@@ -1,0 +1,4 @@
+[<tag id="cmdUpdate2" type="linkbutton" resourcekey="General.cmdUpdateExit"  cssclass="NBright_AcceptButton" commandname="UpdateExit" commandargument="ItemID"/>]
+[<tag id="cmdUpdate1" type="linkbutton" resourcekey="General.cmdSave"  cssclass="NBright_AcceptButton" commandname="Update" commandargument="ItemID"/>]
+[<tag id="cmdCancel1" type="linkbutton" resourcekey="General.cmdCancel"  cssclass="NBright_Orange_Arrow_UpButton" commandname="Cancel" commandargument="ItemID" />]
+[<tag id="cmdDelete1" type="linkbutton"  resourcekey="General.cmdDelete" cssclass="NBright_DeleteButton" commandname="Delete" commandargument="ItemID" />]

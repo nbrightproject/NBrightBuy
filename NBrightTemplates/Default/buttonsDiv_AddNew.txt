@@ -1,0 +1,2 @@
+[<tag id="cmdNew" type="linkbutton" resourcekey="General.cmdAdd"  cssclass="nwb-button primary icon add" commandname="new" commandargument="0"/>]
+<hr />
