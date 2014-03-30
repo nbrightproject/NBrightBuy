@@ -1,0 +1,3 @@
+<div class="nwb-button-container">
+[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave"  cssclass="nwb-button primary icon approve" commandname="save" commandargument="ItemID"/>]
+</div>

@@ -1,0 +1,7 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+<span [<tag type="testof" testvalue="sortselected" display="style='display:none;'" displayelse="" />]>
+[<tag id="cmdSort" type="linkbutton" resourcekey="General.cmdSortImg" commandname="sort" commandargument="ItemID" />]
+</span>
+<span [<tag type="testof" testvalue="sortselected" display="" displayelse="style='display:none;'" />]>
+[<tag id="cmdSortSel" type="linkbutton" resourcekey="General.cmdSelectImg" commandname="sortselect" commandargument="ItemID" />]
+</span>

@@ -1,0 +1,5 @@
+<div class="nwb-button-container">
+[<tag id="cmdUpdate1" type="linkbutton" resourcekey="General.cmdSave"  cssclass="nwb-button primary icon approve" commandname="Update" commandargument="ItemID"/>]
+[<tag id="cmdCancel1" type="linkbutton" resourcekey="General.cmdCancel"  cssclass="nwb-button danger" commandname="Cancel" commandargument="ItemID" />]
+[<tag id="cmdDelete1" type="linkbutton"  resourcekey="General.cmdDelete" cssclass="nwb-button danger icon remove" commandname="Delete" commandargument="ItemID" />]
+</div>
