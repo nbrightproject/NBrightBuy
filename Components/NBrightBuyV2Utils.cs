@@ -67,7 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strSelectedIds += obj.RelatedProductID.ToString("") + ",";
             }
             var strFilter = " and [LegacyItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
-            var relList = objCtrl.GetList(PortalSettings.Current.PortalId,-1,"PRD",strFilter);
+            var relList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRD", strFilter, "", 0, 0, 0, 0, "PRDLANG", Utils.GetCurrentCulture());
             return relList;
         }
 
