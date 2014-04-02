@@ -1,0 +1,95 @@
+<div class="dnnFormItem">
+[<tag id="lbltextsearch" type="dnnlabelcontrol" />][<tag id="chktextsearch" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="textsearch">
+<div class="dnnFormItem textsearch">
+[<tag id="lbltxtsummary" type="dnnlabelcontrol" />][<tag id="chktxtsummary" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem textsearch">
+[<tag id="lbltxtmanufacturer" type="dnnlabelcontrol" />][<tag id="chktxtmanufacturer" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem textsearch">
+[<tag id="lbltxtseoname" type="dnnlabelcontrol" />][<tag id="chktxtseoname" type="checkbox" Text=""  />]<br/>
+</div>
+<div class="dnnFormItem textsearch">
+[<tag id="lbltxtseopagetitle" type="dnnlabelcontrol" />][<tag id="chktxtseopagetitle" type="checkbox" Text=""  />]<br/>
+</div>
+<div class="dnnFormItem textsearch">
+[<tag id="lbltxttagwords" type="dnnlabelcontrol" />][<tag id="chktxttagwords" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem textsearch">
+[<tag id="lbldescription" type="dnnlabelcontrol" />][<tag id="chkdescription" type="checkbox" Text="" />]<br/>
+</div>
+</div>
+<div class="dnnFormItem">
+[<tag id="lblinstock" type="dnnlabelcontrol" />][<tag id="chkInStock" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem">
+[<tag id="lblpricerange" type="dnnlabelcontrol" />][<tag id="chkpricerange" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem">
+[<tag id="lblcatselect" type="dnnlabelcontrol" />][<tag id="chkcatselect" type="checkbox" Text="" checked="True" />]<br/>
+</div>
+<div class="dnnFormItem categorysearchptions">
+[<tag id="lblcatsearchtype" type="dnnlabelcontrol" />][<tag id="rblcatsearchtype" type="radiobuttonlist" data="AND;OR;CASCADE" repeatcolumns="3" selectedvalue="AND" />]<br/>
+[<tag id="lblparentcatref" type="dnnlabelcontrol" />][<tag id="parentcatref" type="textbox" width="200" maxlength="50" />]<br/>
+[<tag id="lblcatreflist" type="dnnlabelcontrol" />][<tag id="catreflist" type="textbox" width="400" maxlength="500" />]<br/>
+[<tag id="lblcatrepeatcolumns" type="dnnlabelcontrol" />][<tag id="catrepeatcolumns" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+[<tag id="lbldisplaylevels" type="dnnlabelcontrol" />][<tag id="displaylevels" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+
+[<tag id="lblgroupselect1" type="dnnlabelcontrol" />][<tag id="chkgroupselect1" type="checkbox" Text="" checked="False" />]<br/>
+<div class="dnnFormItem searchgroup1">
+<hr/>
+<h3>AND</h3>
+[<tag id="lblparentcatref1" type="dnnlabelcontrol" />][<tag id="parentcatref1" type="textbox" width="200" maxlength="50" />]<br/>
+[<tag id="lblcatreflist1" type="dnnlabelcontrol" />][<tag id="catreflist1" type="textbox" width="400" maxlength="500" />]<br/>
+[<tag id="lblcatrepeatcolumns1" type="dnnlabelcontrol" />][<tag id="catrepeatcolumns1" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+[<tag id="lbldisplaylevels1" type="dnnlabelcontrol" />][<tag id="displaylevels1" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+
+[<tag id="lblgroupselect2" type="dnnlabelcontrol" />][<tag id="chkgroupselect2" type="checkbox" Text="" checked="False" />]<br/>
+<div class="dnnFormItem searchgroup2">
+<hr/>
+<h3>AND</h3>
+[<tag id="lblparentcatref2" type="dnnlabelcontrol" />][<tag id="parentcatref2" type="textbox" width="200" maxlength="50" />]<br/>
+[<tag id="lblcatreflist2" type="dnnlabelcontrol" />][<tag id="catreflist2" type="textbox" width="400" maxlength="500" />]<br/>
+[<tag id="lblcatrepeatcolumns2" type="dnnlabelcontrol" />][<tag id="catrepeatcolumns2" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+[<tag id="lbldisplaylevels2" type="dnnlabelcontrol" />][<tag id="displaylevels2" type="textbox" text="1" width="30" maxlength="5" />]<br/>
+</div>
+</div>
+
+</div>
+
+<script>
+
+function displaycheckboxs()
+ {
+	if ($("input[[id*='chkcatselect']]").prop('checked') == false) $('.categorysearchptions').hide();
+	if ($("input[[id*='chkgroupselect1']]").prop('checked') == false) $('.searchgroup1').hide();
+	if ($("input[[id*='chkgroupselect2']]").prop('checked') == false) $('.searchgroup2').hide();
+
+    $("input[[id*='chkcatselect']]").change(function() {
+		$('.categorysearchptions').show();
+		if ($("input[[id*='chkcatselect']]").prop('checked') == false) $('.categorysearchptions').hide();
+    });
+    $("input[[id*='chkgroupselect1']]").change(function() {
+		$('.searchgroup1').show();
+		if ($("input[[id*='chkgroupselect1']]").prop('checked') == false) $('.searchgroup1').hide();
+    });
+    $("input[[id*='chkgroupselect2']]").change(function() {
+		$('.searchgroup2').show();
+		if ($("input[[id*='chkgroupselect2']]").prop('checked') == false) $('.searchgroup2').hide();
+    });
+	
+	if ($("input[[id*='chktextsearch']]").prop('checked') == false) $('.textsearch').hide();
+
+    $("input[[id*='chktextsearch']]").change(function() {
+		$('.textsearch').show();
+		if ($("input[[id*='chktextsearch']]").prop('checked') == false) $('.textsearch').hide();
+    });
+ }
+
+$(document).ready(function() {
+	displaycheckboxs();
+});
+
+</script>

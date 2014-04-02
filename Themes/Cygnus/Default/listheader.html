@@ -1,0 +1,27 @@
+[<tag id="includeinheader" type="meta" value="listpageheader.html" />]
+
+<div class="NBB">
+
+[<tag id="searchpagesize" type="meta" value="{Settings:pagesize}" />] 
+
+[<tag id="orderby" type="meta" value="NB3.FromPrice" />]
+<!-- Define all the possible orderby columns we want, this will specfied by the dropdownlist values-->
+[<tag id="orderby0" type="meta" value="NB3.ProductRef" />]
+[<tag id="orderby1" type="meta" value="NB3.ProductName" />]
+[<tag id="orderby2" type="meta" value="NB3.Manufacturer" />]
+[<tag id="orderby3" type="meta" value="NB3.FromPrice" />]
+[<tag id="orderby4" type="meta" value="NB3.FromPrice DESC" />]
+[<tag id="orderby5" type="meta" value="NB3.Qty" />]
+
+<!-- List header -->
+<select class="sorter" onchange="location=this.options[[this.selectedIndex]].value">
+<option value="">Sort by</option>
+<option value="?orderby=0">Code</option>
+<option value="?orderby=1">Title</option>
+<option value="?orderby=2">Manufacturer</option>
+<option value="?orderby=3">Lowest price</option>
+<option value="?orderby=4">Highest price</option>
+<option value="?orderby=5">Quantity</option>
+</select>
+
+<ul id="listwrapper" class="productlist">

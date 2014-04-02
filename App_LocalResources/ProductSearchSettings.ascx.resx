@@ -207,4 +207,100 @@
   <data name="lbltheme.Text" xml:space="preserve">
     <value>Theme : </value>
   </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Product Search Settings</value>
+  </data>
+  <data name="lblbasicsettings.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="lblcatreflist.Help" xml:space="preserve">
+    <value>A CSV list of Category Refs to be displayed on the search form. e.g. (Cat1,Cat2,Cat3)  This will only apply to the returned categories from Parent Ref selection, if no Ref List is specified all returned categories will be displayed.</value>
+  </data>
+  <data name="lblcatreflist.Text" xml:space="preserve">
+    <value>Category Ref List : </value>
+  </data>
+  <data name="lblcatreflist1.Help" xml:space="preserve">
+    <value>A CSV list of Category Refs to be displayed on the search form. e.g. (Cat1,Cat2,Cat3)  This will only apply to the returned categories from Parent Ref selection, if no Ref List is specified all returned categories will be displayed.</value>
+  </data>
+  <data name="lblcatreflist1.Text" xml:space="preserve">
+    <value>Category Ref List : </value>
+  </data>
+  <data name="lblcatreflist2.Help" xml:space="preserve">
+    <value>A CSV list of Category Refs to be displayed on the search form. e.g. (Cat1,Cat2,Cat3)  This will only apply to the returned categories from Parent Ref selection, if no Ref List is specified all returned categories will be displayed.</value>
+  </data>
+  <data name="lblcatreflist2.Text" xml:space="preserve">
+    <value>Category Ref List : </value>
+  </data>
+  <data name="lblcatrepeatcolumns.Help" xml:space="preserve">
+    <value>Number of columns to be displayed.</value>
+  </data>
+  <data name="lblcatrepeatcolumns.Text" xml:space="preserve">
+    <value>Columns : </value>
+  </data>
+  <data name="lblcatrepeatcolumns1.Help" xml:space="preserve">
+    <value>Number of columns to be displayed.</value>
+  </data>
+  <data name="lblcatrepeatcolumns1.Text" xml:space="preserve">
+    <value>Columns : </value>
+  </data>
+  <data name="lblcatrepeatcolumns2.Help" xml:space="preserve">
+    <value>Number of columns to be displayed.</value>
+  </data>
+  <data name="lblcatrepeatcolumns2.Text" xml:space="preserve">
+    <value>Columns : </value>
+  </data>
+  <data name="lbldisplaylevels.Help" xml:space="preserve">
+    <value>Number of sub levels of categories to display.</value>
+  </data>
+  <data name="lbldisplaylevels.Text" xml:space="preserve">
+    <value>Display Levels :</value>
+  </data>
+  <data name="lbldisplaylevels1.Help" xml:space="preserve">
+    <value>Number of sub levels of categories to display.</value>
+  </data>
+  <data name="lbldisplaylevels1.Text" xml:space="preserve">
+    <value>Display Levels :</value>
+  </data>
+  <data name="lbldisplaylevels2.Help" xml:space="preserve">
+    <value>Number of sub levels of categories to display.</value>
+  </data>
+  <data name="lbldisplaylevels2.Text" xml:space="preserve">
+    <value>Display Levels :</value>
+  </data>
+  <data name="lblgroupselect1.Help" xml:space="preserve">
+    <value>Activates a AND clause on a second category group "Group 1".</value>
+  </data>
+  <data name="lblgroupselect1.Text" xml:space="preserve">
+    <value>Activate AND Search Group 1 : </value>
+  </data>
+  <data name="lblgroupselect2.Help" xml:space="preserve">
+    <value>Activates a AND clause on a third category group "Group 2".</value>
+  </data>
+  <data name="lblgroupselect2.Text" xml:space="preserve">
+    <value>Activate AND Search Group 2 : </value>
+  </data>
+  <data name="lblparentcatref.Help" xml:space="preserve">
+    <value>All categories below this parent category will be returned.  If not specified all categories will be returned.</value>
+  </data>
+  <data name="lblparentcatref.Text" xml:space="preserve">
+    <value>Category Parent Ref : </value>
+  </data>
+  <data name="lblparentcatref1.Help" xml:space="preserve">
+    <value>All categories below this parent category will be returned.  If not specified all categories will be returned.</value>
+  </data>
+  <data name="lblparentcatref1.Text" xml:space="preserve">
+    <value>Category Parent Ref : </value>
+  </data>
+  <data name="lblparentcatref2.Help" xml:space="preserve">
+    <value>All categories below this parent category will be returned.  If not specified all categories will be returned.</value>
+  </data>
+  <data name="lblparentcatref2.Text" xml:space="preserve">
+    <value>Category Parent Ref : </value>
+  </data>
+  <data name="lblthemesettings.Text" xml:space="preserve">
+    <value>Specific Theme Settings</value>
+  </data>
+  <data name="themehidden.Text" xml:space="preserve">
+    <value>Old Theme Settings have been disabled, update to activate new theme. </value>
+  </data>
 </root>

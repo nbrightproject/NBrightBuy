@@ -973,7 +973,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
 
-            if (objCache == null)
+            if (objCache == null | StoreSettings.Current.DebugMode)
             {
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
                 var d = new Dictionary<int, string>();
@@ -998,7 +998,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                         rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                     else
                                     {
-                                        if ((catreflist + ",").Contains(grpcat.categoryref + ","))
+                                        if (grpcat.categoryref != "" && (catreflist + ",").Contains(grpcat.categoryref + ","))
                                         {
                                             rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                         }

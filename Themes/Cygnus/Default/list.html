@@ -1,0 +1,24 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx" />]
+<!-- List item -->
+<ul class="product">
+	[<tag type="testof" testinrole="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<li class="edit">[<tag resourcekey="ProductView.editicon" type="nbb:editlink"  />]</li>[<tag type="endtestof" />]
+	[<tag type="nbb:if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+	<li class="image"><a href="[<tag type="entryurl" />]"><img title="[<tag type="nbb:summary" />]" src="[<tag type="thumbnail" w="200"  h="0" />]"></a></li>
+	[<tag type="endif" />]
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
+	[<tag type="nbb:if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
+	<li class="noimage"><a href="[<tag type="entryurl" />]"><i class="fa fa-camera"></i></a></li>
+	[<tag type="endif" />]
+	[<tag type="endif" />]
+	<li class="title"><div class="manufacturer">[<tag type="nbb:manufacturer" />]</div><div class="name">[<tag type="nbb:productname" />]</div></li>
+	<li class="summary">[<tag type="nbb:summary" />]</li>
+	<li class="purchase">
+	<span class="price">[<tag type="nbb:price" />]</span>
+	[<tag type="nbb:if" outofstock="0" display="{OFF}" displayelse="{ON}" />]
+	[<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />]
+	[<tag type="endtestof"  />]
+	[<tag type="nbb:if" inwishlist="" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />]
+	[<tag type="nbb:if" inwishlist="" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]
+	[<tag type="nbb:entrylink" cssclass="view" resourcekey="ProductView.viewicon"/>]
+	</li>
+</ul>

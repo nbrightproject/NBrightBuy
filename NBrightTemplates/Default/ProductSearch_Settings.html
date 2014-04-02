@@ -1,82 +1,55 @@
-[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+<script>
 
-<h2>Product Search Settings</h2>
-<div class="dnnFormItem">
-[<tag id="lblRedirectTab" type="dnnlabelcontrol" />][<tag id="RedirectTabId" type="dropdownlist" datatabs="blank" />]
-</div>
-<div class="dnnFormItem">
-[<tag id="lbltargetmodulekey" type="dnnlabelcontrol" />][<tag id="targetmodulekey" type="textbox" width="300" maxlength="250" />]<br/>
-</div>
-<div class="dnnFormItem">
-	[<tag id="lbltheme" type="dnnlabelcontrol" />][<tag id="themefolder" cssclass="themefolder" type="textbox" width="150" maxlength="50" text="Cygnus" />]
-</div>
-<div class="dnnFormItem">
-[<tag id="lblsearchtemplate" type="dnnlabelcontrol" />][<tag id="txtsearchtemplate" type="textbox" width="300" maxlength="250" />]<br/>
-</div>
-<hr/>
-<div class="dnnFormItem">
-[<tag id="lbltextsearch" type="dnnlabelcontrol" />][<tag id="chktextsearch" type="checkbox" Text="" checked="True" />]<br/>
-</div>
+    $(document).ready(function () {
 
-<div class="textsearch">
-<div class="dnnFormItem textsearch">
-[<tag id="lbltxtsummary" type="dnnlabelcontrol" />][<tag id="chktxtsummary" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem textsearch">
-[<tag id="lbltxtmanufacturer" type="dnnlabelcontrol" />][<tag id="chktxtmanufacturer" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem textsearch">
-[<tag id="lbltxtseoname" type="dnnlabelcontrol" />][<tag id="chktxtseoname" type="checkbox" Text=""  />]<br/>
-</div>
-<div class="dnnFormItem textsearch">
-[<tag id="lbltxtseopagetitle" type="dnnlabelcontrol" />][<tag id="chktxtseopagetitle" type="checkbox" Text=""  />]<br/>
-</div>
-<div class="dnnFormItem textsearch">
-[<tag id="lbltxttagwords" type="dnnlabelcontrol" />][<tag id="chktxttagwords" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem textsearch">
-[<tag id="lbldescription" type="dnnlabelcontrol" />][<tag id="chkdescription" type="checkbox" Text="" />]<br/>
-</div>
-</div>
-<div class="dnnFormItem">
-[<tag id="lblinstock" type="dnnlabelcontrol" />][<tag id="chkInStock" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem">
-[<tag id="lblpricerange" type="dnnlabelcontrol" />][<tag id="chkpricerange" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem">
-[<tag id="lblcatselect" type="dnnlabelcontrol" />][<tag id="chkcatselect" type="checkbox" Text="" checked="True" />]<br/>
-</div>
-<div class="dnnFormItem rblcatsearchtype">
-[<tag id="lblcatsearchtype" type="dnnlabelcontrol" />][<tag id="rblcatsearchtype" type="radiobuttonlist" data="AND;OR;CASCADE" repeatcolumns="3" selectedvalue="AND" />]<br/>
+        $(function () {
+            $("#accordion").accordion({
+                heightStyle: "content",
+                header: "h3",
+                collapsible: true,
+                active: 0
+            });
+        });
+
+        $('.themefolder').change(function () {
+            alert('[<tag type="valueof" resourcekey="ProductSearchSettings.themehidden" />]');
+            $('.themesettings').html('');
+        });
+
+    });
+
+</script>
+
+<div id="dnnPanel-ArchivesTemplateSettings">
+    <h2 class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">[<tag type="valueof" resourcekey="ProductSearchSettings.lblbasicsettings" />]</a></h2>
+    <fieldset>
+		<div class="dnnFormItem">
+		[<tag id="lblRedirectTab" type="dnnlabelcontrol" />][<tag id="RedirectTabId" type="dropdownlist" datatabs="blank" />]
+		</div>
+		<div class="dnnFormItem">
+		[<tag id="lbltargetmodulekey" type="dnnlabelcontrol" />][<tag id="targetmodulekey" type="textbox" width="300" maxlength="250" />]<br/>
+		</div>
+		<div class="dnnFormItem">
+			[<tag id="lbltheme" type="dnnlabelcontrol" />][<tag id="themefolder" cssclass="themefolder" type="textbox" width="150" maxlength="50" text="Cygnus" />]
+		</div>
+		<div class="dnnFormItem">
+		[<tag id="lblsearchtemplate" type="dnnlabelcontrol" />][<tag id="txtsearchtemplate" type="textbox" width="300" maxlength="250" />]<br/>
+		</div>
+    </fieldset>
+
+
+<div class="themesettings">
+	<h2 class="dnnFormSectionHead"><a href="">[<tag type="valueof" resourcekey="ProductSearchSettings.lblthemesettings" />]</a></h2>
+	<fieldset>
+		[Template:ProductSearchSettings.html]
+	</fieldset>
+	</div>
 </div>
 
-<hr/>
+
+
+<!-- Save button here for testing, to be removed for release -->
 <br/>
 <br/>
 [Template:buttonsDiv_Save.txt]
-
-<script>
-
-function displaycheckboxs()
- {
-	if ($("input[[id*='chkcatselect']]").prop('checked') == false) $('.rblcatsearchtype').hide();
-
-    $("input[[id*='chkcatselect']]").change(function() {
-		$('.rblcatsearchtype').show();
-		if ($("input[[id*='chkcatselect']]").prop('checked') == false) $('.rblcatsearchtype').hide();
-    });
-	
-	if ($("input[[id*='chktextsearch']]").prop('checked') == false) $('.textsearch').hide();
-
-    $("input[[id*='chktextsearch']]").change(function() {
-		$('.textsearch').show();
-		if ($("input[[id*='chktextsearch']]").prop('checked') == false) $('.textsearch').hide();
-    });
- }
-
-$(document).ready(function() {
-	displaycheckboxs();
-});
-
-</script>
+<hr/>

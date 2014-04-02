@@ -1,0 +1,13 @@
+	<tr>
+		<td>[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
+		<td>[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]
+		[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]
+		[<tag type='endtestof' />]
+		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{ON}' displayelse='{OFF}' />]No Sale[<tag type='endtestof' />]</td>
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtdealercost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtqtyremaining" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/hidden/stockincart" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/hidden/calcstock" />]</td>
+	</tr>

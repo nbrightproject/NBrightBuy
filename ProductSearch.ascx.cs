@@ -41,8 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
             
             base.OnInit(e);
 
-            //[TODO: Not sure testing for this checkbox is valid for all search templates.]
-            if (ModSettings.Get("chktextsearch") == "")  // if we don't have module setting jump out
+            if (ModSettings.Get("txtsearchtemplate") == "")  // if we don't have module setting jump out
             {
                 rpData.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
                 return;
