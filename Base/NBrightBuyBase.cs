@@ -32,11 +32,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             var obj = new NBrightBuyController();
             base.ObjCtrl = obj;
 
-            // build StoreSettings and place in httpcontext
-		    if (HttpContext.Current.Items["StoreSettings"] == null)
-		    {
-                HttpContext.Current.Items.Add("StoreSettings", new StoreSettings());		        
-		    }
             DebugMode = StoreSettings.Current.DebugMode;
                         
 		    base.OnInit(e);

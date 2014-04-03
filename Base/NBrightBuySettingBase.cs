@@ -36,11 +36,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 			//set default Data controller
             ModCtrl = new NBrightBuyController();
 
-            // build StoreSettings and place in httpcontext
-            if (HttpContext.Current.Items["StoreSettings"] == null)
-            {
-                HttpContext.Current.Items.Add("StoreSettings", new StoreSettings());
-            }
 
             #region "Get all Settings for module"
             //get Model Level Settings

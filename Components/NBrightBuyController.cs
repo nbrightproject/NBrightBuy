@@ -394,15 +394,39 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "static methods"
 
+        /// <summary>
+        /// Get current portal StoreSettings
+        /// </summary>
+        /// <returns></returns>
 	    public static StoreSettings GetCurrentPortalData()
 	    {
             StoreSettings objPortalSettings = null;
             if (HttpContext.Current != null)
             {
-                objPortalSettings = (StoreSettings)HttpContext.Current.Items["StoreSettings"];
+                // build StoreSettings and place in httpcontext
+                if (HttpContext.Current.Items["NBBStoreSettings"] == null)
+                {
+                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStoreSettings());
+                }
+                objPortalSettings = (StoreSettings)HttpContext.Current.Items["NBBStoreSettings"];
             }
             return objPortalSettings;
 	    }
+
+        /// <summary>
+        /// Cache the current store settings
+        /// </summary>
+        /// <returns></returns>
+        private static StoreSettings GetStoreSettings()
+        {
+            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            if (objSs == null)
+            {
+                objSs = new StoreSettings();
+                Utils.SetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""), objSs);
+            }
+            return objSs;
+        }
 
         #endregion
 
