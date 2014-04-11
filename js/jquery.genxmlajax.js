@@ -1,4 +1,4 @@
-// NBright JQuery plugin to generate ajax post of input fields - v1.0.0
+// NBright JQuery plugin to generate ajax post of input fields - v1.0.1
 (function ($) {
 
 	// Usage: var values = $.fn.genxmlajax(selectordiv);
