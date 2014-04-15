@@ -321,6 +321,48 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "hasrelateditems":
+                                dataValue = "FALSE";
+                                if (NBrightBuyV2Utils.HasRelatedProducts((NBrightInfo)container.DataItem))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "hasdocuments":
+                                dataValue = "FALSE";
+                                if (NBrightBuyV2Utils.HasDocuments((NBrightInfo)container.DataItem))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "hasmodelsoroptions":
+                                dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + 2 + "]/hidden/modelid");
+                                if (nod != null && nod.InnerText != "")
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                if (dataValue=="FALSE")
+                                {
+                                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + 1 + "]/hidden/optionid");
+                                    if (nod != null && nod.InnerText != "")
+                                    {
+                                        dataValue = "TRUE";
+                                        testValue = "TRUE";
+                                    }                                                                        
+                                }
+                                break;
+                            case "isproductincart":
+                                dataValue = "FALSE";
+                                if (NBrightBuyV2Utils.IsInCart((NBrightInfo)container.DataItem))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             default:
                                 dataValue = "";
                                 break;

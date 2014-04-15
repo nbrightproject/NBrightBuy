@@ -55,6 +55,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return -1;
         }
 
+        public static Boolean HasRelatedProducts(NBrightInfo objProduct)
+        {
+            var productid = GetLegacyProductId(objProduct);
+            var objPCtrl = new ProductController();
+            var arylist = objPCtrl.GetProductRelatedList(PortalSettings.Current.PortalId, productid, Utils.GetCurrentCulture(), -1, false);
+            if (arylist.Count > 0) return true;
+            return false;
+        }
+
         public static List<NBrightInfo> GetRelatedProducts(NBrightInfo objProduct,Boolean getAll = false)
         {
             var objCtrl = new NBrightBuyController();
@@ -69,6 +78,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strFilter = " and [LegacyItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
             var relList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRD", strFilter, "", 0, 0, 0, 0, "PRDLANG", Utils.GetCurrentCulture());
             return relList;
+        }
+
+        public static Boolean HasDocuments(NBrightInfo objProduct)
+        {
+            var productid = GetLegacyProductId(objProduct);
+            var objPCtrl = new ProductController();
+            var arylist = objPCtrl.GetProductDocList(productid, Utils.GetCurrentCulture());
+            if (arylist.Count > 0) return true;
+            return false;
         }
 
         public static bool DocHasBeenPurchasedByDocId(int userId, int docId)
@@ -227,6 +245,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             CurrentCart.ValidateCart(PortalSettings.Current.PortalId, uInfo);
 
         }
+
+
+        public static Boolean IsInCart(NBrightInfo objProduct)
+        {
+            var productid = GetLegacyProductId(objProduct);
+            var objPCtrl = new ProductController();
+            var cartL = CurrentCart.GetCurrentCartItems(PortalSettings.Current.PortalId);
+            foreach (NB_Store_CartItemsInfo c in cartL)
+            {
+                var m = objPCtrl.GetModel(c.ModelID, Utils.GetCurrentCulture());
+                if (m.ProductID == productid) return true;
+            }
+            return false;
+        }
+
 
         public static String FormatToStoreCurrency(Double value)
         {
