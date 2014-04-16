@@ -199,7 +199,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (selectoperator.ToLower() == "cascade")
                     {
-                        strRtn += "NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId in (" + categorylist + ")) ";
+                        strRtn += "NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId in (" + categorylist + ")) ";
                     }
                     else
                     {

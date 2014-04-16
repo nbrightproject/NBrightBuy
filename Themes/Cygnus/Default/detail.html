@@ -1,44 +1,43 @@
-[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx" />]
 <!-- Detail -->
 
 <div class="productdetail">
 
-	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
-	[<tag type="nbb:if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
+	[<tag type="if" function="settings" key="placeholderimage" testvalue="True" display="{ON}" displayelse="{OFF}" />]
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
 	<div class="images">
 	<div class="noimage"><i class="fa fa-camera"></i></div>
 	</div>
 	[<tag type="endif" />]
 	[<tag type="endif" />]
 	
-	[<tag type="nbb:if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
 	<div class="images">
-		<div class="image"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[1]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="340" h="0" image="1" />]" alt="[<tag type="nbb:productimgdesc" index="1"  />]" title="[<tag type="nbb:productimgdesc" index="1"  />]" /></a></div>	
-	[<tag type="nbb:if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		<div class="image"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[1]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='340' h='0' image='1' />]" alt="[<tag type='nbb:productimgdesc' index='1'  />]" title="[<tag type='nbb:productimgdesc' index='1'  />]" /></a></div>	
+	[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
 	<ul class="gallery">
-		[<tag type="nbb:if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<li class="image2"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[2]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="2" />]" alt="[<tag type="nbb:productimgdesc" index="2"  />]" title="[<tag type="nbb:productimgdesc" index="2"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		<li class="image2"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[2]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='2' />]" alt="[<tag type='nbb:productimgdesc' index='2'  />]" title="[<tag type='nbb:productimgdesc' index='2'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
-		<li class="image3"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[3]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="3" />]" alt="[<tag type="nbb:productimgdesc" index="3"  />]" title="[<tag type="nbb:productimgdesc" index="3"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
+		<li class="image3"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[3]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='3' />]" alt="[<tag type='nbb:productimgdesc' index='3'  />]" title="[<tag type='nbb:productimgdesc' index='3'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
-		<li class="image4"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[4]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="4" />]" alt="[<tag type="nbb:productimgdesc" index="4"  />]" title="[<tag type="nbb:productimgdesc" index="4"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
+		<li class="image4"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[4]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='4' />]" alt="[<tag type='nbb:productimgdesc' index='4'  />]" title="[<tag type='nbb:productimgdesc' index='4'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="5" display="{ON}" displayelse="{OFF}" />]
-		<li class="image5"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[5]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="5" />]" alt="[<tag type="nbb:productimgdesc" index="5"  />]" title="[<tag type="nbb:productimgdesc" index="5"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="5" display="{ON}" displayelse="{OFF}" />]
+		<li class="image5"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[5]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='5' />]" alt="[<tag type='nbb:productimgdesc' index='5'  />]" title="[<tag type='nbb:productimgdesc' index='5'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="6" display="{ON}" displayelse="{OFF}" />]
-		<li class="image6"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[6]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="6" />]" alt="[<tag type="nbb:productimgdesc" index="6"  />]" title="[<tag type="nbb:productimgdesc" index="6"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="6" display="{ON}" displayelse="{OFF}" />]
+		<li class="image6"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[6]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='6' />]" alt="[<tag type='nbb:productimgdesc' index='6'  />]" title="[<tag type='nbb:productimgdesc' index='6'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="7" display="{ON}" displayelse="{OFF}" />]
-		<li class="image7"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[7]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="7" />]" alt="[<tag type="nbb:productimgdesc" index="7"  />]" title="[<tag type="nbb:productimgdesc" index="7"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="7" display="{ON}" displayelse="{OFF}" />]
+		<li class="image7"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[7]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='7' />]" alt="[<tag type='nbb:productimgdesc' index='7'  />]" title="[<tag type='nbb:productimgdesc' index='7'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="8" display="{ON}" displayelse="{OFF}" />]
-		<li class="image8"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[8]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="8" />]" alt="[<tag type="nbb:productimgdesc" index="8"  />]" title="[<tag type="nbb:productimgdesc" index="8"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="8" display="{ON}" displayelse="{OFF}" />]
+		<li class="image8"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[8]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='8' />]" alt="[<tag type='nbb:productimgdesc' index='8'  />]" title="[<tag type='nbb:productimgdesc' index='8'  />]" /></a></li>
 		[<tag type="endif" />]
-		[<tag type="nbb:if" function="imgexists" testvalue="9" display="{ON}" displayelse="{OFF}" />]
-		<li class="image9"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[9]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type="nbb:thumbnail" w="76" h="76" image="9" />]" alt="[<tag type="nbb:productimgdesc" index="9"  />]" title="[<tag type="nbb:productimgdesc" index="9"  />]" /></a></li>
+		[<tag type="if" function="imgexists" testvalue="9" display="{ON}" displayelse="{OFF}" />]
+		<li class="image9"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[9]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='nbb:thumbnail' w='76' h='76' image='9' />]" alt="[<tag type='nbb:productimgdesc' index='9'  />]" title="[<tag type='nbb:productimgdesc' index='9'  />]" /></a></li>
 		[<tag type="endif" />]
 	</ul>
 	[<tag type="endif" />]
@@ -59,46 +58,79 @@
 		[<tag type="endtestof"  />]
 		</li>
 		
-		[<tag type="nbb:if" function="price" testvalue="0.00" display="{OFF}" displayelse="{ON}" />]
-		<li class="price">[<tag type="nbb:price" />]</li>
-		[<tag type="endtestof"  />]
+<!-- Begin Pricing for Retail, Sale and Dealer -->
+	[<tag type="if" function="settings" key="disableprices" testvalue="True" display="{OFF}" />]<!-- If prices are disabled then hide all prices -->
+	
+		[<tag type="if" function="price" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide all prices -->
+		[<tag type="if" function="isinrole" role="Dealer" display="{OFF}" displayelse="{ON}" />]<!-- Hide retail and sale section from dealer -->
+		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
+		<li class="price">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:price" />]</li><!-- Retail Pricing -->
+		[<tag type="endif"  />]
+		
+		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Pricing -->
+		<li class="oldprice">Normally [<tag type="nbb:price" />]</li>
+		<li class="saleprice">On Sale [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]from [<tag type="endif" />][<tag type="nbb:saleprice" />]</li>
+		[<tag type="endif"  />]
+		
+		[<tag type="endif"  />]<!-- End hide retail and sale section from dealer -->
+		
+		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer Pricing -->
+		<li class="retailprice">Retail [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]from [<tag type="endif" />][<tag type="nbb:price" />]</li>
+		<li class="dealerprice">Dealer [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]from [<tag type="endif" />][<tag type="nbb:dealerprice" />]</li>
+		[<tag type="endif"  />]		
 
-		[<tag type="nbb:if" function="price" testvalue="0.00" display="{ON}" displayelse="{OFF}" />]
-		<li class="price">Call for Price</li>
-		[<tag type="endtestof"  />]
+		[<tag type="if" function="price" testvalue="0.00" display="{ON}" />]<!-- If price is zero then display contact message -->
+		<li class="emailprice">
+		<a href="mailto:[TAG:SETTING:merchant.email]?subject=Price request - [<tag type='nbb:productname' />]&amp;body=Please inform me of the price of the [<tag type='nbb:productname' />] at [<tag type='websiteurl' />][<tag type='entryurl' />] on this page: [<tag type='websiteurl' />]">Email for price</a>
+		</li>
+		[<tag type="endif"  />]
+		
+		[<tag type="endif"  />]
+		
+	[<tag type="endif"  />]
+
+<!-- End Pricing for Retail, Sale and Dealer -->
+
 
 		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtsummary" testvalue="" display="{OFF}" displayelse="{ON}" />]
 		<li class="summary">[<tag type="breakof" xpath="genxml/lang/genxml/textbox/txtsummary" />]</li>
-		[<tag type="endtestof"  />]
+		[<tag type="endif"  />]
+		
+	[<tag type="if" function="settings" key="disableprices" testvalue="True" display="{OFF}" />]<!-- If prices are disabled then hide all options and models -->
 
-		[<tag type="nbb:if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
 		<li class="models">[<tag type="nbb:modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1"/>]</li>
-		[<tag type="endtestof"  />]
+		[<tag type="endif"  />]
 		
-		[<tag type="nbb:if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option1"><span class="optionvalue optionvalue1">[<tag type="nbb:productoption" index="1" />]</span><span class="optionname optionname1">[<tag type="nbb:productoptionname" index="1" />]</span></li>
-		[<tag type="endtestof"  />]
-		[<tag type="nbb:if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option2"><span class="optionvalue optionvalue2">[<tag type="nbb:productoption" index="2" />]</span><span class="optionname optionname2">[<tag type="nbb:productoptionname" index="2" />]</span></li>
-		[<tag type="endtestof"  />]
-		[<tag type="nbb:if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option3"><span class="optionvalue optionvalue3">[<tag type="nbb:productoption" index="3" />]</span><span class="optionname optionname3">[<tag type="nbb:productoptionname" index="3" />]</span></li>
-		[<tag type="endtestof"  />]
-		[<tag type="nbb:if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option4"><span class="optionvalue optionvalue4">[<tag type="nbb:productoption" index="4" />]</span><span class="optionname optionname4">[<tag type="nbb:productoptionname" index="4" />]</span></li>
-		[<tag type="endtestof"  />]
-		
+		[<tag type="endif"  />]
+
 		<li class="buy">
-		<span [<tag type="nbb:if" outofstock="0" display="style='display:none;'" displayelse="" />]>
+		[<tag type="if" function="settings" key="disablepurchasing" testvalue="True" display="{OFF}" />]<!-- If purchasing is disabled then hide buy button and quantity -->		
+		<span [<tag type="if" outofstock="0" display="style='display:none;'" displayelse="" />]>
 		[<tag type="nbb:addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" cssclass="label" resourcekey="ProductView.addtobasket" />] 
 		</span>
-		[<tag type="nbb:if" outofstock="0" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="if" outofstock="0" display="{ON}" displayelse="{OFF}" />]
 		<span class="outofstock">Out of Stock</span>
-		[<tag type="endtestof"  />]
+		[<tag type="endif"  />]
+		[<tag type="endif"  />]
 		<span class="return">[<tag type="nbb:returnlink" resourcekey="ProductView.returnicon" />]</span>
-		<span class="wishlist">[<tag type="nbb:if" inwishlist="" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />] 
-		[<tag type="nbb:if" inwishlist="" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]</span>
+		<span class="wishlist">[<tag type="if" function="inwishlist" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />] 
+		[<tag type="if" function="inwishlist" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]</span>
 		</li>
+		
+	[<tag type="endif"  />]
+
 	</ul>
 </div>
 
@@ -106,7 +138,7 @@
 <div class="details">
 
 <!-- Details With Tabs -->
-	[<tag type='testof' settings='tabbedcontent' testvalue='True' display='{ON}' displayelse='{OFF}' />]
+	[<tag type="if" function="settings" key="tabbedcontent" testvalue="True" display="{ON}" displayelse="{OFF}" />]
 	<div id="DetailTabs">
         <ul>
             <li><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li>
@@ -147,11 +179,11 @@
         [<tag type="nbb:relatedproducts" template="relatedlist.html" />]
         </div>
 	</div>
-	[<tag type='endtestof' />]
+	[<tag type="endif" />]
 
 
 <!-- Details Without Tabs -->
-	[<tag type='testof' settings='tabbedcontent' testvalue='False' display='{ON}' displayelse='{OFF}' />]
+	[<tag type="if" function="settings" key="tabbedcontent" testvalue="False" display="{ON}" displayelse="{OFF}" />]
             <h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
             [<tag type="nbb:description" />]
             <h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
@@ -180,23 +212,28 @@
 	        </div>
             <h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
             [<tag type="nbb:relatedproducts" template="relatedlist.html" />]
-	[<tag type='endtestof' />]
+	[<tag type="endif" />]
 
 </div>
-	
-	<div>
-		[<tag type="nbb:testof" outofstock="0" display="{ON}" displayelse="{OFF}" />]
+
+</div>
+
+
+
+	<p>
+		[<tag type="if" function="isinstock" display="{OFF}" />]
 		<br />
 		OUT OF STOCK<br />
 		<br />
-		[<tag type="endtestof" />] 
+		[<tag type="endif" />] 
 		
-		[<tag type="nbb:testof" outofstockcart="0" display="{ON}" displayelse="{OFF}" />]
+		[<tag type="if" function="isinstockcart" display="{OFF}" />]
 		<br />
 		OUT OF STOCK WITH CART<br />
 		<br />
-		[<tag type="endtestof" />] <br />
-	</div>
-</div>
+		[<tag type="endif" />] <br />
+	</p>
 
-
+[<tag type='if' function='settings' key='debug.mode' testvalue='1' display='{ON}' displayelse='{OFF}' />]
+DEBUG ON
+[<tag type="endtestof"  />]

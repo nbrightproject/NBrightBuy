@@ -132,4 +132,10 @@
   <data name="lblplaceholderimage.Text" xml:space="preserve">
     <value>Placeholder Image : </value>
   </data>
+  <data name="lbldisableprices.Text" xml:space="preserve">
+    <value>Disable Prices : </value>
+  </data>
+  <data name="lbldisablepurchasing.Text" xml:space="preserve">
+    <value>Disable Purchasing : </value>
+  </data>
 </root>

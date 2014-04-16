@@ -296,7 +296,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
             var lg = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
             var lx = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
-
+            var lx2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
+            lx.AddRange(lx2);
             foreach (var i in l)
             {
                 var grpcat = new GroupCategoryData();

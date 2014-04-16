@@ -240,10 +240,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //get test value, set all tests to else
                 string output = displayElse;
 
-                if (container.DataItem != null && xmlNod != null && (xmlNod.Attributes != null && (xmlNod.Attributes["function"] != null) && (xmlNod.Attributes["testvalue"] != null)))
+                if (container.DataItem != null && xmlNod != null && (xmlNod.Attributes != null && xmlNod.Attributes["function"] != null))
                 {
                     XmlNode nod;
-                    var testValue = xmlNod.Attributes["testvalue"].InnerXml;
+                    var testValue = "";
+                    if ((xmlNod.Attributes["testvalue"] != null)) testValue = xmlNod.Attributes["testvalue"].Value;
+
+                    // check for setting key
+                    var settingkey = "";
+                    if ((xmlNod.Attributes["key"] != null)) settingkey = xmlNod.Attributes["key"].Value;
+
+                    var role = "";
+                    if ((xmlNod.Attributes["role"] != null)) role = xmlNod.Attributes["role"].Value;
 
                     // do normal xpath test
                     if (xmlNod.Attributes["xpath"] != null)
@@ -258,7 +266,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     // do special tests for named fucntions
                     if (xmlNod.Attributes["function"] != null)
                     {
-                        switch (xmlNod.Attributes["function"].InnerXml.ToLower())
+                        switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
                             case "price":
                                 dataValue = GetFromPrice((NBrightInfo) container.DataItem);
@@ -270,17 +278,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 dataValue = GetSalePrice((NBrightInfo) container.DataItem);
                                 break;
                             case "imgexists":
-                                dataValue = xmlNod.Attributes["testvalue"].InnerXml;
+                                dataValue = testValue;
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + dataValue + "]/hidden/imageid");
                                 if (nod == null || nod.InnerText == "") dataValue = "FALSE";
                                 break;
                             case "modelexists":
-                                dataValue = xmlNod.Attributes["testvalue"].InnerXml;
+                                dataValue = testValue;
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + dataValue + "]/hidden/modelid");
                                 if (nod == null || nod.InnerText == "") dataValue = "FALSE";
                                 break;
                             case "optionexists":
-                                dataValue = xmlNod.Attributes["testvalue"].InnerXml;
+                                dataValue = testValue;
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + dataValue + "]/hidden/optionid");
                                 if (nod == null || nod.InnerText == "") dataValue = "FALSE";
                                 break;
@@ -363,6 +371,22 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "settings":
+                                dataValue = "FALSE";
+                                if (_settings[settingkey] != null && _settings[settingkey] == testValue)
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "isinrole":
+                                dataValue = "FALSE";
+                                if (CmsProviderManager.Default.IsInRole(role))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;                                
                             default:
                                 dataValue = "";
                                 break;
@@ -2243,7 +2267,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var s = m.GetXmlProperty("genxml/hidden/saleprice");
                 if (Utils.IsNumeric(s))
                 {
-                    if (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US"))) saleprice = s;
+                    if (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US"))) saleprice = s;
                 }
             }
             return saleprice;

@@ -302,7 +302,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         var dbOwner = DataProvider.Instance().DatabaseOwner;
                         if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
                         {
-                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + _catid + ") ";
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
                         }
                         else
                             strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
@@ -345,8 +345,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey,1);
 
-                    var recordCount = returnlimit; // we don;t need to count if we have a returnlimit.
-                    if (recordCount == 0) recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
+                    var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
+                    if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit; 
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
 
