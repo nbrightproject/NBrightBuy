@@ -1,6 +1,8 @@
 <!--*******************************************************-->
 <!--**** ADVANCED SEARCH TEMPLATE FOR NBRIGHTSTORE      ***-->
 <!--*******************************************************-->
+<!-- In this template we are using a function defined in nbbajax.js "nbxcheckifnull", so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/nbbajax.js"></script>
 
 <!-- These postback fields are create to keep data that is used to do the section criteria -->
 <!-- They are used the the "search" tokens, js is used to change these values to what the client selects, the values here are set to the default.-->
@@ -14,6 +16,15 @@
 [<tag id='disabledsearchtokens' type='postback' value="" />]
 
 <script>
+
+function hideshowsearchbutton(){
+	$('.searchpostbacklink').hide();
+	$('.nocateogryselected').show();
+	if ( $('input[[id*="chknbbcats"]]').is(':checked') ) {
+		$('.searchpostbacklink').show();
+		$('.nocateogryselected').hide();	
+	}	
+}
 
 $(document).ready(function() {
 
@@ -39,8 +50,53 @@ $(document).ready(function() {
 		// Update disabled fields to the postback field -->
 		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
 	}
+
+	$(".chknbbcatscheckall").on("change", function () {
+		 $('input[[id*="chknbbcats"]]').prop("checked", this.checked);
+	});	
+	
+	// if we do any postback then check if we want to disable any search criteria
+	$("body").on("click", ".postbacklink", function () {
+		$('.processing').show();
+		nbxcheckifnull('.advsearchtext','search0;search1;search2;search3;search4;search5;search6;search7;search8;'); // disble text search if empty
+		$('input[[id*="chknbbcats"]]').prop('checked') == true;
+	});
 	
 
+	// check if no category are selected (display message if not selected, by show/hide "search" buttons) 
+	$(".nocateogryselected").click(function() {
+		alert('[<tag type="valueof" resourcekey="ProductSearch.NoCategorySelected" />]');
+	});
+	$('input[[id*="chknbbcats"]]').click(function() {
+		hideshowsearchbutton();
+	});
+	$('.chknbbcatscheckall').click(function() {
+		hideshowsearchbutton();
+	});	
+	hideshowsearchbutton();
+	
+	// disable/enable the group1 search
+	$(".chknbbgrp1checkall").click(function() {
+		var searchtoken = 'search50';
+		var disabledlist = $("input[[id*='disabledsearchtokens']]").val();
+		if ($(this).prop('checked') == true)
+			disabledlist = disabledlist.replace(';' + searchtoken,'') + ';' + searchtoken;
+		else			
+			disabledlist = disabledlist.replace(';' + searchtoken,'');
+		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
+	});
+	
+	// disable/enable the group2 search
+	$(".chknbbgrp2checkall").click(function() {
+		var searchtoken = 'search60';
+		var disabledlist = $("input[[id*='disabledsearchtokens']]").val();
+		if ($(this).prop('checked') == true)
+			disabledlist = disabledlist.replace(';' + searchtoken,'') + ';' + searchtoken;
+		else			
+			disabledlist = disabledlist.replace(';' + searchtoken,'');
+		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
+	});
+	
 });
 
 </script>
@@ -68,13 +124,13 @@ $(document).ready(function() {
 [<tag id="search34" active="{Settings:chkinstock}" type="meta" action="close" />]
 
 <!-- Token to create the SQL required for the is in category selection -->
-[<tag id="search40" active="{Settings:chkcatselect}" type="meta" action="cats" search="genxml/checkboxlist/chkcats" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
+[<tag id="search40" active="{Settings:chkcatselect}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcats" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
-[<tag id="search50" active="{Settings:chkgroupselect1}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp1" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
+[<tag id="search50" active="{Settings:chkgroupselect1}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcatsgrp1" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
-[<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
+[<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 
 <!-- Define all the poosible orderby columns we want, this will specfied by the dropdownlist values-->
@@ -93,53 +149,62 @@ $(document).ready(function() {
 <div>
 [<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
 <!-- text search -->
-Search : [<tag id='txtSearch' type='textbox' width='200' maxlength='150' />]<br/>
+[<tag type="valueof" resourcekey="General.Search" />] : [<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />]<br/>
 <br/>
 [<tag type='endif' />]
 
 [<tag type='if' settings='chkpricerange' testvalue='True' display='{ON}' />]
 <!-- Price range search -->
-Price Range : [<tag id='txtFrom' type='textbox' width='50' maxlength='50' text="1"/>] - [<tag id='txtTo' type='textbox' width='50' maxlength='50' text="10000" />]<br/>
+[<tag type="valueof" resourcekey="ProductSearch.PriceRange" />] : [<tag id='txtFrom' type='textbox' width='50' maxlength='50' text="1"/>] - [<tag id='txtTo' type='textbox' width='50' maxlength='50' text="10000" />]<br/>
 <br/>
 [<tag type='endif' />]
 
 <!-- Is in Stock search -->
 [<tag type='if' settings='chkinstock' testvalue='True' display='{ON}' />]
-In Stock Only : [<tag id="chkInStock" type="checkbox" Text="" />] <br/>
+[<tag type="valueof" resourcekey="ProductSearch.OnlyInStock" />] : [<tag id="chkInStock" type="checkbox" Text="" />] <br/>
 <br/>
 [<tag type='endif' />]
 
 <!-- category search -->
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
 <br/>
-Categories
+[<tag type="valueof" resourcekey="General.Categories" />]
 <br/>
-[<tag id="chkcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" />]
+<input type="checkbox" class="chknbbcatscheckall">&nbsp;[<tag type="valueof" resourcekey="ProductSearch.CheckAll" />]
+<br/>
+[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" groupref="cat" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" />]
 [<tag type='endif' />]
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
 <br/>
-[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" />]
+<input type="checkbox" class="chknbbgrp1checkall">&nbsp;[<tag type="valueof" resourcekey="General.Any" />]
+<br/>
+[<tag id="chknbbcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect2' testvalue='True' display='{ON}' />]
 <br/>
-[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" />]
+<input type="checkbox" class="chknbbgrp2checkall">&nbsp;[<tag type="valueof" resourcekey="General.Any" />]
+<br/>
+[<tag id="chknbbcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 
 <br/>
-Order By
+[<tag type="valueof" resourcekey="General.OrderBy" />]
 <br/>
-[<tag id="ddlOrderBy" type="dropdownlist" data="Ref;Name;Manufacturer;Price;Qty" datavalue="0;1;2;3;4" />]
+[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />]
 
 <hr/>
-[<tag id="cmdAdvSearch" type="linkbutton" text="Search" commandname="search" commandargument="ItemID" />]
+<a href="#" class="nocateogryselected">[<tag type="valueof" resourcekey="General.Search" />]</a>
+
+[<tag id="cmdAdvSearch" type="linkbutton" cssclass="postbacklink searchpostbacklink" resourcekey="General.Search" commandname="search" commandargument="ItemID" />]
 &nbsp;
-[<tag id="cmdAdvReset" type="linkbutton" text="Reset" commandname="resetsearch" commandargument="ItemID" />]
+[<tag id="cmdAdvReset" type="linkbutton" cssclass="postbacklink"  resourcekey="General.Reset" commandname="resetsearch" commandargument="ItemID" />]
 </div>
 <hr/>
+<div class="processing" style="display:none;">[<tag type="valueof" resourcekey="General.Processing" />]</div>

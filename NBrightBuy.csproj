@@ -52,6 +52,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_LocalResources\ProductSearch.ascx.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductSearch.ascx.resx</DependentUpon>
+    </Compile>
     <Compile Include="Base\NBrightBuyBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -151,6 +156,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProductSearch.ascx.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductView.ascx.resx" />

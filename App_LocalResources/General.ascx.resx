@@ -351,4 +351,22 @@
   <data name="Download.Text" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="Categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Processing.Text" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Reset.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="OrderBy.Text" xml:space="preserve">
+    <value>Order By</value>
+  </data>
+  <data name="Any.Text" xml:space="preserve">
+    <value>Any</value>
+  </data>
 </root>
