@@ -2389,6 +2389,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(stock)) stockcount += Convert.ToInt32(stock);
             }
             if (stockOn && (amtTest >= stockcount)) return true;
+            if (!stockOn) return true;
             return false;
         }
 
