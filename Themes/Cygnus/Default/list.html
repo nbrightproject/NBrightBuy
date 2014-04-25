@@ -1,24 +1,62 @@
-[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx" />]
 <!-- List item -->
-<ul class="product">
-	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<li class="edit">[<tag resourcekey="ProductView.editicon" type="nbb:editlink"  />]</li>[<tag type="endtestof" />]
-	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-	<li class="image"><a href="[<tag type="entryurl" />]"><img title="[<tag type="nbb:summary" />]" src="[<tag type="thumbnail" w="200"  h="0" />]"></a></li>
+<ul class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
+
+	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button -->
+	<li class="edit">[<tag resourcekey="ProductView.editicon" type="nbb:editlink"  />]</li>[<tag type="endtestof" />]
+	
+<a class="entryurl" href="[<tag type='entryurl' />]"><!-- Link to details -->
+	
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
+	<li class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img title="[<tag type='nbb:summary' />]" src="[<tag type='thumbnail' w='{Settings:thumbnailwidth}' h='{Settings:thumbnailheight}' />]"></li>
 	[<tag type="endif" />]
-	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
+	
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
-	<li class="noimage"><a href="[<tag type="entryurl" />]"><i class="fa fa-camera"></i></a></li>
+	<li class="noimage"><i class="fa fa-camera"></i></li>
 	[<tag type="endif" />]
 	[<tag type="endif" />]
-	<li class="title"><div class="manufacturer">[<tag type="nbb:manufacturer" />]</div><div class="name">[<tag type="nbb:productname" />]</div></li>
-	<li class="summary">[<tag type="nbb:summary" />]</li>
-	<li class="purchase">
-	<span class="price">[<tag type="nbb:price" />]</span>
-	[<tag type="if" outofstock="0" display="{OFF}" displayelse="{ON}" />]
-	[<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />]
-	[<tag type="endtestof"  />]
-	[<tag type="if" function="inwishlist" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />]
-	[<tag type="if" function="inwishlist" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]
-	[<tag type="nbb:entrylink" cssclass="view" resourcekey="ProductView.viewicon"/>]
-	</li>
+	
+	<li class="title"><!-- Manufacturer and Title -->
+	[<tag type="if" xpath="genxml/lang/genxml/textbox/txtmanufacturer" testvalue="" display="{OFF}" displayelse="{ON}" />]
+	<div class="manufacturer">[<tag type="nbb:manufacturer" />]</div>
+	[<tag type="endif" />]
+	<div class="name">[<tag type="nbb:productname" />]</div></li>
+	
+<!-- Begin Pricing for Retail, Sale and Dealer -->
+	[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
+	
+		[<tag type="if" function="price" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide all prices -->
+		
+		[<tag type="if" function="isinrole" role="Dealer" display="{OFF}" displayelse="{ON}" />]<!-- Hide retail and sale section from dealer -->
+		
+		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
+		<li class="price"><span class="retail">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:price" />]</span></li><!-- Retail Price -->
+		[<tag type="endif"  />]
+		
+		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Price -->
+		<li class="price"><span class="old">[<tag type="nbb:price" />]</span>
+		<span class="sale">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]Sale from [<tag type="endif" />][<tag type="nbb:saleprice" />]</span>
+		[<tag type="endif"  />]
+		</li>
+		
+		[<tag type="endif"  />]<!-- End hide retail and sale section from dealer -->
+		
+		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer Price -->
+		<li class="price"><span class="dealer">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:dealerprice" />]</span></li>
+		[<tag type="endif"  />]		
+		
+		[<tag type="if" function="price" testvalue="0.00" display="{ON}" />]<!-- If price is zero then display contact message -->
+		<li class="price"><span class="zero"><a href="mailto:[TAG:SETTING:merchant.email]?subject=Price request - [<tag type='nbb:productname' />]&amp;body=Please inform me of the price of the [<tag type='nbb:productname' />] at [<tag type='websiteurl' />][<tag type='entryurl' />] on this page: [<tag type='websiteurl' />]">Email for price</a></span>
+		</li>
+		[<tag type="endif"  />]
+		
+		[<tag type="endif"  />]<!-- End If price is zero then hide all prices -->
+		
+<!-- End Pricing for Retail, Sale and Dealer -->
+
+		<li>[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]out of stock
+		[<tag type="endif" />]</li>
+		
+	[<tag type="endif"  />]<!-- End Hide all prices, models and options in catalogue mode -->
+</a>
 </ul>

@@ -283,6 +283,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             return SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, value);
         }
+
+        public static String GetCurrencyIsoCode()
+        {
+            return SharedFunctions.getCurrencyISOCode();            
+        }
+
     }
 
 }

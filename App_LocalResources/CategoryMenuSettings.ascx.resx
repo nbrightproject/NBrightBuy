@@ -117,70 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="addtobasket.Text" xml:space="preserve">
-    <value>Buy</value>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Category Menu Settings</value>
   </data>
-  <data name="addtobasketicon.Text" xml:space="preserve">
-    <value>&lt;span title="Add to basket" class="fa-stack"&gt;
-  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
-&lt;/span&gt;</value>
+  <data name="lblbasicsettings.Text" xml:space="preserve">
+    <value>General</value>
   </data>
-  <data name="edit.Text" xml:space="preserve">
-    <value>Edit</value>
+  <data name="lbldefaultcatid.Help" xml:space="preserve">
+    <value>Root display category the menu will start displaying from, leaft blank to start from root.</value>
   </data>
-  <data name="editicon.Text" xml:space="preserve">
-    <value>&lt;i title="Edit Product" class="fa fa-edit"&gt;&lt;/i&gt;</value>
+  <data name="lbldefaultcatid.Text" xml:space="preserve">
+    <value>Root Display Category : </value>
   </data>
-  <data name="description.Text" xml:space="preserve">
-    <value>Description</value>
+  <data name="lbldepth.Help" xml:space="preserve">
+    <value>Depth the menu will display.</value>
   </data>
-  <data name="documentation.Text" xml:space="preserve">
-    <value>Documentation</value>
+  <data name="lbldepth.Text" xml:space="preserve">
+    <value>Depth : </value>
   </data>
-  <data name="models.Text" xml:space="preserve">
-    <value>Models</value>
+  <data name="lbllistbody.Help" xml:space="preserve">
+    <value>Template to be used as product list body, this is repeated for each product.</value>
   </data>
-  <data name="related.Text" xml:space="preserve">
-    <value>Related Products</value>
+  <data name="lbllistbody.Text" xml:space="preserve">
+    <value>List Body : </value>
   </data>
-  <data name="convertor.Text" xml:space="preserve">
-    <value>Currency Converter</value>
+  <data name="lbllistfooter.Help" xml:space="preserve">
+    <value>Template to be used as product list footer.</value>
   </data>
-  <data name="return.Text" xml:space="preserve">
-    <value>Return</value>
+  <data name="lbllistfooter.Text" xml:space="preserve">
+    <value>List Footer : </value>
   </data>
-  <data name="returnicon.Text" xml:space="preserve">
-    <value>&lt;span title="Return to list" class="fa-stack"&gt;
-  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-reply fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
-&lt;/span&gt;</value>
+  <data name="lbllistheader.Help" xml:space="preserve">
+    <value>Template to be used as product list header.</value>
   </data>
-  <data name="view.Text" xml:space="preserve">
-    <value>View</value>
+  <data name="lbllistheader.Text" xml:space="preserve">
+    <value>List Header : </value>
   </data>
-  <data name="viewicon.Text" xml:space="preserve">
-    <value>&lt;span title="Information" class="fa-stack"&gt;
-  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
-&lt;/span&gt;</value>
+  <data name="lblmenutype.Help" xml:space="preserve">
+    <value>Menu Display Type</value>
   </data>
-  <data name="wishlistadd.Text" xml:space="preserve">
-    <value>Add to Wish List</value>
+  <data name="lblmenutype.Text" xml:space="preserve">
+    <value>Menu Type : </value>
   </data>
-  <data name="wishlistaddicon.Text" xml:space="preserve">
-    <value>&lt;span title="Add to wishlist" class="fa-stack"&gt;
-  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-heart-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
-&lt;/span&gt;</value>
+  <data name="lbltheme.Help" xml:space="preserve">
+    <value>Name of the theme to use for this productlist.</value>
   </data>
-  <data name="wishlistremove.Text" xml:space="preserve">
-    <value>Remove from Wish List</value>
-  </data>
-  <data name="wishlistremoveicon.Text" xml:space="preserve">
-    <value>&lt;span title="Remove from wishlist" class="fa-stack"&gt;
-  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
-&lt;/span&gt;</value>
+  <data name="lbltheme.Text" xml:space="preserve">
+    <value>Theme : </value>
   </data>
 </root>

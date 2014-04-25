@@ -1,4 +1,17 @@
-	<ul class="related">
-		<li><img src="[<tag type="nbb:thumbnail" w="100" h="0" />]"></li>
-		<li>[<tag type="nbb:entrylink" text="Link to Entry"/>]</li>		
+	<a class="entryurl" href="[<tag type='entryurl' />]">
+	<ul class="relateditem" style="width:[Settings:relateditemwidth]px;height:[Settings:relateditemheight];margin-bottom:[Settings:relateditembottommargin]px">
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
+	<li class="image" style="width:[Settings:relateditemwidth]px;height:[Settings:relateditemimagecontainerheight]"><img src="[<tag type='nbb:thumbnail' w='{Settings:relatedimagewidth}' h='{Settings:relatedimageheight}' />]"></li>
+	[<tag type="endif" />]
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
+	<li class="noimage"><i class="fa fa-camera"></i></li>
+	[<tag type="endif" />]
+	[<tag type="endif" />]
+	<li class="title"><!-- Manufacturer and Title -->
+	[<tag type="if" xpath="genxml/lang/genxml/textbox/txtmanufacturer" testvalue="" display="{OFF}" displayelse="{ON}" />]
+	<div class="manufacturer">[<tag type="nbb:manufacturer" />]</div>
+	[<tag type="endif" />]
+	<div class="name">[<tag type="nbb:productname" />]</div></li>
 	</ul>
+	</a>

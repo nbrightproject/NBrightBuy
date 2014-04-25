@@ -188,21 +188,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         /* *********************  list Data Gets ********************** */
 
-        /// <summary>
-        /// Get data list count with caching
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="moduleId"></param>
-        /// <param name="typeCode"></param>
-        /// <param name="sqlSearchFilter"></param>
-        /// <param name="typeCodeLang"></param>
-        /// <param name="lang"></param>
-        /// <param name="debugMode"></param>
-        /// <returns></returns>
-        public int GetDataListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string typeCodeLang = "", string lang = "", Boolean debugMode = false)
+	    /// <summary>
+	    /// Get data list count with caching
+	    /// </summary>
+	    /// <param name="portalId"></param>
+	    /// <param name="moduleId"></param>
+	    /// <param name="typeCode"></param>
+	    /// <param name="sqlSearchFilter"></param>
+	    /// <param name="typeCodeLang"></param>
+	    /// <param name="lang"></param>
+	    /// <param name="debugMode"></param>
+	    /// <param name="visibleOnly"> </param>
+	    /// <returns></returns>
+	    public int GetDataListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string typeCodeLang = "", string lang = "", Boolean debugMode = false, Boolean visibleOnly = true)
         {
             // get cache data
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + typeCode + "*" + "*filter:" + sqlSearchFilter.Replace(" ", "") + "*" + lang;
+            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + typeCode + "*" + "*filter:" + sqlSearchFilter.Replace(" ", "") + "*" + lang + "*" + visibleOnly.ToString(CultureInfo.InvariantCulture);
             var rtncount = -1;
             if (debugMode == false)
             {
@@ -212,6 +213,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (rtncount == -1)
             {
+                if (visibleOnly) sqlSearchFilter += " and (NB3.Visible = 1) ";
                 rtncount = DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, typeCodeLang, lang);
                 if (debugMode == false) NBrightBuyUtils.SetModCache(moduleId, strCacheKey, rtncount);
             }
@@ -244,24 +246,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        /// <summary>
-        /// Data Get, used to call the Database provider and applies caching. Plus the option of adding user to the filter.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="moduleId"></param>
-        /// <param name="entityTypeCode"></param>
-        /// <param name="entityTypeCodeLang"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="strFilters"></param>
-        /// <param name="strOrderBy"></param>
-        /// <param name="debugMode"></param>
-        /// <param name="selUserId"></param>
-        /// <param name="returnLimit"></param>
-        /// <param name="pageNumber"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="recordCount"></param>
-        /// <returns></returns>
-        public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,bool visibleOnly = true)
+	    /// <summary>
+	    /// Data Get, used to call the Database provider and applies caching. Plus the option of adding user to the filter.
+	    /// </summary>
+	    /// <param name="portalId"></param>
+	    /// <param name="moduleId"></param>
+	    /// <param name="entityTypeCode"></param>
+	    /// <param name="entityTypeCodeLang"></param>
+	    /// <param name="cultureCode"></param>
+	    /// <param name="strFilters"></param>
+	    /// <param name="strOrderBy"></param>
+	    /// <param name="debugMode"></param>
+	    /// <param name="selUserId"></param>
+	    /// <param name="returnLimit"></param>
+	    /// <param name="pageNumber"></param>
+	    /// <param name="pageSize"></param>
+	    /// <param name="recordCount"></param>
+	    /// <param name="visibleOnly"> </param>
+	    /// <returns></returns>
+	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,bool visibleOnly = true)
         {
             if (selUserId != "")
             {

@@ -65,6 +65,20 @@
     <Compile Include="Components\NavigationData.cs" />
     <Compile Include="Components\NBrightBuyV2Utils.cs" />
     <Compile Include="Components\StoreSettings.cs" />
+    <Compile Include="CategoryMenu.ascx.cs">
+      <DependentUpon>CategoryMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryMenu.ascx.designer.cs">
+      <DependentUpon>CategoryMenu.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryMenuSettings.ascx.cs">
+      <DependentUpon>CategoryMenuSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryMenuSettings.ascx.designer.cs">
+      <DependentUpon>CategoryMenuSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -108,6 +122,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CategoryMenu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CategoryMenuSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_AddNew.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_Delete.txt" />
@@ -151,6 +171,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />

@@ -1,0 +1,178 @@
+// --- Copyright (c) notice NevoWeb ---
+//  Copyright (c) 2014 SARL NevoWeb.  www.nevoweb.com. The MIT License (MIT).
+// Author: D.C.Lee
+// ------------------------------------------------------------------------
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+// ------------------------------------------------------------------------
+// This copyright notice may NOT be removed, obscured or modified without written consent from the author.
+// --- End copyright notice --- 
+
+using System;
+using System.Globalization;
+using System.Web.UI.WebControls;
+using DotNetNuke.Common;
+using NBrightCore.common;
+using NBrightCore.render;
+using NBrightDNN;
+using NEvoWeb.Modules.NB_Store;
+using Nevoweb.DNN.NBrightBuy.Base;
+using Nevoweb.DNN.NBrightBuy.Components;
+using DataProvider = DotNetNuke.Data.DataProvider;
+
+namespace Nevoweb.DNN.NBrightBuy
+{
+
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// The ViewNBrightGen class displays the content
+    /// </summary>
+    /// -----------------------------------------------------------------------------
+    public partial class CategoryMenu : NBrightBuyBase
+    {
+
+        private String _catid = "";
+        private String _catname = "";
+        private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
+        private String _templH = "";
+        private String _templD = "";
+        private String _templF = "";
+
+        #region Event Handlers
+
+
+        override protected void OnInit(EventArgs e)
+        {
+            base.EntityTypeCode = "CATEGORY";
+            base.CtrlTypeCode = "CATEGORY";
+            base.EntityTypeCodeLang = "CATEGORYLANG";
+
+            base.OnInit(e);
+
+            if (ModSettings.Get("theme") == "")  // if we don't have module setting jump out
+            {
+                rpDataH.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
+                return;
+            }
+
+            try
+            {
+                _catid = Utils.RequestQueryStringParam(Context, "catid");
+                _catname = Utils.RequestQueryStringParam(Context, "category");
+                
+                _templH = ModSettings.Get("txtlistheader");
+                _templD = ModSettings.Get("txtlistbody");
+                _templF = ModSettings.Get("txtlistfooter");
+
+
+
+                // Get Display Header
+                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
+
+
+                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
+
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
+
+                // Get Display Body
+                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
+                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+                // Get Display Footer
+                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
+
+
+            }
+            catch (Exception exc)
+            {
+                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
+                // catch any error and allow processing to continue, output error as footer template.
+            }
+
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            try
+            {
+                base.OnLoad(e);
+                if (Page.IsPostBack == false)
+                {
+                    PageLoad();
+                }
+            }
+            catch (Exception exc) //Module failed to load
+            {
+                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                var l = new Literal();
+                l.Text = exc.ToString();
+                phData.Controls.Add(l);
+            }
+        }
+
+        private void PageLoad()
+        {
+            // display header
+            base.DoDetail(rpDataH);
+
+            #region "Data Repeater"
+            if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
+            {
+
+                    #region "Get Category select setup"
+
+
+                    //check if we are display categories 
+                    // get category list data
+                    NBrightInfo objCat = null;
+                    if (_catname != "") // if catname passed in url, calculate what the catid is
+                    {
+                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
+                        if (objCat == null)
+                        {
+                            // check it's not just a single language
+                            objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
+                            if (objCat != null) _catid = objCat.ItemID.ToString("");
+                        }
+                        else
+                        {
+                            _catid = objCat.ParentItemId.ToString("");
+                        }
+                    }
+
+                    if (_catid == "") _catid = "0";
+                    if (Utils.IsNumeric(_catid))
+                    {
+                        var catid = Convert.ToInt32(_catid);
+                        var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                        var l = catGrpCtrl.GetCategories(catid);
+
+                        rpData.DataSource = l;
+                        rpData.DataBind();
+
+                    }
+
+                    #endregion
+
+
+            }
+
+            #endregion
+
+            // display footer
+            base.DoDetail(rpDataF);
+
+        }
+
+        #endregion
+
+
+    }
+
+}

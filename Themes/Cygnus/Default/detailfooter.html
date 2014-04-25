@@ -10,7 +10,8 @@
             collapsible: 'accordion',
             animation: 'slide', // Animation options - fade, slide or do not use
             rotate: false,
-            setHash: true
+            setHash: true,
+			activate: function(){$('#relatedwrapper').masonry();}
         });
     });
 </script>
@@ -112,3 +113,31 @@ $(function() {
 
 </script>
 
+<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagesloaded.pkgd.min.js"></script>
+
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/masonry.pkgd.min.js"></script>
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+var $container = $('#relatedwrapper');
+// initialize
+$container.masonry({
+  columnWidth: [Settings:relateditemwidth], // List item width - Can also use CSS width of first list item
+  itemSelector: '.relateditem',
+  gutter: [Settings:relateditemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+  isOriginLeft: true, // Build from right to left if false
+  isOriginTop: true, // Build from bottom to top if false
+});
+
+// initialize Masonry after all images have loaded - Webkit needs this when image containers don't have a fixed height
+$container.imagesLoaded( function() {
+  $container.masonry();
+});
+
+});
+
+</script>

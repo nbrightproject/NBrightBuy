@@ -101,6 +101,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "description":
                     CreateDescription(container, xmlNod);
                     return true;
+                case "currencyisocode":
+                    CreateCurrencyIsoCode(container, xmlNod);
+                    return true;
                 case "price":
                     CreateFromPrice(container, xmlNod);
                     return true;
@@ -2135,6 +2138,35 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     }
                     if (v >= 0) l.Text = NBrightBuyV2Utils.FormatToStoreCurrency(v);
                 }
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
+
+        #endregion
+
+        #region "CreateCurrencyIsoCode"
+
+        private void CreateCurrencyIsoCode(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            l.DataBinding += CreateCurrencyIsoCodeDataBinding;
+            l.Text = "";
+            container.Controls.Add(l);
+        }
+
+        private void CreateCurrencyIsoCodeDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                l.Text = "";
+                l.Visible = NBrightGlobal.IsVisible;
+                l.Text = NBrightBuyV2Utils.GetCurrencyIsoCode();
             }
             catch (Exception ex)
             {

@@ -6,7 +6,9 @@
 		[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]
 		[<tag type='endtestof' />]
 		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{ON}' displayelse='{OFF}' />]No Sale[<tag type='endtestof' />]</td>
+		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtdealercost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
+		[<tag type="endif"  />]
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtqtyremaining" />]</td>
 		<td>[<tag type="valueof" xpath="genxml/hidden/stockincart" />]</td>
 		<td>[<tag type="valueof" xpath="genxml/hidden/calcstock" />]</td>

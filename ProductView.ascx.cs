@@ -41,6 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _modkey = "";
         private String _pagemid = "";
         private String _pagenum = "1";
+        private String _pagesize = "";
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
         private String _strOrder = "";
         private String _templH = "";
@@ -77,7 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _catname = Utils.RequestQueryStringParam(Context, "category");
-
+                
                 #region "set templates based on entry id (eid) from url"
 
                 _eid = Utils.RequestQueryStringParam(Context, "eid");
@@ -85,6 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 _modkey = Utils.RequestQueryStringParam(Context, "modkey");
                 _pagemid = Utils.RequestQueryStringParam(Context, "pagemid");
                 _pagenum = Utils.RequestQueryStringParam(Context, "page");
+                _pagesize = Utils.RequestQueryStringParam(Context, "pagesize");
                 _orderbyindex = Utils.RequestQueryStringParam(Context, "orderby");
                 
 
@@ -212,16 +214,24 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "Get Paging setup"
                     //See if we have a pagesize, uses the "searchpagesize" tag token.
                     // : This can be overwritten by the cookie value if we need user selection of pagesize.
-                    var pageSize = 0;
-                    var strPgSize = "";
-                    if (_templateHeader != null) strPgSize = _templateHeader.GetHiddenFieldValue("searchpagesize");
-                    if (_templateHeader != null && strPgSize == "") strPgSize = _templateHeader.GetHiddenFieldValue("pagesize");
-                    if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
                     CtrlPaging.Visible = false;
-                    if (pageSize > 0)
+                    var pageSize = 0;
+                    if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
+                    //check for url param page size
+                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
                     {
-                        CtrlPaging.Visible = true;
+                        pageSize = Convert.ToInt32(_pagesize);
                     }
+
+                    if (pageSize == 0)
+                    {
+                        var strPgSize = "";
+                        if (_templateHeader != null) strPgSize = _templateHeader.GetHiddenFieldValue("searchpagesize");
+                        if (_templateHeader != null && strPgSize == "") strPgSize = _templateHeader.GetHiddenFieldValue("pagesize");
+                        if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
+                    }
+                    if (pageSize > 0) CtrlPaging.Visible = true;
+                    _navigationdata.PageSize = pageSize.ToString("");
 
                     var pageNumber = 1;
 

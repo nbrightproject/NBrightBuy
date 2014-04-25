@@ -1,5 +1,5 @@
 <!-- List footer  -->
-</ul>
+</div>
 </div>
 
 <!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
@@ -15,9 +15,9 @@ $( document ).ready(function() {
 var $container = $('#listwrapper');
 // initialize
 $container.masonry({
-  columnWidth: [Settings:columnwidth], // List item width - Can also use CSS width of first list item
+  columnWidth: [Settings:itemwidth], // List item width - Can also use CSS width of first list item
   itemSelector: '.product',
-  gutter: 1, // Set horizontal gap and include in calculations. Use CSS margin for vertical gap
+  gutter: [Settings:itemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
   isOriginLeft: true, // Build from right to left if false
   isOriginTop: true, // Build from bottom to top if false
 });
@@ -30,4 +30,3 @@ $container.imagesLoaded( function() {
 });
 
 </script>
-
