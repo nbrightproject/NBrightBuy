@@ -60,13 +60,11 @@
 		
 <!-- Begin Pricing for Retail, Sale and Dealer -->
 	[<tag type="if" function="settings" key="disableprices" testvalue="True" display="{OFF}" />]<!-- If prices are disabled then hide all prices -->
-	
 		[<tag type="if" function="price" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide all prices -->
 		[<tag type="if" function="isinrole" role="Dealer" display="{OFF}" displayelse="{ON}" />]<!-- Hide retail and sale section from dealer -->
 		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
 		<li class="price">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:price" />]</li><!-- Retail Pricing -->
 		[<tag type="endif"  />]
-		
 		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Pricing -->
 		<li class="oldprice">Normally [<tag type="nbb:price" />]</li>
 		<li class="saleprice">On Sale [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]from [<tag type="endif" />][<tag type="nbb:saleprice" />]</li>
@@ -120,7 +118,8 @@
 		<span [<tag type="if" outofstock="0" display="style='display:none;'" displayelse="" />]>
 		[<tag type="nbb:addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" cssclass="label" resourcekey="ProductView.addtobasket" />] 
 		</span>
-		[<tag type="if" outofstock="0" display="{ON}" displayelse="{OFF}" />]
+
+		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
 		<span class="outofstock">Out of Stock</span>
 		[<tag type="endif"  />]
 		[<tag type="endif"  />]
@@ -181,6 +180,32 @@
 	</div>
 	[<tag type="endif" />]
 
+	
+	BEST PRICE: [<tag type="bestprice" />]
+	
+	[<tag type="if" function="hasdocuments" display="{ON}" />]
+	TEST hasdocuments
+	[<tag type="endif" />]
+
+	[<tag type="if" function="haspurchasedocuments" display="{ON}" />]
+	TEST has purchase documents
+	[<tag type="endif" />]
+
+	[<tag type="if" function="isdocpurchased" index="1" display="{ON}" />]
+	TEST the index document has been purchased 
+	[<tag type="endif" />]
+	
+	[<tag type="if" function="hasdocuments" display="{OFF}" />]
+	NOT TEST hasdocuments
+	[<tag type="endif" />]
+
+	[<tag type="if" function="haspurchasedocuments" display="{OFF}" />]
+	NOT TEST has purchase documents
+	[<tag type="endif" />]
+
+	[<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
+	NOT TEST the index document has been purchased 
+	[<tag type="endif" />]
 
 <!-- Details Without Tabs -->
 	[<tag type="if" function="settings" key="tabbedcontent" testvalue="False" display="{ON}" displayelse="{OFF}" />]
@@ -188,7 +213,8 @@
             [<tag type="nbb:description" />]
             <h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
             <ul>
-	            <li>[<tag type="nbb:productdocdesc" index="1" />] - [<tag type="nbb:productdocfilename" index="1" />] - [<tag type="nbb:productdoclink" index="1" />]</li>
+				<li>[<tag type="productdoclink" index="1"  text="Download" tooltip="tooltip" />] [<tag type="productdoclink" index="1"  resourcekey="General.Download"/>]</li>
+	            <li>[<tag type="productdocdesc" index="1" />] - [<tag type="productdocfilename" index="1" />] - [<tag type="productdoclink" index="1" />]</li>
 	            <li>[<tag type="nbb:productdocdesc" index="2" />] - [<tag type="nbb:productdocfilename" index="2" />] - [<tag type="nbb:productdoclink" index="2" security="purchased" />]</li>
 	            <li>[<tag type="nbb:productdocdesc" index="3" />] - [<tag type="nbb:productdocfilename" index="3" />] - [<tag type="nbb:productdoclink" index="3" />]</li>
             </ul>            

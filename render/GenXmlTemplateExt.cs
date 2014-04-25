@@ -110,6 +110,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "dealerprice":
                     CreateDealerPrice(container, xmlNod);
                     return true;
+                case "bestprice":
+                    CreateBestPrice(container, xmlNod);
+                    return true;
                 case "quantity":
                     CreateQuantity(container, xmlNod);
                     return true;
@@ -253,6 +256,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var role = "";
                     if ((xmlNod.Attributes["role"] != null)) role = xmlNod.Attributes["role"].Value;
 
+                    var index = "";
+                    if ((xmlNod.Attributes["index"] != null)) role = xmlNod.Attributes["index"].Value;
+
+
                     // do normal xpath test
                     if (xmlNod.Attributes["xpath"] != null)
                     {
@@ -345,9 +352,30 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "haspurchasedocuments":
+                                dataValue = "FALSE";
+                                if (NBrightBuyV2Utils.HasPurchaseDocuments((NBrightInfo)container.DataItem))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "isdocpurchased":
+                                dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
+                                if (nod != null && Utils.IsNumeric(nod.InnerText))
+                                {
+                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nod.InnerText)))
+                                    {
+                                        dataValue = "TRUE";
+                                        testValue = "TRUE";
+                                    }
+                                }
+                                break;
                             case "hasmodelsoroptions":
                                 dataValue = "FALSE";
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + 2 + "]/hidden/modelid");
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[2]/hidden/modelid");
                                 if (nod != null && nod.InnerText != "")
                                 {
                                     dataValue = "TRUE";
@@ -355,7 +383,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 }
                                 if (dataValue=="FALSE")
                                 {
-                                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + 1 + "]/hidden/optionid");
+                                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[1]/hidden/optionid");
                                     if (nod != null && nod.InnerText != "")
                                     {
                                         dataValue = "TRUE";
@@ -1828,7 +1856,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var cmd = new LinkButton();
                     cmd = (LinkButton)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
                     cmd.Attributes.Add("index",xmlNod.Attributes["index"].Value);
-                    if (xmlNod.Attributes["security"] != null) cmd.Attributes.Add("security", xmlNod.Attributes["security"].Value);
                     cmd.DataBinding += ProductDocLinkDataBind;
                     container.Controls.Add(cmd);
                 }
@@ -1846,13 +1873,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     var index = cmd.Attributes["index"];
                     cmd.Attributes.Remove("index");
-                    var security = "";
-                    if (cmd.Attributes["security"] != null)
-                    {
-                        security = cmd.Attributes["security"];
-                        cmd.Attributes.Remove("security");
-                    }
-
 
                     var objInfo = (NBrightInfo) container.DataItem;
                     cmd.CommandName = "DocDownload";
@@ -1867,16 +1887,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (nodName != null) cmd.ToolTip = nodName.InnerText;
                     }
 
-                    if (security == "")
-                        cmd.Visible = true;
-                    else
+                    cmd.Visible = true;
+                    var nodDocId = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/hidden/docid");
+                    if (nodDocId != null && Utils.IsNumeric(nodDocId.InnerText))
                     {
-                        cmd.Visible = false;
-                        var nodDocId = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/hidden/docid");
-                        if (nodDocId != null && Utils.IsNumeric(nodDocId.InnerText) )
+                        if (NBrightBuyV2Utils.DocIsPurchaseOnlyByDocId(Convert.ToInt32(nodDocId.InnerText)))
                         {
+                            cmd.Visible = false;
+                            var role = "Manager";
+                            if (!String.IsNullOrEmpty(_settings["manager.role"])) role = _settings["manager.role"];
                             var uInfo = UserController.GetCurrentUserInfo();
-                            if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nodDocId.InnerText))) cmd.Visible = true;
+                            if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nodDocId.InnerText)) || CmsProviderManager.Default.IsInRole(role)) cmd.Visible = true;
                         }
                     }
                 }
@@ -2162,6 +2183,44 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
+        #region "Best Price"
+
+        private void CreateBestPrice(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            l.DataBinding += BestPriceDataBinding;
+            l.Text = "";
+            container.Controls.Add(l);
+        }
+
+        private void BestPriceDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                l.Text = "";
+                l.Visible = NBrightGlobal.IsVisible;
+                var sp = GetBestPrice((NBrightInfo)container.DataItem);
+                if (Utils.IsNumeric(sp))
+                {
+                    Double v = -1;
+                    if (Utils.IsNumeric(XmlConvert.DecodeName(sp)))
+                    {
+                        v = Convert.ToDouble(XmlConvert.DecodeName(sp), CultureInfo.GetCultureInfo("en-US"));
+                    }
+                    if (v >= 0) l.Text = NBrightBuyV2Utils.FormatToStoreCurrency(v);
+                }
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
+
+        #endregion
+
         #region "Functions"
 
         private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj, Boolean addCartStock = false, Boolean addSalePrices = false)
@@ -2270,7 +2329,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var s = m.GetXmlProperty("genxml/hidden/saleprice");
                 if (Utils.IsNumeric(s))
                 {
-                    if (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US"))) saleprice = s;
+                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US"))) | (saleprice == "-1")) saleprice = s;
                 }
             }
             return saleprice;
@@ -2305,6 +2364,31 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
             }
             return price;
+        }
+
+        private String GetBestPrice(NBrightInfo dataItemObj)
+        {
+            var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj));
+            if (fromprice < 0) fromprice = 0; // make sure we have a valid price
+            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj));
+            if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
+
+            var role = "Dealer";
+            if (!String.IsNullOrEmpty(_settings["dealer.role"])) role = _settings["dealer.role"];
+            if (CmsProviderManager.Default.IsInRole(role))
+            {
+                var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj));
+                if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
+                if (fromprice < dealerprice)
+                {
+                    if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                    return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                }
+                if (dealerprice < saleprice) return dealerprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            }
+            if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));                
         }
 
         private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
@@ -2388,7 +2472,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 if (Utils.IsNumeric(stock)) stockcount += Convert.ToInt32(stock);
             }
-            if (stockOn && (amtTest >= stockcount)) return true;
+            if (stockOn && (stockcount > amtTest)) return true;
             if (!stockOn) return true;
             return false;
         }

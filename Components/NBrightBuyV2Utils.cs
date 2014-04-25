@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -87,6 +88,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var arylist = objPCtrl.GetProductDocList(productid, Utils.GetCurrentCulture());
             if (arylist.Count > 0) return true;
             return false;
+        }
+
+        public static Boolean HasPurchaseDocuments(NBrightInfo objProduct)
+        {
+            var productid = GetLegacyProductId(objProduct);
+            var objPCtrl = new ProductController();
+            var arylist = objPCtrl.GetProductDocList(productid, Utils.GetCurrentCulture());
+            return arylist.Cast<NB_Store_ProductDocInfo>().Any(l => l.Purchase);
+        }
+
+
+        public static bool DocIsPurchaseOnlyByDocId(int docId)
+        {
+            var objCtrl = new ProductController();
+            NB_Store_ProductDocInfo objDoc = default(NB_Store_ProductDocInfo);
+            objDoc = objCtrl.GetProductDoc(docId, Utils.GetCurrentCulture());
+            return objDoc.Purchase;
         }
 
         public static bool DocHasBeenPurchasedByDocId(int userId, int docId)
