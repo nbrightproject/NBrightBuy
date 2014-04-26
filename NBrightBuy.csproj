@@ -141,6 +141,7 @@
     <Content Include="NBrightTemplates\Default\buttonsDiv_SD.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SED.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCDL.txt" />
+    <Content Include="NBrightTemplates\Default\CategoryMenu_Settings.html" />
     <Content Include="NBrightTemplates\Default\ProductSearch_Settings.html" />
     <Content Include="NBrightTemplates\Default\ProductView_Settings.html" />
     <Content Include="ProductSearchSettings.ascx" />

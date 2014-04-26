@@ -32,6 +32,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int depth { get; set; }
         public bool disabled { get; set; }
         public int entrycount { get; set; }
+        public string url { get; set; }
 
     }
     

@@ -118,8 +118,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var tabid = "";
                     if (Utils.IsNumeric(defaultListPage)) tabid = defaultListPage;
                     if (tabid == "") tabid = currentTabId;
-
-                    n.Url = grpCatCtrl.GetCategoryUrl(obj, tabid);
+                    if (Utils.IsNumeric(tabid)) n.Url = grpCatCtrl.GetCategoryUrl(obj, Convert.ToInt32((tabid)));
 
                     n.Enabled = true;
                     if (obj.disabled) n.Enabled = false;

@@ -12,6 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -40,6 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _templH = "";
         private String _templD = "";
         private String _templF = "";
+        private GrpCatController _catGrpCtrl;
 
         #region Event Handlers
 
@@ -52,7 +54,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
             base.OnInit(e);
 
-            if (ModSettings.Get("theme") == "")  // if we don't have module setting jump out
+            _catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+
+            if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
                 rpDataH.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
                 return;
@@ -62,10 +66,10 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _catname = Utils.RequestQueryStringParam(Context, "category");
-                
-                _templH = ModSettings.Get("txtlistheader");
-                _templD = ModSettings.Get("txtlistbody");
-                _templF = ModSettings.Get("txtlistfooter");
+
+                _templH = ModSettings.Get("txtdisplayheader");
+                _templD = ModSettings.Get("txtdisplaybody");
+                _templF = ModSettings.Get("txtdisplayfooter");
 
 
 
@@ -118,55 +122,51 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
+            var catid = 0;
+
+            // get category list data
+            NBrightInfo objCat = null;
+            if (_catname != "") // if catname passed in url, calculate what the catid is
+            {
+                objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
+                if (objCat == null)
+                {
+                    // check it's not just a single language
+                    objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
+                    if (objCat != null) _catid = objCat.ItemID.ToString("");
+                }
+                else
+                {
+                    _catid = objCat.ParentItemId.ToString("");
+                }
+            }
+
+            if (_catid == "") _catid = "0";
+            if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
+
             // display header
-            base.DoDetail(rpDataH);
+            var obj = _catGrpCtrl.GetCategory(catid);
+            var catl = new List<object> {obj};
+
+            rpDataH.DataSource = catl;
+            rpDataH.DataBind();
 
             #region "Data Repeater"
-            if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
+
+            if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
 
-                    #region "Get Category select setup"
+                var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
 
-
-                    //check if we are display categories 
-                    // get category list data
-                    NBrightInfo objCat = null;
-                    if (_catname != "") // if catname passed in url, calculate what the catid is
-                    {
-                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
-                        if (objCat == null)
-                        {
-                            // check it's not just a single language
-                            objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
-                            if (objCat != null) _catid = objCat.ItemID.ToString("");
-                        }
-                        else
-                        {
-                            _catid = objCat.ParentItemId.ToString("");
-                        }
-                    }
-
-                    if (_catid == "") _catid = "0";
-                    if (Utils.IsNumeric(_catid))
-                    {
-                        var catid = Convert.ToInt32(_catid);
-                        var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                        var l = catGrpCtrl.GetCategories(catid);
-
-                        rpData.DataSource = l;
-                        rpData.DataBind();
-
-                    }
-
-                    #endregion
-
-
+                rpData.DataSource = l;
+                rpData.DataBind();
             }
 
             #endregion
 
             // display footer
-            base.DoDetail(rpDataF);
+            rpDataF.DataSource = catl;
+            rpDataF.DataBind();
 
         }
 

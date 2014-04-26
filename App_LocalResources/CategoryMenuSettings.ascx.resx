@@ -136,22 +136,22 @@
     <value>Depth : </value>
   </data>
   <data name="lbllistbody.Help" xml:space="preserve">
-    <value>Template to be used as product list body, this is repeated for each product.</value>
+    <value>Template to be used as category menu body, this is repeated for each category.</value>
   </data>
   <data name="lbllistbody.Text" xml:space="preserve">
-    <value>List Body : </value>
+    <value>Menu Body : </value>
   </data>
   <data name="lbllistfooter.Help" xml:space="preserve">
-    <value>Template to be used as product list footer.</value>
+    <value>Template to be used as category menu footer.</value>
   </data>
   <data name="lbllistfooter.Text" xml:space="preserve">
-    <value>List Footer : </value>
+    <value>Menu Footer : </value>
   </data>
   <data name="lbllistheader.Help" xml:space="preserve">
-    <value>Template to be used as product list header.</value>
+    <value>Template to be used as category menu header.</value>
   </data>
   <data name="lbllistheader.Text" xml:space="preserve">
-    <value>List Header : </value>
+    <value>Menu Header : </value>
   </data>
   <data name="lblmenutype.Help" xml:space="preserve">
     <value>Menu Display Type</value>

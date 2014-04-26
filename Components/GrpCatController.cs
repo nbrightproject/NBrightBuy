@@ -72,6 +72,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        public List<GroupCategoryData> GetCategoriesWithUrl(int parentcategoryid, int tabid)
+        {
+            var l = GetCategories(parentcategoryid);
+            foreach (var c in l)
+            {
+                c.url = GetCategoryUrl(c, tabid);
+            }
+            return l;
+        }
+
         public GroupCategoryData GetGrpCategoryByRef(string categoryref)
         {
             var lenum = from i in GrpCategoryList where i.categoryref == categoryref select i;
@@ -84,26 +94,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Special methods"
 
-        public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, string tabid)
+        public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, int tabid)
         {
 
             //set a default url
             var url = "?catid=" + groupCategoryInfo.categoryid.ToString("");
             // get friendly url if possible
-            if (NBrightCore.common.Utils.IsNumeric(tabid))
-            {
                 if (groupCategoryInfo.categoryname != "")
                 {
                     var newBaseName = groupCategoryInfo.seoname;
                     if (newBaseName == "") newBaseName = groupCategoryInfo.categoryname;
-                    var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(Convert.ToInt32(tabid)));
+                    var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
                         url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString(""), newBaseName.Replace(" ", "-") + ".aspx");
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
                     }
                 }
-            }
             return url;
         }
 
@@ -261,10 +268,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
                         }
 
-                        var strOut = "<a href='" + GetCategoryUrl(l.First(), defaultTabId) + "'>" + crumbText + "</a>" + ">" + breadCrumb;
-                        checkDic.Add(categoryid, categoryid);
-                        categoryid = l.First().parentcatid;
-                        breadCrumb = strOut.TrimEnd('>');
+                        if (Utils.IsNumeric(defaultTabId))
+                        {
+                            var strOut = "<a href='" + GetCategoryUrl(l.First(), Convert.ToInt32(defaultTabId)) + "'>" + crumbText + "</a>" + ">" + breadCrumb;
+                            checkDic.Add(categoryid, categoryid);
+                            categoryid = l.First().parentcatid;
+                            breadCrumb = strOut.TrimEnd('>');
+                        }
                         continue;
                     }
                 }
