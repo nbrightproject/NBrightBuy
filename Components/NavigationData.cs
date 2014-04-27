@@ -231,7 +231,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 HttpContext.Current.Session[_cookieName + "PageSize"] = PageSize;
                 HttpContext.Current.Session[_cookieName + "OrderBy"] = OrderBy;
                 HttpContext.Current.Session[_cookieName + "CategoryId"] = CategoryId;
-
+                HttpContext.Current.Session[_cookieName + "RecordCount"] = RecordCount;
+                
                 // could be large, use with care.           
                 HttpContext.Current.Session[_cookieNameXml + "XmlData"] =  XmlData;                
                 
@@ -246,7 +247,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Cookie.SetCookieValue(_portalId, _cookieName, "PageSize", PageSize, 1, _encryptkey);
                 Cookie.SetCookieValue(_portalId, _cookieName, "OrderBy", OrderBy, 1, _encryptkey);
                 Cookie.SetCookieValue(_portalId, _cookieName, "CategoryId", CategoryId, 1, _encryptkey);
-
+                Cookie.SetCookieValue(_portalId, _cookieName, "RecordCount", RecordCount, 1, _encryptkey);
+                
                 // could make a large cookie, use with care.           
                 Cookie.SetCookieValue(_portalId, _cookieNameXml, "XmlData", XmlData, 1, _encryptkey);                
             }
@@ -272,6 +274,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (HttpContext.Current.Session[_cookieName + "OrderBy"] != null) OrderBy = (String)HttpContext.Current.Session[_cookieName + "OrderBy"];
                 if (HttpContext.Current.Session[_cookieName + "CategoryId"] != null) CategoryId = (String)HttpContext.Current.Session[_cookieName + "CategoryId"];
                 if (HttpContext.Current.Session[_cookieNameXml + "XmlData"] != null) XmlData = (String)HttpContext.Current.Session[_cookieNameXml + "XmlData"];
+                if (HttpContext.Current.Session[_cookieName + "RecordCount"] != null) RecordCount = (String)HttpContext.Current.Session[_cookieName + "RecordCount"];
             }
             else
             {
@@ -283,6 +286,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 OrderBy = Cookie.GetCookieValue(_portalId, _cookieName, "OrderBy", _encryptkey);
                 CategoryId = Cookie.GetCookieValue(_portalId, _cookieName, "CategoryId", _encryptkey);
                 XmlData = Cookie.GetCookieValue(_portalId, _cookieNameXml, "XmlData", _encryptkey);
+                RecordCount = Cookie.GetCookieValue(_portalId, _cookieName, "RecordCount", _encryptkey);                
             }
 
             if (Criteria == "" && XmlData == "") // "Exist" property not used for paging data
@@ -310,6 +314,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (HttpContext.Current.Session[_cookieName + "OrderBy"] != null) HttpContext.Current.Session.Remove(_cookieName + "OrderBy");
                 if (HttpContext.Current.Session[_cookieName + "CategoryId"] != null) HttpContext.Current.Session.Remove(_cookieName + "CategoryId");
                 if (HttpContext.Current.Session[_cookieNameXml + "XmlData"] != null) HttpContext.Current.Session.Remove(_cookieNameXml + "XmlData");
+                if (HttpContext.Current.Session[_cookieName + "RecordCount"] != null) HttpContext.Current.Session.Remove(_cookieName + "RecordCount");
             }
             else
             {
@@ -329,6 +334,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             XmlData = "";
             CategoryId = "";
             PageSize = "";
+            RecordCount = "";
         }
 
         /// <summary>
@@ -375,6 +381,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// CategoryId Selected
         /// </summary>
         public string CategoryId { get; set; }
+
+        /// <summary>
+        /// Count of records returned on last Display
+        /// </summary>
+        public string RecordCount { get; set; }
 
     }
 

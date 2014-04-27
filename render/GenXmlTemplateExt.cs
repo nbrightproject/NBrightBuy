@@ -50,6 +50,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "relatedproducts":
                     CreateRelatedlist(container, xmlNod);
                     return true;
+                case "productcount":
+                    CreateProductCount(container, xmlNod);
+                    return true;
                 case "productdoclink":
                     CreateProductDocLink(container, xmlNod);
                     return true;
@@ -262,6 +265,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var index = "";
                     if ((xmlNod.Attributes["index"] != null)) role = xmlNod.Attributes["index"].Value;
 
+                    var modulekey = "";
+                    if ((xmlNod.Attributes["modulekey"] != null)) modulekey = xmlNod.Attributes["modulekey"].Value;
 
                     // do normal xpath test
                     if (xmlNod.Attributes["xpath"] != null)
@@ -278,6 +283,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
+                            case "productcount":
+                                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, modulekey, StoreSettings.Current.Get("storagetype"));
+                                dataValue = navdata.RecordCount;
+                                break;
                             case "price":
                                 dataValue = GetFromPrice((NBrightInfo) container.DataItem);
                                 break;
@@ -341,7 +350,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "hasrelateditems":
                                 dataValue = "FALSE";
-                                if (NBrightBuyV2Utils.HasRelatedProducts((NBrightInfo)container.DataItem))
+                                if (NBrightBuyV2Utils.HasRelatedProducts((NBrightInfo) container.DataItem))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -349,7 +358,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "hasdocuments":
                                 dataValue = "FALSE";
-                                if (NBrightBuyV2Utils.HasDocuments((NBrightInfo)container.DataItem))
+                                if (NBrightBuyV2Utils.HasDocuments((NBrightInfo) container.DataItem))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -357,10 +366,23 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "haspurchasedocuments":
                                 dataValue = "FALSE";
-                                if (NBrightBuyV2Utils.HasPurchaseDocuments((NBrightInfo)container.DataItem))
+                                if (NBrightBuyV2Utils.HasPurchaseDocuments((NBrightInfo) container.DataItem))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
+                                }
+                                break;
+                            case "isdocpurchasable":
+                                dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
+                                if (nod != null && Utils.IsNumeric(nod.InnerText))
+                                {
+                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    if (NBrightBuyV2Utils.DocIsPurchaseOnlyByDocId(Convert.ToInt32(nod.InnerText)))
+                                    {
+                                        dataValue = "TRUE";
+                                        testValue = "TRUE";
+                                    }
                                 }
                                 break;
                             case "isdocpurchased":
@@ -384,19 +406,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
                                 }
-                                if (dataValue=="FALSE")
+                                if (dataValue == "FALSE")
                                 {
                                     nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[1]/hidden/optionid");
                                     if (nod != null && nod.InnerText != "")
                                     {
                                         dataValue = "TRUE";
                                         testValue = "TRUE";
-                                    }                                                                        
+                                    }
                                 }
                                 break;
                             case "isproductincart":
                                 dataValue = "FALSE";
-                                if (NBrightBuyV2Utils.IsInCart((NBrightInfo)container.DataItem))
+                                if (NBrightBuyV2Utils.IsInCart((NBrightInfo) container.DataItem))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -417,7 +439,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
                                 }
-                                break;                                
+                                break;
                             default:
                                 dataValue = "";
                                 break;
@@ -1185,65 +1207,76 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
 
                 lc.Visible = NBrightGlobal.IsVisible;
-                var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
-                var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
-                if (Utils.IsNumeric(id))
+
+                var catid = -1;
+                if (container.DataItem is NBrightInfo)
                 {
-                    var objCInfo = (NBrightDNN.NBrightInfo) container.DataItem;
-                    var itemid = objCInfo.ItemID;
-                    if (objCInfo.TypeCode == "DATA")
+                    // Must be displaying a product or category with (NBrightInfo), so get categoryid
+                    var objCInfo = (NBrightInfo)container.DataItem;
+                    if (objCInfo.TypeCode == "PRD") 
                     {
-                        // Is EntryId, so Get default category for entry.
-                        var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request,
-                            Convert.ToInt32(id));
-                        if (obj != null) itemid = obj.categoryid;
-                    }
-                    var xmlDoc = new XmlDataDocument();
-                    xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
-                    var xmlNod = xmlDoc.SelectSingleNode("root/tag");
-                    var intLength = 400;
-                    var intShortLength = -1;
-                    var IsLink = false;
-
-                    if (xmlNod.Attributes != null)
-                    {
-                        if (xmlNod.Attributes["length"] != null)
-                        {
-                            if (Utils.IsNumeric(xmlNod.Attributes["length"].InnerText))
-                            {
-                                intLength = Convert.ToInt32(xmlNod.Attributes["length"].InnerText);
-                            }
-                        }
-                        if (xmlNod.Attributes["links"] != null) IsLink = true;
-                        if (xmlNod.Attributes["short"] != null)
-                        {
-                            if (Utils.IsNumeric(xmlNod.Attributes["short"].InnerText))
-                            {
-                                intShortLength = Convert.ToInt32(xmlNod.Attributes["short"].InnerText);
-                            }
-                        }
-                    }
-
-                    var defcatid = itemid;
-                    if (IsLink)
-                    {
-                        if (Utils.IsNumeric(moduleId))
-                        {
-                            var nbSettings = NBrightBuyUtils.GetSettings(PortalSettings.Current.PortalId,Convert.ToInt32(moduleId));
-                            var defTabId = nbSettings.GetXmlProperty("genxml/dropdownlist/cattabid");
-                            lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(defcatid, defTabId, intShortLength);
-                        }
+                        //Is product so get categoryid    
+                        var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                        var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
+                        if (obj != null) catid = obj.categoryid;
                     }
                     else
                     {
-                        lc.Text = grpCatCtrl.GetBreadCrumb(defcatid, intShortLength);
+                        catid = objCInfo.ItemID;                        
+                    }
+                }
+
+                if (container.DataItem is GroupCategoryData)
+                {
+                    // GroupCategoryData class, so use categoryid
+                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "categoryid"));
+                    if (Utils.IsNumeric(id)) catid = Convert.ToInt32(id);
+                }
+
+
+                var xmlDoc = new XmlDataDocument();
+                xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
+                var xmlNod = xmlDoc.SelectSingleNode("root/tag");
+                var intLength = 400;
+                var intShortLength = -1;
+                var isLink = false;
+
+                if (xmlNod != null && xmlNod.Attributes != null)
+                {
+                    if (xmlNod.Attributes["length"] != null)
+                    {
+                        if (Utils.IsNumeric(xmlNod.Attributes["length"].InnerText))
+                        {
+                            intLength = Convert.ToInt32(xmlNod.Attributes["length"].InnerText);
+                        }
+                    }
+                    if (xmlNod.Attributes["links"] != null) isLink = true;
+                    if (xmlNod.Attributes["short"] != null)
+                    {
+                        if (Utils.IsNumeric(xmlNod.Attributes["short"].InnerText))
+                        {
+                            intShortLength = Convert.ToInt32(xmlNod.Attributes["short"].InnerText);
+                        }
+                    }
+                }
+
+                if (catid > 0) // check we have a catid
+                {
+                    if (isLink)
+                    {
+                        var defTabId = PortalSettings.Current.ActiveTab.TabID;
+                        if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                        lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength);
+                    }
+                    else
+                    {
+                        lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength);
                     }
 
                     if (lc.Text.Length > intLength)
                     {
                         lc.Text = lc.Text.Substring(0, (intLength - 3)) + "...";
-                    }
+                    }                    
                 }
             }
             catch (Exception)
@@ -1845,6 +1878,37 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
             return ""; // no stock so return empty string.
         }
+
+        #endregion
+
+        #region "ProductCount"
+
+        private void CreateProductCount(Control container, XmlNode xmlNod)
+        {
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["modulekey"] != null))
+            {
+                var l = new Literal();
+                l.DataBinding += ProductCountDataBind;
+                l.Text = xmlNod.Attributes["modulekey"].Value;
+                container.Controls.Add(l);
+            }
+        }
+
+        private void ProductCountDataBind(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            try
+            {
+                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, l.Text, StoreSettings.Current.Get("storagetype"));
+                l.Text = navdata.RecordCount;
+                l.Visible = NBrightGlobal.IsVisible;
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
 
         #endregion
 

@@ -1,4 +1,25 @@
+<script>
 
+    $(document).ready(function () {
+
+
+        $(function () {
+            $("#accordion").accordion({
+                heightStyle: "content",
+                header: "h3",
+                collapsible: true,
+                active: 0
+            });
+        });
+
+        $('.themefolder').change(function () {
+            alert('[<tag type="valueof" resourcekey="ProductViewSettings.themehidden" />]');
+            $('.themesettings').html('');
+        });
+
+    });
+
+</script>
 <div id="dnnPanel-ArchivesTemplateSettings">
     <h2 class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">[<tag type="valueof" resourcekey="ProductViewSettings.lblbasicsettings" />]</a></h2>
     <fieldset>
@@ -9,8 +30,16 @@
             [<tag id="lbldefaultcatid" type="dnnlabelcontrol" />][<tag id="defaultcatid" type="nbb:catdropdown" allowblank="1" width="300" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldepth" type="dnnlabelcontrol" />][<tag id="txtdepth" type="textbox" width="40" maxlength="2"  Text="0"/>]
+            [<tag id="lbldetailtab" type="dnnlabelcontrol" />][<tag id="ddllisttabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddllisttabid]
         </div>
+        <div class="dnnFormItem">
+            [<tag id="lblmenutype" type="dnnlabelcontrol" />][<tag id="rblmenutype" type="radiobuttonlist" data="DrillDown;Treeview;Accordian;MegaMenu" value="DrillDown" />][Settings:ddllisttabid]
+        </div>
+    </fieldset>
+
+    <h2 class="dnnFormSectionHead"><a href="">[<tag type="valueof" resourcekey="ProductViewSettings.lbladvancedsettings" />]</a></h2>
+    <fieldset>
+
         <div class="dnnFormItem">
             [<tag id="lbllistheader" type="dnnlabelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="catmenuheader.html" />]
         </div>
@@ -21,5 +50,12 @@
             [<tag id="lbllistfooter" type="dnnlabelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="catmenufooter.html"/>]
         </div>
     </fieldset>
+
+    <div class="themesettings">
+    <h2 class="dnnFormSectionHead"><a href="">[<tag type="valueof" resourcekey="ProductViewSettings.lblthemesettings" />]</a></h2>
+    <fieldset>
+        [Template:CategoryMenuSettings.html]
+    </fieldset>
+    </div>
     
 </div>

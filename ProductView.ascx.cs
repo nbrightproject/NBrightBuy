@@ -179,8 +179,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            // display header
-            base.DoDetail(rpDataH);
 
             #region "Data Repeater"
             if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
@@ -350,12 +348,15 @@ namespace Nevoweb.DNN.NBrightBuy
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
                     _navigationdata.PageNumber = Utils.RequestParam(Context, "page");
                     if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
-                    _navigationdata.Save();
 
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey,1);
 
                     var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
+
+                    _navigationdata.RecordCount = recordCount.ToString("");
+                    _navigationdata.Save();
+
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit; 
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
@@ -371,6 +372,9 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
             #endregion
+
+            // display header (Do header after the data return so the productcount works)
+            base.DoDetail(rpDataH);
 
             // display footer
             base.DoDetail(rpDataF);

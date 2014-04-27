@@ -42,7 +42,8 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _templD = "";
         private String _templF = "";
         private GrpCatController _catGrpCtrl;
-
+        private String _entryid = "";
+        
         #region Event Handlers
 
 
@@ -65,6 +66,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
+                _entryid = Utils.RequestQueryStringParam(Context, "eid");
                 _catname = Utils.RequestQueryStringParam(Context, "category");
 
                 _templH = ModSettings.Get("txtdisplayheader");
@@ -122,8 +124,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            var catid = 0;
+            #region "Get category id"
 
+            var catid = 0;
             // get category list data
             NBrightInfo objCat = null;
             if (_catname != "") // if catname passed in url, calculate what the catid is
@@ -141,25 +144,82 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
             }
 
+            if (_catid == "") _catid = ModSettings.Get("defaultcatid");
             if (_catid == "") _catid = "0";
             if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
+            
+            #endregion
+
+            #region "Get category into list"
+
+            var obj = _catGrpCtrl.GetCategory(catid);
+            if (obj == null)
+            {
+                // if we have a product displaying, get the deault category for the category
+                if (Utils.IsNumeric(_entryid))
+                {
+                    catid = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
+                    obj = _catGrpCtrl.GetCategory(catid);
+                }
+                if (obj == null) obj = new GroupCategoryData();
+            }
+            var catl = new List<object> { obj };
+
+            #endregion
 
             // display header
-            var obj = _catGrpCtrl.GetCategory(catid);
-            var catl = new List<object> {obj};
-
             rpDataH.DataSource = catl;
             rpDataH.DataBind();
 
             #region "Data Repeater"
 
+
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
+                var menutype = ModSettings.Get("rblmenutype").ToLower();
 
-                var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
+                #region "Drill Down"
 
-                rpData.DataSource = l;
-                rpData.DataBind();
+                if (menutype == "drilldown")
+                {
+                    var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
+                    // if we have no categories, it could be the end of branch or product view, so load the root menu
+                    if (l.Count == 0)
+                    {
+                        catid = 0;
+                        _catid = ModSettings.Get("defaultcatid");
+                        if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
+                        l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
+                    }
+                    rpData.DataSource = l;
+                    rpData.DataBind();
+                }
+
+                #endregion
+
+                #region "treeview"
+
+                if (menutype == "treeview")
+                {
+
+                }
+                #endregion
+
+                #region "Accordian"
+
+                if (menutype == "accordian")
+                {
+
+                }
+                #endregion
+
+                #region "megamenu"
+
+                if (menutype == "megamenu")
+                {
+
+                }
+                #endregion
             }
 
             #endregion

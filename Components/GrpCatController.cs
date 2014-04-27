@@ -123,6 +123,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var defId = 0;
             var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var strFilter = " and NB1.parentitemid = " + productid.ToString("") + " ";
             var objInfo = objCtrl.Get(productid);
 
@@ -130,6 +132,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
 
                 var l = objCtrl.GetList(objInfo.PortalId, objInfo.ModuleId, "CATXREF", strFilter);
+
+                var catIds = new HashSet<int>(CategoryList.Select(x => x.categoryid));
+                l.RemoveAll(x => !catIds.Contains(x.XrefItemId));
+
+
                 foreach (var e in l)
                 {
                     if (e.GetXmlProperty("genxml/hidden/defaultcat").ToLower() == "true")
@@ -248,7 +255,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public String GetBreadCrumbWithLinks(int categoryid, string defaultTabId, int shortLength)
+        public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength)
         {
             var breadCrumb = "";
             var checkDic = new Dictionary<int, int>();
@@ -268,13 +275,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
                         }
 
-                        if (Utils.IsNumeric(defaultTabId))
-                        {
-                            var strOut = "<a href='" + GetCategoryUrl(l.First(), Convert.ToInt32(defaultTabId)) + "'>" + crumbText + "</a>" + ">" + breadCrumb;
-                            checkDic.Add(categoryid, categoryid);
-                            categoryid = l.First().parentcatid;
-                            breadCrumb = strOut.TrimEnd('>');
-                        }
+                        var strOut = "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + ">" + breadCrumb;
+                        checkDic.Add(categoryid, categoryid);
+                        categoryid = l.First().parentcatid;
+                        breadCrumb = strOut.TrimEnd('>');
                         continue;
                     }
                 }

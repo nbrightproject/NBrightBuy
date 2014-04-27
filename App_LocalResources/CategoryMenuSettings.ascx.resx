@@ -120,6 +120,9 @@
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Category Menu Settings</value>
   </data>
+  <data name="lbladvancedsettings.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
   <data name="lblbasicsettings.Text" xml:space="preserve">
     <value>General</value>
   </data>
@@ -134,6 +137,12 @@
   </data>
   <data name="lbldepth.Text" xml:space="preserve">
     <value>Depth : </value>
+  </data>
+  <data name="lbldetailtab.Help" xml:space="preserve">
+    <value>The page the user will be redirected to when the category is clicked.  If blank the current page is used. </value>
+  </data>
+  <data name="lbldetailtab.Text" xml:space="preserve">
+    <value>Product List Page : </value>
   </data>
   <data name="lbllistbody.Help" xml:space="preserve">
     <value>Template to be used as category menu body, this is repeated for each category.</value>
@@ -164,5 +173,11 @@
   </data>
   <data name="lbltheme.Text" xml:space="preserve">
     <value>Theme : </value>
+  </data>
+  <data name="lblthemesettings.Text" xml:space="preserve">
+    <value>Theme Settings</value>
+  </data>
+  <data name="themehidden.Text" xml:space="preserve">
+    <value>Old Theme Settings have been disabled, update to activate new theme. </value>
   </data>
 </root>
