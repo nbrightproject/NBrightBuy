@@ -33,8 +33,11 @@
             [<tag id="lbldetailtab" type="dnnlabelcontrol" />][<tag id="ddllisttabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddllisttabid]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblmenutype" type="dnnlabelcontrol" />][<tag id="rblmenutype" type="radiobuttonlist" data="DrillDown;Treeview;Accordian;MegaMenu" value="DrillDown" />][Settings:ddllisttabid]
+            [<tag id="lblmenutype" type="dnnlabelcontrol" />][<tag id="rblmenutype" type="radiobuttonlist" data="DrillDown;Treeview;MegaMenu" value="DrillDown" />][Settings:ddllisttabid]
         </div>
+        <div class="dnnFormItem alwaysshow">
+            [<tag id="lblalwaysshow" type="dnnlabelcontrol" />][<tag id="alwaysshow" type="checkbox" Text="" checked="True" />]
+        </div>        
     </fieldset>
 
     <h2 class="dnnFormSectionHead"><a href="">[<tag type="valueof" resourcekey="ProductViewSettings.lbladvancedsettings" />]</a></h2>
@@ -44,7 +47,7 @@
             [<tag id="lbllistheader" type="dnnlabelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="catmenuheader.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistbody" type="dnnlabelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="catmenu.html" />]
+            [<tag id="lbllistbody" type="dnnlabelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="categorybody.html" />]
         </div>
         <div class="dnnFormItem">
             [<tag id="lbllistfooter" type="dnnlabelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="catmenufooter.html"/>]

@@ -72,6 +72,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool DebugMode { get; private set; }
         public NBrightInfo DataInfo { get; private set; }
         public String ThemeFolder { get; private set; }
+        public int ActiveCatId { get; set; }
 
         #endregion
 

@@ -331,7 +331,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             var newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseodescription");
                             if (newBaseDescription == "") newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtdescription");
                             if (newBaseDescription != "") basePage.Description = newBaseDescription;
-
                         }
                     }
                     else

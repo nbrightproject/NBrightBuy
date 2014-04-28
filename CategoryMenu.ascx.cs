@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -40,9 +41,11 @@ namespace Nevoweb.DNN.NBrightBuy
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
         private String _templH = "";
         private String _templD = "";
+        private String _templDfoot = "";
         private String _templF = "";
         private GrpCatController _catGrpCtrl;
         private String _entryid = "";
+        private String _tabid = "";
         
         #region Event Handlers
 
@@ -65,15 +68,17 @@ namespace Nevoweb.DNN.NBrightBuy
 
             try
             {
-                _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _entryid = Utils.RequestQueryStringParam(Context, "eid");
-                _catname = Utils.RequestQueryStringParam(Context, "category");
+                _catid = Utils.RequestQueryStringParam(Context, "catid");
+                if (_catid == "") _catid = ModSettings.Get("defaultcatid");
 
                 _templH = ModSettings.Get("txtdisplayheader");
                 _templD = ModSettings.Get("txtdisplaybody");
+                _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-
+                _tabid = ModSettings.Get("ddllisttabid");
+                if (!Utils.IsNumeric(_tabid)) _tabid = TabId.ToString("");
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
@@ -124,52 +129,20 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            #region "Get category id"
-
             var catid = 0;
-            // get category list data
-            NBrightInfo objCat = null;
-            if (_catname != "") // if catname passed in url, calculate what the catid is
-            {
-                objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
-                if (objCat == null)
-                {
-                    // check it's not just a single language
-                    objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
-                    if (objCat != null) _catid = objCat.ItemID.ToString("");
-                }
-                else
-                {
-                    _catid = objCat.ParentItemId.ToString("");
-                }
-            }
-
-            if (_catid == "") _catid = ModSettings.Get("defaultcatid");
-            if (_catid == "") _catid = "0";
             if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
-            
-            #endregion
+            StoreSettings.Current.ActiveCatId = catid;
 
-            #region "Get category into list"
-
-            var obj = _catGrpCtrl.GetCategory(catid);
-            if (obj == null)
+            #region "Get default category into list for displaying header and footer templates on product (breadcrumb)"
+            // if we have a product displaying, get the deault category for the category
+            var obj = new GroupCategoryData();
+            if (Utils.IsNumeric(_entryid))
             {
-                // if we have a product displaying, get the deault category for the category
-                if (Utils.IsNumeric(_entryid))
-                {
-                    catid = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
-                    obj = _catGrpCtrl.GetCategory(catid);
-                }
-                if (obj == null) obj = new GroupCategoryData();
+                var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
+                obj = _catGrpCtrl.GetCategory(catiddef);
             }
             var catl = new List<object> { obj };
-
             #endregion
-
-            // display header
-            rpDataH.DataSource = catl;
-            rpDataH.DataBind();
 
             #region "Data Repeater"
 
@@ -182,14 +155,15 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (menutype == "drilldown")
                 {
+
                     var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
-                    // if we have no categories, it could be the end of branch or product view, so load the root menu
-                    if (l.Count == 0)
+                    if (l.Count == 0 && (ModSettings.Get("alwaysshow") == "True"))
                     {
-                        catid = 0;
+                        // if we have no categories, it could be the end of branch or product view, so load the root menu
+                        var catid2 = 0;
                         _catid = ModSettings.Get("defaultcatid");
-                        if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
-                        l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
+                        if (Utils.IsNumeric(_catid)) catid2 = Convert.ToInt32(_catid);
+                        l = _catGrpCtrl.GetCategoriesWithUrl(catid2, TabId);
                     }
                     rpData.DataSource = l;
                     rpData.DataBind();
@@ -201,7 +175,18 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (menutype == "treeview")
                 {
+                    var catidtree = 0;
+                    if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
 
+                    rpData.Visible = false;
+                    var catBuiler = new CatMenuBuilder(_templD, ModSettings, DebugMode);
+                    var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid));
+                    
+                    // if debug , output the html used.
+                    if (DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html",strOut);
+
+                    var l = new Literal {Text = strOut};
+                    phData.Controls.Add(l);
                 }
                 #endregion
 
@@ -224,6 +209,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
+            // display header
+            rpDataH.DataSource = catl;
+            rpDataH.DataBind();
+
             // display footer
             rpDataF.DataSource = catl;
             rpDataF.DataBind();
@@ -231,6 +220,7 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         #endregion
+
 
 
     }

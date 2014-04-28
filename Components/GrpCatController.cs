@@ -209,11 +209,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var levelList = GetGrpCategories(parentid, groupref);
             foreach (GroupCategoryData tInfo in levelList)
             {
-                    var nInfo = tInfo;
-                    nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7);
-                    nInfo.depth = level;
-                    rtnList.Add(nInfo);
-                    GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref);
+                var nInfo = tInfo;
+                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7);
+                nInfo.depth = level;
+                rtnList.Add(nInfo);
+                GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref);
             }
 
             return rtnList;
