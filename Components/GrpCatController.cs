@@ -148,6 +148,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (defId == 0)
                 {
+                    foreach (var e in l)
+                    {
+                        if ((e.GetXmlProperty("genxml/checkbox/chkishidden").ToLower() == "false") && (e.GetXmlProperty("genxml/checkbox/chkarchived").ToLower() == "false"))
+                        {
+                            defId = e.XrefItemId;
+                            break;
+                        }
+                    }
+                }
+
+
+                if (defId == 0)
+                {
                     if (l.Count > 0)
                     {
                         defId = l[0].XrefItemId;
@@ -243,14 +256,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
                         }
 
-                        var strOut = crumbText + ">" + breadCrumb;
+                        var strOut = ">" + crumbText + breadCrumb;
                         checkDic.Add(categoryid, categoryid);
                         categoryid = l.First().parentcatid;
-                        breadCrumb = strOut.TrimEnd('>');
+                        breadCrumb = strOut;
                         continue;
                     }
                 }
-                return breadCrumb;
+                return breadCrumb.TrimStart('>');
             }
             return "";
         }
@@ -275,14 +288,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
                         }
 
-                        var strOut = "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + ">" + breadCrumb;
+                        var strOut = "><a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + breadCrumb;
                         checkDic.Add(categoryid, categoryid);
                         categoryid = l.First().parentcatid;
-                        breadCrumb = strOut.TrimEnd('>');
+                        breadCrumb = strOut;
                         continue;
                     }
                 }
-                return breadCrumb;
+                return breadCrumb.TrimStart('>');
             }
             return "";
         }
