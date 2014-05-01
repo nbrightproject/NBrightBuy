@@ -1,4 +1,6 @@
 <!-- List footer  -->
+[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
+
 </div>
 </div>
 
@@ -31,4 +33,4 @@ $container.imagesLoaded( function() {
 
 </script>
 
-[<tag type="productcount" modulekey="ProductView" />]
+[<tag type="endif"  />]<!-- End hide product list when current category has zero items -->

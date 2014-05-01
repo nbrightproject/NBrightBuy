@@ -1,6 +1,11 @@
 [<tag id="includeinheader" type="meta" value="listpageheader.html" />]
+
+[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
+
 [<tag type="productcount" modulekey="ProductView" />]
 <div class="NBB">
+
+<div>[<tag type="catbreadcrumb" links="True" />]Category breadcrumbs nogo in listheader</div>
 
 [<tag id="searchpagesize" type="meta" value="{Settings:pagesize}" />] 
 
@@ -24,5 +29,8 @@
 <option value="?orderby=5">Quantity</option>
 </select>
 
-[<tag type="catbreadcrumb" />]
+
 <div id="listwrapper" class="productlist">
+
+
+[<tag type="endif"  />]<!-- End hide product list when current category has zero items -->

@@ -1,6 +1,44 @@
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.metisMenu.js"></script>
-<script>
-    $(function () {
-        $('.nbrightbuy_catmenu').metisMenu();
-    });
+<!-- Treeview menu https://github.com/tefra/navgoco -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/jquery.navgoco.css" rel="stylesheet">
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.cookie.min.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.navgoco.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	// Initialize navgoco with default options
+	$(".nbrightbuy_catmenu").navgoco({
+		caretHtml: '',
+		accordion: false,
+		openClass: 'open',
+		save: true,
+		cookie: {
+			name: 'navgoco',
+			expires: false,
+			path: '/'
+		},
+		slide: {
+			duration: 100,
+			easing: 'linear'
+		},
+		// Add Active class to clicked menu item
+		onClickAfter: function(e, submenu) {
+			//e.preventDefault();
+			$('.nbrightbuy_catmenu').find('li').removeClass('active');
+			var li =  $(this).parent();
+			var lis = li.parents('li');
+			li.addClass('active');
+			lis.addClass('active');
+		},
+	});
+
+	$("#collapseAll").click(function(e) {
+		e.preventDefault();
+		$(".nbrightbuy_catmenu").navgoco('toggle', false);
+	});
+
+	$("#expandAll").click(function(e) {
+		e.preventDefault();
+		$(".nbrightbuy_catmenu").navgoco('toggle', true);
+	});
+});
 </script>

@@ -1,4 +1,6 @@
 <!-- List item -->
+[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
+
 <ul class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
 
 	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button -->
@@ -30,19 +32,19 @@
 		[<tag type="if" function="isinrole" role="Dealer" display="{OFF}" displayelse="{ON}" />]<!-- Hide retail and sale section from dealer -->
 		
 		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
-		<li class="price"><span class="retail">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:price" />]</span></li><!-- Retail Price -->
+		<li class="price"><span class="retail">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.from" />] [<tag type="endif" />][<tag type="nbb:price" />]</span></li><!-- Retail Price -->
 		[<tag type="endif"  />]
 		
 		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Price -->
 		<li class="price"><span class="old">[<tag type="nbb:price" />]</span>
-		<span class="sale">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]Sale from [<tag type="endif" />][<tag type="nbb:saleprice" />]</span>
+		<span class="sale">[<tag type="label" resourcekey="ProductView.onsale" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.fromlower" />] [<tag type="endif" />][<tag type="nbb:saleprice" />]</span>
 		[<tag type="endif"  />]
 		</li>
 		
 		[<tag type="endif"  />]<!-- End hide retail and sale section from dealer -->
 		
 		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer Price -->
-		<li class="price"><span class="dealer">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]From [<tag type="endif" />][<tag type="nbb:dealerprice" />]</span></li>
+		<li class="price"><span class="dealer">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.from" />] [<tag type="endif" />][<tag type="nbb:dealerprice" />]</span></li>
 		[<tag type="endif"  />]		
 		
 		[<tag type="if" function="price" testvalue="0.00" display="{ON}" />]<!-- If price is zero then display contact message -->
@@ -54,9 +56,10 @@
 		
 <!-- End Pricing for Retail, Sale and Dealer -->
 
-		<li>[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]out of stock
+		<li class="outofstock">[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>][<tag type="label" resourcekey="ProductView.outofstock" />]
 		[<tag type="endif" />]</li>
 		
 	[<tag type="endif"  />]<!-- End Hide all prices, models and options in catalogue mode -->
 </a>
 </ul>
+[<tag type="endif"  />]<!-- End hide product list when current category has zero items -->

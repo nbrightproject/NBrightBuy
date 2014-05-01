@@ -97,6 +97,11 @@ a.entryurl{color:#333;display: block;}
 .productdetail .relateditem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;}
 .productdetail .relateditem .manufacturer{display:inline-block;margin-right:3px;}
 .productdetail .relateditem .name{display:inline-block}
+.productdetail .documents{}
+.productdetail .documents li{margin-bottom:12px}
+.productdetail .documentname{font-weight:bold}
+.productdetail .documentdescription{display:block}
+.productdetail .documentlink{}
 
 
 /* Models Table - http://www.csstablegenerator.com */

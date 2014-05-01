@@ -263,7 +263,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if ((xmlNod.Attributes["role"] != null)) role = xmlNod.Attributes["role"].Value;
 
                     var index = "";
-                    if ((xmlNod.Attributes["index"] != null)) role = xmlNod.Attributes["index"].Value;
+                    if ((xmlNod.Attributes["index"] != null)) index = xmlNod.Attributes["index"].Value;
 
                     var modulekey = "";
                     if ((xmlNod.Attributes["modulekey"] != null)) modulekey = xmlNod.Attributes["modulekey"].Value;
