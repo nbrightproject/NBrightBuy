@@ -185,21 +185,6 @@
 	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="3" />]
 	            </li>
             </ul>
-			isdocpurchasable - 
-[<tag type="if" function="isdocpurchased" index="1" display="{ON}" />]
-TEST the index document has been purchased 
-[<tag type="endif" />]
-[<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
-TEST the index document has been NOT purchased 
-[<tag type="endif" />]
-
-[<tag type="if" function="isdocpurchasable" index="1" display="{ON}" />]
- TEST the index document is purchasable 
-[<tag type="endif" />]
-[<tag type="if" function="isdocpurchasable" index="1" display="{OFF}" />]
- TEST the index document is NOT purchasable 
-[<tag type="endif" />]
- 
         </div>
         [<tag type="endif" />]
         [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->

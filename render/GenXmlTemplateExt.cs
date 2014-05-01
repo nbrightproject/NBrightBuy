@@ -1213,7 +1213,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     // Must be displaying a product or category with (NBrightInfo), so get categoryid
                     var objCInfo = (NBrightInfo)container.DataItem;
-                    if (objCInfo.TypeCode == "PRD") 
+                    if (objCInfo.TypeCode == "PRD" || String.IsNullOrEmpty(objCInfo.TypeCode)) // no type is list header, so use catid in url if there. 
                     {
                         //Is product so get categoryid    
                         var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));

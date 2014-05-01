@@ -149,7 +149,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var menutype = ModSettings.Get("rblmenutype").ToLower();
+                var menutype = ModSettings.Get("ddlmenutype").ToLower();
 
                 #region "Drill Down"
 
@@ -180,7 +180,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     rpData.Visible = false;
                     var catBuiler = new CatMenuBuilder(_templD, ModSettings, DebugMode);
-                    var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid));
+                    var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid), ModSettings.Get("treeidentclass"), ModSettings.Get("treerootclass"));
                     
                     // if debug , output the html used.
                     if (DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html",strOut);

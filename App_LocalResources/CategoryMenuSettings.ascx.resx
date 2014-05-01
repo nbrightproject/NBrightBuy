@@ -189,6 +189,18 @@
   <data name="lblthemesettings.Text" xml:space="preserve">
     <value>Theme Settings</value>
   </data>
+  <data name="lbltreeidentclass.Help" xml:space="preserve">
+    <value>Identifying CSS class name to be placed onto the root "ul" of the tree structure.  This will be used to identify the Tree to the Javascipt.</value>
+  </data>
+  <data name="lbltreeidentclass.Text" xml:space="preserve">
+    <value>Identifying Css Class : </value>
+  </data>
+  <data name="lbltreerootclass.Help" xml:space="preserve">
+    <value>Optional CSS class name to be placed onto the root "ul" of the tree structure. For styling the tree.</value>
+  </data>
+  <data name="lbltreerootclass.Text" xml:space="preserve">
+    <value>Style Css Class : </value>
+  </data>
   <data name="themehidden.Text" xml:space="preserve">
     <value>Old Theme Settings have been disabled, update to activate new theme. </value>
   </data>

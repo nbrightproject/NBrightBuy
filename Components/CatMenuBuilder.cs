@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public string GetTreeCatList(int displaylevels = 20, int parentid = 0, int tabid = 0)
+        public string GetTreeCatList(int displaylevels = 20, int parentid = 0, int tabid = 0, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
         {
             if (tabid == 0) tabid = PortalSettings.Current.ActiveTab.TabID;
             var rtnList = "";
@@ -36,7 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
-                rtnList = BuildTreeCatList(rtnList, 0, parentid, "cat", tabid, displaylevels);
+                rtnList = BuildTreeCatList(rtnList, 0, parentid, "cat", tabid, displaylevels,identClass,styleClass,activeClass);
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnList);
             }
             else
@@ -47,13 +47,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        private String BuildTreeCatList(String rtnList, int level, int parentid, string groupref, int tabid, int displaylevels = 50)
+        private String BuildTreeCatList(String rtnList, int level, int parentid, string groupref, int tabid, int displaylevels = 50, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
         {
             if (level > displaylevels) return rtnList; // stop infinate loop
 
             // header
             if (level == 0)
-                rtnList += "<ul class='nbrightbuy_catmenu'>";
+                rtnList += "<ul class='" + identClass + " " + identClass + "'>";
             else
                 rtnList += "<ul>";
 
@@ -68,7 +68,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.depth = level; //make base 1, to pick up the
 
                     if (StoreSettings.Current.ActiveCatId == grpcat.categoryid)
-                        rtnList += "<li class='active'>";
+                        rtnList += "<li class='" + activeClass + "'>";
                     else
                         rtnList += "<li>";
 
