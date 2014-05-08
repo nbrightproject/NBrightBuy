@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // header
             if (level == 0)
-                rtnList += "<ul class='" + identClass + " " + identClass + "'>";
+                rtnList += "<ul class='" + identClass + " " + styleClass + "'>";
             else
                 rtnList += "<ul>";
 
