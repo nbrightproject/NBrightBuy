@@ -1482,6 +1482,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     ddl.Visible = false;
                     ddl.Enabled = false;
                     ddl.ID = "optionddl" + xmlNod.Attributes["index"].Value;
+                    if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+                    {
+                        ddl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+                    }
                     container.Controls.Add(ddl);
                     chk.Attributes.Add("index", xmlNod.Attributes["index"].Value);
                     chk = (CheckBox)GenXmlFunctions.AssignByReflection(chk, xmlNod);
@@ -1573,6 +1577,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         ddl.Enabled = true;
                         if (nodList != null)
                         {
+
+                            if (ddl.Attributes["blank"] != null)
+                            {
+                                var li = new ListItem();
+                                li.Text = ddl.Attributes["blank"];
+                                li.Value = "0";
+                                ddl.Items.Add(li);
+                                ddl.Attributes.Remove("blank");
+                            }
+
                             foreach (XmlNode nodOptVal in nodList)
                             {
                                 var nodVal = nodOptVal.SelectSingleNode("hidden/optionvalueid");
@@ -1709,6 +1723,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.Attributes.Add("template", xmlNod.Attributes["template"].Value);
             }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+            {
+                rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            }
             rbl = (RadioButtonList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += ModelsradioDataBind;
             rbl.ID = "rblModelsel";
@@ -1735,6 +1753,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
 
+                    if (rbl.Attributes["blank"] != null)
+                    {
+                        var li = new ListItem();
+                        li.Text = rbl.Attributes["blank"];
+                        li.Value = "0";
+                        rbl.Items.Add(li);
+                        rbl.Attributes.Remove("blank");
+                    }
+
                     foreach (var obj in objL)
                     {
                         var li = new ListItem();
@@ -1742,7 +1769,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") rbl.Items.Add(li);
                     }
-                    if (objL.Count > 0) rbl.SelectedIndex = 0;
                 }
 
             }
@@ -1758,6 +1784,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 rbl.Attributes.Add("template", xmlNod.Attributes["template"].Value);
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+            {
+                rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
             }
             rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += ModelsdropdownDataBind;
@@ -1784,6 +1814,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var objL = BuildModelList((NBrightInfo)container.DataItem, true, true);
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
+
+                    if (ddl.Attributes["blank"] != null)
+                    {                       
+                        var li = new ListItem();
+                        li.Text = ddl.Attributes["blank"];
+                        li.Value = "0";
+                        ddl.Items.Add(li);
+                        ddl.Attributes.Remove("blank");
+                    }
 
                     foreach (var obj in objL)
                     {

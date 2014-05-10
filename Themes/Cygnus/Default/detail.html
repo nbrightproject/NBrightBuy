@@ -99,11 +99,11 @@
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 
 		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<li class="models">[<tag type="nbb:modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1"/>]</li>
+		<li class="models">[<tag type="modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1" />]</li>
 		[<tag type="endif"  />]
 		
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-		<li class="options option1"><span class="optionvalue optionvalue1">[<tag type="nbb:productoption" index="1" />]</span><span class="optionname optionname1">[<tag type="nbb:productoptionname" index="1" />]</span></li>
+		<li class="options option1"><span class="optionvalue optionvalue1">[<tag type="nbb:productoption" index="1"  />]</span><span class="optionname optionname1">[<tag type="nbb:productoptionname" index="1" />]</span></li>
 		[<tag type="endif"  />]
 		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option2"><span class="optionvalue optionvalue2">[<tag type="nbb:productoption" index="2" />]</span><span class="optionname optionname2">[<tag type="nbb:productoptionname" index="2" />]</span></li>
@@ -124,7 +124,7 @@
 		[<tag type="endif"  />]
 		[<tag type="if" function="settings" key="holidaymode" testvalue="True" display="{OFF}" />]<!-- Hide buy button and quantity in Holiday Mode -->		
 		<span [<tag type="if" function="isinstock" testvalue="0" display="" displayelse="style='display:none;'" />]>
-		[<tag type="nbb:addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />] 
+		[<tag type="nbb:addqty" text="1" width="21" />]<span class="buybutton">[<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />]</span>
 		</span>
 		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
 		<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>

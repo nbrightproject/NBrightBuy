@@ -141,3 +141,21 @@ $container.imagesLoaded( function() {
 });
 
 </script>
+
+
+// Buy Button validation
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+var isChecked = $('input[[id*="rblModelsel"]]').prop('checked');
+
+$('.buybutton').hide();
+if (isChecked=="true") $('.buybutton').show();
+$('input[[id*="rblModelsel"]]').change(function(){
+	$('.buybutton').show();
+});
+
+});
+
+</script>
