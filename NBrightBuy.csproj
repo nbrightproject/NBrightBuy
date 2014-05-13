@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
+    <Compile Include="Components\ItemListData.cs" />
     <Compile Include="Components\DdrMenuInterface.cs" />
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />

@@ -1277,7 +1277,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength, separator, aslist);
                     }
 
-                    if (lc.Text.Length > intLength)
+                    if ((lc.Text.Length > intLength) && (!aslist))
                     {
                         lc.Text = lc.Text.Substring(0, (intLength - 3)) + "...";
                     }                    

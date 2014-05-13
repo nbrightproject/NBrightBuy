@@ -40,6 +40,9 @@ namespace Nevoweb.DNN.NBrightBuy
             var catxid = Utils.RequestQueryStringParam(context, "catxid");
             var templatePrefix = Utils.RequestQueryStringParam(context, "tprefix");
             var value = Utils.RequestQueryStringParam(context, "value");
+            var itemListName = Utils.RequestQueryStringParam(context, "listname");
+            if (itemListName == "") itemListName = "ItemList";
+            if (itemListName == "*") itemListName = "ItemList";
 
             #region "setup language"
 
@@ -88,6 +91,30 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "getdata":
                     strOut = GetReturnData(context);
+                    break;
+                case "additemlist":
+                    if (Utils.IsNumeric(itemId) && Utils.IsNumeric(moduleId))
+                    {
+                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
+                        cw.Add(itemId);
+                        strOut = cw.ItemList;
+                    }
+                    break;
+                case "removeitemlist":
+                    if (Utils.IsNumeric(itemId) && Utils.IsNumeric(moduleId))
+                    {
+                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
+                        cw.Remove(itemId);
+                        strOut = cw.ItemList;
+                    }
+                    break;
+                case "deleteitemlist":
+                    if (Utils.IsNumeric(moduleId))
+                    {
+                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
+                        cw.Delete();
+                        strOut = "deleted";
+                    }
                     break;
             }
 
