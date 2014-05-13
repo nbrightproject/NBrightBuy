@@ -171,7 +171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return defId;
         }
 
-        public GroupCategoryData GetCurrentCategoryData(int portalId,  System.Web.HttpRequest request, int entryId = 0)
+        public GroupCategoryData GetCurrentCategoryData(int portalId,  System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null)
         {
 
             var defcatid = 0;
@@ -182,7 +182,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (defcatid == 0)
             {
-                if (Utils.IsNumeric(portalId))
+                if (settings != null && settings["defaultcatid"] != null)
+                {
+                    var setcatid = settings["defaultcatid"];
+                    if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
+                }
+
+                if (Utils.IsNumeric(portalId) && defcatid == 0)
                 {
                     var nbSettings = NBrightBuyUtils.GetGlobalSettings(Convert.ToInt32(portalId));
                     var setcatid = nbSettings.GetXmlProperty("genxml/hidden/defaultcatid");
@@ -215,7 +221,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objCtrl.Get(defcatid);
         }
 
-        public List<GroupCategoryData> GetTreeCategoryList(List<GroupCategoryData> rtnList, int level, int parentid, string groupref)
+        public List<GroupCategoryData> GetTreeCategoryList(List<GroupCategoryData> rtnList, int level, int parentid, string groupref,string breadcrumbseparator)
         {
             if (level > 20) return rtnList; // stop infinate loop
 
@@ -223,10 +229,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             foreach (GroupCategoryData tInfo in levelList)
             {
                 var nInfo = tInfo;
-                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7);
+                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7, breadcrumbseparator,false);
                 nInfo.depth = level;
                 rtnList.Add(nInfo);
-                GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref);
+                GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
             }
 
             return rtnList;
@@ -236,41 +242,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "breadcrumbs"
 
-        public String GetBreadCrumb(int categoryid, int shortLength)
+        public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
         {
             var breadCrumb = "";
-            var checkDic = new Dictionary<int,int>();
-            while (true)
-            {
-                if (checkDic.ContainsKey(categoryid)) break; // jump out if we get data giving an infinate loop
-                int itemid1 = categoryid;
-                var lenum = from i in CategoryList where i.categoryid == itemid1 select i;
-                var l = lenum.ToList();
-                if (l.Any())
-                {
-                    var crumbText = l.First().categoryname;
-                    if (crumbText != null)
-                    {
-                        if (shortLength > 0)
-                        {
-                            if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
-                        }
-
-                        var strOut = ">" + crumbText + breadCrumb;
-                        checkDic.Add(categoryid, categoryid);
-                        categoryid = l.First().parentcatid;
-                        breadCrumb = strOut;
-                        continue;
-                    }
-                }
-                return breadCrumb.TrimStart('>');
-            }
-            return "";
-        }
-
-        public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength)
-        {
-            var breadCrumb = "";
+            if (aslist) breadCrumb = "<ul class='crumbs'>";
             var checkDic = new Dictionary<int, int>();
             while (true)
             {
@@ -288,14 +263,61 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
                         }
 
-                        var strOut = "><a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + breadCrumb;
+                        var strOut = "";
+                        if (aslist)
+                            strOut = "<li>" + separator + crumbText + "</li>" + breadCrumb;
+                        else
+                            strOut = separator + crumbText + breadCrumb;
+
                         checkDic.Add(categoryid, categoryid);
                         categoryid = l.First().parentcatid;
                         breadCrumb = strOut;
                         continue;
                     }
                 }
-                return breadCrumb.TrimStart('>');
+                if (breadCrumb.StartsWith(separator)) breadCrumb = breadCrumb.Substring(separator.Length);
+                if (aslist) breadCrumb += "</ul>";
+                return breadCrumb;
+            }
+            return "";
+        }
+
+        public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist)
+        {
+            var breadCrumb = "";
+            if (aslist) breadCrumb = "<ul class='crumbs'>";
+            var checkDic = new Dictionary<int, int>();
+            while (true)
+            {
+                if (checkDic.ContainsKey(categoryid)) break; // jump out if we get data giving an infinate loop
+                int itemid1 = categoryid;
+                var lenum = from i in CategoryList where i.categoryid == itemid1 select i;
+                var l = lenum.ToList();
+                if (l.Any())
+                {
+                    var crumbText = l.First().categoryname;
+                    if (crumbText != null)
+                    {
+                        if (shortLength > 0)
+                        {
+                            if (crumbText.Length > (shortLength + 1)) crumbText = crumbText.Substring(0, shortLength) + ".";
+                        }
+
+                        var strOut = "";
+                        if (aslist)
+                            strOut = "<li>" + separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + "</li>" + breadCrumb;
+                        else
+                            strOut = separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + breadCrumb;
+                        
+                        checkDic.Add(categoryid, categoryid);
+                        categoryid = l.First().parentcatid;
+                        breadCrumb = strOut;
+                        continue;
+                    }
+                }
+                if (breadCrumb.StartsWith(separator)) breadCrumb = breadCrumb.Substring(separator.Length);
+                if (aslist) breadCrumb += "</ul>";
+                return breadCrumb;
             }
             return "";
         }

@@ -1084,7 +1084,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
 
-        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "")
+        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">")
         {
             var rtnDic = new Dictionary<int, string>();
 
@@ -1097,7 +1097,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
                 var d = new Dictionary<int, string>();
                 var rtnList = new List<GroupCategoryData>();
-                rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref);
+                rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref,breadcrumbseparator);
                 var strCount = "";
                 foreach (var grpcat in rtnList)
                 {
@@ -1217,7 +1217,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         //Is product so get categoryid    
                         var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                        var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
+                        var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), _settings);
                         if (obj != null) catid = obj.categoryid;
                     }
                     else
@@ -1240,6 +1240,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var intLength = 400;
                 var intShortLength = -1;
                 var isLink = false;
+                var separator = ">";
+                var aslist = false;
 
                 if (xmlNod != null && xmlNod.Attributes != null)
                 {
@@ -1258,6 +1260,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             intShortLength = Convert.ToInt32(xmlNod.Attributes["short"].InnerText);
                         }
                     }
+                    if (xmlNod.Attributes["separator"] != null) separator = xmlNod.Attributes["separator"].InnerText;
+                    if (xmlNod.Attributes["aslist"] != null && xmlNod.Attributes["aslist"].InnerText.ToLower() == "true") aslist = true;
                 }
 
                 if (catid > 0) // check we have a catid
@@ -1266,11 +1270,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         var defTabId = PortalSettings.Current.ActiveTab.TabID;
                         if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
-                        lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength);
+                        lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
                     }
                     else
                     {
-                        lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength);
+                        lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength, separator, aslist);
                     }
 
                     if (lc.Text.Length > intLength)
