@@ -192,6 +192,12 @@
   <data name="lbllistheader.Text" xml:space="preserve">
     <value>List Header : </value>
   </data>
+  <data name="lbllistonly.Help" xml:space="preserve">
+    <value>Only display list view for this module, no detail view will be displayed on this module.</value>
+  </data>
+  <data name="lbllistonly.Text" xml:space="preserve">
+    <value>List Only : </value>
+  </data>
   <data name="lblmoduleref.Help" xml:space="preserve">
     <value>Unique Module Key.  This is used to identify this module to other NBS modules.</value>
   </data>

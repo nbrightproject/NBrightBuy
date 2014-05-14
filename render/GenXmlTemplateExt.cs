@@ -173,6 +173,21 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "if":
                     CreateTestOf(container, xmlNod);
                     return true;
+                case "itemlistcount":
+                    CreateItemListCount(container, xmlNod);
+                    return true;
+                case "itemlistfield":
+                    CreateItemListField(container, xmlNod);
+                    return true;
+                case "itemlistadd":
+                    CreateItemListLink(container, xmlNod, "add");
+                    return true;
+                case "itemlistremove":
+                    CreateItemListLink(container, xmlNod, "remove");
+                    return true;
+                case "itemlistdelete":
+                    CreateItemListLink(container, xmlNod, "delete");
+                    return true;
                 default:
                     return false;
 
@@ -2357,6 +2372,142 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+
+        #endregion
+
+        #region "ItemList (WishList)"
+
+        private void CreateItemListCount(Control container, XmlNode xmlNod)
+        {
+            if (_settings != null)
+            {
+                var l = new Literal();
+
+                var listName = "ItemList";
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["listname"] != null))
+                {
+                    listName = xmlNod.Attributes["listname"].InnerText;
+                }
+                var il = new ItemListData(HttpContext.Current.Request, HttpContext.Current.Response, 0, listName);
+                l.Text = il.ItemCount;
+                if (l.Text == "") l.Text = "0";
+                l.Text = "<span class='nbxItemListCount'>" + l.Text + "</span>";
+                container.Controls.Add(l);
+            }
+        }
+
+        private void CreateItemListField(Control container, XmlNode xmlNod)
+        {
+            if (_settings != null)
+            {
+                var h = new HiddenField();
+
+                var listName = "ItemList";
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["listname"] != null))
+                {
+                    listName = xmlNod.Attributes["listname"].InnerText;
+                }
+                var il = new ItemListData(HttpContext.Current.Request, HttpContext.Current.Response, 0, listName);
+                h.Value = il.ItemList;
+                h.ID = "nbxItemList" + listName;
+                container.Controls.Add(h);
+                // add required JS
+                var l = new Literal();
+                l.Text = "<script>$(document).ready(function() {nbxbuttonview('input[id*=\"nbxItemList" + listName + "\"]');});</script>";
+                container.Controls.Add(l);
+            }
+        }
+
+        private void CreateItemListLink(Control container, XmlNode xmlNod, String action)
+        {
+            var lk = new HyperLink();
+            lk = (HyperLink)GenXmlFunctions.AssignByReflection(lk, xmlNod);
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["class"] != null))
+            {
+                lk.CssClass = xmlNod.Attributes["class"].InnerXml;
+            }
+
+            var listName = "ItemList";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["listname"] != null))
+            {
+                lk.Attributes.Add("listName", xmlNod.Attributes["listname"].InnerText);
+            }
+
+            lk.Attributes.Add("action", action);
+
+            lk.DataBinding += ItemListDataBinding;
+            container.Controls.Add(lk);
+
+            var l = new Literal();
+            l.Text = action;
+            l.DataBinding += ItemListScriptBinding;
+            container.Controls.Add(l);
+
+        }
+
+        private void ItemListDataBinding(object sender, EventArgs e)
+        {
+            var lk = (HyperLink)sender;
+            var container = (IDataItemContainer)lk.NamingContainer;
+            try
+            {
+                lk.Visible = NBrightGlobal.IsVisible;
+
+                var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
+                var moduleId = Convert.ToString(DataBinder.Eval(container.DataItem, "ModuleId"));
+                if (Utils.IsNumeric(moduleId))
+                {
+                    var listname = "ItemList";
+                    if (lk.Attributes["listname"] != null) listname = lk.Attributes["listname"];
+                    var cmd = "";
+                    if (lk.Attributes["action"] == "add")
+                    {
+                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=additemlist&itemid=" + entryid + "&listname=" + listname;
+                        lk.ID = "nbxItemListAdd" + entryid;
+                        lk.Target = entryid;
+                    }
+                    if (lk.Attributes["action"] == "remove")
+                    {
+                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=removeitemlist&itemid=" + entryid + "&listname=" + listname;
+                        lk.ID = "nbxItemListRemove" + entryid;
+                        lk.Target = entryid;
+                    }
+                    if (lk.Attributes["action"] == "delete")
+                    {
+                        lk.ID = "nbxItemListDelete";
+                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=deleteitemlist&listname=" + listname;
+                    }
+
+                    lk.Attributes.Add("cmd", cmd);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lk.Text = ex.ToString();
+            }
+        }
+
+        private void ItemListScriptBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                l.Visible = NBrightGlobal.IsVisible;
+                var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
+                if (l.Text == "add") l.Text = "<script>nbxajaxaction('a[id*=\"nbxItemListAdd" + entryid + "\"]');</script>";
+                if (l.Text == "remove") l.Text = "<script>nbxajaxaction('a[id*=\"nbxItemListRemove" + entryid + "\"]');</script>";
+                if (l.Text == "delete") l.Text = "<script>nbxajaxaction('a[id*=\"nbxItemListDelete\"]');</script>";
+
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
 
         #endregion
 

@@ -245,7 +245,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
         {
             var breadCrumb = "";
-            if (aslist) breadCrumb = "<ul class='crumbs'>";
             var checkDic = new Dictionary<int, int>();
             while (true)
             {
@@ -276,7 +275,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (breadCrumb.StartsWith(separator)) breadCrumb = breadCrumb.Substring(separator.Length);
-                if (aslist) breadCrumb += "</ul>";
+                if (aslist) breadCrumb = "<ul class='crumbs'>" + breadCrumb + "</ul>";
                 return breadCrumb;
             }
             return "";
@@ -285,7 +284,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist)
         {
             var breadCrumb = "";
-            if (aslist) breadCrumb = "<ul class='crumbs'>";
             var checkDic = new Dictionary<int, int>();
             while (true)
             {
@@ -316,7 +314,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (breadCrumb.StartsWith(separator)) breadCrumb = breadCrumb.Substring(separator.Length);
-                if (aslist) breadCrumb += "</ul>";
+                if (aslist) breadCrumb = "<ul class='crumbs'>" + breadCrumb + "</ul>"; 
                 return breadCrumb;
             }
             return "";

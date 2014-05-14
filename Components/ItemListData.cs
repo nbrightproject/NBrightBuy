@@ -157,6 +157,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Count of itemids to be included in the wishlist
         /// </summary>
         public string ItemCount { get; set; }
+        /// <summary>
+        /// wishlist is active for bi-view modules
+        /// </summary>
+        public bool Active { get; set; }
     }
 
 

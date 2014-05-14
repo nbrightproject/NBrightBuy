@@ -92,6 +92,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // see if we need to display the entry page.
                 if ((_modkey == ModuleKey | _modkey == "") && (_eid != "" | _ename != "")) _displayentrypage = true;
+                if (ModSettings.Get("listonly").ToLower() == "true") _displayentrypage = false;
 
                 // get template codes
                 if (_displayentrypage)
@@ -336,6 +337,39 @@ namespace Nevoweb.DNN.NBrightBuy
                     else
                     {
                         _navigationdata.CategoryId = "";
+                    }
+
+                    #endregion
+
+
+                    #region "itemlists (wishlist)"
+
+                    // if we have a itemListName field then get the itemlist cookie.
+                    var itemListName = "";
+                    var itemListAction = "";
+                    if (_templateHeader != null) itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
+                    if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
+                    if (itemListAction == "wishlist" || itemListAction == "both")
+                    {
+                        var cw = new ItemListData(Request, Response, 0, itemListName);
+                        var showList = !(itemListAction == "both" && !cw.Active);
+                        if (showList)
+                        {
+                            if (cw.Exists && cw.ItemCount != "0")
+                            {
+                                strFilter = " and (";
+                                foreach (var i in cw.GetItemList())
+                                {
+                                    strFilter += " NB1.itemid = '" + i + "' or";
+                                }
+                                strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                            }
+                            else
+                            {
+                                //no data in list so select false itemid to stop anything displaying
+                                strFilter += " and (NB1.itemid = '-1') ";
+                            }
+                        }
                     }
 
                     #endregion

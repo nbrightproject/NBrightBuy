@@ -93,28 +93,25 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = GetReturnData(context);
                     break;
                 case "additemlist":
-                    if (Utils.IsNumeric(itemId) && Utils.IsNumeric(moduleId))
+                    if (Utils.IsNumeric(itemId))
                     {
-                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
+                        var cw = new ItemListData(context.Request, context.Response, 0, itemListName);
                         cw.Add(itemId);
                         strOut = cw.ItemList;
                     }
                     break;
                 case "removeitemlist":
-                    if (Utils.IsNumeric(itemId) && Utils.IsNumeric(moduleId))
+                    if (Utils.IsNumeric(itemId))
                     {
-                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
-                        cw.Remove(itemId);
-                        strOut = cw.ItemList;
+                        var cw1 = new ItemListData(context.Request, context.Response, 0, itemListName);
+                        cw1.Remove(itemId);
+                        strOut = cw1.ItemList;
                     }
                     break;
                 case "deleteitemlist":
-                    if (Utils.IsNumeric(moduleId))
-                    {
-                        var cw = new ItemListData(context.Request, context.Response, Convert.ToInt32(moduleId), itemListName);
-                        cw.Delete();
+                        var cw2 = new ItemListData(context.Request, context.Response, 0, itemListName);
+                        cw2.Delete();
                         strOut = "deleted";
-                    }
                     break;
             }
 
