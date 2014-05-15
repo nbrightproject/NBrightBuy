@@ -1,16 +1,39 @@
-[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]<!-- Point to language file  -->
+
 	<tr>
-		<td>[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td>
+		<td style="text-align:left">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td><!-- Model -->
+		
+		[<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]<!-- Show Product Code -->
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{ON}' displayelse='{OFF}' />]<!-- If no Product Code -->
+		<td>NA</td>
+		[<tag type="endif"  />]
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{OFF}' displayelse='{ON}' />]<!-- Product Code -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td>
-		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
-		<td>[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]
-		[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]
+		[<tag type="endif"  />]
+		[<tag type="endif"  />]
+		
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
+		
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Retail price -->
+		
+		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Sale price -->
+		<td>[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
 		[<tag type='endtestof' />]
-		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{ON}' displayelse='{OFF}' />]No Sale[<tag type='endtestof' />]</td>
-		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]
+		
+		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer price -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtdealercost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
 		[<tag type="endif"  />]
+
+		[<tag type="endif"  />]<!-- End hide all prices in catalogue mode -->
+		
+		[<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]<!-- Stock and availability -->
+		[<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='-1' display='{ON}' displayelse='{OFF}' />]<!-- Infinite stock yes -->
+		<td>[<tag type="valueof" resourcekey="ProductView.instock" />]</td>
+		[<tag type="endif"  />]
+		[<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Infinite stock no -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtqtyremaining" />]</td>
 		<td>[<tag type="valueof" xpath="genxml/hidden/stockincart" />]</td>
-		<td>[<tag type="valueof" xpath="genxml/hidden/calcstock" />] Return text:[<tag type="valueof" resourcekey="ProductView.return" />]</td>
+		<td>[<tag type="valueof" xpath="genxml/hidden/calcstock" />]</td>
+		[<tag type="endif"  />]
+		[<tag type="endif"  />]
 	</tr>

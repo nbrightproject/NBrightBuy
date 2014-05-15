@@ -5,7 +5,7 @@
 	[<tag type="if" function="settings" key="placeholderimage" testvalue="True" display="{ON}" displayelse="{OFF}" />]
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
 	<div class="images" style="width:[Settings:imagewidth]px">
-	<div class="noimage">[<tag type="label" resourcekey="ProductView.noimage" />]</div>
+	<div class="noimage">[Settings:noimageicon]</div>
 	</div>
 	[<tag type="endif" />]
 	[<tag type="endif" />]
@@ -99,11 +99,11 @@
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 
 		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<li class="models">[<tag type="modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1" />]</li>
+		<li class="models">[<tag type="nbb:modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1"/>]</li>
 		[<tag type="endif"  />]
 		
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-		<li class="options option1"><span class="optionvalue optionvalue1">[<tag type="nbb:productoption" index="1"  />]</span><span class="optionname optionname1">[<tag type="nbb:productoptionname" index="1" />]</span></li>
+		<li class="options option1"><span class="optionvalue optionvalue1">[<tag type="nbb:productoption" index="1" />]</span><span class="optionname optionname1">[<tag type="nbb:productoptionname" index="1" />]</span></li>
 		[<tag type="endif"  />]
 		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
 		<li class="options option2"><span class="optionvalue optionvalue2">[<tag type="nbb:productoption" index="2" />]</span><span class="optionname optionname2">[<tag type="nbb:productoptionname" index="2" />]</span></li>
@@ -118,13 +118,13 @@
 		[<tag type="endif"  />]
 	
 		<li class="buy">
-		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 		[<tag type="if" function="settings" key="holidaymode" testvalue="True" display="{ON}" />]<!-- Show holiday message in Holiday Mode -->		
-		<span class="holiday">[<tag type="label" resourcekey="ProductView.dealer" />]</span>
+		<span class="holiday">[<tag type="label" resourcekey="ProductView.holidaymsg" />]</span>
 		[<tag type="endif"  />]
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 		[<tag type="if" function="settings" key="holidaymode" testvalue="True" display="{OFF}" />]<!-- Hide buy button and quantity in Holiday Mode -->		
 		<span [<tag type="if" function="isinstock" testvalue="0" display="" displayelse="style='display:none;'" />]>
-		[<tag type="nbb:addqty" text="1" width="21" />]<span class="buybutton">[<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />]</span>
+		[<tag type="nbb:addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />] 
 		</span>
 		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
 		<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>
@@ -136,96 +136,158 @@
 		<span class="wishlist">[<tag type="if" function="inwishlist" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />] 
 		[<tag type="if" function="inwishlist" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]</span>
 		[<tag type="endif"  />]
-
-		<span class="wishlist">
-		[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" listname="wishlist" />]
-		[<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" listname="wishlist" />]
-		</span>
-
-		
 		</li>
 		
-
+		[<tag type="if" function="haspurchasedocuments" display="{ON}" />]<!-- Downloadable product message -->	
+		<ul class="fa-ul downloadableproduct"><li><i class='fa-li fa fa-exclamation-circle'></i>[<tag type="valueof" resourcekey="ProductView.downloadableproduct" />]</li></ul>
+		[<tag type="endif"  />]
 	</ul>
 </div>
 
-
+<!-- Details -->
 <div class="details">
 
-<!-- Details With Tabs -->
-	[<tag type="if" function="settings" key="tabbedcontent" testvalue="True" display="{ON}" displayelse="{OFF}" />]
-	<div id="DetailTabs">
-        <ul>
-            [<tag type="if" xpath="genxml/lang/genxml/textbox/edt/description" testvalue="" display="{ON}" displayelse="{OFF}" />]
+	<div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='DetailTabs' displayelse='tabsoff' />]">
+ 	[<tag type="if" function="settings" key="tabbedcontent" testvalue="True" display="{ON}" displayelse="{OFF}" />]
+       <ul>
+            [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
             <li><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li>
             [<tag type="endif" />]
-            [<tag type="if" function="hasdocuments" display="{ON}" />]
-            <li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li>
-            [<tag type="endif" />]
-            [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
+            
             [<tag type="if" function="settings" key="modelstable" testvalue="True" display="{ON}" />]<!-- Show Models table -->
-            <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li>
+            <li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li>
             [<tag type="endif" />]
+            
+            [<tag type="if" function="hasdocuments" display="{ON}" />]<!-- Document downloads -->
+            <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li>
             [<tag type="endif" />]
+            
             [<tag type="if" function="settings" key="currencyconverter" testvalue="True" display="{ON}" />]<!-- Currency Convertor -->
             <li><a href="#tab-4">[<tag type="valueof" resourcekey="ProductView.convertor" />]</a></li>
             [<tag type="endif" />]
-            [<tag type="if" function="hasrelateditems" display="{ON}" />]
+            
+            [<tag type="if" function="hasrelateditems" display="{ON}" />]<!-- Related items -->
             <li><a href="#tab-5">[<tag type="valueof" resourcekey="ProductView.related" />]</a></li>
             [<tag type="endif" />]
         </ul>
-        [<tag type="if" xpath="genxml/lang/genxml/textbox/edt/description" testvalue="" display="{ON}" displayelse="{OFF}" />]
-        <div id="tab-1">
+	[<tag type="endif" />]
+	
+        [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
+        <div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='tab-1' displayelse='tabsoff' />]">
+            <h3 [<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='style="display:none;"' displayelse='' />]>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
             [<tag type="nbb:description" />]
         </div>
         [<tag type="endif" />]
-        [<tag type="if" function="hasdocuments" display="{ON}" />]
-        <div id="tab-2">
-            <ul class="documents">
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="1" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="1" />]
-	            </li>
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="2" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="2" />]
-	            </li>
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="3" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="3" />]
-	            </li>
-            </ul>
-        </div>
-        [<tag type="endif" />]
-        [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
+
         [<tag type="if" function="settings" key="modelstable" testvalue="True" display="{ON}" />]<!-- Show Models table -->
-        <div id="tab-3">
+        <div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='tab-2' displayelse='tabsoff' />]">
+        <h3 [<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='style="display:none;"' displayelse='' />]>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
         <div class="models" >
 		<table class="StackThis large-only">
-		    <tbody>
-		        <tr>
-		            <th>[<tag type="label" resourcekey="ProductView.model" />]</th>
+			    <tbody>
+			        <tr>
+		            <th style="text-align:left">[<tag type="label" resourcekey="ProductView.model" />]</th><!-- Model -->
+		            
+		            [<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]<!-- Product Code/Ref -->
 		            <th>[<tag type="label" resourcekey="ProductView.code" />]</th>
-		            <th>[<tag type="label" resourcekey="ProductView.price" />]</th>
+		            [<tag type="endif" />]
+		            
+		            [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
+		            
+		            <th>[<tag type="label" resourcekey="ProductView.price" />]</th><!-- Retail price -->
+		            
+		            [<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale price -->
 		            <th>[<tag type="label" resourcekey="ProductView.saleprice" />]</th>
-		            [<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]
+		            [<tag type="endif" />]
+		            [<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer price -->
 		            <th>[<tag type="label" resourcekey="ProductView.dealerprice" />]</th>
 		            [<tag type="endif" />]
+		            
+		            [<tag type="endif" />]<!-- End hide all prices in catalogue mode -->
+		            
+		            [<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]<!-- Stock and availability -->
 		            <th>[<tag type="label" resourcekey="ProductView.stock" />]</th>
-		            <th>[<tag type="label" resourcekey="ProductView.incart" />]</th>
+		            [<tag type='if' xpath='genxml/models/genxml/textbox/txtqtyremaining' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Infinite stock no -->
+		            <th>[<tag type="label" resourcekey="ProductView.reserved" />]</th>
 		            <th>[<tag type="label" resourcekey="ProductView.remaining" />]</th>
-		        </tr>
-			[<tag type="nbb:modelslist" template="modellist.html" />]
-		    </tbody>
+		            [<tag type="endif" />]
+		            [<tag type="endif" />]
+			        </tr>
+				[<tag type="nbb:modelslist" template="modellist.html" />]
+			    </tbody>
 		</table>
         </div>
         </div>
         [<tag type="endif"  />]
+        
+        [<tag type="if" function="hasdocuments" display="{ON}" />]
+        <div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='tab-3' displayelse='tabsoff' />]">
+        <h3 [<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='style="display:none;"' displayelse='' />]>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
+            <ul class="fa-ul documents">
+	            [<tag type="if" xpath="genxml/docs/genxml[[1]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="1" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="1" />]
+	            [<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="1" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[2]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="2" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="2" />]
+	            [<tag type="if" function="isdocpurchased" index="2" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="2" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[3]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="3" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="3" />]
+	            [<tag type="if" function="isdocpurchased" index="3" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="3" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[4]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="4" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="4" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="4" />]
+	            [<tag type="if" function="isdocpurchased" index="4" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="4" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[5]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="5" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="5" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="5" />]
+	            [<tag type="if" function="isdocpurchased" index="5" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="5" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[6]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="nbb:productdocfilename" index="6" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="6" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="nbb:productdoclink" index="6" />]
+	            [<tag type="if" function="isdocpurchased" index="6" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="6" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+            </ul>
+        </div>
         [<tag type="endif" />]
+        
         [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide currency converter in catalogue mode -->
         [<tag type="if" function="settings" key="currencyconverter" testvalue="True" display="{ON}" />]
-        <div id="tab-4">
+        <div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='tab-4' displayelse='tabsoff' />]">
 		<div class="ccwrapper">
             <div class="ccinner">
                 <div class="ccinfo">
-                <h3>[<tag type="valueof" resourcekey="ProductView.convertor" />]</h3>
+                <h3 [<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='style="display:none;"' displayelse='' />]>[<tag type="valueof" resourcekey="ProductView.convertor" />]</h3>
                 [<tag type="label" resourcekey="ProductView.currencyconvertormsg" />]
                 </div>
                 <div class="currencyconverter">
@@ -236,86 +298,17 @@
         </div>
         [<tag type="endif"  />]
         [<tag type="endif"  />]
+        
         [<tag type="if" function="hasrelateditems" display="{ON}" />]
-        <div id="tab-5">
+        <div id="[<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='tab-5' displayelse='tabsoff' />]">
+            <h3 [<tag type='if' function='settings' key='tabbedcontent' testvalue='True' display='style="display:none;"' displayelse='' />]>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
             <div id="relatedwrapper">
             [<tag type="nbb:relatedproducts" template="relatedlist.html" />]
             </div>
         </div>
         [<tag type="endif"  />]
+        
 	</div>
-	[<tag type="endif" />]
-
-
-<!-- Details Without Tabs -->
-	[<tag type="if" function="settings" key="tabbedcontent" testvalue="False" display="{ON}" displayelse="{OFF}" />]
-            [<tag type="if" xpath="genxml/lang/genxml/textbox/edt/description" testvalue="" display="{ON}" displayelse="{OFF}" />]
-            <h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
-            [<tag type="nbb:description" />]
-            [<tag type="endif" />]
-            
-            
-            [<tag type="if" function="hasdocuments" display="{ON}" />]
-            <h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
-            <ul class="documents">
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="1" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="1" />]
-	            </li>
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="2" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="2" />]
-	            </li>
-	            <li><span class="documentname">[<tag type="nbb:productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="nbb:productdocdesc" index="3" />]</span>
-	            [<tag cssclass="documentlink" text="Download this file" tooltip="Download this file" type="nbb:productdoclink" index="3" />]
-	            </li>
-            </ul>
-            [<tag type="endif" />]
-            
-            [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
-            [<tag type="if" function="settings" key="modelstable" testvalue="True" display="{ON}" />]<!-- Show Models table -->
-            <h3>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
-	        <div class="models" >
-			<table class="StackThis large-only">
-			    <tbody>
-			        <tr>
-		            	<th>[<tag type="label" resourcekey="ProductView.model" />]</th>
-		            	<th>[<tag type="label" resourcekey="ProductView.code" />]</th>
-		            	<th>[<tag type="label" resourcekey="ProductView.price" />]</th>
-		            	<th>[<tag type="label" resourcekey="ProductView.saleprice" />]</th>
-		            	[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]
-		            	<th>[<tag type="label" resourcekey="ProductView.dealerprice" />]</th>
-		            	[<tag type="endif" />]
-		            	<th>[<tag type="label" resourcekey="ProductView.stock" />]</th>
-		            	<th>[<tag type="label" resourcekey="ProductView.incart" />]</th>
-		            	<th>[<tag type="label" resourcekey="ProductView.remaining" />]</th>
-			        </tr>
-				[<tag type="nbb:modelslist" template="modellist.html" />]
-			    </tbody>
-			</table>
-	        </div>
-	        [<tag type="endif" />]
-	        [<tag type="endif" />]
-	        [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide currency converter in catalogue mode -->
-	        [<tag type="if" function="settings" key="currencyconverter" testvalue="True" display="{ON}" />]
-	        <div class="ccwrapper">
-            <div class="ccinner">
-                <div class="ccinfo">
-                <h3>[<tag type="valueof" resourcekey="ProductView.convertor" />]</h3>
-                [<tag type="label" resourcekey="ProductView.currencyconvertormsg" />]
-                </div>
-                <div class="currencyconverter">
-                <iframe src="http://www.foreignexchangeresource.com/currency-converter.php?c=[<tag type='currencyisocode' />]&amp;amt=[<tag type='bestprice' />]&amp;a=[Settings:currencyisocode.convert]&amp;Go.x=7&amp;Go.y=20&amp;size=200&amp;k=" width="100%" height="200" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
-                </div>
-            </div>
-	        </div>
-	        [<tag type="endif"  />]
-	        [<tag type="endif"  />]
-	        [<tag type="if" function="hasrelateditems" display="{ON}" />]
-            <h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
-            <div id="relatedwrapper">
-            [<tag type="nbb:relatedproducts" template="relatedlist.html" />]
-            </div>
-            [<tag type="endif" />]
-	[<tag type="endif" />]
 
 </div>
 

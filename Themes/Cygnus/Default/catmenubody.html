@@ -1,2 +1,9 @@
-catmenu
-<a href="[<tag type="valueof" databind="url" />]">[<tag type="valueof" databind="categoryname" />]</a> - 
+﻿[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{ON}" />]<!-- Hide drilldown menu when current category has zero items -->
+<!-- Drilldown Menu body -->
+<a class="categoryurl" href="[<tag type='valueof' databind='url' />]">
+<ul class="drilldownitem" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px">
+<li class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=[<tag type='valueof' databind='imageurl' />]&w=[Settings:thumbnailwidth]&h=[Settings:thumbnailheight]" /></li>
+<li class="title">[<tag type="valueof" databind="categoryname" />]</li>
+</ul>
+</a>
+[<tag type="endif"  />]<!-- End hide drilldown menu when current category has zero items -->
