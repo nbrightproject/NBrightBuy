@@ -9,7 +9,7 @@
 </div>
 <div class="dnnFormItem">
 [<tag id="lblitemheight" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblitemheight" />]
-[<tag id="itemheight" type="textbox" Text="300px" />]
+[<tag id="itemheight" type="textbox" Text="280px" />]
 </div>
 <div class="dnnFormItem">
 [<tag id="lblitemimagecontainerheight" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblitemimagecontainerheight" />]
@@ -80,6 +80,14 @@
 [<tag id="modelstable" type="checkbox" checked="True" />]
 </div>
 <div class="dnnFormItem">
+[<tag id="lblshowstock" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblshowstock" />]
+[<tag id="showstock" type="checkbox" checked="True" />]
+</div>
+<div class="dnnFormItem">
+[<tag id="lblproductcode" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblproductcode" />]
+[<tag id="productcode" type="checkbox" checked="True" />]
+</div>
+<div class="dnnFormItem">
 [<tag id="lblcurrencyconverter" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblcurrencyconverter" />]
 [<tag id="currencyconverter" type="checkbox" checked="False" />]
 </div>
@@ -94,6 +102,15 @@
 <div class="dnnFormItem">
 [<tag id="lblplaceholderimage" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblplaceholderimage" />]
 [<tag id="placeholderimage" type="checkbox" checked="True" />]
+</div>
+<div class="dnnFormItem">
+[<tag id="lblnoimageicon" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblnoimageicon" />]
+[<tag id="noimageicon" type="textbox" Text="" />]
+<script type="text/javascript">
+$(document).ready(function() {
+                if ($('input[[id*="noimageicon"]]').val() == '') $('input[[id*="noimageicon"]]').val('<i class="fa fa-picture-o"></i>');
+});
+</script>
 </div>
 <div class="dnnFormItem">
 [<tag id="lblholidaymode" type="dnnlabelcontrol" resourcekey="ProductViewSettings.lblholidaymode" />]

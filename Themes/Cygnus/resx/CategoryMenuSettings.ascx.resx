@@ -117,94 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lbllightboxspeed.Text" xml:space="preserve">
-    <value>LightBox Speed in ms : </value>
-  </data>
-  <data name="lbllightboxspeed.Help" xml:space="preserve">
-    <value>Animation speed for lightbox</value>
-  </data>
   <data name="lblitemwidth.Text" xml:space="preserve">
-    <value>List Item Width in px : </value>
+    <value>Category Item Width in px : </value>
   </data>
   <data name="lblitemheight.Text" xml:space="preserve">
-    <value>List Item Height (incl unit or auto) : </value>
+    <value>Category Item Height (incl unit or auto) : </value>
   </data>
   <data name="lblitemimagecontainerheight.Text" xml:space="preserve">
-    <value>List Item Image Container Height (incl unit or auto) : </value>
+    <value>Category Item Image Container Height (incl unit or auto) : </value>
   </data>
   <data name="lblitemgutter.Text" xml:space="preserve">
-    <value>List Item Gutter in px: </value>
+    <value>Category Item Gutter in px: </value>
   </data>
   <data name="lblitembottommargin.Text" xml:space="preserve">
-    <value>List Item Bottom Margin in px : </value>
+    <value>Category Item Bottom Margin in px : </value>
   </data>
   <data name="lblthumbnailwidth.Text" xml:space="preserve">
-    <value>List Image Width in px or 0 for auto : </value>
+    <value>Category Image Width in px or 0 for auto : </value>
   </data>
   <data name="lblthumbnailheight.Text" xml:space="preserve">
-    <value>List Image Height in px or 0 for auto : </value>
-  </data>
-  <data name="lblimagewidth.Text" xml:space="preserve">
-    <value>Details Image Width in px or 0 for auto : </value>
-  </data>
-  <data name="lblimageheight.Text" xml:space="preserve">
-    <value>Details Image Height in px or 0 for auto : </value>
-  </data>
-  <data name="lblgallerywidth.Text" xml:space="preserve">
-    <value>Gallery Image Width in px or 0 for auto : </value>
-  </data>
-  <data name="lblgalleryheight.Text" xml:space="preserve">
-    <value>Gallery Image Height in px or 0 for auto : </value>
-  </data>
-  <data name="lblrelateditemwidth.Text" xml:space="preserve">
-    <value>Related Item Width in px or 0 for auto : </value>
-  </data>
-  <data name="lblrelateditemheight.Text" xml:space="preserve">
-    <value>Related Item Height (incl unit or auto) : </value>
-  </data>
-  <data name="lblrelateditemimagecontainerheight.Text" xml:space="preserve">
-    <value>Related Item Image Container Height (incl unit or auto) : </value>
-  </data>
-  <data name="lblrelateditemgutter.Text" xml:space="preserve">
-    <value>Related Item Gutter in px: </value>
-  </data>
-  <data name="lblrelateditembottommargin.Text" xml:space="preserve">
-    <value>Related Item Bottom Margin in px : </value>
-  </data>
-  <data name="lblrelatedimagewidth.Text" xml:space="preserve">
-    <value>Related Image Width in px or 0 for auto : </value>
-  </data>
-  <data name="lblrelatedimageheight.Text" xml:space="preserve">
-    <value>Related Image Height in px or 0 for auto : </value>
-  </data>
-  <data name="lblmodelstable.Text" xml:space="preserve">
-    <value>Show Models Table : </value>
-  </data>
-  <data name="lblproductcode.Text" xml:space="preserve">
-    <value>Show Code/Ref : </value>
-  </data>
-  <data name="lblshowstock.Text" xml:space="preserve">
-    <value>Show Stock : </value>
-  </data>
-  <data name="lblcurrencyconverter.Text" xml:space="preserve">
-    <value>Enable Currency Converter : </value>
-  </data>
-  <data name="lbltabbedcontent.Text" xml:space="preserve">
-    <value>Enable Tabs : </value>
-  </data>
-  <data name="lblwishlist.Text" xml:space="preserve">
-    <value>Enable Wishlist : </value>
-  </data>
-  <data name="lblplaceholderimage.Text" xml:space="preserve">
-    <value>Enable Placeholder Image : </value>
-  </data>
-  <data name="lblnoimageicon.Text" xml:space="preserve">
-    <value>Placeholder Image Icon (fontawesome.io) : </value>
-  </data>
-  <data name="lblholidaymode.Text" xml:space="preserve">
-    <value>Holiday Mode : </value>
-  </data>
-  <data name="lblcataloguemode.Text" xml:space="preserve">
-    <value>Catalogue Mode : </value>
+    <value>Category Image Height in px or 0 for auto : </value>
   </data>
 </root>

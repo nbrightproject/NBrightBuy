@@ -1,5 +1,5 @@
-<!-- List item -->
 [<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
+<!-- List item -->
 
 <ul class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
 
@@ -12,10 +12,12 @@
 	<li class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img title="[<tag type='nbb:summary' />]" src="[<tag type='thumbnail' w='{Settings:thumbnailwidth}' h='{Settings:thumbnailheight}' />]"></li>
 	[<tag type="endif" />]
 	
-	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
-	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
-	<li class="noimage"><i class="fa fa-camera"></i></li>
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
+	<li class="noimage" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]">
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
+	[Settings:noimageicon]
 	[<tag type="endif" />]
+	</li>
 	[<tag type="endif" />]
 	
 	<li class="title"><!-- Manufacturer and Title -->
@@ -38,8 +40,8 @@
 		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Price -->
 		<li class="price"><span class="old">[<tag type="nbb:price" />]</span>
 		<span class="sale">[<tag type="label" resourcekey="ProductView.onsale" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.fromlower" />] [<tag type="endif" />][<tag type="nbb:saleprice" />]</span>
-		[<tag type="endif"  />]
 		</li>
+		[<tag type="endif"  />]
 		
 		[<tag type="endif"  />]<!-- End hide retail and sale section from dealer -->
 		
@@ -55,9 +57,14 @@
 		[<tag type="endif"  />]<!-- End If price is zero then hide all prices -->
 		
 <!-- End Pricing for Retail, Sale and Dealer -->
+		
+		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale flag -->
+		<li class="onsaleflag">[<tag type="label" resourcekey="ProductView.onsaleflag" />]</li>
+		[<tag type="endif" />]
 
-		<li class="outofstock">[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>][<tag type="label" resourcekey="ProductView.outofstock" />]
-		[<tag type="endif" />]</li>
+		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]<!-- Out of stock flag -->
+		<li class="outofstockflag">[<tag type="label" resourcekey="ProductView.outofstockflag" />]</li>
+		[<tag type="endif" />]
 		
 	[<tag type="endif"  />]<!-- End Hide all prices, models and options in catalogue mode -->
 </a>

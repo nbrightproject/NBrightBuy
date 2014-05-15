@@ -136,7 +136,7 @@
     <value>Description</value>
   </data>
   <data name="documentation.Text" xml:space="preserve">
-    <value>Documentation</value>
+    <value>Downloads</value>
   </data>
   <data name="models.Text" xml:space="preserve">
     <value>Models</value>
@@ -149,6 +149,99 @@
   </data>
   <data name="return.Text" xml:space="preserve">
     <value>Return</value>
+  </data>
+  <data name="pricerequest.Text" xml:space="preserve">
+    <value>Price request</value>
+  </data>
+  <data name="emailmsg.Text" xml:space="preserve">
+    <value>Please inform me of the price of this product at</value>
+  </data>
+  <data name="noimage.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-camera"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="from.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="fromlower.Text" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="emailprice.Text" xml:space="preserve">
+    <value>Email for price</value>
+  </data>
+  <data name="normally.Text" xml:space="preserve">
+    <value>Normally</value>
+  </data>
+  <data name="onsale.Text" xml:space="preserve">
+    <value>On sale</value>
+  </data>
+  <data name="onsaleflag.Text" xml:space="preserve">
+    <value>On Sale!</value>
+  </data>
+  <data name="retail.Text" xml:space="preserve">
+    <value>Retail</value>
+  </data>
+  <data name="dealer.Text" xml:space="preserve">
+    <value>Dealer price</value>
+  </data>
+  <data name="holidaymsg.Text" xml:space="preserve">
+    <value>Closed for holiday</value>
+  </data>
+  <data name="outofstock.Text" xml:space="preserve">
+    <value>Out of Stock</value>
+  </data>
+  <data name="outofstockflag.Text" xml:space="preserve">
+    <value>Out of Stock</value>
+  </data>
+  <data name="instock.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="downloadableproduct.Text" xml:space="preserve">
+    <value>This is a downloadable product. Retrieve it from this page after purchase, or via a link in the purchase notification.</value>
+  </data>
+  <data name="model.Text" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="code.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="price.Text" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="saleprice.Text" xml:space="preserve">
+    <value>Sale price</value>
+  </data>
+  <data name="dealerprice.Text" xml:space="preserve">
+    <value>Dealer price</value>
+  </data>
+  <data name="stock.Text" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="reserved.Text" xml:space="preserve">
+    <value>Reserved</value>
+  </data>
+  <data name="remaining.Text" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="download.Text" xml:space="preserve">
+    <value>Download this file &lt;i class='fa fa-download'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="purchasabledocument.Text" xml:space="preserve">
+    <value>Download here after purchase &lt;i class='fa fa-exclamation-circle'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="filebullets.Text" xml:space="preserve">
+    <value>&lt;i class='fa-li fa fa-file-o'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="currencyconvertormsg.Text" xml:space="preserve">
+    <value>&lt;p&gt;If it is not already displayed, select your target currency and click the 
+button to convert. The result is calculated based on current market exchange 
+rates.&lt;/p&gt;&lt;p&gt;Banks and other institutions charge you fees for conversion and 
+handling of foreign currencies and so the final price on your credit card bill 
+will likely be a few percent higher than the result displayed here. Use this 
+just as a guide.&lt;/p&gt;&lt;p style="font-size:11px;font-style:italic"&gt;This service 
+is provided by foreignexchangeresource.com&lt;/p&gt;</value>
+  </data>
+  <data name="debugmode.Text" xml:space="preserve">
+    <value>Debug mode is on - Caching is off</value>
   </data>
   <data name="returnicon.Text" xml:space="preserve">
     <value>&lt;span title="Return to list" class="fa-stack"&gt;
