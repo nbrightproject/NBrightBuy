@@ -136,6 +136,13 @@
 		<span class="wishlist">[<tag type="if" function="inwishlist" display="{OFF}" displayelse="{ON}" />][<tag type="linkbutton" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" commandname="wishlistadd" commandargument="ItemID" />][<tag type="endif" />] 
 		[<tag type="if" function="inwishlist" display="{ON}" displayelse="{OFF}" />][<tag type="linkbutton" cssclass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" commandname="wishlistremove" commandargument="ItemID" />][<tag type="endif" />]</span>
 		[<tag type="endif"  />]
+
+		<span class="wishlist">
+		[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon" listname="wishlist" />]
+		[<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon" listname="wishlist" />]
+		</span> 
+
+		
 		</li>
 		
 		[<tag type="if" function="haspurchasedocuments" display="{ON}" />]<!-- Downloadable product message -->	

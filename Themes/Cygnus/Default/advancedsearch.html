@@ -158,21 +158,19 @@ $(document).ready(function() {
 <div>
 [<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
 <!-- text search -->
-[<tag type="valueof" resourcekey="General.Search" />] : [<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />]<br/>
-<br/>
+[<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />] [<tag type="valueof" resourcekey="General.Search" />]
 [<tag type='endif' />]
-
+<br/>
 [<tag type='if' settings='chkpricerange' testvalue='True' display='{ON}' />]
 <!-- Price range search -->
-[<tag type="valueof" resourcekey="ProductSearch.PriceRange" />] : [<tag id='txtFrom' type='textbox' width='50' maxlength='50' text="1"/>] - [<tag id='txtTo' type='textbox' width='50' maxlength='50' text="10000" />]<br/>
-<br/>
+[<tag id='txtFrom' type='textbox' width='50' maxlength='50' text="1"/>] - [<tag id='txtTo' type='textbox' width='50' maxlength='50' text="10000" />] [<tag type="valueof" resourcekey="ProductSearch.PriceRange" />]
 [<tag type='endif' />]
-
+<br/>
 <!-- Is in Stock search -->
 [<tag type='if' settings='chkinstock' testvalue='True' display='{ON}' />]
-[<tag type="valueof" resourcekey="ProductSearch.OnlyInStock" />] : [<tag id="chkInStock" type="checkbox" Text="" />] <br/>
-<br/>
+[<tag id="chkInStock" type="checkbox" Text="" />] [<tag type="valueof" resourcekey="ProductSearch.OnlyInStock" />]
 [<tag type='endif' />]
+<br/>
 
 <!-- category search -->
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
@@ -204,9 +202,7 @@ $(document).ready(function() {
 
 
 <br/>
-[<tag type="valueof" resourcekey="General.OrderBy" />]
-<br/>
-[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />]
+[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />] [<tag type="valueof" resourcekey="General.OrderBy" />]
 
 <hr/>
 <a href="#" class="nocateogryselected">[<tag type="valueof" resourcekey="General.Search" />]</a>
