@@ -32,7 +32,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (tabid == 0) tabid = PortalSettings.Current.ActiveTab.TabID;
             var rtnList = "";
-            var strCacheKey = "NBrightBuy_GetTreeCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + parentid + "*" + Utils.GetCurrentCulture();
+            var strCacheKey = "NBrightBuy_GetTreeCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + parentid + "*" + Utils.GetCurrentCulture() + "*" + StoreSettings.Current.ActiveCatId;
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
@@ -66,6 +66,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // update cat info
                     grpcat.url = _catGrpCtrl.GetCategoryUrl(grpcat, tabid);
                     grpcat.depth = level; //make base 1, to pick up the
+
+                    var openClass = " class='open' ";
+                    if (_catGrpCtrl. StoreSettings.Current.)
+                    {
+                        
+                    }    
 
                     if (StoreSettings.Current.ActiveCatId == grpcat.categoryid)
                         rtnList += "<li class='" + activeClass + "'>";

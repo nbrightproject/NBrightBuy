@@ -94,6 +94,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Special methods"
 
+        /// <summary>
+        /// test if parentof
+        /// </summary>
+        /// <param name="categoryid">The categoryid that might be the parent of childCategoryid</param>
+        /// <param name="childCategoryid">The id that might be a child of the categoryid</param>
+        /// <returns>true if  category</returns>
+        public Boolean IsParentCategoryOf(int categoryid, int childCategoryid)
+        {
+            var checkDic = new Dictionary<int, int>();
+            while (true)
+            {
+                if (checkDic.ContainsKey(categoryid)) break; // jump out if we get data giving an infinate loop
+                int itemid1 = categoryid;
+                var lenum = from i in CategoryList where i.categoryid == itemid1 select i;
+                var l = lenum.ToList();
+                if (l.Any())
+                {
+                        checkDic.Add(categoryid, categoryid);
+                        categoryid = l.First().parentcatid;
+                        if (categoryid == childCategoryid) return true;
+                        continue;
+                }
+                return false;
+            }
+            return false;
+        }
+
+
         public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, int tabid)
         {
 
