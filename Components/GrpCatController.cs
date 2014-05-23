@@ -94,33 +94,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Special methods"
 
-        /// <summary>
-        /// test if parentof
-        /// </summary>
-        /// <param name="categoryid">The categoryid that might be the parent of childCategoryid</param>
-        /// <param name="childCategoryid">The id that might be a child of the categoryid</param>
-        /// <returns>true if  category</returns>
-        public Boolean IsParentCategoryOf(int categoryid, int childCategoryid)
-        {
-            var checkDic = new Dictionary<int, int>();
-            while (true)
-            {
-                if (checkDic.ContainsKey(categoryid)) break; // jump out if we get data giving an infinate loop
-                int itemid1 = categoryid;
-                var lenum = from i in CategoryList where i.categoryid == itemid1 select i;
-                var l = lenum.ToList();
-                if (l.Any())
-                {
-                        checkDic.Add(categoryid, categoryid);
-                        categoryid = l.First().parentcatid;
-                        if (categoryid == childCategoryid) return true;
-                        continue;
-                }
-                return false;
-            }
-            return false;
-        }
-
 
         public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, int tabid)
         {
@@ -365,6 +338,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return lenum.Count();
         }
 
+
+        private List<NBrightInfo> GetParentList(List<NBrightInfo> catList, int categoryid)
+        {
+            var rtnList = new List<NBrightInfo>();
+            var startCat = from i in catList where i.ItemID == categoryid select i;
+            if (startCat.Any())
+            {
+                categoryid = startCat.ToList()[0].ParentItemId;
+                var c = 1;
+                while (true)
+                {
+                    var l = from i in catList where i.ItemID == categoryid select i;
+                    if (l.Any())
+                    {
+                        rtnList.Add(l.ToList()[0]);
+                        categoryid = rtnList.Last().ParentItemId;
+                    }
+                    else
+                        break;
+                    c += 1;
+                    if (c > 50) break; //stop possible infinate loop
+                }
+            }
+            return rtnList;
+        }
+
         private List<GroupCategoryData> GetGrpCatListFromDatabase(String lang = "")
         {
 
@@ -389,7 +388,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.grouptyperef = i.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                 grpcat.parentcatid = i.ParentItemId;
                 grpcat.entrycount = GetEntryCount(lx, grpcat.categoryid);
-
+                
                 // get the language data
                 var langItem =  GetLangData(lg,grpcat.categoryid);
                 if (langItem != null)
@@ -401,6 +400,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.metakeywords = langItem.GetXmlProperty("genxml/textbox/txtmetakeywords");
                     grpcat.seopagetitle = langItem.GetXmlProperty("genxml/textbox/txtseopagetitle");
                 }
+
+                //get parents
+                var p = GetParentList(l,grpcat.categoryid);
+                foreach (var pi in p)
+                    grpcat.Parents.Add(pi.ItemID);
 
                 grpcatList.Add(grpcat);
             }

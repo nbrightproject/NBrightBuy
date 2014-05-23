@@ -42,6 +42,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public List<int> Parents { get; set; }
+
+        public GroupCategoryData()
+        {
+            Parents = new List<int>();
+        }
+
     }
     
     public enum ModuleEventCodes { none, displaycategoryheader, displaycategorybody, displaycategoryfooter, displayentryheader, displayentrybody, displayentryfooter, displayheader, displaybody, displayfooter, selectsearch, selectheader, selectbody, selectfooter, selectedheader, selectedbody, selectedfooter, editheader, editbody, editlang, editfooter, editlistsearch, editlistheader, editlistbody, editlistfooter, email, emailsubject, emailclient, emailreturnmsg, jsinsert, exportxsl };

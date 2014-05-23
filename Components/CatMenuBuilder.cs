@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -57,6 +58,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             else
                 rtnList += "<ul>";
 
+            var activeCat = _catGrpCtrl.GetCategory(StoreSettings.Current.ActiveCatId);
+            if (activeCat == null) activeCat = new GroupCategoryData();
             var depth = 0;
             var levelList = _catGrpCtrl.GetGrpCategories(parentid, groupref);
             foreach (GroupCategoryData grpcat in levelList)
@@ -67,16 +70,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.url = _catGrpCtrl.GetCategoryUrl(grpcat, tabid);
                     grpcat.depth = level; //make base 1, to pick up the
 
-                    var openClass = " class='open' ";
-                    if (_catGrpCtrl. StoreSettings.Current.)
-                    {
-                        
-                    }    
+                    var openClass = "";
+                    if (activeCat.Parents.Contains(grpcat.categoryid) || grpcat.categoryid == StoreSettings.Current.ActiveCatId) openClass = " open ";
 
                     if (StoreSettings.Current.ActiveCatId == grpcat.categoryid)
-                        rtnList += "<li class='" + activeClass + "'>";
+                        rtnList += "<li class='" + activeClass + openClass + "'>";
                     else
-                        rtnList += "<li>";
+                    {
+                        if (openClass == "")
+                            rtnList += "<li>";
+                        else 
+                            rtnList += "<li class='" + openClass + "'>";
+                    }
 
                     //body 
                     if (_templateBody.Count > grpcat.depth) depth = grpcat.depth;
