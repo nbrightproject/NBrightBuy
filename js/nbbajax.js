@@ -51,4 +51,23 @@ function nbxget(selector,cmd,selformdiv,action)
 		else
 			disabledlist = disabledlist.replace(';' + searchtoken,'');
 		$("input[id*='disabledsearchtokens']").val(disabledlist);
-	}	
+	}
+
+	function nbxcheckifselected(selector,searchtoken)
+	{ // check if checboxlist is selected. If not, do not build the SQL.  Add it to disabledlist token.
+		var disabledlist = $("input[id*='disabledsearchtokens']").val();
+		var sel = false;
+		$(selector).each(function() { 
+			if (this.checked)
+			{	
+				sel = true; 
+				return false;
+			}
+        });	
+		if (sel)
+			disabledlist = disabledlist.replace(';' + searchtoken,'');
+		else
+			disabledlist = disabledlist.replace(';' + searchtoken,'') + ';' + searchtoken;
+		$("input[id*='disabledsearchtokens']").val(disabledlist);
+	}
+

@@ -65,6 +65,8 @@ $(document).ready(function() {
 	$("body").on("click", ".postbacklink", function () {
 		$('.processing').show();
 		nbxcheckifnull('.advsearchtext','search0;search1;search2;search3;search4;search5;search6;search7;search8;'); // disble text search if empty
+		nbxcheckifselected('input[[id*="chkcatsgrp1"]]','search50');
+		nbxcheckifselected('input[[id*="chkcatsgrp2"]]','search60');
 		$('input[[id*="chknbbcats"]]').prop('checked') == true;
 	});
 	
@@ -83,29 +85,7 @@ $(document).ready(function() {
 	[<tag type='endif' />]
 
 	hideshowsearchbutton();
-	
-	// disable/enable the group1 search
-	$(".chknbbgrp1checkall").click(function() {
-		var searchtoken = 'search50';
-		var disabledlist = $("input[[id*='disabledsearchtokens']]").val();
-		if ($(this).prop('checked') == true)
-			disabledlist = disabledlist.replace(';' + searchtoken,'') + ';' + searchtoken;
-		else			
-			disabledlist = disabledlist.replace(';' + searchtoken,'');
-		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
-	});
-	
-	// disable/enable the group2 search
-	$(".chknbbgrp2checkall").click(function() {
-		var searchtoken = 'search60';
-		var disabledlist = $("input[[id*='disabledsearchtokens']]").val();
-		if ($(this).prop('checked') == true)
-			disabledlist = disabledlist.replace(';' + searchtoken,'') + ';' + searchtoken;
-		else			
-			disabledlist = disabledlist.replace(';' + searchtoken,'');
-		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
-	});
-	
+		
 });
 
 </script>
@@ -136,10 +116,10 @@ $(document).ready(function() {
 [<tag id="search40" active="{Settings:chkcatselect}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcats" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
-[<tag id="search50" active="{Settings:chkgroupselect1}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcatsgrp1" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
+[<tag id="search50" active="{Settings:chkgroupselect1}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp1" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
-[<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chknbbcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
+[<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
 
 <!-- Define all the poosible orderby columns we want, this will specfied by the dropdownlist values-->
@@ -185,18 +165,14 @@ $(document).ready(function() {
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
 <br/>
-<input type="checkbox" class="chknbbgrp1checkall">&nbsp;[<tag type="valueof" resourcekey="General.Any" />]
-<br/>
-[<tag id="chknbbcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" />]
+[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect2' testvalue='True' display='{ON}' />]
 <br/>
-<input type="checkbox" class="chknbbgrp2checkall">&nbsp;[<tag type="valueof" resourcekey="General.Any" />]
-<br/>
-[<tag id="chknbbcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" />]
+[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
