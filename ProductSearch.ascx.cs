@@ -38,6 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
+            DisablePaging = true; // stop paging control being created
             
             base.OnInit(e);
 
