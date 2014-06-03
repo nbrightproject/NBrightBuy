@@ -17,21 +17,6 @@
 
 <script>
 
-function hideshowsearchbutton(){
-	[<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
-		$('.searchpostbacklink').hide();
-		$('.nocateogryselected').show();
-		if ( $('input[[id*="chknbbcats"]]').is(':checked') ) {
-			$('.searchpostbacklink').show();
-			$('.nocateogryselected').hide();	
-		}	
-	[<tag type='endif' />]
-	[<tag type='if' settings='chkcatselect' testvalue='True' display='{OFF}' />]
-		$('.searchpostbacklink').show();
-		$('.nocateogryselected').hide();	
-	[<tag type='endif' />]
-}
-
 $(document).ready(function() {
 
     //Update the is in stock flag, by altering the criteria input fields.
@@ -65,26 +50,11 @@ $(document).ready(function() {
 	$("body").on("click", ".postbacklink", function () {
 		$('.processing').show();
 		nbxcheckifnull('.advsearchtext','search0;search1;search2;search3;search4;search5;search6;search7;search8;'); // disble text search if empty
+		nbxcheckifselected('input[[id*="chknbbcats"]]','search40');
 		nbxcheckifselected('input[[id*="chkcatsgrp1"]]','search50');
 		nbxcheckifselected('input[[id*="chkcatsgrp2"]]','search60');
 		$('input[[id*="chknbbcats"]]').prop('checked') == true;
 	});
-	
-
-	// check if no category are selected (display message if not selected, by show/hide "search" buttons, Only if categories ON) 
-	[<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
-	$(".nocateogryselected").click(function() {
-		alert('[<tag type="valueof" resourcekey="ProductSearch.NoCategorySelected" />]');
-	});
-	$('input[[id*="chknbbcats"]]').click(function() {
-		hideshowsearchbutton();
-	});
-	$('.chknbbcatscheckall').click(function() {
-		hideshowsearchbutton();
-	});	
-	[<tag type='endif' />]
-
-	hideshowsearchbutton();
 		
 });
 
@@ -181,8 +151,6 @@ $(document).ready(function() {
 [<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />] [<tag type="valueof" resourcekey="General.OrderBy" />]
 
 <hr/>
-<a href="#" class="nocateogryselected">[<tag type="valueof" resourcekey="General.Search" />]</a>
-
 [<tag id="cmdAdvSearch" type="linkbutton" cssclass="postbacklink searchpostbacklink" resourcekey="General.Search" commandname="search" commandargument="ItemID" />]
 &nbsp;
 [<tag id="cmdAdvReset" type="linkbutton" cssclass="postbacklink"  resourcekey="General.Reset" commandname="resetsearch" commandargument="ItemID" />]
