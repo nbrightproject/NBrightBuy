@@ -59,6 +59,7 @@ namespace Nevoweb.DNN.NBrightBuy
             base.EntityTypeCode = "PRD";
             base.CtrlTypeCode = "PRD";
             base.EntityTypeCodeLang = "PRDLANG";
+            base.DisableUserInfo = true;
 
             base.OnInit(e);
 
