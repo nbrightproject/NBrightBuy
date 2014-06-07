@@ -87,6 +87,13 @@ namespace Nevoweb.DNN.NBrightBuy.Base
                     l.Add(moduleSettings);
                     RpData.DataSource = l;
                     RpData.DataBind();
+
+                    //if new setting, save theme and reload, so we get theme settings displayed.
+                    if (moduleSettings.ItemID == -1)
+                    {
+                        UpdateData();
+                        Response.Redirect(Request.Url.AbsoluteUri,true);
+                    }
                 }
 			}
 			catch (Exception exc) //Module failed to load
@@ -134,43 +141,41 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
         protected void UpdateData()
 		{
-			if (Page.IsValid)
-			{
 
-                if (CtrlTypeCode != "")
+            if (CtrlTypeCode != "")
+            {
+                // read any existing data or create new.
+                var objInfo = NBrightBuyUtils.GetSettings(PortalId, ModuleId, false);
+                if (objInfo == null)
                 {
-                    // read any existing data or create new.
-                    var objInfo = NBrightBuyUtils.GetSettings(PortalId, ModuleId, false);
-                    if (objInfo == null)
-                    {
-                        objInfo = new NBrightInfo();
-                        // populate data
-                        objInfo.PortalId = PortalId;
-                        objInfo.ModuleId = ModuleId;
-                        objInfo.ItemID = -1;
-                        objInfo.TypeCode = "SETTINGS";
-                        objInfo.UserId = -1;
-                        objInfo.GUIDKey = CtrlTypeCode;
-                    }
-
-                    // populate changed data
-                    objInfo.ModifiedDate = DateTime.Now;
-
-                    //rebuild xml
-                    objInfo.XMLData = GenXmlFunctions.GetGenXml(RpData);
-
-                    objInfo = EventBeforeUpdate(RpData, objInfo);
-
-                    objInfo.ItemID = ModCtrl.Update(objInfo);
-
-                    EventAfterUpdate(RpData, objInfo);
-
-                    // clear any store level cache, might be overkill to clear ALL Store cache, 
-                    // but editing of settings should only happen when changes are being made.
-                    NBrightBuyUtils.RemoveModCache(-1);
-
+                    objInfo = new NBrightInfo();
+                    // populate data
+                    objInfo.PortalId = PortalId;
+                    objInfo.ModuleId = ModuleId;
+                    objInfo.ItemID = -1;
+                    objInfo.TypeCode = "SETTINGS";
+                    objInfo.UserId = -1;
+                    objInfo.GUIDKey = CtrlTypeCode;
                 }
-			}
+
+                // populate changed data
+                objInfo.ModifiedDate = DateTime.Now;
+
+                //rebuild xml
+                objInfo.XMLData = GenXmlFunctions.GetGenXml(RpData);
+
+                objInfo = EventBeforeUpdate(RpData, objInfo);
+
+                objInfo.ItemID = ModCtrl.Update(objInfo);
+
+
+                EventAfterUpdate(RpData, objInfo);
+
+                // clear any store level cache, might be overkill to clear ALL Store cache, 
+                // but editing of settings should only happen when changes are being made.
+                NBrightBuyUtils.RemoveModCache(-1);
+
+            }
 		}
 
 		#endregion
