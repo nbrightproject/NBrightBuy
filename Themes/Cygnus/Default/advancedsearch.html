@@ -15,6 +15,9 @@
 <!-- This is used if you want the user to deselect search options. -->
 [<tag id='disabledsearchtokens' type='postback' value="" />]
 
+
+[<tag id='navigationmode' type='postback' value="f" />] 
+
 <script>
 
 $(document).ready(function() {
@@ -91,6 +94,7 @@ $(document).ready(function() {
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
 [<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
+[<tag id="search101" type="meta" action="cat" />]
 
 <!-- Define all the poosible orderby columns we want, this will specfied by the dropdownlist values-->
 [<tag id="orderby0" type="hidden" value="NB3.ProductRef" />]
