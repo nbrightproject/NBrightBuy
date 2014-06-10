@@ -15,10 +15,27 @@
 <!-- This is used if you want the user to deselect search options. -->
 [<tag id='disabledsearchtokens' type='postback' value="" />]
 
+<!-- Add postback field for filtermode -->
+[<tag id='navigationmode' type='postback' value="" />]
+
+
 <script>
 
 $(document).ready(function() {
 
+	//Update filter mode
+	[<tag type='if' settings='rblfiltermode' testvalue='f' display='{ON}' />]
+	$("input[[id*='navigationmode']]").val('f');
+	[<tag type='endif' />]
+	
+	[<tag type='if' settings='rblfiltermode' testvalue='u' display='{ON}' />]
+	alert("ass");
+	$("input[[id*='rblfiltermode']]").change(function() {
+		alert($this.val());
+		$("input[[id*='navigationmode']]").val($this.val());
+	});
+	[<tag type='endif' />]
+	
     //Update the is in stock flag, by altering the criteria input fields.
     $("input[[id*='chkInStock']]").change(function() {
 		if ($("input[[id*='chkInStock']]").prop('checked') == true) $("input[[id*='nbb-min']]").val('1');
@@ -91,6 +108,7 @@ $(document).ready(function() {
 <!-- Token to create the SQL required for the is in AND group1 category selection -->
 [<tag id="search60" active="{Settings:chkgroupselect2}" type="meta" action="cats" search="genxml/checkboxlist/chkcatsgrp2" sqloperator="and" selectoperator="{Settings:rblcatsearchtype}" />]
 
+[<tag id="search101" type="meta" action="cat" />]
 
 <!-- Define all the poosible orderby columns we want, this will specfied by the dropdownlist values-->
 [<tag id="orderby0" type="hidden" value="NB3.ProductRef" />]
@@ -106,6 +124,10 @@ $(document).ready(function() {
 
 <hr/>
 <div>
+	[<tag type='if' settings='rblfiltermode' testvalue='u' display='{ON}' />]
+		[<tag id="rblfiltermode" type="radiobuttonlist" datavalue="s;f" data="Search;Filter" repeatcolumns="3"  selectedvalue="s" resourcekey="ProductSearchSettings.rbluserfiltermode" />]
+	[<tag type='endif' />]
+<br/>
 [<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
 <!-- text search -->
 [<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />] [<tag type="valueof" resourcekey="General.Search" />]
@@ -126,8 +148,6 @@ $(document).ready(function() {
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
 <br/>
 [<tag type="valueof" resourcekey="General.Categories" />]
-<br/>
-<input type="checkbox" class="chknbbcatscheckall">&nbsp;[<tag type="valueof" resourcekey="ProductSearch.CheckAll" />]
 <br/>
 [<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" groupref="cat" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" />]
 [<tag type='endif' />]

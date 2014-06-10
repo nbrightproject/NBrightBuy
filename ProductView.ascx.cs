@@ -251,14 +251,18 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "Get filter setup"
 
                     var strFilter = "";
-                    if (_navigationdata.Exists && (_catid == "" && _catname == "")) // ignore navdata if we pass a catid in the url.
+                    // filter mode and will persist past category selection.
+                    if (_navigationdata.Exists && (_navigationdata.FilterMode || (_catid == "" && _catname == ""))) 
                     {
+                        if (_catid != "") _navigationdata.CategoryId = _catid; // if in filter mode, persist the categoryid
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
                         _strOrder = _navigationdata.OrderBy; 
                     }
                     else
                     {
+                        if (!_navigationdata.FilterMode) _navigationdata.ResetSearch(); // reset search criteria when new catid and not in filter mode.
+
                         // We have a category selected (in url), so overwrite categoryid navigationdata.
                         // This allows the return to the same category after a returning from a entry view.
                         _navigationdata.CategoryId = _catid;
