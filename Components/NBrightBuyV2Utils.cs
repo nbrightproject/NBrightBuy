@@ -225,7 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cartId = CurrentCart.getCartID(PortalSettings.Current.PortalId);
 
             // Add to Cart (v2)
-            var objCartCtrl = new CartController();
+            var objCartCtrl = new NEvoWeb.Modules.NB_Store.CartController();
             var objCartInfo = objCartCtrl.GetCartItemByOptCode(cartId, optCode);
 
             if (objCartInfo == null || txtOption != "") //create new cart item if textbox data has been entered

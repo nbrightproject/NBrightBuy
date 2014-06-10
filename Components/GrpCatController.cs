@@ -21,7 +21,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GrpCategoryList == null)
             {
-                GrpCategoryList = GetGrpCatListFromDatabase(Utils.GetCurrentCulture());
+                GrpCategoryList = GetGrpCatListFromDatabase(lang);
                 NBrightBuyUtils.SetModCache(-1, strCacheKey,GrpCategoryList);
             }
 
