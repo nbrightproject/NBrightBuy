@@ -25,14 +25,14 @@ $(document).ready(function() {
 
 	//Update filter mode
 	[<tag type='if' settings='rblfiltermode' testvalue='f' display='{ON}' />]
+		alert('fffffff');
 	$("input[[id*='navigationmode']]").val('f');
 	[<tag type='endif' />]
 	
 	[<tag type='if' settings='rblfiltermode' testvalue='u' display='{ON}' />]
-	alert("ass");
 	$("input[[id*='rblfiltermode']]").change(function() {
-		alert($this.val());
-		$("input[[id*='navigationmode']]").val($this.val());
+		alert($(this).val());
+		$("input[[id*='navigationmode']]").val($(this).val());
 	});
 	[<tag type='endif' />]
 	
