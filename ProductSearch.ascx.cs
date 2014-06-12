@@ -101,6 +101,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     navigationData.Build(strXml,_templD);
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
                     navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
+                    navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
                     navigationData.Save();
                     if (DebugMode)
                     {
