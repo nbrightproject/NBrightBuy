@@ -95,7 +95,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "additemlist":
                     if (Utils.IsNumeric(itemId))
                     {
-                        var cw = new ItemListData(context.Request, context.Response, 0, itemListName);
+                        var cw = new ItemListData(0, itemListName);
                         cw.Add(itemId);
                         strOut = cw.ItemList;
                     }
@@ -103,13 +103,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "removeitemlist":
                     if (Utils.IsNumeric(itemId))
                     {
-                        var cw1 = new ItemListData(context.Request, context.Response, 0, itemListName);
+                        var cw1 = new ItemListData(0, itemListName);
                         cw1.Remove(itemId);
                         strOut = cw1.ItemList;
                     }
                     break;
                 case "deleteitemlist":
-                        var cw2 = new ItemListData(context.Request, context.Response, 0, itemListName);
+                        var cw2 = new ItemListData(0, itemListName);
                         cw2.Delete();
                         strOut = "deleted";
                     break;

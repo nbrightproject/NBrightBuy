@@ -296,7 +296,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (HttpContext.Current.Session[_cookieName + "CategoryId"] != null) CategoryId = (String)HttpContext.Current.Session[_cookieName + "CategoryId"];
                 if (HttpContext.Current.Session[_cookieNameXml + "XmlData"] != null) XmlData = (String)HttpContext.Current.Session[_cookieNameXml + "XmlData"];
                 if (HttpContext.Current.Session[_cookieName + "RecordCount"] != null) RecordCount = (String)HttpContext.Current.Session[_cookieName + "RecordCount"];
-                if (HttpContext.Current.Session[_cookieName + "Mode"] != null) RecordCount = (String)HttpContext.Current.Session[_cookieName + "Mode"];
+                if (HttpContext.Current.Session[_cookieName + "Mode"] != null) Mode = (String)HttpContext.Current.Session[_cookieName + "Mode"];
             }
             else
             {

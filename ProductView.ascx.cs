@@ -356,7 +356,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
                     if (itemListAction == "wishlist" || itemListAction == "both")
                     {
-                        var cw = new ItemListData(Request, Response, 0, itemListName);
+                        var cw = new ItemListData(0, itemListName);
                         var showList = !(itemListAction == "both" && !cw.Active);
                         if (showList)
                         {
@@ -450,6 +450,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "addtobasket":
                     NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.DataInfo, Request, e.Item.ItemIndex, DebugMode);
+                    var currentCart = new CartData(PortalId);
+                    currentCart.AddToCart(rpData, StoreSettings.Current.DataInfo, e.Item.ItemIndex, DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

@@ -2388,7 +2388,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     listName = xmlNod.Attributes["listname"].InnerText;
                 }
-                var il = new ItemListData(HttpContext.Current.Request, HttpContext.Current.Response, 0, listName);
+                var il = new ItemListData(0, listName);
                 l.Text = il.ItemCount;
                 if (l.Text == "") l.Text = "0";
                 l.Text = "<span class='nbxItemListCount'>" + l.Text + "</span>";
@@ -2407,7 +2407,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     listName = xmlNod.Attributes["listname"].InnerText;
                 }
-                var il = new ItemListData(HttpContext.Current.Request, HttpContext.Current.Response, 0, listName);
+                var il = new ItemListData(0, listName);
                 h.Value = il.ItemList;
                 h.ID = "nbxItemList" + listName;
                 container.Controls.Add(h);

@@ -18,21 +18,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private readonly HttpRequest _request;
         private readonly HttpResponse _response;
         private HttpCookie _cookie;
+        private DataStorageType _storageType;
 
         /// <summary>
         /// Populate class with cookie data
         /// </summary>
-        /// <param name="request"> </param>
-        /// <param name="response"> </param>
         /// <param name="moduleid"> </param>
-        /// <param name="tabid"> </param>
-        public ItemListData(HttpRequest request, HttpResponse response, int moduleid, String listName = "ItemList")
+        /// <param name="storageType">"cookie" or "sessionmemory"</param>
+        /// <param name="listName"></param>
+        public ItemListData(int moduleid, String storageType = "Cookie", String listName = "ItemList")
         {
-            Exists = false;
-            _request = request;
-            _response = response;
-            CookieName = "NBrightBuy_" + moduleid.ToString("") + "_" + listName;
+            if (storageType != null)
+                if (storageType.ToLower() == "sessionmemory")
+                    _storageType = DataStorageType.SessionMemory;
+                else
+                    _storageType = DataStorageType.Cookie;
+            else
+                _storageType = DataStorageType.Cookie;
 
+            Exists = false;
+            CookieName = "NBrightBuy_" + moduleid.ToString("") + "_" + listName;
+            _request = HttpContext.Current.Request;
+            _response = HttpContext.Current.Response;
             Get();
         }
 
@@ -41,14 +48,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save()
         {
-            if (ItemList != "") _cookie["ItemList"] = ItemList;
-            if (ItemCount != "") _cookie["ItemCount"] = ItemCount;
-
+            if (_storageType == DataStorageType.SessionMemory)
+            {
+                // save data to cache
+                HttpContext.Current.Session[CookieName + "ItemList"] = ItemList;
+                HttpContext.Current.Session[CookieName + "ItemCount"] = ItemCount;
+            }
+            else
+            {
+                if (ItemList != "") _cookie["ItemList"] = ItemList;
+                if (ItemCount != "") _cookie["ItemCount"] = ItemCount;
+                _cookie.Expires = DateTime.Now.AddDays(1d);
+                _response.Cookies.Add(_cookie);
+            }
             Exists = true;
-
-            _cookie.Expires = DateTime.Now.AddDays(1d);
-            _response.Cookies.Add(_cookie);
-
         }
 
         /// <summary>
@@ -58,19 +71,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public ItemListData Get()
         {
             ItemList = "";
-
-            _cookie = _request.Cookies[CookieName];
-            if (_cookie == null)
+            ItemCount = "";
+            if (_storageType == DataStorageType.SessionMemory)
             {
-                Exists = false;
-                _cookie = new HttpCookie(CookieName);
+                if (HttpContext.Current.Session[CookieName + "CategoryId"] != null) ItemList = (String)HttpContext.Current.Session[CookieName + "CategoryId"];
+                if (HttpContext.Current.Session[CookieName + "RecordCount"] != null) ItemCount = (String)HttpContext.Current.Session[CookieName + "RecordCount"];
             }
             else
             {
-                if (_cookie["ItemList"] != null) ItemList = _cookie["ItemList"];
-                if (_cookie["ItemCount"] != null) ItemCount = _cookie["ItemCount"];
-                Exists = true;
+                _cookie = _request.Cookies[CookieName];
+                if (_cookie == null)
+                {
+                    _cookie = new HttpCookie(CookieName);
+                }
+                else
+                {
+                    if (_cookie["ItemList"] != null) ItemList = _cookie["ItemList"];
+                    if (_cookie["ItemCount"] != null) ItemCount = _cookie["ItemCount"];
+                }
             }
+
+            if (ItemList == "" && ItemCount == "") // "Exist" property not used for paging data
+                Exists = false;
+            else
+                Exists = true;
 
             return this;
         }
@@ -80,14 +104,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Delete()
         {
-            if (_cookie != null)
+            if (_storageType == DataStorageType.SessionMemory)
             {
-                _cookie.Expires = DateTime.Now.AddDays(-1d);
-                _response.Cookies.Add(_cookie);
-                ItemCount = "";
-                ItemList = "";
-                Exists = false;
-            };
+                if (HttpContext.Current.Session[CookieName + "ItemList"] != null) HttpContext.Current.Session.Remove(CookieName + "ItemList");
+                if (HttpContext.Current.Session[CookieName + "ItemCount"] != null) HttpContext.Current.Session.Remove(CookieName + "ItemCount");
+            }
+            else
+            {
+                if (_cookie != null)
+                {
+                    _cookie.Expires = DateTime.Now.AddDays(-1d);
+                    _response.Cookies.Add(_cookie);
+                    ItemCount = "";
+                    ItemList = "";
+                    Exists = false;
+                }
+            }
         }
         /// <summary>
         /// Add Item to wishlist
@@ -149,16 +181,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool Exists { get; private set; }
 
         /// <summary>
-        /// List of itemids to be included in the wishlist
+        /// List of itemids to be included in the list
         /// </summary>
         public string ItemList { get; set; }
 
         /// <summary>
-        /// Count of itemids to be included in the wishlist
+        /// Count of itemids to be included in the list
         /// </summary>
         public string ItemCount { get; set; }
         /// <summary>
-        /// wishlist is active for bi-view modules
+        /// list is active for bi-view modules
         /// </summary>
         public bool Active { get; set; }
     }
