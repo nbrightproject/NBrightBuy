@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBrightDNN", "..\..\..\..\.
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NB_Store", "..\..\NB_Store\NB_Store.vbproj", "{981AF709-BC75-4D90-84B0-34B66F5ED2A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartProvider", "Providers\CartProvider\CartProvider.csproj", "{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{981AF709-BC75-4D90-84B0-34B66F5ED2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981AF709-BC75-4D90-84B0-34B66F5ED2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981AF709-BC75-4D90-84B0-34B66F5ED2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

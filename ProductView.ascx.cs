@@ -109,7 +109,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     _templF = ModSettings.Get("txtdisplayfooter");
                 }
 
-
                 #endregion
 
 
@@ -138,6 +137,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 //if body template doesn't contain a default moduleid add it.
                 if (!rpDataTempl.ToLower().Contains("nbb:modeldefault")) rpDataTempl = "[<tag type='nbb:modeldefault' />]" + rpDataTempl;
+                //Add the productid so we alwasy have a hidden field for it on each product record.
+                if (!rpDataTempl.ToLower().Contains("id='productid'")) rpDataTempl = "[<tag id='productid' type='hidden' databind='itemid' />]" + rpDataTempl;
 
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 

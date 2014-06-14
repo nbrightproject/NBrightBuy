@@ -78,6 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			return l;
 		}
 
+
         public static NBrightInfo AddEntity(NBrightInfo objInfo, String entityName, int numberToAdd = 1, String genxmlData = "<genxml></genxml>")
         {
             var xNod = objInfo.XMLDoc.SelectSingleNode("genxml/" + entityName.ToLower());

@@ -504,7 +504,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtimagedesc";
+                    l.Text = "genxml/lang/genxml/imgs/genxml[./hidden/imgid=../../../../imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/imgid]/textbox/txtimagedesc";
                     container.Controls.Add(l);
                 }
             }
@@ -519,7 +519,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtdocdesc";
+                    l.Text = "genxml/lang/genxml/docs/genxml[./hidden/docid=../../../../docs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/docid]/textbox/txtdocdesc";
                     container.Controls.Add(l);
                 }
             }
@@ -547,7 +547,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/options/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtoptiondesc";
+                    l.Text = "genxml/lang/genxml/options/genxml[./hidden/optionid=../../../../options/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/optionid]/textbox/txtoptiondesc";
                     container.Controls.Add(l);
                 }
             }
@@ -1520,6 +1520,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     txt.Visible = false;
                     txt.Enabled = false;
                     container.Controls.Add(txt);
+                    var hid = new HiddenField();
+                    hid.DataBinding += ProductoptionsDataBind;
+                    hid.ID = "optionid" + xmlNod.Attributes["index"].Value;
+                    hid.Value = xmlNod.Attributes["index"].Value;
+                    container.Controls.Add(hid);                    
                 }
             }
         }
@@ -1538,6 +1543,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 DropDownList ddl = null;
                 CheckBox chk = null;
                 TextBox txt = null;
+                HiddenField hid = null;
+
+                if (ctl is HiddenField)
+                {
+                    hid = (HiddenField)ctl;
+                    index = hid.Value;
+                }
 
                 if (ctl is DropDownList)
                 {
@@ -1565,6 +1577,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (nod != null)
                 {
                     optionid = nod.InnerText;
+                    if (hid != null) hid.Value = optionid;
                     var nodDesc = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
                     if (nodDesc != null) optiondesc = nodDesc.InnerText;
 
