@@ -61,12 +61,14 @@
     <Compile Include="Components\CartData.cs" />
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
+    <Compile Include="Components\Interfaces\CartInterface.cs" />
     <Compile Include="Components\ItemListData.cs" />
     <Compile Include="Components\DdrMenuInterface.cs" />
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
     <Compile Include="Components\NavigationData.cs" />
     <Compile Include="Components\NBrightBuyV2Utils.cs" />
+    <Compile Include="Components\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
     <Compile Include="CategoryMenu.ascx.cs">
       <DependentUpon>CategoryMenu.ascx</DependentUpon>
