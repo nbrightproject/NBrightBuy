@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -504,7 +505,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtimagedesc";
+                    l.Text = "genxml/lang/genxml/imgs/genxml[./hidden/imgid=../../../../imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/imgid]/textbox/txtimagedesc";
                     container.Controls.Add(l);
                 }
             }
@@ -519,7 +520,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtdocdesc";
+                    l.Text = "genxml/lang/genxml/docs/genxml[./hidden/docid=../../../../docs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/docid]/textbox/txtdocdesc";
                     container.Controls.Add(l);
                 }
             }
@@ -547,7 +548,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/options/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtoptiondesc";
+                    l.Text = "genxml/lang/genxml/options/genxml[./hidden/optionid=../../../../options/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/optionid]/textbox/txtoptiondesc";
                     container.Controls.Add(l);
                 }
             }
@@ -1168,6 +1169,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var displayCount = false;
             var showEmpty = true;
             var groupref = "";
+            var filtermode = "";
+            List<int> validCatList = null;
 
             if (xmlNod.Attributes != null)
             {
@@ -1182,7 +1185,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["showempty"] != null) showempty = xmlNod.Attributes["showempty"].Value;
                 if (xmlNod.Attributes["displaycount"] != null) displaycount = xmlNod.Attributes["displaycount"].Value;
                 if (xmlNod.Attributes["prefix"] != null) prefix = xmlNod.Attributes["prefix"].Value;
-                if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;    
+                if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
+                if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 
                 if (showhidden == "True") showHidden = true;
                 if (showarchived == "True") showArchived = true;
@@ -1195,12 +1199,64 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
                     if (p != null) parentid = p.categoryid;                    
                 }
+                var catid = "";
+                if (filtermode != "")
+                {
+                    catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
+                    if (Utils.IsNumeric(catid))
+                    {
+                        validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
+                    }
+                }
+
             }
 
+            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
 
-            return BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
+            if (validCatList != null)
+            {
+                var nonValid = new List<int>();
+                // we have a filter on the list, so remove any categories not in valid list.
+                foreach (var k in rtnList)
+                {
+                    if (!validCatList.Contains(k.Key)) nonValid.Add(k.Key);
+                }
+                foreach (var k in nonValid)
+                {
+                    rtnList.Remove(k);
+                }
+            }
 
+            return rtnList;
         }
+
+        /// <summary>
+        /// Return a list of category ids for all the valid categories for a given product list (selected by a categoryid)  
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        private List<int> GetCateoriesInProductList(int categoryId)
+        {
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+
+            var objCtrl = new NBrightBuyController();
+            var strXML = objCtrl.GetSqlxml("select distinct XrefItemId from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and parentitemid in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId in (" + categoryId + ")) for xml raw ");
+            // get returned XML into generic List
+            var xmlDoc = new XmlDataDocument();
+            xmlDoc.LoadXml("<root>" + strXML + "</root>");
+            var nList = xmlDoc.SelectNodes("root/row");
+            var rtnList = new List<int>();
+            foreach (XmlNode n in nList)
+            {
+                if (n.Attributes["XrefItemId"].Value != null && Utils.IsNumeric(n.Attributes["XrefItemId"].Value))
+                {
+                    rtnList.Add(Convert.ToInt32(n.Attributes["XrefItemId"].Value));
+                }
+            }
+            return rtnList;
+        }
+
         #endregion
 
         #region "catbreadcrumb"
@@ -1520,6 +1576,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     txt.Visible = false;
                     txt.Enabled = false;
                     container.Controls.Add(txt);
+                    var hid = new HiddenField();
+                    hid.DataBinding += ProductoptionsDataBind;
+                    hid.ID = "optionid" + xmlNod.Attributes["index"].Value;
+                    hid.Value = xmlNod.Attributes["index"].Value;
+                    container.Controls.Add(hid);                    
                 }
             }
         }
@@ -1538,6 +1599,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 DropDownList ddl = null;
                 CheckBox chk = null;
                 TextBox txt = null;
+                HiddenField hid = null;
+
+                if (ctl is HiddenField)
+                {
+                    hid = (HiddenField)ctl;
+                    index = hid.Value;
+                }
 
                 if (ctl is DropDownList)
                 {
@@ -1565,6 +1633,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (nod != null)
                 {
                     optionid = nod.InnerText;
+                    if (hid != null) hid.Value = optionid;
                     var nodDesc = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
                     if (nodDesc != null) optiondesc = nodDesc.InnerText;
 

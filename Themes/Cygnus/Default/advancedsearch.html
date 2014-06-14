@@ -147,13 +147,13 @@ $(document).ready(function() {
 <br/>
 [<tag type="valueof" resourcekey="General.Categories" />]
 <br/>
-[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" groupref="cat" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" />]
+[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" groupref="cat" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" />]
 [<tag type='endif' />]
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
 <br/>
-[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" />]
+[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
