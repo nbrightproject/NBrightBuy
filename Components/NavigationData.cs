@@ -25,11 +25,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Populate class with cookie data
         /// </summary>
         /// <param name="portalId"> </param>
-        /// <param name="tabid"> </param>
         /// <param name="moduleKey"> </param>
         /// <param name="storageType"> Select data storgae type "SessionMemory" or "Cookie" (Default Cookie) </param>
         /// <param name="nameAppendix">specifiy Unique key for search data</param>
-        public NavigationData(int portalId, int tabid, String moduleKey, String storageType = "Cookie", string nameAppendix = "")
+        public NavigationData(int portalId, String moduleKey, String storageType = "Cookie", string nameAppendix = "")
         {
             if (storageType != null)
                 if (storageType.ToLower() == "sessionmemory")
@@ -41,8 +40,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             Exists = false;
             _portalId = portalId;
-            _cookieName = "NBrightBuyNav" + "*" + tabid.ToString("") + "*" + moduleKey + nameAppendix;
-            _cookieNameXml = "NBrightBuyNavXml" + "*" + tabid.ToString("") + "*" + moduleKey + nameAppendix;
+            _cookieName = "NBrightBuyNav" + "*" + moduleKey + nameAppendix;
+            _cookieNameXml = "NBrightBuyNavXml" + "*" + moduleKey + nameAppendix;
             _encryptkey = "NBrightBuyNav";
             Get();
         }
@@ -94,7 +93,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var sqltype = GenXmlFunctions.GetGenXmlValue(mt, "tag/@sqltype");
                     var sqloperator = GenXmlFunctions.GetGenXmlValue(mt, "tag/@sqloperator");
 
-                    if (sqlfield == "") sqlfield = GenXmlFunctions.GetGenXmlValue(mt, "tag/@xpath");  //check is xpath of node ha been used.
+                    if (sqlfield == "") sqlfield = GenXmlFunctions.GetGenXmlValue(mt, "tag/@xpath"); //check is xpath of node ha been used.
 
                     if (lp == 1) sqloperator = ""; // use the "and" sepcified above for the first criteria.
 
@@ -112,6 +111,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                     var searchValFrom = obj.GetXmlProperty(searchfrom);
                     var searchValTo = obj.GetXmlProperty(searchto);
+
                     switch (action.ToLower())
                     {
                         case "open":
@@ -122,21 +122,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             break;
                         case "equal":
                             _criteria += " " + sqloperator + " " +
-                                        GenXmlFunctions.GetSqlFilterText(sqlfield, sqltype, searchVal, sqlcol);
+                                         GenXmlFunctions.GetSqlFilterText(sqlfield, sqltype, searchVal, sqlcol);
                             break;
                         case "like":
-                            if (searchVal == "")
-                                searchVal = "NORESULTSnbright";
+                            if (searchVal == "") searchVal = "NORESULTSnbright";
                             // for "like", build the sql so we have valid value, but add a fake search so the result is nothing for no selection values
-                            _criteria += " " + sqloperator + " " +
-                                        GenXmlFunctions.GetSqlFilterLikeText(sqlfield, sqltype, searchVal, sqlcol);
+                            _criteria += " " + sqloperator + " " + GenXmlFunctions.GetSqlFilterLikeText(sqlfield, sqltype, searchVal, sqlcol);
+
                             break;
                         case "range":
                             // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
                             if (searchValFrom == "") searchValFrom = "0";
                             if (searchValTo == "") searchValTo = "9999999";
                             _criteria += " " + sqloperator + " " +
-                                        GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
+                                         GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
                             break;
                         case "cats":
                             _criteria += " " + sqloperator + " ";

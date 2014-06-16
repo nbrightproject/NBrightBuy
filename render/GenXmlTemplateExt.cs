@@ -300,7 +300,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
                             case "productcount":
-                                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, modulekey, StoreSettings.Current.Get("storagetype"));
+                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("storagetype"));
                                 dataValue = navdata.RecordCount;
                                 break;
                             case "price":
@@ -1171,6 +1171,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var groupref = "";
             var filtermode = "";
             List<int> validCatList = null;
+            var modulekey = "";
+            var redirecttabid = "";
+            var tabid = "";
 
             if (xmlNod.Attributes != null)
             {
@@ -1187,6 +1190,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["prefix"] != null) prefix = xmlNod.Attributes["prefix"].Value;
                 if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
+                if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
                 
                 if (showhidden == "True") showHidden = true;
                 if (showarchived == "True") showArchived = true;
@@ -1202,7 +1206,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var catid = "";
                 if (filtermode != "")
                 {
+                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("DataStorageType"));
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
                     if (Utils.IsNumeric(catid))
                     {
                         validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
@@ -2026,7 +2032,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var l = (Literal)sender;
             try
             {
-                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, l.Text, StoreSettings.Current.Get("storagetype"));
+                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text, StoreSettings.Current.Get("storagetype"));
                 l.Text = navdata.RecordCount;
                 l.Visible = NBrightGlobal.IsVisible;
             }

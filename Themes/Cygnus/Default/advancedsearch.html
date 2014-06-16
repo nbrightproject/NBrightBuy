@@ -6,7 +6,7 @@
 
 <!-- These postback fields are create to keep data that is used to do the section criteria -->
 <!-- They are used the the "search" tokens, js is used to change these values to what the client selects, the values here are set to the default.-->
-[<tag id='nbb-min' type='postback' value="1" />] <!-- Used in is in stock range check -->
+[<tag id='nbb-min' type='postback' value="0" />] <!-- Used in is in stock range check -->
 [<tag id='nbb-max' type='postback' value="9999999" />] <!-- Used in is in stock range check -->
 [<tag id='nbb-off' type='postback' value="-1" />] <!-- Used in is in stock range check -->
 
@@ -18,7 +18,6 @@
 <!-- Add postback field for filtermode -->
 [<tag id='navigationmode' type='postback' value="" />]
 
-
 <script>
 
 $(document).ready(function() {
@@ -26,12 +25,6 @@ $(document).ready(function() {
 	//Update filter mode
 	[<tag type='if' settings='rblfiltermode' testvalue='f' display='{ON}' />]
 	$("input[[id*='navigationmode']]").val('f');
-	[<tag type='endif' />]
-	
-	[<tag type='if' settings='rblfiltermode' testvalue='u' display='{ON}' />]
-	$("input[[id*='rblfiltermode']]").change(function() {
-		$("input[[id*='navigationmode']]").val($(this).val());
-	});
 	[<tag type='endif' />]
 	
     //Update the is in stock flag, by altering the criteria input fields.
@@ -57,10 +50,7 @@ $(document).ready(function() {
 		$("input[[id*='disabledsearchtokens']]").val(disabledlist);
 	}
 
-	$(".chknbbcatscheckall").on("change", function () {
-		 $('input[[id*="chknbbcats"]]').prop("checked", this.checked);
-	});	
-	
+
 	// if we do any postback then check if we want to disable any search criteria
 	$("body").on("click", ".postbacklink", function () {
 		$('.processing').show();
@@ -68,7 +58,6 @@ $(document).ready(function() {
 		nbxcheckifselected('input[[id*="chknbbcats"]]','search40');
 		nbxcheckifselected('input[[id*="chkcatsgrp1"]]','search50');
 		nbxcheckifselected('input[[id*="chkcatsgrp2"]]','search60');
-		$('input[[id*="chknbbcats"]]').prop('checked') == true;
 	});
 		
 });
@@ -122,10 +111,6 @@ $(document).ready(function() {
 
 <hr/>
 <div>
-	[<tag type='if' settings='rblfiltermode' testvalue='u' display='{ON}' />]
-		[<tag id="rblfiltermode" type="radiobuttonlist" datavalue="s;f" data="Search;Filter" repeatcolumns="3"  selectedvalue="s" resourcekey="ProductSearchSettings.rbluserfiltermode" />]
-	[<tag type='endif' />]
-<br/>
 [<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
 <!-- text search -->
 [<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />] [<tag type="valueof" resourcekey="General.Search" />]
@@ -145,22 +130,20 @@ $(document).ready(function() {
 <!-- category search -->
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
 <br/>
-[<tag type="valueof" resourcekey="General.Categories" />]
-<br/>
-[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" groupref="cat" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" />]
+[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
 [<tag type='endif' />]
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
 <br/>
-[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" />]
+[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect2' testvalue='True' display='{ON}' />]
 <br/>
-[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" />]
+[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
