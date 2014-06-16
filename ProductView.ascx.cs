@@ -453,7 +453,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "addtobasket":
                     NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.DataInfo, Request, e.Item.ItemIndex, DebugMode);
                     var currentCart = new CartData(PortalId);
-                    currentCart.AddToCart(rpData, StoreSettings.Current.DataInfo, e.Item.ItemIndex, DebugMode);
+                    currentCart.AddItem(rpData, StoreSettings.Current.DataInfo, e.Item.ItemIndex, DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

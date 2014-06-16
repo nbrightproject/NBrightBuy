@@ -84,6 +84,20 @@
     <Compile Include="CategoryMenuSettings.ascx.designer.cs">
       <DependentUpon>CategoryMenuSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="CartView.ascx.cs">
+      <DependentUpon>CartView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartView.ascx.designer.cs">
+      <DependentUpon>CartView.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CartViewSettings.ascx.cs">
+      <DependentUpon>CartViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartViewSettings.ascx.designer.cs">
+      <DependentUpon>CartViewSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -131,6 +145,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="CategoryMenuSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CartView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
