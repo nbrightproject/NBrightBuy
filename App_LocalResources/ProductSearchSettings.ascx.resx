@@ -304,15 +304,12 @@
     <value>Old Theme Settings have been disabled, update to activate new theme. </value>
   </data>
   <data name="lblfiltermode.Help" xml:space="preserve">
-    <value>Mode for search module.  Search= Criteria will be reset on category menu selection; Filter= Criteria will persist category menu selection;User=User has option to select Search or Filter mode.</value>
+    <value>Mode for search module.  Search=Search options will be static; Filter=Search options will be dynamic based on category menu selection, the category selection will also persist across searches.</value>
   </data>
   <data name="lblfiltermode.Text" xml:space="preserve">
     <value>Search Mode : </value>
   </data>
   <data name="rblfiltermode.data" xml:space="preserve">
-    <value>Search;Filter;User</value>
-  </data>
-  <data name="rbluserfiltermode.data" xml:space="preserve">
     <value>Search;Filter</value>
   </data>
 </root>

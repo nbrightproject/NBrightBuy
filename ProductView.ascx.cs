@@ -69,7 +69,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 return;
             }
 
-            _navigationdata = new NavigationData(PortalId, TabId, ModuleKey, StoreSettings.Current.Get("storagetype"));
+            _navigationdata = new NavigationData(PortalId, ModuleKey, StoreSettings.Current.Get("storagetype"));
 
             // Pass in a template specifying the token to create a friendly url for paging. 
             // (NOTE: we need this in NBB becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
@@ -253,16 +253,17 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     var strFilter = "";
                     // filter mode and will persist past category selection.
-                    if (_navigationdata.Exists && (_navigationdata.FilterMode || (_catid == "" && _catname == ""))) 
+                    if ((_catid == "" && _catname == "")) 
                     {
-                        if (_catid != "") _navigationdata.CategoryId = _catid; // if in filter mode, persist the categoryid
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
                         _strOrder = _navigationdata.OrderBy; 
                     }
                     else
                     {
-                        if (!_navigationdata.FilterMode) _navigationdata.ResetSearch(); // reset search criteria when new catid and not in filter mode.
+                        _navigationdata.ResetSearch(); 
 
                         // We have a category selected (in url), so overwrite categoryid navigationdata.
                         // This allows the return to the same category after a returning from a entry view.
@@ -342,7 +343,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     else
                     {
-                        _navigationdata.CategoryId = "";
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
                     }
 
                     #endregion

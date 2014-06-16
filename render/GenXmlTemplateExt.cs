@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -299,7 +300,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
                             case "productcount":
-                                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, modulekey, StoreSettings.Current.Get("storagetype"));
+                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("storagetype"));
                                 dataValue = navdata.RecordCount;
                                 break;
                             case "price":
@@ -1168,6 +1169,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var displayCount = false;
             var showEmpty = true;
             var groupref = "";
+            var filtermode = "";
+            List<int> validCatList = null;
+            var modulekey = "";
+            var redirecttabid = "";
+            var tabid = "";
 
             if (xmlNod.Attributes != null)
             {
@@ -1182,7 +1188,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["showempty"] != null) showempty = xmlNod.Attributes["showempty"].Value;
                 if (xmlNod.Attributes["displaycount"] != null) displaycount = xmlNod.Attributes["displaycount"].Value;
                 if (xmlNod.Attributes["prefix"] != null) prefix = xmlNod.Attributes["prefix"].Value;
-                if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;    
+                if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
+                if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
+                if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
                 
                 if (showhidden == "True") showHidden = true;
                 if (showarchived == "True") showArchived = true;
@@ -1195,12 +1203,66 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
                     if (p != null) parentid = p.categoryid;                    
                 }
+                var catid = "";
+                if (filtermode != "")
+                {
+                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("DataStorageType"));
+                    catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
+                    if (Utils.IsNumeric(catid))
+                    {
+                        validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
+                    }
+                }
+
             }
 
+            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
 
-            return BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
+            if (validCatList != null)
+            {
+                var nonValid = new List<int>();
+                // we have a filter on the list, so remove any categories not in valid list.
+                foreach (var k in rtnList)
+                {
+                    if (!validCatList.Contains(k.Key)) nonValid.Add(k.Key);
+                }
+                foreach (var k in nonValid)
+                {
+                    rtnList.Remove(k);
+                }
+            }
 
+            return rtnList;
         }
+
+        /// <summary>
+        /// Return a list of category ids for all the valid categories for a given product list (selected by a categoryid)  
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        private List<int> GetCateoriesInProductList(int categoryId)
+        {
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+
+            var objCtrl = new NBrightBuyController();
+            var strXML = objCtrl.GetSqlxml("select distinct XrefItemId from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and parentitemid in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId in (" + categoryId + ")) for xml raw ");
+            // get returned XML into generic List
+            var xmlDoc = new XmlDataDocument();
+            xmlDoc.LoadXml("<root>" + strXML + "</root>");
+            var nList = xmlDoc.SelectNodes("root/row");
+            var rtnList = new List<int>();
+            foreach (XmlNode n in nList)
+            {
+                if (n.Attributes["XrefItemId"].Value != null && Utils.IsNumeric(n.Attributes["XrefItemId"].Value))
+                {
+                    rtnList.Add(Convert.ToInt32(n.Attributes["XrefItemId"].Value));
+                }
+            }
+            return rtnList;
+        }
+
         #endregion
 
         #region "catbreadcrumb"
@@ -1970,7 +2032,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var l = (Literal)sender;
             try
             {
-                var navdata = new NavigationData(PortalSettings.Current.PortalId, PortalSettings.Current.ActiveTab.TabID, l.Text, StoreSettings.Current.Get("storagetype"));
+                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text, StoreSettings.Current.Get("storagetype"));
                 l.Text = navdata.RecordCount;
                 l.Visible = NBrightGlobal.IsVisible;
             }

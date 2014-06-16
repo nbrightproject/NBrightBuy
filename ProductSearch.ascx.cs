@@ -68,7 +68,7 @@ namespace Nevoweb.DNN.NBrightBuy
             // must assign a redirect tab, so postback cookie works.
             _redirecttabid = TabId;
             if (Utils.IsNumeric(ModSettings.Get("redirecttabid"))) _redirecttabid = Convert.ToInt32(ModSettings.Get("redirecttabid"));
-
+            
             _targetModuleKey = "";
             _targetModuleKey = ModSettings.Get("targetmodulekey");
 
@@ -76,7 +76,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var obj = new NBrightInfo();
                 
-                var searchcookie = new NavigationData(PortalId, _redirecttabid, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                var searchcookie = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
                 if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
                 DoDetail(rpData, obj);
             }
@@ -92,7 +92,7 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var param = new string[2];
-            var navigationData = new NavigationData(PortalId, _redirecttabid, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+            var navigationData = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
             switch (e.CommandName.ToLower())
             {
                 case "search":
@@ -109,7 +109,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         var xmlDoc = new System.Xml.XmlDataDocument();
                         xmlDoc.LoadXml(strXml);
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
-                    }
+                    }                    
                     Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
                     break;
                 case "resetsearch":
