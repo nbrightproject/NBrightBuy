@@ -265,6 +265,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Get Current Cart Item List
+        /// </summary>
+        /// <returns></returns>
+        public List<NBrightInfo> GetCartItemList()
+        {
+            var rtnList = new List<NBrightInfo>();
+            var xmlNodeList = _cartInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                    rtnList.Add(newInfo);
+                }
+            }
+            return rtnList;
+        }      
+
+        /// <summary>
         /// Set to true if cart exists
         /// </summary>
         public bool Exists { get; private set; }
@@ -319,25 +338,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return Convert.ToInt32(cartId);
         }
-
-        /// <summary>
-        /// Get Current Cart Item List
-        /// </summary>
-        /// <returns></returns>
-        private List<NBrightInfo> GetCartItemList()
-        {
-            var rtnList = new List<NBrightInfo>();
-            var xmlNodeList = _cartInfo.XMLDoc.SelectNodes("genxml/items/*");
-            if (xmlNodeList != null)
-            {
-                foreach (XmlNode carNod in xmlNodeList)
-                {
-                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
-                    rtnList.Add(newInfo);
-                }
-            }
-            return rtnList;
-        }      
 
 
         #endregion

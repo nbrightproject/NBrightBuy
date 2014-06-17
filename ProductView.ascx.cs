@@ -216,14 +216,13 @@ namespace Nevoweb.DNN.NBrightBuy
                     //See if we have a pagesize, uses the "searchpagesize" tag token.
                     // : This can be overwritten by the cookie value if we need user selection of pagesize.
                     CtrlPaging.Visible = false;
+
+                    #region "Get pagesize, from best place"
                     var pageSize = 0;
                     if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
+                    if (!Utils.IsNumeric(pageSize) && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
                     //check for url param page size
-                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
-                    {
-                        pageSize = Convert.ToInt32(_pagesize);
-                    }
-
+                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture))) pageSize = Convert.ToInt32(_pagesize);
                     if (pageSize == 0)
                     {
                         var strPgSize = "";
@@ -233,6 +232,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     if (pageSize > 0) CtrlPaging.Visible = true;
                     _navigationdata.PageSize = pageSize.ToString("");
+                    #endregion
 
                     var pageNumber = 1;
 
@@ -451,9 +451,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addtobasket":
-                    NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.DataInfo, Request, e.Item.ItemIndex, DebugMode);
-                    var currentCart = new CartData(PortalId);
-                    currentCart.AddItem(rpData, StoreSettings.Current.DataInfo, e.Item.ItemIndex, DebugMode);
+                    NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
+                    var currentCart = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
+                    currentCart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

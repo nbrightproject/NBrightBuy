@@ -19,11 +19,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DebugMode = false;
 
             //[TODO: NB_Store v2.4 code for settings, needs to be changed/removed for v3]
-            DataInfo = NBrightBuyUtils.GetGlobalSettings(PortalSettings.Current.PortalId);
-            if (DataInfo != null)
+            SettingsInfo = NBrightBuyUtils.GetGlobalSettings(PortalSettings.Current.PortalId);
+            if (SettingsInfo != null)
             {
-                _settingDic = DataInfo.ToDictionary();
-                if (DataInfo.GetXmlProperty("genxml/hidden/debug.mode") == "1") DebugMode = true; // set debug mmode
+                _settingDic = SettingsInfo.ToDictionary();
+                if (SettingsInfo.GetXmlProperty("genxml/hidden/debug.mode") == "1") DebugMode = true; // set debug mmode
             }
 
             //Get NBrightBuy Portal Settings.
@@ -70,7 +70,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
-        public NBrightInfo DataInfo { get; private set; }
+        public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }
 

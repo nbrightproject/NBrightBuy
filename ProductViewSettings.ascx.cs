@@ -87,6 +87,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     ModCtrl.Update(objGlobal);
                 }
             }
+            // set page size so we pick it up in the product view.
+            var navigationdata = new NavigationData(PortalId, objInfo.GetXmlProperty("genxml/textbox/modulekey"), StoreSettings.Current.Get("storagetype"));
+            navigationdata.PageSize = objInfo.GetXmlProperty("genxml/textbox/pagesize");
+            navigationdata.Save();
         }
 
     }

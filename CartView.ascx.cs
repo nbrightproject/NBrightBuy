@@ -45,7 +45,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _templF = "";
         private String _entryid = "";
         private String _tabid = "";
-        private NBrightInfo _cartInfo;
+        private CartData _cartInfo;
 
         #region Event Handlers
 
@@ -59,7 +59,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             base.OnInit(e);
 
-            _cartInfo = new cartData();
+            _cartInfo = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
@@ -69,21 +69,13 @@ namespace Nevoweb.DNN.NBrightBuy
 
             try
             {
-                _entryid = Utils.RequestQueryStringParam(Context, "eid");
-                _catid = Utils.RequestQueryStringParam(Context, "catid");
-                if (_catid == "") _catid = ModSettings.Get("defaultcatid");
-
                 _templH = ModSettings.Get("txtdisplayheader");
                 _templD = ModSettings.Get("txtdisplaybody");
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-                _tabid = ModSettings.Get("ddllisttabid");
-                if (!Utils.IsNumeric(_tabid)) _tabid = TabId.ToString("");
-
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
-
 
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
@@ -130,92 +122,28 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            var catid = 0;
-            if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
-            StoreSettings.Current.ActiveCatId = catid;
-
-            #region "Get default category into list for displaying header and footer templates on product (breadcrumb)"
-            // if we have a product displaying, get the deault category for the category
-            var obj = new GroupCategoryData();
-            if (Utils.IsNumeric(_entryid))
-            {
-                var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
-                obj = _catGrpCtrl.GetCategory(catiddef);
-            }
-            var catl = new List<object> { obj };
-            #endregion
 
             #region "Data Repeater"
 
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var menutype = ModSettings.Get("ddlmenutype").ToLower();
-
-                #region "Drill Down"
-
-                if (menutype == "drilldown")
-                {
-
-                    var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
-                    if (l.Count == 0 && (ModSettings.Get("alwaysshow") == "True"))
-                    {
-                        // if we have no categories, it could be the end of branch or product view, so load the root menu
-                        var catid2 = 0;
-                        _catid = ModSettings.Get("defaultcatid");
-                        if (Utils.IsNumeric(_catid)) catid2 = Convert.ToInt32(_catid);
-                        l = _catGrpCtrl.GetCategoriesWithUrl(catid2, TabId);
-                    }
-                    rpData.DataSource = l;
-                    rpData.DataBind();
-                }
-
-                #endregion
-
-                #region "treeview"
-
-                if (menutype == "treeview")
-                {
-                    var catidtree = 0;
-                    if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
-
-                    rpData.Visible = false;
-                    var catBuiler = new CatMenuBuilder(_templD, ModSettings, DebugMode);
-                    var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid), ModSettings.Get("treeidentclass"), ModSettings.Get("treerootclass"));
-                    
-                    // if debug , output the html used.
-                    if (DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html",strOut);
-
-                    var l = new Literal {Text = strOut};
-                    phData.Controls.Add(l);
-                }
-                #endregion
-
-                #region "Accordian"
-
-                if (menutype == "accordian")
-                {
-
-                }
-                #endregion
-
-                #region "megamenu"
-
-                if (menutype == "megamenu")
-                {
-
-                }
-                #endregion
+                var l = _cartInfo.GetCartItemList();
+                rpData.DataSource = l;
+                rpData.DataBind();
             }
 
             #endregion
 
+            var cartL = new List<NBrightInfo>();
+            cartL.Add(_cartInfo.GetCart());
+
             // display header
-            rpDataH.DataSource = catl;
+            rpDataH.DataSource = cartL;
             rpDataH.DataBind();
 
             // display footer
-            rpDataF.DataSource = catl;
+            rpDataF.DataSource = cartL;
             rpDataF.DataBind();
 
         }
