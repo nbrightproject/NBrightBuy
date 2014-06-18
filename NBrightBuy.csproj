@@ -98,6 +98,20 @@
     <Compile Include="CartViewSettings.ascx.designer.cs">
       <DependentUpon>CartViewSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Checkout.ascx.cs">
+      <DependentUpon>Checkout.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Checkout.ascx.designer.cs">
+      <DependentUpon>Checkout.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckoutSettings.ascx.cs">
+      <DependentUpon>CheckoutSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckoutSettings.ascx.designer.cs">
+      <DependentUpon>CheckoutSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -153,6 +167,12 @@
     <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Checkout.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CheckoutSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_AddNew.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_Delete.txt" />
@@ -166,6 +186,7 @@
     <Content Include="NBrightTemplates\Default\buttonsDiv_SD.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SED.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCDL.txt" />
+    <Content Include="NBrightTemplates\Default\CartView_Settings.html" />
     <Content Include="NBrightTemplates\Default\CategoryMenu_Settings.html" />
     <Content Include="NBrightTemplates\Default\ProductSearch_Settings.html" />
     <Content Include="NBrightTemplates\Default\ProductView_Settings.html" />
@@ -198,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />

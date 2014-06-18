@@ -369,4 +369,7 @@
   <data name="Any.Text" xml:space="preserve">
     <value>Any</value>
   </data>
+  <data name="cmdRemove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

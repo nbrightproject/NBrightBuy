@@ -55,6 +55,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 	    public abstract NBrightInfo ValidateCart(NBrightInfo cartInfo);
 
+        public abstract NBrightInfo ValidateCartItem(NBrightInfo cartItemInfo);
+
 
 	}
 

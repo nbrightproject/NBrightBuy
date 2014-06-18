@@ -77,14 +77,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        /// <summary>
-        /// Delete cart 
-        /// </summary>
-        public void Delete()
-        {
-        }
-
-
         #region "base methods"
 
         /// <summary>
@@ -106,7 +98,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 xmlDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
             }
 
-            // load into NbrigthInfo class, so it's easier to get at xml values.
+            // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
             var objInfo = new NBrightInfo();
@@ -116,7 +108,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strproductid = objInfoIn.GetXmlProperty("genxml/hidden/productid");
             if (Utils.IsNumeric(strproductid))
             {
-                var itemcode = "";
+                var itemcode = ""; // The itemcode var is used to decide if a cart item is new or already existing in the cart.
                 var productData = new ProductData(Convert.ToInt32(strproductid));
 
                 objInfo.AddSingleNode("productid", strproductid, "item");
@@ -158,8 +150,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         strXmlIn += "<option>";
                         var idx = nod.Name.Replace("optiontxt", "");
                         var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                        var optvaltext = nod.InnerText;
                         strXmlIn += "<optid>" + optionid + "</optid>";
-                        itemcode += optionid + "-";
+                        strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
+                        var itemcodeText = "";
+                        if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
+                        itemcode += optionid + itemcodeText + "-";
                         strXmlIn += "<optname>" + productData.Info.GetXmlProperty("genxml/lang/genxml/options/genxml[./hidden/optionid='" + optionid + "']/textbox/txtoptiondesc") + "</optname>";
                         strXmlIn += "</option>";
                     }
@@ -205,12 +201,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'),"item");
 
                 //Validate Cart
-                if (Interfaces.CartInterface.Instance() != null)
-                {
-                    objInfo = Interfaces.CartInterface.Instance().ValidateCart(objInfo);
-                    if (objInfo.XMLData == "") return objInfo.TextData;  // if we find a validation error (xmlData removed) return message status code created in textdata.
-                }
-                
+                objInfo = ValidateCartItem(objInfo);
+                if (objInfo.XMLData == "") return objInfo.TextData;  // if we find a validation error (xmlData removed) return message status code created in textdata.
+
                 //replace the item if it's already in the list.
                 var nodItem = _cartInfo.XMLDoc.SelectSingleNode("genxml/items/item[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null)
@@ -240,15 +233,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return ""; // if everything is OK, don't send a message back.
         }
 
-        public void RemoveItem(int modelId)
+        public void RemoveItem(int index)
         {
-
+            _itemList.RemoveAt(index);
+            Save();
         }
 
-        public void EditProduct(int qty)
+        public void UpdateItemQty(int index,int qty)
         {
-
+            var itemqty = _itemList[index].GetXmlPropertyInt("item/qty");
+            itemqty += qty;
+            if (itemqty <=0 )
+                RemoveItem(index);
+            else
+                _itemList[index].SetXmlProperty("item/qty",itemqty.ToString(""),TypeCode.String,false);
+            Save();
         }
+
 
         public void DeleteCart()
         {
@@ -288,16 +289,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public bool Exists { get; private set; }
 
-        public void MarkProduct(int productId)
-        {
 
+        public String ValidateCart()
+        {
+            if (Interfaces.CartInterface.Instance() != null)
+            {
+                _cartInfo = Interfaces.CartInterface.Instance().ValidateCart(_cartInfo);
+                if (_cartInfo.XMLData == "") return _cartInfo.TextData;  // if we find a validation error (xmlData removed) return message status code created in textdata.
+            }
+            return "";
         }
 
-        public void SaveAsList(string listName)
+        public NBrightInfo ValidateCartItem(NBrightInfo cartItem)
         {
-
+            if (Interfaces.CartInterface.Instance() != null)
+            {
+                cartItem = Interfaces.CartInterface.Instance().ValidateCartItem(cartItem);
+            }
+            return cartItem;
         }
-
 
         #endregion
 

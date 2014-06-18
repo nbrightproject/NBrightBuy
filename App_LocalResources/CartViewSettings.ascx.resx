@@ -117,22 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblinstock.Help" xml:space="preserve">
-    <value>If checked the user is allowed to select, display only products that are in stock.</value>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Cart View Settings</value>
   </data>
-  <data name="lblinstock.Text" xml:space="preserve">
-    <value>In Stock Selection</value>
+  <data name="lbladvancedsettings.Text" xml:space="preserve">
+    <value>Advanced</value>
   </data>
-  <data name="lblRedirectTab.Help" xml:space="preserve">
-    <value>Name of the page to redirect to after the search button has been clicked.  If empty the current page is used.</value>
+  <data name="lblbasicsettings.Text" xml:space="preserve">
+    <value>General</value>
   </data>
-  <data name="lblRedirectTab.Text" xml:space="preserve">
-    <value>Redirect Page : </value>
+  <data name="lbllistbody.Help" xml:space="preserve">
+    <value>Template to be used as category body, this is repeated for each category.</value>
   </data>
-  <data name="lblsearchtemplate.Help" xml:space="preserve">
-    <value>Name of the display search template to be used by this module.</value>
+  <data name="lbllistbody.Text" xml:space="preserve">
+    <value>Category Body : </value>
   </data>
-  <data name="lblsearchtemplate.Text" xml:space="preserve">
-    <value>Search Template :</value>
+  <data name="lbllistbodyfoot.Help" xml:space="preserve">
+    <value>Template to be used as category end, this is repeated for each category.</value>
+  </data>
+  <data name="lbllistbodyfoot.Text" xml:space="preserve">
+    <value>Category End : </value>
+  </data>
+  <data name="lbllistfooter.Help" xml:space="preserve">
+    <value>Template to be used as category menu footer.</value>
+  </data>
+  <data name="lbllistfooter.Text" xml:space="preserve">
+    <value>Menu Footer : </value>
+  </data>
+  <data name="lbllistheader.Help" xml:space="preserve">
+    <value>Template to be used as category menu header.</value>
+  </data>
+  <data name="lbllistheader.Text" xml:space="preserve">
+    <value>Menu Header : </value>
+  </data>
+  <data name="lbltheme.Help" xml:space="preserve">
+    <value>Name of the theme to use for this productlist.</value>
+  </data>
+  <data name="lbltheme.Text" xml:space="preserve">
+    <value>Theme : </value>
+  </data>
+  <data name="lblthemesettings.Text" xml:space="preserve">
+    <value>Theme Settings</value>
   </data>
 </root>

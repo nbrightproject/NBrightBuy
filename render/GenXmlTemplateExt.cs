@@ -189,6 +189,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "itemlistdelete":
                     CreateItemListLink(container, xmlNod, "delete");
                     return true;
+                case "cartqtytextbox":
+                    CreateCartQtyTextbox(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -2583,6 +2586,49 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 l.Text = ex.ToString();
             }
         }
+
+        #endregion
+
+        #region "CartQtyTextbox"
+
+        private void CreateCartQtyTextbox(Control container, XmlNode xmlNod)
+        {
+            var txt = new TextBox { Text = "" };
+
+            txt = (TextBox)GenXmlFunctions.AssignByReflection(txt, xmlNod);
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["text"] != null))
+            {
+                txt.Text = xmlNod.Attributes["text"].InnerXml;
+            }
+
+            txt.DataBinding += CartQtyTextDataBinding;
+            container.Controls.Add(txt);
+        }
+
+        private void CartQtyTextDataBinding(object sender, EventArgs e)
+        {
+            var txt = (TextBox)sender;
+            var container = (IDataItemContainer)txt.NamingContainer;
+
+            try
+            {
+                txt.Visible = NBrightGlobal.IsVisible;
+                if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
+                else
+                {
+                    var strXML = Convert.ToString(DataBinder.Eval(container.DataItem,"XMLData" ));
+                    var nbInfo = new NBrightInfo();
+                    nbInfo.XMLData = strXML;
+                    txt.Text = nbInfo.GetXmlProperty("item/qty");
+                }
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
 
         #endregion
 

@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class CartView : NBrightBuyBase
+    public partial class Checkout : NBrightBuyBase
     {
 
         private String _catid = "";
@@ -52,9 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.EntityTypeCode = "CART";
-            base.CtrlTypeCode = "CART";
-            base.EntityTypeCodeLang = "";
+            base.CtrlTypeCode = "ORDER";
             base.DisableUserInfo = true;
 
             base.OnInit(e);
@@ -145,41 +143,6 @@ namespace Nevoweb.DNN.NBrightBuy
             // display footer
             rpDataF.DataSource = cartL;
             rpDataF.DataBind();
-
-        }
-
-        #endregion
-
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[2];
-
-            switch (e.CommandName.ToLower())
-            {
-                case "addqty":
-                    if (!Utils.IsNumeric(cArg)) cArg = "1";
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        _cartInfo.UpdateItemQty(e.Item.ItemIndex,Convert.ToInt32(cArg));
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "removeqty":
-                    if (!Utils.IsNumeric(cArg)) cArg = "-1";
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        _cartInfo.UpdateItemQty(e.Item.ItemIndex, Convert.ToInt32(cArg));
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "deletecartitem":
-                    _cartInfo.RemoveItem(e.Item.ItemIndex);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-            }
 
         }
 

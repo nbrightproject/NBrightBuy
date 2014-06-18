@@ -12,20 +12,13 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The Settings class manages Module Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class CartViewSettings : NBrightBuySettingBase
+    public partial class CheckoutSettings : NBrightBuySettingBase
     {
 
         protected override void OnInit(EventArgs e)
-        {          
-            base.CtrlTypeCode = "CartView";
-            base.OnInit(e);
-        }
-
-        protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
-            // if we don't have module settings update so we pickup the default.
-            if (ModSettings.Get("themefolder") == "") UpdateSettings();
+            base.CtrlTypeCode = "Checkout";
+            base.OnInit(e);
         }
 
         public override void UpdateSettings()

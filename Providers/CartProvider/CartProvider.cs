@@ -17,5 +17,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             return cartInfo;
         }
+
+        public override NBrightInfo ValidateCartItem(NBrightInfo cartItemInfo)
+        {
+
+            return cartItemInfo;
+        }
     }
 }
