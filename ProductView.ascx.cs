@@ -235,7 +235,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     #endregion
 
                     var pageNumber = 1;
-
                     //check for url param paging
                     if (Utils.IsNumeric(_pagenum) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
                     {

@@ -60,6 +60,25 @@ $(document).ready(function() {
 		nbxcheckifselected('input[[id*="chkcatsgrp2"]]','search60');
 	});
 		
+  // Range slider
+  $(function() {
+    // Price
+    $( "#pricerangeslider" ).slider({
+      range: true,
+      step: 100,
+      min: 0,
+      max: 5000,
+      values: [[ 0, 5000 ]],
+      slide: function( event, ui ) {
+        $( "input[[id*='txtFrom']]" ).val( ui.values[[ 0 ]]);
+        $( "input[[id*='txtTo']]" ).val( ui.values[[ 1 ]]);
+      }
+    });
+    $( "input[[id*='txtFrom']]" ).val( $( "#pricerangeslider" ).slider( "values", 0 ));
+    $( "input[[id*='txtTo']]" ).val( $( "#pricerangeslider" ).slider( "values", 1 ));
+  });
+
+
 });
 
 </script>
@@ -109,52 +128,62 @@ $(document).ready(function() {
 <!--*********************************-->
 <!-- This section display the control needs to do an advanced search, certain fields can be hidden by the module settings. -->
 
-<hr/>
-<div>
-[<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
+<div class="NBB dnnForm">
+
+<ul class="advancedsearch">
+
 <!-- text search -->
-[<tag id='txtSearch' cssclass='advsearchtext' type='textbox' width='200' maxlength='150' />] [<tag type="valueof" resourcekey="General.Search" />]
+[<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
+<li class="searchtext">[<tag id='txtSearch' cssclass='advsearchtext' type='textbox' maxlength='150' />][<tag type="valueof" resourcekey="General.Search" />]</li>
 [<tag type='endif' />]
-<br/>
-[<tag type='if' settings='chkpricerange' testvalue='True' display='{ON}' />]
+
 <!-- Price range search -->
-[<tag id='txtFrom' type='textbox' width='50' maxlength='50' text="1"/>] - [<tag id='txtTo' type='textbox' width='50' maxlength='50' text="10000" />] [<tag type="valueof" resourcekey="ProductSearch.PriceRange" />]
+[<tag type='if' settings='chkpricerange' testvalue='True' display='{ON}' />]
+<li class="pricerange">
+[<tag id="txtFrom" type="textbox" />][<tag type="valueof" resourcekey="ProductSearch.PriceRange" />][<tag id="txtTo" type="textbox" />]
+<div id="pricerangeslider"></div>
+</li>
 [<tag type='endif' />]
-<br/>
+
+<li class="orderby">
+[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />][<tag type="valueof" resourcekey="General.OrderBy" />]
+</li>
+
+
+[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide Manufacturers and Attributes category search when current category has zero items -->
+<li><h4>Refine your search</h4></li>
+
 <!-- Is in Stock search -->
 [<tag type='if' settings='chkinstock' testvalue='True' display='{ON}' />]
-[<tag id="chkInStock" type="checkbox" Text="" />] [<tag type="valueof" resourcekey="ProductSearch.OnlyInStock" />]
+<li class="stock">[<tag id="chkInStock" type="checkbox" Text="" />][<tag type="valueof" resourcekey="ProductSearch.OnlyInStock" />]</li>
 [<tag type='endif' />]
-<br/>
 
 <!-- category search -->
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
-<br/>
-[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
+<li class="manufacturer"><h5>{Settings:parentcatref}</h5>
+[<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
 [<tag type='endif' />]
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
-<br/>
-[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
+<li class="attributes"><h5>{Settings:parentcatref1}</h5>
+[<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect2' testvalue='True' display='{ON}' />]
-<br/>
-[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]
-[<tag type='endif' />]
+<li class="promotions"><h5>{Settings:parentcatref2}</h5>
+[<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
+[<tag type='endif' />
 <!-- END: AND category search on Group 1 -->
+[<tag type="endif"  />]<!-- End Manufacturers and Attributes category search when current category has zero items -->
 
+<li class="buttons">
+[<tag id="cmdAdvSearch" type="linkbutton" cssclass="postbacklink searchpostbacklink {Settings:primarybuttonclass}" resourcekey="ProductSearch.Search" commandname="search" commandargument="ItemID" />]
+[<tag id="cmdAdvReset" type="linkbutton" cssclass="postbacklink {Settings:secondarybuttonclass}"  resourcekey="ProductSearch.Reset" commandname="resetsearch" commandargument="ItemID" />]
+<span class="processing" style="display:none;">[<tag type="label" resourcekey="ProductSearch.Processing" />]</span>
+</li>
 
-<br/>
-[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />] [<tag type="valueof" resourcekey="General.OrderBy" />]
-
-<hr/>
-[<tag id="cmdAdvSearch" type="linkbutton" cssclass="postbacklink searchpostbacklink" resourcekey="General.Search" commandname="search" commandargument="ItemID" />]
-&nbsp;
-[<tag id="cmdAdvReset" type="linkbutton" cssclass="postbacklink"  resourcekey="General.Reset" commandname="resetsearch" commandargument="ItemID" />]
+</ul>
 </div>
-<hr/>
-<div class="processing" style="display:none;">[<tag type="valueof" resourcekey="General.Processing" />]</div>

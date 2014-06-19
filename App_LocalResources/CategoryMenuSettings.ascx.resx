@@ -180,6 +180,12 @@
   <data name="lblmenutype.Text" xml:space="preserve">
     <value>Menu Type : </value>
   </data>
+  <data name="lbltargetmodulekey.Help" xml:space="preserve">
+    <value>Module Key of the module that will display the results.</value>
+  </data>
+  <data name="lbltargetmodulekey.Text" xml:space="preserve">
+    <value>Target Module Key : </value>
+  </data>
   <data name="lbltheme.Help" xml:space="preserve">
     <value>Name of the theme to use for this productlist.</value>
   </data>
