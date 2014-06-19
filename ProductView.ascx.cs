@@ -215,14 +215,13 @@ namespace Nevoweb.DNN.NBrightBuy
                     //See if we have a pagesize, uses the "searchpagesize" tag token.
                     // : This can be overwritten by the cookie value if we need user selection of pagesize.
                     CtrlPaging.Visible = false;
+
+                    #region "Get pagesize, from best place"
                     var pageSize = 0;
                     if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
+                    if (!Utils.IsNumeric(pageSize) && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
                     //check for url param page size
-                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
-                    {
-                        pageSize = Convert.ToInt32(_pagesize);
-                    }
-
+                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture))) pageSize = Convert.ToInt32(_pagesize);
                     if (pageSize == 0)
                     {
                         var strPgSize = "";
@@ -232,9 +231,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     if (pageSize > 0) CtrlPaging.Visible = true;
                     _navigationdata.PageSize = pageSize.ToString("");
+                    #endregion
 
                     var pageNumber = 1;
-
                     //check for url param paging
                     if (Utils.IsNumeric(_pagenum) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
                     {
