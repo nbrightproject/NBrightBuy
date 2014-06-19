@@ -284,6 +284,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var modulekey = "";
                     if ((xmlNod.Attributes["modulekey"] != null)) modulekey = xmlNod.Attributes["modulekey"].Value;
 
+                    var targetmodulekey = "";
+                    if ((xmlNod.Attributes["targetmodulekey"] != null)) targetmodulekey = xmlNod.Attributes["targetmodulekey"].Value;
+
                     // do normal xpath test
                     if (xmlNod.Attributes["xpath"] != null)
                     {
@@ -299,6 +302,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
+                            case "searchactive":
+                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey, StoreSettings.Current.Get("storagetype"));
+                                if (navdata2.Criteria == "") dataValue = "false"; else dataValue = "true";
+                                break;
                             case "productcount":
                                 var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("storagetype"));
                                 dataValue = navdata.RecordCount;
@@ -1285,79 +1292,86 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 lc.Visible = NBrightGlobal.IsVisible;
 
-                var catid = -1;
-                if (container.DataItem is NBrightInfo)
+                if (NBrightGlobal.IsVisible)
                 {
-                    // Must be displaying a product or category with (NBrightInfo), so get categoryid
-                    var objCInfo = (NBrightInfo)container.DataItem;
-                    if (objCInfo.TypeCode == "PRD" || String.IsNullOrEmpty(objCInfo.TypeCode)) // no type is list header, so use catid in url if there. 
+
+                    var xmlDoc = new XmlDataDocument();
+                    xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
+                    var xmlNod = xmlDoc.SelectSingleNode("root/tag");
+
+                    var catid = -1;
+                    if (container.DataItem is NBrightInfo)
                     {
-                        //Is product so get categoryid    
-                        var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                        var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), _settings);
-                        if (obj != null) catid = obj.categoryid;
-                    }
-                    else
-                    {
-                        catid = objCInfo.ItemID;                        
-                    }
-                }
-
-                if (container.DataItem is GroupCategoryData)
-                {
-                    // GroupCategoryData class, so use categoryid
-                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "categoryid"));
-                    if (Utils.IsNumeric(id)) catid = Convert.ToInt32(id);
-                }
-
-
-                var xmlDoc = new XmlDataDocument();
-                xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
-                var xmlNod = xmlDoc.SelectSingleNode("root/tag");
-                var intLength = 400;
-                var intShortLength = -1;
-                var isLink = false;
-                var separator = ">";
-                var aslist = false;
-
-                if (xmlNod != null && xmlNod.Attributes != null)
-                {
-                    if (xmlNod.Attributes["length"] != null)
-                    {
-                        if (Utils.IsNumeric(xmlNod.Attributes["length"].InnerText))
+                        // Must be displaying a product or category with (NBrightInfo), so get categoryid
+                        var objCInfo = (NBrightInfo) container.DataItem;
+                        if (objCInfo.TypeCode == "PRD" || String.IsNullOrEmpty(objCInfo.TypeCode)) // no type is list header, so use catid in url if there. 
                         {
-                            intLength = Convert.ToInt32(xmlNod.Attributes["length"].InnerText);
+                            //Is product so get categoryid    
+                            var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                            var targetModuleKey = "";
+                            if (xmlNod != null && xmlNod.Attributes != null && xmlNod.Attributes["targetmodulekey"] != null) targetModuleKey = xmlNod.Attributes["targetmodulekey"].InnerText;
+                            var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), _settings, targetModuleKey);
+                            if (obj != null) catid = obj.categoryid;
+                        }
+                        else
+                        {
+                            catid = objCInfo.ItemID;
                         }
                     }
-                    if (xmlNod.Attributes["links"] != null) isLink = true;
-                    if (xmlNod.Attributes["short"] != null)
+
+                    if (container.DataItem is GroupCategoryData)
                     {
-                        if (Utils.IsNumeric(xmlNod.Attributes["short"].InnerText))
+                        // GroupCategoryData class, so use categoryid
+                        var id = Convert.ToString(DataBinder.Eval(container.DataItem, "categoryid"));
+                        if (Utils.IsNumeric(id)) catid = Convert.ToInt32(id);
+                    }
+
+
+                    var intLength = 400;
+                    var intShortLength = -1;
+                    var isLink = false;
+                    var separator = ">";
+                    var aslist = false;
+
+                    if (xmlNod != null && xmlNod.Attributes != null)
+                    {
+                        if (xmlNod.Attributes["length"] != null)
                         {
-                            intShortLength = Convert.ToInt32(xmlNod.Attributes["short"].InnerText);
+                            if (Utils.IsNumeric(xmlNod.Attributes["length"].InnerText))
+                            {
+                                intLength = Convert.ToInt32(xmlNod.Attributes["length"].InnerText);
+                            }
+                        }
+                        if (xmlNod.Attributes["links"] != null) isLink = true;
+                        if (xmlNod.Attributes["short"] != null)
+                        {
+                            if (Utils.IsNumeric(xmlNod.Attributes["short"].InnerText))
+                            {
+                                intShortLength = Convert.ToInt32(xmlNod.Attributes["short"].InnerText);
+                            }
+                        }
+                        if (xmlNod.Attributes["separator"] != null) separator = xmlNod.Attributes["separator"].InnerText;
+                        if (xmlNod.Attributes["aslist"] != null && xmlNod.Attributes["aslist"].InnerText.ToLower() == "true") aslist = true;
+                    }
+
+                    if (catid > 0) // check we have a catid
+                    {
+                        if (isLink)
+                        {
+                            var defTabId = PortalSettings.Current.ActiveTab.TabID;
+                            if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                            lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
+                        }
+                        else
+                        {
+                            lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength, separator, aslist);
+                        }
+
+                        if ((lc.Text.Length > intLength) && (!aslist))
+                        {
+                            lc.Text = lc.Text.Substring(0, (intLength - 3)) + "...";
                         }
                     }
-                    if (xmlNod.Attributes["separator"] != null) separator = xmlNod.Attributes["separator"].InnerText;
-                    if (xmlNod.Attributes["aslist"] != null && xmlNod.Attributes["aslist"].InnerText.ToLower() == "true") aslist = true;
-                }
-
-                if (catid > 0) // check we have a catid
-                {
-                    if (isLink)
-                    {
-                        var defTabId = PortalSettings.Current.ActiveTab.TabID;
-                        if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
-                        lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
-                    }
-                    else
-                    {
-                        lc.Text = grpCatCtrl.GetBreadCrumb(catid, intShortLength, separator, aslist);
-                    }
-
-                    if ((lc.Text.Length > intLength) && (!aslist))
-                    {
-                        lc.Text = lc.Text.Substring(0, (intLength - 3)) + "...";
-                    }                    
                 }
             }
             catch (Exception)

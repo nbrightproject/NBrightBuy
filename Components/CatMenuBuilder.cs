@@ -18,22 +18,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private readonly Boolean _debugMode;
         private readonly ModSettings _modSettings;
         private readonly List<string> _templateBody;
+        private readonly int _currentCatId = 0;
 
-        public CatMenuBuilder(String templateBody, ModSettings modSettings, Boolean debugMode)
+
+        public CatMenuBuilder(String templateBody, ModSettings modSettings, int currentCatId, Boolean debugMode)
         {
             _catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
             _ctrlObj = new NBrightBuyController();
             _modSettings = modSettings;
             _debugMode = debugMode;
             _templateBody = GetMenuTemplates(templateBody);
-
+            _currentCatId = currentCatId;
         }
 
         public string GetTreeCatList(int displaylevels = 20, int parentid = 0, int tabid = 0, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
         {
             if (tabid == 0) tabid = PortalSettings.Current.ActiveTab.TabID;
             var rtnList = "";
-            var strCacheKey = "NBrightBuy_GetTreeCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + parentid + "*" + Utils.GetCurrentCulture() + "*" + StoreSettings.Current.ActiveCatId;
+            var strCacheKey = "NBrightBuy_GetTreeCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + parentid + "*" + Utils.GetCurrentCulture() + "*" + _currentCatId.ToString("");
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
@@ -58,7 +60,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             else
                 rtnList += "<ul>";
 
-            var activeCat = _catGrpCtrl.GetCategory(StoreSettings.Current.ActiveCatId);
+            var activeCat = _catGrpCtrl.GetCategory(_currentCatId);
             if (activeCat == null) activeCat = new GroupCategoryData();
             var depth = 0;
             var levelList = _catGrpCtrl.GetGrpCategories(parentid, groupref);
@@ -71,9 +73,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.depth = level; //make base 1, to pick up the
 
                     var openClass = "";
-                    if (activeCat.Parents.Contains(grpcat.categoryid) || grpcat.categoryid == StoreSettings.Current.ActiveCatId) openClass = " open ";
+                    if (activeCat.Parents.Contains(grpcat.categoryid) || grpcat.categoryid == _currentCatId) openClass = " open ";
 
-                    if (StoreSettings.Current.ActiveCatId == grpcat.categoryid)
+                    if (_currentCatId == grpcat.categoryid)
                         rtnList += "<li class='" + activeClass + openClass + "'>";
                     else
                     {

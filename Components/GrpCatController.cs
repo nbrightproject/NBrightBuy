@@ -172,7 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return defId;
         }
 
-        public GroupCategoryData GetCurrentCategoryData(int portalId,  System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null)
+        public GroupCategoryData GetCurrentCategoryData(int portalId, System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null, String targetModuleKey = "")
         {
 
             var defcatid = 0;
@@ -180,6 +180,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(entryId) && entryId > 0) defcatid = GetDefaultCatId(entryId);
 
             if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
+
+            if (targetModuleKey != "")
+            {
+                var navigationdata = new NavigationData(portalId, targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
+            }
 
             if (defcatid == 0)
             {
