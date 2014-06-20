@@ -72,8 +72,8 @@ namespace Nevoweb.DNN.NBrightBuy
             _navigationdata = new NavigationData(PortalId, ModuleKey, StoreSettings.Current.Get("storagetype"));
 
             // Pass in a template specifying the token to create a friendly url for paging. 
-            // (NOTE: we need this in NBB becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
-            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='nbb:hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='valueof' databind='PostText' />]";
+            // (NOTE: we need this in NBS becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
+            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='valueof' databind='PostText' />]";
             CtrlPaging.UseListDisplay = true;
             try
             {
@@ -109,6 +109,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     _templF = ModSettings.Get("txtdisplayfooter");
                 }
 
+
                 #endregion
 
 
@@ -136,9 +137,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 //if body template doesn't contain a default moduleid add it.
-                if (!rpDataTempl.ToLower().Contains("nbb:modeldefault")) rpDataTempl = "[<tag type='nbb:modeldefault' />]" + rpDataTempl;
-                //Add the productid so we alwasy have a hidden field for it on each product record.
-                if (!rpDataTempl.ToLower().Contains("id='productid'")) rpDataTempl = "[<tag id='productid' type='hidden' databind='itemid' />]" + rpDataTempl;
+                if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
 
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
@@ -357,7 +356,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
                     if (itemListAction == "wishlist" || itemListAction == "both")
                     {
-                        var cw = new ItemListData(0, itemListName);
+                        var cw = new ItemListData(Request, Response, 0, itemListName);
                         var showList = !(itemListAction == "both" && !cw.Active);
                         if (showList)
                         {
@@ -450,9 +449,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addtobasket":
-                    NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
-                    var currentCart = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
-                    currentCart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.DataInfo, Request, e.Item.ItemIndex, DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
