@@ -137,7 +137,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 //if body template doesn't contain a default moduleid add it.
-                if (!rpDataTempl.ToLower().Contains("nbb:modeldefault")) rpDataTempl = "[<tag type='nbb:modeldefault' />]" + rpDataTempl;
+                if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
 
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
