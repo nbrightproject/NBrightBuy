@@ -319,7 +319,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 templ = Utils.ReplaceSettingTokens(templ, settings);
                 templ = Utils.ReplaceUrlTokens(templ);
-                templ = "[<tag type='tokennamespace' value='nbs' />]" + templ;
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
             }

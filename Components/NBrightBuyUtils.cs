@@ -337,6 +337,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic,String portalHomeDirectory)
         {
+            if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
+
             var itemTempl = new GenXmlTemplate(templateData, settingsDic);
             // add default resx folder to template
             itemTempl.AddResxFolder("/DesktopModules/NBright/NBrightBuy/App_LocalResources/");

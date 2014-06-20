@@ -138,6 +138,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 //if body template doesn't contain a default moduleid add it.
                 if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
+                // always add a productid hidden field to the data template (for add to cart)
+                rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
 
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
@@ -356,7 +358,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
                     if (itemListAction == "wishlist" || itemListAction == "both")
                     {
-                        var cw = new ItemListData(Request, Response, 0, itemListName);
+                        var cw = new ItemListData(0, itemListName);
                         var showList = !(itemListAction == "both" && !cw.Active);
                         if (showList)
                         {
@@ -449,7 +451,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addtobasket":
-                    NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.DataInfo, Request, e.Item.ItemIndex, DebugMode);
+                    //NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
+                    var currentcart = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
+                    currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
