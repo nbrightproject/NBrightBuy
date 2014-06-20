@@ -37,8 +37,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             //remove namespace of token.
             // If the NBrigthCore template system is being used across mutliple modules in the portal (that use a provider interface for tokens),
-            // then a namespace should be added to the front of the type attribute, this stops clashes in the tokening system. 
-            if (ctrltype.StartsWith("nbb:")) ctrltype = ctrltype.Substring(4);
+            // then a namespace should be added to the front of the type attribute, this stops clashes in the tokening system. NOTE: the "tokennamespace" tag is now supported as well
+            if (ctrltype.StartsWith("nbs:")) ctrltype = ctrltype.Substring(4);
 
             _rootname = rootname;
             _databindColumn = databindColum;
