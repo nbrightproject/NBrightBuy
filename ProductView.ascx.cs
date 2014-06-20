@@ -72,8 +72,8 @@ namespace Nevoweb.DNN.NBrightBuy
             _navigationdata = new NavigationData(PortalId, ModuleKey, StoreSettings.Current.Get("storagetype"));
 
             // Pass in a template specifying the token to create a friendly url for paging. 
-            // (NOTE: we need this in NBB becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
-            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='nbb:hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='valueof' databind='PostText' />]";
+            // (NOTE: we need this in NBS becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
+            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='valueof' databind='PostText' />]";
             CtrlPaging.UseListDisplay = true;
             try
             {
