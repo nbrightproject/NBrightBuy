@@ -1,29 +1,36 @@
 ﻿<div>
 [<tag id="cmdDeleteItem" type="linkbutton" resourcekey="General.cmdDelete" tooltip="General.cmdDelete" commandname="deletecartitem" />]
-[<tag type="valueof" xpath="item/productname" />]
-[<tag type="valueof" xpath="item/modelref" />]
-[<tag type="valueof" xpath="item/modeldesc" />]
-[<tag id="txtqty" type="cartqtytextbox" width="60" maxlength="10" text="" />]
-[<tag type="valueof" xpath="item/unitcost" />]
+[<tag type="valueof" xpath="genxml/productname" />]
+[<tag type="valueof" xpath="genxml/modelref" />]
+[<tag type="valueof" xpath="genxml/modeldesc" />]
+<!-- NOTE: Qty field needs to be called "qty", so it updates the correct cart field on update -->
+[<tag id="qty" type="cartqtytextbox" width="60" maxlength="10" text="" />]
+
+[<tag id="txtTest" type="textbox" width="60" maxlength="10" text="testing textbox field" />]
+[<tag id="ddlTest" type="dropdownlist" data="a;b;c;d" datavalue="1;2;3;4" />]
+[<tag id="rblTest" type="radiobuttonlist" data="a;b;c" repeatcolumns="3" />]
+[<tag id="chkTest" type="checkbox" Text="Checkbox Test" />] 
+
+[<tag type="valueof" xpath="genxml/unitcost" />]
 [<tag id="cmdRemoveQty" type="linkbutton" resourcekey="General.cmdRemove" commandname="removeqty" />]
-[<tag type="valueof" xpath="item/qty" />]
+[<tag type="valueof" xpath="genxml/qty" />]
 [<tag id="cmdAddQty" type="linkbutton" resourcekey="General.cmdAdd" commandname="addqty" />]
-[<tag type="valueof" xpath="item/itemcode" />]
+[<tag type="valueof" xpath="genxml/itemcode" />]
 <br/>
-[<tag type="valueof" xpath="item/options/option[[1]]/optname" />]
-[<tag type="valueof" xpath="item/options/option[[1]]/optvaltext" />]
-[<tag type="valueof" xpath="item/options/option[[1]]/optvalcost" />]
+[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]
+[<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />]
+[<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]
 
-[<tag type="valueof" xpath="item/options/option[[2]]/optname" />]
-[<tag type="valueof" xpath="item/options/option[[2]]/optvaltext" />]
-[<tag type="valueof" xpath="item/options/option[[2]]/optvalcost" />]
+[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]
+[<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />]
+[<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />]
 
-[<tag type="valueof" xpath="item/options/option[[3]]/optname" />]
-[<tag type="valueof" xpath="item/options/option[[3]]/optvaltext" />]
-[<tag type="valueof" xpath="item/options/option[[3]]/optvalcost" />]
+[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]
+[<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />]
+[<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />]
 
-[<tag type="valueof" xpath="item/options/option[[4]]/optname" />]
-[<tag type="valueof" xpath="item/options/option[[4]]/optvaltext" />]
-[<tag type="valueof" xpath="item/options/option[[4]]/optvalcost" />]
+[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]
+[<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />]
+[<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />]
 
 </div>

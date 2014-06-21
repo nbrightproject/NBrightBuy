@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml;
-using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -23,5 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             return cartItemInfo;
         }
+
+
     }
 }

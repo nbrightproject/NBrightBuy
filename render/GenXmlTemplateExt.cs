@@ -2634,7 +2634,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var strXML = Convert.ToString(DataBinder.Eval(container.DataItem,"XMLData" ));
                     var nbInfo = new NBrightInfo();
                     nbInfo.XMLData = strXML;
-                    txt.Text = nbInfo.GetXmlProperty("item/qty");
+                    txt.Text = nbInfo.GetXmlProperty("genxml/qty");
                 }
             }
             catch (Exception)

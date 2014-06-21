@@ -14,16 +14,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 {
 
 
-	public abstract class CartInterface
+	public abstract class PromoInterface
 	{
 
 		#region "Shared/Static Methods"
 
 		// singleton reference to the instantiated object 
 
-        private static CartInterface objProvider = null;
+        private static PromoInterface objProvider = null;
         // constructor
-        static CartInterface()
+        static PromoInterface()
 		{
 			CreateProvider();
 		}
@@ -35,27 +35,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 			string[] Prov = null;
 			string ProviderName = null;
 
-            ProviderName = StoreSettings.Current.Get("cart.provider");
-            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.CartProvider,Nevoweb.DNN.NBrightBuy.Providers.CartProvider"; 
+            ProviderName = StoreSettings.Current.Get("promo.provider");
+            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.PromoProvider,Nevoweb.DNN.NBrightBuy.Providers.PromoProvider"; 
             if (!string.IsNullOrEmpty(ProviderName))
 			{
 			    Prov = ProviderName.Split(',');
 				handle = Activator.CreateInstance(Prov[0], Prov[1]);
-                objProvider = (CartInterface)handle.Unwrap();
+                objProvider = (PromoInterface)handle.Unwrap();
 			}
         }
 
 		// return the provider
-        public static new CartInterface Instance()
+        public static new PromoInterface Instance()
 		{
             return objProvider;
 		}
 
 		#endregion
         
-        public abstract NBrightInfo ValidateCart(NBrightInfo cartInfo);
-
-        public abstract NBrightInfo ValidateCartItem(NBrightInfo cartItemInfo);
 
 
 	}

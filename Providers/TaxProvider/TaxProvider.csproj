@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{18B26693-FFB9-4C88-932A-1F2F7E6C5EFB}</ProjectGuid>
+    <ProjectGuid>{0BAF630B-7B63-4769-BBD1-8E2F1162945A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CartProvider</RootNamespace>
-    <AssemblyName>NBrightBuy.CartProvider</AssemblyName>
+    <RootNamespace>TaxProvider</RootNamespace>
+    <AssemblyName>TaxProvider</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CartProvider.cs" />
+    <Compile Include="TaxProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +62,6 @@
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\..\..\bin\$(TargetFileName)"
 
 copy "$(AssemblyName).pdb" "..\..\..\..\..\..\..\bin\$(AssemblyName).pdb"
-
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

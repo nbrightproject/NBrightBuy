@@ -156,6 +156,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[2];
+            if (Utils.RequestParam(Context, "eid") != "") param[0] = "eid=" + Utils.RequestParam(Context, "eid"); 
 
             switch (e.CommandName.ToLower())
             {
@@ -179,12 +180,34 @@ namespace Nevoweb.DNN.NBrightBuy
                     _cartInfo.RemoveItem(e.Item.ItemIndex);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "deletecart":
+                    _cartInfo.DeleteCart();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "updatecart":
+                    UpdateCart();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
 
         #endregion
 
+        #region "Methods"
+
+        private void UpdateCart()
+        {
+            foreach (RepeaterItem i in rpData.Items)
+            {
+                var strXml = GenXmlFunctions.GetGenXml(i);
+                var cInfo = new NBrightInfo();
+                cInfo.XMLData = strXml;
+                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo, DebugMode);
+            }
+        }
+
+        #endregion
 
 
     }

@@ -372,4 +372,10 @@
   <data name="cmdRemove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>
