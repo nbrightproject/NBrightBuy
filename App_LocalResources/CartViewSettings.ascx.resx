@@ -117,14 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="addresslisttemplates.Text" xml:space="preserve">
+    <value>Address List Templates</value>
+  </data>
+  <data name="checkoutemplates.Text" xml:space="preserve">
+    <value>Checkout Templates</value>
+  </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Cart View Settings</value>
+  </data>
+  <data name="lbladdressinput.Text" xml:space="preserve">
+    <value>Address Input Form : </value>
+  </data>
+  <data name="lbladdrlistbody.Text" xml:space="preserve">
+    <value>Address List Body : </value>
+  </data>
+  <data name="lbladdrlistfooter.Text" xml:space="preserve">
+    <value>Address List Footer : </value>
+  </data>
+  <data name="lbladdrlistheader.Text" xml:space="preserve">
+    <value>Address List Header : </value>
   </data>
   <data name="lbladvancedsettings.Text" xml:space="preserve">
     <value>Advanced</value>
   </data>
   <data name="lblbasicsettings.Text" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="lblcheckoutdetails.Text" xml:space="preserve">
+    <value>Checkout Details : </value>
+  </data>
+  <data name="lblcheckoutextra.Text" xml:space="preserve">
+    <value>Extra Data Form : </value>
+  </data>
+  <data name="lblcheckoutpromo.Text" xml:space="preserve">
+    <value>Promotions Form : </value>
+  </data>
+  <data name="lblcheckoutship.Text" xml:space="preserve">
+    <value>Shipping Form : </value>
+  </data>
+  <data name="lblcheckouttax.Text" xml:space="preserve">
+    <value>Tax Form : </value>
   </data>
   <data name="lbllistbody.Help" xml:space="preserve">
     <value>Template to be used as category body, this is repeated for each category.</value>

@@ -74,6 +74,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
+                var templAH = ModSettings.Get("txtaddrlistheader");
+                var templAB = ModSettings.Get("txtaddrlistbody");
+                var templAF = ModSettings.Get("txtaddrlistfooter");
+                var templA = ModSettings.Get("txtaddressinput");
+                var templS = ModSettings.Get("txtcheckoutship");
+                var templT = ModSettings.Get("txtcheckouttax");
+                var templP = ModSettings.Get("txtcheckoutpromo");
+                var templE = ModSettings.Get("txtcheckoutextra");
+                var templD = ModSettings.Get("txtcheckoutdetails");
+
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
 
@@ -89,8 +99,18 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // Get Display Footer
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
+                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
+
+                rpAddrListH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAH, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpAddrListB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpAddrListF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAF, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpAddr.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templA, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpExtra.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templE, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory); 
 
             }
             catch (Exception exc)
@@ -169,6 +189,10 @@ namespace Nevoweb.DNN.NBrightBuy
             // display Address input form
             rpAddr.DataSource = cartL;
             rpAddr.DataBind();
+
+            // display shipping input form
+            rpShip.DataSource = cartL;
+            rpShip.DataBind();
 
             // display Promo input form
             rpPromo.DataSource = cartL;
