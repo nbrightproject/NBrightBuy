@@ -123,7 +123,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void PageLoad()
         {
 
-            #region "Data Repeater"
+            #region " Cart List Data Repeater"
 
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
@@ -132,8 +132,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpData.DataSource = l;
                 rpData.DataBind();
             }
-
-            #endregion
 
             var cartL = new List<NBrightInfo>();
             cartL.Add(_cartInfo.GetCart());
@@ -145,6 +143,49 @@ namespace Nevoweb.DNN.NBrightBuy
             // display footer
             rpDataF.DataSource = cartL;
             rpDataF.DataBind();
+
+            #endregion
+
+            #region "Address List Data Repeater"
+
+
+            if (_templD.Trim() != "") // if we don;t have a template, don't do anything
+            {
+                var l = _cartInfo.GetCartItemList();
+                rpAddrListB.DataSource = l;
+                rpAddrListB.DataBind();
+            }
+
+            // display header
+            rpAddrListH.DataSource = cartL;
+            rpAddrListH.DataBind();
+
+            // display footer
+            rpAddrListF.DataSource = cartL;
+            rpAddrListF.DataBind();
+
+            #endregion
+
+            // display Address input form
+            rpAddr.DataSource = cartL;
+            rpAddr.DataBind();
+
+            // display Promo input form
+            rpPromo.DataSource = cartL;
+            rpPromo.DataBind();
+
+            // display Tax input form
+            rpTax.DataSource = cartL;
+            rpTax.DataBind();
+
+            // display extra input form
+            rpExtra.DataSource = cartL;
+            rpExtra.DataBind();
+
+            // display cart details
+            rpDetailDisplay.DataSource = cartL;
+            rpDetailDisplay.DataBind();
+
 
         }
 
