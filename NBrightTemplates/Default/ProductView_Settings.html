@@ -37,17 +37,17 @@
     <h2 class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">[<tag type="valueof" resourcekey="ProductViewSettings.lblbasicsettings" />]</a></h2>
     <fieldset>
         <div class="dnnFormItem">
-            [<tag id="lblmoduleref" type="dnnlabelcontrol" />][<tag id="modulekey" type="textbox" width="300" maxlength="250" text="ProductView" />]&nbsp;
+            [<tag id="lblmoduleref" type="dnn:labelcontrol" />][<tag id="modulekey" type="textbox" width="300" maxlength="250" text="ProductView" />]&nbsp;
             [<tag id="rvReq" cssclass="dnnFormError" ctrltype="rfvalidator" resourcekey="General.RequiredField" controltovalidate="modulekey" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbltheme" type="dnnlabelcontrol" />][<tag id="themefolder" cssclass="themefolder" type="textbox" width="150" maxlength="50" text="Cygnus" />]
+            [<tag id="lbltheme" type="dnn:labelcontrol" />][<tag id="themefolder" cssclass="themefolder" type="textbox" width="150" maxlength="50" text="Settings:theme" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldefaultcatid" type="dnnlabelcontrol" />][<tag id="defaultcatid" type="catdropdown" allowblank="1" width="300" />]
+            [<tag id="lbldefaultcatid" type="dnn:labelcontrol" />][<tag id="defaultcatid" type="catdropdown" allowblank="1" width="300" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblpagesize" type="dnnlabelcontrol" />][<tag id="pagesize" type="textbox" width="75" maxlength="3" text="10" />]
+            [<tag id="lblpagesize" type="dnn:labelcontrol" />][<tag id="pagesize" type="textbox" width="75" maxlength="3" text="10" />]
             [<tag id="rvpagesize" ctrltype="rvalidator" text="error" controltovalidate="pagesize" minimumvalue="0" maximumvalue="999" type="Integer" />] 
         </div>
     </fieldset>
@@ -55,46 +55,46 @@
     <h2 class="dnnFormSectionHead"><a href="">[<tag type="valueof" resourcekey="ProductViewSettings.lbladvancedsettings" />]</a></h2>
     <fieldset>
         <div class="dnnFormItem">
-            [<tag id="lbllistheader" type="dnnlabelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="listheader.html" />]
+            [<tag id="lbllistheader" type="dnn:labelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="listheader.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistbody" type="dnnlabelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="list.html" />]
+            [<tag id="lbllistbody" type="dnn:labelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="list.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistfooter" type="dnnlabelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="listfooter.html"/>]
+            [<tag id="lbllistfooter" type="dnn:labelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="listfooter.html"/>]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldetailheader" type="dnnlabelcontrol" />][<tag id="txtdisplayentryheader" type="textbox" width="300" maxlength="250" Text="detailheader.html" />]
+            [<tag id="lbldetailheader" type="dnn:labelcontrol" />][<tag id="txtdisplayentryheader" type="textbox" width="300" maxlength="250" Text="detailheader.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldetailbody" type="dnnlabelcontrol" />][<tag id="txtdisplayentrybody" type="textbox" width="300" maxlength="250" Text="detail.html" />]
+            [<tag id="lbldetailbody" type="dnn:labelcontrol" />][<tag id="txtdisplayentrybody" type="textbox" width="300" maxlength="250" Text="detail.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldetailfooter" type="dnnlabelcontrol" />][<tag id="txtdisplayentryfooter" type="textbox" width="300" maxlength="250" Text="detailfooter.html"/>]
+            [<tag id="lbldetailfooter" type="dnn:labelcontrol" />][<tag id="txtdisplayentryfooter" type="textbox" width="300" maxlength="250" Text="detailfooter.html"/>]
         </div>
         <div class="dnnFormItem staticlist">
-            [<tag id="lblstaticlist" type="dnnlabelcontrol" />][<tag id="staticlist" type="checkbox" Text="" checked="False" />]
+            [<tag id="lblstaticlist" type="dnn:labelcontrol" />][<tag id="staticlist" type="checkbox" Text="" checked="False" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistonly" type="dnnlabelcontrol" />][<tag id="listonly" type="checkbox" Text="" checked="False" />]
+            [<tag id="lbllistonly" type="dnn:labelcontrol" />][<tag id="listonly" type="checkbox" Text="" checked="False" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblcascaderesults" type="dnnlabelcontrol" />][<tag id="chkcascaderesults" type="checkbox" Text="" checked="True" />]
+            [<tag id="lblcascaderesults" type="dnn:labelcontrol" />][<tag id="chkcascaderesults" type="checkbox" Text="" checked="True" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldetailtab" type="dnnlabelcontrol" />][<tag id="ddldetailtabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddldetailtabid]
+            [<tag id="lbldetailtab" type="dnn:labelcontrol" />][<tag id="ddldetailtabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddldetailtabid]
         </div>
         <div class="dnnFormItem detailmoduleref">
-            [<tag id="lbldetailmoduleref" type="dnnlabelcontrol" />][<tag id="detailmodulekey" type="textbox" width="300" maxlength="250" />][Settings:detailmodulekey]
+            [<tag id="lbldetailmoduleref" type="dnn:labelcontrol" />][<tag id="detailmodulekey" type="textbox" width="300" maxlength="250" />][Settings:detailmodulekey]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblreturntab" type="dnnlabelcontrol" />][<tag id="ddllisttabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddllisttabid]
+            [<tag id="lblreturntab" type="dnn:labelcontrol" />][<tag id="ddllisttabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddllisttabid]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldefaultlistmodule" type="dnnlabelcontrol" />][<tag id="chkdefaultlistmodule" type="checkbox" Text="" checked="False" />]
+            [<tag id="lbldefaultlistmodule" type="dnn:labelcontrol" />][<tag id="chkdefaultlistmodule" type="checkbox" Text="" checked="False" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblreturnlimit" type="dnnlabelcontrol" />][<tag id="returnlimit" type="textbox" width="75" maxlength="3" text="0" />]
+            [<tag id="lblreturnlimit" type="dnn:labelcontrol" />][<tag id="returnlimit" type="textbox" width="75" maxlength="3" text="0" />]
         </div>
     </fieldset>
     
