@@ -397,7 +397,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<billaddress>";
             strXml += info.XMLData;
             strXml += "</billaddress>";
+            _cartInfo.RemoveXmlNode("genxml/billaddress");
             _cartInfo.AddXmlNode(strXml, "billaddress", "genxml");
+            Save();
         }
 
         public NBrightInfo GetBillingAddress()
@@ -416,7 +418,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<shipaddress>";
             strXml += info.XMLData;
             strXml += "</shipaddress>";
+            _cartInfo.RemoveXmlNode("genxml/shipaddress");
             _cartInfo.AddXmlNode(strXml, "shipaddress", "genxml");
+            Save();
         }
 
         public NBrightInfo GetShippingAddress()

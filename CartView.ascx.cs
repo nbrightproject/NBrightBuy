@@ -46,6 +46,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _entryid = "";
         private String _tabid = "";
         private CartData _cartInfo;
+        private AddressData _addressData;
 
         #region Event Handlers
 
@@ -60,6 +61,7 @@ namespace Nevoweb.DNN.NBrightBuy
             base.OnInit(e);
 
             _cartInfo = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
+            _addressData = new AddressData();
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
@@ -110,7 +112,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                 rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                 rpExtra.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templE, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory); 
+                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
 
             }
             catch (Exception exc)
@@ -171,7 +173,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList();
+                var l = _addressData.GetAddressList();
                 rpAddrListB.DataSource = l;
                 rpAddrListB.DataBind();
             }
@@ -251,6 +253,22 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "updatecart":
                     UpdateCart();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "addaddress":
+                    _addressData.AddAddress(rpAddr, DebugMode);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "deladdress":
+                    _addressData.RemoveAddress(e.Item.ItemIndex);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "selectbilladdress":
+                    _cartInfo.AddBillingAddress(_addressData.GetAddress(e.Item.ItemIndex));
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "selectshipaddress":
+                    _cartInfo.AddShippingAddress(_addressData.GetAddress(e.Item.ItemIndex));
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

@@ -378,4 +378,34 @@
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="lblFirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="lblLastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="lblAddress1.Text" xml:space="preserve">
+    <value>Address1</value>
+  </data>
+  <data name="lblAddress2.Text" xml:space="preserve">
+    <value>Address2</value>
+  </data>
+  <data name="lblTown.Text" xml:space="preserve">
+    <value>Town</value>
+  </data>
+  <data name="lblCity.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="lblPostCode.Text" xml:space="preserve">
+    <value>Post Code</value>
+  </data>
+  <data name="lblCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="TaxNumber.Text" xml:space="preserve">
+    <value>Tax Number</value>
+  </data>
+  <data name="PromotionalCode.Text" xml:space="preserve">
+    <value>Promotional Code</value>
+  </data>
 </root>

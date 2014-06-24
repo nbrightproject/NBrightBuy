@@ -61,6 +61,8 @@
     <Compile Include="Components\CartData.cs" />
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
+    <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\UserData.cs" />
     <Compile Include="Components\Interfaces\CartInterface.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />
@@ -206,6 +208,57 @@
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Themes\Cygnus\css\cygnus.css" />
+    <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
+    <Content Include="Themes\Cygnus\css\jquery.metisMenu.css" />
+    <Content Include="Themes\Cygnus\css\jquery.navgoco.css" />
+    <Content Include="Themes\Cygnus\Default\addressinput.html" />
+    <Content Include="Themes\Cygnus\Default\addressselectbody.html" />
+    <Content Include="Themes\Cygnus\Default\addressselectfooter.html" />
+    <Content Include="Themes\Cygnus\Default\addressselectheader.html" />
+    <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
+    <Content Include="Themes\Cygnus\Default\cartviewbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartviewfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartviewheader.html" />
+    <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\categorybody.html" />
+    <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />
+    <Content Include="Themes\Cygnus\Default\CategoryMenuSettings.html" />
+    <Content Include="Themes\Cygnus\Default\catmenu.html" />
+    <Content Include="Themes\Cygnus\Default\catmenubody.html" />
+    <Content Include="Themes\Cygnus\Default\catmenufooter.html" />
+    <Content Include="Themes\Cygnus\Default\catmenuheader.html" />
+    <Content Include="Themes\Cygnus\Default\cattreebody.html" />
+    <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
+    <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutdetails.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutextra.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutpromo.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutship.html" />
+    <Content Include="Themes\Cygnus\Default\checkouttax.html" />
+    <Content Include="Themes\Cygnus\Default\detail.html" />
+    <Content Include="Themes\Cygnus\Default\detailfooter.html" />
+    <Content Include="Themes\Cygnus\Default\detailheader.html" />
+    <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\drilldownmenu.html" />
+    <Content Include="Themes\Cygnus\Default\drilldownmenufooter.html" />
+    <Content Include="Themes\Cygnus\Default\drilldownmenuheader.html" />
+    <Content Include="Themes\Cygnus\Default\list.html" />
+    <Content Include="Themes\Cygnus\Default\listfooter.html" />
+    <Content Include="Themes\Cygnus\Default\listheader.html" />
+    <Content Include="Themes\Cygnus\Default\listpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\modellist.html" />
+    <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
+    <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\relatedlist.html" />
+    <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
+    <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.metisMenu.js" />
+    <Content Include="Themes\Cygnus\js\jquery.navgoco.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.responsiveTabs.min.js" />
+    <Content Include="Themes\Cygnus\js\masonry.pkgd.min.js" />
+    <Content Include="Themes\Cygnus\js\stacktable.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\Support\NBrightCore\NBrightCore.csproj">
@@ -228,6 +281,12 @@
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\menu.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\CategoryMenuSettings.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\CartView.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearch.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearchSettings.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\ProductView.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\ProductViewSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NBrightThumb.ashx" />
