@@ -1,4 +1,138 @@
-<div>
+<div class="checkoutextra" style="display:none;">
 <h2>Extra Information</h2>
-    [<tag id='extramessage' type='textbox' width='400' Multiline="True" height="100" />]    
+    [<tag id='extramessage' type='textbox' width='400' textmode="MultiLine" height="100" />]    
+    
+    [<tag id="cmdConfirm" type="linkbutton" resourcekey="CartView.confirm" commandname="confirm" />] 
 </div>
+
+<!-- Process button on for checkout -->
+<div class="navigationbuttons">
+    <a href="#" class="billingback">[<tag type="valueof" resourcekey="CartView.Back" />] Back to Cart</a>
+    <a href="#" class="billingnext">[<tag type="valueof" resourcekey="CartView.Next" />] Next to Billing</a>
+    <a href="#" class="shippingback">[<tag type="valueof" resourcekey="CartView.Back" />] Back to Billing</a>
+    <a href="#" class="shippingnext">[<tag type="valueof" resourcekey="CartView.Next" />] Next to Shipping</a>
+    <a href="#" class="extraback">[<tag type="valueof" resourcekey="CartView.Back" />] Back to Shipping</a>
+    <a href="#" class="extranext">[<tag type="valueof" resourcekey="CartView.Next" />] Next to Extra</a>
+    <a href="#" class="confirmback">[<tag type="valueof" resourcekey="CartView.Back" />] Back to Extra</a>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        var stage = "cart";
+        var addrlistactive = $("input[[id*='addresslistactive']]").val();
+        hidenavigation();
+        $(".billingnext").show();
+        $(".cartdetailist").show();
+        $(".navigationbuttons").show();
+
+        if ('[Url:stage]' == 'confirm') stageconfirm();
+        if ('[Url:stage]' == 'bill') stagebill();
+        if ('[Url:stage]' == 'ship') stageship();
+        if ('[Url:stage]' == 'extra') stageextra();
+
+        if ('[Url:stage]' == 'edit') {
+            hidenavigation();
+            $(".addressinputform").show();            
+        }
+
+        //address list functions
+        $(".addnewaddress").click(function () {
+            hidenavigation();
+            $(".addressinputform").show();
+        });
+        $(".cancelnewaddress").click(function () {
+            hidenavigation();
+            if (stage == "ship") stageship(); else stagebill();
+        });
+
+        //Navigation buttons
+        $(".billingback").click(function () { stagecart(); });
+        $(".billingnext").click(function () { stagebill(); });
+        $(".shippingback").click(function () { stagebill(); });
+        $(".shippingnext").click(function () { stageship(); });
+        $(".extraback").click(function () { stageship(); });
+        $(".extranext").click(function () { stageextra(); });
+        $(".confirmback").click(function () { stageextra(); });
+
+        function stagecart() {
+            stage = "cart";
+            hidenavigation();
+            $(".billingnext").show();
+            $(".cartdetailist").show();
+            $("a[[id*='cmdUpdate']]").show();
+            $(".navigationbuttons").show();
+        }
+        function stagebill() {
+            stage = "bill";
+            hidenavigation();
+            $(".billingback").show();
+            if (addrlistactive) {
+                $(".checkoutselectaddress").show();
+            } else {
+                $(".checkoutbillform").show();
+                $(".shippingnext").show();
+            }
+            $(".selectaddressheading").html("[<tag type="valueof" resourcekey="CartView.BillingAddress" />]");            
+        }
+        function stageship() {
+            stage = "ship";
+            hidenavigation();
+            $(".shippingback").show();
+            $("a[[id*='cmdUseBillingAddress']]").show();
+            $("a[[id*='cmdForCollection']]").show();
+            $(".selectaddressheading").html("[<tag type="valueof" resourcekey="CartView.ShippingAddress" />]");
+            if (addrlistactive) {
+                $(".checkoutselectaddress").show();
+            } else {
+                $(".checkoutshipform").show();
+                $(".extranext").show();
+            }
+        }
+        function stageextra() {
+            stage = "extra";
+            hidenavigation();
+            $(".ordernext").show();
+            $(".extraback").show();
+            $(".checkoutextra").show();
+            $(".checkoutship").show();
+            $(".checkouttax").show();
+            $(".checkoutpromo").show();
+        }
+        function stageconfirm() {
+            stage = "confirm";
+            $(".checkoutdetails").show();
+            $(".cartdetailist").show();
+            $(".billingnext").hide();
+            $(".confirmback").show();
+            $("a[[id*='cmdUpdate']]").hide();
+        }
+
+
+        function hidenavigation() {
+            $(".billingback").hide();
+            $(".billingnext").hide();
+            $(".shippingback").hide();
+            $(".shippingnext").hide();
+            $(".extraback").hide();
+            $(".extranext").hide();
+            $(".confirmback").hide();
+            $(".cartdetailist").hide();
+            $(".checkoutdetails").hide();
+            $(".checkoutshipform").hide();
+            $(".checkoutbillform").hide();
+            $(".checkoutextra").hide();
+            $(".checkoutship").hide();
+            $(".checkouttax").hide();
+            $(".checkoutpromo").hide();
+            $(".checkoutselectaddress").hide();
+            $(".addressinputform").hide();
+            $("input[[id*='currentstage']]").val(stage);
+            $("a[[id*='cmdUseBillingAddress']]").hide();
+            $("a[[id*='cmdForCollection']]").hide();
+            
+        }
+
+    });
+
+</script>

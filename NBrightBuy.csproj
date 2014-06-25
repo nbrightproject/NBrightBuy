@@ -236,6 +236,8 @@
     <Content Include="Themes\Cygnus\Default\checkoutpromo.html" />
     <Content Include="Themes\Cygnus\Default\checkoutship.html" />
     <Content Include="Themes\Cygnus\Default\checkouttax.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutaddrship.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutaddrbill.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />

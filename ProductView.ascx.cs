@@ -454,6 +454,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     //NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
                     var currentcart = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    currentcart.Save(DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

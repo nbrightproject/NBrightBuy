@@ -1,8 +1,5 @@
-[<tag id="currentstage" type="postback" value="" />] 
-[<tag id="forcollection" type="postback" value="" />] 
-
-<div class="addressinputform" style="display:none">
-<h2>Address Input</h2>
+<div class="checkoutshipform" style="display:none">
+<h2>[<tag type="valueof" resourcekey="CartView.ShippingAddress" />]</h2>
 
 
 [<tag id='lblFirstName' resourcekey='General.lblFirstName' type='dnn:labelcontrol' />]
@@ -28,14 +25,5 @@
 
 [<tag id='lblCountry' resourcekey='General.lblCountry' type='dnn:labelcontrol' />]
 [<tag id='Country' type='dropdownlist' data='111111;2222222;3333333;4444444;555555' />]&nbsp;
-
-    <div>
-    [<tag id="cmdAddAddress" type="linkbutton" resourcekey="General.cmdAdd" commandname="addaddress" />] 
     
-    [<tag id="cmdUpdateAddress" type="linkbutton" resourcekey="General.cmdUpdate" commandname="updateaddress" />] 
-
-    <a href="#" class="cancelnewaddress">[<tag type="valueof" resourcekey="General.cmdCancel" />]</a>    
-
-    </div>
-
 </div>

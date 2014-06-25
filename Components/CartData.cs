@@ -38,7 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Save cart
         /// </summary>
-        private void Save(Boolean debugMode = false)
+        public void Save(Boolean debugMode = false)
         {
             //save cart
             var strXML = "<items>";
@@ -229,9 +229,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("radiobuttonlist", "", "genxml");
                 objInfo.AddSingleNode("checkbox", "", "genxml");
 
-                // Update xml to cart on DB.
-                Save(debugMode);
-
                 // return the message status code in textData, non-critical (usually empty)
                 return objInfo.TextData;
             }
@@ -242,7 +239,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void RemoveItem(int index)
         {
             _itemList.RemoveAt(index);
-            Save();
         }
 
         public void UpdateItemQty(int index,int qty)
@@ -253,7 +249,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 RemoveItem(index);
             else
                 _itemList[index].SetXmlProperty("genxml/qty", itemqty.ToString(""), TypeCode.String, false);
-            Save();
         }
 
 
@@ -331,7 +326,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="index">index of cart item</param>
         /// <param name="inputInfo">genxml data of cartview item</param>
         /// <param name="debugMode">Debug mode</param>
-        public void MergeCartInputData(int index, NBrightInfo inputInfo, Boolean debugMode = false)
+        public void MergeCartInputData(int index, NBrightInfo inputInfo)
         {
             //get cart item
             _itemList = GetCartItemList();
@@ -385,13 +380,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
-                Save(debugMode);
             }
         }
 
         /// <summary>
         /// Add/Upate billing Address
         /// </summary>
+        public void AddBillingAddress(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddBillingAddress(addInfo);
+        }
         public void AddBillingAddress(NBrightInfo info)
         {
             var strXml = "<billaddress>";
@@ -399,20 +400,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml += "</billaddress>";
             _cartInfo.RemoveXmlNode("genxml/billaddress");
             _cartInfo.AddXmlNode(strXml, "billaddress", "genxml");
-            Save();
         }
 
         public NBrightInfo GetBillingAddress()
         {
             var rtnInfo = new NBrightInfo();
             var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/billaddress");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.OuterXml;
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
 
         /// <summary>
         /// Add/Upate Shipping Address
         /// </summary>
+        public void AddShippingAddress(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddShippingAddress(addInfo);
+        }
         public void AddShippingAddress(NBrightInfo info)
         {
             var strXml = "<shipaddress>";
@@ -420,25 +427,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml += "</shipaddress>";
             _cartInfo.RemoveXmlNode("genxml/shipaddress");
             _cartInfo.AddXmlNode(strXml, "shipaddress", "genxml");
-            Save();
         }
 
         public NBrightInfo GetShippingAddress()
         {
             var rtnInfo = new NBrightInfo();
             var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/shipaddress");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.OuterXml;
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
+        public void DeleteShippingAddress()
+        {
+            _cartInfo.RemoveXmlNode("genxml/shipaddress");
+        }
+
 
         /// <summary>
         /// Add/Upate promotion code
         /// </summary>
+        public void AddPromoCode(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddPromoCode(addInfo);
+        }
         public void AddPromoCode(NBrightInfo info)
         {
             var strXml = "<promocode>";
             strXml += info.XMLData;
             strXml += "</promocode>";
+            _cartInfo.RemoveXmlNode("genxml/promocode");
             _cartInfo.AddXmlNode(strXml, "promocode", "genxml");
         }
 
@@ -446,18 +465,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var rtnInfo = new NBrightInfo();
             var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/promocode");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.OuterXml;
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
 
         /// <summary>
         /// Add/Upate tax data
         /// </summary>
+        public void AddTaxData(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddTaxData(addInfo);
+        }
         public void AddTaxData(NBrightInfo info)
         {
             var strXml = "<taxdata>";
             strXml += info.XMLData;
             strXml += "</taxdata>";
+            _cartInfo.RemoveXmlNode("genxml/taxdata");
             _cartInfo.AddXmlNode(strXml, "taxdata", "genxml");
         }
 
@@ -465,18 +492,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var rtnInfo = new NBrightInfo();
             var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/taxdata");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.OuterXml;
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
 
         /// <summary>
         /// Add/Upate Extra Info
         /// </summary>
+        public void AddExtraInfo(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddExtraInfo(addInfo);
+        }
         public void AddExtraInfo(NBrightInfo info)
         {
             var strXml = "<extrainfo>";
             strXml += info.XMLData;
             strXml += "</extrainfo>";
+            _cartInfo.RemoveXmlNode("genxml/extrainfo");
             _cartInfo.AddXmlNode(strXml, "extrainfo", "genxml");
         }
 
@@ -484,9 +519,60 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var rtnInfo = new NBrightInfo();
             var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.OuterXml;
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
+
+        /// <summary>
+        /// Add/Upate Extra Shipping data
+        /// </summary>
+        public void AddShipData(Repeater rpData)
+        {
+            var strXML = GenXmlFunctions.GetGenXml(rpData);
+            var addInfo = new NBrightInfo();
+            addInfo.XMLData = strXML;
+            AddShipData(addInfo);
+        }
+
+        public void AddShipData(NBrightInfo info)
+        {
+            var strXml = "<shipdata>";
+            strXml += info.XMLData;
+            strXml += "</shipdata>";
+            _cartInfo.RemoveXmlNode("genxml/shipdata");
+            _cartInfo.AddXmlNode(strXml, "shipdata", "genxml");
+        }
+
+        public NBrightInfo GetShipData()
+        {
+            var rtnInfo = new NBrightInfo();
+            var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/shipdata");
+            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
+            return rtnInfo;
+        }
+
+
+        //Collection Flag
+        public void UpdateCollectionFlag(Boolean flag)
+        {
+            var strXml = "<collect>";
+            if (flag)
+            {
+                DeleteShippingAddress();
+                strXml += "true";
+            }
+            else
+                strXml += "false";
+            strXml += "</collect>";
+            _cartInfo.RemoveXmlNode("genxml/collect");
+            _cartInfo.AddXmlNode(strXml, "collect", "genxml");
+        }
+        public Boolean IsCollection()
+        {
+            var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/collect");
+            return xmlNode != null && xmlNode.InnerXml == "true";
+        }
+
 
         #endregion
 

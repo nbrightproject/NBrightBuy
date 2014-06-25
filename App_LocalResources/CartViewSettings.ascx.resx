@@ -117,26 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="addresslisttemplates.Text" xml:space="preserve">
-    <value>Address List Templates</value>
-  </data>
-  <data name="checkoutemplates.Text" xml:space="preserve">
-    <value>Checkout Templates</value>
-  </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Cart View Settings</value>
-  </data>
-  <data name="lbladdressinput.Text" xml:space="preserve">
-    <value>Address Input Form : </value>
-  </data>
-  <data name="lbladdrlistbody.Text" xml:space="preserve">
-    <value>Address List Body : </value>
-  </data>
-  <data name="lbladdrlistfooter.Text" xml:space="preserve">
-    <value>Address List Footer : </value>
-  </data>
-  <data name="lbladdrlistheader.Text" xml:space="preserve">
-    <value>Address List Header : </value>
   </data>
   <data name="lbladvancedsettings.Text" xml:space="preserve">
     <value>Advanced</value>
@@ -144,47 +126,26 @@
   <data name="lblbasicsettings.Text" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="lblcheckoutdetails.Text" xml:space="preserve">
-    <value>Checkout Details : </value>
-  </data>
-  <data name="lblcheckoutextra.Text" xml:space="preserve">
-    <value>Extra Data Form : </value>
-  </data>
-  <data name="lblcheckoutpromo.Text" xml:space="preserve">
-    <value>Promotions Form : </value>
-  </data>
-  <data name="lblcheckoutship.Text" xml:space="preserve">
-    <value>Shipping Form : </value>
-  </data>
-  <data name="lblcheckouttax.Text" xml:space="preserve">
-    <value>Tax Form : </value>
-  </data>
   <data name="lbllistbody.Help" xml:space="preserve">
-    <value>Template to be used as category body, this is repeated for each category.</value>
+    <value>Template to be used as cart body, this is repeated for each cart item.</value>
   </data>
   <data name="lbllistbody.Text" xml:space="preserve">
-    <value>Category Body : </value>
-  </data>
-  <data name="lbllistbodyfoot.Help" xml:space="preserve">
-    <value>Template to be used as category end, this is repeated for each category.</value>
-  </data>
-  <data name="lbllistbodyfoot.Text" xml:space="preserve">
-    <value>Category End : </value>
+    <value>Cart Body : </value>
   </data>
   <data name="lbllistfooter.Help" xml:space="preserve">
-    <value>Template to be used as category menu footer.</value>
+    <value>Template to be used as cart footer.</value>
   </data>
   <data name="lbllistfooter.Text" xml:space="preserve">
-    <value>Menu Footer : </value>
+    <value>Cart Footer : </value>
   </data>
   <data name="lbllistheader.Help" xml:space="preserve">
-    <value>Template to be used as category menu header.</value>
+    <value>Template to be used as cart header.</value>
   </data>
   <data name="lbllistheader.Text" xml:space="preserve">
-    <value>Menu Header : </value>
+    <value>Cart Header : </value>
   </data>
   <data name="lbltheme.Help" xml:space="preserve">
-    <value>Name of the theme to use for this productlist.</value>
+    <value>Name of the theme to use for this cart list.</value>
   </data>
   <data name="lbltheme.Text" xml:space="preserve">
     <value>Theme : </value>
@@ -192,4 +153,16 @@
   <data name="lblthemesettings.Text" xml:space="preserve">
     <value>Theme Settings</value>
   </data>
- </root>
+  <data name="ddlcarttype.data" xml:space="preserve">
+    <value>CartOnly;Checkout</value>
+  </data>
+  <data name="ddlcarttype.datavalue" xml:space="preserve">
+    <value>1;2</value>
+  </data>
+  <data name="lblcarttype.Help" xml:space="preserve">
+    <value>Type of display mode, "Cart Only" for a list of cart items, like a mini-cart or "Checkout" for the full cart checkout process.</value>
+  </data>
+  <data name="lblcarttype.Text" xml:space="preserve">
+    <value>Cart Type : </value>
+  </data>
+</root>
