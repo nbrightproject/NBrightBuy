@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBrightCore", "..\..\..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBrightDNN", "..\..\..\..\..\..\Support\NBrightDNN\NBrightDNN.csproj", "{EC815D38-62CF-4B46-8177-CF40CE1AAB62}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NB_Store", "..\..\..\..\..\NBrightStore\htdocs\DesktopModules\NB_Store\NB_Store.vbproj", "{981AF709-BC75-4D90-84B0-34B66F5ED2A6}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NB_Store", "..\..\NB_Store\NB_Store.vbproj", "{981AF709-BC75-4D90-84B0-34B66F5ED2A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
