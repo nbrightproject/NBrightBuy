@@ -13,6 +13,15 @@ namespace Nevoweb.DNN.NBrightBuy {
     public partial class CartView {
         
         /// <summary>
+        /// checkoutlayout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder checkoutlayout;
+        
+        /// <summary>
         /// rpDetailDisplay control.
         /// </summary>
         /// <remarks>
@@ -40,15 +49,6 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpData;
         
         /// <summary>
-        /// phData control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phData;
-        
-        /// <summary>
         /// rpDataF control.
         /// </summary>
         /// <remarks>
@@ -58,13 +58,13 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpDataF;
         
         /// <summary>
-        /// phPaging control.
+        /// rpPromo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
+        protected global::System.Web.UI.WebControls.Repeater rpPromo;
         
         /// <summary>
         /// rpAddrListH control.
@@ -94,15 +94,6 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpAddrListF;
         
         /// <summary>
-        /// rpAddr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpAddr;
-        
-        /// <summary>
         /// rpAddrB control.
         /// </summary>
         /// <remarks>
@@ -128,15 +119,6 @@ namespace Nevoweb.DNN.NBrightBuy {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpShip;
-        
-        /// <summary>
-        /// rpPromo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPromo;
         
         /// <summary>
         /// rpTax control.

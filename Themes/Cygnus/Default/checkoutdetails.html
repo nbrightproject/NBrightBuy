@@ -1,34 +1,9 @@
 <div class="checkoutdetails" style="display:none;">
 <h2>Checkout Details</h2>
+    [<tag id="cmdOrder" type="linkbutton" resourcekey="CartView.Order" commandname="order" />]   
+    <br/>
+    [<tag id="cmdConfirm" type="linkbutton" resourcekey="General.Refresh" commandname="confirm" />] 
 
-<div>
-<div  style="float: left;">
-<b>Billing Address</b></br>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/address1'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/address2'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/town'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postcode'  />]<br/>
-[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country'  />]<br/>
-</div>
-<div  style="float: left;">
-<b>Shipping Address</b></br>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/address1'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/address2'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/town'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postcode'  />]<br/>
-[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country'  />]<br/>
-</div>
-<div style="clear: both;"></div>
-</div>
-
-[<tag id="cmdOrder" type="linkbutton" resourcekey="CartView.Order" commandname="order" />] 
-   
 </div>
 
 

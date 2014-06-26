@@ -26,6 +26,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Exists = false;
             _uData = new UserData();
             _addressList = GetAddressList();
+            //if we have no address create a defualt one from DNN profile
+
         }
 
 
@@ -80,6 +82,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Save();
         }
 
+        public void UpdateAddress(Repeater rpData, int index)
+        {
+            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+            _addressList[index].XMLData = strXml;
+            Save();
+        }
+
         /// <summary>
         /// Get Current Cart Item List
         /// </summary>
@@ -94,10 +103,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     foreach (XmlNode carNod in xmlNodeList)
                     {
-                        var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                        var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
                         rtnList.Add(newInfo);
                     }
-                }                
+                }
             }
             return rtnList;
         }

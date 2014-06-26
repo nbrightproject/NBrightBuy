@@ -408,4 +408,10 @@
   <data name="PromotionalCode.Text" xml:space="preserve">
     <value>Promotional Code</value>
   </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>

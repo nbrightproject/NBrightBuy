@@ -466,6 +466,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "iscartcollection":
+                                dataValue = "FALSE";
+                                var cartInfo = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.Get("DataStorageType"));
+                                if (cartInfo.IsCollection())
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";                                    
+                                }
+                                break;
                             default:
                                 dataValue = "";
                                 break;

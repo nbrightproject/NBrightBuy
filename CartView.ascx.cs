@@ -79,7 +79,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templASH = "addressselectheader.html";
                 const string templASB = "addressselectbody.html";
                 const string templASF = "addressselectfooter.html";
-                const string templA = "addressinput.html";
                 const string templAB = "checkoutaddrbill.html";
                 const string templAS = "checkoutaddrship.html";
                 const string templS = "checkoutship.html";
@@ -89,10 +88,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templD = "checkoutdetails.html";
 
                 // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
+                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
+                _templateHeader = (GenXmlTemplate) rpDataH.ItemTemplate;
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
@@ -105,19 +104,20 @@ namespace Nevoweb.DNN.NBrightBuy
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
-
-                rpAddrListH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASH, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpAddrListB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpAddrListF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASF, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpAddr.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templA, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpExtra.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templE, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpAddrB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpAddrS.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-
+                var carttype = ModSettings.Get("ddlcarttype");
+                if (carttype == "2")
+                {
+                    rpAddrListH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASH, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpAddrListB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpAddrListF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASF, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpExtra.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templE, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpAddrB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpAddrS.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                }
             }
             catch (Exception exc)
             {
@@ -142,7 +142,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
-                phData.Controls.Add(l);
+                checkoutlayout.Controls.Add(l);
             }
         }
 
@@ -172,7 +172,14 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
-            #region "Address List Data Repeater"
+            var carttype =  ModSettings.Get("ddlcarttype");
+            if (carttype == "2")
+            {
+                var l = new Literal();
+                l.Text = ModCtrl.GetTemplateData(ModSettings, "checkoutlayout.html", Utils.GetCurrentCulture(), DebugMode);
+                checkoutlayout.Controls.Add(l);
+
+                #region "Address List Data Repeater"
 
                 var addrlist = _addressData.GetAddressList();
                 if (addrlist.Count == 0)
@@ -180,7 +187,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     rpAddrListH.Visible = false;
                     rpAddrListB.Visible = false;
                     rpAddrListF.Visible = false;
-                    rpAddr.Visible = false;
                 }
                 else
                 {
@@ -192,60 +198,48 @@ namespace Nevoweb.DNN.NBrightBuy
                     // display footer
                     rpAddrListF.DataSource = cartL;
                     rpAddrListF.DataBind();
-                    // display Address input form
-                    var stg = Utils.RequestParam(Context, "stage");
-                    var idx = Utils.RequestParam(Context, "idx");
-                    if (Utils.IsNumeric(idx) && stg=="edit")
-                    {
-                        var objAddr = new List<NBrightInfo>();
-                        objAddr.Add(_addressData.GetAddress(Convert.ToInt32(idx)));
-                        rpAddr.DataSource = objAddr;                        
-                    }
-                    else
-                        rpAddr.DataSource = cartL;
-                    rpAddr.DataBind();
                 }
 
-            #endregion
+                #endregion
 
-            var objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetBillingAddress());
-            rpAddrB.DataSource = objl;
-            rpAddrB.DataBind();
+                var objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetBillingAddress());
+                rpAddrB.DataSource = objl;
+                rpAddrB.DataBind();
 
-            objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetShippingAddress());
-            rpAddrS.DataSource = objl;
-            rpAddrS.DataBind();
+                objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetShippingAddress());
+                rpAddrS.DataSource = objl;
+                rpAddrS.DataBind();
 
-            // display shipping input form
-            objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetShipData());
-            rpShip.DataSource = objl;
-            rpShip.DataBind();
+                // display shipping input form
+                objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetShipData());
+                rpShip.DataSource = objl;
+                rpShip.DataBind();
 
-            // display Promo input form
-            objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetPromoCode());
-            rpPromo.DataSource = objl;
-            rpPromo.DataBind();
+                // display Promo input form
+                objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetPromoCode());
+                rpPromo.DataSource = objl;
+                rpPromo.DataBind();
 
-            // display Tax input form
-            objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetTaxData());
-            rpTax.DataSource = objl;
-            rpTax.DataBind();
+                // display Tax input form
+                objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetTaxData());
+                rpTax.DataSource = objl;
+                rpTax.DataBind();
 
-            // display extra input form
-            objl = new List<NBrightInfo>();
-            objl.Add(_cartInfo.GetExtraInfo());
-            rpExtra.DataSource = objl;
-            rpExtra.DataBind();
+                // display extra input form
+                objl = new List<NBrightInfo>();
+                objl.Add(_cartInfo.GetExtraInfo());
+                rpExtra.DataSource = objl;
+                rpExtra.DataBind();
 
-            // display cart details
-            rpDetailDisplay.DataSource = cartL;
-            rpDetailDisplay.DataBind();
-
+                // display cart details
+                rpDetailDisplay.DataSource = cartL;
+                rpDetailDisplay.DataBind();
+            }
 
         }
 
@@ -256,7 +250,7 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
-            var param = new string[2];
+            var param = new string[3];
             if (Utils.RequestParam(Context, "eid") != "") param[0] = "eid=" + Utils.RequestParam(Context, "eid"); 
 
             switch (e.CommandName.ToLower())
@@ -292,55 +286,17 @@ namespace Nevoweb.DNN.NBrightBuy
                     UpdateCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "addaddress":
-                    param[0] = "stage=" + AddAddress();                    
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "updateaddress":
-                    param[0] = "stage=" + UpdateAddress();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "deladdress":
-                    param[0] = "stage=bill";
-                    _addressData.RemoveAddress(e.Item.ItemIndex);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "editaddress":
-                    param[0] = "stage=edit";
-                    param[1] = "idx=" + e.Item.ItemIndex.ToString("");
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "selectbilladdress":
-                    param[0] = "stage=ship";
-                    _cartInfo.AddBillingAddress(_addressData.GetAddress(e.Item.ItemIndex));
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "selectshipaddress":
-                    param[0] = "stage=extra";
-                    _cartInfo.AddShippingAddress(_addressData.GetAddress(e.Item.ItemIndex));
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "selectaddress":
-                    param[0] = "stage=" + AddSelectedAddress(_addressData.GetAddress(e.Item.ItemIndex));
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "usebilladdress":
-                    param[0] = "stage=extra";
-                    _cartInfo.AddShippingAddress(_cartInfo.GetBillingAddress());
-                    _cartInfo.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "forcollection":
-                    param[0] = "stage=extra";
-                    _cartInfo.UpdateCollectionFlag(true);
-                    _cartInfo.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
                 case "confirm":
-                    UpdateCart();
                     UpdateCartData();
-                    param[0] = "stage=confirm";
+                    UpdateCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "order":
+                    UpdateCartData();
+                    UpdateCart();
+                    var paytabid = ModSettings.Get("paymenttab");
+                    if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
+                    Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
                     break;
             }
 
@@ -350,49 +306,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Methods"
 
-        private String AddAddress()
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpAddr);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            _addressData.AddAddress(rpAddr, DebugMode); // Add to address list
-
-            switch (addInfo.GetXmlProperty("genxml/hidden/currentstage"))
-            {
-                case "ship":
-                    _cartInfo.AddShippingAddress(addInfo); ///add shipping address to cart
-                    _cartInfo.Save();
-                    return "extra";
-                    break;
-                case "bill":
-                    _cartInfo.AddBillingAddress(addInfo); ///add billing address to cart
-                    _cartInfo.Save();
-                    return "ship";
-                    break;
-            }
-            return "bill";
-        }
-
-        private String AddSelectedAddress(NBrightInfo selectedAddr)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpAddr);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            switch (addInfo.GetXmlProperty("genxml/hidden/currentstage"))
-            {
-                case "ship":
-                    _cartInfo.AddShippingAddress(selectedAddr); ///add shipping address to cart
-                    _cartInfo.Save();
-                    return "extra";
-                case "bill":
-                    _cartInfo.AddBillingAddress(selectedAddr); ///add billing address to cart
-                    _cartInfo.Save();
-                    return "ship";
-                case "confirm":
-                    return "confirm";
-            }
-            return "bill";            
-        }
 
         private void UpdateCart()
         {

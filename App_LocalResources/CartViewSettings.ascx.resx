@@ -165,4 +165,10 @@
   <data name="lblcarttype.Text" xml:space="preserve">
     <value>Cart Type : </value>
   </data>
+  <data name="lblPaymentTab.Help" xml:space="preserve">
+    <value>Page whcih the NBS_Payment module is placed.  The cart will be redirected to this page and processing of the order will be taken over by the NBS_Payment module.</value>
+  </data>
+  <data name="lblPaymentTab.Text" xml:space="preserve">
+    <value>Payment Page : </value>
+  </data>
 </root>

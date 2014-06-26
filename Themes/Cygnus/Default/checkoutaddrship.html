@@ -1,29 +1,15 @@
-<div class="checkoutshipform" style="display:none">
-<h2>[<tag type="valueof" resourcekey="CartView.ShippingAddress" />]</h2>
-
-
-[<tag id='lblFirstName' resourcekey='General.lblFirstName' type='dnn:labelcontrol' />]
-[<tag id='FirstName' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblLastName' resourcekey='General.lblLastName' type='dnn:labelcontrol' />]
-[<tag id='LastName' type='textbox' width='400' />]
-
-[<tag id='lblAddress1' resourcekey='General.lblAddress1' type='dnn:labelcontrol' />]
-[<tag id='Address1' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblAddress2' resourcekey='General.lblAddress2' type='dnn:labelcontrol' />]
-[<tag id='Address2' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblTown' resourcekey='General.lblTown' type='dnn:labelcontrol' />]
-[<tag id='Town' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblCity' resourcekey='General.lblCity' type='dnn:labelcontrol' />]
-[<tag id='City' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblPostCode' resourcekey='General.lblPostCode' type='dnn:labelcontrol' />]
-[<tag id='PostCode' type='textbox' width='400' />]&nbsp;
-
-[<tag id='lblCountry' resourcekey='General.lblCountry' type='dnn:labelcontrol' />]
-[<tag id='Country' type='dropdownlist' data='111111;2222222;3333333;4444444;555555' />]&nbsp;
-    
+<div class="checkoutshipform" style="display:none;">
+    <h2>[<tag type="valueof" resourcekey="CartView.ShippingAddress" />]</h2><a href="#" class="selectshipaddress">[<tag type="valueof" resourcekey="CartView.selectaddress" />]</a>
+    [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="0" RepeateColumns="3" SelectedValue="1" />]
+    <div id="shippinginput" style="display:none;">        
+    [<tag type='valueof' resourcekey='General.lblFirstName' />][<tag id='FirstName' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblLastName' />][<tag id='LastName' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblAddress1' />][<tag id='Unit' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblAddress2' />][<tag id='Street' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblTown' />][<tag id='City' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblCity' />][<tag id='Region' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblPostCode' />][<tag id='PostCode' type='textbox' width='300' />]<br/>
+    [<tag type='valueof' resourcekey='General.lblCountry' />][<tag id='Country' type='dropdownlist' data='111111;2222222;3333333;4444444;555555' />]<br/>
+    [<tag type='valueof' resourcekey='General.Email' />][<tag id='Email' type='textbox' width='300' />]
+    </div>
 </div>

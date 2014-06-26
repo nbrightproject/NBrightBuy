@@ -427,6 +427,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml += "</shipaddress>";
             _cartInfo.RemoveXmlNode("genxml/shipaddress");
             _cartInfo.AddXmlNode(strXml, "shipaddress", "genxml");
+            UpdateCollectionFlag(false);
         }
 
         public NBrightInfo GetShippingAddress()
