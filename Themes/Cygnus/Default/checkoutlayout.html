@@ -1,40 +1,87 @@
-<div id="cartheader"></div>
+
+<div id="cartdetails">  
 <div>
 <div id="cartbilladdress" style="float: left;"></div>
 <div id="cartshipaddress" style="float: left;"></div>
 <div style="clear: both;"></div>
 </div>
 <div>
-<div id="cartextra" style="float: left;"></div>
-<div id="carttotals" style="float: left;"></div>
-<div style="clear: both;"></div>
-<div id="cartspecial"></div>
+    <div id="cartextra" style="float: left;"></div>
+    <div id="carttotals" style="float: left;"></div>
+    <div style="clear: both;"></div>
+    <div id="cartspecial"></div>
 </div>
+    <div id="cartlist"></div>
+</div>
+
 
 <script>
     $(document).ready(function () {
+
         // JQuery used to move cart elements into required area 
         $('#cartbilladdress').append($('.checkoutbillform'));
+        $('#cartshipaddress').append($('#shippingoptions'));
         $('#cartshipaddress').append($('.checkoutshipform'));
         $('#cartextra').append($('.checkoutpromo'));
         $('#cartextra').append($('.checkouttax'));
         $('#cartextra').append($('.checkoutextra'));
         $('#carttotals').append($('.checkoutdetails'));
         $('#cartshipaddress').append($('.checkoutship'));
+        $('#cartlist').append($('#checkoutitemlist'));
         $('.checkoutbillform').show();
         $('.checkoutshipform').show();
         $('.checkoutpromo').show();
         $('.checkouttax').show();
         $('.checkoutextra').show();
         $('.checkoutdetails').show();
+        $('#checkoutitemlist').show();
+        $('#shippingoptions').show();
+        $("a[id*='cmdSaveShipAddress']").hide();
+        $("#selectshipaddress").hide();
+
+        //hide/show shipping option
+        if ($("input[id*='rblshippingoptions']:checked").val() == "2") {
+            $('#shippinginput').show();
+            $("a[id*='cmdSaveShipAddress']").show();
+            $("#selectshipaddress").show();
+        }
+        if ($("input[id*='rblshippingoptions']:checked").val() == "3") $('.checkoutship').show();
 
         $("input[id*='rblshippingoptions']").change(function () {
             $('.checkoutship').hide();
             $('#shippinginput').hide();
-            if ($(this).val() == "2") $('#shippinginput').show();
+            $("a[id*='cmdSaveShipAddress']").hide();
+            $("#selectshipaddress").hide();
+            if ($(this).val() == "2") {
+                $('#shippinginput').show();
+                $("a[id*='cmdSaveShipAddress']").show();
+                $("#selectshipaddress").show();            
+            }
             if ($(this).val() == "3") $('.checkoutship').show();
         });
 
+        $("#selectbilladdress").click(function () {
+            $("#cartdetails").hide();
+            $("#addressbook").show();
+            $("input[id*='selectaddresstype']").val("bill"); //update postback, so the server knows which address type
+        });
+        $("#selectshipaddress").click(function () {
+            $("#cartdetails").hide();
+            $("#addressbook").show();
+            $("input[id*='selectaddresstype']").val("ship"); //update postback, so the server knows which address type
+        });
+        $("#cancelselectaddress").click(function () {
+            $("#cartdetails").show();
+            $("#addressbook").hide();
+        });
+
+        //if we have no address book, hide the option to select and save.
+        if ($("#addressbook").length == 0) {
+            $("a[id*='cmdSaveBillAddress']").hide();
+            $("a[id*='cmdSaveShipAddress']").hide();
+            $("#selectshipaddress").hide();
+            $("#selectbilladdress").hide();
+        }
 
     });
 </script>

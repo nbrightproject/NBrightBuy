@@ -76,9 +76,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-                const string templASH = "addressselectheader.html";
-                const string templASB = "addressselectbody.html";
-                const string templASF = "addressselectfooter.html";
+                const string templASH = "checkoutselectaddrH.html";
+                const string templASB = "checkoutselectaddrB.html";
+                const string templASF = "checkoutselectaddrF.html";
                 const string templAB = "checkoutaddrbill.html";
                 const string templAS = "checkoutaddrship.html";
                 const string templS = "checkoutship.html";
@@ -283,20 +283,37 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "updatecart":
-                    UpdateCart();
+                    UpdateCartItems();
+                    SaveCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "confirm":
-                    UpdateCartData();
-                    UpdateCart();
+                    UpdateCartItems();
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
+                    SaveCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "order":
-                    UpdateCartData();
-                    UpdateCart();
+                    UpdateCartItems();
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
+                    SaveCart();
                     var paytabid = ModSettings.Get("paymenttab");
                     if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
                     Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
+                    break;
+                case "selectaddress":
+                    AddSelectedAddress(_addressData.GetAddress(e.Item.ItemIndex));
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "saveshipaddress":
+                    _addressData.AddAddress(rpAddrS);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "savebilladdress":
+                    _addressData.AddAddress(rpAddrB);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
 
@@ -306,32 +323,57 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Methods"
 
+        private void AddSelectedAddress(NBrightInfo selectedAddr)
+        {
+            var strXml = GenXmlFunctions.GetGenXml(rpAddrListH);
+            switch (GenXmlFunctions.GetGenXmlValue(strXml, "genxml/hidden/selectaddresstype"))
+            {
+                case "ship":
+                    _cartInfo.AddShippingAddress(selectedAddr); ///add shipping address to cart
+                    UpdateCartItems();
+                    UpdateCartInfo();
+                    SaveCart();
+                    break;
+                case "bill":
+                    _cartInfo.AddBillingAddress(selectedAddr); ///add billing address to cart
+                    UpdateCartItems();
+                    UpdateCartInfo();
+                    SaveCart();
+                    break;
+            }
+        }
 
-        private void UpdateCart()
+        private void SaveCart()
+        {
+            _cartInfo.Save(DebugMode);
+        }
+
+
+        private void UpdateCartItems()
         {
             foreach (RepeaterItem i in rpData.Items)
             {
                 var strXml = GenXmlFunctions.GetGenXml(i);
                 var cInfo = new NBrightInfo();
                 cInfo.XMLData = strXml;
-                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);
-                _cartInfo.Save(DebugMode);
+                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);                
             }           
-
         }
 
-        private void UpdateCartData()
+        private void UpdateCartAddresses()
         {
             //update address
             _cartInfo.AddShippingAddress(rpAddrS); //add shipping address to cart
             _cartInfo.AddBillingAddress(rpAddrB); //add billing address to cart
+        }
 
-            //update extra data
+        private void UpdateCartInfo()
+        {
+            //update data
             _cartInfo.AddExtraInfo(rpExtra);
             _cartInfo.AddPromoCode(rpPromo);
             _cartInfo.AddTaxData(rpTax);
             _cartInfo.AddShipData(rpShip);
-            _cartInfo.Save(DebugMode);
         }
 
         #endregion

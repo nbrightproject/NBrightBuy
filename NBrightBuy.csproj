@@ -238,13 +238,13 @@
     <Content Include="Themes\Cygnus\Default\checkouttax.html" />
     <Content Include="Themes\Cygnus\Default\checkoutaddrship.html" />
     <Content Include="Themes\Cygnus\Default\checkoutaddrbill.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutselectaddrB.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutselectaddrF.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutselectaddrH.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
     <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
-    <Content Include="Themes\Cygnus\Default\drilldownmenu.html" />
-    <Content Include="Themes\Cygnus\Default\drilldownmenufooter.html" />
-    <Content Include="Themes\Cygnus\Default\drilldownmenuheader.html" />
     <Content Include="Themes\Cygnus\Default\list.html" />
     <Content Include="Themes\Cygnus\Default\listfooter.html" />
     <Content Include="Themes\Cygnus\Default\listheader.html" />

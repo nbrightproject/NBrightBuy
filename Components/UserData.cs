@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Info != null)
             {
                 var modCtrl = new NBrightBuyController();
-                modCtrl.Update(Info);
+                Info.ItemID = modCtrl.Update(Info);
                 if (debugMode) Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_userdata.xml");
                 Exists = true;
             }

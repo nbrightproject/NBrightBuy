@@ -427,7 +427,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml += "</shipaddress>";
             _cartInfo.RemoveXmlNode("genxml/shipaddress");
             _cartInfo.AddXmlNode(strXml, "shipaddress", "genxml");
-            UpdateCollectionFlag(false);
+            SetShippingOption("2"); 
         }
 
         public NBrightInfo GetShippingAddress()
@@ -552,26 +552,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnInfo;
         }
 
-
-        //Collection Flag
-        public void UpdateCollectionFlag(Boolean flag)
+        /// <summary>
+        /// Get the shipping option: 1 = use billing, 2=shipping, 3 = collection
+        /// </summary>
+        public String GetShippingOption()
         {
-            var strXml = "<collect>";
-            if (flag)
-            {
-                DeleteShippingAddress();
-                strXml += "true";
-            }
-            else
-                strXml += "false";
-            strXml += "</collect>";
-            _cartInfo.RemoveXmlNode("genxml/collect");
-            _cartInfo.AddXmlNode(strXml, "collect", "genxml");
+            return _cartInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
         }
-        public Boolean IsCollection()
+        /// <summary>
+        /// Set the shipping option:
+        /// </summary>
+        /// <param name="value"> 1 = use billing, 2=shipping, 3 = collection</param>
+        public void SetShippingOption(String value)
         {
-            var xmlNode = _cartInfo.XMLDoc.SelectSingleNode("genxml/collect");
-            return xmlNode != null && xmlNode.InnerXml == "true";
+            _cartInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", value, TypeCode.String, false);
         }
 
 

@@ -174,4 +174,10 @@
   <data name="shippingoption2.datavalue" xml:space="preserve">
     <value>1;2</value>
   </data>
+  <data name="SaveAddress.Text" xml:space="preserve">
+    <value>Save Address</value>
+  </data>
+  <data name="SaveAddress.Title" xml:space="preserve">
+    <value>Save Address to Address Book</value>
+  </data>
 </root>
