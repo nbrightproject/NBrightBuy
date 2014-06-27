@@ -40,6 +40,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
                 rtnList = BuildTreeCatList(rtnList, 0, parentid, "cat", tabid, displaylevels,identClass,styleClass,activeClass);
+                //remove emprty <ul> elements
+                rtnList = rtnList.Replace("<ul></ul>", "");
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnList);
             }
             else
