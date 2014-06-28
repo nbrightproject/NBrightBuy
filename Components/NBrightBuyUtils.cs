@@ -34,7 +34,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templCtrl;
         }
 
-        public static NBrightInfo GetSettings(int portalId, int moduleId, bool useCache = true)
+        public static NBrightInfo GetSettings(int portalId, int moduleId, String ctrlTypeCode = "", bool useCache = true)
         {
             var obj = (NBrightInfo)GetModCache("NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""));
             if (obj == null | !useCache)
@@ -49,6 +49,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     obj.ModuleId = moduleId;
                     obj.PortalId = portalId;
                     obj.XMLData = "<genxml><hidden></hidden><textbox></textbox></genxml>";
+                    obj.UserId = -1;
+                    obj.GUIDKey = ctrlTypeCode;
                 }
                 SetModCache(-1, "NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""), obj);
             }
@@ -320,7 +322,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (templ != "")
                     {
                         var includetext = modCtrl.GetTemplateData(moduleId, templ, Utils.GetCurrentCulture(), settings, debugMode);
-                        if (objInfo != null) includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
+                        if (objInfo == null) objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
+                        includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
                         if (includetext != "") PageIncludes.IncludeTextInHeader(page, includetext);                        
                     }
                 }

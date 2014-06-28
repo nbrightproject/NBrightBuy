@@ -33,7 +33,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool disabled { get; set; }
         public int entrycount { get; set; }
         public string url { get; set; }
-        public bool isvisible {
+        public string message { get; set; }
+        public bool isvisible
+        {
             get
             {
                 if (archived) return false;

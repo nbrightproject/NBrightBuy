@@ -159,6 +159,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catdefaultname":
                     CreateCatDefaultName(container, xmlNod);
                     return true;
+                case "catdefault":
+                    CreateCatDefault(container, xmlNod);
+                    return true;
                 case "catvalueof":
                     CreateCatValueOf(container, xmlNod);
                     return true;
@@ -1398,7 +1401,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void CatDefaultNameDataBind(object sender, EventArgs e)
         {
             var lc = (Literal)sender;
-            lc.Text = "";
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
@@ -1414,6 +1416,114 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (objCInfo != null)
                     {
                         lc.Text = objCInfo.categoryname;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lc.Text = ex.ToString();
+            }
+        }
+
+        #endregion
+
+        #region "CreateCatDefault"
+
+        private void CreateCatDefault(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            if (xmlNod.Attributes != null && xmlNod.Attributes["name"] != null) lc.Text = xmlNod.Attributes["name"].InnerText;
+            lc.DataBinding += CatDefaultDataBind;
+            container.Controls.Add(lc);
+        }
+
+        private void CatDefaultDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var name = lc.Text;
+            lc.Text = "";
+            var container = (IDataItemContainer)lc.NamingContainer;
+            try
+            {
+                lc.Visible = NBrightGlobal.IsVisible;
+                var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
+                var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
+
+                if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleId))
+                {
+                    var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                    var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
+                    if (objCInfo != null)
+                    {
+                        switch (name.ToLower())
+                        {
+                            case "categorydesc":
+                                lc.Text = objCInfo.categorydesc;
+                                break;
+                            case "message":
+                                lc.Text = System.Web.HttpUtility.HtmlDecode(objCInfo.message);
+                                break;
+                            case "archived":
+                                lc.Text = objCInfo.archived.ToString(CultureInfo.InvariantCulture);
+                                break;
+                            case "breadcrumb":
+                                lc.Text = objCInfo.breadcrumb;
+                                break;
+                            case "categoryid":
+                                lc.Text = objCInfo.categoryid.ToString("");
+                                break;
+                            case "categoryname":
+                                lc.Text = objCInfo.categoryname;
+                                break;
+                            case "categoryref":
+                                lc.Text = objCInfo.categoryref;
+                                break;
+                            case "depth":
+                                lc.Text = objCInfo.depth.ToString("");
+                                break;
+                            case "disabled":
+                                lc.Text = objCInfo.disabled.ToString(CultureInfo.InvariantCulture) ;
+                                break;
+                            case "entrycount":
+                                lc.Text = objCInfo.entrycount.ToString("");
+                                break;
+                            case "grouptyperef":
+                                lc.Text = objCInfo.grouptyperef;
+                                break;
+                            case "imageurl":
+                                lc.Text = objCInfo.imageurl;
+                                break;
+                            case "ishidden":
+                                lc.Text = objCInfo.ishidden.ToString(CultureInfo.InvariantCulture);
+                                break;
+                            case "isvisible":
+                                lc.Text = objCInfo.isvisible.ToString(CultureInfo.InvariantCulture) ;
+                                break;
+                            case "metadescription":
+                                lc.Text = objCInfo.metadescription;
+                                break;
+                            case "metakeywords":
+                                lc.Text = objCInfo.metakeywords;
+                                break;
+                            case "parentcatid":
+                                lc.Text = objCInfo.parentcatid.ToString("");
+                                break;
+                            case "recordsortorder":
+                                lc.Text = objCInfo.recordsortorder.ToString("");
+                                break;
+                            case "seoname":
+                                lc.Text = objCInfo.seoname;
+                                if (lc.Text == "") lc.Text = objCInfo.categoryname;
+                                break;
+                            case "seopagetitle":
+                                lc.Text = objCInfo.seopagetitle ;
+                                break;
+                            case "url":
+                                lc.Text = objCInfo.url ;
+                                break;
+                        }
                     }
                 }
 
@@ -1457,6 +1567,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         lc.Text = objCInfo.GetXmlProperty(lc.Text);
                     }
+                    else
+                    {
+                        lc.Text = "";
+                    }
                 }
 
             }
@@ -1498,9 +1612,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (objCInfo != null)
                     {
                         lc.Text = objCInfo.GetXmlProperty(lc.Text);
+                        lc.Text = System.Web.HttpUtility.HtmlEncode(lc.Text);
+                        lc.Text = lc.Text.Replace(Environment.NewLine, "<br/>");
                     }
-                    lc.Text = System.Web.HttpUtility.HtmlEncode(lc.Text);
-                    lc.Text = lc.Text.Replace(Environment.NewLine, "<br/>");
+                    else
+                    {
+                        lc.Text = "";
+                    }
                 }
 
             }
@@ -1542,8 +1660,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (objCInfo != null)
                     {
                         lc.Text = objCInfo.GetXmlProperty(lc.Text);
+                        lc.Text = System.Web.HttpUtility.HtmlDecode(lc.Text);
                     }
-                    lc.Text = System.Web.HttpUtility.HtmlDecode(lc.Text);
+                    else
+                    {
+                        lc.Text = "";
+                    }
                 }
 
             }

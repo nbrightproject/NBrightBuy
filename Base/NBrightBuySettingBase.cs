@@ -82,7 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
                 {
                     // display the detail
                     var l = new List<NBrightInfo>();
-                    var moduleSettings = NBrightBuyUtils.GetSettings(PortalId, ModuleId, false);
+                    var moduleSettings = NBrightBuyUtils.GetSettings(PortalId, ModuleId, CtrlTypeCode, false);
                     moduleSettings = EventBeforeRender(moduleSettings);
                     l.Add(moduleSettings);
                     RpData.DataSource = l;
@@ -145,18 +145,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             if (CtrlTypeCode != "")
             {
                 // read any existing data or create new.
-                var objInfo = NBrightBuyUtils.GetSettings(PortalId, ModuleId, false);
-                if (objInfo == null)
-                {
-                    objInfo = new NBrightInfo();
-                    // populate data
-                    objInfo.PortalId = PortalId;
-                    objInfo.ModuleId = ModuleId;
-                    objInfo.ItemID = -1;
-                    objInfo.TypeCode = "SETTINGS";
-                    objInfo.UserId = -1;
-                    objInfo.GUIDKey = CtrlTypeCode;
-                }
+                var objInfo = NBrightBuyUtils.GetSettings(PortalId, ModuleId, CtrlTypeCode, false);
 
                 // populate changed data
                 objInfo.ModifiedDate = DateTime.Now;
