@@ -38,6 +38,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 AddToSettingDic(indexSettings, "genxml/radiobuttonlist/*");
             }
 
+            //add DNN Portalsettings
+            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
+            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
+            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
+            if (!_settingDic.ContainsKey("defaultportalalias")) _settingDic.Add("defaultportalalias", PortalSettings.Current.DefaultPortalAlias);
+
+
             ThemeFolder = Get("themefolder");
 
         }

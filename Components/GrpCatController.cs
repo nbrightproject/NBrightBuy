@@ -225,7 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             var objCtrl = new NBrightBuyController();
-            return objCtrl.Get(defcatid);
+            return objCtrl.GetData(defcatid,"CATEGORYLANG");
         }
 
         public List<GroupCategoryData> GetTreeCategoryList(List<GroupCategoryData> rtnList, int level, int parentid, string groupref,string breadcrumbseparator)
@@ -405,6 +405,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.metadescription = langItem.GetXmlProperty("genxml/textbox/txtmetadescription");
                     grpcat.metakeywords = langItem.GetXmlProperty("genxml/textbox/txtmetakeywords");
                     grpcat.seopagetitle = langItem.GetXmlProperty("genxml/textbox/txtseopagetitle");
+                    grpcat.message = langItem.GetXmlProperty("genxml/edt/message");
                 }
 
                 //get parents
