@@ -308,10 +308,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "saveshipaddress":
+                    UpdateCartAddresses();
+                    _cartInfo.Save();
                     _addressData.AddAddress(rpAddrS);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "savebilladdress":
+                    UpdateCartAddresses();
+                    _cartInfo.Save();
                     _addressData.AddAddress(rpAddrB);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;

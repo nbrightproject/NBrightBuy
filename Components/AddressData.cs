@@ -126,6 +126,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     foreach (XmlNode carNod in xmlNodeList)
                     {
                         var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                        newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
                         rtnList.Add(newInfo);
                     }
                 }

@@ -55,9 +55,10 @@
             if ($(this).val() == "2") {
                 $('#shippinginput').show();
                 $("a[id*='cmdSaveShipAddress']").show();
-                $("#selectshipaddress").show();            
+                $("#selectshipaddress").show();
             }
             if ($(this).val() == "3") $('.checkoutship').show();
+            hideaddressbook();
         });
 
         $("#selectbilladdress").click(function () {
@@ -75,13 +76,18 @@
             $("#addressbook").hide();
         });
 
-        //if we have no address book, hide the option to select and save.
-        if ($("#addressbook").length == 0) {
-            $("a[id*='cmdSaveBillAddress']").hide();
-            $("a[id*='cmdSaveShipAddress']").hide();
-            $("#selectshipaddress").hide();
-            $("#selectbilladdress").hide();
+
+        function hideaddressbook() {
+            //if we have no address book, hide the option to select and save.
+            if ($("#addressbook").length == 0) {
+                $("a[id*='cmdSaveBillAddress']").hide();
+                $("a[id*='cmdSaveShipAddress']").hide();
+                $("#selectshipaddress").hide();
+                $("#selectbilladdress").hide();
+            }
         }
+
+        hideaddressbook();
 
     });
 </script>
