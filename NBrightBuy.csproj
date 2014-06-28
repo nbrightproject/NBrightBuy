@@ -118,6 +118,20 @@
     <Compile Include="CheckoutSettings.ascx.designer.cs">
       <DependentUpon>CheckoutSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddressAdmin.ascx.cs">
+      <DependentUpon>AddressAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressAdmin.ascx.designer.cs">
+      <DependentUpon>AddressAdmin.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAdminSettings.ascx.cs">
+      <DependentUpon>AddressAdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressAdminSettings.ascx.designer.cs">
+      <DependentUpon>AddressAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -177,6 +191,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="CheckoutSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="AddressAdmin.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="AddressAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\ajaxincludes.html" />

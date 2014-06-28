@@ -86,7 +86,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             // load into NBrigthInfo class, so it's easier to get at xml values.
             if (debugMode) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
-            if (!AddressExists(addressInfo))
+            var addrExists = AddressExists(addressInfo);
+            if (addressInfo.GetXmlPropertyBool("genxml/hidden/default"))
+            {
+                // if we have a default DNN address, we don;t want to update it from here.
+                // It can get very confusing if the profie is updated from the cart. (plus the email is not part of the profile)
+                // The idea is to have a special method for this in the NBS_Address module or to force user to change DNN profile. 
+                addressInfo.RemoveXmlNode("genxml/hidden/default");
+            }
+            if (addrExists)
+            {
+                if (Utils.IsNumeric(addressInfo.GetXmlProperty("genxml/hidden/index")))
+                {
+                    var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
+                    UpdateAddress(addressInfo.XMLData, idx);
+                }
+            }
+            else
             {
                 _addressList.Add(addressInfo);
                 Save(debugMode);
@@ -100,14 +116,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Save();
         }
 
+        public void UpdateAddress(String xmlData, int index)
+        {
+            if (_addressList.Count > index)
+            {
+                _addressList[index].XMLData = xmlData;
+                Save();
+                UpdateDnnProfile(_addressList[index]);
+            }
+        }
+
         public void UpdateAddress(Repeater rpData, int index)
         {
             if (_addressList.Count > index)
             {
                 var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
-                _addressList[index].XMLData = strXml;
-                Save();
-                UpdateDnnProfile(_addressList[index]);
+                UpdateAddress(strXml, index);
             }
         }
 
@@ -150,7 +174,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             NBrightInfo aInfo = null; 
             if (_uData.Exists)
             {
-                var xmlNodeList = _uData.Info.XMLDoc.SelectNodes("genxml/address/*[./genxml/hidden/default='True']");
+                var xmlNodeList = _uData.Info.XMLDoc.SelectNodes("genxml/address/*[./hidden/default='True']");
                 if (xmlNodeList != null && xmlNodeList.Count > 0)
                 {
                     aInfo = new NBrightInfo { XMLData = xmlNodeList[0].OuterXml };
@@ -198,16 +222,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var flag = false;
                 var prop1 = DnnUtils.GetCurrentUserProfileProperties();
+                var prop2 = DnnUtils.GetCurrentUserProfileProperties();
                 foreach (var p in prop1)
                 {
                     var n = defaultAddr.XMLDoc.SelectSingleNode("genxml/textbox/" + p.Key.ToLower());
                     if (n != null)
                     {
-                        prop1[p.Key] = n.InnerText;
+                        prop2[p.Key] = n.InnerText;
                         flag = true;
                     }
                 }
-                if (flag) DnnUtils.SetCurrentUserProfileProperties(prop1);
+                if (flag) DnnUtils.SetCurrentUserProfileProperties(prop2);
             }
         }
 
