@@ -10,7 +10,7 @@
 namespace Nevoweb.DNN.NBrightBuy {
     
     
-    public partial class AddressAdmin {
+    public partial class OrderAdmin {
         
         /// <summary>
         /// rpDataH control.
@@ -31,6 +31,15 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpData;
         
         /// <summary>
+        /// phData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phData;
+        
+        /// <summary>
         /// rpDataF control.
         /// </summary>
         /// <remarks>
@@ -40,21 +49,12 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpDataF;
         
         /// <summary>
-        /// rpAddr control.
+        /// phPaging control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpAddr;
-        
-        /// <summary>
-        /// phData control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phData;
+        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
     }
 }

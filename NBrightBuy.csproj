@@ -132,6 +132,20 @@
     <Compile Include="AddressAdminSettings.ascx.designer.cs">
       <DependentUpon>AddressAdminSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="OrderAdmin.ascx.cs">
+      <DependentUpon>OrderAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderAdmin.ascx.designer.cs">
+      <DependentUpon>OrderAdmin.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrderAdminSettings.ascx.cs">
+      <DependentUpon>OrderAdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderAdminSettings.ascx.designer.cs">
+      <DependentUpon>OrderAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -197,6 +211,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="AddressAdminSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
+    <Content Include="OrderAdmin.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="OrderAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
@@ -299,6 +320,7 @@
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />

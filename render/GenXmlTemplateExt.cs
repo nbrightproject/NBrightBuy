@@ -2779,7 +2779,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
 
                 #region "Init"
-                var isDealer = CmsProviderManager.Default.IsInRole(_settings["dealer.role"]);
+
+                var dealerrole = "Dealer"; //defualt dealer role
+                if (_settings.ContainsKey("dealer.role")) dealerrole = _settings["dealer.role"];
+                var isDealer = CmsProviderManager.Default.IsInRole(dealerrole);
 
 
                 #endregion
