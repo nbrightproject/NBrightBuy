@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PromoProvider</RootNamespace>
-    <AssemblyName>PromoProvider</AssemblyName>
+    <AssemblyName>NBrightBuy.PromoProvider</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

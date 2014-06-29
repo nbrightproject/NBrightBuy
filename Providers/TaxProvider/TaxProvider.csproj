@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TaxProvider</RootNamespace>
-    <AssemblyName>TaxProvider</AssemblyName>
+    <AssemblyName>NBrightBuy.TaxProvider</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
