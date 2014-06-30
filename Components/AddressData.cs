@@ -29,16 +29,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //if we have no address create a default one from DNN profile
             if (GetDefaultAddress() == null && _uData.Exists)
             {
-                //var strXml = GenXmlFunctions.GetGenXml(new RepeaterItem(0,ListItemType.Item)); //get a empty xml structure so we can add to it
                 var newDefault = new NBrightInfo(true);
-                //newDefault.XMLData = strXml;
                 newDefault.AddSingleNode("default", "True", "genxml/hidden");
                 var prop = DnnUtils.GetCurrentUserProfileProperties();
                 foreach (var p in prop)
                 {
                     newDefault.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
                 }
-                AddAddress(newDefault);
+                _addressList.Add(newDefault);
+                Save();
             }
         }
 
@@ -87,25 +86,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // load into NBrigthInfo class, so it's easier to get at xml values.
             if (debugMode) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
             var addrExists = AddressExists(addressInfo);
+
             if (addressInfo.GetXmlPropertyBool("genxml/hidden/default"))
             {
-                // if we have a default DNN address, we don;t want to update it from here.
-                // It can get very confusing if the profie is updated from the cart. (plus the email is not part of the profile)
-                // The idea is to have a special method for this in the NBS_Address module or to force user to change DNN profile. 
-                addressInfo.RemoveXmlNode("genxml/hidden/default");
-            }
-            if (addrExists)
-            {
-                if (Utils.IsNumeric(addressInfo.GetXmlProperty("genxml/hidden/index")))
-                {
-                    var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
-                    UpdateAddress(addressInfo.XMLData, idx);
-                }
+                // if we have a default DNN address, we don;t want to ONLY update it from here.
+                //NOTE: Email address is not part of the Profile
+                var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
+                UpdateAddress(addressInfo.XMLData, idx);                
             }
             else
             {
-                _addressList.Add(addressInfo);
-                Save(debugMode);
+                if (Utils.IsNumeric(addressInfo.GetXmlProperty("genxml/hidden/index")))
+                {
+                    if (addressInfo.GetXmlProperty("genxml/hidden/index") == "-1") // index of -1, add the address
+                    {
+                        _addressList.Add(addressInfo);
+                        Save();
+                    }
+                    else
+                    {
+                        var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
+                        UpdateAddress(addressInfo.XMLData, idx);
+                    }
+                }
+                else
+                {
+                    _addressList.Add(addressInfo);
+                    Save(debugMode);
+                }
             }
             return ""; // if everything is OK, don't send a message back.
         }
@@ -160,6 +168,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public NBrightInfo GetAddress(int index)
         {
+            if (index < 0 || index >= _addressList.Count) return null;
             return _addressList[index];
         }
 

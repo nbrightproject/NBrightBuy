@@ -253,9 +253,10 @@
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Cygnus\css\jquery.metisMenu.css" />
     <Content Include="Themes\Cygnus\css\jquery.navgoco.css" />
-    <Content Include="Themes\Cygnus\Default\addressselectbody.html" />
-    <Content Include="Themes\Cygnus\Default\addressselectfooter.html" />
-    <Content Include="Themes\Cygnus\Default\addressselectheader.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
     <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
     <Content Include="Themes\Cygnus\Default\cartviewbody.html" />
     <Content Include="Themes\Cygnus\Default\cartviewfooter.html" />

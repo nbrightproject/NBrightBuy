@@ -87,7 +87,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
                 // Get Display Footer
-                var rpInpTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+                var rpInpTempl = ModCtrl.GetTemplateData(ModSettings, _templinp, Utils.GetCurrentCulture(), DebugMode);
                 rpAddr.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpInpTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
 
 
@@ -134,14 +134,55 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
-            GenXmlFunctions.RenderRepeater(rpDataH);
-            GenXmlFunctions.RenderRepeater(rpDataF);
-            GenXmlFunctions.RenderRepeater(rpAddr);
+            base.DoDetail(rpDataH);
+            base.DoDetail(rpDataF);
+            var addrid = Utils.RequestParam(Context, "addressid");
+            if (Utils.IsNumeric(addrid))
+            {
+                var objAddr = _addressData.GetAddress(Convert.ToInt32(addrid));
+                if (objAddr == null) objAddr = new NBrightInfo(true); //assume new address
+                base.DoDetail(rpAddr,objAddr);
+            }
+            else
+            {
+                base.DoDetail(rpAddr);                
+            }
 
         }
 
         #endregion
 
+
+        #region  "Events "
+
+        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            var cArg = e.CommandArgument.ToString();
+            var param = new string[3];
+
+            switch (e.CommandName.ToLower())
+            {
+                case "saveaddress":
+                    _addressData.AddAddress(rpAddr);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "deleteaddress":
+                    _addressData.RemoveAddress(e.Item.ItemIndex);                        
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "editaddress":
+                    param[0] = "addressid=" + e.Item.ItemIndex.ToString("");
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "newaddress":
+                    param[0] = "addressid=-1";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+            }
+
+        }
+
+        #endregion
 
 
     }

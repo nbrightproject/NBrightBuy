@@ -203,7 +203,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 #endregion
 
                 var objl = new List<NBrightInfo>();
-                objl.Add(_cartInfo.GetBillingAddress());
+                var billaddr = _cartInfo.GetBillingAddress();
+                if (billaddr.XMLData == null)
+                {
+                    var defAddr = _addressData.GetDefaultAddress();
+                    if (defAddr != null) billaddr.XMLData = defAddr.XMLData;
+                }
+                objl.Add(billaddr);
                 rpAddrB.DataSource = objl;
                 rpAddrB.DataBind();
 
