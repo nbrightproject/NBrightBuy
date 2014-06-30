@@ -52,7 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "ORDER";
+            base.CtrlTypeCode = "CART";
             base.DisableUserInfo = true;
 
             base.OnInit(e);
@@ -61,40 +61,29 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
-                rpDataH.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
+                rpPaymentGateways.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
                 return;
             }
 
             try
             {
-                _templH = ModSettings.Get("txtdisplayheader");
-                _templD = ModSettings.Get("txtdisplaybody");
-                _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
-                _templF = ModSettings.Get("txtdisplayfooter");
 
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
+                const string templOK = "checkoutOK.html";
+                const string templFAIL = "checkoutFAIL.html";
 
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
+                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templOK, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
 
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
-
-
             }
             catch (Exception exc)
             {
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
-                // catch any error and allow processing to continue, output error as footer template.
+                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                var l = new Literal();
+                l.Text = exc.ToString();
+                phData.Controls.Add(l);
             }
 
         }
@@ -120,35 +109,41 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
+            //TODO: fix this to work for payment gateways.
+            // First step is to make the cart turn into a order and accept the order...no payment proccessing
 
-            #region "Data Repeater"
-
-
-            if (_templD.Trim() != "") // if we don;t have a template, don't do anything
-            {
-                var l = _cartInfo.GetCartItemList();
-                rpData.DataSource = l;
-                rpData.DataBind();
-            }
-
-            #endregion
+            var cartInfo = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
+            cartInfo.ConvertToOrder(DebugMode);
 
             var cartL = new List<NBrightInfo>();
             cartL.Add(_cartInfo.GetCart());
 
             // display header
-            rpDataH.DataSource = cartL;
-            rpDataH.DataBind();
-
-            // display footer
-            rpDataF.DataSource = cartL;
-            rpDataF.DataBind();
-
+            rpDetailDisplay.DataSource = cartL;
+            rpDetailDisplay.DataBind();
         }
 
         #endregion
 
 
+        #region  "Events "
+
+        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            var cArg = e.CommandArgument.ToString();
+            var param = new string[3];
+            if (Utils.RequestParam(Context, "eid") != "") param[0] = "eid=" + Utils.RequestParam(Context, "eid");
+
+            switch (e.CommandName.ToLower())
+            {
+                case "pay":
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+            }
+
+        }
+
+        #endregion
 
     }
 

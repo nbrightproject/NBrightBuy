@@ -62,6 +62,8 @@
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\PurchaseData.cs" />
+    <Compile Include="Components\OrderData.cs" />
     <Compile Include="Components\UserData.cs" />
     <Compile Include="Components\Interfaces\CartInterface.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
@@ -214,6 +216,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
+    <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
     <Content Include="OrderAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -283,6 +286,8 @@
     <Content Include="Themes\Cygnus\Default\cattreebody.html" />
     <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
@@ -322,6 +327,7 @@
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />

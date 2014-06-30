@@ -13,22 +13,22 @@ namespace Nevoweb.DNN.NBrightBuy {
     public partial class Checkout {
         
         /// <summary>
-        /// rpDataH control.
+        /// rpDetailDisplay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpDataH;
+        protected global::System.Web.UI.WebControls.Repeater rpDetailDisplay;
         
         /// <summary>
-        /// rpData control.
+        /// rpPaymentGateways control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpData;
+        protected global::System.Web.UI.WebControls.Repeater rpPaymentGateways;
         
         /// <summary>
         /// phData control.
@@ -38,23 +38,5 @@ namespace Nevoweb.DNN.NBrightBuy {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phData;
-        
-        /// <summary>
-        /// rpDataF control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpDataF;
-        
-        /// <summary>
-        /// phPaging control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
     }
 }
