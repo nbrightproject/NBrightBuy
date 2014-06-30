@@ -76,16 +76,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-                const string templASH = "checkoutselectaddrH.html";
-                const string templASB = "checkoutselectaddrB.html";
-                const string templASF = "checkoutselectaddrF.html";
-                const string templAB = "checkoutaddrbill.html";
-                const string templAS = "checkoutaddrship.html";
-                const string templS = "checkoutship.html";
-                const string templT = "checkouttax.html";
-                const string templP = "checkoutpromo.html";
-                const string templE = "checkoutextra.html";
-                const string templD = "checkoutdetails.html";
+                const string templASH = "cartselectaddrH.html";
+                const string templASB = "cartselectaddrB.html";
+                const string templASF = "cartselectaddrF.html";
+                const string templAB = "cartaddrbill.html";
+                const string templAS = "cartaddrship.html";
+                const string templS = "cartship.html";
+                const string templT = "carttax.html";
+                const string templP = "cartpromo.html";
+                const string templE = "cartextra.html";
+                const string templD = "cartdetails.html";
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
@@ -176,7 +176,7 @@ namespace Nevoweb.DNN.NBrightBuy
             if (carttype == "2")
             {
                 var l = new Literal();
-                l.Text = ModCtrl.GetTemplateData(ModSettings, "checkoutlayout.html", Utils.GetCurrentCulture(), DebugMode);
+                l.Text = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
                 checkoutlayout.Controls.Add(l);
 
                 #region "Address List Data Repeater"
