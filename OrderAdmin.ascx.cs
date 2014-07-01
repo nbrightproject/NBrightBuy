@@ -38,14 +38,16 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String _catid = "";
         private String _catname = "";
-        private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
         private String _templH = "";
         private String _templD = "";
-        private String _templDfoot = "";
         private String _templF = "";
         private String _entryid = "";
         private String _tabid = "";
-        private CartData _cartInfo;
+        private Boolean _displayentrypage = false;
+        private CartData _orderInfo;
+        private String _templIH = "";
+        private String _templID = "";
+        private String _templIF = "";
 
         #region Event Handlers
 
@@ -57,44 +59,77 @@ namespace Nevoweb.DNN.NBrightBuy
 
             base.OnInit(e);
 
-            _cartInfo = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
-
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
                 rpDataH.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
                 return;
             }
 
+            CtrlPaging.Visible = false; // don't bother with paging on this module.
             try
             {
-                _templH = ModSettings.Get("txtdisplayheader");
-                _templD = ModSettings.Get("txtdisplaybody");
-                _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
-                _templF = ModSettings.Get("txtdisplayfooter");
+                #region "set templates based on entry id (eid) from url"
+
+                _entryid = Utils.RequestQueryStringParam(Context, "eid");
+
+                if (_entryid != "") _displayentrypage = true;
+
+                // get template codes
+                if (_displayentrypage)
+                {
+                    _templH = ModSettings.Get("txtdetailheader");
+                    _templD = ModSettings.Get("txtdetailbody");
+                    _templF = ModSettings.Get("txtdetailfooter");
+                }
+                else
+                {
+                    _templH = ModSettings.Get("txtdisplayheader");
+                    _templD = ModSettings.Get("txtdisplaybody");
+                    _templF = ModSettings.Get("txtdisplayfooter");
+                }
+
+                _templIH = ModSettings.Get("txtitemdetailheader");
+                _templID = ModSettings.Get("txtitemdetailbody");
+                _templIF = ModSettings.Get("txtitemdetailfooter");
+
+                #endregion
+
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
-
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
-
-                // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
-
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
                 // Get Display Footer
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
+                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
+                if (Utils.IsNumeric(_entryid))
+                {
+                    var rpItemHTempl = ModCtrl.GetTemplateData(ModSettings, _templIH, Utils.GetCurrentCulture(), DebugMode);
+                    rpItemH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    // Get Display Body
+                    var rpItemTempl = ModCtrl.GetTemplateData(ModSettings, _templID, Utils.GetCurrentCulture(), DebugMode);
+                    rpItem.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    // Get Display Footer
+                    var rpItemFTempl = ModCtrl.GetTemplateData(ModSettings, _templIF, Utils.GetCurrentCulture(), DebugMode);
+                    rpItemF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                }
+                else
+                {
+                    rpItemH.Visible = false;
+                    rpItem.Visible = false;
+                    rpItemF.Visible = false;
+                }
 
             }
             catch (Exception exc)
             {
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
-                // catch any error and allow processing to continue, output error as footer template.
+                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                var l = new Literal();
+                l.Text = exc.ToString();
+                phData.Controls.Add(l);
             }
 
         }
@@ -122,32 +157,94 @@ namespace Nevoweb.DNN.NBrightBuy
         {
 
             #region "Data Repeater"
-
-
-            if (_templD.Trim() != "") // if we don;t have a template, don't do anything
+            if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList();
-                rpData.DataSource = l;
-                rpData.DataBind();
+
+                if (_displayentrypage)
+                {
+                    DisplayDataEntryRepeater(_entryid);
+                }
+                else
+                {
+                    // check the display header to see if we have a sqlfilter defined.
+                    var strFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                    strFilter += " and UserId = " + UserId.ToString("") + " ";
+                    //Default orderby if not set
+                    var strOrder = " Order by ModifiedDate DESC  ";
+                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
+                    rpData.DataBind();
+
+                }
             }
 
             #endregion
 
-            var cartL = new List<NBrightInfo>();
-            cartL.Add(_cartInfo.GetCart());
-
-            // display header
-            rpDataH.DataSource = cartL;
-            rpDataH.DataBind();
+            // display header (Do header after the data return so the productcount works)
+            base.DoDetail(rpDataH);
 
             // display footer
-            rpDataF.DataSource = cartL;
-            rpDataF.DataBind();
+            base.DoDetail(rpDataF);
 
         }
 
         #endregion
 
+        #region  "Events "
+
+        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            var cArg = e.CommandArgument.ToString();
+            var param = new string[3];
+
+            switch (e.CommandName.ToLower())
+            {
+                case "entrydetail":
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "reorder":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
+                        orderData.CopyToCart(DebugMode);
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "return":
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+            }
+
+        }
+
+        #endregion
+
+
+        private void DisplayDataEntryRepeater(String entryId)
+        {
+            if (Utils.IsNumeric(entryId) && entryId != "0")
+            {
+                var orderData = new OrderData(PortalId, Convert.ToInt32(entryId));
+
+                // if debug , output the xml used.
+                if (DebugMode)
+                {
+                    var xmlDoc = new System.Xml.XmlDataDocument();
+                    xmlDoc.LoadXml(orderData.GetInfo().XMLData);
+                    xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_order.xml");
+                }
+
+                //render the detail page
+                base.DoDetail(rpData, orderData.GetInfo());
+
+                base.DoDetail(rpItemH, orderData.GetInfo());
+                rpItem.DataSource = orderData.GetCartItemList();
+                rpItem.DataBind();
+                base.DoDetail(rpItemF, orderData.GetInfo());
+
+            }
+        }
 
 
     }

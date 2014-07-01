@@ -23,7 +23,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             PurchaseTypeCode = "ORDER";
             PortalId = portalId;
-            PopulatePurchaseData(cartData.GetCart().ItemID); // move cart from "CART" type to "ORDER" (Cart no loanger exists at this point, it becomes an order.)
+            PopulatePurchaseData(cartData.GetInfo().ItemID); // move cart from "CART" type to "ORDER" (Cart no loanger exists at this point, it becomes an order.)
         }
 
         public OrderData(int portalId, int entryid)
@@ -33,19 +33,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulatePurchaseData(entryid);
         }
 
-        public void ConvertToCart(Boolean debugMode = false)
+        public void ConvertToCart(Boolean debugMode = false, String storageType = "Cookie", string nameAppendix = "")
         {
             PurchaseTypeCode = "CART";
-            base.Save();
+            var cartId = base.Save();
+            var cartData = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"), "", cartId.ToString("")); //create the client record (cookie)
             if (debugMode) OutputDebugFile("debug_convertedorder.xml");
         }
 
-        public void CopyToCart(Boolean debugMode = false)
+        public void CopyToCart(Boolean debugMode = false, String storageType = "Cookie", string nameAppendix = "")
         {
             PurchaseTypeCode = "CART";
-            base.Save(true);
+            var cartId = base.Save(true);
+            var cartData = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"), "", cartId.ToString("")); //create the client record (cookie)
             if (debugMode) OutputDebugFile("debug_copytocart.xml");
         }
+
 
         //TODO: these need to persist to the DB
         public bool Status { get; set; }        

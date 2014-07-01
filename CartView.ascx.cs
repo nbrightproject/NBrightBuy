@@ -160,7 +160,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
             var cartL = new List<NBrightInfo>();
-            cartL.Add(_cartInfo.GetCart());
+            cartL.Add(_cartInfo.GetInfo());
 
             // display header
             rpDataH.DataSource = cartL;
@@ -290,6 +290,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "updatecart":
                     UpdateCartItems();
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
                     SaveCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;

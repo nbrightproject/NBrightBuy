@@ -239,7 +239,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get Current Cart
         /// </summary>
         /// <returns></returns>
-        public NBrightInfo GetCart()
+        public NBrightInfo GetInfo()
         {
             return _purchaseInfo;
         }

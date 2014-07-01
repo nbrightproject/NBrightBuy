@@ -217,6 +217,7 @@
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
     <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
+    <Content Include="NBrightTemplates\Default\OrderAdmin_Settings.html" />
     <Content Include="OrderAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -288,6 +289,15 @@
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
     <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
     <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitem.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
@@ -328,6 +338,7 @@
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
@@ -335,6 +346,7 @@
     <EmbeddedResource Include="Themes\Cygnus\resx\CategoryMenuSettings.ascx.resx" />
     <EmbeddedResource Include="Themes\Cygnus\resx\CartView.ascx.resx" />
     <EmbeddedResource Include="Themes\Cygnus\resx\CartViewSettings.ascx.resx" />
+    <EmbeddedResource Include="Themes\Cygnus\resx\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearch.ascx.resx" />
     <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="Themes\Cygnus\resx\ProductView.ascx.resx" />

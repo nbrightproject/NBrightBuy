@@ -31,13 +31,31 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpData;
         
         /// <summary>
-        /// phData control.
+        /// rpItemH control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phData;
+        protected global::System.Web.UI.WebControls.Repeater rpItemH;
+        
+        /// <summary>
+        /// rpItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpItem;
+        
+        /// <summary>
+        /// rpItemF control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpItemF;
         
         /// <summary>
         /// rpDataF control.
@@ -49,12 +67,12 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpDataF;
         
         /// <summary>
-        /// phPaging control.
+        /// phData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
+        protected global::System.Web.UI.WebControls.PlaceHolder phData;
     }
 }

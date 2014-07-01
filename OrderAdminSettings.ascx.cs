@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         protected override void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "AddressAdmin";
+            base.CtrlTypeCode = "OrderAdmin";
             base.OnInit(e);
         }
 

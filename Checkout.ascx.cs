@@ -116,7 +116,7 @@ namespace Nevoweb.DNN.NBrightBuy
             cartInfo.ConvertToOrder(DebugMode);
 
             var cartL = new List<NBrightInfo>();
-            cartL.Add(_cartInfo.GetCart());
+            cartL.Add(_cartInfo.GetInfo());
 
             // display header
             rpDetailDisplay.DataSource = cartL;
