@@ -76,12 +76,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-                const string templASH = "cartselectaddrH.html";
-                const string templASB = "cartselectaddrB.html";
-                const string templASF = "cartselectaddrF.html";
-                const string templAB = "cartaddrbill.html";
-                const string templAS = "cartaddrship.html";
-                const string templS = "cartship.html";
+                const string templASH = "cartselectaddressheader.html";
+                const string templASB = "cartselectaddressbody.html";
+                const string templASF = "cartselectaddressfooter.html";
+                const string templAB = "cartbillingaddress.html";
+                const string templAS = "cartshippingaddress.html";
+                const string templS = "cartshipment.html";
                 const string templT = "carttax.html";
                 const string templP = "cartpromo.html";
                 const string templE = "cartextra.html";
@@ -175,9 +175,10 @@ namespace Nevoweb.DNN.NBrightBuy
             var carttype =  ModSettings.Get("ddlcarttype");
             if (carttype == "2")
             {
-                var l = new Literal();
-                l.Text = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
-                checkoutlayout.Controls.Add(l);
+
+                var layout = new Literal();
+                layout.Text = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
+                checkoutlayout.Controls.Add(layout);
 
                 #region "Address List Data Repeater"
 
@@ -207,7 +208,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (billaddr.XMLData == null)
                 {
                     var defAddr = _addressData.GetDefaultAddress();
-                    if (defAddr != null) billaddr.XMLData = defAddr.XMLData;
+                    if (defAddr == null)
+                    {
+                        var cookieaddr = Cookie.GetCookieValue(PortalId,"cartaddress","billingaddress","cartaddress");
+                        billaddr.XMLData = cookieaddr;
+                    }
+                    else
+                        billaddr.XMLData = defAddr.XMLData;
+
                 }
                 objl.Add(billaddr);
                 rpAddrB.DataSource = objl;
@@ -303,6 +311,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "order":
+                    _cartInfo.SetValidated(true);
                     UpdateCartItems();
                     UpdateCartAddresses();
                     UpdateCartInfo();
@@ -358,6 +367,11 @@ namespace Nevoweb.DNN.NBrightBuy
         private void SaveCart()
         {
             _cartInfo.Save(DebugMode);
+            if (UserId == -1)
+            {
+                // no user registered so save address as cookie
+                Cookie.SetCookieValue(PortalId, "cartaddress", "billingaddress", _cartInfo.GetBillingAddress().XMLData,  "cartaddress");
+            }
         }
 
 

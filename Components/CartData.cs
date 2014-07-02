@@ -49,10 +49,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ConvertToOrder(Boolean debugMode = false)
         {
-            PurchaseTypeCode = "ORDER";
-            base.Save();
-            if (debugMode) OutputDebugFile("debug_convertedcart.xml");
-            Exists = false;
+            if (IsValidated())
+            {
+                PurchaseTypeCode = "ORDER";
+                base.Save();
+                if (debugMode) OutputDebugFile("debug_convertedcart.xml");
+                Exists = false;                
+            }
         }
 
 

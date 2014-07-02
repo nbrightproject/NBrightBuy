@@ -36,6 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class OrderAdmin : NBrightBuyBase
     {
 
+        private GenXmlTemplate _templSearch; 
         private String _catid = "";
         private String _catname = "";
         private String _templH = "";
@@ -94,6 +95,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 #endregion
 
+                // Get Search
+                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "orderadminsearch.html", Utils.GetCurrentCulture(), DebugMode);
+                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpSearch.ItemTemplate = _templSearch;
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
@@ -146,6 +151,9 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception exc) //Module failed to load
             {
+                //remove the navigation data, it could be causing the error.
+                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
@@ -159,21 +167,25 @@ namespace Nevoweb.DNN.NBrightBuy
             #region "Data Repeater"
             if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
             {
-
-                if (_displayentrypage)
+                if (UserId > 0) // only logged in users can see data on this module.
                 {
-                    DisplayDataEntryRepeater(_entryid);
-                }
-                else
-                {
-                    // check the display header to see if we have a sqlfilter defined.
-                    var strFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
-                    strFilter += " and UserId = " + UserId.ToString("") + " ";
-                    //Default orderby if not set
-                    var strOrder = " Order by ModifiedDate DESC  ";
-                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
-                    rpData.DataBind();
 
+                    if (_displayentrypage)
+                    {
+                        DisplayDataEntryRepeater(_entryid);
+                    }
+                    else
+                    {
+                        // check the display header to see if we have a sqlfilter defined.
+                        var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                        var strFilter = navigationData.Criteria;
+                        strFilter += " and UserId = " + UserId.ToString("") + " ";
+                        //Default orderby if not set
+                        var strOrder = " Order by ModifiedDate DESC  ";
+                        rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
+                        rpData.DataBind();
+
+                    }
                 }
             }
 
@@ -185,6 +197,8 @@ namespace Nevoweb.DNN.NBrightBuy
             // display footer
             base.DoDetail(rpDataF);
 
+            // display search
+            base.DoDetail(rpSearch);
         }
 
         #endregion
@@ -195,6 +209,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
+            var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
 
             switch (e.CommandName.ToLower())
             {
@@ -213,6 +228,30 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "return":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "search":
+                    var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
+                    navigationData.Build(strXml, _templSearch);
+                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpSearch);
+                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch);
+                    navigationData.Save();
+                    if (DebugMode)
+                    {
+                        strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
+                        var xmlDoc = new System.Xml.XmlDataDocument();
+                        xmlDoc.LoadXml(strXml);
+                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "resetsearch":
+                    // clear cookie info
+                    navigationData.Delete();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "orderby":
+                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
+                    navigationData.Save();
                     break;
             }
 

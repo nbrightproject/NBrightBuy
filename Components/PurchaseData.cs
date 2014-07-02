@@ -538,6 +538,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _purchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", value, TypeCode.String, false);
         }
 
+        /// <summary>
+        /// Get the IsValidated (A cart is validated by the cart process and can only be converted to an ORDER when it have been validated)
+        /// </summary>
+        public Boolean IsValidated()
+        {
+            if (_purchaseInfo.GetXmlProperty("genxml/isvalidated") == "True") return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Set IsValidated:
+        /// </summary>
+        /// <param name="value"> </param>
+        public void SetValidated(Boolean value)
+        {
+            if (value)
+                _purchaseInfo.SetXmlProperty("genxml/isvalidated", "True", TypeCode.String, false);
+            else
+                _purchaseInfo.SetXmlProperty("genxml/isvalidated", "False", TypeCode.String, false);
+        }
+
+
         public void OutputDebugFile(String fileName)
         {
             _purchaseInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);

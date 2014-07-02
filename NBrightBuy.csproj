@@ -307,6 +307,7 @@
     <Content Include="Themes\Cygnus\Default\listheader.html" />
     <Content Include="Themes\Cygnus\Default\listpageheader.html" />
     <Content Include="Themes\Cygnus\Default\modellist.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminsearch.html" />
     <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
     <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
     <Content Include="Themes\Cygnus\Default\relatedlist.html" />

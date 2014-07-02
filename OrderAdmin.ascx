@@ -1,4 +1,5 @@
 <%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.OrderAdmin" AutoEventWireup="true"  Codebehind="OrderAdmin.ascx.cs" %>
+<asp:Repeater ID="rpSearch" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpDataH" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpData" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpItemH" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>

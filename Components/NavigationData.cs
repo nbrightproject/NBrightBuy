@@ -112,6 +112,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var searchValFrom = obj.GetXmlProperty(searchfrom);
                     var searchValTo = obj.GetXmlProperty(searchto);
 
+                    if (sqltype.ToLower() == "datetime")
+                    {
+                        if (Utils.IsDate(searchValFrom))
+                            searchValFrom = Convert.ToDateTime(searchValFrom).ToString("yyyy-MM-dd HH:mm:ss");
+                        else
+                            searchValFrom = "";
+                        if (Utils.IsDate(searchValTo))
+                            searchValTo = Convert.ToDateTime(searchValTo).ToString("yyyy-MM-dd HH:mm:ss");
+                        else
+                            searchValTo = "";
+                        if (Utils.IsDate(searchVal))
+                            searchVal = Convert.ToDateTime(searchVal).ToString("yyyy-MM-dd HH:mm:ss");
+                        else
+                            searchVal = "";
+                    }
+
                     switch (action.ToLower())
                     {
                         case "open":
@@ -132,8 +148,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             break;
                         case "range":
                             // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
-                            if (searchValFrom == "") searchValFrom = "0";
-                            if (searchValTo == "") searchValTo = "9999999";
+                            if (searchValFrom == "")
+                            {
+                                if (sqltype.ToLower() == "datetime")
+                                    searchValFrom = "1800-01-01";
+                                else
+                                    searchValFrom = "0";                                
+                            }
+                            if (searchValTo == "")
+                            {
+                                if (sqltype.ToLower() == "datetime")
+                                    searchValTo = "3000-12-30";
+                                else
+                                    searchValTo = "999999999";
+                            }
+
                             _criteria += " " + sqloperator + " " +
                                          GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
                             break;

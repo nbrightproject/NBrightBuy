@@ -414,4 +414,10 @@
   <data name="Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="From.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="To.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>

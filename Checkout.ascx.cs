@@ -71,7 +71,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templOK = "checkoutOK.html";
                 const string templFAIL = "checkoutFAIL.html";
 
-                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templOK, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                var displayTempl = templOK;
+                if (!_cartInfo.IsValidated()) displayTempl = templFAIL;
+
+                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, displayTempl, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                 _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
 
                 // insert page header text
@@ -112,15 +115,18 @@ namespace Nevoweb.DNN.NBrightBuy
             //TODO: fix this to work for payment gateways.
             // First step is to make the cart turn into a order and accept the order...no payment proccessing
 
-            var cartInfo = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
-            cartInfo.ConvertToOrder(DebugMode);
+            if (_cartInfo.IsValidated())
+            {
 
-            var cartL = new List<NBrightInfo>();
-            cartL.Add(_cartInfo.GetInfo());
+                _cartInfo.ConvertToOrder(DebugMode);
 
-            // display header
-            rpDetailDisplay.DataSource = cartL;
-            rpDetailDisplay.DataBind();
+                var cartL = new List<NBrightInfo>();
+                cartL.Add(_cartInfo.GetInfo());
+
+                // display header
+                rpDetailDisplay.DataSource = cartL;
+                rpDetailDisplay.DataBind();
+            }
         }
 
         #endregion

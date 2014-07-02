@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
+using NBrightCore.common;
 using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
@@ -43,6 +44,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
             if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
             if (!_settingDic.ContainsKey("defaultportalalias")) _settingDic.Add("defaultportalalias", PortalSettings.Current.DefaultPortalAlias);
+            if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
             ThemeFolder = Get("themefolder");

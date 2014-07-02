@@ -17,6 +17,22 @@
             $('.themesettings').html('');
         });
 
+        $('.ddlcarttype').change(function () {
+            if ($(this).val() == '1')
+			{
+				$('input[[id*="txtdisplayheader"]]').val('minicartlistheader.html');
+				$('input[[id*="txtdisplaybody"]]').val('minicartlistbody.html');
+				$('input[[id*="txtdisplayfooter"]]').val('minicartlistfooter.html');
+			}
+            if ($(this).val() == '2')
+			{
+				$('input[[id*="txtdisplayheader"]]').val('cartlistheader.html');
+				$('input[[id*="txtdisplaybody"]]').val('cartlistbody.html');
+				$('input[[id*="txtdisplayfooter"]]').val('cartlistfooter.html');
+			}
+        });
+
+		
     });
 
 </script>
@@ -28,16 +44,16 @@
         </div>
 		<h2>[<tag type="valueof" resourcekey="CartViewSettings.carttemplates" />]</h2>
         <div class="dnnFormItem">
-            [<tag id="lbllistheader" type="dnn:labelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="cartviewheader.html" />]
+            [<tag id="lbllistheader" type="dnn:labelcontrol" />][<tag id="txtdisplayheader" type="textbox" width="300" maxlength="250" Text="minicartlistheader.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistbody" type="dnn:labelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="cartviewbody.html" />]
+            [<tag id="lbllistbody" type="dnn:labelcontrol" />][<tag id="txtdisplaybody" type="textbox" width="300" maxlength="250" Text="minicartlistbody.html" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbllistfooter" type="dnn:labelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="cartviewfooter.html"/>]
+            [<tag id="lbllistfooter" type="dnn:labelcontrol" />][<tag id="txtdisplayfooter" type="textbox" width="300" maxlength="250"  Text="minicartlistfooter.html"/>]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lblcarttype" type="dnn:labelcontrol" />][<tag id="ddlcarttype" type="dropdownlist" resourcekey="CartViewSettings.ddlcarttype" width="200" />]
+            [<tag id="lblcarttype" type="dnn:labelcontrol" />][<tag id="ddlcarttype" cssclass="ddlcarttype" type="dropdownlist" resourcekey="CartViewSettings.ddlcarttype" width="200" />]
         </div>
         <div class="dnnFormItem">
         [<tag id="lblPaymentTab" type="dnn:labelcontrol" />][<tag id="PaymentTab" type="dropdownlist" datatabs="blank" />]
