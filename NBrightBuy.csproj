@@ -49,9 +49,24 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Orders.ascx.cs">
+      <DependentUpon>Orders.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Orders.ascx.designer.cs">
+      <DependentUpon>Orders.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\NBrightBuyBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -62,6 +77,7 @@
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
     <Compile Include="Components\UserData.cs" />
@@ -134,6 +150,13 @@
     <Compile Include="AddressAdminSettings.ascx.designer.cs">
       <DependentUpon>AddressAdminSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\BackOffice.ascx.cs">
+      <DependentUpon>BackOffice.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\BackOffice.ascx.designer.cs">
+      <DependentUpon>BackOffice.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrderAdmin.ascx.cs">
       <DependentUpon>OrderAdmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -191,6 +214,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Menu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Orders.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CategoryMenu.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -215,8 +244,21 @@
     <Content Include="AddressAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\BackOffice.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
     <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
+    <Content Include="NBrightTemplates\Default\ordersbody.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetail.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetailfooter.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetailheader.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetailitem.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetailitemfooter.html" />
+    <Content Include="NBrightTemplates\Default\ordersdetailitemheader.html" />
+    <Content Include="NBrightTemplates\Default\ordersfooter.html" />
+    <Content Include="NBrightTemplates\Default\ordersheader.html" />
+    <Content Include="NBrightTemplates\Default\orderssearch.html" />
     <Content Include="NBrightTemplates\Default\OrderAdmin_Settings.html" />
     <Content Include="OrderAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -262,20 +304,20 @@
     <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
     <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
     <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
-    <Content Include="Themes\Cygnus\Default\cartaddrbill.html" />
-    <Content Include="Themes\Cygnus\Default\cartaddrship.html" />
+    <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
     <Content Include="Themes\Cygnus\Default\cartdetails.html" />
     <Content Include="Themes\Cygnus\Default\cartextra.html" />
     <Content Include="Themes\Cygnus\Default\cartlayout.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
     <Content Include="Themes\Cygnus\Default\cartpromo.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddrB.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddrF.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddrH.html" />
-    <Content Include="Themes\Cygnus\Default\cartship.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartshipment.html" />
+    <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
     <Content Include="Themes\Cygnus\Default\carttax.html" />
-    <Content Include="Themes\Cygnus\Default\cartviewbody.html" />
-    <Content Include="Themes\Cygnus\Default\cartviewfooter.html" />
-    <Content Include="Themes\Cygnus\Default\cartviewheader.html" />
     <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
     <Content Include="Themes\Cygnus\Default\categorybody.html" />
     <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />
@@ -289,6 +331,9 @@
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
     <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
     <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistheader.html" />
     <Content Include="Themes\Cygnus\Default\orderadmindetailitem.html" />
     <Content Include="Themes\Cygnus\Default\orderadmindetailitemf.html" />
     <Content Include="Themes\Cygnus\Default\orderadmindetailitemh.html" />
