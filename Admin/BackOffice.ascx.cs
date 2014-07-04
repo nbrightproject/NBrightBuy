@@ -12,7 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
-
+using System.Web;
 using System.Web.UI.WebControls;
 using NBrightCore.common;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -34,14 +34,25 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             base.OnInit(e);
             try
             {
-                var pluginData = new PluginData(PortalId);
-
                 var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
-
+                if (ctrl == "")
+                    ctrl = (String)HttpContext.Current.Session["nbrightbackofficectrl"];
+                else
+                    HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
+                
                 var ctlpath = GetControlPath(ctrl);
 
-                var c1 = LoadControl(ctlpath);
-                phData.Controls.Add(c1);
+                if (ctlpath != "")
+                {
+                    var c1 = LoadControl(ctlpath);
+                    phData.Controls.Add(c1);                    
+                }
+                else
+                {
+                    var c1 = new Literal();
+                    c1.Text = "INVALID CONTROL: " + ctrl;
+                    phData.Controls.Add(c1);                                        
+                }
             }
             catch (Exception exc) //Module failed to load
             {
@@ -55,7 +66,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String GetControlPath(String ctrl)
         {
-            return "/DesktopModules/NBright/NBrightBuy/Admin/Orders.ascx";
+            var pluginData = new PluginData(PortalId);
+
+            var nod = pluginData.Info.XMLDoc.SelectSingleNode("genxml/plugin/genxml[textbox/ctrl='" + ctrl + "']/textbox/path");
+            if (nod != null)
+            {
+                //var pathnod = nod.SelectSingleNode("textbox/path");
+                //if (pathnod != null) return pathnod.InnerText;
+                return nod.InnerText;
+            }
+            return "";
         }
 
     }

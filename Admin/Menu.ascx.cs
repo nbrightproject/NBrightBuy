@@ -38,14 +38,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
 
-                var rpDataTemplH = ModCtrl.GetTemplateData(ModSettings, "menuheader.html", Utils.GetCurrentCulture(), DebugMode);
-                var l = new Literal();
-                l.Text = rpDataTemplH;
-                phMenuH.Controls.Add(l);
-                var rpDataTemplF = ModCtrl.GetTemplateData(ModSettings, "menufooter.html", Utils.GetCurrentCulture(), DebugMode);
-                l = new Literal();
-                l.Text = rpDataTemplF;
-                phMenuF.Controls.Add(l);
  
             }
             catch (Exception exc) //Module failed to load
@@ -66,9 +58,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
+                    var rpDataTemplH = ModCtrl.GetTemplateData(ModSettings, "menuheader.html", Utils.GetCurrentCulture(), DebugMode);
                     var l = new Literal();
+                    l.Text = rpDataTemplH;
+                    phMenuH.Controls.Add(l);
+
+                    l = new Literal();
                     l.Text = GetMenu();
                     phMenuF.Controls.Add(l);
+
+                    var rpDataTemplF = ModCtrl.GetTemplateData(ModSettings, "menufooter.html", Utils.GetCurrentCulture(), DebugMode);
+                    l = new Literal();
+                    l.Text = rpDataTemplF;
+                    phMenuF.Controls.Add(l);
+
                 }
             }
             catch (Exception exc) //Module failed to load

@@ -49,6 +49,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 info.XMLData = newPlugin;
                 AddPlugin(info);
 
+                newPlugin = strXml.Replace("{name}", "Clients").Replace("{pluginpath}", "/DesktopModules/Admin/Security/users.ascx").Replace("{ctrl}", "clients");
+                info = new NBrightInfo();
+                info.XMLData = newPlugin;
+                AddPlugin(info);
+
                 newPlugin = strXml.Replace("{name}", "Exit").Replace("{pluginpath}", "").Replace("{ctrl}", "");
                 info = new NBrightInfo();
                 info.XMLData = newPlugin;
