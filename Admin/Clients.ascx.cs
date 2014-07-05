@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Orders : NBrightBuyBase
+    public partial class Clients : NBrightBuyBase
     {
 
         private GenXmlTemplate _templSearch; 
@@ -89,23 +89,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
-                if (Utils.IsNumeric(_entryid))
-                {
-                    var rpItemHTempl = ModCtrl.GetTemplateData(ModSettings, "ordersdetailitemheader.html", Utils.GetCurrentCulture(), DebugMode);
-                    rpItemH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    // Get Display Body
-                    var rpItemTempl = ModCtrl.GetTemplateData(ModSettings, "ordersdetailitem.html", Utils.GetCurrentCulture(), DebugMode);
-                    rpItem.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    // Get Display Footer
-                    var rpItemFTempl = ModCtrl.GetTemplateData(ModSettings, "ordersdetailitemfooter.html", Utils.GetCurrentCulture(), DebugMode);
-                    rpItemF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpItemFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                }
-                else
-                {
-                    rpItemH.Visible = false;
-                    rpItem.Visible = false;
-                    rpItemF.Visible = false;
-                }
                 #endregion
 
 
@@ -245,11 +228,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 //render the detail page
                 base.DoDetail(rpData, orderData.GetInfo());
-
-                base.DoDetail(rpItemH, orderData.GetInfo());
-                rpItem.DataSource = orderData.GetCartItemList();
-                rpItem.DataBind();
-                base.DoDetail(rpItemF, orderData.GetInfo());
 
             }
         }

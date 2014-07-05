@@ -86,12 +86,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String GetMenu()
         {
             var strOut = "<ul>";
-            var pluginData = new PluginData(PortalId);
+            var strCacheKey = "menuplugin*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
+            PluginData pluginData = null;
+            if (!StoreSettings.Current.DebugMode) pluginData = (PluginData)Utils.GetCache(strCacheKey);
+            if (pluginData == null) pluginData = new PluginData(PortalId);
             foreach (var p in pluginData.GetPluginList())
             {
                 strOut += "<li>";
                 var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                if (ctrl == "")
+                if (ctrl == "" || ctrl == "exit")
                 {
                     strOut += "<a href='/'>" + p.GetXmlProperty("genxml/textbox/name") + "</a>";
                 }

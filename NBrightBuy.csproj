@@ -53,6 +53,20 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Clients.ascx.cs">
+      <DependentUpon>Clients.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Clients.ascx.designer.cs">
+      <DependentUpon>Clients.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Plugins.ascx.cs">
+      <DependentUpon>Plugins.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Plugins.ascx.designer.cs">
+      <DependentUpon>Plugins.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Menu.ascx.cs">
       <DependentUpon>Menu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -214,6 +228,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Clients.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Plugins.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Menu.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -295,6 +315,7 @@
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Cygnus\css\jquery.metisMenu.css" />
@@ -384,6 +405,7 @@
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />

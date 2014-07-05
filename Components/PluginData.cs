@@ -20,50 +20,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private List<NBrightInfo> _pluginList;
         public NBrightInfo Info;
-
+        private NBrightCore.TemplateEngine.TemplateGetter _templCtrl; 
         public PluginData(int portalId)
         {
-            var modCtrl = new NBrightBuyController();
-            Info = modCtrl.GetByType(portalId, -1, "PLUGINDATA");
-            if (Info == null)
+            _templCtrl = NBrightBuyUtils.GetTemplateGetter("config");
+
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture());
+            if (menuplugin != "")
             {
-                _pluginList = new List<NBrightInfo>();
-
                 Info = new NBrightInfo();
-                Info.ItemID = -1;
-                Info.UserId = -1;
-                Info.PortalId = portalId;
-                Info.ModuleId = -1;
-                Info.TypeCode = "PLUGINDATA";
-                Info.XMLData = "<genxml></genxml>";
-
-                // add default mennu items [TODO: make this param driven and localized]
-                var strXml = "<genxml><files /><hidden><index></index></hidden><textbox><ctrl>{ctrl}</ctrl><name>{name}</name><path>{pluginpath}</path><help></help></textbox><checkbox /><dropdownlist /><checkboxlist /><radiobuttonlist /><edt /></genxml>";
-                var newPlugin = strXml.Replace("{name}", "DashBoard").Replace("{pluginpath}", "").Replace("{ctrl}", "dashboard");
-                var info = new NBrightInfo();
-                info.XMLData = newPlugin; 
-                AddPlugin(info);
-                
-                newPlugin = strXml.Replace("{name}", "Orders").Replace("{pluginpath}", "/DesktopModules/NBright/NBrightBuy/Admin/Orders.ascx").Replace("{ctrl}","orders");
-                info = new NBrightInfo();
-                info.XMLData = newPlugin;
-                AddPlugin(info);
-
-                newPlugin = strXml.Replace("{name}", "Clients").Replace("{pluginpath}", "/DesktopModules/Admin/Security/users.ascx").Replace("{ctrl}", "clients");
-                info = new NBrightInfo();
-                info.XMLData = newPlugin;
-                AddPlugin(info);
-
-                newPlugin = strXml.Replace("{name}", "Exit").Replace("{pluginpath}", "").Replace("{ctrl}", "");
-                info = new NBrightInfo();
-                info.XMLData = newPlugin;
-                AddPlugin(info);
-
-                
-                Save(true);
+                Info.XMLData = menuplugin;
+                _pluginList = new List<NBrightInfo>();
+                _pluginList = GetPluginList();
             }
-
-            _pluginList = GetPluginList();
         }
 
 
@@ -75,19 +44,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Info != null)
             {
                 //save cart
-                var strXML = "<plugin>";
+                var strXml = "<plugin>";
                 foreach (var info in _pluginList)
                 {
-                    strXML += info.XMLData;
+                    strXml += info.XMLData;
                 }
-                strXML += "</plugin>";
+                strXml += "</plugin>";
                 Info.RemoveXmlNode("genxml/plugin");
-                Info.AddXmlNode(strXML, "plugin", "genxml");
-
-                var modCtrl = new NBrightBuyController();
-                Info.ItemID = modCtrl.Update(Info);
-                if (debugMode) Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_plugindata.xml");
-
+                Info.AddXmlNode(strXml, "plugin", "genxml");
+                _templCtrl.SaveTemplate("menuplugin.xml",Info.XMLData);
             }
         }
 
@@ -171,6 +136,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (XmlNode carNod in xmlNodeList)
                 {
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                    newInfo.ItemID = rtnList.Count;
                     newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
                     rtnList.Add(newInfo);
                 }
