@@ -126,10 +126,10 @@
     <value>Category search type</value>
   </data>
   <data name="lblcatselect.Help" xml:space="preserve">
-    <value>Turn on the by category search</value>
+    <value>Turn on the category search</value>
   </data>
   <data name="lblcatselect.Text" xml:space="preserve">
-    <value> By Category/Group Search</value>
+    <value>Category Group Search</value>
   </data>
   <data name="lbldescription.Help" xml:space="preserve">
     <value>Turn on the product description text search</value>
@@ -143,8 +143,11 @@
   <data name="lblpricerange.Text" xml:space="preserve">
     <value>Price Range</value>
   </data>
+  <data name="lblorderselector.Text" xml:space="preserve">
+    <value>Sort Order Selector</value>
+  </data>
   <data name="lbltextsearch.Help" xml:space="preserve">
-    <value>Turn on the text search</value>
+    <value>Turn on the sort order selector</value>
   </data>
   <data name="lbltextsearch.Text" xml:space="preserve">
     <value>Text Search</value>

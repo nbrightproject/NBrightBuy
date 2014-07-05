@@ -6,13 +6,13 @@
 $(document).ready(function() {
 	// Initialize navgoco with default options
 	$(".nbrightbuy_catmenu").navgoco({
-		caretHtml: '',
-		accordion: false,
+		caretHtml: '<i class="fa fa-chevron-circle-down"></i>', // http://fontawesome.io/icons/
+		accordion: [<tag type="if" function="settings" key="treebehaviour" testvalue="True" display="true" displayelse="false" />], // Because the script requires lower case
 		openClass: 'open',
 		save: false,
 		slide: {
-			duration: 100,
-			easing: 'linear'
+			duration: 200,
+			easing: 'swing' // linear or swing
 		},
 		// Add Active class to clicked menu item
 		onClickAfter: function(e, submenu) {
@@ -36,3 +36,5 @@ $(document).ready(function() {
 	});
 });
 </script>
+
+<div class="treemenu">

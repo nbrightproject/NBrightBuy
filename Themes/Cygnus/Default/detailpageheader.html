@@ -1,4 +1,51 @@
-﻿<script type="text/javascript">
+﻿<!-- detailpageheader.html - This template is injected into the page html head section. It contains meta data for SEO as well as prioritised script and CSS resources -->
+
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx" />]<!-- This template requires link to language resource -->
+
+<!-- Combined SEO name field test to cover all services below - To save on code -->
+[<tag type="if" xpath="genxml/lang/genxml/textbox/txtseoname" testvalue="" display="{OFF}" displayelse="{ON}" />]
+<meta property="og:title" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
+<meta name="twitter:title" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
+<meta itemprop="name" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
+[<tag type="endif" />]
+[<tag type="if" xpath="genxml/lang/genxml/textbox/txtseoname" testvalue="" display="{ON}" displayelse="{OFF}" />]
+<meta property="og:title" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
+<meta name="twitter:title" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
+<meta itemprop="name" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
+[<tag type="endif" />]
+
+<!-- Open Graph data for Facebook - Title and Type are required - https://developers.facebook.com/docs/reference/opengraph/object-type/object -->
+<meta property="og:description" content="[<tag type='breakof' xpath='genxml/lang/genxml/textbox/txtsummary' />]"/>
+<meta property="og:image" content="http://[<tag type='websiteurl' />][<tag type='valueof' xpath='genxml/imgs/genxml/hidden/imageurl' />]"/>
+<meta property="og:url" content="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]"/>
+<meta property="og:site_name" content="[Settings:portalname]"/>
+<meta property="og:type" content="[Settings:ogobjecttype]"/>
+<meta property="og:price:amount" content="[<tag type='valueof' xpath='genxml/models/genxml/textbox/txtunitcost' />]"/>
+<meta property="og:price:currency" content="[<tag type='currencyisocode' />]"/>
+
+<!-- Facebook id number for Page Insights - https://www.facebook.com/help/336893449723054 -->
+<meta property="fb:admins" content="[Settings:facebookid]"/>
+
+<!-- Twitter Card - https://dev.twitter.com/docs/cards -->
+<meta name="twitter:card" content="product"/>
+<meta name="twitter:site" content="[Settings:twittersite]"/>
+<meta name="twitter:creator" content="[Settings:twitteruser]"/>
+<meta name="twitter:domain" content="[<tag type='websiteurl' />]"/>
+<meta name="twitter:description" content="[<tag type='breakof' xpath='genxml/lang/genxml/textbox/txtsummary' />]"/> 
+<meta name="twitter:image" content="http://[<tag type='websiteurl' />][<tag type='valueof' xpath='genxml/imgs/genxml/hidden/imageurl' />]"/>
+<meta name="twitter:label1" content="[<tag type='valueof' resourcekey='ProductView.price' />]"/><!-- need to fix this to just get the label, no spans -->
+<meta name="twitter:data1" content="[<tag type='valueof' xpath='genxml/models/genxml/textbox/txtunitcost' />]"/>
+<meta name="twitter:label2" content=""/>
+<meta name="twitter:data2" content=""/>
+
+<!-- Google Plus -->
+<meta itemprop="description" content="[<tag type='breakof' xpath='genxml/lang/genxml/textbox/txtsummary' />]"/>
+<meta itemprop="image" content="http://[<tag type='websiteurl' />][<tag type='valueof' xpath='genxml/imgs/genxml/hidden/imageurl' />]"/>
+
+<!-- Rich Snippets / Schema.org code is in the detail.html template - http://schema.org/Product -->
+
+
+<script type="text/javascript">
 // Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
 if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
     var msViewportStyle = document.createElement("style");
@@ -7,9 +54,8 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             "@-ms-viewport{width:auto!important}"
         )
     );
-    document.getElementsByTagName("head")[0].
-        appendChild(msViewportStyle);
-}
+    document.getElementsByTagName("head")[[0]].appendChild(msViewportStyle); // Fixed for the store
+    }
 </script>
 
 <!-- Vector Font Icons http://fontawesome.io - These font-icons are used in the productview.resx resource file -->

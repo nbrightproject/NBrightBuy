@@ -121,7 +121,7 @@
     <value>Check All</value>
   </data>
   <data name="ddlOrderBy.data" xml:space="preserve">
-    <value>Ref;Name;Manufacturer;Price;Qty</value>
+    <value>Price;Price descending;Product Name;Manufacturer;Reference code;Stock</value>
   </data>
   <data name="NoCategorySelected.Text" xml:space="preserve">
     <value>No Category Selected</value>
@@ -129,11 +129,20 @@
   <data name="OnlyInStock.Text" xml:space="preserve">
     <value>Only Items In Stock</value>
   </data>
+  <data name="SearchText.Text" xml:space="preserve">
+    <value>Find Text</value>
+  </data>
   <data name="PriceRange.Text" xml:space="preserve">
     <value>Price Range</value>
   </data>
+  <data name="PriceRangeSeperator.Text" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="RefineSearch.Text" xml:space="preserve">
+    <value>Refine your Search</value>
+  </data>
   <data name="Search.Text" xml:space="preserve">
-    <value>Apply</value>
+    <value>Search</value>
   </data>
   <data name="Reset.Text" xml:space="preserve">
     <value>Clear</value>

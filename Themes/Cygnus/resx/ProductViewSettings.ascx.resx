@@ -177,6 +177,9 @@
   <data name="lblrelatedimageheight.Text" xml:space="preserve">
     <value>Related Image Height in px or 0 for auto : </value>
   </data>
+  <data name="lblcategorydetails.Text" xml:space="preserve">
+    <value>Show Category Details : </value>
+  </data>
   <data name="lblmodelstable.Text" xml:space="preserve">
     <value>Show Models Table : </value>
   </data>
@@ -201,10 +204,52 @@
   <data name="lblnoimageicon.Text" xml:space="preserve">
     <value>Placeholder Image Icon (fontawesome.io) : </value>
   </data>
+  <data name="lblallowzeroprice.Text" xml:space="preserve">
+    <value>Allow Zero-price Purchase : </value>
+  </data>
   <data name="lblholidaymode.Text" xml:space="preserve">
     <value>Holiday Mode : </value>
   </data>
   <data name="lblcataloguemode.Text" xml:space="preserve">
     <value>Catalogue Mode : </value>
+  </data>
+  <data name="lbllistimages.Text" xml:space="preserve">
+    <value>List Images : </value>
+  </data>
+  <data name="lbldetailimages.Text" xml:space="preserve">
+    <value>Detail Images : </value>
+  </data>
+  <data name="lblrelatedimages.Text" xml:space="preserve">
+    <value>Related Product Images : </value>
+  </data>
+  <data name="lbldisplayfeatures.Text" xml:space="preserve">
+    <value>Display Features : </value>
+  </data>
+  <data name="lblsocialseodata.Text" xml:space="preserve">
+    <value>Social and SEO : </value>
+  </data>
+    <data name="lblogobjecttype.Text" xml:space="preserve">
+    <value>Open Graph Obect Type : </value>
+  </data>
+  <data name="lblogobjecttype.Help" xml:space="preserve">
+    <value>Open Graph Obect Type - Normally 'website'. Refer https://developers.facebook.com/docs/reference/opengraph/ </value>
+  </data>
+  <data name="lblfacebookid.Text" xml:space="preserve">
+    <value>Facebook ID Number : </value>
+  </data>
+  <data name="lblfacebookid.Help" xml:space="preserve">
+    <value>Facebook ID number for Page Insights. Can be a single fb:admins ID or a comma-separated list of IDs. Refer https://developers.facebook.com/docs/insights/</value>
+  </data>
+  <data name="lbltwittersite.Text" xml:space="preserve">
+    <value>Twitter Website @username : </value>
+  </data>
+  <data name="lbltwittersite.Help" xml:space="preserve">
+    <value>The Twitter user name of the website , including the @ symbol. May be the same as the Twitter user. Refer https://dev.twitter.com/docs/cards/markup-reference</value>
+  </data>
+  <data name="lbltwitteruser.Text" xml:space="preserve">
+    <value>Twitter User @username : </value>
+  </data>
+  <data name="lbltwitteruser.Help" xml:space="preserve">
+    <value>The Twitter user name, including the @ symbol of the content poster. May be the same as the Twitter website user. Refer https://dev.twitter.com/docs/cards/markup-reference</value>
   </data>
 </root>

@@ -1,11 +1,25 @@
 <div class="checkoutdetails" style="display:none;">
-    
-    <h2>Checkout Details</h2>
-    [<tag id="cmdOrder" type="linkbutton" resourcekey="CartView.Order" commandname="order" />]   
-    <br/>
-    [<tag id="cmdConfirm" type="linkbutton" resourcekey="General.Refresh" commandname="confirm" />] 
-
+<div class="formrow">
+    <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
+    Subtotal<br>
+    Discount<br>
+    Shipping<br>
+    Tax<br>
+    Total
 </div>
 
-
-
+<div class="formrow">
+<table cellpadding="6" style="width:100%">
+	<tr>
+		<td><input type="checkbox"> <label>I have read and accept the terms</label></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"> <label>Receive products news and updates</label></td>
+	</tr>
+</table>
+</div>
+  
+<div class="formrow">
+		[<tag id="cmdConfirm" type="linkbutton" cssclass="secondarybutton" resourcekey="General.Refresh" commandname="confirm" />][<tag id="cmdOrder" type="linkbutton" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
+</div>
+</div>

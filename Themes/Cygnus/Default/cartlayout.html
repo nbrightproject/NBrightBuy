@@ -1,15 +1,65 @@
+<script type="text/javascript">
+// Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[[0]].appendChild(msViewportStyle); // Fixed for the store
+    
+    }
+</script>
 
-<div id="cartdetails">  
-<div>
-<div id="cartbilladdress" style="float: left;"></div>
-<div id="cartshipaddress" style="float: left;"></div>
-<div style="clear: both;"></div>
-</div>
-<div>
-    <div id="cartextra" style="float: left;"></div>
-    <div id="carttotals" style="float: left;"></div>
-    <div style="clear: both;"></div>
+<!-- Vector Font Icons http://fontawesome.io - These font-icons are used in the productview.resx resource file -->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!-- Cygnus jQuery Theme-->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+
+<!-- Cygnus CSS -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
+
+
+<style type="text/css">
+#cartdetails{}
+#cartdetails H3 {background:#777777;color: #FFFFFF;line-height: 34px;margin: 0 0 12px;padding: 0 12px;}
+#cartdetails H6 {font-size: 12px;font-weight: normal;margin: 0 0 5px;}
+#cartbilladdress{float:left;margin-right: 5%;width:30%;min-width:260px}
+.cartlist {border-collapse: collapse;width:100%}
+.cartlist th{background:#777777;color: #FFFFFF;line-height: 34px;border-collapse: collapse;padding:0}
+.cartlist td{border: 1px solid #DDDDDD;padding:10px;vertical-align:top}
+.checkoutshipform{float:left;margin-right: 5%;width:30%;min-width:260px}
+.checkoutship{float:left;margin-right: 5%;width:30%;min-width:260px}
+
+#cartsummary{float:left;width:30%;min-width:260px}
+#cartextra{}
+#carttotals{}
+#cartspecial{}
+#cartlist{clear:both;}
+.formrow{clear:both;}
+.formrow input[type=text], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin: 0 0 10px;}
+.leftside{float:left;width: 48%;}
+.rightside{float:right;width: 48%;}
+#shippingoptions{}
+#shippingoptions input{vertical-align: -2px;margin: 0 0 0 10px;}
+#shippingoptions label{line-height: 22px;margin: 0 0 0 6px;}
+.checkoutship input{vertical-align: -2px;margin: 0 0 0 10px;}
+.checkoutship label{line-height: 22px;margin: 0 0 0 6px;}
+
+#checkoutdetails .primarybutton{margin-right:0}
+.checkoutbillform,#shippingoptions,#cartshipaddress,#cartsummary{margin-bottom:32px}
+</style>
+
+
+<div id="cartdetails" class="NBB dnnform">
+<div id="cartbilladdress"></div>
+<div id="cartshipaddress"></div>
+<div id="cartsummary">
+    <div id="cartextra"></div>
     <div id="cartspecial"></div>
+    <div id="carttotals"></div>
 </div>
     <div id="cartlist"></div>
 </div>
@@ -20,11 +70,11 @@
 
         // JQuery used to move cart elements into required area 
         $('#cartbilladdress').append($('.checkoutbillform'));
-        $('#cartshipaddress').append($('#shippingoptions'));
+        $('#cartbilladdress').append($('#shippingoptions'));
         $('#cartshipaddress').append($('.checkoutshipform'));
+        $('#cartextra').append($('.checkoutextra'));
         $('#cartextra').append($('.checkoutpromo'));
         $('#cartextra').append($('.checkouttax'));
-        $('#cartextra').append($('.checkoutextra'));
         $('#carttotals').append($('.checkoutdetails'));
         $('#cartshipaddress').append($('.checkoutship'));
         $('#cartlist').append($('#checkoutitemlist'));

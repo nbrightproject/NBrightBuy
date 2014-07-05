@@ -378,6 +378,9 @@
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="lblCompany.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
   <data name="lblFirstName.Text" xml:space="preserve">
     <value>First Name</value>
   </data>
@@ -385,10 +388,10 @@
     <value>Last Name</value>
   </data>
   <data name="lblAddress1.Text" xml:space="preserve">
-    <value>Address1</value>
+    <value>Address line 1</value>
   </data>
   <data name="lblAddress2.Text" xml:space="preserve">
-    <value>Address2</value>
+    <value>Address line 2</value>
   </data>
   <data name="lblTown.Text" xml:space="preserve">
     <value>Town</value>
@@ -398,6 +401,12 @@
   </data>
   <data name="lblPostCode.Text" xml:space="preserve">
     <value>Post Code</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="lblPhone.Text" xml:space="preserve">
+    <value>Phone</value>
   </data>
   <data name="lblCountry.Text" xml:space="preserve">
     <value>Country</value>
@@ -412,12 +421,30 @@
     <value>Email</value>
   </data>
   <data name="Refresh.Text" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Save Changes</value>
   </data>
   <data name="From.Text" xml:space="preserve">
     <value>From</value>
   </data>
   <data name="To.Text" xml:space="preserve">
     <value>To</value>
+  </data>
+  <data name="lblshippingoptions.Text" xml:space="preserve">
+    <value>Shipping Options</value>
+  </data>
+  <data name="lblspecialinstructions.Text" xml:space="preserve">
+    <value>Special Instructions</value>
+  </data>
+  <data name="lblordersummary.Text" xml:space="preserve">
+    <value>Order Summary</value>
+  </data>
+  <data name="lblTotals.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="lblcollectionoptions.Text" xml:space="preserve">
+    <value>Collection Options</value>
+  </data>
+  <data name="lblcartlist.Text" xml:space="preserve">
+    <value>Items in Cart</value>
   </data>
 </root>

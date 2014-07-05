@@ -139,7 +139,7 @@
     <value>Next</value>
   </data>
   <data name="Order.Text" xml:space="preserve">
-    <value>Order</value>
+    <value>Submit Order</value>
   </data>
   <data name="SelectBill.Text" xml:space="preserve">
     <value>Select Billing Address</value>
@@ -160,10 +160,10 @@
     <value>Collection Times</value>
   </data>
   <data name="selectaddress.Text" xml:space="preserve">
-    <value>Select Address</value>
+    <value>Address Book</value>
   </data>
   <data name="shippingoption1.data" xml:space="preserve">
-    <value>Use Billing Address;Enter Shipping Address;Collect from Store</value>
+    <value>Ship to the billing address;Ship to another address;I will collect from store</value>
   </data>
   <data name="shippingoption1.datavalue" xml:space="preserve">
     <value>1;2;3</value>
@@ -179,5 +179,14 @@
   </data>
   <data name="SaveAddress.Title" xml:space="preserve">
     <value>Save Address to Address Book</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>&lt;i class='fa fa-plus-square'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdRemove.Text" xml:space="preserve">
+    <value>&lt;i class='fa fa-minus-square'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdDelete.Text" xml:space="preserve">
+    <value>&lt;i class='fa fa-times-circle'&gt;&lt;/i&gt;</value>
   </data>
 </root>

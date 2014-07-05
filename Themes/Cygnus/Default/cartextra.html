@@ -1,7 +1,16 @@
-<div class="checkoutextra" style="display:none;">
-    <div id="shippingoptions" style="display:none;">
-        [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="0" RepeateColumns="3" SelectedValue="1" />]        
+<div class="formrow">
+	<div id="shippingoptions" style="display:none;"><!-- Shipping options radio buttons - What the hell is this doing in here -->
+    	<h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
+		[<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
     </div>
-    <h2>Extra Information</h2>
-    [<tag id='extramessage' type='textbox' width='400' textmode="MultiLine" height="100" />]       
+</div>
+
+<div class="checkoutextra" style="display:none;">
+    <div class="formrow">
+        <h3>[<tag type='valueof' resourcekey='General.lblordersummary' />]</h3>
+    </div>
+    <div class="formrow">
+        <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
+        [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
+    </div>
 </div>

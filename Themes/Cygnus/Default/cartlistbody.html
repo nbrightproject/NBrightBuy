@@ -1,36 +1,24 @@
-﻿<div>
-[<tag id="cmdDeleteItem" type="linkbutton" resourcekey="General.cmdDelete" tooltip="General.cmdDelete" commandname="deletecartitem" />]
-[<tag type="valueof" xpath="genxml/productname" />]
-[<tag type="valueof" xpath="genxml/modelref" />]
-[<tag type="valueof" xpath="genxml/modeldesc" />]
-<!-- NOTE: Qty field needs to be called "qty", so it updates the correct cart field on update -->
-[<tag id="qty" type="cartqtytextbox" width="60" maxlength="10" text="" />]
+﻿	<tr>
+		<td>
+		<img src="http://placehold.it/100x80">
+		</td>
+		<td>
+		<!-- [<tag type="valueof" xpath="genxml/productname" />] -->
+		<h5>[<tag type="valueof" xpath="genxml/modeldesc" />]</h5>
+		<div class="cartlistref">[<tag type="valueof" xpath="genxml/modelref" />]</div>
+		<div class="cartlistoptions">
+		<h6>Options</h6>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]</div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />]</div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />]</div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />]</div>
+		</div>
+		</td>
+		<td>
+		[<tag id="cmdRemoveQty" type="linkbutton" resourcekey="CartView.cmdRemove" commandname="removeqty" />][<tag cssclass="quantity" id="qty" type="cartqtytextbox" maxlength="10" text="" />][<tag id="cmdAddQty" type="linkbutton" resourcekey="CartView.cmdAdd" commandname="addqty" />]
+		[<tag id="cmdDeleteItem" type="linkbutton" resourcekey="CartView.cmdDelete" commandname="deletecartitem" />]
+		</td>
+		<td>[<tag type="valueof" xpath="genxml/unitcost" />]</td>
+		<td>tag for total</td>
+	</tr>
 
-[<tag id="txtTest" type="textbox" width="60" maxlength="10" text="testing textbox field" />]
-[<tag id="ddlTest" type="dropdownlist" data="a;b;c;d" datavalue="1;2;3;4" />]
-[<tag id="rblTest" type="radiobuttonlist" data="a;b;c" repeatcolumns="3" />]
-[<tag id="chkTest" type="checkbox" Text="Checkbox Test" />] 
-
-[<tag type="valueof" xpath="genxml/unitcost" />]
-[<tag id="cmdRemoveQty" type="linkbutton" resourcekey="General.cmdRemove" commandname="removeqty" />]
-[<tag type="valueof" xpath="genxml/qty" />]
-[<tag id="cmdAddQty" type="linkbutton" resourcekey="General.cmdAdd" commandname="addqty" />]
-[<tag type="valueof" xpath="genxml/itemcode" />]
-<br/>
-[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]
-[<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />]
-[<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]
-
-[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]
-[<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />]
-[<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />]
-
-[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]
-[<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />]
-[<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />]
-
-[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]
-[<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />]
-[<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />]
-
-</div>
