@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -64,19 +65,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 #region "load templates"
 
                 // Get Search
-                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "orderssearch.html", Utils.GetCurrentCulture(), DebugMode);
+                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "clientssearch.html", Utils.GetCurrentCulture(), DebugMode);
                 _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 rpSearch.ItemTemplate = _templSearch;
 
-                var t1 = "ordersheader.html";
-                var t2 = "ordersbody.html";
-                var t3 = "ordersfooter.html";
+                var t1 = "clientsheader.html";
+                var t2 = "clientsbody.html";
+                var t3 = "clientsfooter.html";
 
                 if (Utils.IsNumeric(_entryid))
                 {
-                    t1 = "ordersdetailheader.html";
-                    t2 = "ordersdetail.html";
-                    t3 = "ordersdetailfooter.html";
+                    t1 = "clientsdetailheader.html";
+                    t2 = "clientsdetail.html";
+                    t3 = "clientsdetailfooter.html";
                 }
 
                 // Get Display Header
@@ -116,7 +117,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.Get("DataStorageType"));
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -139,11 +140,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 else
                 {
                     // check the display header to see if we have a sqlfilter defined.
-                    var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
-                    var strFilter = navigationData.Criteria;
+                    var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.Get("DataStorageType"));
                     //Default orderby if not set
-                    var strOrder = " Order by ModifiedDate DESC  ";
-                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
+                    var totRecords = 500;
+                    var userlist = UserController.GetUsers(PortalId, 1, 30, ref totRecords);
+                    rpData.DataSource = userlist;
                     rpData.DataBind();
 
                 }

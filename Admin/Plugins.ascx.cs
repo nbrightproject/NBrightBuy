@@ -193,6 +193,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     HttpContext.Current.Session[strCacheKey] = "";                                          
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "add":
+                    param[0] = "eid=-1";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "return":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);

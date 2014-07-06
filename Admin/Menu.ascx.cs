@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -125,15 +126,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var grp = p.GetXmlProperty("genxml/textbox/group");
                         if (grpname.Key == grp && p.GetXmlPropertyBool("genxml/checkbox/hidden") == false && IsInRoles(p.GetXmlProperty("genxml/textbox/roles")))
                         {
-                            strOutSub += "<li>";
-                            var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                            var param = new string[3];
-                            param[0] = "ctrl=" + ctrl;
-                            var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
-                            if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
-                            strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
-                            strOutSub += "</li>";
-                            subexists = true;
+                            var path = p.GetXmlProperty("genxml/textbox/path");
+                            if (File.Exists(MapPath(path)))
+                            {
+                                strOutSub += "<li>";
+                                var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
+                                var param = new string[3];
+                                param[0] = "ctrl=" + ctrl;
+                                var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
+                                if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
+                                strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
+                                strOutSub += "</li>";
+                                subexists = true;
+                            }
                         }
                     }
                     strOutSub += "</ul>";

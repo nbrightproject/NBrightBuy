@@ -60,6 +60,13 @@
     <Compile Include="Admin\Clients.ascx.designer.cs">
       <DependentUpon>Clients.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\DashSummary.ascx.cs">
+      <DependentUpon>DashSummary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DashSummary.ascx.designer.cs">
+      <DependentUpon>DashSummary.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Plugins.ascx.cs">
       <DependentUpon>Plugins.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -231,6 +238,9 @@
     <Content Include="Admin\Clients.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\DashSummary.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Plugins.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -269,6 +279,12 @@
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
     <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
+    <Content Include="NBrightTemplates\Default\clientsbody.html" />
+    <Content Include="NBrightTemplates\Default\clientsdetail.html" />
+    <Content Include="NBrightTemplates\Default\clientsdetailfooter.html" />
+    <Content Include="NBrightTemplates\Default\clientsdetailheader.html" />
+    <Content Include="NBrightTemplates\Default\clientsfooter.html" />
+    <Content Include="NBrightTemplates\Default\clientsheader.html" />
     <Content Include="NBrightTemplates\Default\menufooter.html" />
     <Content Include="NBrightTemplates\Default\menuheader.html" />
     <Content Include="NBrightTemplates\Default\ordersbody.html" />
