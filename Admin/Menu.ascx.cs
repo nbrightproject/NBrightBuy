@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using NBrightCore.common;
@@ -36,8 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             base.OnInit(e);
             try
-            {
-
+            {              
  
             }
             catch (Exception exc) //Module failed to load
@@ -55,23 +55,27 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             try
             {
-                base.OnLoad(e);
-                if (Page.IsPostBack == false)
+                if (UserId > 0) //do nothing if user not logged on
                 {
-                    var rpDataTemplH = ModCtrl.GetTemplateData(ModSettings, "menuheader.html", Utils.GetCurrentCulture(), DebugMode);
-                    var l = new Literal();
-                    l.Text = rpDataTemplH;
-                    phMenuH.Controls.Add(l);
+                    base.OnLoad(e);
+                    if (Page.IsPostBack == false)
+                    {
+                        var rpDataTemplH = ModCtrl.GetTemplateData(ModSettings, "menuheader.html",
+                            Utils.GetCurrentCulture(), DebugMode);
+                        var l = new Literal();
+                        l.Text = rpDataTemplH;
+                        phMenuH.Controls.Add(l);
 
-                    l = new Literal();
-                    l.Text = GetMenu();
-                    phMenuF.Controls.Add(l);
+                        l = new Literal();
+                        l.Text = GetMenu();
+                        phMenuF.Controls.Add(l);
 
-                    var rpDataTemplF = ModCtrl.GetTemplateData(ModSettings, "menufooter.html", Utils.GetCurrentCulture(), DebugMode);
-                    l = new Literal();
-                    l.Text = rpDataTemplF;
-                    phMenuF.Controls.Add(l);
-
+                        var rpDataTemplF = ModCtrl.GetTemplateData(ModSettings, "menufooter.html",
+                            Utils.GetCurrentCulture(), DebugMode);
+                        l = new Literal();
+                        l.Text = rpDataTemplF;
+                        phMenuF.Controls.Add(l);
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -85,32 +89,86 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String GetMenu()
         {
-            var strOut = "<ul>";
-            var strCacheKey = "menuplugin*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
-            PluginData pluginData = null;
-            if (!StoreSettings.Current.DebugMode) pluginData = (PluginData)Utils.GetCache(strCacheKey);
-            if (pluginData == null) pluginData = new PluginData(PortalId);
-            foreach (var p in pluginData.GetPluginList())
+            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
+
+            var strOut = "";
+            if (HttpContext.Current.Session[strCacheKey] != null) strOut = (String)HttpContext.Current.Session[strCacheKey];
+
+            if (StoreSettings.Current.DebugMode || strOut == "")
             {
+                var pluginData = new PluginData(PortalId);
+                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Plugins.ascx.resx";
+                //get group list (these are the sections/first level of the menu)
+                var groupList = new Dictionary<String, String>();
+                foreach (var p in pluginData.GetPluginList())
+                {
+                    var grpname = p.GetXmlProperty("genxml/textbox/group");
+                    if (grpname != "" && p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
+                    {
+                        if (!groupList.ContainsKey(grpname))
+                        {
+                            var resxname = DnnUtils.GetLocalizedString(grpname, resxpath, Utils.GetCurrentCulture());
+                            if (resxname == "") resxname = grpname;
+                            groupList.Add(grpname, resxname);
+                        }
+                    }
+                }
+
+                strOut = "<ul>";
+                foreach (var grpname in groupList)
+                {
+                    // Build the subgroup, if it doesn't exists then we don't need the parent group li section.
+                    var strOutSub = "<ul>";
+                    var subexists = false;
+                    foreach (var p in pluginData.GetPluginList())
+                    {
+                        var grp = p.GetXmlProperty("genxml/textbox/group");
+                        if (grpname.Key == grp && p.GetXmlPropertyBool("genxml/checkbox/hidden") == false && IsInRoles(p.GetXmlProperty("genxml/textbox/roles")))
+                        {
+                            strOutSub += "<li>";
+                            var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
+                            var param = new string[3];
+                            param[0] = "ctrl=" + ctrl;
+                            var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
+                            if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
+                            strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
+                            strOutSub += "</li>";
+                            subexists = true;
+                        }
+                    }
+                    strOutSub += "</ul>";
+
+                    if (subexists)
+                    {
+                        strOut += "<li>";
+                        strOut += grpname.Value;
+                        strOut += strOutSub;
+                        strOut += "</li>";                        
+                    }
+
+                }
                 strOut += "<li>";
-                var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                if (ctrl == "" || ctrl == "exit")
-                {
-                    strOut += "<a href='/'>" + p.GetXmlProperty("genxml/textbox/name") + "</a>";
-                }
-                else
-                {
-                    var param = new string[3];
-                    param[0] = "ctrl=" + ctrl;
-                    strOut += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + p.GetXmlProperty("genxml/textbox/name") + "</a>";
-                }
+                strOut += "<a href='/'>" + DnnUtils.GetLocalizedString("Exit", resxpath, Utils.GetCurrentCulture()) + "</a>";
                 strOut += "</li>";
+
+                strOut += "</ul>";
+
+                HttpContext.Current.Session[strCacheKey] = strOut;
             }
 
-            strOut += "<ul>";
             return strOut;
         }
 
+        private Boolean IsInRoles(String roleCSV)
+        {
+            if (roleCSV == "") return true;
+            var s = roleCSV.Split(',');
+            foreach (var r in s)
+            {
+                if (UserInfo.IsInRole(r)) return true;
+            }
+            return false;
+        }
 
         #region  "Events "
 

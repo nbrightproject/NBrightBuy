@@ -269,6 +269,8 @@
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
     <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
+    <Content Include="NBrightTemplates\Default\menufooter.html" />
+    <Content Include="NBrightTemplates\Default\menuheader.html" />
     <Content Include="NBrightTemplates\Default\ordersbody.html" />
     <Content Include="NBrightTemplates\Default\ordersdetail.html" />
     <Content Include="NBrightTemplates\Default\ordersdetailfooter.html" />
@@ -280,6 +282,12 @@
     <Content Include="NBrightTemplates\Default\ordersheader.html" />
     <Content Include="NBrightTemplates\Default\orderssearch.html" />
     <Content Include="NBrightTemplates\Default\OrderAdmin_Settings.html" />
+    <Content Include="NBrightTemplates\Default\pluginsbody.html" />
+    <Content Include="NBrightTemplates\Default\pluginsdetail.html" />
+    <Content Include="NBrightTemplates\Default\pluginsdetailfooter.html" />
+    <Content Include="NBrightTemplates\Default\pluginsdetailheader.html" />
+    <Content Include="NBrightTemplates\Default\pluginsfooter.html" />
+    <Content Include="NBrightTemplates\Default\pluginsheader.html" />
     <Content Include="OrderAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

@@ -34,26 +34,30 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             base.OnInit(e);
             try
             {
-                var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
-                if (ctrl == "")
-                    ctrl = (String)HttpContext.Current.Session["nbrightbackofficectrl"];
-                else
-                    HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
-
-                if (ctrl == "") ctrl = "dashboard";
-
-                var ctlpath = GetControlPath(ctrl);
-
-                if (ctlpath != "")
+                if (UserId > 0) //do nothing if user not logged on
                 {
-                    var c1 = LoadControl(ctlpath);
-                    phData.Controls.Add(c1);                    
-                }
-                else
-                {
-                    var c1 = new Literal();
-                    c1.Text = "INVALID CONTROL: " + ctrl;
-                    phData.Controls.Add(c1);                                        
+
+                    var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
+                    if (ctrl == "")
+                        ctrl = (String) HttpContext.Current.Session["nbrightbackofficectrl"];
+                    else
+                        HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
+
+                    if (ctrl == "") ctrl = "dashboard";
+
+                    var ctlpath = GetControlPath(ctrl);
+
+                    if (ctlpath != "")
+                    {
+                        var c1 = LoadControl(ctlpath);
+                        phData.Controls.Add(c1);
+                    }
+                    else
+                    {
+                        var c1 = new Literal();
+                        c1.Text = "INVALID CONTROL: " + ctrl;
+                        phData.Controls.Add(c1);
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load

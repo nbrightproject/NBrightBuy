@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Catalog.Text" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="Dashboard.Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Exit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="lblctrl.Help" xml:space="preserve">
     <value>Plugin Ref to identify the plugin to the system, must be unique and used to referece the resx file entry for the menu name.</value>
   </data>
@@ -146,5 +158,35 @@
   </data>
   <data name="lblpath.Text" xml:space="preserve">
     <value>Path to Control</value>
+  </data>
+  <data name="OrdersGrp.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Promotions.Text" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="Shipping.Text" xml:space="preserve">
+    <value>Shipping</value>
+  </data>
+  <data name="Tax.Text" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="Utilities.Text" xml:space="preserve">
+    <value>Utlities</value>
+  </data>
+  <data name="clients.Text" xml:space="preserve">
+    <value>Clients</value>
+  </data>
+  <data name="cmdView.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="dashsummary.Text" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="orders.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="plugins.Text" xml:space="preserve">
+    <value>Plugins</value>
   </data>
 </root>
