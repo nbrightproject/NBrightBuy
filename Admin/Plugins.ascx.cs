@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -154,7 +155,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
             var pluginData = new PluginData(PortalId);
-            var strCacheKey = "menuplugin*" + PortalId.ToString("");
+            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
 
             switch (e.CommandName.ToLower())
             {
@@ -162,12 +163,34 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "entryup":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var idx = Convert.ToInt32(cArg);
+                        var p = pluginData.GetPlugin(idx);                        
+                        pluginData.RemovePlugin(idx);
+                        p.SetXmlProperty("genxml/hidden/index","");  //remove index so we add instead of update
+                        pluginData.AddPlugin(p, idx - 1);
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "entrydown":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var idx = Convert.ToInt32(cArg);
+                        var p = pluginData.GetPlugin(idx);
+                        pluginData.RemovePlugin(idx);
+                        p.SetXmlProperty("genxml/hidden/index", ""); //remove index so we add instead of update
+                        pluginData.AddPlugin(p, idx + 1);
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "save":
                     if (Utils.IsNumeric(cArg))
                         pluginData.UpdatePlugin(rpData,Convert.ToInt32(cArg));
                     else
                         pluginData.AddPlugin(rpData);
-                    Utils.RemoveCache(strCacheKey);                                            
+                    HttpContext.Current.Session[strCacheKey] = "";                                          
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "return":

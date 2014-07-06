@@ -189,4 +189,16 @@
   <data name="plugins.Text" xml:space="preserve">
     <value>Plugins</value>
   </data>
+  <data name="lblhidden.Help" xml:space="preserve">
+    <value>Do not display on menu.</value>
+  </data>
+  <data name="lblhidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="lblroles.Help" xml:space="preserve">
+    <value>CSV list of roles that are able to view this contol</value>
+  </data>
+  <data name="lblroles.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
 </root>

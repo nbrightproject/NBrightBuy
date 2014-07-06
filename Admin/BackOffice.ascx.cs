@@ -77,8 +77,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var nod = pluginData.Info.XMLDoc.SelectSingleNode("genxml/plugin/genxml[textbox/ctrl='" + ctrl + "']/textbox/path");
             if (nod != null)
             {
-                //var pathnod = nod.SelectSingleNode("textbox/path");
-                //if (pathnod != null) return pathnod.InnerText;
                 return nod.InnerText;
             }
             return "";

@@ -62,8 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Add Adddress
         /// </summary>
         /// <param name="rpData"></param>
-        /// <param name="debugMode"></param>
-        public String AddPlugin(Repeater rpData, Boolean debugMode = false)
+        public String AddPlugin(Repeater rpData)
         {
             var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
             // load into NBrigthInfo class, so it's easier to get at xml values.
@@ -73,16 +72,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return ""; // if everything is OK, don't send a message back.
         }
 
-        public String AddPlugin(NBrightInfo pluginInfo, Boolean debugMode = false)
+        public String AddPlugin(NBrightInfo pluginInfo, int index = -1)
         {
-            // load into NBrigthInfo class, so it's easier to get at xml values.
-            if (debugMode) pluginInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_pluginadd.xml");
-
             if (Utils.IsNumeric(pluginInfo.GetXmlProperty("genxml/hidden/index")))
             {
                 if (pluginInfo.GetXmlProperty("genxml/hidden/index") == "-1") // index of -1, add the address
                 {
-                    _pluginList.Add(pluginInfo);
+                    if (index == -1)
+                        _pluginList.Add(pluginInfo);
+                    else
+                        _pluginList.Insert(index,pluginInfo);
                     Save();
                 }
                 else
@@ -93,8 +92,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             else
             {
-                _pluginList.Add(pluginInfo);
-                Save(debugMode);
+                if (index == -1)
+                    _pluginList.Add(pluginInfo);
+                else
+                    _pluginList.Insert(index, pluginInfo);
+                Save();
             }
             return ""; // if everything is OK, don't send a message back.
         }
