@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -180,6 +181,48 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
 
         }
+
+
+        public static string GetListUrl(int portalId, int tabId, int catId, string seoName, string lang)
+        {
+            seoName = Utils.CleanInput(seoName);
+            if (seoName == "") seoName = "page";
+            if (catId == -1) return GetSEOLink(portalId, tabId, "", seoName + ".aspx", "language=" + lang);
+            return GetSEOLink(portalId, tabId, "", seoName + ".aspx", "CatID=" + catId.ToString(""), "language=" + lang);
+        }
+
+        public static string GetSEOLink(int portalId, int tabId, string controlKey, string title, params string[] additionalParameters)
+        {
+
+            DotNetNuke.Entities.Tabs.TabInfo tabInfo = (new DotNetNuke.Entities.Tabs.TabController()).GetTab(tabId, portalId, false);
+            var langList = DnnUtils.GetCultureCodeList(portalId);
+
+
+            if ((tabInfo != null))
+            {
+                string Path = "~/default.aspx?tabid=" + tabInfo.TabID;
+
+                foreach (string p in additionalParameters)
+                {
+                    if (langList.Count > 1)
+                    {
+                        Path += "&" + p;
+                    }
+                    else
+                    {
+                        //only one langauge so don't add the langauge param.
+                        if (!p.ToLower().StartsWith("language"))
+                        {
+                            Path += "&" + p;
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(title)) title = "Default.aspx";
+                return DotNetNuke.Common.Globals.FriendlyUrl(tabInfo, Path, title);
+            }
+            return "";
+        }
+
 
         public static string GetReturnUrl(string tabid)
         {

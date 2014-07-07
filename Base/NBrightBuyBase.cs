@@ -26,6 +26,11 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 	    public ModSettings ModSettings;
         //public Dictionary<string, string> SettingsDic;
 
+        public DotNetNuke.Framework.CDefault BasePage
+        {
+            get { return (DotNetNuke.Framework.CDefault) this.Page; }
+        }
+
 		protected override void OnInit(EventArgs e)
 		{
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightDNN;
 
@@ -18,21 +19,82 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> Imgs;
         public List<NBrightInfo> Docs;
 
-        public ProductData(int productId)
+        /// <summary>
+        /// Populate the ProductData in this class
+        /// </summary>
+        /// <param name="productId">productid</param>
+        /// <param name="hydrateLists">populate the sub data into lists</param>
+        public ProductData(String productId, Boolean hydrateLists = true)
         {
-            var objCtrl = new NBrightBuyController();
-            Info = objCtrl.Get(productId,"PRDLANG",Utils.GetCurrentCulture());
-
-            //build model list
-            Models = GetEntityList("models", "modelid");
-            Options = GetEntityList("options", "optionid");
-            OptionValues = GetEntityList("optionvalues", "optionvalueid");
-            Imgs = GetEntityList("imgs", "imageid");
-            Docs = GetEntityList("docs", "docid");
-
+            if (Utils.IsNumeric(productId)) LoadData(Convert.ToInt32(productId), hydrateLists);
         }
 
-        #region "functions"
+        /// <summary>
+        /// Populate the ProductData in this class
+        /// </summary>
+        /// <param name="productId">productid</param>
+        /// <param name="hydrateLists">populate the sub data into lists</param>
+        public ProductData(int productId, Boolean hydrateLists = true)
+        {
+            LoadData(productId, hydrateLists);
+        }
+
+        #region "public functions/interface"
+
+        /// <summary>
+        /// Set to true if product exists
+        /// </summary>
+        public bool Exists { get; private set; }
+
+        public String SEOName
+        {
+            get
+            {
+                var seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                if (seoname == "") seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
+                return seoname;                
+            }
+        }
+
+        public String SEOTitle
+        {
+            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");}
+        }
+
+        public String SEOTagwords
+        {
+            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords");}
+        }
+
+        public String SEODescription
+        {
+            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");}
+        }
+
+
+        #endregion
+
+        #region " private functions"
+
+        private void LoadData(int productId, Boolean hydrateLists = true)
+        {
+            Exists = false;
+            var objCtrl = new NBrightBuyController();
+            Info = objCtrl.Get(productId,"PRDLANG",Utils.GetCurrentCulture());
+            if (Info != null)
+            {
+                Exists = true;
+                if (hydrateLists)
+                {
+                    //build model list
+                    Models = GetEntityList("models", "modelid");
+                    Options = GetEntityList("options", "optionid");
+                    OptionValues = GetEntityList("optionvalues", "optionvalueid");
+                    Imgs = GetEntityList("imgs", "imageid");
+                    Docs = GetEntityList("docs", "docid");                    
+                }
+            }
+        }
 
         private List<NBrightInfo> GetEntityList(String entityName,String entityIdName)
         {

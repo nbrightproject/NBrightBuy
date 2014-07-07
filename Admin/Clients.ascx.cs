@@ -143,7 +143,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.Get("DataStorageType"));
                     //Default orderby if not set
                     var totRecords = 500;
-                    var userlist = UserController.GetUsers(PortalId, 1, 30, ref totRecords);
+                    var userlist = UserController.GetUsers(PortalId);
                     rpData.DataSource = userlist;
                     rpData.DataBind();
 

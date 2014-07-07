@@ -51,6 +51,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _orderbyindex = "";
         private NavigationData _navigationdata;
 
+
         #region Event Handlers
 
 
@@ -183,6 +184,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
+            NBrightInfo objCat = null;
 
             #region "Data Repeater"
             if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
@@ -293,7 +295,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     //check if we are display categories 
                     // get category list data
-                    NBrightInfo objCat = null;
                     if (_catname != "") // if catname passed in url, calculate what the catid is
                     {
                         objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
@@ -326,19 +327,28 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (Utils.IsNumeric(_catid)) objCat = GetData(Convert.ToInt32(_catid), "CATEGORYLANG", Utils.GetCurrentCulture());
                         if (objCat != null)
                         {
-                            // add SEO data from category
-                            var basePage = (DotNetNuke.Framework.CDefault) base.Page;
+
                             //Page Title
-                            var newBaseTitle = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseotitle");
-                            if (newBaseTitle == "") newBaseTitle = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txttitle");
-                            if (newBaseTitle != "") basePage.Title = newBaseTitle;
+                            var seoname = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                            if (seoname == "") seoname = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                            var newBaseTitle = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                            if (newBaseTitle != "") BasePage.Title = newBaseTitle;
                             //Page KeyWords
-                            var newBaseKeyWords = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseokeywords");
-                            if (newBaseKeyWords != "") basePage.KeyWords = newBaseKeyWords;
+                            var newBaseKeyWords = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                            if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
                             //Page Description
-                            var newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseodescription");
-                            if (newBaseDescription == "") newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtdescription");
-                            if (newBaseDescription != "") basePage.Description = newBaseDescription;
+                            var newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                            if (newBaseDescription == "") newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                            if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                            if (PortalSettings.HomeTabId == TabId)
+                                PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                            else
+                            {
+                                PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                            }
+
                         }
                     }
                     else
@@ -414,7 +424,13 @@ namespace Nevoweb.DNN.NBrightBuy
             #endregion
 
             // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
+            if (objCat == null)
+                base.DoDetail(rpDataH);
+            else
+            {
+                if (DebugMode) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
+                DoDetail(rpDataH, objCat);
+            }
 
             // display footer
             base.DoDetail(rpDataF);
@@ -468,22 +484,28 @@ namespace Nevoweb.DNN.NBrightBuy
         private void DisplayDataEntryRepeater(String entryId)
         {
             base.ItemId = entryId;
+            var productData = new ProductData(entryId,false);
 
-            NBrightInfo objInfo = null;
-            if (Utils.IsNumeric(ItemId) && ItemId != "0") objInfo = GetData(Convert.ToInt32(entryId), EntityTypeCodeLang, EntityLangauge);
-            if (objInfo == null) objInfo = new NBrightInfo { ModuleId = ModuleId, PortalId = PortalId, XMLData = "<genxml></genxml>" };
-
-            // if debug , output the xml used.
-            if (DebugMode)
+            if (productData.Exists)
             {
-                var xmlDoc = new System.Xml.XmlDataDocument();
-                xmlDoc.LoadXml(objInfo.XMLData);
-                xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
+                if (PortalSettings.HomeTabId == TabId)
+                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                else
+                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetEntryUrl(PortalId, _eid, "", productData.SEOName, TabId.ToString("")));
+
+                // overwrite SEO data
+                if (productData.SEOName != "") BasePage.Title = productData.SEOTitle;
+                if (productData.SEODescription != "") BasePage.Description = productData.SEODescription;
+                if (productData.SEOTagwords != "") BasePage.KeyWords = productData.SEOTagwords;
+
+                // if debug , output the xml used.
+                if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
+                //render the detail page
+                base.DoDetail(rpData, productData.Info);                
             }
-            // insert page header text
-            NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), objInfo, DebugMode);
-            //render the detail page
-            base.DoDetail(rpData, objInfo);
+
         }
 
         #endregion
