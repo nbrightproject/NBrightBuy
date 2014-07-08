@@ -1,16 +1,25 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
 <div>
-    <h2>PlugIn Data</h2>
-    <div id="Div1">
-        [<tag id="lblctrl" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblctrl" />] : [<tag id="ctrl" type="textbox" width="300" maxlength="50" />]<br/>
-        [<tag id="lblname" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblname" />] : [<tag id="name" type="textbox" width="300" maxlength="50" />]<br/>
-        [<tag id="lblgroup" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblgroup" />] : [<tag id="group" type="textbox" width="300" maxlength="50" />]<br/>
-        [<tag id="lblpath" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblpath" />] : [<tag id="path" type="textbox" width="500" maxlength="350" />]<br/>
-        [<tag id="lblhelp" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblhelp" />] : [<tag id="help" type="textbox" width="300" maxlength="150" />]<br/>
-        [<tag id="lblhidden" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblhidden" />] : [<tag id="hidden" type="checkbox" text="" />]<br/>
-        [<tag id="lblroles" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lblroles" />] : [<tag id="roles" type="textbox" width="300" maxlength="150" />]<br/>
-        [<tag id="lbldescription" type="dnn:dnnlabelcontrol" resourcekey="Plugins.lbldescription" />] : [<tag id="description" type="textbox" height="100" width="400" textmode="MultiLine" />]<br/>
+    <div>
+        [<tag id="cmdResetPass" type="linkbutton" resourcekey="Clients.cmdResetPass" commandname="resetpass" />] - 
+        [<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" />] - 
+        [<tag id="cmdValidateUser" type="linkbutton" resourcekey="Clients.cmdValidateUser" commandname="validateuser" />] - 
+        [<tag id="cmdViewAddresses" type="linkbutton" resourcekey="Clients.cmdViewAddresses" commandname="viewaddresses" />] - 
+        [<tag id="cmdViewOrders" type="linkbutton" resourcekey="Clients.cmdViewOrders" commandname="vieworders" />] - 
+        [<tag id="cmdCreateOrder" type="linkbutton" resourcekey="Clients.cmdCreateOrder" commandname="createorder" />] - 
+    </div>
+    <h2>User Data</h2>
+    <div id="Div1">        
+    [<tag id="lbluserid" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblUserID" />][<tag type='valueof' databind="ItemId" />]</br> 
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblUserName" />][<tag type='valueof' xpath='genxml/textbox/username' />]</br> 
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblFirstName" />][<tag type='valueof' xpath='genxml/textbox/firstname' />]</br>
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblLastName" />][<tag type='valueof' xpath='genxml/textbox/lastname' />]</br> 
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblDisplayName" />][<tag type='valueof' xpath='genxml/textbox/displayname' />]</br> 
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblEmail" />][<tag type='valueof' xpath='genxml/textbox/email' />]</br>
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblauthorised" />][<tag type='valueof' xpath='genxml/textbox/authorised' />]</br>
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblupdatepassword" />][<tag type='valueof' xpath='genxml/textbox/updatepassword' />]</br>
+    [<tag id="lblusername" type="dnn:dnnlabelcontrol" resourcekey="Clients.lblisdeleted" />][<tag type='valueof' xpath='genxml/textbox/isdeleted' />]</br>
     </div>
     <div>
         [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 

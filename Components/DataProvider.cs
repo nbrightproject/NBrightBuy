@@ -68,6 +68,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 		public abstract void Delete(int ItemID);
 		public abstract void CleanData();
         public abstract string GetSqlxml(string commandText);
+        public abstract IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
 
 		#endregion
 

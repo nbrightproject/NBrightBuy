@@ -285,6 +285,7 @@
     <Content Include="NBrightTemplates\Default\clientsdetailheader.html" />
     <Content Include="NBrightTemplates\Default\clientsfooter.html" />
     <Content Include="NBrightTemplates\Default\clientsheader.html" />
+    <Content Include="NBrightTemplates\Default\clientssearch.html" />
     <Content Include="NBrightTemplates\Default\menufooter.html" />
     <Content Include="NBrightTemplates\Default\menuheader.html" />
     <Content Include="NBrightTemplates\Default\ordersbody.html" />
@@ -429,6 +430,7 @@
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />

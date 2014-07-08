@@ -18,6 +18,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -46,12 +47,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "ORDER";
+            base.CtrlTypeCode = "CLIENT";
             base.DisableUserInfo = true;
 
             base.OnInit(e);
 
-            CtrlPaging.Visible = false; // don't bother with paging on this module.
+            CtrlPaging.Visible = true;
+            CtrlPaging.UseListDisplay = true;
             try
             {
                 #region "set templates based on entry id (eid) from url"
@@ -140,12 +142,45 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 else
                 {
                     // check the display header to see if we have a sqlfilter defined.
-                    var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.Get("DataStorageType"));
-                    //Default orderby if not set
-                    var totRecords = 500;
-                    var userlist = UserController.GetUsers(PortalId);
+                    var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
+                    
+                    //setup paging
+                    var pagesize = 30;
+                    var pagenumber = 1;
+                    var strpagenumber = Utils.RequestParam(Context, "page");
+                    if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);
+                    var recordcount = 0;
+
+                    // get search data
+                    var sInfo = new NBrightInfo();
+                    sInfo.XMLData = navigationData.XmlData;
+
+                    // display search
+                    base.DoDetail(rpSearch, sInfo);
+
+                    if (Utils.IsNumeric(navigationData.RecordCount))
+                    {
+                        recordcount = Convert.ToInt32(navigationData.RecordCount);
+                    }
+                    else
+                    {
+                        recordcount = ModCtrl.GetDnnUsersCount(PortalId, "%" + sInfo.GetXmlProperty("genxml/textbox/txtsearch") + "%");
+                        navigationData.RecordCount = recordcount.ToString("");
+                    }
+
+                    //display list, with search filter
+                    var userlist = ModCtrl.GetDnnUsers(PortalId, "%" + sInfo.GetXmlProperty("genxml/textbox/txtsearch") + "%", 0,pagenumber,pagesize,recordcount);
                     rpData.DataSource = userlist;
                     rpData.DataBind();
+
+
+                    if (pagesize > 0)
+                    {
+                        CtrlPaging.PageSize = pagesize;
+                        CtrlPaging.CurrentPage = pagenumber;
+                        CtrlPaging.TotalRecords = recordcount;
+                        CtrlPaging.BindPageLinks();
+                    }
 
                 }
             }
@@ -158,8 +193,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // display footer
             base.DoDetail(rpDataF);
 
-            // display search
-            base.DoDetail(rpSearch);
         }
 
         #endregion
@@ -170,7 +203,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
+            var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
 
             switch (e.CommandName.ToLower())
             {
@@ -178,31 +211,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "reorder":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
-                        orderData.CopyToCart(DebugMode);
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
                 case "return":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "search":
-                    var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
-                    navigationData.Build(strXml, _templSearch);
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpSearch);
-                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch);
+                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch,"","");
                     navigationData.Save();
-                    if (DebugMode)
-                    {
-                        strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
-                        xmlDoc.LoadXml(strXml);
-                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
-                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "resetsearch":
@@ -210,13 +225,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     navigationData.Delete();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "orderby":
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                    navigationData.Save();
-                    break;
             }
 
         }
+
+        public override void EventBeforePageChange(object source, RepeaterCommandEventArgs e)
+        {
+            //hook into the page click event so we can redirect with new page number in url.
+            var cArg = e.CommandArgument.ToString();
+            var param = new string[1];
+            if (Utils.IsNumeric(cArg))
+            {
+                param[0] = "page=" + cArg;
+                Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+            }
+            
+        }
+
 
         #endregion
 

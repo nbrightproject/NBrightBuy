@@ -88,6 +88,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Get DNN user list
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="sqlSearchFilter"></param>
+        /// <param name="returnLimit"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="recordCount"></param>
+        /// <returns></returns>
+        public override List<NBrightInfo> GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUsers(portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount));
+        }
+
+
+        /// <summary>
         /// override for Database Function
         /// </summary>
         /// <param name="objInfo"></param>
