@@ -136,10 +136,7 @@
     <value>Unlock User</value>
   </data>
   <data name="cmdValidateUser.Text" xml:space="preserve">
-    <value>Validate Users</value>
-  </data>
-  <data name="cmdViewAddresses.ViewAddresses" xml:space="preserve">
-    <value>View Addresses</value>
+    <value>Validate User</value>
   </data>
   <data name="cmdViewOrders.Text" xml:space="preserve">
     <value>View Orders</value>
@@ -173,5 +170,11 @@
   </data>
   <data name="UserID.Header" xml:space="preserve">
     <value>UserID</value>
+  </data>
+  <data name="cmdValidateUser.confirm" xml:space="preserve">
+    <value>Authorise User and grant client role access?</value>
+  </data>
+  <data name="cmdViewAddressBook.Text" xml:space="preserve">
+    <value>View Address Book</value>
   </data>
 </root>

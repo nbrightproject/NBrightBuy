@@ -18,7 +18,7 @@ using NEvoWeb.Modules.NB_Store;
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
 
-	public class NBrightBuyController : DataCtrlInterface, IPortable, ISearchable
+    public class NBrightBuyController : DataCtrlInterfaceNBrightBuy, IPortable, ISearchable
 	{
 
         #region "NBrightBuy override DB Public Methods"
@@ -102,6 +102,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUsers(portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount));
         }
 
+        /// <summary>
+        /// Get full record count for user search. (Needed for paging)
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="sqlSearchFilter"></param>
+        /// <returns></returns>
+        public override int GetDnnUsersCount(int portalId, string sqlSearchFilter = "")
+        {
+            return DataProvider.Instance().GetDnnUsersCount(portalId, sqlSearchFilter);
+        }
 
         /// <summary>
         /// override for Database Function

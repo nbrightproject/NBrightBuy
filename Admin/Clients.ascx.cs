@@ -145,7 +145,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
                     
                     //setup paging
-                    var pagesize = 30;
+                    var pagesize = 2;
                     var pagenumber = 1;
                     var strpagenumber = Utils.RequestParam(Context, "page");
                     if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);
@@ -225,6 +225,61 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     navigationData.Delete();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "unlockuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.UnlockUser();
+                    }
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "validateuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.AuthoriseClient();
+                        clientData.AddClientRole();
+                    }
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "resetpass":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.ResetPassword();
+                    }
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "viewaddressbook":
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "vieworders":
+                    param[0] = "";
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        param[0] = "ctrl=orders";
+                        param[1] = "uid=" + cArg;
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "createorder":
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "updateemail":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var email = GenXmlFunctions.GetField(rpData,"email");
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.UpdateEmail(email);
+                    }
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
@@ -250,10 +305,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             if (Utils.IsNumeric(entryId) && entryId != "0")
             {
-                var orderData = new OrderData(PortalId, Convert.ToInt32(entryId));
+                var clientData = new ClientData(PortalId, Convert.ToInt32(entryId));
 
+                clientData.OutputDebugFile("debug_client.xml");
+                
                 //render the detail page
-                base.DoDetail(rpData, orderData.GetInfo());
+                base.DoDetail(rpData, clientData.GetInfo());
 
             }
         }

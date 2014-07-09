@@ -1,11 +1,18 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
+using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
 
+    public abstract class DataCtrlInterfaceNBrightBuy : DataCtrlInterface
+    {
+        public abstract List<NBrightInfo> GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
+    }
 	/// -----------------------------------------------------------------------------
 	/// <summary>
 	/// An abstract class for the data access layer
@@ -69,6 +76,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 		public abstract void CleanData();
         public abstract string GetSqlxml(string commandText);
         public abstract IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
 
 		#endregion
 

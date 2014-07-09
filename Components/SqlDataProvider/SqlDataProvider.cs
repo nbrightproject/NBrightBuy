@@ -157,6 +157,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUsers", portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount);
         }
 
+        public override int GetDnnUsersCount(int portalId, string sqlSearchFilter = "")
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUsersCount", portalId, sqlSearchFilter));
+        }
+
 
         #endregion
 

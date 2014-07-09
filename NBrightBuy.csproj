@@ -53,6 +53,13 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AddressBook.ascx.cs">
+      <DependentUpon>AddressBook.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AddressBook.ascx.designer.cs">
+      <DependentUpon>AddressBook.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Clients.ascx.cs">
       <DependentUpon>Clients.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -98,6 +105,7 @@
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
@@ -235,6 +243,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\AddressBook.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Clients.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
