@@ -1,4 +1,4 @@
-<%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.Admin.DashSummary" AutoEventWireup="true"  Codebehind="DashSummary.ascx.cs" %>
+<%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.Admin.Settings" AutoEventWireup="true"  Codebehind="Settings.ascx.cs" %>
 <asp:Repeater ID="rpDataH" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpData" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpDataF" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>

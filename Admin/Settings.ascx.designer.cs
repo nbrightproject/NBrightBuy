@@ -10,7 +10,7 @@
 namespace Nevoweb.DNN.NBrightBuy.Admin {
     
     
-    public partial class DashSummary {
+    public partial class Settings {
         
         /// <summary>
         /// rpDataH control.

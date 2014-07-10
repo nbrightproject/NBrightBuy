@@ -36,9 +36,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class DashSummary : NBrightBuyAdminBase
     {
 
-        private GenXmlTemplate _templSearch; 
-        private String _entryid = "";
-        private Boolean _displayentrypage = false;
 
         #region Event Handlers
 
@@ -50,31 +47,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             CtrlPaging.Visible = false; // don't bother with paging on this module.
             try
             {
-                #region "set templates based on entry id (eid) from url"
-
-                _entryid = Utils.RequestQueryStringParam(Context, "eid");
-
-                if (_entryid != "") _displayentrypage = true;
-
-                #endregion
 
                 #region "load templates"
 
-                // Get Search
-                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "orderssearch.html", Utils.GetCurrentCulture(), DebugMode);
-                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpSearch.ItemTemplate = _templSearch;
-
-                var t1 = "ordersheader.html";
-                var t2 = "ordersbody.html";
-                var t3 = "ordersfooter.html";
-
-                if (Utils.IsNumeric(_entryid))
-                {
-                    t1 = "ordersdetailheader.html";
-                    t2 = "ordersdetail.html";
-                    t3 = "ordersdetailfooter.html";
-                }
+                var t1 = "dashboardheader.html";
+                var t2 = "dashboardbody.html";
+                var t3 = "dashboardfooter.html";
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
@@ -112,9 +90,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
             catch (Exception exc) //Module failed to load
             {
-                //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
-                navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
@@ -129,21 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
 
-                if (_displayentrypage)
-                {
-                    DisplayDataEntryRepeater(_entryid);
-                }
-                else
-                {
-                    // check the display header to see if we have a sqlfilter defined.
-                    var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
-                    var strFilter = navigationData.Criteria;
-                    //Default orderby if not set
-                    var strOrder = " Order by ModifiedDate DESC  ";
-                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
-                    rpData.DataBind();
-
-                }
+                DisplayDataEntryRepeater();
             }
 
             #endregion
@@ -154,8 +115,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // display footer
             base.DoDetail(rpDataF);
 
-            // display search
-            base.DoDetail(rpSearch);
         }
 
         #endregion
@@ -166,49 +125,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
 
             switch (e.CommandName.ToLower())
             {
-                case "entrydetail":
-                    param[0] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "reorder":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
-                        orderData.CopyToCart(DebugMode);
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "return":
+                case "save":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "search":
-                    var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
-                    navigationData.Build(strXml, _templSearch);
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpSearch);
-                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch);
-                    navigationData.Save();
-                    if (DebugMode)
-                    {
-                        strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
-                        xmlDoc.LoadXml(strXml);
-                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
-                    }
+                case "cancel":
+                    param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "resetsearch":
-                    // clear cookie info
-                    navigationData.Delete();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "orderby":
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                    navigationData.Save();
                     break;
             }
 
@@ -217,16 +143,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         #endregion
 
 
-        private void DisplayDataEntryRepeater(String entryId)
+        private void DisplayDataEntryRepeater()
         {
-            if (Utils.IsNumeric(entryId) && entryId != "0")
-            {
-                var orderData = new OrderData(PortalId, Convert.ToInt32(entryId));
-
                 //render the detail page
-                base.DoDetail(rpData, orderData.GetInfo());
-
-            }
+                base.DoDetail(rpData);
         }
 
 
