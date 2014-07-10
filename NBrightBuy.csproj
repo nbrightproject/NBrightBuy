@@ -95,6 +95,9 @@
     <Compile Include="Admin\Orders.ascx.designer.cs">
       <DependentUpon>Orders.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\NBrightBuyAdminBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Base\NBrightBuyBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -289,6 +292,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
+    <Content Include="NBrightTemplates\Default\addressbookbody.html" />
+    <Content Include="NBrightTemplates\Default\addressbookfooter.html" />
+    <Content Include="NBrightTemplates\Default\addressbookheader.html" />
+    <Content Include="NBrightTemplates\Default\addressbookinput.html" />
     <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
     <Content Include="NBrightTemplates\Default\clientsbody.html" />
     <Content Include="NBrightTemplates\Default\clientsdetail.html" />

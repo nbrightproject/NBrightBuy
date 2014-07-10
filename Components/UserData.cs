@@ -23,26 +23,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public UserData()
         {
-            Exists = false;
-            _userInfo = UserController.GetCurrentUserInfo();
-            if (_userInfo.UserID != -1) // only create userdata if we have a user logged in.
-            {
-                var modCtrl = new NBrightBuyController();
-                Info = modCtrl.GetByType(_userInfo.PortalID, -1, "USERDATA", _userInfo.UserID.ToString(""));
-                if (Info == null && _userInfo.UserID != -1)
-                {
-                    Info = new NBrightInfo();
-                    Info.ItemID = -1;
-                    Info.UserId = _userInfo.UserID;
-                    Info.PortalId = _userInfo.PortalID;
-                    Info.ModuleId = -1;
-                    Info.TypeCode = "USERDATA";
-                    Info.XMLData = "<genxml></genxml>";
-                    Save();
-                }
-                else
-                    Exists = true;
-            }
+            PopulateData("");
+        }
+
+        public UserData(String userId)
+        {
+            PopulateData(userId);
         }
 
         /// <summary>
@@ -81,6 +67,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public bool Exists { get; private set; }
 
+        private void PopulateData(String userId)
+        {
+            Exists = false;
+            if (Utils.IsNumeric(userId))
+                _userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
+            else
+                _userInfo = UserController.GetCurrentUserInfo();
+
+            if (_userInfo != null && _userInfo.UserID != -1) // only create userdata if we have a user logged in.
+            {
+                var modCtrl = new NBrightBuyController();
+                Info = modCtrl.GetByType(_userInfo.PortalID, -1, "USERDATA", _userInfo.UserID.ToString(""));
+                if (Info == null && _userInfo.UserID != -1)
+                {
+                    Info = new NBrightInfo();
+                    Info.ItemID = -1;
+                    Info.UserId = _userInfo.UserID;
+                    Info.PortalId = _userInfo.PortalID;
+                    Info.ModuleId = -1;
+                    Info.TypeCode = "USERDATA";
+                    Info.XMLData = "<genxml></genxml>";
+                    Save();
+                }
+                else
+                    Exists = true;
+            }
+        }
 
     }
 }

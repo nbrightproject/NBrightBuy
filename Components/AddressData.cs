@@ -23,22 +23,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public AddressData()
         {
-            Exists = false;
-            _uData = new UserData();
-            _addressList = GetAddressList();
-            //if we have no address create a default one from DNN profile
-            if (GetDefaultAddress() == null && _uData.Exists)
-            {
-                var newDefault = new NBrightInfo(true);
-                newDefault.AddSingleNode("default", "True", "genxml/hidden");
-                var prop = DnnUtils.GetCurrentUserProfileProperties();
-                foreach (var p in prop)
-                {
-                    newDefault.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
-                }
-                _addressList.Add(newDefault);
-                Save();
-            }
+            PopulateData("");
+        }
+
+        public AddressData(String userId)
+        {
+            PopulateData(userId);
         }
 
 
@@ -230,8 +220,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (defaultAddr.GetXmlProperty("genxml/hidden/default") == "True")
             {
                 var flag = false;
-                var prop1 = DnnUtils.GetCurrentUserProfileProperties();
-                var prop2 = DnnUtils.GetCurrentUserProfileProperties();
+                var prop1 = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                var prop2 = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
                 foreach (var p in prop1)
                 {
                     var n = defaultAddr.XMLDoc.SelectSingleNode("genxml/textbox/" + p.Key.ToLower());
@@ -241,7 +231,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         flag = true;
                     }
                 }
-                if (flag) DnnUtils.SetCurrentUserProfileProperties(prop2);
+                if (flag) DnnUtils.SetUserProfileProperties(_uData.Info.UserId.ToString(""), prop2);
+            }
+        }
+
+        private void PopulateData(String userId)
+        {
+            Exists = false;
+            _uData = new UserData(userId);
+            _addressList = GetAddressList();
+            //if we have no address create a default one from DNN profile
+            if (GetDefaultAddress() == null && _uData.Exists)
+            {
+                var newDefault = new NBrightInfo(true);
+                newDefault.AddSingleNode("default", "True", "genxml/hidden");
+                var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                foreach (var p in prop)
+                {
+                    newDefault.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
+                }
+                _addressList.Add(newDefault);
+                Save();
             }
         }
 

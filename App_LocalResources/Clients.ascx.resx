@@ -177,4 +177,7 @@
   <data name="cmdViewAddressBook.Text" xml:space="preserve">
     <value>View Address Book</value>
   </data>
+  <data name="cmdViewClient.Text" xml:space="preserve">
+    <value>View Client</value>
+  </data>
 </root>

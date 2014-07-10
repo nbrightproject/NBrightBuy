@@ -33,18 +33,15 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class AddressBook : NBrightBuyBase
+    public partial class AddressBook : NBrightBuyAdminBase
     {
 
-        private String _catid = "";
-        private String _catname = "";
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
         private String _templH = "";
         private String _templD = "";
         private String _templinp = "";
         private String _templF = "";
-        private String _entryid = "";
-        private String _tabid = "";
+        private String _uid = "";
         private AddressData _addressData;
 
         #region Event Handlers
@@ -52,12 +49,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "USERDATA";
-            base.DisableUserInfo = true;
-
             base.OnInit(e);
 
-            _addressData = new AddressData();
+            _uid = Utils.RequestParam(Context, "uid");
+            _addressData = new AddressData(_uid);
 
             try
             {
@@ -153,6 +148,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
+            if (_uid != "") param[0] = "uid=" + _uid;
 
             switch (e.CommandName.ToLower())
             {
@@ -161,15 +157,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deleteaddress":
-                    _addressData.RemoveAddress(e.Item.ItemIndex);                        
+                    _addressData.RemoveAddress(e.Item.ItemIndex);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "editaddress":
-                    param[0] = "addressid=" + e.Item.ItemIndex.ToString("");
+                    param[1] = "addressid=" + e.Item.ItemIndex.ToString("");
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "newaddress":
-                    param[0] = "addressid=-1";
+                    param[1] = "addressid=-1";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "viewclient":
+                    param[1] = "ctrl=clients";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

@@ -52,8 +52,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "CART";
-            base.DisableUserInfo = true;
 
             base.OnInit(e);
 

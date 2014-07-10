@@ -53,10 +53,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.EntityTypeCode = "CATEGORY";
-            base.CtrlTypeCode = "CATEGORY";
-            base.EntityTypeCodeLang = "CATEGORYLANG";
-            base.DisableUserInfo = true;
 
             base.OnInit(e);
 

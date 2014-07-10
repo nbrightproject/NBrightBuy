@@ -31,7 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Menu : NBrightBuyBase
+    public partial class Menu : NBrightBuyAdminBase
     {
 
         protected override void OnInit(EventArgs e)

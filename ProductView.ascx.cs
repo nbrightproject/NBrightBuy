@@ -50,17 +50,14 @@ namespace Nevoweb.DNN.NBrightBuy
         private Boolean _displayentrypage = false;
         private String _orderbyindex = "";
         private NavigationData _navigationdata;
-
+        private const String EntityTypeCode = "PRD";
+        private const String EntityTypeCodeLang = "PRDLANG";
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
-            base.EntityTypeCode = "PRD";
-            base.CtrlTypeCode = "PRD";
-            base.EntityTypeCodeLang = "PRDLANG";
-            base.DisableUserInfo = true;
 
             base.OnInit(e);
 
@@ -74,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             // Pass in a template specifying the token to create a friendly url for paging. 
             // (NOTE: we need this in NBS becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
-            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='valueof' databind='PostText' />]";
+            CtrlPaging.HrefLinkTemplate = "[<tag type='valueof' databind='PreText' />][<tag type='if' databind='Text' testvalue='' display='{OFF}' />][<tag type='hrefpagelink' moduleid='" + ModuleId.ToString("") + "' />][<tag type='endif' />][<tag type='valueof' databind='PostText' />]";
             CtrlPaging.UseListDisplay = true;
             try
             {
@@ -324,7 +321,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         else
                             strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
 
-                        if (Utils.IsNumeric(_catid)) objCat = GetData(Convert.ToInt32(_catid), "CATEGORYLANG", Utils.GetCurrentCulture());
+                        if (Utils.IsNumeric(_catid)) objCat = ModCtrl.GetData(Convert.ToInt32(_catid), "CATEGORYLANG", Utils.GetCurrentCulture());
                         if (objCat != null)
                         {
 
@@ -483,7 +480,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void DisplayDataEntryRepeater(String entryId)
         {
-            base.ItemId = entryId;
             var productData = new ProductData(entryId,false);
 
             if (productData.Exists)

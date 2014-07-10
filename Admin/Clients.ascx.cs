@@ -35,7 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Clients : NBrightBuyBase
+    public partial class Clients : NBrightBuyAdminBase
     {
 
         private GenXmlTemplate _templSearch; 
@@ -47,9 +47,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "CLIENT";
-            base.DisableUserInfo = true;
-
             base.OnInit(e);
 
             CtrlPaging.Visible = true;
@@ -58,7 +55,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 #region "set templates based on entry id (eid) from url"
 
-                _entryid = Utils.RequestQueryStringParam(Context, "eid");
+                _entryid = Utils.RequestQueryStringParam(Context, "uid");
 
                 if (_entryid != "") _displayentrypage = true;
 
@@ -208,7 +205,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
-                    param[0] = "eid=" + cArg;
+                    param[0] = "uid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "return":
@@ -231,7 +228,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
                         clientData.UnlockUser();
                     }
-                    param[0] = "eid=" + cArg;
+                    param[0] = "uid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "validateuser":
@@ -241,7 +238,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         clientData.AuthoriseClient();
                         clientData.AddClientRole();
                     }
-                    param[0] = "eid=" + cArg;
+                    param[0] = "uid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "resetpass":
@@ -250,11 +247,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
                         clientData.ResetPassword();
                     }
-                    param[0] = "eid=" + cArg;
+                    param[0] = "uid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "viewaddressbook":
                     param[0] = "";
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        param[0] = "ctrl=addressbook";
+                        param[1] = "uid=" + cArg;
+                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "vieworders":
@@ -277,7 +279,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
                         clientData.UpdateEmail(email);
                     }
-                    param[0] = "eid=" + cArg;
+                    param[0] = "uid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
@@ -294,7 +296,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 param[0] = "page=" + cArg;
                 Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
             }
-            
+
         }
 
 

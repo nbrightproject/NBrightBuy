@@ -31,7 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //var controlMapPath = objSettings.GetXmlProperty("genxml/hidden/controlmappath");
             var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy");
             themeFolder = "Themes\\" + themeFolder;
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "NBrightTemplates", themeFolder);
+            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath,  "Themes\\config", themeFolder);
             return templCtrl;
         }
 

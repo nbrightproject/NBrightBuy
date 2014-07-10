@@ -34,7 +34,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Plugins : NBrightBuyBase
+    public partial class Plugins : NBrightBuyAdminBase
     {
 
         private GenXmlTemplate _templSearch; 

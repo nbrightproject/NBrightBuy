@@ -55,8 +55,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "ORDER";
-            base.DisableUserInfo = true;
 
             base.OnInit(e);
 

@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Orders : NBrightBuyBase
+    public partial class Orders : NBrightBuyAdminBase
     {
 
         private GenXmlTemplate _templSearch; 
@@ -45,9 +45,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "ORDER";
-            base.DisableUserInfo = true;
-
             base.OnInit(e);
 
             CtrlPaging.Visible = false; // don't bother with paging on this module.
