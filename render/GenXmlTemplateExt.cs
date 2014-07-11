@@ -461,6 +461,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "debugmode":
+                                dataValue = "FALSE";
+                                if (StoreSettings.Current.DebugMode)
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             case "isinrole":
                                 dataValue = "FALSE";
                                 if (CmsProviderManager.Default.IsInRole(role))
@@ -1921,9 +1929,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
                     {
-                        var debugMode = _settings.ContainsKey("debug.mode") && _settings["debug.mode"].ToLower() == "1";
                         var buyCtrl = new NBrightBuyController();
-                        var rpTempl = buyCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, debugMode); 
+                        var rpTempl = buyCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
                        
                         //remove templName from template, so we don't get a loop.
                         if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
@@ -2280,9 +2287,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
                     {
-                        var debugMode = _settings.ContainsKey("debug.mode") && _settings["debug.mode"].ToLower() == "1";
                         var modCtrl = new NBrightBuyController();
-                        var rpTempl = modCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, debugMode); 
+                        var rpTempl = modCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
 
                         //remove templName from template, so we don't get a loop.
                         if (rpTempl.Contains('"' + templName + '"')) rpTempl = rpTempl.Replace(templName, "");
@@ -2291,11 +2297,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                         List<NBrightInfo> objL = null;
                         var strCacheKey = Utils.GetCurrentCulture() + "*" + objInfo.ItemID;
-                        if (!debugMode) objL = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
+                        if (!StoreSettings.Current.DebugMode) objL = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
                         if (objL == null)
                         {
                             objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
-                            if (!debugMode) NBrightBuyUtils.SetModCache(Convert.ToInt32(moduleid), strCacheKey, objL);                            
+                            if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(Convert.ToInt32(moduleid), strCacheKey, objL);                            
                         }
                         // render repeater
                         try

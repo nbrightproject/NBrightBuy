@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -103,7 +104,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             #region "Data Repeater"
             if (UserId > 0) // only logged in users can see data on this module.
             {
-
                 DisplayDataEntryRepeater();
             }
 
@@ -129,6 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "save":
+                    Update();
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -142,11 +143,34 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
+        private void Update()
+        {
+            var settings = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SETTINGS", "NBrightBuySettings");
+            if (settings == null)
+            {
+                settings = new NBrightInfo(true);
+                settings.PortalId = PortalId;
+                // use zero as moduleid so it's not picked up by the modules for their settings.
+                // The normal GetList will get all moduleid OR moduleid=-1 
+                settings.ModuleId = 0; 
+                settings.ItemID = -1;
+                settings.TypeCode = "SETTINGS";
+                settings.GUIDKey = "NBrightBuySettings";
+            }
+            settings.XMLData = GenXmlFunctions.GetGenXml(rpData);
+            ModCtrl.Update(settings);
+            //remove currebt setting from cache an reload
+            HttpContext.Current.Items.Remove("NBBStoreSettings");
+            Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            var d = StoreSettings.Current.DebugMode; // dummy call just to reload now.
+        }
 
         private void DisplayDataEntryRepeater()
         {
                 //render the detail page
-                base.DoDetail(rpData);
+                var settings = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SETTINGS", "NBrightBuySettings");
+                if (settings == null) settings = new NBrightInfo(true);
+                base.DoDetail(rpData, settings);
         }
 
 

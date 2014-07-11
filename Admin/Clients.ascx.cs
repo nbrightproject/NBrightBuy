@@ -142,7 +142,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
                     
                     //setup paging
-                    var pagesize = 2;
+                    var pagesize = StoreSettings.Current.GetInt("pagesize");
                     var pagenumber = 1;
                     var strpagenumber = Utils.RequestParam(Context, "page");
                     if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);

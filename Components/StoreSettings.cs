@@ -24,7 +24,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (SettingsInfo != null)
             {
                 _settingDic = SettingsInfo.ToDictionary();
-                if (SettingsInfo.GetXmlProperty("genxml/hidden/debug.mode") == "1") DebugMode = true; // set debug mmode
             }
 
             //Get NBrightBuy Portal Settings.
@@ -48,6 +47,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             ThemeFolder = Get("themefolder");
+
+            if (_settingDic.ContainsKey("debug.mode")) DebugMode = Convert.ToBoolean(_settingDic.ContainsKey("debug.mode"));  // set debug mmode
 
         }
 
@@ -74,6 +75,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string Get(string key)
         {
             return _settingDic.ContainsKey(key) ? _settingDic[key] : "";
+        }
+
+        public int GetInt(string key)
+        {
+            if (_settingDic.ContainsKey(key))
+            {
+                if (Utils.IsNumeric(_settingDic[key]))
+                {
+                    return Convert.ToInt32(_settingDic[key]);
+                }
+            }
+            return 0;
         }
 
         // this section contain a set of properties that are assign commanly used setting.

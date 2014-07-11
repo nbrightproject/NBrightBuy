@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     obj.UserId = -1;
                     obj.GUIDKey = ctrlTypeCode;
                 }
-                SetModCache(-1, "NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""), obj);
+                SetModCache(moduleId, "NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""), obj);
             }
             return obj;
         }
