@@ -22,7 +22,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private string _cookieName;
         private DataStorageType _storageType;
         private HttpCookie _cookie;
-        private List<NBrightInfo> _itemList;
 
         public CartData(int portalId, String storageType = "Cookie", string nameAppendix = "",String cartid = "")
         {

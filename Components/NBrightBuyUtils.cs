@@ -261,7 +261,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var page = "";
             var pagemid = "";
             var catid = "";
-            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, moduleKey,StoreSettings.Current.Get("storagetype"));
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, moduleKey,StoreSettings.Current.StorageTypeClient);
             if (navigationdata.PageNumber != "") page = "&page=" + navigationdata.PageNumber;
             if (navigationdata.PageModuleId != "") pagemid = "&pagemid=" + navigationdata.PageModuleId;
             if (navigationdata.CategoryId != "") catid = "&catid=" + navigationdata.CategoryId;

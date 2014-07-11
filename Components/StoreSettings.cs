@@ -49,7 +49,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ThemeFolder = Get("themefolder");
 
             if (_settingDic.ContainsKey("debug.mode")) DebugMode = Convert.ToBoolean(_settingDic.ContainsKey("debug.mode"));  // set debug mmode
-
+            StorageTypeAdmin = Get("storagetypeadmin");
+            StorageTypeClient = Get("storagetypeclient");
         }
 
         #endregion
@@ -92,9 +93,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
+        /// <summary>
+        /// Get Client StorageType type Cookie,SessionMemory
+        /// </summary>
+        public String StorageTypeClient { get; private set; }
+        public String StorageTypeAdmin { get; private set; }
         public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }
+
 
         #endregion
 

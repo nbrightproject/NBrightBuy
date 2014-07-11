@@ -150,7 +150,7 @@ namespace Nevoweb.DNN.NBrightBuy
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.StorageTypeClient);
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -175,7 +175,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     else
                     {
                         // check the display header to see if we have a sqlfilter defined.
-                        var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                        var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.StorageTypeClient);
                         var strFilter = navigationData.Criteria;
                         strFilter += " and UserId = " + UserId.ToString("") + " ";
                         //Default orderby if not set
@@ -207,7 +207,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+            var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.StorageTypeClient);
 
             switch (e.CommandName.ToLower())
             {

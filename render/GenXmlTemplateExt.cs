@@ -309,11 +309,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
                             case "searchactive":
-                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey, StoreSettings.Current.Get("storagetype"));
+                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey, StoreSettings.Current.StorageTypeClient);
                                 if (navdata2.Criteria == "") dataValue = "false"; else dataValue = "true";
                                 break;
                             case "productcount":
-                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("storagetype"));
+                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.StorageTypeClient);
                                 dataValue = navdata.RecordCount;
                                 break;
                             case "price":
@@ -1227,7 +1227,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var catid = "";
                 if (filtermode != "")
                 {
-                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.Get("DataStorageType"));
+                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.StorageTypeClient);
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
                     if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
                     if (Utils.IsNumeric(catid))
@@ -2178,7 +2178,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var l = (Literal)sender;
             try
             {
-                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text, StoreSettings.Current.Get("storagetype"));
+                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text, StoreSettings.Current.StorageTypeClient);
                 l.Text = navdata.RecordCount;
                 l.Visible = NBrightGlobal.IsVisible;
             }

@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 _entryid = Utils.RequestQueryStringParam(Context, "eid");
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
-                var navigationdata = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                var navigationdata = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.StorageTypeClient);
                 if (Utils.IsNumeric(_catid)) navigationdata.Delete(); // if a category button has been clicked (in url) then clear search;
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) _catid = navigationdata.CategoryId;
                 if (_catid == "") _catid = ModSettings.Get("defaultcatid");

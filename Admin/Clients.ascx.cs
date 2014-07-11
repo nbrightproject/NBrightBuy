@@ -12,20 +12,13 @@
 // --- End copyright notice --- 
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
-using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -116,7 +109,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.Get("DataStorageType"));
+                var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.StorageTypeClient);
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -138,8 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
-                    // check the display header to see if we have a sqlfilter defined.
-                    var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
+                    var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.StorageTypeClient);
                     
                     //setup paging
                     var pagesize = StoreSettings.Current.GetInt("pagesize");
@@ -200,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.Get("DataStorageType"));
+            var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.StorageTypeClient);
 
             switch (e.CommandName.ToLower())
             {
@@ -270,7 +262,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "createorder":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    var tabId = TabId;
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var cart = new CartData(PortalId, StoreSettings.Current.StorageTypeClient);
+                        cart.UserId = Convert.ToInt32(cArg);
+                        cart.Save();
+                        tabId = StoreSettings.Current.GetInt("productlisttab");
+                        if (tabId==0) tabId = TabId;
+                    }
+                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
                     break;
                 case "updateemail":
                     if (Utils.IsNumeric(cArg))

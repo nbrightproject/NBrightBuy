@@ -67,7 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 return;
             }
 
-            _navigationdata = new NavigationData(PortalId, ModuleKey, StoreSettings.Current.Get("storagetype"));
+            _navigationdata = new NavigationData(PortalId, ModuleKey, StoreSettings.Current.StorageTypeClient);
 
             // Pass in a template specifying the token to create a friendly url for paging. 
             // (NOTE: we need this in NBS becuase the edit product from list return url will copy the page number and hence paging will not work after editing if we don;t do this)
@@ -465,7 +465,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "addtobasket":
                     //NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
-                    var currentcart = new CartData(PortalId, StoreSettings.Current.Get("DataStorageType"));
+                    var currentcart = new CartData(PortalId, StoreSettings.Current.StorageTypeClient);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     currentcart.Save(DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);

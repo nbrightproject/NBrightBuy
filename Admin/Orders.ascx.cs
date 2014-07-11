@@ -12,18 +12,13 @@
 // --- End copyright notice --- 
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
-using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -39,15 +34,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch; 
         private String _entryid = "";
         private Boolean _displayentrypage = false;
+        private String _uid = "";
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
+            _uid = Utils.RequestParam(Context, "uid");
+
             base.OnInit(e);
 
-            CtrlPaging.Visible = false; // don't bother with paging on this module.
+            CtrlPaging.Visible = true;
+            CtrlPaging.UseListDisplay = true;
             try
             {
                 #region "set templates based on entry id (eid) from url"
@@ -130,7 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.Get("DataStorageType"));
+                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.StorageTypeClient);
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -152,13 +151,49 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
-                    // check the display header to see if we have a sqlfilter defined.
-                    var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
+                    var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.StorageTypeClient);
+
+                    //setup paging
+                    var pagesize = StoreSettings.Current.GetInt("pagesize");
+                    var pagenumber = 1;
+                    var strpagenumber = Utils.RequestParam(Context, "page");
+                    if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);
+                    var recordcount = 0;
+
+                    // get search data
+                    var sInfo = new NBrightInfo();
+                    sInfo.XMLData = navigationData.XmlData;
+
+                    // display search
+                    base.DoDetail(rpSearch, sInfo);
+
                     var strFilter = navigationData.Criteria;
+
+                    // if we have a uid, then we want to display only that clients orders.
+                    if (Utils.IsNumeric(_uid)) strFilter += " and UserId = " + _uid + " ";
+
+                    if (Utils.IsNumeric(navigationData.RecordCount))
+                    {
+                        recordcount = Convert.ToInt32(navigationData.RecordCount);
+                    }
+                    else
+                    {
+                        recordcount = ModCtrl.GetListCount(PortalId, -1, "ORDER", strFilter); 
+                        navigationData.RecordCount = recordcount.ToString("");
+                    }
+
                     //Default orderby if not set
                     var strOrder = " Order by ModifiedDate DESC  ";
                     rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
                     rpData.DataBind();
+                    
+                    if (pagesize > 0)
+                    {
+                        CtrlPaging.PageSize = pagesize;
+                        CtrlPaging.CurrentPage = pagenumber;
+                        CtrlPaging.TotalRecords = recordcount;
+                        CtrlPaging.BindPageLinks();
+                    }
 
                 }
             }
@@ -183,7 +218,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.Get("DataStorageType"));
+            if (_uid != "") param[0] = "uid=" + _uid;
+            var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.StorageTypeClient);
 
             switch (e.CommandName.ToLower())
             {
@@ -226,6 +262,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "orderby":
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
                     navigationData.Save();
+                    break;
+                case "viewclient":
+                    param[1] = "ctrl=clients";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
 

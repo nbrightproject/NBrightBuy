@@ -21,6 +21,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private int _entryId;
         private NBrightInfo _purchaseInfo;
         private List<NBrightInfo> _itemList;
+        private int _userId = -1;
 
         public String PurchaseTypeCode;
         public int PortalId;
@@ -47,10 +48,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _purchaseInfo.PortalId = PortalId;
             _purchaseInfo.ModuleId = -1;
             _purchaseInfo.TypeCode = PurchaseTypeCode;
-            var uInfo = UserController.GetCurrentUserInfo();
-            _purchaseInfo.UserId = uInfo.UserID;
+            if (UserId == -1) UserId = UserController.GetCurrentUserInfo().UserID;
+            _purchaseInfo.UserId = UserId;
             _entryId = modCtrl.Update(_purchaseInfo);
             return _entryId;
+        }
+
+        public int UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
         }
 
         #region "base methods"
@@ -585,6 +592,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _purchaseInfo.TypeCode = PurchaseTypeCode;
             }
             PurchaseTypeCode = _purchaseInfo.TypeCode;
+            UserId = _purchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
 
             //build item list
             _itemList = GetCartItemList();

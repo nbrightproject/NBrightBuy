@@ -117,25 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="debugmode.Text" xml:space="preserve">
-    <value>Debug Mode</value>
+  <data name="cmdReOrder.Text" xml:space="preserve">
+    <value>Re-Order</value>
   </data>
-  <data name="pagesize.Text" xml:space="preserve">
-    <value>Defaut Page Size</value>
+  <data name="cmdReturn.Text" xml:space="preserve">
+    <value>Return</value>
   </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="storagetypeclient.Help" xml:space="preserve">
-    <value>Client cartid and other client specific data can be stored as Cookies or SessionMemory</value>
-  </data>
-  <data name="storagetypeclient.Text" xml:space="preserve">
-    <value>Client Storage Type</value>
-  </data>
-  <data name="productlisttab.Help" xml:space="preserve">
-    <value>Used to redirect user/manager to the product page when certain actions are done.</value>
-  </data>
-  <data name="productlisttab.Text" xml:space="preserve">
-    <value>Default Product List Page</value>
+  <data name="cmdView.Text" xml:space="preserve">
+    <value>View Order</value>
   </data>
 </root>
