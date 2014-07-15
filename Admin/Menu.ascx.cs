@@ -34,24 +34,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class Menu : NBrightBuyAdminBase
     {
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            try
-            {              
- 
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
-                var l = new Literal();
-                l.Text = exc.ToString();
-                phData.Controls.Add(l);
-            }
-
-        } 
-
-
         protected override void OnLoad(EventArgs e)
         {
             try

@@ -332,68 +332,14 @@
     <Content Include="ProfileFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
-    <Content Include="NBrightTemplates\Default\addressbookbody.html" />
-    <Content Include="NBrightTemplates\Default\addressbookfooter.html" />
-    <Content Include="NBrightTemplates\Default\addressbookheader.html" />
-    <Content Include="NBrightTemplates\Default\addressbookinput.html" />
-    <Content Include="NBrightTemplates\Default\Checkout_Settings.html" />
-    <Content Include="NBrightTemplates\Default\clientsbody.html" />
-    <Content Include="NBrightTemplates\Default\clientsdetail.html" />
-    <Content Include="NBrightTemplates\Default\clientsdetailfooter.html" />
-    <Content Include="NBrightTemplates\Default\clientsdetailheader.html" />
-    <Content Include="NBrightTemplates\Default\clientsfooter.html" />
-    <Content Include="NBrightTemplates\Default\clientsheader.html" />
-    <Content Include="NBrightTemplates\Default\clientssearch.html" />
-    <Content Include="NBrightTemplates\Default\menufooter.html" />
-    <Content Include="NBrightTemplates\Default\menuheader.html" />
-    <Content Include="NBrightTemplates\Default\ordersbody.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetail.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetailfooter.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetailheader.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetailitem.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetailitemfooter.html" />
-    <Content Include="NBrightTemplates\Default\ordersdetailitemheader.html" />
-    <Content Include="NBrightTemplates\Default\ordersfooter.html" />
-    <Content Include="NBrightTemplates\Default\ordersheader.html" />
-    <Content Include="NBrightTemplates\Default\orderssearch.html" />
-    <Content Include="NBrightTemplates\Default\OrderAdmin_Settings.html" />
-    <Content Include="NBrightTemplates\Default\pluginsbody.html" />
-    <Content Include="NBrightTemplates\Default\pluginsdetail.html" />
-    <Content Include="NBrightTemplates\Default\pluginsdetailfooter.html" />
-    <Content Include="NBrightTemplates\Default\pluginsdetailheader.html" />
-    <Content Include="NBrightTemplates\Default\pluginsfooter.html" />
-    <Content Include="NBrightTemplates\Default\pluginsheader.html" />
     <Content Include="OrderAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="OrderAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_AddNew.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Delete.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Edit.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Exit.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Save.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCD.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCE.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCED.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCEs.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SD.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SED.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCDL.txt" />
-    <Content Include="NBrightTemplates\Default\CartView_Settings.html" />
-    <Content Include="NBrightTemplates\Default\CategoryMenu_Settings.html" />
-    <Content Include="NBrightTemplates\Default\ProductSearch_Settings.html" />
-    <Content Include="NBrightTemplates\Default\ProductView_Settings.html" />
     <Content Include="ProductSearchSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Search.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSC.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCD.txt" />
-    <Content Include="NBrightTemplates\Default\buttons_SortList.txt" />
-    <Content Include="NBrightTemplates\Default\buttons_SxSCD.txt" />
     <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -435,6 +381,7 @@
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
     <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
     <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
+    <Content Include="Themes\Cygnus\Default\profileformemail.html" />
     <Content Include="Themes\Cygnus\Default\profileforminput.html" />
     <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
     <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
@@ -490,6 +437,7 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />

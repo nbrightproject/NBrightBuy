@@ -35,13 +35,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void UpdateProfile(Repeater rpData, Boolean debugMode = false)
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+            const string profileupload = "NBStore\\profileupload";
+            Utils.CreateFolder(PortalSettings.Current.HomeDirectoryMapPath + profileupload);
+            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + profileupload);
             Save(strXml, debugMode);
         }
 
         public NBrightInfo GetProfile()
         {
-            NBrightInfo pInfo = null;
+            var pInfo = new NBrightInfo(true);
             if (_uData.Exists)
             {
                 var xmlNode = _uData.Info.XMLDoc.SelectSingleNode("genxml/profile/genxml");
@@ -57,7 +59,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Set to true if cart exists
         /// </summary>
         public bool Exists { get; private set; }
-
 
         #endregion
 
@@ -104,6 +105,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             if (flag) DnnUtils.SetUserProfileProperties(_uData.Info.UserId.ToString(""), prop2);
+
+            // update email
+            var email = profile.GetXmlProperty("genxml/textbox/email");
+            if (email != "" && email != _uData.GetEmail()) _uData.UpdateEmail(email);
+
         }
 
         /// <summary>
@@ -117,12 +123,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //Get DNN profile
             if (_uData.Exists)
             {
-                var newDefault = new NBrightInfo(true);
+                var newDefault = GetProfile();
                 var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
                 foreach (var p in prop)
                 {
                     newDefault.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
                 }
+                // get email
+                newDefault.SetXmlProperty("genxml/textbox/email", _uData.GetEmail());
                 Save(newDefault.XMLData);
             }
         }

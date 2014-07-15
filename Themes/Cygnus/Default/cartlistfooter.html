@@ -1,6 +1,13 @@
 ﻿</table>
-[<tag id="cmdUpdate" type="linkbutton" resourcekey="General.Update" commandname="updatecart" />] ---
-[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDelete" commandname="deletecart" />]
+<div class="formrow">
+[<tag id="cmdUpdate" type="linkbutton" cssclass="primarybutton" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="linkbutton" cssclass="secondarybutton" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
+</div>
 </div>
 
-
+<!-- Responsive Tables http://johnpolacek.github.io/stacktable.js/ -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/stacktable.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('.StackThis').stacktable({myClass:'stacktable small-only'});
+    });
+</script>

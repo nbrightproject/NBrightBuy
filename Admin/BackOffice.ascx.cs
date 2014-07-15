@@ -48,6 +48,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 // Get Display Body
                 var dataTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
+                // insert page header text
+                var headerTempl = NBrightBuyUtils.GetGenXmlTemplate(dataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, headerTempl, ModSettings.Settings(), null, DebugMode);
+
                 var aryTempl = Utils.ParseTemplateText(dataTempl);
 
                 foreach (var s in aryTempl)

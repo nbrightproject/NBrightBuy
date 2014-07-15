@@ -27,6 +27,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         public string ThemeFolder = "";
 	    public ModSettings ModSettings;
         public Boolean DisablePaging { get; set; } // disable the paging control
+        public bool FileHasBeenUploaded = false; // flag to check if file has been uploaded on any form.
 
         public DotNetNuke.Framework.CDefault BasePage
         {
@@ -40,6 +41,9 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             DebugMode = StoreSettings.Current.DebugMode;
                         
 		    base.OnInit(e);
+
+            // Attach events
+            GenXmlFunctions.FileHasBeenUploaded += new UploadFileCompleted(OnFileUploaded);
 
             #region "Get all Settings for module"
             //get Model Level Settings
@@ -93,6 +97,11 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         public virtual void EventBeforePageChange(object source, RepeaterCommandEventArgs e)
         {
 
+        }
+
+        public void OnFileUploaded()
+        {
+            FileHasBeenUploaded = true;
         }
 
         #endregion

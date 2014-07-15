@@ -138,4 +138,10 @@
   <data name="productlisttab.Text" xml:space="preserve">
     <value>Default Product List Page</value>
   </data>
+  <data name="adminemail.Help" xml:space="preserve">
+    <value>Email Address of store administrator, this is the default store sending email address.</value>
+  </data>
+  <data name="adminemail.Text" xml:space="preserve">
+    <value>Admin Email</value>
+  </data>
 </root>

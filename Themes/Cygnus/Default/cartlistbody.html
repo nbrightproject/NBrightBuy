@@ -1,11 +1,13 @@
 ﻿	<tr>
-		<td>
-		<img src="http://placehold.it/100x80">
+		<td class="imagecolumn">
+		<div class="cropper">
+		<img src="http://placehold.it/300x240">
+		</div>
 		</td>
-		<td>
+		<td class="detailscolumn">
 		<!-- [<tag type="valueof" xpath="genxml/productname" />] -->
 		<h5>[<tag type="valueof" xpath="genxml/modeldesc" />]</h5>
-		<div class="cartlistref">[<tag type="valueof" xpath="genxml/modelref" />]</div>
+		<h6 class="cartlistref">[<tag type="valueof" xpath="genxml/modelref" />]</h6>
 		<div class="cartlistoptions">
 		<h6>Options</h6>
 		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]</div>
@@ -15,10 +17,12 @@
 		</div>
 		</td>
 		<td>
-		[<tag id="cmdRemoveQty" type="linkbutton" resourcekey="CartView.cmdRemove" commandname="removeqty" />][<tag cssclass="quantity" id="qty" type="cartqtytextbox" maxlength="10" text="" />][<tag id="cmdAddQty" type="linkbutton" resourcekey="CartView.cmdAdd" commandname="addqty" />]
-		[<tag id="cmdDeleteItem" type="linkbutton" resourcekey="CartView.cmdDelete" commandname="deletecartitem" />]
+		<div class="quantityoptions">
+		[<tag cssclass="quantity" id="qty" type="cartqtytextbox" maxlength="10" text="" />]
+		<div class="qtyadjust">[<tag id="cmdAddQty" type="linkbutton" cssclass="addqty" resourcekey="CartView.cmdAddItem" commandname="addqty" />][<tag id="cmdRemoveQty" type="linkbutton" cssclass="removeqty" resourcekey="CartView.cmdRemoveItem" commandname="removeqty" />]</div>
+		</div>
 		</td>
 		<td>[<tag type="valueof" xpath="genxml/unitcost" />]</td>
-		<td>tag for total</td>
+		<td>(total)</td>
+		<td>[<tag id="cmdDeleteItem" type="linkbutton" cssclass="deleteitem" resourcekey="CartView.cmdDeleteItem" commandname="deletecartitem" />]</td>
 	</tr>
-

@@ -51,6 +51,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_settingDic.ContainsKey("debug.mode")) DebugMode = Convert.ToBoolean(_settingDic.ContainsKey("debug.mode"));  // set debug mmode
             StorageTypeAdmin = Get("storagetypeadmin");
             StorageTypeClient = Get("storagetypeclient");
+            AdminEmail = Get("adminemail");
         }
 
         #endregion
@@ -98,6 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public String StorageTypeClient { get; private set; }
         public String StorageTypeAdmin { get; private set; }
+        public String AdminEmail { get; private set; }
         public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }

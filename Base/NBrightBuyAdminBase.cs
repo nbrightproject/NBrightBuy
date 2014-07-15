@@ -17,19 +17,18 @@ namespace Nevoweb.DNN.NBrightBuy.Base
     public class NBrightBuyAdminBase : NBrightBuyBase
 	{
 
-		protected override void OnInit(EventArgs e)
-		{
+        protected override void OnLoad(EventArgs e)
+        {
             if (UserInfo.IsInRole("Editor") || UserInfo.IsInRole("Manager"))
             {
-                base.OnInit(e);
+                base.OnLoad(e);
             }
             else
             {
                 // has no right to access, throw error page.
                 Response.Redirect("~/Error.aspx", true);
             }
-        }
-
+       }
 
 	}
 }

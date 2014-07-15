@@ -26,14 +26,10 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 #cartdetails{}
 #cartdetails H3 {background:#777777;color: #FFFFFF;line-height: 34px;margin: 0 0 12px;padding: 0 12px;}
 #cartdetails H6 {font-size: 12px;font-weight: normal;margin: 0 0 5px;}
-#cartbilladdress{float:left;margin-right: 5%;width:30%;min-width:260px}
-.cartlist {border-collapse: collapse;width:100%}
-.cartlist th{background:#777777;color: #FFFFFF;line-height: 34px;border-collapse: collapse;padding:0}
-.cartlist td{border: 1px solid #DDDDDD;padding:10px;vertical-align:top}
-.checkoutshipform{float:left;margin-right: 5%;width:30%;min-width:260px}
-.checkoutship{float:left;margin-right: 5%;width:30%;min-width:260px}
-
-#cartsummary{float:left;width:30%;min-width:260px}
+#cartbilladdress{float:left;margin-right: 5%;width:30%;min-width:240px}
+.checkoutshipform{float:left;margin-right: 5%;width:30%;min-width:240px}
+.checkoutship{float:left;margin-right: 5%;width:30%;min-width:240px}
+#cartsummary{float:left;width:30%;min-width:240px}
 #cartextra{}
 #carttotals{}
 #cartspecial{}
@@ -47,9 +43,68 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 #shippingoptions label{line-height: 22px;margin: 0 0 0 6px;}
 .checkoutship input{vertical-align: -2px;margin: 0 0 0 10px;}
 .checkoutship label{line-height: 22px;margin: 0 0 0 6px;}
-
 #checkoutdetails .primarybutton{margin-right:0}
-.checkoutbillform,#shippingoptions,#cartshipaddress,#cartsummary{margin-bottom:32px}
+.checkoutbillform,#shippingoptions,#shippinginput,#cartsummary{margin-bottom:32px}
+
+@media (max-width: 560px) {
+#cartbilladdress,.checkoutshipform,.checkoutship,#cartsummary{width:100%}
+
+}
+
+
+/* cartlist Table - www.csstablegenerator.com */
+#checkoutitemlist table {margin:0px;padding:0px;width:100%;margin-bottom:24px;border-collapse: collapse;border-spacing:0;width:100%}
+#checkoutitemlist table tr:nth-child(odd){background-color:#f2f2f2;}
+#checkoutitemlist table tr:nth-child(even){background-color:#ffffff;}
+#checkoutitemlist table td{vertical-align:middle;text-align:center;padding:6px;font-family:inherit;font-weight:normal;border: 1px solid #DDDDDD;padding:10px;text-align: center;}
+#checkoutitemlist table tr:last-child td{}
+#checkoutitemlist table tr td:last-child{}
+#checkoutitemlist table tr:last-child td:last-child{}
+#checkoutitemlist table th{background:#777777;color: #FFFFFF;line-height: 34px;padding:0}
+#checkoutitemlist table tr:first-child td:first-child{}
+#checkoutitemlist table tr:first-child td:last-child{}
+
+#checkoutitemlist .imagecolumn{width:110px}
+#checkoutitemlist .imagecolumn img{max-width:100px}
+#checkoutitemlist .detailscolumn{text-align: left;}
+#checkoutitemlist .detailscolumn h5{float: left;}
+#checkoutitemlist .detailscolumn h6#checkoutitemlist .cartlistref{float: right;}
+#checkoutitemlist .cartlistoptions{clear:both;}
+#checkoutitemlist .quantity{float: left;margin-bottom: 0;margin-right: 6px;text-align: center;width: 22px;}
+#checkoutitemlist .quantityoptions{display: inline-block;white-space: nowrap;}
+#checkoutitemlist .qtyadjust{display: inline-block;}
+#checkoutitemlist .addqty{display: block;}
+#checkoutitemlist .removeqty{}
+#checkoutitemlist .deleteitem{}
+#checkoutitemlist .fa-times-circle{color:#666}
+#checkoutitemlist .fa-times-circle:hover {color: #C80000;}
+
+/* Responsive Models Table */
+#checkoutitemlist .stacktable{}
+#checkoutitemlist .st-head-row{}
+#checkoutitemlist .st-head-row.st-head-row-main{}
+#checkoutitemlist .st-key{width:19%;text-align:left;padding-right:1%;}
+#checkoutitemlist .st-val{width:69%;padding-left:1%;}
+#checkoutitemlist .stacktable.large-only{display:table;}
+#checkoutitemlist .small-only{display:none;}
+@media (max-width: 560px) {
+#checkoutitemlist .stacktable{width:100%;min-width:240px;}
+#checkoutitemlist .large-only{display:none;}
+#checkoutitemlist .stacktable.small-only{display:table;}
+#checkoutitemlist td{font-size:12px;padding:3px}
+#checkoutitemlist td{text-align:left;}
+#checkoutitemlist th{text-align:left;}
+#checkoutitemlist .st-head-row{padding: 0;text-align: center;}
+#checkoutitemlist .st-head-row img{width:100%;margin-top: -25%;}
+#checkoutitemlist .st-head-row .cropper{height:100px;overflow: hidden;}
+
+#checkoutitemlist .small-only .fa {font-size: 24px;}
+#checkoutitemlist .small-only .quantity {height: 30px;width: 30px;}
+
+
+}
+
+
 </style>
 
 

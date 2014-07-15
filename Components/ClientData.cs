@@ -44,14 +44,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _clientInfo;
         }
 
+        public void AddClientRole()
+        {
+            if (_userInfo != null)
+            {
+                if (!_userInfo.IsInRole("Client"))
+                {
+                    var rc = new DotNetNuke.Security.Roles.RoleController();
+                    var ri = rc.GetRoleByName(PortalId, "Client");
+                    if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate);
+                }
+            }
+        }
+
         public void ResetPassword()
         {
             if (_userInfo != null)
             {
                 UserController.ResetPassword(_userInfo, "");
                 _userInfo.Membership.UpdatePassword = true;
-                UserController.UpdateUser(PortalId, _userInfo);
-                DotNetNuke.Services.Mail.Mail.SendMail(_userInfo, DotNetNuke.Services.Mail.MessageType.PasswordReminder, (PortalSettings) HttpContext.Current.Items["PortalSettings"]);
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
+                DotNetNuke.Services.Mail.Mail.SendMail(_userInfo, DotNetNuke.Services.Mail.MessageType.PasswordReminder, (PortalSettings)HttpContext.Current.Items["PortalSettings"]);
             }
         }
 
@@ -60,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_userInfo != null && Utils.IsEmail(email))
             {
                 _userInfo.Email = email;
-                UserController.UpdateUser(PortalId,_userInfo);
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
             }
         }
 
@@ -74,20 +87,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_userInfo != null)
             {
                 _userInfo.Membership.Approved = true;
-                UserController.UpdateUser(PortalId, _userInfo);
-            }
-        }
-
-        public void AddClientRole()
-        {
-            if (_userInfo != null)
-            {
-                if (!_userInfo.IsInRole("Client"))
-                {
-                    var rc = new DotNetNuke.Security.Roles.RoleController();
-                    var ri = rc.GetRoleByName(PortalId, "Client");
-                    if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate);                    
-                }
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
             }
         }
 

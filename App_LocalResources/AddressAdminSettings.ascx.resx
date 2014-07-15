@@ -120,38 +120,32 @@
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Address Admin Settings</value>
   </data>
-  <data name="lbladvancedsettings.Text" xml:space="preserve">
-    <value>Advanced</value>
-  </data>
   <data name="lblbasicsettings.Text" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="lbllistbody.Help" xml:space="preserve">
-    <value>Template to be used as cart body, this is repeated for each cart item.</value>
+    <value>Template to be used as address body, this is repeated for each address.</value>
   </data>
   <data name="lbllistbody.Text" xml:space="preserve">
-    <value>Cart Body : </value>
+    <value>Address Body : </value>
   </data>
   <data name="lbllistfooter.Help" xml:space="preserve">
-    <value>Template to be used as cart footer.</value>
+    <value>Template to be used as Address footer.</value>
   </data>
   <data name="lbllistfooter.Text" xml:space="preserve">
-    <value>Cart Footer : </value>
+    <value>Address Footer : </value>
   </data>
   <data name="lbllistheader.Help" xml:space="preserve">
-    <value>Template to be used as cart header.</value>
+    <value>Template to be used as Address header.</value>
   </data>
   <data name="lbllistheader.Text" xml:space="preserve">
-    <value>Cart Header : </value>
+    <value>Address Header : </value>
   </data>
   <data name="lbltheme.Help" xml:space="preserve">
-    <value>Name of the theme to use for this cart list.</value>
+    <value>Name of the theme to use for this Address list.</value>
   </data>
   <data name="lbltheme.Text" xml:space="preserve">
     <value>Theme : </value>
-  </data>
-  <data name="lblthemesettings.Text" xml:space="preserve">
-    <value>Theme Settings</value>
   </data>
   <data name="lblinputform.Help" xml:space="preserve">
     <value>Template to be used as the data entry foem for the address.</value>

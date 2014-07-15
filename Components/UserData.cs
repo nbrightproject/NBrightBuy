@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
@@ -66,6 +67,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Set to true if usedata exists
         /// </summary>
         public bool Exists { get; private set; }
+
+        public void UpdateEmail(String email)
+        {
+            if (_userInfo != null && Utils.IsEmail(email))
+            {
+                _userInfo.Email = email;
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
+            }
+        }
+
+        public String GetEmail()
+        {
+            if (_userInfo != null)
+            {
+                return _userInfo.Email;
+            }
+            return "";
+        }
+
 
         private void PopulateData(String userId)
         {
