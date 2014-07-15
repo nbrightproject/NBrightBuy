@@ -228,7 +228,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-        #region "create nbb:testof"
+        #region "create nbs:testof"
 
         private void CreateTestOf(Control container, XmlNode xmlNod)
         {
@@ -472,6 +472,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             case "isinrole":
                                 dataValue = "FALSE";
                                 if (CmsProviderManager.Default.IsInRole(role))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "iseditmode":
+                                dataValue = "FALSE";
+                                var currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
+                                if (currentcart.IsEditMode())
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";

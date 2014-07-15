@@ -3,6 +3,12 @@
 
 [<tag id="includeinheader" type="meta" value="detailpageheader.html" />]<!-- Injects a template with dynamic data into page head section -->
 
+
+[<tag type='if' function='iseditmode' display='{ON}' displayelse='{OFF}' />]
+<div class="debug">Order being edited for client</div>
+[<tag type="endtestof"  />]
+
+
 <div class="productdetail" itemscope itemtype="http://schema.org/Product">
 
 	[<tag type="if" function="settings" key="placeholderimage" testvalue="True" display="{ON}" displayelse="{OFF}" />]

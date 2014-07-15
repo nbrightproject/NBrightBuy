@@ -1,12 +1,16 @@
 <div class="checkoutdetails" style="display:none;">
-<div class="formrow">
-    <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
-    Subtotal<br>
-    Discount<br>
-    Shipping<br>
-    Tax<br>
-    Total
-</div>
+    <div class="formrow">
+        <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
+        Subtotal<br/>
+        Discount<br/>
+        Shipping<br/>
+        Tax<br/>
+        Total
+    </div>
+
+    [<tag type='if' function='iseditmode' display='{ON}' displayelse='{OFF}' />]
+<div class="debug">Order being edited for client</div>
+[<tag type="endtestof"  />]
 
 <div class="formrow">
 <table cellpadding="6" style="width:100%">

@@ -555,6 +555,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Get the IsEditMode (If the cart is being edited/created by a manager then this flag is set to true.)
+        /// </summary>
+        public Boolean IsEditMode()
+        {
+            if (_purchaseInfo.GetXmlProperty("genxml/editmode") == "True") return true;
+            return false;
+        }
+
+        /// <summary>
         /// Set IsValidated:
         /// </summary>
         /// <param name="value"> </param>
@@ -593,6 +602,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             PurchaseTypeCode = _purchaseInfo.TypeCode;
             UserId = _purchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
+            var currentuserInfo = UserController.GetCurrentUserInfo();
+            if (UserId > 0 && currentuserInfo != null && UserId != currentuserInfo.UserID) // 0 is default userid for new cart
+                _purchaseInfo.SetXmlProperty("genxml/editmode", "True", TypeCode.String, false);                
+            else
+                _purchaseInfo.SetXmlProperty("genxml/editmode", "False", TypeCode.String, false);                
 
             //build item list
             _itemList = GetCartItemList();
