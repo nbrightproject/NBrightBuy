@@ -67,6 +67,13 @@
     <Compile Include="Admin\Clients.ascx.designer.cs">
       <DependentUpon>Clients.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\BackOffice.ascx.cs">
+      <DependentUpon>BackOffice.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\BackOffice.ascx.designer.cs">
+      <DependentUpon>BackOffice.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -116,6 +123,7 @@
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
     <Compile Include="Components\ClientData.cs" />
+    <Compile Include="Components\ProfileData.cs" />
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
@@ -189,12 +197,26 @@
     <Compile Include="AddressAdminSettings.ascx.designer.cs">
       <DependentUpon>AddressAdminSettings.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Admin\BackOffice.ascx.cs">
-      <DependentUpon>BackOffice.ascx</DependentUpon>
+    <Compile Include="Admin\Container.ascx.cs">
+      <DependentUpon>Container.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\BackOffice.ascx.designer.cs">
-      <DependentUpon>BackOffice.ascx.cs</DependentUpon>
+    <Compile Include="Admin\Container.ascx.designer.cs">
+      <DependentUpon>Container.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileForm.ascx.cs">
+      <DependentUpon>ProfileForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileForm.ascx.designer.cs">
+      <DependentUpon>ProfileForm.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileFormSettings.ascx.cs">
+      <DependentUpon>ProfileFormSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileFormSettings.ascx.designer.cs">
+      <DependentUpon>ProfileFormSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="OrderAdmin.ascx.cs">
       <DependentUpon>OrderAdmin.ascx</DependentUpon>
@@ -259,6 +281,9 @@
     <Content Include="Admin\Clients.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\BackOffice.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -298,7 +323,13 @@
     <Content Include="AddressAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Admin\BackOffice.ascx">
+    <Content Include="Admin\Container.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileForm.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="NBrightTemplates\Default\AddressAdmin_Settings.html" />
@@ -358,7 +389,6 @@
     <Content Include="NBrightTemplates\Default\ProductView_Settings.html" />
     <Content Include="ProductSearchSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
-    <Content Include="menu\ControlTabMenu.xsl" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_Search.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SxSC.txt" />
     <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCD.txt" />
@@ -405,6 +435,7 @@
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
     <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
     <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
+    <Content Include="Themes\Cygnus\Default\profileforminput.html" />
     <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
     <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
     <Content Include="Themes\Cygnus\Default\minicartlistheader.html" />

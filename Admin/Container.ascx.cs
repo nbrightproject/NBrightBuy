@@ -14,13 +14,9 @@
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
-using NBrightCore.render;
-using NBrightDNN;
-using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -30,51 +26,41 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class BackOffice : NBrightBuyAdminBase
+    public partial class Container : DotNetNuke.Entities.Modules.PortalModuleBase
     {
 
-
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
             try
             {
-
-
-                #region "load templates"
-
-                var t1 = "backoffice.html";
-
-                // Get Display Body
-                var dataTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
-                var aryTempl = Utils.ParseTemplateText(dataTempl);
-
-                foreach (var s in aryTempl)
+                if (UserId > 0) //do nothing if user not logged on
                 {
-                    var htmlDecode = System.Web.HttpUtility.HtmlDecode(s);
-                    if (htmlDecode != null && htmlDecode.ToLower() == "<tag:menu>")
+
+                    var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
+                    if (ctrl == "")
+                        ctrl = (String) HttpContext.Current.Session["nbrightbackofficectrl"];
+                    else
+                        HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
+
+                    if (ctrl == "") ctrl = "dashboard";
+
+                    var ctlpath = GetControlPath(ctrl);
+
+                    if (ctlpath != "")
                     {
-                        var c1 = LoadControl("/DesktopModules/NBright/NBrightBuy/Admin/Menu.ascx");
-                        phData.Controls.Add(c1);
-                    } if (htmlDecode != null && htmlDecode.ToLower() == "<tag:container>")
-                    {
-                        var c1 = LoadControl("/DesktopModules/NBright/NBrightBuy/Admin/Container.ascx");
+                        var c1 = LoadControl(ctlpath);
                         phData.Controls.Add(c1);
                     }
                     else
                     {
-                        var lc = new Literal { Text = s };
-                        phData.Controls.Add(lc);
+                        var c1 = new Literal();
+                        c1.Text = "INVALID CONTROL: " + ctrl;
+                        phData.Controls.Add(c1);
                     }
                 }
-
-
-                #endregion
-
-
             }
-            catch (Exception exc)
+            catch (Exception exc) //Module failed to load
             {
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -82,6 +68,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 phData.Controls.Add(l);
             }
 
+        } 
+
+        private String GetControlPath(String ctrl)
+        {
+            var pluginData = new PluginData(PortalId);
+
+            var nod = pluginData.Info.XMLDoc.SelectSingleNode("genxml/plugin/genxml[textbox/ctrl='" + ctrl + "']/textbox/path");
+            if (nod != null)
+            {
+                return nod.InnerText;
+            }
+            return "";
         }
 
     }
