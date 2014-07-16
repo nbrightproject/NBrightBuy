@@ -97,11 +97,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                 }
 
-                strOut = "<ul>";
+                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", resxpath, Utils.GetCurrentCulture());
+                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", resxpath, Utils.GetCurrentCulture());
+
+                strOut = "<ul " + bomenuattributes + ">";
                 foreach (var grpname in groupList)
                 {
                     // Build the subgroup, if it doesn't exists then we don't need the parent group li section.
-                    var strOutSub = "<ul>";
+                    var strOutSub = "<ul " + bosubmenuattributes + ">";
                     var subexists = false;
                     foreach (var p in pluginData.GetPluginList())
                     {
@@ -117,6 +120,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 param[0] = "ctrl=" + ctrl;
                                 var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
                                 if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
+                                dispname = p.GetXmlProperty("genxml/textbox/icon") + dispname;
                                 strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
                                 strOutSub += "</li>";
                                 subexists = true;

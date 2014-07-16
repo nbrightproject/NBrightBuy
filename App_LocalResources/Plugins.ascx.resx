@@ -201,4 +201,16 @@
   <data name="lblroles.Text" xml:space="preserve">
     <value>Security Roles</value>
   </data>
+  <data name="bomenuattributes.Text" xml:space="preserve">
+    <value>class='nav' id='side-menu'</value>
+  </data>
+  <data name="bosubmenuattributes.Text" xml:space="preserve">
+    <value>class='nav nav-second-level'</value>
+  </data>
+  <data name="lblgroup.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="lblicon.Text" xml:space="preserve">
+    <value>Icon html</value>
+  </data>
 </root>

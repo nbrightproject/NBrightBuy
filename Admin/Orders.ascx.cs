@@ -183,8 +183,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                     //Default orderby if not set
-                    var strOrder = " Order by ModifiedDate DESC  ";
-                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
+                    const string strOrder = " Order by ModifiedDate DESC  ";
+                    rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 0, pagenumber, pagesize, recordcount);
                     rpData.DataBind();
                     
                     if (pagesize > 0)

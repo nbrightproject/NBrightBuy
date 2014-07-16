@@ -477,10 +477,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
-                            case "iseditmode":
+                            case "isclientordermode":
                                 dataValue = "FALSE";
                                 var currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
-                                if (currentcart.IsEditMode())
+                                if (currentcart.IsClientOrderMode())
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
