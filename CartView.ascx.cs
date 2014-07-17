@@ -362,7 +362,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void SaveCart()
         {
-            _cartInfo.Save(DebugMode);
+            if (_cartInfo.EditMode == "E") // is order being edited, so return to order status after edit.
+                _cartInfo.ConvertToOrder();
+            else
+                _cartInfo.Save(DebugMode);
             if (UserId == -1)
             {
                 // no user registered so save address as cookie

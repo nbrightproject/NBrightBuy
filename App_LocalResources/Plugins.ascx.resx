@@ -162,6 +162,12 @@
   <data name="OrdersGrp.Text" xml:space="preserve">
     <value>Orders</value>
   </data>
+  <data name="settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="addressbook.Text" xml:space="preserve">
+    <value>Address Book</value>
+  </data>
   <data name="Promotions.Text" xml:space="preserve">
     <value>Promotions</value>
   </data>
@@ -214,12 +220,21 @@
     <value>&lt;span class="fa arrow"&gt;&lt;/span&gt;</value>
   </data>
   <data name="groupprefix.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-{ctrl} fa-fw"&gt;&lt;/i&gt;</value>
+    <value />
   </data>
   <data name="nameappendix.Text" xml:space="preserve">
-    <value>&lt;span class="fa arrow"&gt;&lt;/span&gt;</value>
+    <value />
   </data>
   <data name="nameprefix.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-{ctrl} fa-fw"&gt;&lt;/i&gt;</value>
+    <value />
+  </data>
+  <data name="cmdEdit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="lblicon.Hep" xml:space="preserve">
+    <value>Icon to show on menu.</value>
+  </data>
+  <data name="lblicon.Text" xml:space="preserve">
+    <value>Icon html</value>
   </data>
 </root>

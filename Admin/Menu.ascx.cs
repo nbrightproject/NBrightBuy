@@ -33,6 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// -----------------------------------------------------------------------------
     public partial class Menu : NBrightBuyAdminBase
     {
+        const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Plugins.ascx.resx";
 
         protected override void OnLoad(EventArgs e)
         {
@@ -80,14 +81,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (StoreSettings.Current.DebugMode || strOut == "")
             {
                 var pluginData = new PluginData(PortalId);
-                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Plugins.ascx.resx";
 
-                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", resxpath, Utils.GetCurrentCulture());
-                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", resxpath, Utils.GetCurrentCulture());
-                var nameprefix = DnnUtils.GetLocalizedString("nameprefix", resxpath, Utils.GetCurrentCulture());
-                var groupprefix = DnnUtils.GetLocalizedString("groupprefix", resxpath, Utils.GetCurrentCulture());
-                var nameappendix = DnnUtils.GetLocalizedString("groupappendix", resxpath, Utils.GetCurrentCulture());
-                var groupappendix = DnnUtils.GetLocalizedString("groupappendix", resxpath, Utils.GetCurrentCulture());
+                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", Resxpath, Utils.GetCurrentCulture());
+                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", Resxpath, Utils.GetCurrentCulture());
+                var nameprefix = DnnUtils.GetLocalizedString("nameprefix", Resxpath, Utils.GetCurrentCulture());
+                var groupprefix = DnnUtils.GetLocalizedString("groupprefix", Resxpath, Utils.GetCurrentCulture());
+                var nameappendix = DnnUtils.GetLocalizedString("nameappendix", Resxpath, Utils.GetCurrentCulture());
+                var groupappendix = DnnUtils.GetLocalizedString("groupappendix", Resxpath, Utils.GetCurrentCulture());
 
                 
                 //get group list (these are the sections/first level of the menu)
@@ -99,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         if (!groupList.ContainsKey(grpname))
                         {
-                            var resxname = DnnUtils.GetLocalizedString(grpname, resxpath, Utils.GetCurrentCulture());
+                            var resxname = DnnUtils.GetLocalizedString(grpname, Resxpath, Utils.GetCurrentCulture());
                             if (resxname == "") resxname = grpname;
                             resxname = groupprefix.Replace("{ctrl}", "group" + grpname.ToLower()) + resxname + groupappendix.Replace("{ctrl}", "group" + grpname.ToLower());  
                             groupList.Add(grpname, resxname);
@@ -109,6 +109,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
                 strOut = "<ul " + bomenuattributes + ">";
+
+                // do group level plugins
                 foreach (var grpname in groupList)
                 {
                     // Build the subgroup, if it doesn't exists then we don't need the parent group li section.
@@ -122,16 +124,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             var path = p.GetXmlProperty("genxml/textbox/path");
                             if (File.Exists(MapPath(path)))
                             {
-                                strOutSub += "<li>";
                                 var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                                var param = new string[3];
-                                param[0] = "ctrl=" + ctrl;
-                                var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
-                                if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
-                                dispname = p.GetXmlProperty("genxml/textbox/prefix") + dispname + p.GetXmlProperty("genxml/textbox/appendix");
-                                dispname = nameprefix.Replace("{ctrl}", ctrl) + dispname + nameappendix.Replace("{ctrl}", ctrl);
-                                strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
-                                strOutSub += "</li>";
+                                var name = p.GetXmlProperty("genxml/textbox/name");
+                                var icon = p.GetXmlProperty("genxml/textbox/icon");
+                                strOutSub += GetNameNode(name, ctrl, icon, nameprefix, nameappendix);
                                 subexists = true;
                             }
                         }
@@ -147,8 +143,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                 }
+
+                // do root level plugins
+                foreach (var p in pluginData.GetPluginList())
+                {
+                    var grp = p.GetXmlProperty("genxml/textbox/group");
+                    if (grp == "")
+                    {
+                        var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
+                        var name = p.GetXmlProperty("genxml/textbox/name");
+                        var icon = p.GetXmlProperty("genxml/textbox/icon");
+                        strOut += GetNameNode(name, ctrl, icon, nameprefix, nameappendix);                        
+                    }
+                }
+
+                // add exit button
                 strOut += "<li>";
-                strOut += "<a href='/'>" + DnnUtils.GetLocalizedString("Exit", resxpath, Utils.GetCurrentCulture()) + "</a>";
+                strOut += "<a href='/'>" + DnnUtils.GetLocalizedString("Exit", Resxpath, Utils.GetCurrentCulture()) + "</a>";
                 strOut += "</li>";
 
                 strOut += "</ul>";
@@ -157,6 +168,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
 
             return strOut;
+        }
+
+        private String GetNameNode(String name,String ctrl,String icon,String nameprefix, String nameappendix)
+        {
+            var strOutSub = "<li>";
+            var param = new string[3];
+            param[0] = "ctrl=" + ctrl;
+            var dispname = DnnUtils.GetLocalizedString(ctrl, Resxpath, Utils.GetCurrentCulture());
+            if (string.IsNullOrEmpty(dispname)) dispname = name;
+            dispname = icon + dispname;
+            dispname = nameprefix.Replace("{ctrl}", ctrl) + dispname + nameappendix.Replace("{ctrl}", ctrl);
+            strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
+            strOutSub += "</li>";
+            return strOutSub;
         }
 
         private Boolean IsInRoles(String roleCSV)

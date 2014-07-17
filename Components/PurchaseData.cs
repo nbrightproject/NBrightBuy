@@ -612,6 +612,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             PurchaseTypeCode = _purchaseInfo.TypeCode;
+            EditMode = _purchaseInfo.GetXmlProperty("genxml/carteditmode");
             UserId = _purchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
             var currentuserInfo = UserController.GetCurrentUserInfo();
             if (UserId > 0 && currentuserInfo != null && UserId != currentuserInfo.UserID) // 0 is default userid for new cart
