@@ -81,8 +81,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 // if we have a default DNN address, we don;t want to ONLY update it from here.
                 //NOTE: Email address is not part of the Profile
-                var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
-                UpdateAddress(addressInfo.XMLData, idx);                
+                var strIdx = addressInfo.GetXmlProperty("genxml/hidden/index");
+                if (Utils.IsNumeric(strIdx))
+                {
+                    var idx = Convert.ToInt32(strIdx);
+                    UpdateAddress(addressInfo.XMLData, idx);
+                }
+                else
+                {
+                    _addressList.Add(addressInfo);
+                    Save(debugMode);                    
+                }
             }
             else
             {

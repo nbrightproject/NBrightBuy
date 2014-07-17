@@ -217,6 +217,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
+            var tabId = TabId;
             var param = new string[3];
             if (_uid != "") param[0] = "uid=" + _uid;
             var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.StorageTypeClient);
@@ -228,12 +229,26 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "reorder":
+                    param[0] = "";
                     if (Utils.IsNumeric(cArg))
                     {
                         var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
                         orderData.CopyToCart(DebugMode);
+                        tabId = StoreSettings.Current.GetInt("carttab");
+                        if (tabId == 0) tabId = TabId;
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
+                    break;
+                case "editorder":
+                    param[0] = "";
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
+                        orderData.ConvertToCart(DebugMode);
+                        tabId = StoreSettings.Current.GetInt("carttab");
+                        if (tabId == 0) tabId = TabId;
+                    }
+                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
                     break;
                 case "return":
                     param[0] = "";

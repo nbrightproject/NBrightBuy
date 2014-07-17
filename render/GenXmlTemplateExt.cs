@@ -248,6 +248,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 string display = "{ON}";
                 string displayElse = "{OFF}";
                 string dataValue = "";
+                CartData currentcart;
 
                 xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
                 var xmlNod = xmlDoc.SelectSingleNode("root/tag");
@@ -479,8 +480,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "isclientordermode":
                                 dataValue = "FALSE";
-                                var currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
+                                currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
                                 if (currentcart.IsClientOrderMode())
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "carteditmode":
+                                dataValue = "FALSE";
+                                currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
+                                var editmode = currentcart.GetInfo().GetXmlProperty("genxml/carteditmode");
+                                if (editmode == testValue)
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";

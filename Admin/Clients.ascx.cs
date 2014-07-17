@@ -267,6 +267,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var cart = new CartData(PortalId, StoreSettings.Current.StorageTypeClient);
                         cart.UserId = Convert.ToInt32(cArg);
+                        cart.EditMode = "C";
                         cart.Save();
                         tabId = StoreSettings.Current.GetInt("productlisttab");
                         if (tabId==0) tabId = TabId;

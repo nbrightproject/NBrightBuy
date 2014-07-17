@@ -81,6 +81,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var pluginData = new PluginData(PortalId);
                 const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Plugins.ascx.resx";
+
+                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", resxpath, Utils.GetCurrentCulture());
+                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", resxpath, Utils.GetCurrentCulture());
+                var nameprefix = DnnUtils.GetLocalizedString("nameprefix", resxpath, Utils.GetCurrentCulture());
+                var groupprefix = DnnUtils.GetLocalizedString("groupprefix", resxpath, Utils.GetCurrentCulture());
+                var nameappendix = DnnUtils.GetLocalizedString("groupappendix", resxpath, Utils.GetCurrentCulture());
+                var groupappendix = DnnUtils.GetLocalizedString("groupappendix", resxpath, Utils.GetCurrentCulture());
+
+                
                 //get group list (these are the sections/first level of the menu)
                 var groupList = new Dictionary<String, String>();
                 foreach (var p in pluginData.GetPluginList())
@@ -92,13 +101,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         {
                             var resxname = DnnUtils.GetLocalizedString(grpname, resxpath, Utils.GetCurrentCulture());
                             if (resxname == "") resxname = grpname;
+                            resxname = groupprefix.Replace("{ctrl}", "group" + grpname.ToLower()) + resxname + groupappendix.Replace("{ctrl}", "group" + grpname.ToLower());  
                             groupList.Add(grpname, resxname);
                         }
                     }
                 }
 
-                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", resxpath, Utils.GetCurrentCulture());
-                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", resxpath, Utils.GetCurrentCulture());
 
                 strOut = "<ul " + bomenuattributes + ">";
                 foreach (var grpname in groupList)
@@ -120,7 +128,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 param[0] = "ctrl=" + ctrl;
                                 var dispname = DnnUtils.GetLocalizedString(ctrl, resxpath, Utils.GetCurrentCulture());
                                 if (string.IsNullOrEmpty(dispname)) dispname = p.GetXmlProperty("genxml/textbox/name");
-                                dispname = p.GetXmlProperty("genxml/textbox/icon") + dispname;
+                                dispname = p.GetXmlProperty("genxml/textbox/prefix") + dispname + p.GetXmlProperty("genxml/textbox/appendix");
+                                dispname = nameprefix.Replace("{ctrl}", ctrl) + dispname + nameappendix.Replace("{ctrl}", ctrl);
                                 strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
                                 strOutSub += "</li>";
                                 subexists = true;
@@ -132,7 +141,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (subexists)
                     {
                         strOut += "<li>";
-                        strOut += grpname.Value;
+                        strOut += "<a href='#'>" + grpname.Value + "</a>";
                         strOut += strOutSub;
                         strOut += "</li>";                        
                     }

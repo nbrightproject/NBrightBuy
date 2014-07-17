@@ -9,8 +9,16 @@
     </div>
 
     [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
-<div class="debug">Order being edited for client</div>
-[<tag type="endtestof"  />]
+    [<tag type='if' function='carteditmode' testvalue="C" display='{ON}' />]
+        <div class="debug">Order being created for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type='if' function='carteditmode' testvalue="R" display='{ON}' />]
+        <div class="debug">Order being re-ordered for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type='if' function='carteditmode' testvalue="E" display='{ON}' />]
+        <div class="debug">Order being edited for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type="endtestof"  />]
 
 <div class="formrow">
 <table cellpadding="6" style="width:100%">

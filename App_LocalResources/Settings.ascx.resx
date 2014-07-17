@@ -144,4 +144,10 @@
   <data name="adminemail.Text" xml:space="preserve">
     <value>Admin Email</value>
   </data>
+  <data name="carttab.Help" xml:space="preserve">
+    <value>Used to redirect user/manager to the cart page when certain actions are done.</value>
+  </data>
+  <data name="carttab.Text" xml:space="preserve">
+    <value>Cart Page</value>
+  </data>
 </root>

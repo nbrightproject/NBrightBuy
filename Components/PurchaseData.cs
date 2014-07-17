@@ -27,6 +27,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int PortalId;
 
         /// <summary>
+        /// EditMode is a flag to indicate the update process of the cart/order R=Re-order, C=Create New Order for CLient, E=Edit order for client, {Empty}=Normal front office cart
+        /// </summary>
+        public String EditMode;
+
+        /// <summary>
         /// Save Purchase record
         /// </summary>
         /// <param name="copyrecord">Copy this data as a new record in the DB with a new id</param>
@@ -48,6 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _purchaseInfo.PortalId = PortalId;
             _purchaseInfo.ModuleId = -1;
             _purchaseInfo.TypeCode = PurchaseTypeCode;
+            _purchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
             if (UserId == -1) UserId = UserController.GetCurrentUserInfo().UserID;
             _purchaseInfo.UserId = UserId;
             _entryId = modCtrl.Update(_purchaseInfo);
@@ -555,7 +561,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
-        /// Get the IsEditMode (If the cart is being edited/created by a manager then this flag is set to true.)
+        /// Get the IsClientOrderMode (If the cart is being edited/created by a manager then this flag is set to true.)
         /// </summary>
         public Boolean IsClientOrderMode()
         {
@@ -599,14 +605,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 _purchaseInfo = new NBrightInfo { XMLData = "<genxml><items></items></genxml>" };
                 _purchaseInfo.TypeCode = PurchaseTypeCode;
+                if (entryId == -1)
+                {
+                    _purchaseInfo.UserId = UserController.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
+                    EditMode = "";
+                }
             }
             PurchaseTypeCode = _purchaseInfo.TypeCode;
             UserId = _purchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
             var currentuserInfo = UserController.GetCurrentUserInfo();
             if (UserId > 0 && currentuserInfo != null && UserId != currentuserInfo.UserID) // 0 is default userid for new cart
-                _purchaseInfo.SetXmlProperty("genxml/clientmode", "True", TypeCode.String, false);                
+            {
+                _purchaseInfo.SetXmlProperty("genxml/clientmode", "True", TypeCode.String, false);
+                _purchaseInfo.SetXmlProperty("genxml/clientdisplayname", currentuserInfo.DisplayName);
+            }
             else
-                _purchaseInfo.SetXmlProperty("genxml/clientmode", "False", TypeCode.String, false);                
+            {
+                _purchaseInfo.SetXmlProperty("genxml/clientmode", "False", TypeCode.String, false);
+                _purchaseInfo.SetXmlProperty("genxml/clientdisplayname", "");
+            }
+
 
             //build item list
             _itemList = GetCartItemList();

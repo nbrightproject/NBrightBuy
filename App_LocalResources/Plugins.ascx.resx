@@ -148,10 +148,10 @@
     <value>Help</value>
   </data>
   <data name="lblname.Help" xml:space="preserve">
-    <value>Friendly Name for the Plugin. (used as default name on menu)</value>
+    <value>Friendly Name for the Plugin. (used as default name on menu if no resx entry in plugins.ascx.resx)</value>
   </data>
   <data name="lblname.Text" xml:space="preserve">
-    <value>Name</value>
+    <value>Default Name</value>
   </data>
   <data name="lblpath.Help" xml:space="preserve">
     <value>Relative path to the ascx control of the plugin.</value>
@@ -210,7 +210,16 @@
   <data name="lblgroup.Text" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="lblicon.Text" xml:space="preserve">
-    <value>Icon html</value>
+  <data name="groupappendix.Text" xml:space="preserve">
+    <value>&lt;span class="fa arrow"&gt;&lt;/span&gt;</value>
+  </data>
+  <data name="groupprefix.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-{ctrl} fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="nameappendix.Text" xml:space="preserve">
+    <value>&lt;span class="fa arrow"&gt;&lt;/span&gt;</value>
+  </data>
+  <data name="nameprefix.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-{ctrl} fa-fw"&gt;&lt;/i&gt;</value>
   </data>
 </root>
