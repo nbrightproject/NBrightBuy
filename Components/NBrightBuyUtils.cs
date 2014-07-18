@@ -404,13 +404,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var urlmsg = Utils.RequestQueryStringParam(request, "msg");
             if (urlmsg != "")
             {
-                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.resx";
                 var l = new Literal();
                 var msg = DnnUtils.GetLocalizedString(urlmsg, resxpath, Utils.GetCurrentCulture());
-                var level = "ok";
-                if (urlmsg.StartsWith("fail")) level = "fail";
-                if (urlmsg.StartsWith("warning")) level = "warning";
-                if (urlmsg.StartsWith("error")) level = "error";
+                var level = "_ok";
+                if (urlmsg.EndsWith(NotifyCode._fail.ToString())) level = NotifyCode._fail.ToString();
+                if (urlmsg.EndsWith(NotifyCode._warning.ToString())) level = NotifyCode._warning.ToString();
+                if (urlmsg.EndsWith(NotifyCode._error.ToString())) level = NotifyCode._error.ToString();
                 var msgtempl = DnnUtils.GetLocalizedString("notifytemplate" + level, resxpath, Utils.GetCurrentCulture());
                 msgtempl = msgtempl.Replace("{message}", msg);
                 l.Text = msgtempl;
@@ -418,11 +418,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static void SendEmail(String toEmail, String templateName, ModSettings modSettings, NBrightInfo dataObj,String emailsubject = "", String fromEmail = "" )
+        public static void SendEmailToManager(String templateName, ModSettings modSettings, NBrightInfo dataObj, String emailsubject = "", String fromEmail = "")
+        {
+            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, modSettings, dataObj, emailsubject, fromEmail);
+        }
+
+        public static void SendEmail(String toEmail, String templateName, ModSettings modSettings, NBrightInfo dataObj,String NotifyRef = "", String fromEmail = "" )
         {
             var emaillist = toEmail;
             if (emaillist != "")
             {
+                var emailsubject = "";
+                if (NotifyRef!= "")
+                {
+                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.resx";
+                    emailsubject = DnnUtils.GetLocalizedString(NotifyRef + "_emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
+                    if (emailsubject == null) emailsubject = "";                    
+                }
+
                 var objCtrl = new NBrightBuyController();
                 var emailTempl = objCtrl.GetTemplateData(modSettings, templateName, Utils.GetCurrentCulture(),true);
                 var emailbody = GenXmlFunctions.RenderRepeater(dataObj, emailTempl);

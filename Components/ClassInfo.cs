@@ -57,4 +57,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     public enum DataStorageType { Cookie,SessionMemory,Database };
 
+    public enum NotifyCode { _ok,_fail,_warning,_error};
+
 }

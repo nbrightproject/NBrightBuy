@@ -150,4 +150,10 @@
   <data name="carttab.Text" xml:space="preserve">
     <value>Cart Page</value>
   </data>
+  <data name="manageremail.Help" xml:space="preserve">
+    <value>CSV list of manager emails.</value>
+  </data>
+  <data name="manageremail.Text" xml:space="preserve">
+    <value>Manager Email</value>
+  </data>
 </root>

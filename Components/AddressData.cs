@@ -19,7 +19,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class AddressData
     {
         private List<NBrightInfo> _addressList;
-        private UserData _uData;
+        public UserData UserData;
 
         public AddressData()
         {
@@ -37,7 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         private void Save(Boolean debugMode = false)
         {
-            if (_uData.Exists)
+            if (UserData.Exists)
             {
                 //save cart
                 var strXML = "<address>";
@@ -46,9 +46,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     strXML += info.XMLData;
                 }
                 strXML += "</address>";
-                _uData.Info.RemoveXmlNode("genxml/address");
-                _uData.Info.AddXmlNode(strXML, "address", "genxml");
-                _uData.Save(debugMode);
+                UserData.Info.RemoveXmlNode("genxml/address");
+                UserData.Info.AddXmlNode(strXML, "address", "genxml");
+                UserData.Save(debugMode);
 
                 Exists = true;
             }
@@ -149,9 +149,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> GetAddressList()
         {
             var rtnList = new List<NBrightInfo>();
-            if (_uData.Exists)
+            if (UserData.Exists)
             {
-                var xmlNodeList = _uData.Info.XMLDoc.SelectNodes("genxml/address/*");
+                var xmlNodeList = UserData.Info.XMLDoc.SelectNodes("genxml/address/*");
                 if (xmlNodeList != null)
                 {
                     foreach (XmlNode carNod in xmlNodeList)
@@ -180,9 +180,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetDefaultAddress()
         {
             NBrightInfo aInfo = null; 
-            if (_uData.Exists)
+            if (UserData.Exists)
             {
-                var xmlNodeList = _uData.Info.XMLDoc.SelectNodes("genxml/address/*[./hidden/default='True']");
+                var xmlNodeList = UserData.Info.XMLDoc.SelectNodes("genxml/address/*[./hidden/default='True']");
                 if (xmlNodeList != null && xmlNodeList.Count > 0)
                 {
                     aInfo = new NBrightInfo { XMLData = xmlNodeList[0].OuterXml };
@@ -230,8 +230,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (defaultAddr.GetXmlProperty("genxml/hidden/default") == "True")
             {
                 var flag = false;
-                var prop1 = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
-                var prop2 = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                var prop1 = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
+                var prop2 = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
                 foreach (var p in prop1)
                 {
                     var n = defaultAddr.XMLDoc.SelectSingleNode("genxml/textbox/" + p.Key.ToLower());
@@ -241,22 +241,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         flag = true;
                     }
                 }
-                if (flag) DnnUtils.SetUserProfileProperties(_uData.Info.UserId.ToString(""), prop2);
+                if (flag) DnnUtils.SetUserProfileProperties(UserData.Info.UserId.ToString(""), prop2);
             }
         }
 
         private void PopulateData(String userId)
         {
             Exists = false;
-            _uData = new UserData(userId);
+            UserData = new UserData(userId);
             _addressList = GetAddressList();
             //if we have no address create a default one from DNN profile
-            if (GetDefaultAddress() == null && _uData.Exists)
+            if (GetDefaultAddress() == null && UserData.Exists)
             {
                 var newDefault = new NBrightInfo(true);
                 newDefault.AddSingleNode("default", "True", "genxml/hidden");
                 newDefault.SetXmlProperty("genxml/hidden/index", _addressList.Count.ToString(""));
-                var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                var prop = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
                 foreach (var p in prop)
                 {
                     newDefault.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
@@ -275,7 +275,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var da = GetDefaultAddress();
             if (da != null)
             {
-                var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                var prop = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
                 foreach (var p in prop)
                 {
                     da.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);

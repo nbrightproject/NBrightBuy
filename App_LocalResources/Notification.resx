@@ -117,25 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="notifytemplateerror.Text" xml:space="preserve">
+  <data name="addressbookupdated_ok.Text" xml:space="preserve">
+    <value>Address Update Successful</value>
+  </data>
+  <data name="notifytemplate_error.Text" xml:space="preserve">
     <value>&lt;div class="nbsnotifyerror"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="notifytemplatefail.Text" xml:space="preserve">
+  <data name="notifytemplate_fail.Text" xml:space="preserve">
     <value>&lt;div class="nbsnotifyfail"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="notifytemplateok.Text" xml:space="preserve">
+  <data name="notifytemplate_ok.Text" xml:space="preserve">
     <value>&lt;div class="nbsnotifyok"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="notifytemplatewarning.Text" xml:space="preserve">
+  <data name="notifytemplate_warning.Text" xml:space="preserve">
     <value>&lt;div class="nbsnotifywarning"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="okprofileclientrole.Text" xml:space="preserve">
+  <data name="profileupdated_clientrole.Text" xml:space="preserve">
     <value>Your details have been saved, you will recieve an email when your account has been validated and you are able to access the store.</value>
   </data>
-  <data name="okprofileupdated.Text" xml:space="preserve">
+  <data name="profileupdated_emailsubject.Text" xml:space="preserve">
+    <value>Profile Update</value>
+  </data>
+  <data name="profileupdated_ok.Text" xml:space="preserve">
     <value>Your profie has been updated.</value>
   </data>
-  <data name="okupdated.Text" xml:space="preserve">
+  <data name="updated_ok.Text" xml:space="preserve">
     <value>Update Successful</value>
   </data>
 </root>

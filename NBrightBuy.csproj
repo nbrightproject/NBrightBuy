@@ -435,7 +435,7 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.resx" />
     <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />

@@ -153,4 +153,19 @@
   <data name="lblinputform.Text" xml:space="preserve">
     <value>Input form Template : </value>
   </data>
+  <data name="emailmanageropt.data" xml:space="preserve">
+    <value>On Default Address Change Only;On ALL Address Changes</value>
+  </data>
+  <data name="lblemailmanager.Help" xml:space="preserve">
+    <value>Email Manager on address change</value>
+  </data>
+  <data name="lblemailmanager.Text" xml:space="preserve">
+    <value>Email Manager : </value>
+  </data>
+  <data name="lblemailtemplate.Help" xml:space="preserve">
+    <value>Email to be sent when an address is updated.</value>
+  </data>
+  <data name="lblemailtemplate.Text" xml:space="preserve">
+    <value>Email Template : </value>
+  </data>
 </root>

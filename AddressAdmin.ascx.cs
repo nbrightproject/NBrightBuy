@@ -46,6 +46,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _entryid = "";
         private String _tabid = "";
         private AddressData _addressData;
+        private const string NotifyRef = "addressbookupdated";
 
         #region Event Handlers
 
@@ -161,6 +162,27 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 case "saveaddress":
                     _addressData.AddAddress(rpAddr);
+                    var addrid = Utils.RequestParam(Context, "addressid");
+                    if (Utils.IsNumeric(addrid) && ModSettings.Get("emailmanager") == "True")
+                    {
+                        var ad = _addressData.GetAddress(Convert.ToInt32(addrid));
+                        if (ad != null)
+                        {
+                            var emailtemplate = ModSettings.Get("emailtemplate");
+                            if (ModSettings.Get("emailmanageropt") == "2")
+                            {
+                                NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, ad, NotifyRef);
+                            }
+                            else
+                            {
+                                if (ad.GetXmlPropertyBool("genxml/hidden/default"))
+                                {
+                                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, ad, NotifyRef);
+                                }
+                            }
+                        }
+                    }
+                    param[0] = "msg=" + NotifyRef + NotifyCode._ok;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deleteaddress":

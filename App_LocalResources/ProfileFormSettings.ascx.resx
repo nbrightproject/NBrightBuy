@@ -132,12 +132,6 @@
   <data name="lblinputform.Text" xml:space="preserve">
     <value>Input form Template : </value>
   </data>
-  <data name="lblemaillist.Help" xml:space="preserve">
-    <value>CSV list of emails to be notified of address change.</value>
-  </data>
-  <data name="lblemaillist.Text" xml:space="preserve">
-    <value>Emails :</value>
-  </data>
   <data name="lblemailtemplate.Help" xml:space="preserve">
     <value>Email to be sent when a profile is updated.</value>
   </data>
@@ -146,12 +140,6 @@
   </data>
   <data name="emailsubject.Text" xml:space="preserve">
     <value>User Profile Update</value>
-  </data>
-  <data name="lblemailfrom.Help" xml:space="preserve">
-    <value>Email address of sender, if empty the store email from default address will be used.</value>
-  </data>
-  <data name="lblemailfrom.Text" xml:space="preserve">
-    <value>Email From : </value>
   </data>
   <data name="lblclientrole.Help" xml:space="preserve">
     <value>Users will be given a message that they must wait for "Client" role security level before the store is accessible.  </value>

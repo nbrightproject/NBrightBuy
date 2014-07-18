@@ -38,7 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String _templinp = "";
         private ProfileData _profileData;
-        const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/ProfileFormSettings.ascx.resx";
+        private const string NotifyRef = "profileupdated";
 
         #region Event Handlers
 
@@ -117,15 +117,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     _profileData.UpdateProfile(rpInp, DebugMode);
                     var addr = new AddressData(); //this will update the default profile addres int he addressbook.
 
-                    var emaillist = ModSettings.Get("emaillist");
                     var emailtemplate = ModSettings.Get("emailtemplate");
-                    var emailfrom = ModSettings.Get("emailfrom");
-                    var emailsubject = DnnUtils.GetLocalizedString("emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
-                    if (emailsubject == null) emailsubject = "";
-                    NBrightBuyUtils.SendEmail(emaillist, emailtemplate, ModSettings, _profileData.GetProfile(), emailsubject, emailfrom);
+                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, _profileData.GetProfile(), NotifyRef);
 
-                    param[0] = "msg=okprofileupdated";
-                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=okprofileclientrole";
+                    param[0] = "msg=" + NotifyRef + NotifyCode._ok;
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=" + NotifyRef + "_clientrole";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

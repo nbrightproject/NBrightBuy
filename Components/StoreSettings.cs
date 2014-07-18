@@ -52,6 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             StorageTypeAdmin = Get("storagetypeadmin");
             StorageTypeClient = Get("storagetypeclient");
             AdminEmail = Get("adminemail");
+            ManagerEmail = Get("manageremail");
         }
 
         #endregion
@@ -100,6 +101,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String StorageTypeClient { get; private set; }
         public String StorageTypeAdmin { get; private set; }
         public String AdminEmail { get; private set; }
+        public String ManagerEmail { get; private set; }
         public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }
