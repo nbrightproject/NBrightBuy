@@ -115,6 +115,8 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 case "saveprofile":
                     _profileData.UpdateProfile(rpInp,DebugMode);
+                    var addr = new AddressData(); //this will update the default profile addres int he addressbook.
+
                     var emaillist = _templinp = ModSettings.Get("emaillist");
                     if (emaillist != "")
                     {
@@ -130,11 +132,12 @@ namespace Nevoweb.DNN.NBrightBuy
                         {
                             if (!string.IsNullOrEmpty(email) && Utils.IsEmail(emailfrom))
                             {
-                                DotNetNuke.Services.Mail.Mail.SendMail(email, emailfrom, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
+                                DotNetNuke.Services.Mail.Mail.SendMail(emailfrom, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
                             }
                         }
                     }
-
+                    param[0] = "msg=okprofileupdated";
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=okprofileclientrole";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

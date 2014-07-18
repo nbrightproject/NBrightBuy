@@ -347,8 +347,6 @@
     <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
-    <Content Include="Themes\Cygnus\css\jquery.metisMenu.css" />
-    <Content Include="Themes\Cygnus\css\jquery.navgoco.css" />
     <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
     <Content Include="Themes\Cygnus\Default\addressadminfooter.html" />
     <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
@@ -437,6 +435,7 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />

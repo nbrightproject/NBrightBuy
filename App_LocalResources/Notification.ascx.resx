@@ -117,46 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Profile Form Settings</value>
+  <data name="notifytemplateerror.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotifyerror"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="lbltheme.Help" xml:space="preserve">
-    <value>Name of the theme to use for this cart list.</value>
+  <data name="notifytemplatefail.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotifyfail"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="lbltheme.Text" xml:space="preserve">
-    <value>Theme : </value>
+  <data name="notifytemplateok.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotifyok"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="lblinputform.Help" xml:space="preserve">
-    <value>Template to be used as the data entry foem for the address.</value>
+  <data name="notifytemplatewarning.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotifywarning"&gt;{message}&lt;/div&gt;</value>
   </data>
-  <data name="lblinputform.Text" xml:space="preserve">
-    <value>Input form Template : </value>
+  <data name="okprofileclientrole.Text" xml:space="preserve">
+    <value>Your details have been saved, you will recieve an email when your account has been validated and you are able to access the store.</value>
   </data>
-  <data name="lblemaillist.Help" xml:space="preserve">
-    <value>CSV list of emails to be notified of address change.</value>
+  <data name="okprofileupdated.Text" xml:space="preserve">
+    <value>Your profie has been updated.</value>
   </data>
-  <data name="lblemaillist.Text" xml:space="preserve">
-    <value>Emails :</value>
-  </data>
-  <data name="lblemailtemplate.Help" xml:space="preserve">
-    <value>Email to be sent when a profile is updated.</value>
-  </data>
-  <data name="lblemailtemplate.Text" xml:space="preserve">
-    <value>Email Template : </value>
-  </data>
-  <data name="emailsubject.Text" xml:space="preserve">
-    <value>User Profile Update</value>
-  </data>
-  <data name="lblemailfrom.Help" xml:space="preserve">
-    <value>Email address of sender, if empty the store email from default address will be used.</value>
-  </data>
-  <data name="lblemailfrom.Text" xml:space="preserve">
-    <value>Email From : </value>
-  </data>
-  <data name="lblclientrole.Help" xml:space="preserve">
-    <value>Users will be given a message that they must wait for "Client" role security level before the store is accessible.  </value>
-  </data>
-  <data name="lblclientrole.Text" xml:space="preserve">
-    <value>Activate Client Role Security : </value>
+  <data name="okupdated.Text" xml:space="preserve">
+    <value>Update Successful</value>
   </data>
 </root>

@@ -191,6 +191,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return aInfo;
         }
 
+
         #endregion
 
         #region "private functions"
@@ -254,6 +255,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var newDefault = new NBrightInfo(true);
                 newDefault.AddSingleNode("default", "True", "genxml/hidden");
+                newDefault.SetXmlProperty("genxml/hidden/index", _addressList.Count.ToString(""));
                 var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
                 foreach (var p in prop)
                 {
@@ -261,6 +263,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 _addressList.Add(newDefault);
                 Save();
+            }
+            else
+            {
+                UpdateDefaultProfileAddress(); //alway update default address to profile, to keep it in-line.
+            }
+        }
+
+        private void UpdateDefaultProfileAddress()
+        {
+            var da = GetDefaultAddress();
+            if (da != null)
+            {
+                var prop = DnnUtils.GetUserProfileProperties(_uData.Info.UserId.ToString(""));
+                foreach (var p in prop)
+                {
+                    da.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
+                }
+                AddAddress(da);
             }
         }
 

@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -397,6 +399,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return itemTempl;
         }
 
+        public static void NotfiyMessage(HttpRequest request, Control control)
+        {
+            var urlmsg = Utils.RequestQueryStringParam(request, "msg");
+            if (urlmsg != "")
+            {
+                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+                var l = new Literal();
+                var msg = DnnUtils.GetLocalizedString(urlmsg, resxpath, Utils.GetCurrentCulture());
+                var level = "ok";
+                if (urlmsg.StartsWith("fail")) level = "fail";
+                if (urlmsg.StartsWith("warning")) level = "warning";
+                if (urlmsg.StartsWith("error")) level = "error";
+                var msgtempl = DnnUtils.GetLocalizedString("notifytemplate" + level, resxpath, Utils.GetCurrentCulture());
+                msgtempl = msgtempl.Replace("{message}", msg);
+                l.Text = msgtempl;
+                control.Controls.AddAt(0, l);                
+            }
+        }
 
 
     }

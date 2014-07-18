@@ -39,7 +39,9 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
             ModCtrl = new NBrightBuyController();
             DebugMode = StoreSettings.Current.DebugMode;
-                        
+
+            NBrightBuyUtils.NotfiyMessage(Context.Request,this);
+            
 		    base.OnInit(e);
 
             // Attach events
