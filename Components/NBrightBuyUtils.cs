@@ -418,6 +418,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public static void SendEmail(String toEmail, String templateName, ModSettings modSettings, NBrightInfo dataObj,String emailsubject = "", String fromEmail = "" )
+        {
+            var emaillist = toEmail;
+            if (emaillist != "")
+            {
+                var objCtrl = new NBrightBuyController();
+                var emailTempl = objCtrl.GetTemplateData(modSettings, templateName, Utils.GetCurrentCulture(),true);
+                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, emailTempl);
+                if (fromEmail == "") fromEmail = StoreSettings.Current.AdminEmail;
+                var emailarray = emaillist.Split(',');
+                emailsubject = PortalSettings.Current.PortalName + " : " + emailsubject;
+                foreach (var email in emailarray)
+                {
+                    if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail))
+                    {
+                        DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
+                    }
+                }
+            }
+
+        }
 
     }
 

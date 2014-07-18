@@ -114,28 +114,16 @@ namespace Nevoweb.DNN.NBrightBuy
             switch (e.CommandName.ToLower())
             {
                 case "saveprofile":
-                    _profileData.UpdateProfile(rpInp,DebugMode);
+                    _profileData.UpdateProfile(rpInp, DebugMode);
                     var addr = new AddressData(); //this will update the default profile addres int he addressbook.
 
-                    var emaillist = _templinp = ModSettings.Get("emaillist");
-                    if (emaillist != "")
-                    {
-                        var emailtemplate = _templinp = ModSettings.Get("emailtemplate");
-                        var emailTempl = ModCtrl.GetTemplateData(ModSettings, emailtemplate, Utils.GetCurrentCulture(), DebugMode);
-                        var emailbody = GenXmlFunctions.RenderRepeater(_profileData.GetProfile(),emailTempl);
-                        var emailfrom = ModSettings.Get("emailfrom");
-                        if (emailfrom == "") emailfrom = StoreSettings.Current.AdminEmail;
-                        var emailsubject = DnnUtils.GetLocalizedString("emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
-                        if (emailsubject == null) emailsubject = "";
-                        var emailarray = emaillist.Split(',');
-                        foreach (var email in emailarray)
-                        {
-                            if (!string.IsNullOrEmpty(email) && Utils.IsEmail(emailfrom))
-                            {
-                                DotNetNuke.Services.Mail.Mail.SendMail(emailfrom, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
-                            }
-                        }
-                    }
+                    var emaillist = ModSettings.Get("emaillist");
+                    var emailtemplate = ModSettings.Get("emailtemplate");
+                    var emailfrom = ModSettings.Get("emailfrom");
+                    var emailsubject = DnnUtils.GetLocalizedString("emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
+                    if (emailsubject == null) emailsubject = "";
+                    NBrightBuyUtils.SendEmail(emaillist, emailtemplate, ModSettings, _profileData.GetProfile(), emailsubject, emailfrom);
+
                     param[0] = "msg=okprofileupdated";
                     if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=okprofileclientrole";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);

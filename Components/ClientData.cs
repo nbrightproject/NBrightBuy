@@ -44,7 +44,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _clientInfo;
         }
 
-        public void AddClientRole()
+        public void AddClientRole(ModSettings modSettings)
         {
             if (_userInfo != null)
             {
@@ -53,6 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var rc = new DotNetNuke.Security.Roles.RoleController();
                     var ri = rc.GetRoleByName(PortalId, "Client");
                     if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate);
+                    NBrightBuyUtils.SendEmail(_userInfo.Email, "addclientrole.html", modSettings, _clientInfo);
                 }
             }
         }
