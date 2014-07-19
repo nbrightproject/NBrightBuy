@@ -120,7 +120,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var emailtemplate = ModSettings.Get("emailtemplate");
                     NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, _profileData.GetProfile(), NotifyRef);
 
-                    param[0] = "msg=" + NotifyRef + NotifyCode._ok;
+                    param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
                     if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=" + NotifyRef + "_clientrole";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;

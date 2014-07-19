@@ -447,4 +447,19 @@
   <data name="lblcartlist.Text" xml:space="preserve">
     <value>Items in Cart</value>
   </data>
+  <data name="orderstatus.Code" xml:space="preserve">
+    <value>010,020,030,040,050,060,070,080,090,100,110</value>
+  </data>
+  <data name="orderstatus.Text" xml:space="preserve">
+    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Waiting,Shipped,Closed,Archived</value>
+  </data>
+  <data name="shippingdate.Text" xml:space="preserve">
+    <value>Shipping Date</value>
+  </data>
+  <data name="status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="trackingcode.Text" xml:space="preserve">
+    <value>Tracking Code</value>
+  </data>
 </root>

@@ -24,7 +24,13 @@
         [<tag type='valueof' resourcekey='General.Email' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email'  />]
     </div>
     <div>
+        [<tag type="valueof" resourcekey="General.trackingcode" />] : [<tag id="trackingcode" type="textbox" width="150" />]
+        [<tag type="valueof" resourcekey="General.shippingdate" />] : [<tag id="shippingdate" type="textbox" width="90" />]
+        [<tag type="valueof" resourcekey="General.status" />] : [<tag id="orderstatus" type="orderstatus" />]
+    </div>
+    <div>
         [<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" commandname="return" />] - 
+        [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" />] - 
         [<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrder" commandname="reorder" commandargument="ItemID" />] - 
         [<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" commandname="editorder" commandargument="ItemID" />] 
     </div>

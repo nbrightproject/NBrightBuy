@@ -141,7 +141,16 @@
   <data name="profileupdated_ok.Text" xml:space="preserve">
     <value>Your profie has been updated.</value>
   </data>
+  <data name="updated_error.Text" xml:space="preserve">
+    <value>Unknowm Error</value>
+  </data>
+  <data name="updated_fail.Text" xml:space="preserve">
+    <value>Update Failed</value>
+  </data>
   <data name="updated_ok.Text" xml:space="preserve">
     <value>Update Successful</value>
+  </data>
+  <data name="updated_warning.Text" xml:space="preserve">
+    <value>Unknown Warning</value>
   </data>
 </root>

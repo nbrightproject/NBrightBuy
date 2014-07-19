@@ -195,6 +195,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "cartqtytextbox":
                     CreateCartQtyTextbox(container, xmlNod);
                     return true;
+                case "orderstatus":
+                    Createorderstatusdropdown(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -2177,6 +2180,74 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
             return ""; // no stock so return empty string.
         }
+
+        #endregion
+
+        #region "orderstatus"
+
+        private void Createorderstatusdropdown(Control container, XmlNode xmlNod)
+        {
+            var ddl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null)) ddl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                ddl.ID = xmlNod.Attributes["id"].InnerText;
+            else
+                ddl.ID = "orderstatus";
+
+            ddl = (DropDownList)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+            ddl.DataBinding += OrderstatusDataBind;
+            container.Controls.Add(ddl);
+        }
+
+        private void OrderstatusDataBind(object sender, EventArgs e)
+        {
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+
+                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/General.ascx.resx";
+                    var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", Resxpath, Utils.GetCurrentCulture());
+                    var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", Resxpath, Utils.GetCurrentCulture());
+                    if (orderstatuscode != null && orderstatustext != null)
+                    {
+                        if (ddl.Attributes["blank"] != null)
+                        {
+                            orderstatuscode = "," + orderstatuscode;
+                            orderstatustext = "," + orderstatustext;
+                        }
+
+                        var aryCode = orderstatuscode.Split(',');
+                        var aryText = orderstatustext.Split(',');
+
+                        var lp = 0;
+                    foreach (var c in aryCode)
+                    {
+                        var li = new ListItem();
+                        li.Text = aryText[lp];
+                        li.Value = c;
+                        if (li.Text != "")
+                            ddl.Items.Add(li);
+                        else
+                        {
+                            if (lp == 0) ddl.Items.Add(li); // allow the first entry to be blank.
+                        }
+                        lp += 1;
+                    }
+                    if (aryCode.Length > 0) ddl.SelectedIndex = 0;
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
+        }
+
 
         #endregion
 

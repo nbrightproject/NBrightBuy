@@ -404,14 +404,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var urlmsg = Utils.RequestQueryStringParam(request, "msg");
             if (urlmsg != "")
             {
-                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.resx";
+                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
                 var l = new Literal();
                 var msg = DnnUtils.GetLocalizedString(urlmsg, resxpath, Utils.GetCurrentCulture());
-                var level = "_ok";
-                if (urlmsg.EndsWith(NotifyCode._fail.ToString())) level = NotifyCode._fail.ToString();
-                if (urlmsg.EndsWith(NotifyCode._warning.ToString())) level = NotifyCode._warning.ToString();
-                if (urlmsg.EndsWith(NotifyCode._error.ToString())) level = NotifyCode._error.ToString();
-                var msgtempl = DnnUtils.GetLocalizedString("notifytemplate" + level, resxpath, Utils.GetCurrentCulture());
+                var level = "ok";
+                if (urlmsg.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
+                if (urlmsg.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
+                if (urlmsg.EndsWith("_" + NotifyCode.error.ToString())) level = NotifyCode.error.ToString();
+                var msgtempl = DnnUtils.GetLocalizedString("notifytemplate_" + level, resxpath, Utils.GetCurrentCulture());
+                if (msgtempl == null) msgtempl = msg;
                 msgtempl = msgtempl.Replace("{message}", msg);
                 l.Text = msgtempl;
                 control.Controls.AddAt(0, l);                
@@ -431,7 +432,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var emailsubject = "";
                 if (NotifyRef!= "")
                 {
-                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.resx";
+                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
                     emailsubject = DnnUtils.GetLocalizedString(NotifyRef + "_emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
                     if (emailsubject == null) emailsubject = "";                    
                 }

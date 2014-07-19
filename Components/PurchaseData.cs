@@ -19,7 +19,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class PurchaseData
     {
         private int _entryId;
-        private NBrightInfo _purchaseInfo;
+        public NBrightInfo PurchaseInfo;
         private List<NBrightInfo> _itemList;
         private int _userId = -1;
 
@@ -45,18 +45,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strXML += info.XMLData;
             }
             strXML += "</items>";
-            _purchaseInfo.RemoveXmlNode("genxml/items");
-            _purchaseInfo.AddXmlNode(strXML, "items", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/items");
+            PurchaseInfo.AddXmlNode(strXML, "items", "genxml");
 
             var modCtrl = new NBrightBuyController();
-            _purchaseInfo.ItemID = _entryId;
-            _purchaseInfo.PortalId = PortalId;
-            _purchaseInfo.ModuleId = -1;
-            _purchaseInfo.TypeCode = PurchaseTypeCode;
-            _purchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
+            PurchaseInfo.ItemID = _entryId;
+            PurchaseInfo.PortalId = PortalId;
+            PurchaseInfo.ModuleId = -1;
+            PurchaseInfo.TypeCode = PurchaseTypeCode;
+            PurchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
             if (UserId == -1) UserId = UserController.GetCurrentUserInfo().UserID;
-            _purchaseInfo.UserId = UserId;
-            _entryId = modCtrl.Update(_purchaseInfo);
+            PurchaseInfo.UserId = UserId;
+            _entryId = modCtrl.Update(PurchaseInfo);
             return _entryId;
         }
 
@@ -194,7 +194,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (objInfo.XMLData == "") return objInfo.TextData; // if we find a validation error (xmlData removed) return message status code created in textdata.
 
                 //replace the item if it's already in the list.
-                var nodItem = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
+                var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null)
                     _itemList.Add(objInfo); //add as new item
                 else
@@ -204,7 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (qty != null && Utils.IsNumeric(qty.InnerText) && Utils.IsNumeric(strqtyId))
                     {
                         //add new qty and replace item
-                        _purchaseInfo.RemoveXmlNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
+                        PurchaseInfo.RemoveXmlNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                         _itemList = GetCartItemList();
                         var newQty = Convert.ToString(Convert.ToInt32(qty.InnerText) + Convert.ToInt32(strqtyId));
                         objInfo.SetXmlProperty("genxml/qty", newQty, TypeCode.String, false);
@@ -254,7 +254,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public NBrightInfo GetInfo()
         {
-            return _purchaseInfo;
+            return PurchaseInfo;
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> GetCartItemList()
         {
             var rtnList = new List<NBrightInfo>();
-            var xmlNodeList = _purchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
             if (xmlNodeList != null)
             {
                 foreach (XmlNode carNod in xmlNodeList)
@@ -281,8 +281,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (Interfaces.CartInterface.Instance() != null)
             {
-                _purchaseInfo = Interfaces.CartInterface.Instance().ValidateCart(_purchaseInfo);
-                if (_purchaseInfo.XMLData == "") return _purchaseInfo.TextData; // if we find a validation error (xmlData removed) return message status code created in textdata.
+                PurchaseInfo = Interfaces.CartInterface.Instance().ValidateCart(PurchaseInfo);
+                if (PurchaseInfo.XMLData == "") return PurchaseInfo.TextData; // if we find a validation error (xmlData removed) return message status code created in textdata.
             }
             return "";
         }
@@ -375,14 +375,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<billaddress>";
             strXml += info.XMLData;
             strXml += "</billaddress>";
-            _purchaseInfo.RemoveXmlNode("genxml/billaddress");
-            _purchaseInfo.AddXmlNode(strXml, "billaddress", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/billaddress");
+            PurchaseInfo.AddXmlNode(strXml, "billaddress", "genxml");
         }
 
         public NBrightInfo GetBillingAddress()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/billaddress");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/billaddress");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
@@ -403,22 +403,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<shipaddress>";
             strXml += info.XMLData;
             strXml += "</shipaddress>";
-            _purchaseInfo.RemoveXmlNode("genxml/shipaddress");
-            _purchaseInfo.AddXmlNode(strXml, "shipaddress", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/shipaddress");
+            PurchaseInfo.AddXmlNode(strXml, "shipaddress", "genxml");
             SetShippingOption("2");
         }
 
         public NBrightInfo GetShippingAddress()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/shipaddress");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/shipaddress");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
 
         public void DeleteShippingAddress()
         {
-            _purchaseInfo.RemoveXmlNode("genxml/shipaddress");
+            PurchaseInfo.RemoveXmlNode("genxml/shipaddress");
         }
 
 
@@ -438,14 +438,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<promocode>";
             strXml += info.XMLData;
             strXml += "</promocode>";
-            _purchaseInfo.RemoveXmlNode("genxml/promocode");
-            _purchaseInfo.AddXmlNode(strXml, "promocode", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/promocode");
+            PurchaseInfo.AddXmlNode(strXml, "promocode", "genxml");
         }
 
         public NBrightInfo GetPromoCode()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/promocode");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/promocode");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
@@ -466,14 +466,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<taxdata>";
             strXml += info.XMLData;
             strXml += "</taxdata>";
-            _purchaseInfo.RemoveXmlNode("genxml/taxdata");
-            _purchaseInfo.AddXmlNode(strXml, "taxdata", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/taxdata");
+            PurchaseInfo.AddXmlNode(strXml, "taxdata", "genxml");
         }
 
         public NBrightInfo GetTaxData()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/taxdata");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/taxdata");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
@@ -494,14 +494,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<extrainfo>";
             strXml += info.XMLData;
             strXml += "</extrainfo>";
-            _purchaseInfo.RemoveXmlNode("genxml/extrainfo");
-            _purchaseInfo.AddXmlNode(strXml, "extrainfo", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/extrainfo");
+            PurchaseInfo.AddXmlNode(strXml, "extrainfo", "genxml");
         }
 
         public NBrightInfo GetExtraInfo()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
@@ -522,14 +522,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<shipdata>";
             strXml += info.XMLData;
             strXml += "</shipdata>";
-            _purchaseInfo.RemoveXmlNode("genxml/shipdata");
-            _purchaseInfo.AddXmlNode(strXml, "shipdata", "genxml");
+            PurchaseInfo.RemoveXmlNode("genxml/shipdata");
+            PurchaseInfo.AddXmlNode(strXml, "shipdata", "genxml");
         }
 
         public NBrightInfo GetShipData()
         {
             var rtnInfo = new NBrightInfo();
-            var xmlNode = _purchaseInfo.XMLDoc.SelectSingleNode("genxml/shipdata");
+            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/shipdata");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
         }
@@ -539,7 +539,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public String GetShippingOption()
         {
-            return _purchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
+            return PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
         }
 
         /// <summary>
@@ -548,7 +548,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="value"> 1 = use billing, 2=shipping, 3 = collection</param>
         public void SetShippingOption(String value)
         {
-            _purchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", value, TypeCode.String, false);
+            PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", value, TypeCode.String, false);
         }
 
         /// <summary>
@@ -556,7 +556,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public Boolean IsValidated()
         {
-            if (_purchaseInfo.GetXmlProperty("genxml/isvalidated") == "True") return true;
+            if (PurchaseInfo.GetXmlProperty("genxml/isvalidated") == "True") return true;
             return false;
         }
 
@@ -565,7 +565,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public Boolean IsClientOrderMode()
         {
-            if (_purchaseInfo.GetXmlProperty("genxml/clientmode") == "True") return true;
+            if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True") return true;
             return false;
         }
 
@@ -576,15 +576,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void SetValidated(Boolean value)
         {
             if (value)
-                _purchaseInfo.SetXmlProperty("genxml/isvalidated", "True", TypeCode.String, false);
+                PurchaseInfo.SetXmlProperty("genxml/isvalidated", "True", TypeCode.String, false);
             else
-                _purchaseInfo.SetXmlProperty("genxml/isvalidated", "False", TypeCode.String, false);
+                PurchaseInfo.SetXmlProperty("genxml/isvalidated", "False", TypeCode.String, false);
         }
 
 
         public void OutputDebugFile(String fileName)
         {
-            _purchaseInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
+            PurchaseInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
         }
 
     #endregion
@@ -600,30 +600,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _entryId = entryId;
             //populate cart data
             var modCtrl = new NBrightBuyController();
-            _purchaseInfo = modCtrl.Get(Convert.ToInt32(_entryId));
-            if (_purchaseInfo == null)
+            PurchaseInfo = modCtrl.Get(Convert.ToInt32(_entryId));
+            if (PurchaseInfo == null)
             {
-                _purchaseInfo = new NBrightInfo { XMLData = "<genxml><items></items></genxml>" };
-                _purchaseInfo.TypeCode = PurchaseTypeCode;
+                PurchaseInfo = new NBrightInfo { XMLData = "<genxml><items></items></genxml>" };
+                PurchaseInfo.TypeCode = PurchaseTypeCode;
                 if (entryId == -1)
                 {
-                    _purchaseInfo.UserId = UserController.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
+                    PurchaseInfo.UserId = UserController.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
                     EditMode = "";
                 }
             }
-            PurchaseTypeCode = _purchaseInfo.TypeCode;
-            EditMode = _purchaseInfo.GetXmlProperty("genxml/carteditmode");
-            UserId = _purchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
+            PurchaseTypeCode = PurchaseInfo.TypeCode;
+            EditMode = PurchaseInfo.GetXmlProperty("genxml/carteditmode");
+            UserId = PurchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
             var currentuserInfo = UserController.GetCurrentUserInfo();
             if (UserId > 0 && currentuserInfo != null && UserId != currentuserInfo.UserID) // 0 is default userid for new cart
             {
-                _purchaseInfo.SetXmlProperty("genxml/clientmode", "True", TypeCode.String, false);
-                _purchaseInfo.SetXmlProperty("genxml/clientdisplayname", currentuserInfo.DisplayName);
+                PurchaseInfo.SetXmlProperty("genxml/clientmode", "True", TypeCode.String, false);
+                PurchaseInfo.SetXmlProperty("genxml/clientdisplayname", currentuserInfo.DisplayName);
             }
             else
             {
-                _purchaseInfo.SetXmlProperty("genxml/clientmode", "False", TypeCode.String, false);
-                _purchaseInfo.SetXmlProperty("genxml/clientdisplayname", "");
+                PurchaseInfo.SetXmlProperty("genxml/clientmode", "False", TypeCode.String, false);
+                PurchaseInfo.SetXmlProperty("genxml/clientdisplayname", "");
             }
 
 

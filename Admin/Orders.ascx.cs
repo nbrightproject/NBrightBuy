@@ -35,6 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String _entryid = "";
         private Boolean _displayentrypage = false;
         private String _uid = "";
+        private const string NotifyRef = "updated";
 
         #region Event Handlers
 
@@ -282,12 +283,35 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[1] = "ctrl=clients";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "save":
+                    param[0] = "eid=" + _entryid;
+
+                    var result = Update();
+                    param[1] = "msg=" + NotifyRef + "_" + result;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
 
         #endregion
 
+        private NotifyCode Update()
+        {
+            // we don;t have the full field set on this form, so only update the fields we know are there.
+            var trackingcode = GenXmlFunctions.GetField(rpData, "trackingcode");
+            var shippingdate = GenXmlFunctions.GetField(rpData, "shippingdate");
+            var orderstatus = GenXmlFunctions.GetField(rpData, "orderstatus");
+
+            if (!Utils.IsNumeric(_entryid)) return NotifyCode.error;
+            var ordData = new OrderData(PortalId, Convert.ToInt32(_entryid));
+            if (ordData.PurchaseInfo.ItemID == -1) return NotifyCode.fail;
+            ordData.ShippedDate = shippingdate;
+            ordData.OrderStatus = orderstatus;
+            ordData.TrackingCode = trackingcode;                      
+            ordData.Save();
+            return NotifyCode.ok;
+        }
 
         private void DisplayDataEntryRepeater(String entryId)
         {

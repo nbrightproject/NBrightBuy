@@ -182,7 +182,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             }
                         }
                     }
-                    param[0] = "msg=" + NotifyRef + NotifyCode._ok;
+                    param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deleteaddress":

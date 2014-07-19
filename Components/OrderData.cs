@@ -52,12 +52,50 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        //TODO: these need to persist to the DB
-        public bool Status { get; set; }        
-        public DateTime ShippedDate { get; set; }
-        public DateTime OrderPlacedDate { get; set; }
-        public String TrackingCode { get; set; }
-
-
+        public String OrderStatus { 
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/textbox/orderstatus");
+            } 
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/textbox/orderstatus", value);
+                PurchaseInfo.GUIDKey = value;
+            }  
+        }
+        public String ShippedDate
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/textbox/shippingdate");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", value);
+            }
+        }
+        public String OrderPlacedDate
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/textbox/orderplaceddate");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/textbox/orderplaceddate", value);
+            }
+        }
+        public String TrackingCode
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/textbox/trackingcode");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/textbox/trackingcode", value);
+            }
+        }
+        
     }
 }
