@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             set
             {
-                PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", value);
+                PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", value, TypeCode.DateTime);
             }
         }
         public String OrderPlacedDate
@@ -82,7 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             set
             {
-                PurchaseInfo.SetXmlProperty("genxml/textbox/orderplaceddate", value);
+                PurchaseInfo.SetXmlProperty("genxml/textbox/orderplaceddate", value, TypeCode.DateTime);
             }
         }
         public String TrackingCode

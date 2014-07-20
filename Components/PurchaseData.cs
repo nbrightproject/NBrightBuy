@@ -603,8 +603,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo = modCtrl.Get(Convert.ToInt32(_entryId));
             if (PurchaseInfo == null)
             {
-                PurchaseInfo = new NBrightInfo { XMLData = "<genxml><items></items></genxml>" };
+                PurchaseInfo = new NBrightInfo(true);
                 PurchaseInfo.TypeCode = PurchaseTypeCode;
+                //add items node so we can add items
+                PurchaseInfo.AddSingleNode("items","","genxml");
+                
                 if (entryId == -1)
                 {
                     PurchaseInfo.UserId = UserController.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
