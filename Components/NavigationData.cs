@@ -28,16 +28,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleKey"> </param>
         /// <param name="storageType"> Select data storgae type "SessionMemory" or "Cookie" (Default Cookie) </param>
         /// <param name="nameAppendix">specifiy Unique key for search data</param>
-        public NavigationData(int portalId, String moduleKey, String storageType = "Cookie", string nameAppendix = "")
+        public NavigationData(int portalId, String moduleKey, string nameAppendix = "")
         {
-            if (storageType != null)
-                if (storageType.ToLower() == "sessionmemory")
-                    _storageType = DataStorageType.SessionMemory;
-                else
-                    _storageType = DataStorageType.Cookie;
-            else
-                _storageType = DataStorageType.Cookie;
-
+            _storageType = StoreSettings.Current.StorageTypeClient;
             Exists = false;
             _portalId = portalId;
             _cookieName = "NBrightBuyNav" + "*" + moduleKey + nameAppendix;

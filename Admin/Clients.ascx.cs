@@ -111,7 +111,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "ClientAdmin", StoreSettings.Current.StorageTypeClient);
+                var navigationData = new NavigationData(PortalId, "ClientAdmin");
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -133,7 +133,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
-                    var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.StorageTypeClient);
+                    var navigationData = new NavigationData(PortalId, "ClientsAdmin");
                     
                     //setup paging
                     var pagesize = StoreSettings.Current.GetInt("pagesize");
@@ -194,7 +194,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "ClientsAdmin", StoreSettings.Current.StorageTypeClient);
+            var navigationData = new NavigationData(PortalId, "ClientsAdmin");
 
             switch (e.CommandName.ToLower())
             {
@@ -267,7 +267,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var tabId = TabId;
                     if (Utils.IsNumeric(cArg))
                     {
-                        var cart = new CartData(PortalId, StoreSettings.Current.StorageTypeClient);
+                        var cart = new CartData(PortalId);
                         cart.UserId = Convert.ToInt32(cArg);
                         cart.EditMode = "C";
                         cart.Save();

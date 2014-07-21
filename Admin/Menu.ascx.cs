@@ -122,7 +122,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         ctrl = rootname.Key;
                         name = rootname.Value;
                         hrefclass = "class='dropdown-toggle'";
-                        icon = DnnUtils.GetLocalizedString(ctrl + "_icon", Resxpath, Utils.GetCurrentCulture()); ;
+                        icon = DnnUtils.GetLocalizedString(ctrl + "_icon", Resxpath, Utils.GetCurrentCulture());
                         strOut += "<li class='dropdown'>";
                     }
                     else
@@ -165,7 +165,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 // add exit button
                 strOut += "<li>";
-                strOut += GetRootLinkNode("exit", "exit", "<i class='fa fa-exit'></i>", "/","");
+                strOut += GetRootLinkNode("Exit", "Exit", DnnUtils.GetLocalizedString("Exit_icon", Resxpath, Utils.GetCurrentCulture()), "/","");
                 strOut += "</li>";
 
                 strOut += "</ul>";

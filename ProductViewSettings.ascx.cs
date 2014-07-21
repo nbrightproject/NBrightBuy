@@ -88,7 +88,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
             }
             // set page size so we pick it up in the product view.
-            var navigationdata = new NavigationData(PortalId, objInfo.GetXmlProperty("genxml/textbox/modulekey"), StoreSettings.Current.StorageTypeClient);
+            var navigationdata = new NavigationData(PortalId, objInfo.GetXmlProperty("genxml/textbox/modulekey"));
             navigationdata.PageSize = objInfo.GetXmlProperty("genxml/textbox/pagesize");
             navigationdata.Save();
         }

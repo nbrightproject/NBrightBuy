@@ -313,11 +313,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         switch (xmlNod.Attributes["function"].Value.ToLower())
                         {
                             case "searchactive":
-                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey, StoreSettings.Current.StorageTypeClient);
+                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey);
                                 if (navdata2.Criteria == "") dataValue = "false"; else dataValue = "true";
                                 break;
                             case "productcount":
-                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.StorageTypeClient);
+                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey);
                                 dataValue = navdata.RecordCount;
                                 break;
                             case "price":
@@ -483,7 +483,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "isclientordermode":
                                 dataValue = "FALSE";
-                                currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
+                                currentcart = new CartData(PortalSettings.Current.PortalId);
                                 if (currentcart.IsClientOrderMode())
                                 {
                                     dataValue = "TRUE";
@@ -492,7 +492,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "carteditmode":
                                 dataValue = "FALSE";
-                                currentcart = new CartData(PortalSettings.Current.PortalId, StoreSettings.Current.StorageTypeClient);
+                                currentcart = new CartData(PortalSettings.Current.PortalId);
                                 var editmode = currentcart.GetInfo().GetXmlProperty("genxml/carteditmode");
                                 if (editmode == testValue)
                                 {
@@ -1250,7 +1250,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var catid = "";
                 if (filtermode != "")
                 {
-                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey, StoreSettings.Current.StorageTypeClient);
+                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
                     if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
                     if (Utils.IsNumeric(catid))
@@ -2269,7 +2269,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var l = (Literal)sender;
             try
             {
-                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text, StoreSettings.Current.StorageTypeClient);
+                var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text);
                 l.Text = navdata.RecordCount;
                 l.Visible = NBrightGlobal.IsVisible;
             }

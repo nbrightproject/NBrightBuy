@@ -43,7 +43,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         override protected void OnInit(EventArgs e)
         {
             _uid = Utils.RequestParam(Context, "uid");
-            EnablePaging = true; 
+            EnablePaging = true;
 
             base.OnInit(e);
 
@@ -131,7 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             catch (Exception exc) //Module failed to load
             {
                 //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "OrderAdmin", StoreSettings.Current.StorageTypeClient);
+                var navigationData = new NavigationData(PortalId, "OrderAdmin");
                 navigationData.Delete();
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
@@ -153,7 +153,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
-                    var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.StorageTypeClient);
+                    var navigationData = new NavigationData(PortalId, "AdminOrders");
 
                     //setup paging
                     var pagesize = StoreSettings.Current.GetInt("pagesize");
@@ -222,7 +222,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var tabId = TabId;
             var param = new string[3];
             if (_uid != "") param[0] = "uid=" + _uid;
-            var navigationData = new NavigationData(PortalId, "AdminOrders", StoreSettings.Current.StorageTypeClient);
+            var navigationData = new NavigationData(PortalId, "AdminOrders");
 
             switch (e.CommandName.ToLower())
             {
@@ -286,9 +286,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "save":
                     param[0] = "eid=" + _entryid;
-
                     var result = Update();
-                    param[1] = "msg=" + NotifyRef + "_" + result;
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, result);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

@@ -49,8 +49,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ThemeFolder = Get("themefolder");
 
             if (_settingDic.ContainsKey("debug.mode")) DebugMode = Convert.ToBoolean(_settingDic.ContainsKey("debug.mode"));  // set debug mmode
-            StorageTypeAdmin = Get("storagetypeadmin");
-            StorageTypeClient = Get("storagetypeclient");
+            StorageTypeClient = DataStorageType.Cookie;
+            if (Get("storagetypeclient") == "SessionMemory") StorageTypeClient = DataStorageType.SessionMemory;
+            
             AdminEmail = Get("adminemail");
             ManagerEmail = Get("manageremail");
         }
@@ -98,8 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Get Client StorageType type Cookie,SessionMemory
         /// </summary>
-        public String StorageTypeClient { get; private set; }
-        public String StorageTypeAdmin { get; private set; }
+        public DataStorageType StorageTypeClient { get; private set; }
         public String AdminEmail { get; private set; }
         public String ManagerEmail { get; private set; }
         public NBrightInfo SettingsInfo { get; private set; }

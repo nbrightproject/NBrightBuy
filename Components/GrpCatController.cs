@@ -183,7 +183,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (targetModuleKey != "")
             {
-                var navigationdata = new NavigationData(portalId, targetModuleKey, StoreSettings.Current.StorageTypeClient);
+                var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
             }
 

@@ -38,7 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseTypeCode = "CART";
             EditMode = "E";
             var cartId = base.Save();
-            var cartData = new CartData(PortalId, StoreSettings.Current.StorageTypeClient, "", cartId.ToString("")); //create the client record (cookie)
+            var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
             if (debugMode) OutputDebugFile("debug_convertedorder.xml");
         }
 
@@ -47,7 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseTypeCode = "CART";
             EditMode = "R";
             var cartId = base.Save(true);
-            var cartData = new CartData(PortalId, StoreSettings.Current.StorageTypeClient, "", cartId.ToString("")); //create the client record (cookie)
+            var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
             if (debugMode) OutputDebugFile("debug_copytocart.xml");
         }
 

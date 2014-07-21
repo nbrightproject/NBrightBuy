@@ -263,7 +263,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var page = "";
             var pagemid = "";
             var catid = "";
-            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, moduleKey,StoreSettings.Current.StorageTypeClient);
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, moduleKey);
             if (navigationdata.PageNumber != "") page = "&page=" + navigationdata.PageNumber;
             if (navigationdata.PageModuleId != "") pagemid = "&pagemid=" + navigationdata.PageModuleId;
             if (navigationdata.CategoryId != "") catid = "&catid=" + navigationdata.CategoryId;
@@ -399,23 +399,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return itemTempl;
         }
 
-        public static void NotfiyMessage(HttpRequest request, Control control)
+        public static void SetNotfiyMessage(int moduleId, String msgcode,NotifyCode result)
         {
-            var urlmsg = Utils.RequestQueryStringParam(request, "msg");
-            if (urlmsg != "")
+            if (msgcode != "")
+            {
+                var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
+                HttpContext.Current.Session[sessionkey] = msgcode + "_" + result;
+            }
+        }
+
+        public static String GetNotfiyMessage(int moduleId, Control control)
+        {
+            var msg = "";
+            var msgcode = "";
+            var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
+            if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String)HttpContext.Current.Session[sessionkey];
+            if (msgcode != "")
             {
                 const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-                var l = new Literal();
-                var msg = DnnUtils.GetLocalizedString(urlmsg, resxpath, Utils.GetCurrentCulture());
+                msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
                 var level = "ok";
-                if (urlmsg.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
-                if (urlmsg.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
-                if (urlmsg.EndsWith("_" + NotifyCode.error.ToString())) level = NotifyCode.error.ToString();
+                if (msgcode.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
+                if (msgcode.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
+                if (msgcode.EndsWith("_" + NotifyCode.error.ToString())) level = NotifyCode.error.ToString();
                 var msgtempl = DnnUtils.GetLocalizedString("notifytemplate_" + level, resxpath, Utils.GetCurrentCulture());
                 if (msgtempl == null) msgtempl = msg;
                 msgtempl = msgtempl.Replace("{message}", msg);
-                l.Text = msgtempl;
-                control.Controls.AddAt(0, l);                
+                HttpContext.Current.Session.Remove(sessionkey); 
+                return msgtempl;
+            }
+            return "";
+        }
+
+        public static void NotfiyMessage(int moduleId, Control control)
+        {
+            var msg = GetNotfiyMessage(moduleId, control);
+            if (msg != "")
+            {
+                var l = new Literal();
+                l.Text = msg;
+                control.Controls.AddAt(0, l);                                
             }
         }
 

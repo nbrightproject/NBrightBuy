@@ -27,7 +27,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 			//Remove any cache for the module, we don't want any cache in/after the BO editing.
 			NBrightBuyUtils.RemoveModCache(ModuleId);
 
-            NBrightBuyUtils.NotfiyMessage(Context.Request, this);
+            NBrightBuyUtils.NotfiyMessage(ModuleId, this);
 
 			// add required controls.
 			RpData = new Repeater();

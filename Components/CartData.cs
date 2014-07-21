@@ -20,12 +20,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private int _cartId;
         private string _cookieName;
-        private DataStorageType _storageType;
         private HttpCookie _cookie;
 
-        public CartData(int portalId, String storageType = "Cookie", string nameAppendix = "",String cartid = "")
+        public CartData(int portalId, string nameAppendix = "",String cartid = "")
         {
-
             _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" + nameAppendix;
             Exists = false;
             PortalId = portalId;
@@ -74,7 +72,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!Utils.IsNumeric(cartId))
             {
 
-                if (_storageType == DataStorageType.SessionMemory)
+                if (StoreSettings.Current.StorageTypeClient  == DataStorageType.SessionMemory)
                 {
                     if (HttpContext.Current.Session[_cookieName + "cartId"] != null) cartId = (String) HttpContext.Current.Session[_cookieName + "cartId"];
                 }
@@ -111,7 +109,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void SaveCartId()
         {
             //save cartid for client
-            if (_storageType == DataStorageType.SessionMemory)
+            if (StoreSettings.Current.StorageTypeClient == DataStorageType.SessionMemory)
             {
                 // save data to cache
                 HttpContext.Current.Session[_cookieName] = _cartId;

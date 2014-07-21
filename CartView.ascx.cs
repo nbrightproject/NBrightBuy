@@ -56,7 +56,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             base.OnInit(e);
 
-            _cartInfo = new CartData(PortalId, StoreSettings.Current.StorageTypeClient);
+            _cartInfo = new CartData(PortalId);
             _addressData = new AddressData(_cartInfo.UserId.ToString(""));
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out

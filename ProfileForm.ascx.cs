@@ -121,7 +121,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, _profileData.GetProfile(), NotifyRef);
 
                     param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
-                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True") param[0] = "msg=" + NotifyRef + "_clientrole";
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True")
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, NotifyCode.ok);
+                    else
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }

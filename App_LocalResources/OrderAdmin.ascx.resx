@@ -120,6 +120,36 @@
   <data name="cmdEditOrder.Text" xml:space="preserve">
     <value>Edit Order</value>
   </data>
+  <data name="cmdEmailAmended.confirm" xml:space="preserve">
+    <value>Send Amended Email to Client ?</value>
+  </data>
+  <data name="cmdEmailAmended.Text" xml:space="preserve">
+    <value>Send Amended Email</value>
+  </data>
+  <data name="cmdEmailReceipt.confirm" xml:space="preserve">
+    <value>Send Receipt Email to Client ?</value>
+  </data>
+  <data name="cmdEmailReceipt.Text" xml:space="preserve">
+    <value>Send Receipt Email</value>
+  </data>
+  <data name="cmdEmailShipped.confirm" xml:space="preserve">
+    <value>Send Shipped Email to Client ?</value>
+  </data>
+  <data name="cmdEmailShipped.Text" xml:space="preserve">
+    <value>Send Shipped Email</value>
+  </data>
+  <data name="cmdEmailValidated.confirm" xml:space="preserve">
+    <value>Send Validated Email to Client ?</value>
+  </data>
+  <data name="cmdEmailValidated.Text" xml:space="preserve">
+    <value>Send Validated Email</value>
+  </data>
+  <data name="cmdPrintOrder.Text" xml:space="preserve">
+    <value>Print Order</value>
+  </data>
+  <data name="cmdPrintReceipt.Text" xml:space="preserve">
+    <value>Print Receipt</value>
+  </data>
   <data name="cmdReOrder.Text" xml:space="preserve">
     <value>Re-Order</value>
   </data>
