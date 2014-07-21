@@ -302,7 +302,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // we don;t have the full field set on this form, so only update the fields we know are there.
             var trackingcode = GenXmlFunctions.GetField(rpData, "trackingcode");
             var shippingdate = GenXmlFunctions.GetField(rpData, "shippingdate");
-            shippingdate = Utils.FormatToSave(shippingdate, TypeCode.DateTime); 
             var orderstatus = GenXmlFunctions.GetField(rpData, "orderstatus");
 
             if (!Utils.IsNumeric(_entryid)) return NotifyCode.error;
