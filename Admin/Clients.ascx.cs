@@ -40,6 +40,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
+            EnablePaging = true; 
+
             base.OnInit(e);
 
             CtrlPaging.Visible = true;

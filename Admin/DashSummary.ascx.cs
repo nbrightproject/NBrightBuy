@@ -44,7 +44,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             base.OnInit(e);
 
-            CtrlPaging.Visible = false; // don't bother with paging on this module.
             try
             {
 

@@ -26,8 +26,9 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 		public string SelUserId = "";
         public string ThemeFolder = "";
 	    public ModSettings ModSettings;
-        public Boolean DisablePaging { get; set; } // disable the paging control
-        public bool FileHasBeenUploaded = false; // flag to check if file has been uploaded on any form.
+
+        public Boolean EnablePaging;
+        public Boolean FileHasBeenUploaded { get; set; }
 
         public DotNetNuke.Framework.CDefault BasePage
         {
@@ -54,7 +55,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
             #endregion
 
-            if (!DisablePaging)
+            if (EnablePaging)
             {
                 CtrlPaging = new NBrightCore.controls.PagingCtrl();
                 this.Controls.Add(CtrlPaging);
