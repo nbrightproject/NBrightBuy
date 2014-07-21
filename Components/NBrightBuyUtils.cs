@@ -410,14 +410,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String GetNotfiyMessage(int moduleId, Control control)
         {
-            var msg = "";
             var msgcode = "";
             var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
             if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String)HttpContext.Current.Session[sessionkey];
             if (msgcode != "")
             {
                 const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-                msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
+                var msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
                 var level = "ok";
                 if (msgcode.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
                 if (msgcode.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();

@@ -141,16 +141,37 @@
   <data name="profileupdated_ok.Text" xml:space="preserve">
     <value>Your profie has been updated.</value>
   </data>
-  <data name="updated_error.Text" xml:space="preserve">
+  <data name="general_error.Text" xml:space="preserve">
     <value>Unknowm Error</value>
   </data>
-  <data name="updated_fail.Text" xml:space="preserve">
-    <value>Update Failed</value>
+  <data name="general_fail.Text" xml:space="preserve">
+    <value>Operation Failed</value>
   </data>
-  <data name="updated_ok.Text" xml:space="preserve">
-    <value>Update Successful</value>
+  <data name="general_ok.Text" xml:space="preserve">
+    <value>Operation Successful</value>
   </data>
-  <data name="updated_warning.Text" xml:space="preserve">
-    <value>Unknown Warning</value>
+  <data name="general_warning.Text" xml:space="preserve">
+    <value>Operation Warning</value>
+  </data>
+  <data name="orderactionemailamended_ok.Text" xml:space="preserve">
+    <value>Order Amended Email Sent</value>
+  </data>
+  <data name="orderactionemailreceipt_ok.Text" xml:space="preserve">
+    <value>Order Receipt Email Sent</value>
+  </data>
+  <data name="orderactionemailshipped_ok.Text" xml:space="preserve">
+    <value>Order Shipped Email Sent</value>
+  </data>
+  <data name="orderactionemailvalidated_ok.Text" xml:space="preserve">
+    <value>Order Validated Email Sent</value>
+  </data>
+  <data name="orderactionprintorder_ok.Text" xml:space="preserve">
+    <value>Order Printed</value>
+  </data>
+  <data name="orderactionprintreceipt_ok.Text" xml:space="preserve">
+    <value>Receipt Printed</value>
+  </data>
+  <data name="orderactionsave_ok.Text" xml:space="preserve">
+    <value>Order update Successful</value>
   </data>
 </root>

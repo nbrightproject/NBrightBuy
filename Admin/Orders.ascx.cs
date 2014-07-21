@@ -14,6 +14,7 @@
 using System;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.UI.Skins;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -35,7 +36,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String _entryid = "";
         private Boolean _displayentrypage = false;
         private String _uid = "";
-        private const string NotifyRef = "updated";
+        private String _print = "";
+        private const string NotifyRef = "orderaction";
 
         #region Event Handlers
 
@@ -43,7 +45,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         override protected void OnInit(EventArgs e)
         {
             _uid = Utils.RequestParam(Context, "uid");
+            _print = Utils.RequestParam(Context, "print");
             EnablePaging = true;
+
+            // if we want to print a order we need to open the browser with a startup script, this points to a file previously created.
+            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printorder", "window.open('" + PortalSettings.HomeDirectory + "NBStore/temp/" + _print + "','_blank');", true);
 
             base.OnInit(e);
 
@@ -140,12 +146,27 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
+       
         private void PageLoad()
         {
 
             #region "Data Repeater"
             if (UserId > 0) // only logged in users can see data on this module.
             {
+
+                #region "Print order"
+
+                // if we have printed then reload the page without the print param, so we can edit normally, + remove the printed html file.
+                if (_print != "")
+                {
+                    var param = new string[3];
+                    param[0] = "eid=" + _entryid;
+                   // Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                }
+
+                #endregion
+
+                #region "display list and detail"
 
                 if (_displayentrypage)
                 {
@@ -198,6 +219,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                 }
+
+                #endregion
             }
 
             #endregion
@@ -223,8 +246,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var param = new string[3];
             if (_uid != "") param[0] = "uid=" + _uid;
             var navigationData = new NavigationData(PortalId, "AdminOrders");
+            var cmd = e.CommandName.ToLower();
 
-            switch (e.CommandName.ToLower())
+            switch (cmd)
             {
                 case "entrydetail":
                     param[0] = "eid=" + cArg;
@@ -287,7 +311,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "save":
                     param[0] = "eid=" + _entryid;
                     var result = Update();
-                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, result);
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, result);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "printorder":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
+                        
+                        param[0] = "eid=" + _entryid;
+                        param[1] = "print=printtest.html";
+                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);                        
+                    }
+                    param[0] = "eid=" + _entryid;
+                    //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "printreceipt":
+                    param[0] = "eid=" + _entryid;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "emailamended":
+                    param[0] = "eid=" + _entryid;
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
