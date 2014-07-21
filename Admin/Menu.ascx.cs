@@ -84,25 +84,22 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", Resxpath, Utils.GetCurrentCulture());
                 var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", Resxpath, Utils.GetCurrentCulture());
-                var nameprefix = DnnUtils.GetLocalizedString("nameprefix", Resxpath, Utils.GetCurrentCulture());
-                var groupprefix = DnnUtils.GetLocalizedString("groupprefix", Resxpath, Utils.GetCurrentCulture());
-                var nameappendix = DnnUtils.GetLocalizedString("nameappendix", Resxpath, Utils.GetCurrentCulture());
-                var groupappendix = DnnUtils.GetLocalizedString("groupappendix", Resxpath, Utils.GetCurrentCulture());
 
                 
                 //get group list (these are the sections/first level of the menu)
-                var groupList = new Dictionary<String, String>();
+                var rootList = new Dictionary<String, String>();
                 foreach (var p in pluginData.GetPluginList())
                 {
                     var grpname = p.GetXmlProperty("genxml/textbox/group");
-                    if (grpname != "" && p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
+                    if (p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
                     {
-                        if (!groupList.ContainsKey(grpname))
+                        var rootname = grpname;
+                        if (rootname == "") rootname = p.GetXmlProperty("genxml/textbox/ctrl");
+                        if (!rootList.ContainsKey(rootname))
                         {
-                            var resxname = DnnUtils.GetLocalizedString(grpname, Resxpath, Utils.GetCurrentCulture());
-                            if (resxname == "") resxname = grpname;
-                            resxname = groupprefix.Replace("{ctrl}", "group" + grpname.ToLower()) + resxname + groupappendix.Replace("{ctrl}", "group" + grpname.ToLower());  
-                            groupList.Add(grpname, resxname);
+                            var resxname = DnnUtils.GetLocalizedString(rootname, Resxpath, Utils.GetCurrentCulture());
+                            if (resxname == "") resxname = rootname;
+                            rootList.Add(rootname, resxname);
                         }
                     }
                 }
@@ -110,77 +107,93 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 strOut = "<ul " + bomenuattributes + ">";
 
-                // do group level plugins
-                foreach (var grpname in groupList)
+
+                foreach (var rootname in rootList)
                 {
-                    // Build the subgroup, if it doesn't exists then we don't need the parent group li section.
-                    var strOutSub = "<ul " + bosubmenuattributes + ">";
-                    var subexists = false;
-                    foreach (var p in pluginData.GetPluginList())
+                    var sublist = pluginData.GetSubList(rootname.Key);
+                    var href = "#";
+                    var ctrl = "";
+                    var name = "unknown";
+                    var icon = "";
+                    var hrefclass = "";
+                    if (sublist.Count > 0)
                     {
-                        var grp = p.GetXmlProperty("genxml/textbox/group");
-                        if (grpname.Key == grp && p.GetXmlPropertyBool("genxml/checkbox/hidden") == false && IsInRoles(p.GetXmlProperty("genxml/textbox/roles")))
+                        // has sub menus
+                        ctrl = rootname.Key;
+                        name = rootname.Value;
+                        hrefclass = "class='dropdown-toggle'";
+                        icon = DnnUtils.GetLocalizedString(ctrl + "_icon", Resxpath, Utils.GetCurrentCulture()); ;
+                        strOut += "<li class='dropdown'>";
+                    }
+                    else
+                    {
+                        // clickable root menu
+                        var rootp = pluginData.GetPluginByCtrl(rootname.Key);
+                        ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
+                        name = rootp.GetXmlProperty("genxml/textbox/name");
+                        icon = rootp.GetXmlProperty("genxml/textbox/icon");
+                        strOut += "<li>";
+                        var param = new string[1];
+                        param[0] = "ctrl=" + ctrl;
+                        href = Globals.NavigateURL(TabId, "", param);
+                    }
+                    strOut += GetRootLinkNode(name, ctrl, icon, href,hrefclass);
+
+                    if (sublist.Count > 0)
+                    {
+                        strOut += "<ul " + bosubmenuattributes + ">";
+                        foreach (var p in sublist)
                         {
-                            var path = p.GetXmlProperty("genxml/textbox/path");
-                            if (File.Exists(MapPath(path)))
+                            if (p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
                             {
-                                var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                                var name = p.GetXmlProperty("genxml/textbox/name");
-                                var icon = p.GetXmlProperty("genxml/textbox/icon");
-                                strOutSub += GetNameNode(name, ctrl, icon, nameprefix, nameappendix);
-                                subexists = true;
+
+                                ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
+                                name = p.GetXmlProperty("genxml/textbox/name");
+                                icon = p.GetXmlProperty("genxml/textbox/icon");
+                                var param = new string[1];
+                                param[0] = "ctrl=" + ctrl;
+                                href = Globals.NavigateURL(TabId, "", param);
+                                strOut += "<li>" + GetSubLinkNode(name, ctrl, icon, href) + "</li>";
                             }
                         }
+                        strOut += "</ul>";
                     }
-                    strOutSub += "</ul>";
-
-                    if (subexists)
-                    {
-                        strOut += "<li>";
-                        strOut += "<a href='#'>" + grpname.Value + "</a>";
-                        strOut += strOutSub;
-                        strOut += "</li>";                        
-                    }
-
+                    strOut += "</li>";
                 }
 
-                // do root level plugins
-                foreach (var p in pluginData.GetPluginList())
-                {
-                    var grp = p.GetXmlProperty("genxml/textbox/group");
-                    if (grp == "")
-                    {
-                        var ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                        var name = p.GetXmlProperty("genxml/textbox/name");
-                        var icon = p.GetXmlProperty("genxml/textbox/icon");
-                        strOut += GetNameNode(name, ctrl, icon, nameprefix, nameappendix);                        
-                    }
-                }
+
 
                 // add exit button
                 strOut += "<li>";
-                strOut += "<a href='/'>" + DnnUtils.GetLocalizedString("Exit", Resxpath, Utils.GetCurrentCulture()) + "</a>";
+                strOut += GetRootLinkNode("exit", "exit", "<i class='fa fa-exit'></i>", "/","");
                 strOut += "</li>";
 
                 strOut += "</ul>";
 
                 HttpContext.Current.Session[strCacheKey] = strOut;
+
+                if (StoreSettings.Current.DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "\\debug_menu.html",strOut);
             }
 
             return strOut;
         }
 
-        private String GetNameNode(String name,String ctrl,String icon,String nameprefix, String nameappendix)
+
+        private String GetRootLinkNode(String name,String ctrl,String icon,String href,String hrefclass)
         {
-            var strOutSub = "<li>";
-            var param = new string[3];
-            param[0] = "ctrl=" + ctrl;
+            var strOutSub = "";
             var dispname = DnnUtils.GetLocalizedString(ctrl, Resxpath, Utils.GetCurrentCulture());
             if (string.IsNullOrEmpty(dispname)) dispname = name;
-            dispname = icon + dispname;
-            dispname = nameprefix.Replace("{ctrl}", ctrl) + dispname + nameappendix.Replace("{ctrl}", ctrl);
-            strOutSub += "<a href='" + Globals.NavigateURL(TabId, "", param) + "'>" + dispname + "</a>";
-            strOutSub += "</li>";
+            strOutSub += "<a " + hrefclass + " href='" + href + "'>" + icon + "<span class='hidden-xs'>" + dispname + "</span></a>";
+            return strOutSub;
+        }
+
+        private String GetSubLinkNode(String name, String ctrl, String icon, String href)
+        {
+            var strOutSub = "";
+            var dispname = DnnUtils.GetLocalizedString(ctrl, Resxpath, Utils.GetCurrentCulture());
+            if (string.IsNullOrEmpty(dispname)) dispname = name;
+            strOutSub += "<a href='" + href + "'>" + icon + dispname + "</a>";
             return strOutSub;
         }
 

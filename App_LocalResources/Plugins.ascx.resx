@@ -126,7 +126,7 @@
   <data name="Dashboard.Text" xml:space="preserve">
     <value>Dashboard</value>
   </data>
-  <data name="Exit.Text" xml:space="preserve">
+  <data name="exit.Text" xml:space="preserve">
     <value>Exit</value>
   </data>
   <data name="lblctrl.Help" xml:space="preserve">
@@ -208,25 +208,13 @@
     <value>Security Roles</value>
   </data>
   <data name="bomenuattributes.Text" xml:space="preserve">
-    <value>class='nav' id='side-menu'</value>
+    <value>class="nav main-menu"</value>
   </data>
   <data name="bosubmenuattributes.Text" xml:space="preserve">
-    <value>class='nav nav-second-level'</value>
+    <value>class="dropdown-menu"</value>
   </data>
   <data name="lblgroup.Text" xml:space="preserve">
     <value>Group</value>
-  </data>
-  <data name="groupappendix.Text" xml:space="preserve">
-    <value>&lt;span class="fa arrow"&gt;&lt;/span&gt;</value>
-  </data>
-  <data name="groupprefix.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nameappendix.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nameprefix.Text" xml:space="preserve">
-    <value />
   </data>
   <data name="cmdEdit.Text" xml:space="preserve">
     <value>Edit</value>
@@ -236,5 +224,20 @@
   </data>
   <data name="lblicon.Text" xml:space="preserve">
     <value>Icon html</value>
+  </data>
+  <data name="Admin_icon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Catalog_icon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Dashboard_icon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="OrdersGrp_icon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Utilities_icon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
   </data>
 </root>

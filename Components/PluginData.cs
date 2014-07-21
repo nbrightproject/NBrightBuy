@@ -146,6 +146,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        public List<NBrightInfo> GetSubList(String groupname)
+        {
+            var rtnList = new List<NBrightInfo>();
+            if (groupname != "")
+            {
+                var xmlNodeList = Info.XMLDoc.SelectNodes("genxml/plugin/*[./textbox/group='" + groupname + "']");
+                if (xmlNodeList != null)
+                {
+                    foreach (XmlNode carNod in xmlNodeList)
+                    {
+                        var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                        newInfo.ItemID = rtnList.Count;
+                        rtnList.Add(newInfo);
+                    }
+                }                
+            }
+            return rtnList;
+        }
+
+        public NBrightInfo GetPluginByCtrl(String ctrlname)
+        {
+            var p = new NBrightInfo();
+            var nod = Info.XMLDoc.SelectSingleNode("genxml/plugin/*[./textbox/ctrl='"+ ctrlname + "']");
+            if (nod != null) p.XMLData = nod.OuterXml;
+            return p;
+        }
+
         public NBrightInfo GetPlugin(int index)
         {
             if (index < 0 || index >= _pluginList.Count) return null;
