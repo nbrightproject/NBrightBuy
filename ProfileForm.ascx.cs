@@ -118,7 +118,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var addr = new AddressData(); //this will update the default profile addres int he addressbook.
 
                     var emailtemplate = ModSettings.Get("emailtemplate");
-                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, _profileData.GetProfile(), NotifyRef);
+                    NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
 
                     param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
                     if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True")

@@ -14,6 +14,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private readonly Dictionary<string, string> _settingDic;
 
+        public const String ManagerRole = "Manager";
+        public const String EditorRole = "Editor";
+
         #region Constructors
         public StoreSettings()
         {

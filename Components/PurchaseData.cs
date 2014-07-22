@@ -582,10 +582,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
+        public String EmailAddress
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/textbox/emailaddress");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/textbox/emailaddress", value);
+            }
+        }
+
+
         public void OutputDebugFile(String fileName)
         {
             PurchaseInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
         }
+
+
 
     #endregion
 

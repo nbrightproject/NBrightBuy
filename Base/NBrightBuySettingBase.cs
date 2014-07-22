@@ -27,8 +27,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 			//Remove any cache for the module, we don't want any cache in/after the BO editing.
 			NBrightBuyUtils.RemoveModCache(ModuleId);
 
-            NBrightBuyUtils.NotfiyMessage(ModuleId, this);
-
 			// add required controls.
 			RpData = new Repeater();
             RpData.ItemCommand += CtrlItemCommand;
@@ -80,6 +78,15 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 		{
 			try
 			{
+                // load the notificationmessage if with have a placeholder control to display it.
+                var ctrlMsg = this.FindControl("notifymsg");
+                if (ctrlMsg != null)
+                {
+                    var msg = NBrightBuyUtils.GetNotfiyMessage(ModuleId);
+                    var l = new Literal { Text = msg };
+                    ctrlMsg.Controls.Add(l);
+                }
+
                 if (CtrlTypeCode != "")
                 {
                     // display the detail

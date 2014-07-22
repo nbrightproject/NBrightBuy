@@ -41,8 +41,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             ModCtrl = new NBrightBuyController();
             DebugMode = StoreSettings.Current.DebugMode;
 
-            NBrightBuyUtils.NotfiyMessage(ModuleId, this);
-            
 		    base.OnInit(e);
 
             // Attach events
@@ -67,6 +65,23 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 			var pInfo = ModCtrl.GetByGuidKey(PortalId, -1, "PROVIDERS", "NBrightTempalteProviders");
 			if (pInfo != null) NBrightCore.providers.GenXProviderManager.AddProvider(pInfo.XMLDoc);
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // load the notificationmessage if with have a placeholder control to display it.
+            var ctrlMsg = this.FindControl("notifymsg");
+            if (ctrlMsg != null)
+            {
+                var msg = NBrightBuyUtils.GetNotfiyMessage(ModuleId);
+                var l = new Literal {Text = msg};
+                ctrlMsg.Controls.Add(l);
+            }
+        }
+
+
+
 
         #region "Display Methods"
 

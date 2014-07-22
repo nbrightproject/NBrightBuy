@@ -37,6 +37,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private Boolean _displayentrypage = false;
         private String _uid = "";
         private String _print = "";
+        private String _printtemplate = "";
+        
         private const string NotifyRef = "orderaction";
 
         #region Event Handlers
@@ -44,26 +46,22 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
+            _entryid = Utils.RequestQueryStringParam(Context, "eid");
             _uid = Utils.RequestParam(Context, "uid");
             _print = Utils.RequestParam(Context, "print");
+            _printtemplate = Utils.RequestParam(Context, "template");
             EnablePaging = true;
 
-            // if we want to print a order we need to open the browser with a startup script, this points to a file previously created.
-            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printorder", "window.open('" + PortalSettings.HomeDirectory + "NBStore/temp/" + _print + "','_blank');", true);
-
             base.OnInit(e);
+
+            // if we want to print a order we need to open the browser with a startup script, this points to a Printview.aspx. (Must go after the ModSettings has been init.)
+            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printorder", "window.open('/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + _entryid + "&printcode=" + _print + "&template=" + _printtemplate + "&theme=" + ModSettings.Get("theme") + "','_blank');", true);
 
             CtrlPaging.Visible = true;
             CtrlPaging.UseListDisplay = true;
             try
             {
-                #region "set templates based on entry id (eid) from url"
-
-                _entryid = Utils.RequestQueryStringParam(Context, "eid");
-
                 if (_entryid != "") _displayentrypage = true;
-
-                #endregion
 
                 #region "load templates"
 
@@ -154,18 +152,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
 
-                #region "Print order"
-
-                // if we have printed then reload the page without the print param, so we can edit normally, + remove the printed html file.
-                if (_print != "")
-                {
-                    var param = new string[3];
-                    param[0] = "eid=" + _entryid;
-                   // Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                }
-
-                #endregion
-
                 #region "display list and detail"
 
                 if (_displayentrypage)
@@ -243,7 +229,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var tabId = TabId;
-            var param = new string[3];
+            var param = new string[4];
             if (_uid != "") param[0] = "uid=" + _uid;
             var navigationData = new NavigationData(PortalId, "AdminOrders");
             var cmd = e.CommandName.ToLower();
@@ -315,23 +301,38 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "printorder":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
-                        
                         param[0] = "eid=" + _entryid;
-                        param[1] = "print=printtest.html";
+                        param[1] = "print=printorder";
+                        param[2] = "template=printorder.xsl";
                         Response.Redirect(Globals.NavigateURL(TabId, "", param), true);                        
-                    }
-                    param[0] = "eid=" + _entryid;
-                    //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "printreceipt":
-                    param[0] = "eid=" + _entryid;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                        param[0] = "eid=" + _entryid;
+                        param[1] = "print=printorder";
+                        param[2] = "template=printreceipt.xsl";
+                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "emailamended":
                     param[0] = "eid=" + _entryid;
+                    SendOrderEmail(Convert.ToInt32(_entryid), "orderamendedemail.html", "orderamended_emailsubject.Text");
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "emailreceipt":
+                    param[0] = "eid=" + _entryid;
+                    SendOrderEmail(Convert.ToInt32(_entryid), "orderreceiptemail.html", "orderreceipt_emailsubject.Text");
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "emailshipped":
+                    param[0] = "eid=" + _entryid;
+                    SendOrderEmail(Convert.ToInt32(_entryid), "ordershippedemail.html", "ordershipped_emailsubject.Text");
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "emailvalidated":
+                    param[0] = "eid=" + _entryid;
+                    SendOrderEmail(Convert.ToInt32(_entryid), "ordervalidatedemail.html", "ordervalidated_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -375,6 +376,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
+        private void SendOrderEmail(int orderid, String emailtemplate,String emailsubjectresxkey)
+        {
+            var ordData = new OrderData(PortalId, orderid);
+            NBrightBuyUtils.SendEmail(ordData.EmailAddress, emailtemplate, ordData.PurchaseInfo, emailsubjectresxkey);
+        }
 
     }
 

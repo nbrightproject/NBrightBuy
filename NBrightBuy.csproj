@@ -204,6 +204,13 @@
     <Compile Include="Admin\Container.ascx.designer.cs">
       <DependentUpon>Container.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="PrintView.aspx.cs">
+      <DependentUpon>PrintView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrintView.aspx.designer.cs">
+      <DependentUpon>PrintView.aspx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProfileForm.ascx.cs">
       <DependentUpon>ProfileForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -326,6 +333,9 @@
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="PrintView.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProfileForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -347,65 +357,6 @@
     <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
-    <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
-    <Content Include="Themes\Cygnus\Default\addressadminfooter.html" />
-    <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
-    <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
-    <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
-    <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
-    <Content Include="Themes\Cygnus\Default\cartdetails.html" />
-    <Content Include="Themes\Cygnus\Default\cartextra.html" />
-    <Content Include="Themes\Cygnus\Default\cartlayout.html" />
-    <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
-    <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
-    <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
-    <Content Include="Themes\Cygnus\Default\cartpromo.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressbody.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressfooter.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressheader.html" />
-    <Content Include="Themes\Cygnus\Default\cartshipment.html" />
-    <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
-    <Content Include="Themes\Cygnus\Default\carttax.html" />
-    <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
-    <Content Include="Themes\Cygnus\Default\categorybody.html" />
-    <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />
-    <Content Include="Themes\Cygnus\Default\CategoryMenuSettings.html" />
-    <Content Include="Themes\Cygnus\Default\catmenu.html" />
-    <Content Include="Themes\Cygnus\Default\catmenubody.html" />
-    <Content Include="Themes\Cygnus\Default\catmenufooter.html" />
-    <Content Include="Themes\Cygnus\Default\catmenuheader.html" />
-    <Content Include="Themes\Cygnus\Default\cattreebody.html" />
-    <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
-    <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
-    <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
-    <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
-    <Content Include="Themes\Cygnus\Default\profileformemail.html" />
-    <Content Include="Themes\Cygnus\Default\profileforminput.html" />
-    <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
-    <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
-    <Content Include="Themes\Cygnus\Default\minicartlistheader.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetailitem.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetailitemf.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetailitemh.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetailf.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetailh.html" />
-    <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
-    <Content Include="Themes\Cygnus\Default\orderadminfooter.html" />
-    <Content Include="Themes\Cygnus\Default\orderadminheader.html" />
-    <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
-    <Content Include="Themes\Cygnus\Default\detail.html" />
-    <Content Include="Themes\Cygnus\Default\detailfooter.html" />
-    <Content Include="Themes\Cygnus\Default\detailheader.html" />
-    <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
-    <Content Include="Themes\Cygnus\Default\list.html" />
-    <Content Include="Themes\Cygnus\Default\listfooter.html" />
-    <Content Include="Themes\Cygnus\Default\listheader.html" />
-    <Content Include="Themes\Cygnus\Default\listpageheader.html" />
-    <Content Include="Themes\Cygnus\Default\modellist.html" />
-    <Content Include="Themes\Cygnus\Default\orderadminsearch.html" />
-    <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
-    <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
-    <Content Include="Themes\Cygnus\Default\relatedlist.html" />
     <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
     <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
@@ -435,7 +386,9 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
@@ -457,7 +410,9 @@
     <None Include="NBrightThumb.ashx" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Themes\Cygnus\Default\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\bin\$(TargetFileName)"

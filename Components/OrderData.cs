@@ -63,6 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.GUIDKey = value;
             }  
         }
+
         public String ShippedDate
         {
             get

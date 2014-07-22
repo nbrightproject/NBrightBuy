@@ -20,7 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
         protected override void OnLoad(EventArgs e)
         {
-            if (UserInfo.IsInRole("Editor") || UserInfo.IsInRole("Manager"))
+            if (UserInfo.IsInRole(StoreSettings.EditorRole) || UserInfo.IsInRole(StoreSettings.ManagerRole))
             {
                 base.OnLoad(e);
             }

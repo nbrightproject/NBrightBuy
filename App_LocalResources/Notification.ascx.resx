@@ -174,4 +174,16 @@
   <data name="orderactionsave_ok.Text" xml:space="preserve">
     <value>Order update Successful</value>
   </data>
+  <data name="orderamended_emailsubject.Text" xml:space="preserve">
+    <value>Order Amended</value>
+  </data>
+  <data name="orderreceipt_emailsubject.Text" xml:space="preserve">
+    <value>Order Receipt</value>
+  </data>
+  <data name="ordershipped_emailsubject.Text" xml:space="preserve">
+    <value>Order Shipped</value>
+  </data>
+  <data name="ordervalidated_emailsubject.Text" xml:space="preserve">
+    <value>Order Validated</value>
+  </data>
 </root>

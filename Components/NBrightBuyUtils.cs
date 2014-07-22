@@ -399,6 +399,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return itemTempl;
         }
 
+        /// <summary>
+        /// Set Notify Message
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="msgcode"></param>
+        /// <param name="result"></param>
         public static void SetNotfiyMessage(int moduleId, String msgcode,NotifyCode result)
         {
             if (msgcode != "")
@@ -408,7 +414,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static String GetNotfiyMessage(int moduleId, Control control)
+        public static String GetNotfiyMessage(int moduleId)
         {
             var msgcode = "";
             var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
@@ -430,38 +436,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static void NotfiyMessage(int moduleId, Control control)
+        public static void SendEmailToManager(String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
         {
-            var msg = GetNotfiyMessage(moduleId, control);
-            if (msg != "")
-            {
-                var l = new Literal();
-                l.Text = msg;
-                control.Controls.AddAt(0, l);                                
-            }
+            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail);
         }
 
-        public static void SendEmailToManager(String templateName, ModSettings modSettings, NBrightInfo dataObj, String emailsubject = "", String fromEmail = "")
-        {
-            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, modSettings, dataObj, emailsubject, fromEmail);
-        }
-
-        public static void SendEmail(String toEmail, String templateName, ModSettings modSettings, NBrightInfo dataObj,String NotifyRef = "", String fromEmail = "" )
+        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj,String emailsubjectresxkey = "", String fromEmail = "" )
         {
             var emaillist = toEmail;
             if (emaillist != "")
             {
                 var emailsubject = "";
-                if (NotifyRef!= "")
+                if (emailsubjectresxkey != "")
                 {
-                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-                    emailsubject = DnnUtils.GetLocalizedString(NotifyRef + "_emailsubject.Text", Resxpath, Utils.GetCurrentCulture());
+                    const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+                    emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, Utils.GetCurrentCulture());
                     if (emailsubject == null) emailsubject = "";                    
                 }
 
-                var objCtrl = new NBrightBuyController();
-                var emailTempl = objCtrl.GetTemplateData(modSettings, templateName, Utils.GetCurrentCulture(),true);
-                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, emailTempl);
+                var objTempl = NBrightBuyUtils.GetTemplateGetter("Cygnus");
+                var strTempl = objTempl.GetTemplateData(templateName, Utils.GetCurrentCulture());
+
+                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl);
+                if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
                 if (fromEmail == "") fromEmail = StoreSettings.Current.AdminEmail;
                 var emailarray = emaillist.Split(',');
                 emailsubject = PortalSettings.Current.PortalName + " : " + emailsubject;

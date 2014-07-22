@@ -198,6 +198,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "orderstatus":
                     Createorderstatusdropdown(container, xmlNod);
                     return true;
+                case "cartemailaddress":
+                    CreateCartEmailAddress(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -2854,6 +2857,54 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var nbInfo = new NBrightInfo();
                     nbInfo.XMLData = strXML;
                     txt.Text = nbInfo.GetXmlProperty("genxml/qty");
+                }
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
+
+        #endregion
+
+        #region "CartEmailAddress"
+
+        private void CreateCartEmailAddress(Control container, XmlNode xmlNod)
+        {
+            var txt = new TextBox { Text = "" };
+
+            txt = (TextBox)GenXmlFunctions.AssignByReflection(txt, xmlNod);
+            txt.ID = "cartemailaddress";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["text"] != null))
+            {
+                txt.Text = xmlNod.Attributes["text"].InnerXml;
+            }
+
+            txt.DataBinding += CartEmailAddressDataBinding;
+            container.Controls.Add(txt);
+        }
+
+        private void CartEmailAddressDataBinding(object sender, EventArgs e)
+        {
+            var txt = (TextBox)sender;
+            var container = (IDataItemContainer)txt.NamingContainer;
+
+            try
+            {
+                txt.Visible = NBrightGlobal.IsVisible;
+                if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
+                else
+                {
+                    var strXML = Convert.ToString(DataBinder.Eval(container.DataItem, "XMLData"));
+                    var nbInfo = new NBrightInfo();
+                    nbInfo.XMLData = strXML;
+                    txt.Text = nbInfo.GetXmlProperty("genxml/textbox/emailaddress");
+                    if (txt.Text == "")
+                    {
+                        var usr = UserController.GetCurrentUserInfo();
+                        if (usr != null && usr.UserID > 0) txt.Text = usr.Email;
+                    }
                 }
             }
             catch (Exception)

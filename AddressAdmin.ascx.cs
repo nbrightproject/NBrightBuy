@@ -171,13 +171,13 @@ namespace Nevoweb.DNN.NBrightBuy
                             var emailtemplate = ModSettings.Get("emailtemplate");
                             if (ModSettings.Get("emailmanageropt") == "2")
                             {
-                                NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, ad, NotifyRef);
+                                NBrightBuyUtils.SendEmailToManager(emailtemplate, ad, "profileupdated_emailsubject.Text");
                             }
                             else
                             {
                                 if (ad.GetXmlPropertyBool("genxml/hidden/default"))
                                 {
-                                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ModSettings, ad, NotifyRef);
+                                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ad, "profileupdated_emailsubject.Text");
                                 }
                             }
                         }

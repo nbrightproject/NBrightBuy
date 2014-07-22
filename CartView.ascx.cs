@@ -399,6 +399,7 @@ namespace Nevoweb.DNN.NBrightBuy
             _cartInfo.AddPromoCode(rpPromo);
             _cartInfo.AddTaxData(rpTax);
             _cartInfo.AddShipData(rpShip);
+            _cartInfo.EmailAddress = GenXmlFunctions.GetField(rpDetailDisplay, "cartemailaddress");
         }
 
         #endregion
