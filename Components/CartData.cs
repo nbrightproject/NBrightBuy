@@ -36,6 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save(Boolean debugMode = false)
         {
+            base.ValidateCart();
             //save cart
             _cartId = base.Save();
             if (debugMode) OutputDebugFile("debug_currentcart.xml");
