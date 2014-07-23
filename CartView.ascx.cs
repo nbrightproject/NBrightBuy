@@ -293,14 +293,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "updatecart":
-                    UpdateCartItems();
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "confirm":
-                    UpdateCartItems();
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();
@@ -308,7 +306,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "order":
                     _cartInfo.SetValidated(true);
-                    UpdateCartItems();
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();
@@ -347,13 +344,11 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 case "ship":
                     _cartInfo.AddShippingAddress(selectedAddr); ///add shipping address to cart
-                    UpdateCartItems();
                     UpdateCartInfo();
                     SaveCart();
                     break;
                 case "bill":
                     _cartInfo.AddBillingAddress(selectedAddr); ///add billing address to cart
-                    UpdateCartItems();
                     UpdateCartInfo();
                     SaveCart();
                     break;
@@ -373,18 +368,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
-
-        private void UpdateCartItems()
-        {
-            foreach (RepeaterItem i in rpData.Items)
-            {
-                var strXml = GenXmlFunctions.GetGenXml(i);
-                var cInfo = new NBrightInfo();
-                cInfo.XMLData = strXml;
-                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);                
-            }           
-        }
-
         private void UpdateCartAddresses()
         {
             //update address
@@ -394,6 +377,14 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void UpdateCartInfo()
         {
+            //update items
+            foreach (RepeaterItem i in rpData.Items)
+            {
+                var strXml = GenXmlFunctions.GetGenXml(i);
+                var cInfo = new NBrightInfo();
+                cInfo.XMLData = strXml;
+                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);
+            }
             //update data
             _cartInfo.AddExtraInfo(rpExtra);
             _cartInfo.AddPromoCode(rpPromo);

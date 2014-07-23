@@ -36,9 +36,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save(Boolean debugMode = false)
         {
-            base.ValidateCart();
+            ValidateCart();
             //save cart
-            _cartId = base.Save();
+            _cartId = base.SavePurchaseData();
             if (debugMode) OutputDebugFile("debug_currentcart.xml");
             SaveCartId();
             Exists = true;
@@ -47,10 +47,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ConvertToOrder(Boolean debugMode = false)
         {
+            ValidateCart();
             if (IsValidated())
             {
                 PurchaseTypeCode = "ORDER";
-                base.Save();
+                base.SavePurchaseData();
                 if (debugMode) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;                
             }
@@ -126,9 +127,84 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-
         #endregion
 
+        #region "cart validation and calculation"
+
+        public void ValidateCart()
+        {
+            var itemList = GetCartItemList();
+            Double totalcost = 0;
+            Double totaldealercost = 0;
+            var strXml = "<items>";
+            foreach (var info in itemList)
+            {
+                strXml += ValidateCartItem(PortalId, UserId, info).XMLData;
+                totalcost += info.GetXmlPropertyDouble("genxml/totalcost");
+                totaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
+
+            }
+            strXml += "</items>";
+            PurchaseInfo.RemoveXmlNode("genxml/items");
+            PurchaseInfo.AddXmlNode(strXml, "items", "genxml");
+            PopulateItemList();
+
+            // calculate totals
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/displaytotalcost", DisplayCost(PortalId, UserId, totalcost, totaldealercost));
+            SavePurchaseData();
+        }
+
+        private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
+        {
+            var unitcost = cartItemInfo.GetXmlPropertyDouble("genxml/unitcost");
+            var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+            var dealercost = cartItemInfo.GetXmlPropertyDouble("genxml/dealercost");
+            var totalcost = qty * unitcost;
+            var totaldealercost = qty * dealercost;
+
+            var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
+            if (optNods != null)
+            {
+                var lp = 0;
+                foreach (XmlNode nod in optNods)
+                {
+                    var optvalcostnod = nod.SelectSingleNode("option/optvalcost");
+                    if (optvalcostnod != null)
+                    {
+                        var optvalcost = optvalcostnod.InnerText;
+                        if (Utils.IsNumeric(optvalcost))
+                        {
+                            var optvaltotal = Convert.ToDouble(optvalcost) * qty;
+                            cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
+                            totalcost += optvaltotal;
+                            totaldealercost += optvaltotal;
+                        }
+                    }
+                    lp += 1;
+                }
+            }
+            cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
+            cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
+            cartItemInfo.SetXmlPropertyDouble("genxml/displaytotalcost", DisplayCost(portalId, userId, totalcost, totaldealercost));
+            cartItemInfo.SetXmlPropertyDouble("genxml/displaycost", DisplayCost(portalId, userId, unitcost, dealercost));
+
+            return cartItemInfo;
+        }
+
+        private Double DisplayCost(int portalId, int userId, Double cost, Double dealercost)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            if (userInfo != null)
+            {
+                if (userInfo.IsInRole(StoreSettings.EditorRole)) return dealercost;
+            }
+            return cost;
+        }
+
+
+        #endregion
 
     }
 }

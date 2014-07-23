@@ -354,8 +354,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (ordData.PurchaseInfo.ItemID == -1) return NotifyCode.fail;
             ordData.ShippedDate = shippingdate;
             ordData.OrderStatus = orderstatus;
-            ordData.TrackingCode = trackingcode;                      
-            ordData.Save();
+            ordData.TrackingCode = trackingcode;
+            ordData.SavePurchaseData();
             return NotifyCode.ok;
         }
 

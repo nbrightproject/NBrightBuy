@@ -36,17 +36,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="copyrecord">Copy this data as a new record in the DB with a new id</param>
         /// <returns></returns>
-        public int Save(Boolean copyrecord = false )
+        public int SavePurchaseData(Boolean copyrecord = false )
         {
             if (copyrecord) _entryId = -1;
-            var strXML = "<items>";
+            var strXml = "<items>";
             foreach (var info in _itemList)
             {
-                strXML += info.XMLData;
+                strXml += info.XMLData;
             }
-            strXML += "</items>";
+            strXml += "</items>";
             PurchaseInfo.RemoveXmlNode("genxml/items");
-            PurchaseInfo.AddXmlNode(strXML, "items", "genxml");
+            PurchaseInfo.AddXmlNode(strXml, "items", "genxml");
 
             var modCtrl = new NBrightBuyController();
             PurchaseInfo.ItemID = _entryId;
@@ -189,9 +189,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'), "genxml");
 
-                //Validate Cart
-                objInfo = ValidateCartItem(objInfo);
-                if (objInfo.XMLData == "") return objInfo.TextData; // if we find a validation error (xmlData removed) return message status code created in textdata.
 
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
@@ -228,6 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void RemoveItem(int index)
         {
             _itemList.RemoveAt(index);
+            SavePurchaseData();
         }
 
         public void UpdateItemQty(int index, int qty)
@@ -238,6 +236,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 RemoveItem(index);
             else
                 _itemList[index].SetXmlProperty("genxml/qty", itemqty.ToString(""), TypeCode.String, false);
+            SavePurchaseData();
         }
 
 
@@ -276,25 +275,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
-
-        public String ValidateCart()
-        {
-            if (Interfaces.CartInterface.Instance() != null)
-            {
-                PurchaseInfo = Interfaces.CartInterface.Instance().ValidateCart(PurchaseInfo);
-                if (PurchaseInfo.XMLData == "") return PurchaseInfo.TextData; // if we find a validation error (xmlData removed) return message status code created in textdata.
-            }
-            return "";
-        }
-
-        public NBrightInfo ValidateCartItem(NBrightInfo cartItem)
-        {
-            if (Interfaces.CartInterface.Instance() != null)
-            {
-                cartItem = Interfaces.CartInterface.Instance().ValidateCartItem(cartItem);
-            }
-            return cartItem;
-        }
 
         /// <summary>
         /// Merges data entered in the cartview into the cart item
@@ -552,7 +532,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
-        /// Get the IsValidated (A cart is validated by the cart process and can only be converted to an ORDER when it have been validated)
+        /// Get the IsValidated (A cart is validated by the cart process and can only be converted to an ORDER when it has been validated)
         /// </summary>
         public Boolean IsValidated()
         {
@@ -646,10 +626,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             //build item list
-            _itemList = GetCartItemList();
+            PopulateItemList();
+
             return Convert.ToInt32(_entryId);
         }
 
+
+        public void PopulateItemList()
+        {
+            _itemList = GetCartItemList();
+        }
 
         #endregion
 

@@ -128,7 +128,6 @@
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
     <Compile Include="Components\UserData.cs" />
-    <Compile Include="Components\Interfaces\CartInterface.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
