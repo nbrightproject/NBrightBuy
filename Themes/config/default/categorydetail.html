@@ -1,0 +1,40 @@
+<!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/nbbajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<!-- return field for ajax calls -->
+[<tag id="nbxrtn" type="hidden" />]
+[<tag id="nbxprocessing" type="hidden" />]
+[<tag id="nbxaction" type="hidden" />]
+
+<script>
+
+$(document).ready(function() { 
+
+	//get category data from server via ajax.
+	nbxonclick('select[[id*="categorylistbox"]]','getcategoryadminform','#categoryselect','get')
+
+	//we need this event to pick up the data returned and move it into the correct div as html
+    $('input[[id*=nbxrtn]]').change(function() {
+	   $('#categorydata').html($(this).val()); 
+	}); 
+
+});
+
+</script>
+
+
+<div>
+
+<div id="categoryselect" style="float:left;width:300px;">
+CATEGORY LIST
+[<tag id="categorylistbox" type="catlistbox" height="500px" />]
+</div>
+<div id="categorydata" style="float:left;">
+CATEGORY DATA
+</div>
+<div style="clear:both;"></div>
+</div>
+
+</div>
+
+

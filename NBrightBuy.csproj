@@ -60,6 +60,13 @@
     <Compile Include="Admin\AddressBook.ascx.designer.cs">
       <DependentUpon>AddressBook.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Categories.ascx.cs">
+      <DependentUpon>Categories.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Categories.ascx.designer.cs">
+      <DependentUpon>Categories.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Clients.ascx.cs">
       <DependentUpon>Clients.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -123,6 +130,7 @@
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
     <Compile Include="Components\ClientData.cs" />
+    <Compile Include="Components\CategoryData.cs" />
     <Compile Include="Components\ProfileData.cs" />
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
@@ -282,6 +290,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\AddressBook.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Categories.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\Clients.ascx">

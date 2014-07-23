@@ -89,6 +89,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "deldata":
                     break;
+                case "getcategoryadminform":
+                    strOut = GetCategoryForm(context);
+                    break;
                 case "getdata":
                     strOut = GetReturnData(context);
                     break;
@@ -139,7 +142,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
 
-        #region "private methods"
+        #region "SQL Data return"
 
         private string GetReturnData(HttpContext context)
         {
@@ -170,7 +173,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var strSql = templCtrl.GetTemplateData(settings["sqltpl"], Utils.GetCurrentCulture());
                     var xslTemp = templCtrl.GetTemplateData(settings["xsltpl"], Utils.GetCurrentCulture());
 
-                    // replace any settings tokens (This is used to place the form data inot the SQL)
+                    // replace any settings tokens (This is used to place the form data into the SQL)
                     strSql = Utils.ReplaceSettingTokens(strSql, settings);
                     strSql = Utils.ReplaceUrlTokens(strSql);
 
@@ -187,6 +190,54 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+
+        #endregion
+
+
+        #region "Category Methods"
+
+        private string GetCategoryForm(HttpContext context)
+        {
+            try
+            {
+                // get posted form adta into a NBrigthInfo class so we can take the listbox value easily
+                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+                var objInfo = new NBrightInfo();
+                objInfo.ItemID = -1;
+                objInfo.TypeCode = "AJAXDATA";
+                objInfo.XMLData = xmlData;
+                var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can egt them easy.
+
+                var strOut = "No Category ID";
+                if (settings.ContainsKey("categorylistbox"))
+                {
+
+                    var strCatid = settings["categorylistbox"];
+                    if (Utils.IsNumeric(strCatid))
+                    {
+                        var categoryId = Convert.ToInt32(strCatid);
+                        var objTempl = NBrightBuyUtils.GetTemplateGetter("Cygnus");
+
+                        // get template for non-localized fields
+                        var strTempl = objTempl.GetTemplateData("categoryajaxdata.html", Utils.GetCurrentCulture());
+                        var categoryData = new CategoryData(categoryId);
+                        strOut = GenXmlFunctions.RenderRepeater(categoryData.Info, strTempl);
+
+                        // get template for localized fields
+                        strTempl = objTempl.GetTemplateData("categoryajaxdatalang.html", Utils.GetCurrentCulture());
+                        categoryData = new CategoryData(categoryId);
+                        strOut += GenXmlFunctions.RenderRepeater(categoryData.Info, strTempl);
+                    }
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
         #endregion
 
     }

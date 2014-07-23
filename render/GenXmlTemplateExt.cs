@@ -147,6 +147,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catdropdown":
                     CreateCatDropDownList(container, xmlNod);
                     return true;
+                case "catlistbox":
+                    CreateCatListBox(container, xmlNod);
+                    return true;
                 case "catcheckboxlist":
                     CreateCatCheckBoxList(container, xmlNod);
                     return true;
@@ -1115,6 +1118,76 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void DdListDataBinding(object sender, EventArgs e)
         {
             var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+
+                var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+
+                if ((ddl.Items.FindByValue(strValue) != null))
+                {
+                    ddl.SelectedValue = strValue;
+                }
+                else
+                {
+                    var nod = GenXmlFunctions.GetGenXmLnode(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                    if ((nod.Attributes != null) && (nod.Attributes["selectedtext"] != null))
+                    {
+                        strValue = XmlConvert.DecodeName(nod.Attributes["selectedtext"].Value);
+                        if ((ddl.Items.FindByValue(strValue) != null))
+                        {
+                            ddl.SelectedValue = strValue;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
+        private void CreateCatListBox(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+                var ddl = new ListBox();
+                ddl = (ListBox)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["allowblank"] != null))
+                {
+                    var li = new ListItem();
+                    li.Text = "";
+                    li.Value = "";
+                    ddl.Items.Add(li);
+                }
+
+                var tList = GetCatList(xmlNod);
+                foreach (var tItem in tList)
+                {
+                    var li = new ListItem();
+                    li.Text = tItem.Value;
+                    li.Value = tItem.Key.ToString("");
+
+                    ddl.Items.Add(li);
+                }
+
+                ddl.DataBinding += DdListBoxDataBinding;
+                container.Controls.Add(ddl);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
+        }
+
+        private void DdListBoxDataBinding(object sender, EventArgs e)
+        {
+            var ddl = (ListBox)sender;
             var container = (IDataItemContainer)ddl.NamingContainer;
 
             try
