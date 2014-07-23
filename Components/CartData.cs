@@ -27,7 +27,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" + nameAppendix;
             Exists = false;
             PortalId = portalId;
-            _cartId = GetCartId(cartid);                
+            _cartId = GetCartId(cartid);
+            Save();
         }
 
 
@@ -134,15 +135,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void ValidateCart()
         {
             var itemList = GetCartItemList();
-            Double totalcost = 0;
-            Double totaldealercost = 0;
+            Double subtotalcost = 0;
+            Double subtotaldealercost = 0;
+            Double totaldealerbonus = 0;
+            Double totaldiscount = 0;
+            Double totaldealerdiscount = 0;
+
             var strXml = "<items>";
             foreach (var info in itemList)
             {
                 strXml += ValidateCartItem(PortalId, UserId, info).XMLData;
-                totalcost += info.GetXmlPropertyDouble("genxml/totalcost");
-                totaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
-
+                subtotalcost += info.GetXmlPropertyDouble("genxml/totalcost");
+                subtotaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
+                totaldealerbonus += info.GetXmlPropertyDouble("genxml/totaldealerbonus");
+                totaldiscount += info.GetXmlPropertyDouble("genxml/totaldiscount");
+                totaldealerdiscount += info.GetXmlPropertyDouble("genxml/totaldealerdiscount");
             }
             strXml += "</items>";
             PurchaseInfo.RemoveXmlNode("genxml/items");
@@ -150,9 +157,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulateItemList();
 
             // calculate totals
-            PurchaseInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/displaytotalcost", DisplayCost(PortalId, UserId, totalcost, totaldealercost));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
+
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount));
+
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", totaldealerbonus);
+
+
+            //add shipping
+            Double shippingcost = 0;
+            Double shippingdealercost = 0;
+            PurchaseInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
+            //add tax
+            Double taxcost = 0;
+            Double taxdealercost = 0;
+            PurchaseInfo.SetXmlPropertyDouble("genxml/taxcost", taxcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/taxdealercost", taxdealercost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtax", AppliedCost(PortalId, UserId, taxcost, taxdealercost));
+
+            //cart full total
+            var dealertotal = (subtotaldealercost + shippingdealercost + taxdealercost);
+            var total = (subtotalcost + shippingcost + taxcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
+
             SavePurchaseData();
         }
 
@@ -185,16 +220,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     lp += 1;
                 }
             }
+
             cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
             cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
-            cartItemInfo.SetXmlPropertyDouble("genxml/displaytotalcost", DisplayCost(portalId, userId, totalcost, totaldealercost));
-            cartItemInfo.SetXmlPropertyDouble("genxml/displaycost", DisplayCost(portalId, userId, unitcost, dealercost));
+            cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
+
+            //add promo
+            var discount = 0;
+            var dealerdiscount = 0;
+            var totaldiscount = discount * qty;
+            var totaldealerdiscount = dealerdiscount * qty;
+            cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
+            cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
+
+            cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totaldiscount), totaldealercost));
+            cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - discount), (dealercost - dealerdiscount)));
 
             return cartItemInfo;
         }
 
-        private Double DisplayCost(int portalId, int userId, Double cost, Double dealercost)
+        private Double AppliedCost(int portalId, int userId, Double cost, Double dealercost)
         {
+            //always return nortmal price for non-registered users
+            if (UserController.GetCurrentUserInfo().UserID == -1) return cost;
+
             var userInfo = UserController.GetUserById(portalId, userId);
             if (userInfo != null)
             {

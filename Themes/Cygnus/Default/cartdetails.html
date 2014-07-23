@@ -1,11 +1,11 @@
 <div class="checkoutdetails" style="display:none;">
     <div class="formrow">
         <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
-        Subtotal<br/>
-        Discount<br/>
-        Shipping<br/>
-        Tax<br/>
-        Total
+        Subtotal : [<tag type="valueof" xpath="genxml/appliedsubtotal" />]<br/>
+        Discount : [<tag type="valueof" xpath="genxml/applieddiscount" />]<br/>
+        Shipping : [<tag type="valueof" xpath="genxml/appliedshipping" />]<br/>
+        Tax : [<tag type="valueof" xpath="genxml/appliedtax" />]<br/>
+        Total : [<tag type="valueof" xpath="genxml/appliedtotal" />]
     </div>
 
     [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
