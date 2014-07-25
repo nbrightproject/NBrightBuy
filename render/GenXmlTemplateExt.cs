@@ -147,6 +147,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catdropdown":
                     CreateCatDropDownList(container, xmlNod);
                     return true;
+                case "categoryparentname":
+                    CreateCategoryParentName(container, xmlNod);
+                    return true;
                 case "catlistbox":
                     CreateCatListBox(container, xmlNod);
                     return true;
@@ -1218,6 +1221,45 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //do nothing
             }
         }
+
+        private void CreateCategoryParentName(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+                var l = new Literal();
+                l.DataBinding += CategoryParentNameDataBinding;
+                container.Controls.Add(l);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
+        }
+
+        private void CategoryParentNameDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+
+            try
+            {
+                l.Visible = NBrightGlobal.IsVisible;
+                l.Text = "";
+                 var strValue = GenXmlFunctions.GetGenXmlValue("ddlParentCatId", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                if (Utils.IsNumeric(strValue))
+                {
+                    var pCat = new CategoryData(Convert.ToInt32(strValue), StoreSettings.Current.EditLanguage);
+                    if (pCat.Exists) l.Text = pCat.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");                    
+                }
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
 
 
         private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">")

@@ -16,6 +16,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// </summary>
     public class XmlConnector : IHttpHandler
     {
+        private String _lang = "";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -66,6 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             // default to current thread if we have no language.
             if (lang == "") lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+            _lang = lang;
 
             #endregion
 
@@ -91,6 +93,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "getcategoryadminform":
                     strOut = GetCategoryForm(context);
+                    break;
+                case "setcategoryadminform":
+                    strOut = SetCategoryForm(context);
                     break;
                 case "getdata":
                     strOut = GetReturnData(context);
@@ -220,14 +225,14 @@ namespace Nevoweb.DNN.NBrightBuy
                         var objTempl = NBrightBuyUtils.GetTemplateGetter("Cygnus");
 
                         // get template for non-localized fields
-                        var strTempl = objTempl.GetTemplateData("categoryajaxdata.html", Utils.GetCurrentCulture());
-                        var categoryData = new CategoryData(categoryId);
+                        var strTempl = objTempl.GetTemplateData("categoryajaxdata.html", _lang);
+                        var categoryData = new CategoryData(categoryId,_lang);
                         strOut = GenXmlFunctions.RenderRepeater(categoryData.Info, strTempl);
 
                         // get template for localized fields
-                        strTempl = objTempl.GetTemplateData("categoryajaxdatalang.html", Utils.GetCurrentCulture());
-                        categoryData = new CategoryData(categoryId);
-                        strOut += GenXmlFunctions.RenderRepeater(categoryData.Info, strTempl);
+                        strTempl = objTempl.GetTemplateData("categoryajaxdatalang.html", _lang);
+                        categoryData = new CategoryData(categoryId, _lang);
+                        strOut += GenXmlFunctions.RenderRepeater(categoryData.DataLangRecord, strTempl);
                     }
                 }
 
@@ -238,6 +243,46 @@ namespace Nevoweb.DNN.NBrightBuy
                 return ex.ToString();
             }
         }
+
+        private string SetCategoryForm(HttpContext context)
+        {
+            try
+            {
+                // get posted form adta into a NBrigthInfo class so we can take the listbox value easily
+                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+                var objInfo = new NBrightInfo();
+                objInfo.ItemID = -1;
+                objInfo.TypeCode = "AJAXDATA";
+                objInfo.XMLData = xmlData;
+                var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can egt them easy.
+
+                var strOut = "No Category ID (itemid hidden field needed on input form)";
+                if (settings.ContainsKey("itemid"))
+                {
+
+                    var strItemId = settings["itemid"];
+                    if (Utils.IsNumeric(strItemId))
+                    {
+                        var itemId = Convert.ToInt32(strItemId);
+
+                        var objCtrl = new NBrightBuyController();
+                        var nbi = objCtrl.GetData(itemId);
+                        nbi.XMLData = objInfo.XMLData;
+                        objCtrl.Update(nbi);
+
+                        strOut = NBrightBuyUtils.GetResxMessage();
+                    }
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         #endregion
 
     }

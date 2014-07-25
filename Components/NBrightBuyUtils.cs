@@ -421,19 +421,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String)HttpContext.Current.Session[sessionkey];
             if (msgcode != "")
             {
-                const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-                var msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
-                var level = "ok";
-                if (msgcode.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
-                if (msgcode.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
-                if (msgcode.EndsWith("_" + NotifyCode.error.ToString())) level = NotifyCode.error.ToString();
-                var msgtempl = DnnUtils.GetLocalizedString("notifytemplate_" + level, resxpath, Utils.GetCurrentCulture());
-                if (msgtempl == null) msgtempl = msg;
-                msgtempl = msgtempl.Replace("{message}", msg);
+                var msgtempl = GetResxMessage(msgcode);
                 HttpContext.Current.Session.Remove(sessionkey); 
                 return msgtempl;
             }
             return "";
+        }
+
+        public static String GetResxMessage(String msgcode = "general_ok")
+        {
+            const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+            var msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
+            var level = "ok";
+            if (msgcode.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
+            if (msgcode.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
+            if (msgcode.EndsWith("_" + NotifyCode.error.ToString())) level = NotifyCode.error.ToString();
+            var msgtempl = DnnUtils.GetLocalizedString("notifytemplate_" + level, resxpath, Utils.GetCurrentCulture());
+            if (msgtempl == null) msgtempl = msg;
+            msgtempl = msgtempl.Replace("{message}", msg);
+            return msgtempl;
         }
 
         public static void SendEmailToManager(String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")

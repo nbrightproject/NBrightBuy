@@ -17,11 +17,13 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 {
     public class NBrightBuyAdminBase : NBrightBuyBase
 	{
+        public String EditLanguage = "";
 
         protected override void OnLoad(EventArgs e)
         {
             if (UserInfo.IsInRole(StoreSettings.EditorRole) || UserInfo.IsInRole(StoreSettings.ManagerRole))
             {
+                EditLanguage = StoreSettings.Current.EditLanguage;
                 base.OnLoad(e);
             }
             else

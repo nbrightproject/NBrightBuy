@@ -65,10 +65,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get { return NBrightBuyController.GetCurrentPortalData(); }
         }
-
+        
         public Dictionary<string, string> Settings()
         {
             return _settingDic;
+        }
+
+        public String EditLanguage
+        {
+            get
+            {
+                var editlang = "";
+                if (HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
+                if (editlang == "") return Utils.GetCurrentCulture();
+                return editlang;
+            }
+            set { HttpContext.Current.Session["NBrightBuy_EditLanguage"] = value; }
         }
 
 

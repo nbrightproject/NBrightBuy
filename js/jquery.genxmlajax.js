@@ -102,6 +102,25 @@
                 values += '<f id="' + shortID + '"><![CDATA[' + $(this).val() + ']]></f>';
             }
         });
+
+        var $selects = $(selectordiv + ' textarea');
+        $selects.each(function () {
+            strID = $(this).attr("id");
+            nam = strID.split('_');
+            var shortID = nam[nam.length - 1];
+            var lp = 1
+            while (shortID.length < 3) {
+                lp++;
+                shortID = nam[nam.length - lp];
+            }
+            if ($(this).attr("datatype") === undefined) {
+                values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + $(this).val() + ']]></f>';
+            }
+            else {
+                values += '<f t="txt"  id="' + shortID + '" dt="' + $(this).attr("datatype") + '"><![CDATA[' + $(this).val() + ']]></f>';
+            }
+        });
+
 		
 		var $selects = $(selectordiv + ' select');
         $selects.each(function () {

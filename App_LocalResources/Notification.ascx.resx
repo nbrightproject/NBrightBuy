@@ -186,4 +186,7 @@
   <data name="ordervalidated_emailsubject.Text" xml:space="preserve">
     <value>Order Validated</value>
   </data>
+  <data name="categoryactionsave_ok.Text" xml:space="preserve">
+    <value>Category update Successful</value>
+  </data>
 </root>

@@ -144,15 +144,6 @@
   <data name="cmdDelete.ToolTip" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="cmdDeleteImg.confirm" xml:space="preserve">
-    <value>Delete Item?</value>
-  </data>
-  <data name="cmdDeleteImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/delete.png</value>
-  </data>
-  <data name="cmdDeleteImg.ToolTip" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="cmdDeleteLang.confirm" xml:space="preserve">
     <value>Delete Item Language Record?</value>
   </data>
@@ -166,12 +157,6 @@
     <value>Edit</value>
   </data>
   <data name="cmdEdit.ToolTip" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="cmdEditImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/edit.png</value>
-  </data>
-  <data name="cmdEditImg.ToolTip" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="cmdExit.confirm" xml:space="preserve">
@@ -216,22 +201,10 @@
   <data name="cmdSelect.ToolTip" xml:space="preserve">
     <value>Select</value>
   </data>
-  <data name="cmdSelectImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/back.png</value>
-  </data>
-  <data name="cmdSelectImg.ToolTip" xml:space="preserve">
-    <value>Select</value>
-  </data>
   <data name="cmdSort.Text" xml:space="preserve">
     <value>Sort</value>
   </data>
   <data name="cmdSort.ToolTip" xml:space="preserve">
-    <value>Sort</value>
-  </data>
-  <data name="cmdSortImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/refresh.png</value>
-  </data>
-  <data name="cmdSortImg.ToolTip" xml:space="preserve">
     <value>Sort</value>
   </data>
   <data name="cmdUpdateExit.Text" xml:space="preserve">
@@ -252,17 +225,11 @@
   <data name="cmdUploadFile.ToolTip" xml:space="preserve">
     <value>Upload File</value>
   </data>
-  <data name="cmdUploadFile.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/up.png</value>
-  </data>
   <data name="cmdDeleteFile.commandname" xml:space="preserve">
     <value>deletefile</value>
   </data>
   <data name="cmdDeleteFile.confirm" xml:space="preserve">
     <value>Delete File?</value>
-  </data>
-  <data name="cmdDeleteFile.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/delete.png</value>
   </data>
   <data name="cmdDeleteFile.ToolTip" xml:space="preserve">
     <value>Delete File</value>
@@ -281,12 +248,6 @@
   </data>
   <data name="cmdExport.ToolTip" xml:space="preserve">
     <value>Export Module Data</value>
-  </data>
-  <data name="cmdCopyImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/copy_paste.png</value>
-  </data>
-  <data name="cmdCopyImg.ToolTip" xml:space="preserve">
-    <value>Copy</value>
   </data>
   <data name="Value.Text" xml:space="preserve">
     <value>Value</value>
@@ -461,5 +422,11 @@
   </data>
   <data name="trackingcode.Text" xml:space="preserve">
     <value>Tracking Code</value>
+  </data>
+  <data name="cmdCancelSelect.Text" xml:space="preserve">
+    <value>Cancel Select</value>
+  </data>
+  <data name="cmdMove.Text" xml:space="preserve">
+    <value>Move</value>
   </data>
 </root>

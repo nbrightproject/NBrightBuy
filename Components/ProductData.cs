@@ -19,13 +19,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> Imgs;
         public List<NBrightInfo> Docs;
 
+        private String _lang = ""; // needed for webservice
+
         /// <summary>
         /// Populate the ProductData in this class
         /// </summary>
         /// <param name="productId">productid</param>
+        /// <param name="lang">langauge to populate</param>
         /// <param name="hydrateLists">populate the sub data into lists</param>
-        public ProductData(String productId, Boolean hydrateLists = true)
+        public ProductData(String productId, String lang, Boolean hydrateLists = true)
         {
+            _lang = lang;
+            if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
             if (Utils.IsNumeric(productId)) LoadData(Convert.ToInt32(productId), hydrateLists);
         }
 
@@ -33,9 +38,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Populate the ProductData in this class
         /// </summary>
         /// <param name="productId">productid</param>
+        /// <param name="lang">langauge to populate</param>
         /// <param name="hydrateLists">populate the sub data into lists</param>
-        public ProductData(int productId, Boolean hydrateLists = true)
+        public ProductData(int productId, String lang, Boolean hydrateLists = true)
         {
+            _lang = lang;
+            if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
             LoadData(productId, hydrateLists);
         }
 
@@ -80,7 +88,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             Exists = false;
             var objCtrl = new NBrightBuyController();
-            Info = objCtrl.Get(productId,"PRDLANG",Utils.GetCurrentCulture());
+            Info = objCtrl.Get(productId,"PRDLANG",_lang);
             if (Info != null)
             {
                 Exists = true;

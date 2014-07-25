@@ -4,18 +4,24 @@ using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
+using NBrightCore.render;
 using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
     public class GrpCatController
     {
+        private NBrightBuyController _objCtrl;
+
 
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
 
         public GrpCatController(String lang)
         {
+            _objCtrl = new NBrightBuyController();
+
+
             // build group category list
             var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
@@ -419,6 +425,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return grpcatList;
 
         }
+
 
         #endregion
 

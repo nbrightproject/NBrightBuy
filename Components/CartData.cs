@@ -37,8 +37,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save(Boolean debugMode = false)
         {
+            //save cart so any added items are included
+            _cartId = base.SavePurchaseData();
             ValidateCart();
-            //save cart
+            //save cart after validation so calculated costs are saved.
             _cartId = base.SavePurchaseData();
             if (debugMode) OutputDebugFile("debug_currentcart.xml");
             SaveCartId();

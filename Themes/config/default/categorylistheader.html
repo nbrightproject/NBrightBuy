@@ -1,0 +1,44 @@
+
+<script>
+
+$(document).ready(function() {
+
+	$(".selectmove").hide();
+	$(".selectcancel").hide();		
+	$(".savebutton").hide();
+
+    $(".selectrecord").click(function() {
+		$(".selectrecord").hide();
+		$(".selectmove").show();
+		$(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
+		$(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
+		$("input[[id*='selecteditemid']]").val($(this).attr("itemid"));
+    });
+
+    $(".selectcancel").click(function() {
+		$(".selectmove").hide();
+		$(".selectcancel").hide();		
+		$(".selectrecord").show();		
+		$("input[[id*='selecteditemid']]").val('');
+    });
+
+    $("input[[id*='txtcategoryname']]").keyup(function() {
+		var id = $(this).attr("id").replace('txtcategoryname','isdirty');
+		$('#' + id).val(true);
+		$(".savebutton").show();
+    });
+
+});
+
+</script>
+[<tag id="selecteditemid" type="postback" value="" />]
+
+<table>
+<tr>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">[<tag type="valueof" resourcekey="General.Name" />]</td>
+<td align="right">[<tag type="valueof" resourcekey="General.Group" />]</td>
+<td align="right">[<tag type="valueof" resourcekey="General.Parent" />]</td>
+<td align="right"></td>
+</tr>

@@ -405,7 +405,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     _navigationdata.RecordCount = recordCount.ToString("");
                     _navigationdata.Save();
 
-                    if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit; 
+                    if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
+                    strFilter += " and (NB3.Visible = 1) "; // get only visible products
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
 
@@ -481,7 +482,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void DisplayDataEntryRepeater(String entryId)
         {
-            var productData = new ProductData(entryId,false);
+            var productData = new ProductData(entryId,Utils.GetCurrentCulture(),false);
 
             if (productData.Exists)
             {

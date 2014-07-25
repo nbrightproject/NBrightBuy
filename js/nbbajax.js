@@ -6,22 +6,22 @@ var nbxprocessing = 'input[id*="nbxprocessing"]';
 function nbxonclick(selector,cmd,selformdiv,action)
 {
 	$(selector).click(function () {
-		nbxget(selector,cmd,selformdiv,action);
+		nbxget(cmd,selformdiv,action);
 	});
 }
 function nbxonchange(selector,cmd,selformdiv,action)
 {		 
 	$(selector).change(function () {
-		nbxget(selector,cmd,selformdiv,action);
+		nbxget(cmd,selformdiv,action);
 	});
 }
 
-function nbxget(selector,cmd,selformdiv,action)
+function nbxget(cmd,selformdiv,action)
 {		 
     $.ajaxSetup({ cache: false });
-	$(nbxaction).val($(this).id);
+
 	$(nbxprocessing).val("BEFORE").trigger('change');
-	
+
 	// set the nbxaction field to action, so we know which ajax action is processing.
 	$('input[id*="nbxaction"]').val(action)
 	
@@ -34,9 +34,9 @@ function nbxget(selector,cmd,selformdiv,action)
 	});
 	
 	request.done(function (data) {
-		$(nbxprocessing).val("AFTER").trigger('change');	 
 		if (data != 'noaction') $(nbxrtn).val(data).trigger('change');
-	});
+		$(nbxprocessing).val("AFTER").trigger('change');
+});
 
 	request.fail(function (jqXHR, textStatus) {
 		alert("Request failed: " + textStatus);

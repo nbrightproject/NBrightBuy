@@ -52,6 +52,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().Get(itemId, typeCodeLang, lang));
         }
 
+        public override NBrightInfo GetData(int itemId)
+        {
+            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetData(itemId));
+        }
+        public override NBrightInfo GetDataLang(int parentItemId, string lang)
+        {
+            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentItemId, lang));
+        }
+
         /// <summary>
         /// override for Database Function
         /// </summary>
@@ -288,9 +297,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	    /// <param name="pageNumber"></param>
 	    /// <param name="pageSize"></param>
 	    /// <param name="recordCount"></param>
-	    /// <param name="visibleOnly"> </param>
 	    /// <returns></returns>
-	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,bool visibleOnly = true)
+	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
             if (selUserId != "")
             {
@@ -300,7 +308,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             List<NBrightInfo> l = null;
 
             // get cache template 
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture() + "*" + visibleOnly.ToString(CultureInfo.InvariantCulture);
+            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
             if (debugMode == false)
             {
                 l = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
@@ -308,7 +316,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (l == null)
             {
-                if (visibleOnly)strFilters += " and (NB3.Visible = 1) ";
                 l = GetList(portalId, moduleId, entityTypeCode, strFilters, strOrderBy, returnLimit, pageNumber, pageSize, recordCount, entityTypeCodeLang, cultureCode);
                 //add rowcount, so we can use databind RowCount in the templates
                 foreach (var i in l)
