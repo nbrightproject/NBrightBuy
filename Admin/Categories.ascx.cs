@@ -201,10 +201,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
                 selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
+                selData.DataRecord.ParentItemId = movData.DataRecord.ParentItemId;
                 selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
                 var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
                 if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                var neworder = Convert.ToDouble(strneworder) + 0.5;
+                var neworder = Convert.ToDouble(strneworder) - 0.5;
                 selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
                 ModCtrl.Update(selData.DataRecord);
 

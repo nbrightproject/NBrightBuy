@@ -81,6 +81,13 @@
     <Compile Include="Admin\BackOffice.ascx.designer.cs">
       <DependentUpon>BackOffice.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Groups.ascx.cs">
+      <DependentUpon>Groups.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Groups.ascx.designer.cs">
+      <DependentUpon>Groups.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -299,6 +306,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\BackOffice.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Groups.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\Settings.ascx">
