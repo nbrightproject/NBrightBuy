@@ -138,6 +138,7 @@
     <Compile Include="Components\AddressData.cs" />
     <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
+    <Compile Include="Components\GroupData.cs" />
     <Compile Include="Components\ProfileData.cs" />
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />

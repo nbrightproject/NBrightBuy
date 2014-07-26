@@ -479,6 +479,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
+        public static List<NBrightInfo> GetCategoryGroups(String lang, Boolean debugMode = false)
+        {
+            var objCtrl = new NBrightBuyController();
+            var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "GROUP", "GROUPLANG", lang, "", " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", debugMode);
+            return levelList;
+        }
+
     }
 
 }

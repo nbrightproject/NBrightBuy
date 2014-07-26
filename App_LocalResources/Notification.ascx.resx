@@ -189,4 +189,7 @@
   <data name="categoryactionsave_ok.Text" xml:space="preserve">
     <value>Category update Successful</value>
   </data>
+  <data name="groupactionsave_ok.Text" xml:space="preserve">
+    <value>Group update Successful</value>
+  </data>
 </root>

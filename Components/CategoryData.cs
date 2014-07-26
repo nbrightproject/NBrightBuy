@@ -108,10 +108,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Info != null)
             {
                 Exists = true;
+                DataRecord = objCtrl.GetData(categoryId);
+                DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
             }
-            DataRecord = objCtrl.GetData(categoryId);
-            DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
-
         }
 
         private void AddNew()

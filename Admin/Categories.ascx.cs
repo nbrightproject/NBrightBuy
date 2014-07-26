@@ -176,6 +176,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         }
                     }
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
+                    NBrightBuyUtils.RemoveModCache(-1); //clear any cache
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "move":

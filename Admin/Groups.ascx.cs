@@ -20,10 +20,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class Groups : NBrightBuyAdminBase
     {
 
-        private GenXmlTemplate _templSearch;
-        private String _entryid = "";
-        private Boolean _displayentrypage = false;
-
         private const string NotifyRef = "groupaction";
 
         #region Load Event Handlers
@@ -74,13 +70,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (UserId > 0) // only logged in users can see data on this module.
             {
-
-                    //Default orderby if not set
-                var grpCats = GetGroupList();
-
-                    rpData.DataSource = grpCats;
-                    rpData.DataBind();
-
+                rpData.DataSource = NBrightBuyUtils.GetCategoryGroups(EditLanguage,true);
+                rpData.DataBind();
             }
 
             #endregion
@@ -105,7 +96,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "addnew":
-                    var categoryData = new CategoryData(-1, EditLanguage);
+                    var groupData = new GroupData(-1, EditLanguage);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "delete":
@@ -116,34 +107,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "saveall":
-                    var grp = ModCtrl.GetByType(PortalId, -1, "GROUP", "", "GROUPLANG", StoreSettings.Current.EditLanguage);
-                    var grpData = ModCtrl.GetData(grp.ItemID);
-                    var grpDataLang = ModCtrl.GetData(grp.ItemID, StoreSettings.Current.EditLanguage);
-                    var lp = 1;
-                    foreach (RepeaterItem rtnItem in rpData.Items)
-                    {
-                        var isdirty = GenXmlFunctions.GetField(rtnItem, "isdirty");
-                        var itemid = GenXmlFunctions.GetField(rtnItem, "itemid");
-                        if (isdirty == "true" && Utils.IsNumeric(itemid))
-                        {
-                            var grpref = GenXmlFunctions.GetField(rtnItem, "ref");
-                            var name = GenXmlFunctions.GetField(rtnItem, "name");
-                            grp.SetXmlProperty("genxml/items[" + lp + "]/ref", grpref);
-                            grp.SetXmlProperty("genxml/lang/genxml/items[" + lp + "]/name", name);
-                        }
-                        lp += 1;
-                    }
-                    var nodlang = grp.XMLDoc.SelectSingleNode("genxml/lang");
-                    if (nodlang != null)
-                    {
-                        grpDataLang.XMLData = nodlang.InnerXml;
-                        ModCtrl.Update(grpDataLang);
-                    }
-                    grp.RemoveXmlNode("genxml/lang");
-                    grpData.XMLData = grp.XMLData;
-                    ModCtrl.Update(grpData);
-
+                    SaveAll();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
+                    NBrightBuyUtils.RemoveModCache(-1); //clear any cache
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "move":
@@ -160,6 +126,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
+        private void SaveAll()
+        {
+            foreach (RepeaterItem rtnItem in rpData.Items)
+            {
+                var isdirty = GenXmlFunctions.GetField(rtnItem, "isdirty");
+                var itemid = GenXmlFunctions.GetField(rtnItem, "itemid");
+                if (isdirty == "true" && Utils.IsNumeric(itemid))
+                {
+                    var grpData = new GroupData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
+                    if (grpData.Exists)
+                    {
+                        var grpname = GenXmlFunctions.GetField(rtnItem, "groupname");
+                        var grpref = GenXmlFunctions.GetField(rtnItem, "groupref");
+                        grpData.Name = grpname;
+                        grpData.Ref = grpref;
+                        grpData.Save();
+                    }
+                }
+            }
+
+        }
+
         private void MoveRecord(int itemId)
         {
 
@@ -168,39 +156,31 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
-                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
-                selData.DataRecord.ParentItemId = movData.DataRecord.ParentItemId;
-                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
                 var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
                 if (!Utils.IsNumeric(strneworder)) strneworder = "1";
                 var neworder = Convert.ToDouble(strneworder) - 0.5;
                 selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
                 ModCtrl.Update(selData.DataRecord);
-
+                FixRecordSortOrder();
             }
         }
 
-
-        private List<NBrightInfo> GetGroupList()
+        private void FixRecordSortOrder()
         {
-            var rtnList = new List<NBrightInfo>();
-            var grp = ModCtrl.GetByType(PortalId, -1, "GROUP","","GROUPLANG",StoreSettings.Current.EditLanguage);
-            var nodLang = grp.XMLDoc.SelectNodes("genxml/items/*");
-
-            if (nodLang != null)
+            // fix any incorrect sort orders
+            Double lp = 1;
+            var levelList = NBrightBuyUtils.GetCategoryGroups(EditLanguage,true);
+            foreach (NBrightInfo catinfo in levelList)
             {
-                var lp = 1;
-                foreach (var nod in nodLang)
+                var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
+                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder) != lp)
                 {
-                    var nbi = new NBrightInfo();
-                    nbi.ItemID = lp;
-                    nbi.TypeCode = grp.GetXmlProperty("genxml/items[" + lp + "]/ref");
-                    nbi.GUIDKey = grp.GetXmlProperty("genxml/lang/genxml/items[" + lp + "]/name");
-                    rtnList.Add(nbi);
-                    lp += 1;
-                }      
+                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
+                    ModCtrl.Update(catData.DataRecord);
+                }
+                lp += 1;
             }
-            return rtnList;
         }
 
 
