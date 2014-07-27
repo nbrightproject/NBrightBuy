@@ -22,7 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private GenXmlTemplate _templSearch;
         private String _entryid = "";
-        private Boolean _displayentrypage = false;
+        private String _templatType = "list";
 
         private const string NotifyRef = "categoryaction";
 
@@ -33,14 +33,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             base.OnInit(e);
 
+            _entryid = Utils.RequestParam(Context, "eid");
+            if (_entryid != "") _templatType = "detail";
+
             // Get Search
             var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
             _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
             rpSearch.ItemTemplate = _templSearch;
 
-            var t1 = "categorylistheader.html";
-            var t2 = "categorylistbody.html";
-            var t3 = "categorylistfooter.html";
+            var t1 = "category" + _templatType + "header.html";
+            var t2 = "category" + _templatType + "body.html";
+            var t3 = "category" + _templatType + "footer.html";
 
             // Get Display Header
             var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
@@ -80,9 +83,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
 
-                if (_displayentrypage)
+                if (_templatType == "detail")
                 {
-                    DisplayDataEntryRepeater(_entryid);
+                    if (Utils.IsNumeric(_entryid) && _entryid != "0")
+                    {
+                        var categoryData = new CategoryData(Convert.ToInt32(_entryid), EditLanguage);
+                        base.DoDetail(rpData, categoryData.Info);
+                    }
                 }
                 else
                 {
@@ -231,19 +238,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     ModCtrl.Update(catData.DataRecord);
                 }
                 lp += 1;
-            }
-        }
-
-        private void DisplayDataEntryRepeater(String entryId)
-        {
-            if (Utils.IsNumeric(entryId) && entryId != "0")
-            {
-                var categoryData = new CategoryData(Convert.ToInt32(entryId), EditLanguage);
-
-                //categoryData.OutputDebugFile("debug_category.xml");
-
-                //render the detail page
-                base.DoDetail(rpData, categoryData.Info);
             }
         }
 

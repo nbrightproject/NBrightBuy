@@ -1,0 +1,52 @@
+<!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/nbbajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<!-- return field for ajax calls -->
+[<tag id="nbxrtn" type="hidden" />]
+[<tag id="nbxprocessing" type="hidden" />]
+[<tag id="nbxaction" type="hidden" />]
+
+<script>
+
+    $(document).ready(function () {
+
+
+        // ajax call returned data, so action based on the action being done.
+        $('input[[id*=nbxrtn]]').change(function () {
+            if ($('input[[id*="nbxaction"]]').val() == 'get') {
+                //we need this event to pick up the data returned and move it into the correct div as html
+                $('#categorydata').html($(this).val());
+                $('#texteditor').appendTo($('#texteditoreditpos'));
+            }
+        });
+
+        $('input[[id *= "nbxprocessing"]]').change(function () {
+            if ($('input[[id*="nbxaction"]]').val() == 'setcategorylang' && $('input[[id*="nbxprocessing"]]').val() == 'AFTER') {
+                // localized fields updated, operation finished, display message.
+                $('#notifymsg').html($('input[[id*=nbxrtn]]').val());
+            }
+        });
+
+        // save the category data
+        $('#categorysave').click(function () {
+			nbxget('setcategoryadminform', '#cateogryfields', 'setcategory'); // stage 1 update
+        });
+
+    });
+
+</script>
+<div id="notifymsg"></div>
+
+<div id="categorydata">
+CATEGORY DATA
+
+<div id="categorysave"> SAVE BUTTON </div>
+</div>
+
+<div id="texteditor" >
+[<tag id="message" type="dnn:texteditor" height="400" width="800"  editinrole="" viewinrole="" />]
+</div>
+
+<div id="productlist">
+PRODUCT LIST DATA
+</div>

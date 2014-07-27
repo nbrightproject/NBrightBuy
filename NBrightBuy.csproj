@@ -375,7 +375,6 @@
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
@@ -432,6 +431,7 @@
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Themes\config\default\" />
     <Folder Include="Themes\Cygnus\Default\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
