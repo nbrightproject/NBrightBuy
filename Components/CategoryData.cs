@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
+using NBrightCore.render;
 using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
@@ -85,12 +87,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-
         public void Save()
         {
             var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
+        }
+
+
+        public void Update(Repeater rpData)
+        {
+            var strXml = GenXmlFunctions.GetGenXml(rpData);
+            var nbi = new NBrightInfo();
+            nbi.XMLData = strXml;
+
+            foreach (var dic in nbi.ToDictionary())
+            {
+
+                
+            }
         }
 
         #endregion
