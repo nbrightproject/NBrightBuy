@@ -157,8 +157,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
                 var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+
+                var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
                 if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                var neworder = Convert.ToDouble(strneworder) - 0.5;
+                if (!Utils.IsNumeric(selorder)) selorder = "1";
+                var neworder = Convert.ToDouble(strneworder);
+                if (Convert.ToDouble(strneworder) < Convert.ToDouble(selorder))
+                    neworder = neworder - 0.5;
+                else
+                    neworder = neworder + 0.5;                    
                 selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
                 ModCtrl.Update(selData.DataRecord);
                 FixRecordSortOrder();

@@ -212,12 +212,40 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 selData.DataRecord.ParentItemId = movData.DataRecord.ParentItemId;
                 selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
                 var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+                var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
                 if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                var neworder = Convert.ToDouble(strneworder) - 0.5;
+                if (!Utils.IsNumeric(selorder)) selorder = "1";
+                var neworder = Convert.ToDouble(strneworder);
+                if (Convert.ToDouble(strneworder) < Convert.ToDouble(selorder))
+                    neworder = neworder - 0.5;
+                else
+                    neworder = neworder + 0.5;                    
                 selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
                 ModCtrl.Update(selData.DataRecord);
 
                 FixRecordSortOrder(selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
+                FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+            }
+        }
+
+        private void FixRecordGroupType(String parentid, String groupType)
+        {
+            if (Utils.IsNumeric(parentid) && Convert.ToInt32(parentid) > 0)
+            {
+                // fix any incorrect sort orders
+                var strFilter = " and NB1.ParentItemId = " + parentid + " ";
+                var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+                foreach (NBrightInfo catinfo in levelList)
+                {
+                    var grouptype = catinfo.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    if (grouptype != groupType)
+                    {
+                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", groupType);
+                        ModCtrl.Update(catData.DataRecord);
+                    }
+                    FixRecordGroupType(catData.Info.ItemID.ToString(""), groupType);
+                }
             }
         }
 

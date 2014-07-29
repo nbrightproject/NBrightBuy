@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using CKEditor.NET;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -206,6 +207,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "cartemailaddress":
                     CreateCartEmailAddress(container, xmlNod);
+                    return true;
+                case "groupdropdown":
+                    Creategroupdropdown(container, xmlNod);
+                    return true;
+                case "ckeditor": //legacy before namespace
+                    CreateCKEditor(container, xmlNod);
                     return true;
                 default:
                     return false;
@@ -3030,6 +3037,119 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
         #endregion
+
+        #region "groups"
+
+
+        private void Creategroupdropdown(Control container, XmlNode xmlNod)
+        {
+            var rbl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+            {
+                rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            }
+            rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
+            rbl.DataBinding += GroupdropdownDataBind;
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                rbl.ID = xmlNod.Attributes["id"].InnerText;
+            else
+                rbl.ID = "ddlGroupsel";
+            container.Controls.Add(rbl);
+        }
+
+        private void GroupdropdownDataBind(object sender, EventArgs e)
+        {
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+
+                    var objL = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true);
+
+                    if (ddl.Attributes["blank"] != null)
+                    {
+                        var li = new ListItem();
+                        li.Text = ddl.Attributes["blank"];
+                        li.Value = "0";
+                        ddl.Items.Add(li);
+                        ddl.Attributes.Remove("blank");
+                    }
+
+                    foreach (var obj in objL)
+                    {
+                        var li = new ListItem();
+                        li.Text = obj.GetXmlProperty("genxml/lang/genxml/textbox/groupname");
+                        li.Value = obj.GetXmlProperty("genxml/textbox/groupref");
+                        if (li.Text != "") ddl.Items.Add(li);
+                    }
+                    if (objL.Count > 0) ddl.SelectedIndex = 0;
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
+        }
+
+
+
+        #endregion
+
+
+        #region "CKEditor"
+
+        private void CreateCKEditor(Control container, XmlNode xmlNod)
+        {
+            var te = new CKEditorControl();
+            te.BasePath = "/DesktopModules/NBright/NBrightBuy/Themes/config/js/ckeditor/";
+            te = (CKEditorControl)GenXmlFunctions.AssignByReflection(te, xmlNod);
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+            {
+                te.ID = xmlNod.Attributes["id"].InnerXml;
+
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["databind"] != null))
+                {
+                    te.Attributes.Add("databind", xmlNod.Attributes["databind"].InnerXml);
+                }
+
+                te.DataBinding += CKEditorDataBinding;
+                container.Controls.Add(te);
+            }
+        }
+
+        private void CKEditorDataBinding(object sender, EventArgs e)
+        {
+            var gte = (CKEditorControl)sender;
+            var container = (IDataItemContainer)gte.NamingContainer;
+            try
+            {
+                gte.Visible = NBrightGlobal.IsVisible;
+
+                if ((gte.Attributes["databind"] != null))
+                {
+                    gte.Text = (string)DataBinder.Eval(container.DataItem, gte.Attributes["databind"]);
+                }
+                else
+                {
+                    gte.Text = GenXmlFunctions.GetGenXmlValue(gte.ID, "edt", (string)DataBinder.Eval(container.DataItem, _databindColumn));
+                }
+
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                //do nothing
+            }
+        }
+
+        #endregion
+
 
         #region "Functions"
 

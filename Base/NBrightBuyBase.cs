@@ -28,7 +28,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 	    public ModSettings ModSettings;
 
         public Boolean EnablePaging;
-        public Boolean FileHasBeenUploaded { get; set; }
 
         public DotNetNuke.Framework.CDefault BasePage
         {
@@ -42,9 +41,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             DebugMode = StoreSettings.Current.DebugMode;
 
 		    base.OnInit(e);
-
-            // Attach events
-            GenXmlFunctions.FileHasBeenUploaded += new UploadFileCompleted(OnFileUploaded);
 
             #region "Get all Settings for module"
             //get Model Level Settings
@@ -115,11 +111,6 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         public virtual void EventBeforePageChange(object source, RepeaterCommandEventArgs e)
         {
 
-        }
-
-        public void OnFileUploaded()
-        {
-            FileHasBeenUploaded = true;
         }
 
         #endregion

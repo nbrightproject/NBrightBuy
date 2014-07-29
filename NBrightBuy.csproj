@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKEditor.NET">
+      <HintPath>..\..\..\..\..\..\Support\CKEditor\CKEditor.NET.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\..\..\..\Support\DNN6x\bin610\DotNetNuke.dll</HintPath>
     </Reference>
@@ -375,8 +378,145 @@
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
+    <Content Include="Themes\config\default\addressbookbody.html" />
+    <Content Include="Themes\config\default\addressbookfooter.html" />
+    <Content Include="Themes\config\default\addressbookheader.html" />
+    <Content Include="Themes\config\default\addressbookinput.html" />
+    <Content Include="Themes\config\default\ajaxincludes.html" />
+    <Content Include="Themes\config\default\backoffice.html" />
+    <Content Include="Themes\config\default\buttonsDiv_AddNew.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_Delete.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_Edit.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_Exit.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_Save.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SCD.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SCE.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SCED.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SCEs.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SD.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_Search.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SED.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SxSC.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SxSCD.txt" />
+    <Content Include="Themes\config\default\buttonsDiv_SxSCDL.txt" />
+    <Content Include="Themes\config\default\buttons_SortList.txt" />
+    <Content Include="Themes\config\default\buttons_SxSCD.txt" />
+    <Content Include="Themes\config\default\CartView_Settings.html" />
+    <Content Include="Themes\config\default\categoryajaxdata.html" />
+    <Content Include="Themes\config\default\categoryajaxdatalang.html" />
+    <Content Include="Themes\config\default\categorydetailbody.html" />
+    <Content Include="Themes\config\default\categorydetailfooter.html" />
+    <Content Include="Themes\config\default\categorydetailheader.html" />
+    <Content Include="Themes\config\default\categorylistbody.html" />
+    <Content Include="Themes\config\default\categorylistfooter.html" />
+    <Content Include="Themes\config\default\categorylistheader.html" />
+    <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
+    <Content Include="Themes\config\default\categorysearch.html" />
+    <Content Include="Themes\config\default\Checkout_Settings.html" />
+    <Content Include="Themes\config\default\clientsbody.html" />
+    <Content Include="Themes\config\default\clientsdetail.html" />
+    <Content Include="Themes\config\default\clientsdetailfooter.html" />
+    <Content Include="Themes\config\default\clientsdetailheader.html" />
+    <Content Include="Themes\config\default\clientsfooter.html" />
+    <Content Include="Themes\config\default\clientsheader.html" />
+    <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\grouplistbody.html" />
+    <Content Include="Themes\config\default\grouplistfooter.html" />
+    <Content Include="Themes\config\default\grouplistheader.html" />
+    <Content Include="Themes\config\default\menufooter.html" />
+    <Content Include="Themes\config\default\menuheader.html" />
+    <Content Include="Themes\config\default\menuplugin.xml" />
+    <Content Include="Themes\config\default\OrderAdmin_Settings.html" />
+    <Content Include="Themes\config\default\ordersbody.html" />
+    <Content Include="Themes\config\default\ordersdetail.html" />
+    <Content Include="Themes\config\default\ordersdetailfooter.html" />
+    <Content Include="Themes\config\default\ordersdetailheader.html" />
+    <Content Include="Themes\config\default\ordersdetailitem.html" />
+    <Content Include="Themes\config\default\ordersdetailitemfooter.html" />
+    <Content Include="Themes\config\default\ordersdetailitemheader.html" />
+    <Content Include="Themes\config\default\ordersfooter.html" />
+    <Content Include="Themes\config\default\ordersheader.html" />
+    <Content Include="Themes\config\default\orderssearch.html" />
+    <Content Include="Themes\config\default\pluginsbody.html" />
+    <Content Include="Themes\config\default\pluginsdetail.html" />
+    <Content Include="Themes\config\default\pluginsdetailfooter.html" />
+    <Content Include="Themes\config\default\pluginsdetailheader.html" />
+    <Content Include="Themes\config\default\pluginsfooter.html" />
+    <Content Include="Themes\config\default\pluginsheader.html" />
+    <Content Include="Themes\config\default\ProductSearch_Settings.html" />
+    <Content Include="Themes\config\default\ProductView_Settings.html" />
+    <Content Include="Themes\config\default\ProfileForm_Settings.html" />
+    <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
+    <Content Include="Themes\Cygnus\Default\addclientrole.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminemail.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
+    <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
+    <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
+    <Content Include="Themes\Cygnus\Default\cartdetails.html" />
+    <Content Include="Themes\Cygnus\Default\cartextra.html" />
+    <Content Include="Themes\Cygnus\Default\cartlayout.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartpromo.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartselectaddressheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartshipment.html" />
+    <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
+    <Content Include="Themes\Cygnus\Default\carttax.html" />
+    <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\categorybody.html" />
+    <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />
+    <Content Include="Themes\Cygnus\Default\CategoryMenuSettings.html" />
+    <Content Include="Themes\Cygnus\Default\catmenu.html" />
+    <Content Include="Themes\Cygnus\Default\catmenubody.html" />
+    <Content Include="Themes\Cygnus\Default\catmenufooter.html" />
+    <Content Include="Themes\Cygnus\Default\catmenuheader.html" />
+    <Content Include="Themes\Cygnus\Default\cattreebody.html" />
+    <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
+    <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutFAIL.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutOK.html" />
+    <Content Include="Themes\Cygnus\Default\detail.html" />
+    <Content Include="Themes\Cygnus\Default\detailfooter.html" />
+    <Content Include="Themes\Cygnus\Default\detailheader.html" />
+    <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\list.html" />
+    <Content Include="Themes\Cygnus\Default\listfooter.html" />
+    <Content Include="Themes\Cygnus\Default\listheader.html" />
+    <Content Include="Themes\Cygnus\Default\listpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistheader.html" />
+    <Content Include="Themes\Cygnus\Default\modellist.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitem.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminsearch.html" />
+    <Content Include="Themes\Cygnus\Default\orderamendedemail.html" />
+    <Content Include="Themes\Cygnus\Default\orderreceiptemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordershippedemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
+    <Content Include="Themes\Cygnus\Default\printorder.xsl" />
+    <Content Include="Themes\Cygnus\Default\printreceipt.xsl" />
+    <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
+    <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\profileformemail.html" />
+    <Content Include="Themes\Cygnus\Default\profileforminput.html" />
+    <Content Include="Themes\Cygnus\Default\relatedlist.html" />
     <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
     <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
@@ -430,10 +570,7 @@
     <None Include="NBrightThumb.ashx" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Themes\config\default\" />
-    <Folder Include="Themes\Cygnus\Default\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\bin\$(TargetFileName)"
