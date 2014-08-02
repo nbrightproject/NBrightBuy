@@ -16,20 +16,17 @@
             if ($('input[[id*="nbxaction"]]').val() == 'get') {
                 //we need this event to pick up the data returned and move it into the correct div as html
                 $('#categorydata').html($(this).val());
-                $('#texteditor').appendTo($('#texteditoreditpos'));
             }
         });
 
         $('input[[id *= "nbxprocessing"]]').change(function () {
-            if ($('input[[id*="nbxaction"]]').val() == 'setcategorylang' && $('input[[id*="nbxprocessing"]]').val() == 'AFTER') {
-                // localized fields updated, operation finished, display message.
-                $('#notifymsg').html($('input[[id*=nbxrtn]]').val());
-            }
+            $('#notifymsg').html($('input[[id*=nbxrtn]]').val());
         });
 
         // save the category data
         $('#categorysave').click(function () {
-			nbxget('setcategoryadminform', '#cateogryfields', 'setcategory'); // stage 1 update
+            alert('call save');
+            nbxget('setcategoryadminform', '#categorydata', 'setcategory'); // stage 1 update
         });
 
     });
@@ -39,33 +36,39 @@
 
 <br />
 [<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" commandname="return" />] - 
-[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]
+<a href="#" id="categorysave">[<tag type="valueof" resourcekey="General.cmdSave" />]</a>
+
 <br /><br /><br />
 
 <div id="categorydata">
-<h2>CATEGORY DATA</h2>
-<br />
-Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]<br />
-Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
-Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
-Description:   <br />[<tag id="" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-Order:   [<tag id="" type="textbox" width="300" maxlength="250" />]<br />
-Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" />] <br />
-Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
-List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
+    [<tag id="itemid" type="hidden" databind="ItemId" />]
+    [<tag id="lang" type="hidden" databind="Lang" />]
+    [<tag id="fields" type="postback" value="genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+    [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
+    <h2>CATEGORY DATA</h2>
+    <br />
+    Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
+    Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
+    Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
+    Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+    Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" />] <br />
+    Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
+    List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
 
-SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
-SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
-Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+    SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
+    SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
+    Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+    Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+
+<br/>
+<div id="fileupload">
+[<tag id="fileupload" type="fileupload" />]    
 </div>
 <br/>
 <div id="texteditor" >
 [<tag id="message" type="ckeditor" height="400" width="800"  />]
 </div>
 
-<div id="fileupload">
-[<tag id="fileupload" type="fileupload" height="200" width="800" />]    
 </div>
 
 <div id="productlist">

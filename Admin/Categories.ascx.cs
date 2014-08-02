@@ -194,13 +194,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "save":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        Update(Convert.ToInt32(cArg));
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
+
             }
 
         }
@@ -208,13 +202,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
-        private void Update(int CategoryId)
-        {
-            var catInfo = new CategoryData(CategoryId, StoreSettings.Current.EditLanguage);
-            catInfo.Update(rpData);
-            catInfo.Save();
-
-        }
 
         private void MoveRecord(int itemId)
         {

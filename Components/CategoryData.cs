@@ -95,13 +95,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public void Update(Repeater rpData)
+        public void Update(NBrightInfo info)
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderImagesMapPath);
-            var nbi = new NBrightInfo();
-            nbi.XMLData = strXml;
-            DataRecord.FromXmlItem(strXml);
-            DataLangRecord.FromXmlItem(strXml);
+            var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+
+            foreach (var f in localfields)
+            {
+                   DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                   DataRecord.RemoveXmlNode(f);
+            }
+            var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
+
+            foreach (var f in fields)
+            {
+                DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                DataLangRecord.RemoveXmlNode(f);
+            }
         }
 
         #endregion

@@ -257,8 +257,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 objInfo.XMLData = xmlData;
                 var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can egt them easy.
 
-                var strOut = "No Category ID (itemid hidden field needed on input form)";
-                if (settings.ContainsKey("itemid"))
+                var strOut = "No Category ID or Langauge ('itemid' and 'lang' hidden fields needed on input form)";
+                if (settings.ContainsKey("itemid") && settings.ContainsKey("lang"))
                 {
 
                     var strItemId = settings["itemid"];
@@ -266,11 +266,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         var itemId = Convert.ToInt32(strItemId);
 
-                        var objCtrl = new NBrightBuyController();
-                        var nbi = objCtrl.GetData(itemId);
-                        nbi.XMLData = objInfo.XMLData;
-                        objCtrl.Update(nbi);
-
+                        var catData = new CategoryData(itemId, settings["lang"]);
+                        catData.Update(objInfo);
+                        catData.Save();
                         strOut = NBrightBuyUtils.GetResxMessage();
                     }
                 }
