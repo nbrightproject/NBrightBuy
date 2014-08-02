@@ -63,7 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="debugMode"></param>
         public String AddAddress(Repeater rpData, Boolean debugMode = false)
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;

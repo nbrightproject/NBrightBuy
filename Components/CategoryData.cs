@@ -97,15 +97,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Update(Repeater rpData)
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData);
+            var strXml = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderImagesMapPath);
             var nbi = new NBrightInfo();
             nbi.XMLData = strXml;
-
-            foreach (var dic in nbi.ToDictionary())
-            {
-
-                
-            }
+            DataRecord.FromXmlItem(strXml);
+            DataLangRecord.FromXmlItem(strXml);
         }
 
         #endregion

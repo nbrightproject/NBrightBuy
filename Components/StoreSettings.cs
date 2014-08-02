@@ -45,6 +45,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
             if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
             if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
+            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
             if (!_settingDic.ContainsKey("defaultportalalias")) _settingDic.Add("defaultportalalias", PortalSettings.Current.DefaultPortalAlias);
             if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
@@ -57,6 +58,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             
             AdminEmail = Get("adminemail");
             ManagerEmail = Get("manageremail");
+            FolderDocumentsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderdocs");
+            FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
+            FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
         }
 
         #endregion
@@ -121,6 +125,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }
 
+        public String FolderImagesMapPath { get; private set; }
+        public String FolderDocumentsMapPath { get; private set; }
+        public String FolderUploadsMapPath { get; private set; }
 
         #endregion
 

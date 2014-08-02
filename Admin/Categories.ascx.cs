@@ -6,6 +6,7 @@ using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using NEvoWeb.Modules.NB_Store;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 
@@ -193,12 +194,27 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "save":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        Update(Convert.ToInt32(cArg));
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
 
 
         #endregion
+
+        private void Update(int CategoryId)
+        {
+            var catInfo = new CategoryData(CategoryId, StoreSettings.Current.EditLanguage);
+            catInfo.Update(rpData);
+            catInfo.Save();
+
+        }
 
         private void MoveRecord(int itemId)
         {

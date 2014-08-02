@@ -156,4 +156,13 @@
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager Email</value>
   </data>
+  <data name="folderdocs.Text" xml:space="preserve">
+    <value>Documents Folder</value>
+  </data>
+  <data name="folderimages.Text" xml:space="preserve">
+    <value>Images Folder</value>
+  </data>
+  <data name="folderuploads.Text" xml:space="preserve">
+    <value>Upload Folder</value>
+  </data>
 </root>
