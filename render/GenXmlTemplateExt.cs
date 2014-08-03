@@ -3116,6 +3116,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     te.Attributes.Add("databind", xmlNod.Attributes["databind"].InnerXml);
                 }
+                te.Attributes.Add("type", "text");
 
                 te.DataBinding += CKEditorDataBinding;
                 container.Controls.Add(te);
@@ -3136,7 +3137,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
                 else
                 {
-                    gte.Text = GenXmlFunctions.GetGenXmlValue(gte.ID, "edt", (string)DataBinder.Eval(container.DataItem, _databindColumn));
+                    gte.Text = GenXmlFunctions.GetGenXmlValue(gte.ID, "textbox", (string)DataBinder.Eval(container.DataItem, _databindColumn));
                 }
 
             }

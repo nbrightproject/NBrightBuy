@@ -248,14 +248,14 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                // get posted form adta into a NBrigthInfo class so we can take the listbox value easily
+                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
                 var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
                 var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
                 var objInfo = new NBrightInfo();
                 objInfo.ItemID = -1;
                 objInfo.TypeCode = "AJAXDATA";
                 objInfo.XMLData = xmlData;
-                var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can egt them easy.
+                var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
 
                 var strOut = "No Category ID or Langauge ('itemid' and 'lang' hidden fields needed on input form)";
                 if (settings.ContainsKey("itemid") && settings.ContainsKey("lang"))
