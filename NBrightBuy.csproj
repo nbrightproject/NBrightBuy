@@ -403,8 +403,6 @@
     <Content Include="Themes\config\default\buttons_SortList.txt" />
     <Content Include="Themes\config\default\buttons_SxSCD.txt" />
     <Content Include="Themes\config\default\CartView_Settings.html" />
-    <Content Include="Themes\config\default\categoryajaxdata.html" />
-    <Content Include="Themes\config\default\categoryajaxdatalang.html" />
     <Content Include="Themes\config\default\categorydetailbody.html" />
     <Content Include="Themes\config\default\categorydetailfooter.html" />
     <Content Include="Themes\config\default\categorydetailheader.html" />

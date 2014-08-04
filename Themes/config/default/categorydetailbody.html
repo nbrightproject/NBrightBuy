@@ -15,9 +15,10 @@
 
         // ajax call returned data, so action based on the action being done.
         $('input[[id*=nbxrtn]]').change(function () {
-            if ($('input[[id*="nbxaction"]]').val() == 'get') {
-                //we need this event to pick up the data returned and move it into the correct div as html
-                $('#categorydata').html($(this).val());
+            //we need this event to pick up the data returned and move it into the correct div as html
+            if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
+                $('#productlist').html($(this).val());
+                $(this).val('');
             }
         });
 
@@ -32,6 +33,8 @@
         });
 
         $("#tabs").tabs();
+
+        nbxget('getproductselectlist', '#categorydata', 'getproductlist'); // stage 1 update
 
 
     });
@@ -58,7 +61,14 @@
     [<tag id="lang" type="hidden" databind="Lang" />]
     [<tag id="fields" type="postback" value="genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
     [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
-    <h2>CATEGORY DATA</h2>
+
+    [<tag id="header" type="hidden" value="categoryproductheader.html"/>]
+    [<tag id="body" type="hidden" value="categoryproductbody.html"/>]
+    [<tag id="footer" type="hidden" value="categoryproductfooter.html"/>]
+    [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
+      
+
+      <h2>CATEGORY DATA</h2>
     <br />
     Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
     Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
@@ -85,9 +95,9 @@
       [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
   </div>
   <div id="tabs-4">
-    <div id="productlist"> 
-        PRODUCT LIST DATA
-    </div>
+      <div id="productlist">
+
+      </div>
   </div>
 </div>
 </div>
