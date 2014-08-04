@@ -61,6 +61,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderDocumentsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderdocs");
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
+
+            FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
+            FolderImages = Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
+            FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
         }
 
         #endregion
@@ -128,6 +132,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String FolderImagesMapPath { get; private set; }
         public String FolderDocumentsMapPath { get; private set; }
         public String FolderUploadsMapPath { get; private set; }
+        public String FolderImages { get; private set; }
+        public String FolderDocuments { get; private set; }
+        public String FolderUploads { get; private set; }
 
         #endregion
 

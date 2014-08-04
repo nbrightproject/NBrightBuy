@@ -234,9 +234,6 @@
   <data name="cmdDeleteFile.ToolTip" xml:space="preserve">
     <value>Delete File</value>
   </data>
-  <data name="cmdUploadFile.commandname" xml:space="preserve">
-    <value>uploadfile</value>
-  </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
   </data>

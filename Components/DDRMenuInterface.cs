@@ -130,14 +130,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     n.LargeImage = "";
                     n.Icon = "";
                     var img = obj.imageurl;
-                    //if (img != "")
-                    //{
-                    //    n.LargeImage = imgFolder + "/" + img;
-                    //    n.Icon = imgFolder + "/Thumb_50x0" + img;
-                    //    if (defimgsize != "") n.Icon = imgFolder + "/Thumb_" + defimgsize + img;
-                    //    var imgsize = obj.GetXmlProperty("genxml/textbox/txtsmallimgsize");
-                    //    if (imgsize != "") n.Icon = imgFolder + "/Thumb_" + imgsize + img;
-                    //}
+                    if (img != "")
+                    {
+                        n.LargeImage = img;
+                        n.Icon = "/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=50&amp;h=50&amp;src=/" + img;
+                    }
                     n.Keywords = obj.metakeywords;
                     n.Description = obj.metadescription;
                     n.CommandName = "";

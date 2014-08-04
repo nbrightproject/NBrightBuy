@@ -40,7 +40,7 @@
 <div id="notifymsg"></div>
 
 <br />
-[<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" commandname="return" />] - 
+[<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 
 <a href="#" id="categorysave">[<tag type="valueof" resourcekey="General.cmdSave" />]</a>
 
 <br /><br /><br />
@@ -56,7 +56,7 @@
   <div id="tabs-1">
     [<tag id="itemid" type="hidden" databind="ItemId" />]
     [<tag id="lang" type="hidden" databind="Lang" />]
-    [<tag id="fields" type="postback" value="genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+    [<tag id="fields" type="postback" value="genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
     [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
     <h2>CATEGORY DATA</h2>
     <br />
@@ -80,7 +80,9 @@
     [<tag id="message" type="ckeditor" height="400" width="800"  />]
   </div>
   <div id="tabs-3">
-    [<tag id="Tag1" type="fileupload" />]    
+      [<tag id="image" type="fileupload" />]    <br/>
+      [<tag id="cmdUpload" type="linkbutton" resourcekey="General.cmdUploadFile" commandname="uploadimage" />]  
+      [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
   </div>
   <div id="tabs-4">
     <div id="productlist"> 

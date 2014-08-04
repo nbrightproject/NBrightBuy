@@ -109,6 +109,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             foreach (var f in fields)
             {
                 DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                // if we have a image field then we need to create the imageurl field
+                if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
+                    DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
                 DataLangRecord.RemoveXmlNode(f);
             }
         }

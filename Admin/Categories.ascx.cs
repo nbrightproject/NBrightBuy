@@ -194,6 +194,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "uploadimage":
+                    UpodateRecord();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
 
             }
 
@@ -202,6 +206,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
+        private void UpodateRecord()
+        {
+            var xmlData = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderImagesMapPath);
+            var objInfo = new NBrightInfo();
+            objInfo.ItemID = -1;
+            objInfo.TypeCode = "POSTDATA";
+            objInfo.XMLData = xmlData;
+            var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
+
+            var strOut = "No Category ID ('itemid' hidden fields needed on input form)";
+            if (settings.ContainsKey("itemid"))
+            {
+                var catData = new CategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
+                catData.Update(objInfo);
+                catData.Save();
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.ok);
+            }
+            else
+            {
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.fail);
+            }
+        }
 
         private void MoveRecord(int itemId)
         {

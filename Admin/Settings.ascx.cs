@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -161,7 +162,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             //remove currebt setting from cache an reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");
             Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
-            var d = StoreSettings.Current.DebugMode; // dummy call just to reload now.
+
+            // create upload folders
+            var folder = StoreSettings.Current.FolderImagesMapPath;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            folder = StoreSettings.Current.FolderDocumentsMapPath;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            folder = StoreSettings.Current.FolderUploadsMapPath ;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
         }
 
         private void DisplayDataEntryRepeater()

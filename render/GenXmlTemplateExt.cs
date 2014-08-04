@@ -13,6 +13,7 @@ using DotNetNuke.Entities.Portals;
 using NBrightCore;
 using NBrightCore.TemplateEngine;
 using NBrightCore.common;
+using NBrightCore.images;
 using NBrightCore.providers;
 using NBrightCore.render;
 using DotNetNuke.Entities.Users;
@@ -213,6 +214,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "ckeditor": //legacy before namespace
                     CreateCKEditor(container, xmlNod);
+                    return true;
+                case "imageof":
+                    CreateImage(container, xmlNod);
                     return true;
                 default:
                     return false;
@@ -3099,7 +3103,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-
         #region "CKEditor"
 
         private void CreateCKEditor(Control container, XmlNode xmlNod)
@@ -3146,6 +3149,71 @@ namespace Nevoweb.DNN.NBrightBuy.render
             // ReSharper restore EmptyGeneralCatchClause
             {
                 //do nothing
+            }
+        }
+
+        #endregion
+
+        #region "create Image control"
+
+        private void CreateImage(Control container, XmlNode xmlNod)
+        {
+            var img = new Image();
+
+            img = (Image)GenXmlFunctions.AssignByReflection(img, xmlNod);
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["xpath"] != null))
+            {
+                img.ImageUrl = xmlNod.Attributes["xpath"].InnerXml; // use imageurl to get the xpath of the image
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["thumb"] != null))
+            {
+                img.Attributes.Add("thumb", xmlNod.Attributes["thumb"].InnerXml);
+            }
+
+            img.DataBinding += ImageDataBinding;
+            container.Controls.Add(img);
+        }
+
+        private void ImageDataBinding(object sender, EventArgs e)
+        {
+            var img = (Image)sender;
+            var container = (IDataItemContainer)img.NamingContainer;
+            try
+            {
+                img.Visible = NBrightGlobal.IsVisible;
+                var src = "";
+
+                XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), img.ImageUrl);
+                if ((nod != null))
+                {
+                    src += nod.InnerText;
+                }
+
+                var altpath = img.ImageUrl.Replace("genxml/hidden/hid", "genxml/textbox/txt");
+                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), altpath);
+                if ((nod != null))
+                {
+                    img.AlternateText = nod.InnerText;
+                }
+
+                if (img.Attributes["thumb"] == null || img.Attributes["thumb"] == "")
+                {
+                    img.ImageUrl = src;
+                }
+                else
+                {
+                    var w = ImgUtils.GetThumbWidth(img.Attributes["thumb"]).ToString("");
+                    var h = ImgUtils.GetThumbHeight(img.Attributes["thumb"]).ToString("");
+                    if (w == "-1") w = "0";
+                    if (h == "-1") h = "0";
+                    img.Attributes.Remove("thumb");
+                    img.ImageUrl = "/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=" + w + "&h=" + h + "&src=" + src;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // no error
             }
         }
 
