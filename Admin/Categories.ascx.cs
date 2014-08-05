@@ -196,6 +196,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "uploadimage":
                     UpodateRecord();
+                    param[0] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
 

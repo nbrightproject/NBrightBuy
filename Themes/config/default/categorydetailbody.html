@@ -16,31 +16,104 @@
         // ajax call returned data, so action based on the action being done.
         $('input[[id*=nbxrtn]]').change(function () {
             //we need this event to pick up the data returned and move it into the correct div as html
-            if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
+
+            $('#nbsnotify').html(''); // clear message on each load.
+            
+            // START: --------   Category Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'getcategoryproductlist') {
                 $('#productlist').html($(this).val());
                 $(this).val('');
+                //Do paging
+                $('.cmdPg').click(function () {
+                    $('input[[id*="pagenumber"]]').val($(this).attr("pagenumber"));
+                    nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
+                });
+                // select product
+                $('#productselect').click(function () {
+                    $("input[[id*='header']]").val("productselectheader.html");
+                    $("input[[id*='body']]").val("productselectbody.html");
+                    $("input[[id*='footer']]").val("productselectfooter.html");
+                    nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
+                    $('#categorydatasection').hide();
+                    $('#productselectsection').show();
+                });
+                // remove product
+                $('.removeproduct').click(function () {
+                    nbxget('deletecatxref', '.productid' + $(this).attr('itemid'), 'deletecatxref');
+                    $('.productid' + $(this).attr('itemid')).hide();
+                });
             }
+            // END: --------   Category Product Xref ----------------------
+
+            // START: --------  Product Select ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
+                $('#productselectlist').html($(this).val());
+                $(this).val('');
+                //Do paging
+                $('.cmdPg').click(function () {
+                    $('input[[id*="pagenumber"]]').val($(this).attr("pagenumber"));
+                    nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
+                });
+                // return from select product
+                $('#returnfromselect').click(function () {
+                    $("input[[id*='header']]").val("categoryproductheader.html");
+                    $("input[[id*='body']]").val("categoryproductbody.html");
+                    $("input[[id*='footer']]").val("categoryproductfooter.html");
+                    nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
+                    $('#categorydatasection').show();
+                    $('#productselectsection').hide();
+                });
+                // select product
+                $('.selectproduct').click(function () {
+                    nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'), 'selectcatxref');
+                    $('.selectproductid' + $(this).attr('itemid')).hide();
+                });
+            }
+            // END: --------  Product Select ----------------------
+
+            // START: --------   Remove Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'deletecatxref') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+            }
+            // END: --------   Remove Product Xref ----------------------
+
+            // START: --------   Select Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'selectcatxref') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+            }
+            // END: --------   Select Product Xref ----------------------
+
+            // START: --------   Save Category Data ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'setcategory') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+            }
+            // END: --------   Save Category Data ----------------------
+
         });
 
-        $('input[[id *= "nbxprocessing"]]').change(function () {
-            $('#notifymsg').html($('input[[id*=nbxrtn]]').val());
-        });
 
         // save the category data
         $('#categorysave').click(function () {
             CKEditor_TextBoxEncode($('textarea[[id*="message"]]').attr('id'), 0); // need this to get ckeditor text
-            nbxget('setcategoryadminform', '#categorydata', 'setcategory'); // stage 1 update
+            nbxget('setcategoryadminform', '#categorydata', 'setcategory');
         });
+
 
         $("#tabs").tabs();
 
-        nbxget('getproductselectlist', '#categorydata', 'getproductlist'); // stage 1 update
+        nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
 
 
     });
 
 </script>
-<div id="notifymsg"></div>
+<div id="nbsnotify"></div>
+
+<div id="categorydatasection">
+    
 
 <br />
 [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 
@@ -52,52 +125,66 @@
   <ul>
     <li><a href="#tabs-1">General</a></li>
     <li><a href="#tabs-2">Description</a></li>
-    <li><a href="#tabs-3">Images</a></li>
-    <li><a href="#tabs-4">Products</a></li>
+    <li><a href="#tabs-3">Products</a></li>
   </ul>
-<div id="categorydata">
-  <div id="tabs-1">
-    [<tag id="itemid" type="hidden" databind="ItemId" />]
-    [<tag id="lang" type="hidden" databind="Lang" />]
-    [<tag id="fields" type="postback" value="genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
-    [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
+    <div id="categorydata">
+        
+        <div id="productselectparams">
+            [<tag id="itemid" type="hidden" databind="ItemId" />]
+            [<tag id="lang" type="hidden" databind="Lang" />]
+            [<tag id="header" type="hidden" value="categoryproductheader.html"/>]
+            [<tag id="body" type="hidden" value="categoryproductbody.html"/>]
+            [<tag id="footer" type="hidden" value="categoryproductfooter.html"/>]
+            [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
+            [<tag id="pagesize" type="hidden" value="30"/>]
+            [<tag id="pagenumber" type="hidden" value="1"/>]
+        </div>
 
-    [<tag id="header" type="hidden" value="categoryproductheader.html"/>]
-    [<tag id="body" type="hidden" value="categoryproductbody.html"/>]
-    [<tag id="footer" type="hidden" value="categoryproductfooter.html"/>]
-    [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
-      
+        [<tag id="fields" type="postback" value="genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+        [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
 
-      <h2>CATEGORY DATA</h2>
-    <br />
-    Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
-    Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
-    Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
-    Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-    Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" />] <br />
-    Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
-    List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
+        <div id="tabs-1">
+     
 
-    SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
-    SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
-    Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-    Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+            <h2>CATEGORY DATA</h2>
+            <br />
+            Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
+            Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
+            Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
+            Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+            Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" />] <br />
+            Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
+            List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
 
-  </div>
-    <br />
-    <br />
-  <div id="tabs-2">
-    [<tag id="message" type="ckeditor" height="400" width="800"  />]
-  </div>
-  <div id="tabs-3">
-      [<tag id="image" type="fileupload" />]    <br/>
-      [<tag id="cmdUpload" type="linkbutton" resourcekey="General.cmdUploadFile" commandname="uploadimage" />]  
-      [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
-  </div>
-  <div id="tabs-4">
-      <div id="productlist">
+            SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
+            SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
+            Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+            Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
 
-      </div>
-  </div>
+            <br />
+            <div>
+                [<tag id="image" type="fileupload" />]    <br/>
+                [<tag id="cmdUpload" type="linkbutton" resourcekey="General.cmdUploadFile" commandname="uploadimage" commandargument="ItemID" />]  
+                [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
+            </div>
+
+        </div>
+        <br />
+        <div id="tabs-2">
+            [<tag id="message" type="ckeditor" height="400" width="800"  />]
+        </div>
+        <div id="tabs-3">
+            <div id="productlist">
+
+            </div>
+        </div>
+    </div>
 </div>
+
+</div>
+<div id="productselectsection" style="display:none;">
+
+    <div id="productselectlist">
+        
+    </div>
 </div>

@@ -410,6 +410,9 @@
     <Content Include="Themes\config\default\categorylistfooter.html" />
     <Content Include="Themes\config\default\categorylistheader.html" />
     <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
+    <Content Include="Themes\config\default\categoryproductbody.html" />
+    <Content Include="Themes\config\default\categoryproductfooter.html" />
+    <Content Include="Themes\config\default\categoryproductheader.html" />
     <Content Include="Themes\config\default\categorysearch.html" />
     <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\clientsbody.html" />
@@ -443,6 +446,9 @@
     <Content Include="Themes\config\default\pluginsfooter.html" />
     <Content Include="Themes\config\default\pluginsheader.html" />
     <Content Include="Themes\config\default\ProductSearch_Settings.html" />
+    <Content Include="Themes\config\default\productselectbody.html" />
+    <Content Include="Themes\config\default\productselectfooter.html" />
+    <Content Include="Themes\config\default\productselectheader.html" />
     <Content Include="Themes\config\default\ProductView_Settings.html" />
     <Content Include="Themes\config\default\ProfileForm_Settings.html" />
     <Content Include="Themes\config\default\settingsbody.html" />

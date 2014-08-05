@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
+using System.Text;
 using System.Web;
+using System.Web.UI;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using Microsoft.ApplicationBlocks.Data;
@@ -124,6 +127,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "getproductselectlist":
                     strOut = GetProductSelectList(context);
                     break;
+                case "getcategoryproductlist":
+                    strOut = GetCategoryProductList(context);
+                    break;
+                case "deletecatxref":
+                    if (CheckRights()) strOut = DeleteCatXref(context);
+                    break;
+                case "selectcatxref":
+                    if (CheckRights()) strOut = SelectCatXref(context);
+                    break;
+                    
 
             }
 
@@ -242,6 +255,96 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+
+        private String GetCategoryProductList(HttpContext context)
+        {
+            try
+            {
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DataProvider.Instance().DatabaseOwner;
+
+                var settings = GetAjaxFields(context);
+                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
+
+                strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
+
+
+                if (!settings.ContainsKey("filter")) settings.Add("filter", strFilter);
+                return GetProductListData(settings);
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+        private string DeleteCatXref(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
+                if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                    var dbOwner = DataProvider.Instance().DatabaseOwner;
+                    var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+                    objCtrl.GetSqlxml(stmt);
+                }
+                else
+                    return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return "";
+        }
+
+        private string SelectCatXref(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
+                if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var strGuid = xrefitemid + "x" + parentitemid;
+                    var objCtrl = new NBrightBuyController();
+                    var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
+                    if (nbi == null)
+                    {
+                        nbi = new NBrightInfo();
+                        nbi.ItemID = -1;
+                        nbi.PortalId = PortalSettings.Current.PortalId;
+                        nbi.ModuleId = -1;
+                        nbi.TypeCode = "CATXREF";
+                        nbi.XrefItemId = Convert.ToInt32(xrefitemid);
+                        nbi.ParentItemId = Convert.ToInt32(parentitemid);
+                        nbi.GUIDKey = strGuid;
+                        objCtrl.Update(nbi);                        
+                    }
+                }
+                else
+                    return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return "";
+        }
+
         #endregion
 
         #region "Product Methods"
@@ -264,34 +367,13 @@ namespace Nevoweb.DNN.NBrightBuy
 
         }
 
-        private String GetCategoryProductList(HttpContext context)
-        {
-            try
-            {
-                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                var dbOwner = DataProvider.Instance().DatabaseOwner;
-
-                var settings = GetAjaxFields(context);
-                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + settings["itemid"] + ") ";
-                if (!settings.ContainsKey("filter")) settings.Add("filter",strFilter);
-                return GetProductListData(settings);
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
 
         #endregion
 
 
         #region "functions"
 
-        private String GetProductListData(Dictionary<String, String> settings)
+        private String GetProductListData(Dictionary<String, String> settings,bool paging = true)
         {
             var strOut = "";
 
@@ -300,15 +382,20 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!settings.ContainsKey("footer")) settings.Add("footer", "");
             if (!settings.ContainsKey("filter")) settings.Add("filter", "");
             if (!settings.ContainsKey("orderby")) settings.Add("orderby", "");
+            if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
+            if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
+            if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
 
             var header = settings["header"];
             var body = settings["body"];
             var footer = settings["footer"];
             var filter = settings["filter"];
             var orderby = settings["orderby"];
+            var returnLimit = Convert.ToInt32(settings["returnlimit"]);    
+            var pageNumber = Convert.ToInt32(settings["pagenumber"]);            
+            var pageSize = Convert.ToInt32(settings["pagesize"]);
 
-
-            
+            var recordCount = 0;
 
             var themeFolder = StoreSettings.Current.ThemeFolder;
             if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
@@ -333,10 +420,24 @@ namespace Nevoweb.DNN.NBrightBuy
             var obj = new NBrightInfo(true);
             strOut = GenXmlFunctions.RenderRepeater(obj, headerTempl);
 
-            var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode);
+            if (paging) // get record count for paging
+            {
+                if (pageNumber == 0) pageNumber = 1;
+                if (pageSize == 0) pageSize = StoreSettings.Current.GetInt("pagesize");
+                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "PRD", filter,"PRDLANG",_lang);
+            }
+
+            var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode,"",returnLimit,pageNumber,pageSize,recordCount);
             strOut += GenXmlFunctions.RenderRepeater(objList, bodyTempl);
 
             strOut += GenXmlFunctions.RenderRepeater(obj, footerTempl);
+
+            // add paging if needed
+            if (paging)
+            {
+                var pg = new NBrightCore.controls.PagingCtrl();
+                strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
+            }
 
             return strOut;
         }
