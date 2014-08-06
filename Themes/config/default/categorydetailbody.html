@@ -37,13 +37,33 @@
                     $('#categorydatasection').hide();
                     $('#productselectsection').show();
                 });
-                // remove product
+                // remove single product
                 $('.removeproduct').click(function () {
                     nbxget('deletecatxref', '.productid' + $(this).attr('itemid'), 'deletecatxref');
                     $('.productid' + $(this).attr('itemid')).hide();
                 });
+                $('#removeall').click(function() {
+                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
+                        nbxget('deleteallcatxref', '#productselectparams', 'deleteallcatxref');
+                    }
+                });
+                $('#copyto').click(function () {
+                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
+                        nbxget('copyallcatxref', '#productselectparams', 'copyallcatxref');
+                    }
+                });
+                $('#moveto').click(function () {
+                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
+                        nbxget('moveallcatxref', '#productselectparams', 'moveallcatxref');
+                    }
+                });
+
+                $('select[[id*="selectcatid"]]').change(function() {
+                    $('input[[id*="selectedcatid"]]').val($(this).val());
+                });
+
             }
-            // END: --------   Category Product Xref ----------------------
+            // END: -------------------------------------------------------
 
             // START: --------  Product Select ----------------------
             if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
@@ -69,28 +89,51 @@
                     $('.selectproductid' + $(this).attr('itemid')).hide();
                 });
             }
-            // END: --------  Product Select ----------------------
+            // END: -------------------------------------------------------
 
             // START: --------   Remove Product Xref ----------------------
             if ($('input[[id*="nbxaction"]]').val() == 'deletecatxref') {
                 $('#nbsnotify').html($(this).val());
                 $(this).val('');
             }
-            // END: --------   Remove Product Xref ----------------------
+            // END: -------------------------------------------------------
+
+            // START: --------   Remove ALL Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'deleteallcatxref') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+                nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
+            }
+            // END: -------------------------------------------------------
+
+            // START: --------   Move ALL Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'moveallcatxref') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+                nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
+            }
+            // END: -------------------------------------------------------
+
+            // START: --------   Copy ALL Product Xref ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'copyallcatxref') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+            }
+            // END: -------------------------------------------------------
 
             // START: --------   Select Product Xref ----------------------
             if ($('input[[id*="nbxaction"]]').val() == 'selectcatxref') {
                 $('#nbsnotify').html($(this).val());
                 $(this).val('');
             }
-            // END: --------   Select Product Xref ----------------------
+            // END: -------------------------------------------------------
 
             // START: --------   Save Category Data ----------------------
             if ($('input[[id*="nbxaction"]]').val() == 'setcategory') {
                 $('#nbsnotify').html($(this).val());
                 $(this).val('');
             }
-            // END: --------   Save Category Data ----------------------
+            // END: -------------------------------------------------------
 
         });
 
@@ -103,6 +146,7 @@
 
 
         $("#tabs").tabs();
+
 
         nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
 
@@ -138,9 +182,10 @@
             [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
             [<tag id="pagesize" type="hidden" value="30"/>]
             [<tag id="pagenumber" type="hidden" value="1"/>]
+            [<tag id="selectedcatid" type="hidden" value=""/>]            
         </div>
 
-        [<tag id="fields" type="postback" value="genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+        [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/textbox/message" />]
 
         <div id="tabs-1">
@@ -152,7 +197,7 @@
             Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
             Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
             Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-            Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" />] <br />
+            Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" showhidden="true" />] <br />
             Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
             List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
 
@@ -160,7 +205,7 @@
             SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
             Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
             Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-
+            Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] 
             <br />
             <div>
                 [<tag id="image" type="fileupload" />]    <br/>

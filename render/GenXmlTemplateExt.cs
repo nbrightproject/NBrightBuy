@@ -1296,20 +1296,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         if (showEmpty || grpcat.entrycount > 0)
                         {
-
-                            if (grpcat.archived == false || showArchived)
+                            if (grpcat.ishidden == false || showHidden)
                             {
-                                if (grpcat.ishidden == false || showHidden)
+                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                if (catreflist == "")
+                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                else
                                 {
-                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
-                                    if (catreflist == "")
-                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                    else
+                                    if (grpcat.categoryref != "" &&
+                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
                                     {
-                                        if (grpcat.categoryref != "" && (catreflist + ",").Contains(grpcat.categoryref + ","))
-                                        {
-                                            rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                        }
+                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                     }
                                 }
                             }
@@ -1365,10 +1362,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
                 
-                if (showhidden == "True") showHidden = true;
-                if (showarchived == "True") showArchived = true;
-                if (showempty == "False") showEmpty = false;
-                if (displaycount == "True") displayCount = true;
+                if (showhidden.ToLower() == "true") showHidden = true;
+                if (showarchived.ToLower() == "true") showArchived = true;
+                if (showempty.ToLower() == "false") showEmpty = false;
+                if (displaycount.ToLower() == "true") displayCount = true;
                 if (xmlNod.Attributes["catreflist"] != null) catreflist = xmlNod.Attributes["catreflist"].Value;
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
                 if (parentref != "")

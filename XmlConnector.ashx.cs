@@ -136,8 +136,15 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "selectcatxref":
                     if (CheckRights()) strOut = SelectCatXref(context);
                     break;
-                    
-
+                case "deleteallcatxref":
+                    if (CheckRights()) strOut = DeleteAllCatXref(context);
+                    break;
+                case "copyallcatxref":
+                    if (CheckRights()) strOut = CopyAllCatXref(context);
+                    break;
+                case "moveallcatxref":
+                    if (CheckRights()) strOut = CopyAllCatXref(context,true);
+                    break;
             }
 
             #endregion
@@ -255,7 +262,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
-
         private String GetCategoryProductList(HttpContext context)
         {
             try
@@ -344,6 +350,74 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             return "";
         }
+
+        private string DeleteAllCatXref(HttpContext context)
+        {
+            var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var objCtrl = new NBrightBuyController();
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DataProvider.Instance().DatabaseOwner;
+                var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid} ";
+                stmt = Utils.ReplaceSettingTokens(stmt, settings);
+
+                objCtrl.GetSqlxml(stmt);
+                strOut = NBrightBuyUtils.GetResxMessage();
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return strOut;
+        }
+
+        private String CopyAllCatXref(HttpContext context,Boolean moverecords = false)
+        {
+            var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var strFilter = " and XrefItemId = {Settings:itemid} ";
+
+                strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
+
+                var newcatid = "";
+                if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"]; 
+
+                if (Utils.IsNumeric(newcatid))
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
+
+                    foreach (var obj in objList)
+                    {
+                        var strGuid = newcatid + "x" + obj.ParentItemId.ToString("");
+                        var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
+                        if (nbi == null)
+                        {
+                            if (!moverecords) obj.ItemID = -1;
+                            obj.XrefItemId = Convert.ToInt32(newcatid);
+                            obj.GUIDKey = strGuid;
+                            objCtrl.Update(obj);
+                        }
+                        else
+                        {
+                            if (moverecords && obj.ItemID != nbi.ItemID) objCtrl.Delete(obj.ItemID);
+                        }
+                    }
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            return strOut;
+        }
+
 
         #endregion
 

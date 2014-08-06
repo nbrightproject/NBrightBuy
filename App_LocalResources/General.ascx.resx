@@ -426,4 +426,16 @@
   <data name="cmdMove.Text" xml:space="preserve">
     <value>Move</value>
   </data>
+  <data name="CopyTo.Text" xml:space="preserve">
+    <value>Copy To</value>
+  </data>
+  <data name="MoveTo.Text" xml:space="preserve">
+    <value>Move To</value>
+  </data>
+  <data name="RemoveAll.Text" xml:space="preserve">
+    <value>Remove All</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
 </root>
