@@ -17,6 +17,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo DataRecord;
         public NBrightInfo DataLangRecord;
 
+        private Boolean _doCascadeIndex;
+        private int _oldcatcascadeid = 0;
+        private int _newcatcascadeid = 0;
         private String _lang = ""; // needed for webservice
 
         /// <summary>
@@ -114,7 +117,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
                 if (f == "genxml/dropdownlist/ddlparentcatid")
                 {
-                    if (Utils.IsNumeric(info.GetXmlProperty(f))) DataRecord.ParentItemId = Convert.ToInt32(info.GetXmlProperty(f));
+                    if (Utils.IsNumeric(info.GetXmlProperty(f)))
+                    {
+                        if (DataRecord.ParentItemId != Convert.ToInt32(info.GetXmlProperty(f)))
+                        {
+                            _oldcatcascadeid = DataRecord.ParentItemId;
+                            _newcatcascadeid = Convert.ToInt32(info.GetXmlProperty(f));
+                            _doCascadeIndex = true;
+                            DataRecord.ParentItemId = _newcatcascadeid;  
+                        }
+                    }
                 }
                 DataLangRecord.RemoveXmlNode(f);
                 

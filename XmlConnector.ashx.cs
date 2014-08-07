@@ -298,11 +298,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var objCtrl = new NBrightBuyController();
-                    var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                    var dbOwner = DataProvider.Instance().DatabaseOwner;
-                    var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-                    objCtrl.GetSqlxml(stmt);
+                    DeleteCatXref(xrefitemid, parentitemid);
                 }
                 else
                     return "Invalid parentitemid or xrefitmeid";
@@ -312,6 +308,38 @@ namespace Nevoweb.DNN.NBrightBuy
                 return e.ToString();
             }
             return "";
+        }
+
+        private void DeleteCatXref(String xrefitemid, String parentitemid)
+        {
+            var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DataProvider.Instance().DatabaseOwner;
+            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+            objCtrl.GetSqlxml(stmt);
+            //remove all cascade xref 
+            var objGrpCtrl = new GrpCatController(_lang, true);
+            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
+            foreach (var p in parentcats.Parents)
+            {
+                var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.parentitemid = " + parentitemid);
+                var deleterecord = true;
+                foreach (var xref in xreflist)
+                {
+                    var catid = xref.XrefItemId;
+                    var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
+                    if (xrefparentcats.Parents.Contains(p))
+                    {
+                        deleterecord = false;
+                        break;
+                    }
+                }
+                if (deleterecord)
+                {
+                    stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
+                    objCtrl.GetSqlxml(stmt);                    
+                }
+            }
         }
 
         private string SelectCatXref(HttpContext context)
@@ -337,9 +365,28 @@ namespace Nevoweb.DNN.NBrightBuy
                         nbi.TypeCode = "CATXREF";
                         nbi.XrefItemId = Convert.ToInt32(xrefitemid);
                         nbi.ParentItemId = Convert.ToInt32(parentitemid);
+                        nbi.XMLData = null;
+                        nbi.TextData = null;
+                        nbi.Lang = null;
                         nbi.GUIDKey = strGuid;
-                        objCtrl.Update(nbi);                        
+                        objCtrl.Update(nbi);
+                        //add all cascade xref 
+                        var objGrpCtrl = new GrpCatController(_lang,true);
+                        var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
+                        foreach (var p in parentcats.Parents)
+                        {
+                            strGuid = p.ToString("") + "x" + parentitemid;
+                            var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                            if (obj == null)
+                            {
+                                nbi.XrefItemId = p;
+                                nbi.TypeCode = "CATCASCADE";
+                                nbi.GUIDKey = strGuid;
+                                objCtrl.Update(nbi);
+                            }
+                        }
                     }
+
                 }
                 else
                     return "Invalid parentitemid or xrefitmeid";
@@ -357,14 +404,21 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var settings = GetAjaxFields(context);
-                var objCtrl = new NBrightBuyController();
-                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                var dbOwner = DataProvider.Instance().DatabaseOwner;
-                var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid} ";
-                stmt = Utils.ReplaceSettingTokens(stmt, settings);
 
-                objCtrl.GetSqlxml(stmt);
-                strOut = NBrightBuyUtils.GetResxMessage();
+                if (settings.ContainsKey("itemid"))
+                {
+                    var strFilter = " and XrefItemId = {Settings:itemid} ";
+                    strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
+
+                    var objCtrl = new NBrightBuyController();
+                    var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
+
+                    foreach (var obj in objList)
+                    {
+                        DeleteCatXref(settings["itemid"], obj.ParentItemId.ToString(""));
+                    }
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
             }
             catch (Exception e)
             {
@@ -384,9 +438,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
 
                 var newcatid = "";
-                if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"]; 
+                if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"];
 
-                if (Utils.IsNumeric(newcatid))
+                if (Utils.IsNumeric(newcatid) && settings.ContainsKey("itemid"))
                 {
                     var objCtrl = new NBrightBuyController();
                     var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
@@ -400,13 +454,30 @@ namespace Nevoweb.DNN.NBrightBuy
                             if (!moverecords) obj.ItemID = -1;
                             obj.XrefItemId = Convert.ToInt32(newcatid);
                             obj.GUIDKey = strGuid;
+                            obj.XMLData = null;
+                            obj.TextData = null;
+                            obj.Lang = null;
                             objCtrl.Update(obj);
-                        }
-                        else
-                        {
-                            if (moverecords && obj.ItemID != nbi.ItemID) objCtrl.Delete(obj.ItemID);
+                            //add all cascade xref 
+                            var objGrpCtrl = new GrpCatController(_lang, true);
+                            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(newcatid));
+                            foreach (var p in parentcats.Parents)
+                            {
+                                strGuid = p.ToString("") + "x" + obj.ParentItemId.ToString("");
+                                nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                                if (nbi == null)
+                                {
+                                    obj.XrefItemId = p;
+                                    obj.TypeCode = "CATCASCADE";
+                                    obj.GUIDKey = strGuid;
+                                    objCtrl.Update(obj);
+                                }
+                            }
                         }
                     }
+
+                    if (moverecords) DeleteAllCatXref(context);
+
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }
 

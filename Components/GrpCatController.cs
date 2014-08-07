@@ -12,12 +12,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class GrpCatController
     {
         private NBrightBuyController _objCtrl;
-
-
+        
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
 
-        public GrpCatController(String lang)
+        public GrpCatController(String lang,Boolean debugMode = false)
         {
             _objCtrl = new NBrightBuyController();
 
@@ -25,7 +24,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // build group category list
             var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (GrpCategoryList == null)
+            if (GrpCategoryList == null || debugMode)
             {
                 GrpCategoryList = GetGrpCatListFromDatabase(lang);
                 NBrightBuyUtils.SetModCache(-1, strCacheKey,GrpCategoryList);
@@ -34,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // build cateogry list for navigation from group category list
             strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
             CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (CategoryList == null)
+            if (CategoryList == null || debugMode)
             {
                 var lenum = from i in GrpCategoryList where i.grouptyperef == "cat" select i;
                 CategoryList = lenum.ToList();
@@ -424,6 +423,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return grpcatList;
 
+        }
+
+
+        #endregion
+
+        #region "indexing"
+
+
+        public void ReIndexCascade(int parentitemid)
+        {
+            //TODO: Create fucntion to clear all casacde indexes on a category and rebuild.
         }
 
 
