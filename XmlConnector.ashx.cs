@@ -328,7 +328,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var catid = xref.XrefItemId;
                     var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
-                    if (xrefparentcats.Parents.Contains(p))
+                    if (xrefparentcats != null && xrefparentcats.Parents.Contains(p))
                     {
                         deleterecord = false;
                         break;
