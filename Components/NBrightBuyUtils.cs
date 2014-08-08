@@ -319,6 +319,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public static void RemoveCache(String cacheKey)
+        {
+            NBrightCore.common.Utils.RemoveCache(cacheKey);
+        }
+
         public static void RemoveModCache(int moduleid)
         {
             var cList = (List<String>)NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));

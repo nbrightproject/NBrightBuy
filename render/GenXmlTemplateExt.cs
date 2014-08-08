@@ -3086,7 +3086,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/textbox/groupref");
                         if (li.Text != "") ddl.Items.Add(li);
                     }
-                    if (objL.Count > 0) ddl.SelectedIndex = 0;
+                    var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                    if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
                 }
 
             }

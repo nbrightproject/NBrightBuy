@@ -125,7 +125,10 @@ namespace Nevoweb.DNN.NBrightBuy
                         strOut = "deleted";
                     break;
                 case "getproductselectlist":
-                    strOut = GetProductSelectList(context);
+                    strOut = GetProductList(context);
+                    break;
+                case "getproductlist":
+                    strOut = GetProductList(context);
                     break;
                 case "getcategoryproductlist":
                     strOut = GetCategoryProductList(context);
@@ -320,24 +323,31 @@ namespace Nevoweb.DNN.NBrightBuy
             //remove all cascade xref 
             var objGrpCtrl = new GrpCatController(_lang, true);
             var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
-            foreach (var p in parentcats.Parents)
+            if (parentcats != null)
             {
-                var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.parentitemid = " + parentitemid);
-                var deleterecord = true;
-                foreach (var xref in xreflist)
+                foreach (var p in parentcats.Parents)
                 {
-                    var catid = xref.XrefItemId;
-                    var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
-                    if (xrefparentcats != null && xrefparentcats.Parents.Contains(p))
+                    var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF"," and NB1.parentitemid = " + parentitemid);
+                    if (xreflist != null)
                     {
-                        deleterecord = false;
-                        break;
+                        var deleterecord = true;
+                        foreach (var xref in xreflist)
+                        {
+                            var catid = xref.XrefItemId;
+                            var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
+                            if (xrefparentcats != null && xrefparentcats.Parents.Contains(p))
+                            {
+                                deleterecord = false;
+                                break;
+                            }
+                        }
+                        if (deleterecord)
+                        {
+                            stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
+                            objCtrl.GetSqlxml(stmt);
+                        }
+                        
                     }
-                }
-                if (deleterecord)
-                {
-                    stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
-                    objCtrl.GetSqlxml(stmt);                    
                 }
             }
         }
@@ -373,17 +383,20 @@ namespace Nevoweb.DNN.NBrightBuy
                         //add all cascade xref 
                         var objGrpCtrl = new GrpCatController(_lang,true);
                         var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
-                        foreach (var p in parentcats.Parents)
+                        if (parentcats != null)
                         {
-                            strGuid = p.ToString("") + "x" + parentitemid;
-                            var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                            if (obj == null)
+                            foreach (var p in parentcats.Parents)
                             {
-                                nbi.XrefItemId = p;
-                                nbi.TypeCode = "CATCASCADE";
-                                nbi.GUIDKey = strGuid;
-                                objCtrl.Update(nbi);
-                            }
+                                strGuid = p.ToString("") + "x" + parentitemid;
+                                var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                                if (obj == null)
+                                {
+                                    nbi.XrefItemId = p;
+                                    nbi.TypeCode = "CATCASCADE";
+                                    nbi.GUIDKey = strGuid;
+                                    objCtrl.Update(nbi);
+                                }
+                            }                            
                         }
                     }
 
@@ -494,7 +507,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Product Methods"
 
-        private String GetProductSelectList(HttpContext context)
+        private String GetProductList(HttpContext context)
         {
             try
             {
@@ -530,6 +543,8 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
             if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
             if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
+            if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
+            if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
 
             var header = settings["header"];
             var body = settings["body"];
@@ -539,6 +554,18 @@ namespace Nevoweb.DNN.NBrightBuy
             var returnLimit = Convert.ToInt32(settings["returnlimit"]);    
             var pageNumber = Convert.ToInt32(settings["pagenumber"]);            
             var pageSize = Convert.ToInt32(settings["pagesize"]);
+
+            var searchText = settings["searchtext"];
+            var searchCategory = settings["searchcategory"];
+
+            if (searchText != "") filter += " and (NB3.[ProductName] like '%" + searchText + "%' or NB3.[ProductRef] like '%" + searchText + "%' or NB3.[Summary] like '%" + searchText + "%' ) ";
+
+            if (Utils.IsNumeric(searchCategory))
+            {
+                var objQual = DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DataProvider.Instance().DatabaseOwner;
+                filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
+            }
 
             var recordCount = 0;
 

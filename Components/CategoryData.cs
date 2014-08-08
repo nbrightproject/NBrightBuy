@@ -19,7 +19,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private Boolean _doCascadeIndex;
         private int _oldcatcascadeid = 0;
-        private int _newcatcascadeid = 0;
         private String _lang = ""; // needed for webservice
 
         /// <summary>
@@ -95,6 +94,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
+            
+            //do reindex of cascade records.
+            if (_doCascadeIndex)
+            {
+                var objGrpCtrl = new GrpCatController(_lang);
+                objGrpCtrl.ReIndexCascade(_oldcatcascadeid); // reindex form parnet and parents
+                objGrpCtrl.ReIndexCascade(DataRecord.ItemID); // reindex self
+                objGrpCtrl.Reload();
+            }
         }
 
 
@@ -117,15 +125,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
                 if (f == "genxml/dropdownlist/ddlparentcatid")
                 {
-                    if (Utils.IsNumeric(info.GetXmlProperty(f)))
+                    var parentitemid = info.GetXmlProperty(f);
+                    if (!Utils.IsNumeric(parentitemid)) parentitemid = "0";
+                    if (DataRecord.ParentItemId != Convert.ToInt32(parentitemid))
                     {
-                        if (DataRecord.ParentItemId != Convert.ToInt32(info.GetXmlProperty(f)))
-                        {
-                            _oldcatcascadeid = DataRecord.ParentItemId;
-                            _newcatcascadeid = Convert.ToInt32(info.GetXmlProperty(f));
-                            _doCascadeIndex = true;
-                            DataRecord.ParentItemId = _newcatcascadeid;  
-                        }
+                        _oldcatcascadeid = DataRecord.ParentItemId;
+                        _doCascadeIndex = true;
+                        DataRecord.ParentItemId = Convert.ToInt32(parentitemid);
                     }
                 }
                 DataLangRecord.RemoveXmlNode(f);

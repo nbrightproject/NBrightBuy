@@ -1,0 +1,182 @@
+<!-- jQuery style just for dev, to be removed as needed -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+<!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<!-- return field for ajax calls -->
+[<tag id="nbxrtn" type="hidden" />]
+[<tag id="nbxprocessing" type="hidden" />]
+[<tag id="nbxaction" type="hidden" />]
+
+<script>
+
+    $(document).ready(function () {
+
+        $('input[[id*="nbxprocessing"]]').change(function () {
+            if ($(this).val() == 'BEFORE') $('.processing').show();
+            if ($(this).val() == 'AFTER') $('.processing').hide();
+        });
+
+
+        // ajax call returned data, so action based on the action being done.
+        $('input[[id*="nbxrtn"]]').change(function () {
+            //we need this event to pick up the data returned and move it into the correct div as html
+
+            $('#nbsnotify').html(''); // clear message on each load.          
+
+            // START: --------  Product Select ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
+                $('#productlist').html($(this).val());
+                $(this).val('');
+                //Do paging
+                $('.cmdPg').click(function () {
+                    $('input[[id*="pagenumber"]]').val($(this).attr("pagenumber"));
+                    nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
+                });
+                // select product
+                $('.selectproduct').click(function () {
+                    nbxget('editproduct', '.selproductid' + $(this).attr('itemid'), 'editproduct');
+                    $('#productlistsection').hide();
+                    $('#productdatasection').show();
+                });
+            }
+            // END: -------------------------------------------------------
+
+
+            // START: --------   Save Category Data ----------------------
+            if ($('input[[id*="nbxaction"]]').val() == 'setcategory') {
+                $('#nbsnotify').html($(this).val());
+                $(this).val('');
+            }
+            // END: -------------------------------------------------------
+
+        });
+
+
+        // START: --------   Search products ----------------------
+        // select search
+        $('#listsearch').click(function () {
+            $('input[[id*="searchtext"]]').val($('input[[id*="txtSearch"]]').val());
+            $('input[[id*="searchcategory"]]').val($('select[[id*="ddllistsearchcategory"]]').val());
+            nbxget('getproductlist', '#productselectparams', 'getproductlist');
+        });
+
+        // select search reset
+        $('#listreset').click(function () {
+            $('input[[id*="txtSearch"]]').val('');
+            $('select[[id*="ddllistsearchcategory"]]').val('');
+            $('input[[id*="searchtext"]]').val('');
+            $('input[[id*="searchcategory"]]').val('');
+            nbxget('getproductlist', '#productselectparams', 'getproductlist');
+        });
+        // END: -------------------------------------------------------
+
+        //show processing on postback for image.
+        $("body").on("click", ".postbacklink", function() {
+            $('.processing').show();
+        });
+
+        // save the product data
+        $('#productsave').click(function () {
+            CKEditor_TextBoxEncode($('textarea[[id*="message"]]').attr('id'), 0); // need this to get ckeditor text
+            //nbxget('setproductadminform', '#productdata', 'setproduct');
+        });
+        $('#returntolist').click(function () {
+            $('#productlistsection').show();
+            $('#productdatasection').hide();
+        });
+        
+
+
+        $("#tabs").tabs();
+
+        nbxget('getproductlist', '#productselectparams', 'getproductlist');
+
+    });
+
+</script>
+<div id="nbsnotify"></div>
+<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
+
+<div id="productsearchsection">
+    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
+    [<tag id="ddllistsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
+    <a href="#" id="listsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
+    <a href="#" id="listreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+</div>
+
+<div id="productlistsection">
+
+    <div id="productlist">
+        
+    </div>        
+</div>
+
+
+<div id="productdatasection" style="display:none;">
+
+    <br />
+    <a href="#" id="returntolist">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a> - 
+    <a href="#" id="productsave">[<tag type="valueof" resourcekey="General.cmdSave" />]</a>
+
+    <br /><br /><br />
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">General</a></li>
+            <li><a href="#tabs-2">Models</a></li>
+            <li><a href="#tabs-3">Description</a></li>
+            <li><a href="#tabs-4">Images</a></li>
+            <li><a href="#tabs-5">Related Products</a></li>
+        </ul>
+        <div id="productdata">
+        
+            <div id="productselectparams">
+                [<tag id="itemid" type="hidden" databind="ItemId" />]
+                [<tag id="lang" type="hidden" databind="Lang" />]
+                [<tag id="header" type="hidden" value="productlistheader.html"/>]
+                [<tag id="body" type="hidden" value="productlistbody.html"/>]
+                [<tag id="footer" type="hidden" value="productlistfooter.html"/>]
+                [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
+                [<tag id="pagesize" type="hidden" value="30"/>]
+                [<tag id="pagenumber" type="hidden" value="1"/>]
+                [<tag id="selectedcatid" type="hidden" value=""/>]            
+                [<tag id="searchtext" type="hidden" value=""/>]     
+                [<tag id="searchcategory" type="hidden" value=""/>]     
+            </div>
+
+            [<tag id="fields" type="postback" value="" />]
+            [<tag id="localizedfields" type="postback" value="" />]
+
+            <div id="tabs-1">
+                <h2>PRODUCT DATA</h2>
+                <br />
+                Name:   [<tag id="txtproductref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
+            </div>
+            <br />
+            <div id="tabs-2">
+            </div>
+            <div id="tabs-3">
+                [<tag id="message" type="ckeditor" height="400" width="800"  />]
+            </div>
+            <div id="tabs-4">
+                <div id="productimages">
+
+                </div>                
+            </div>
+            <div id="tabs-5">
+                <div id="relatedproductlist">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="productselectsection" style="display:none;">
+    <div id="productselectlist">
+        
+    </div>
+</div>

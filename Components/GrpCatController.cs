@@ -12,38 +12,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class GrpCatController
     {
         private NBrightBuyController _objCtrl;
-        
+
+        private String _lang = "";
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
 
         public GrpCatController(String lang,Boolean debugMode = false)
         {
-            _objCtrl = new NBrightBuyController();
-
-
-            // build group category list
-            var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
-            GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (GrpCategoryList == null || debugMode)
-            {
-                GrpCategoryList = GetGrpCatListFromDatabase(lang);
-                NBrightBuyUtils.SetModCache(-1, strCacheKey,GrpCategoryList);
-            }
-
-            // build cateogry list for navigation from group category list
-            strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
-            CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (CategoryList == null || debugMode)
-            {
-                var lenum = from i in GrpCategoryList where i.grouptyperef == "cat" select i;
-                CategoryList = lenum.ToList();
-                NBrightBuyUtils.SetModCache(-1, strCacheKey, CategoryList);
-            }
-
+            Load(lang, debugMode);
         }
 
         #region "base methods"
 
+        public void Reload()
+        {
+            ClearCache();
+            Load(_lang);
+        }
+
+        public void ClearCache()
+        {
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);
+                strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);                
+            }
+        }
 
         public GroupCategoryData GetGrpCategory(int categoryid)
         {
@@ -93,6 +89,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = lenum.ToList();
             if (l.Count == 0) return null;
             return l[0];
+        }
+
+        public List<GroupCategoryData> GetSubCategoryList(List<GroupCategoryData> catList, int categoryid, int lvl = 0)
+        {
+            if (lvl > 50) return catList; // stop possible infinate loop
+
+            var subcats = from i in GrpCategoryList where i.parentcatid == categoryid select i;
+            foreach (var c in subcats)
+            {
+                catList.Add(c);
+                GetSubCategoryList(catList, c.categoryid, lvl + 1);
+            }
+            return catList;
         }
 
         #endregion
@@ -336,6 +345,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "private methods"
 
+        private void Load(String lang, Boolean debugMode = false)
+        {
+            _objCtrl = new NBrightBuyController();
+            _lang = lang;
+
+            // build group category list
+            var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (GrpCategoryList == null || debugMode)
+            {
+                GrpCategoryList = GetGrpCatListFromDatabase(lang);
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, GrpCategoryList);
+            }
+
+            // build cateogry list for navigation from group category list
+            strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (CategoryList == null || debugMode)
+            {
+                var lenum = from i in GrpCategoryList where i.grouptyperef == "cat" select i;
+                CategoryList = lenum.ToList();
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, CategoryList);
+            }
+        }
+
         private NBrightInfo GetLangData(List<NBrightInfo> langList,int categoryid)
         {
             var lenum = from i in langList where i.ParentItemId == categoryid select i;
@@ -425,15 +459,81 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
+        private void AddCatCascadeRecord(int categoryid,int productid)
+        {
+            var strGuid = categoryid.ToString("D") + "x" + productid.ToString("D");
+            var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+            if (nbi == null)
+            {
+                nbi = new NBrightInfo();
+                nbi.ItemID = -1;
+                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.ModuleId = -1;
+                nbi.TypeCode = "CATCASCADE";
+                nbi.XrefItemId = categoryid;
+                nbi.ParentItemId = productid;
+                nbi.XMLData = null;
+                nbi.TextData = null;
+                nbi.Lang = null;
+                nbi.GUIDKey = strGuid;
+                _objCtrl.Update(nbi);
+            }
+        }
 
         #endregion
 
         #region "indexing"
 
-
-        public void ReIndexCascade(int parentitemid)
+        /// <summary>
+        /// Reindex catcascade records for category and all parent categories 
+        /// </summary>
+        /// <param name="categoryid"></param>
+        public void ReIndexCascade(int categoryid)
         {
-            //TODO: Create fucntion to clear all casacde indexes on a category and rebuild.
+            ReIndexSingleCascade(categoryid);
+            var cat = GetCategory(categoryid);
+            if (cat != null)
+            {
+                foreach (var p in cat.Parents)
+                {
+                    ReIndexSingleCascade(p);
+                }                
+            }
+        }
+
+        /// <summary>
+        /// Rebuild the CATCASCADE index records for a single category
+        /// </summary>
+        /// <param name="categoryid"></param>
+        private void ReIndexSingleCascade(int categoryid)
+        {
+            //get all category product ids from catxref sub category records.
+            var xrefList = new List<NBrightInfo>();
+            var prodItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+            var catList = new List<GroupCategoryData>();
+            var subCats = GetSubCategoryList(catList, categoryid);
+            foreach (var c in subCats)
+            {
+                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString("D"));
+                prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
+            }
+            //Get the current catascade records
+            xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString("D"));
+            var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+
+            //Update the catcascade records.
+            foreach (var prodId in prodItemIdList)
+            {
+                AddCatCascadeRecord(categoryid, prodId);
+                casacdeProdItemIdList.RemoveAll(i => i == prodId);
+            }
+            //remove any cascade records that no longer exists
+            foreach (var productid in casacdeProdItemIdList)
+            {
+                var strGuid = categoryid.ToString("D") + "x" + productid.ToString("D");
+                var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                if (nbi != null) _objCtrl.Delete(nbi.ItemID);
+            }
         }
 
 

@@ -13,8 +13,14 @@
 
     $(document).ready(function () {
 
+        $('input[[id*="nbxprocessing"]]').change(function () {
+            if ($(this).val() == 'BEFORE') $('.processing').show();
+            if ($(this).val() == 'AFTER') $('.processing').hide();
+        });
+
+
         // ajax call returned data, so action based on the action being done.
-        $('input[[id*=nbxrtn]]').change(function () {
+        $('input[[id*="nbxrtn"]]').change(function () {
             //we need this event to pick up the data returned and move it into the correct div as html
 
             $('#nbsnotify').html(''); // clear message on each load.
@@ -138,6 +144,29 @@
         });
 
 
+        // START: --------   Search products ----------------------
+        // select search
+        $('#selectsearch').click(function () {
+            $('input[[id*="searchtext"]]').val($('input[[id*="txtSearch"]]').val());
+            $('input[[id*="searchcategory"]]').val($('select[[id*="ddlsearchcategory"]]').val());
+            nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
+        });
+
+        // select search reset
+        $('#selectreset').click(function () {
+            $('input[[id*="txtSearch"]]').val('');
+            $('select[[id*="ddlsearchcategory"]]').val('');
+            $('input[[id*="searchtext"]]').val('');
+            $('input[[id*="searchcategory"]]').val('');
+            nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
+        });
+        // END: -------------------------------------------------------
+
+        //show processing on postback for image.
+        $("body").on("click", ".postbacklink", function() {
+            //$('.processing').show();
+        });
+
         // save the category data
         $('#categorysave').click(function () {
             CKEditor_TextBoxEncode($('textarea[[id*="message"]]').attr('id'), 0); // need this to get ckeditor text
@@ -150,12 +179,11 @@
 
         nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
 
-
     });
 
 </script>
 <div id="nbsnotify"></div>
-
+<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
 <div id="categorydatasection">
     
 
@@ -183,6 +211,8 @@
             [<tag id="pagesize" type="hidden" value="30"/>]
             [<tag id="pagenumber" type="hidden" value="1"/>]
             [<tag id="selectedcatid" type="hidden" value=""/>]            
+            [<tag id="searchtext" type="hidden" value=""/>]     
+            [<tag id="searchcategory" type="hidden" value=""/>]     
         </div>
 
         [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
@@ -228,6 +258,13 @@
 
 </div>
 <div id="productselectsection" style="display:none;">
+<div>
+    <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  
+    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
+    [<tag id="ddlsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
+    <a href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
+    <a href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+</div>
 
     <div id="productselectlist">
         

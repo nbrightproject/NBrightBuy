@@ -84,6 +84,13 @@
     <Compile Include="Admin\BackOffice.ascx.designer.cs">
       <DependentUpon>BackOffice.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Products.ascx.cs">
+      <DependentUpon>Products.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Products.ascx.designer.cs">
+      <DependentUpon>Products.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Groups.ascx.cs">
       <DependentUpon>Groups.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -312,6 +319,9 @@
     <Content Include="Admin\BackOffice.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\Products.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Groups.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -422,6 +432,10 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\productlistbody.html" />
+    <Content Include="Themes\config\default\productlistfooter.html" />
+    <Content Include="Themes\config\default\productlistheader.html" />
+    <Content Include="Themes\config\default\productadmin.html" />
     <Content Include="Themes\config\default\grouplistbody.html" />
     <Content Include="Themes\config\default\grouplistfooter.html" />
     <Content Include="Themes\config\default\grouplistheader.html" />

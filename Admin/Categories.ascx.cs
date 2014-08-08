@@ -94,7 +94,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
-                    var navigationData = new NavigationData(PortalId, "CategoryOrders");
+                    var navigationData = new NavigationData(PortalId, "CategoryAdmin");
 
                     // get search data
                     var sInfo = new NBrightInfo();
@@ -103,12 +103,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     // display search
                     base.DoDetail(rpSearch, sInfo);
 
-                    var strFilter = navigationData.Criteria;
-
                     //Default orderby if not set
-                    const string strOrder = " ";
                     var grpCats = new List<NBrightInfo>();
-                    grpCats = GetTreeCatList(grpCats);
+                    grpCats = GetTreeCatList(grpCats,0,0,GenXmlFunctions.GetGenXmlValue(navigationData.XmlData,"genxml/dropdownlist/groupsel"));
 
                     rpData.DataSource = grpCats;
                     rpData.DataBind();
@@ -147,7 +144,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "search":
-                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch, "", "");
+                    var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
+                    navigationData.XmlData = strXml;
+                    if (DebugMode)
+                    {
+                        strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
+                        var xmlDoc = new System.Xml.XmlDataDocument();
+                        xmlDoc.LoadXml(strXml);
+                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
+                    }   
                     navigationData.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -238,7 +243,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
-                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
+                var reindex = movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid") != selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
+                var fromParentItemid = selData.DataRecord.ParentItemId;
+                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
                 selData.DataRecord.ParentItemId = movData.DataRecord.ParentItemId;
                 selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
                 var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
@@ -255,6 +262,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 FixRecordSortOrder(selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
                 FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+
+                if (reindex)
+                {
+                    var objGrpCtrl = new GrpCatController(StoreSettings.Current.EditLanguage);
+                    objGrpCtrl.ReIndexCascade(fromParentItemid); // reindex from parent and parents.
+                    objGrpCtrl.ReIndexCascade(selData.Info.ItemID); // reindex select and parents
+                }
             }
         }
 
@@ -305,8 +319,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (level > displaylevels) return rtnList; // stop infinate loop
 
             var strFilter = " and NB1.ParentItemId = " + parentid + " ";
-            if (groupref != "") strFilter += " and [XMLData].value('(genxml/hidden/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
-
+            if (groupref != "") strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+            
             var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
             foreach (NBrightInfo catinfo in levelList)
             {
