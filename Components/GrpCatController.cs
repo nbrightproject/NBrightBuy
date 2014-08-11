@@ -259,6 +259,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        public List<GroupCategoryData> GetProductCategories(int productid)
+        {
+            var objCtrl = new NBrightBuyController();
+            var catxrefList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.[ParentItemId] = " + productid);
+            var joinItems = (from d1 in GrpCategoryList
+                             join d2 in catxrefList on d1.categoryid equals d2.XrefItemId
+                             select d1).ToList<GroupCategoryData>();
+            return joinItems;
+        }
         #endregion
 
         #region "breadcrumbs"

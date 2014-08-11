@@ -12,10 +12,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class ProductData
     {
         public NBrightInfo Info;
+        public NBrightInfo DataRecord;
+        public NBrightInfo DataLangRecord;
 
         public List<NBrightInfo> Models;
         public List<NBrightInfo> Options;
-        public List<NBrightInfo> OptionValues;
         public List<NBrightInfo> Imgs;
         public List<NBrightInfo> Docs;
 
@@ -79,6 +80,59 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");}
         }
 
+        public List<NBrightInfo> GetOptionValues(int optionid)
+        {
+            var l = new List<NBrightInfo>();
+            if (Info != null)
+            {
+                var xmlNodList = Info.XMLDoc.SelectNodes("genxml/optionvalues[@optionid='" + optionid + "']/*");
+                // build generic list to bind to rpModelsLang List
+                var xmlNodListLang = Info.XMLDoc.SelectNodes("genxml/lang/genxml/optionvalues/*");
+                if (xmlNodList != null && xmlNodList.Count > 0)
+                {
+                    foreach (XmlNode xNod in xmlNodList)
+                    {
+                        var obj = new NBrightInfo();
+                        obj.XMLData = xNod.OuterXml;
+                        var entityId = obj.GetXmlProperty("genxml/hidden/optionvalueid");
+                        if (Utils.IsNumeric(entityId))
+                        {
+                            obj.ItemID = Convert.ToInt32(entityId);
+                            var nodLang = "<genxml>" + Info.GetXmlNode("genxml/lang/genxml/optionvalues/genxml[./hidden/optionvalueid/text()='" + entityId + "']") + "</genxml>";
+                            if (nodLang != "")
+                            {
+                                obj.AddSingleNode("lang", "", "genxml");
+                                obj.AddXmlNode(nodLang, "genxml", "genxml/lang");
+                            }
+                        }
+                        obj.ParentItemId = Info.ItemID;
+                        l.Add(obj);
+                    }
+                }
+            }
+            return l;
+        }
+
+        public List<GroupCategoryData> GetCategories()
+        {
+            var objGrpCtrl = new GrpCatController(_lang);
+            return objGrpCtrl.GetProductCategories(Info.ItemID);
+        }
+
+        public List<NBrightInfo> GetRelatedProducts()
+        {
+            var objCtrl = new NBrightBuyController();
+            var strSelectedIds = "";
+            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF"," and ");
+            foreach (var obj in arylist)
+            {
+                strSelectedIds += obj.ItemID.ToString("") + ",";
+            }
+            var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
+            var relList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
+            return relList;
+        }
+
 
         #endregion
 
@@ -97,10 +151,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     //build model list
                     Models = GetEntityList("models", "modelid");
                     Options = GetEntityList("options", "optionid");
-                    OptionValues = GetEntityList("optionvalues", "optionvalueid");
                     Imgs = GetEntityList("imgs", "imageid");
-                    Docs = GetEntityList("docs", "docid");                    
+                    Docs = GetEntityList("docs", "docid");
                 }
+                Exists = true;
+                DataRecord = objCtrl.GetData(productId);
+                DataLangRecord = objCtrl.GetDataLang(productId, _lang);
             }
         }
 

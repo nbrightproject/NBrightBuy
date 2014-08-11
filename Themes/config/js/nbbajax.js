@@ -16,14 +16,14 @@ function nbxonchange(selector,cmd,selformdiv,action)
 	});
 }
 
-function nbxget(cmd,selformdiv,action)
+function nbxget(cmd,selformdiv,action,target)
 {		 
     $.ajaxSetup({ cache: false });
 
 	$(nbxprocessing).val("BEFORE").trigger('change');
 
 	// set the nbxaction field to action, so we know which ajax action is processing.
-	$('input[id*="nbxaction"]').val(action)
+    $('input[id*="nbxaction"]').val(action);
 	
 	var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd;
 	var values = $.fn.genxmlajax(selformdiv);
@@ -32,11 +32,20 @@ function nbxget(cmd,selformdiv,action)
 		cache: false,
 		data: { inputxml: encodeURI(values) }		
 	});
-	
+
 	request.done(function (data) {
-		if (data != 'noaction') $(nbxrtn).val(data).trigger('change');
-		$(nbxprocessing).val("AFTER").trigger('change');
-});
+	    if (target == null) {
+	        if (data != 'noaction') $(nbxrtn).val(data).trigger('change');
+	    } else {
+	        if (target.substring(0, 9) == 'textarea[') {
+	            if (data != 'noaction') {
+	                var editorid = $(target).attr('id');
+	                CKEDITOR.instances[editorid].setData(data);
+	            }
+	        } else if (data != 'noaction') $(target).html(data).trigger('change');
+	    }
+	    $(nbxprocessing).val("AFTER").trigger('change');
+	});
 
 	request.fail(function (jqXHR, textStatus) {
 		alert("Request failed: " + textStatus);

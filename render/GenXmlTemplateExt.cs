@@ -3138,7 +3138,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
                 else
                 {
-                    gte.Text = GenXmlFunctions.GetGenXmlValue(gte.ID, "textbox", (string)DataBinder.Eval(container.DataItem, _databindColumn));
+                    gte.Text = GenXmlFunctions.GetGenXmlValue(gte.ID, "edt", (string)DataBinder.Eval(container.DataItem, _databindColumn));
                 }
 
             }

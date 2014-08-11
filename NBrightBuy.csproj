@@ -432,6 +432,13 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\productadmincategories.html" />
+    <Content Include="Themes\config\default\productadmindocs.html" />
+    <Content Include="Themes\config\default\productadminimages.html" />
+    <Content Include="Themes\config\default\productadminoptionvalues.html" />
+    <Content Include="Themes\config\default\productadminoptions.html" />
+    <Content Include="Themes\config\default\productadminmodels.html" />
+    <Content Include="Themes\config\default\productadmingeneral.html" />
     <Content Include="Themes\config\default\productlistbody.html" />
     <Content Include="Themes\config\default\productlistfooter.html" />
     <Content Include="Themes\config\default\productlistheader.html" />
@@ -729,6 +736,7 @@
     <Content Include="Themes\config\js\jquery.ui.datepicker-fr.js" />
     <Content Include="Themes\config\js\nbbajax.js" />
     <Content Include="Themes\config\js\nbbitemlist.js" />
+    <Content Include="Themes\config\js\productajax.js" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Cygnus\Default\addclientrole.html" />

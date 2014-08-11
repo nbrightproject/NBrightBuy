@@ -112,8 +112,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             foreach (var f in localfields)
             {
-                   DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
-                   DataRecord.RemoveXmlNode(f);
+                if (f == "genxml/edt/message")
+                {
+                    // special processing for editor, to place code in standard place.
+                    if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
+                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/message"));
+                }
+                else
+                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+
+                DataRecord.RemoveXmlNode(f);
             }
             var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
 

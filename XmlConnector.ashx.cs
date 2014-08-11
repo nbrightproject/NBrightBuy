@@ -148,6 +148,33 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "moveallcatxref":
                     if (CheckRights()) strOut = CopyAllCatXref(context,true);
                     break;
+                case "editproduct":
+                    if (CheckRights()) strOut = GetProductGeneralData(context);
+                    break;
+                case "productdescription":
+                    if (CheckRights()) strOut = GetProductDescription(context);
+                    break;
+                case "productmodels":
+                    if (CheckRights()) strOut = GetProductModels(context);
+                    break;
+                case "productoptions":
+                    if (CheckRights()) strOut = GetProductOptions(context);
+                    break;
+                case "productoptionvalues":
+                    if (CheckRights()) strOut = GetProductOptionValues(context);
+                    break;
+                case "productimages":
+                    if (CheckRights()) strOut = GetProductImages(context);
+                    break;
+                case "productdocs":
+                    if (CheckRights()) strOut = GetProductDocs(context);
+                    break;
+                case "productrelatedproducts":
+                    if (CheckRights()) strOut = GetProductModels(context);
+                    break;
+                case "productcategories":
+                    if (CheckRights()) strOut = GetProductCategories(context);
+                    break;
             }
 
             #endregion
@@ -525,6 +552,236 @@ namespace Nevoweb.DNN.NBrightBuy
 
         }
 
+        private String GetProductDescription(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+
+                return  HttpUtility.HtmlDecode(prodData.Info.GetXmlProperty("genxml/lang/genxml/edt/description"));
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductGeneralData(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+                
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadmingeneral.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Info, bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            
+        }
+        
+        private String GetProductModels(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Models, bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductOptions(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductOptionValues(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                if (!settings.ContainsKey("selectedoptionid")) settings.Add("selectedoptionid", "");
+                var productitemid = settings["itemid"];
+                var selectedoptionid = settings["selectedoptionid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", Utils.GetCurrentCulture());
+
+                //get data
+                var strOut = "";
+                if (Utils.IsNumeric(selectedoptionid) && Utils.IsNumeric(productitemid))
+                {
+                    var prodData = new ProductData(productitemid, _lang);
+                    strOut = GenXmlFunctions.RenderRepeater(prodData.GetOptionValues(Convert.ToInt32(selectedoptionid)), bodyTempl);  
+                }
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductImages(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Imgs, bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductDocs(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadmindocs.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Docs, bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductCategories(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadmincategories.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
 
         #endregion
 
