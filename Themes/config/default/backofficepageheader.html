@@ -1,0 +1,43 @@
+﻿<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrap/bootstrap.css" rel="stylesheet">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/xcharts/xcharts.min.css" rel="stylesheet">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/select2/select2.css" rel="stylesheet">
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/css/style.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[[if lt IE 9]]>
+<script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
+<script src="http://getbootstrap.com/docs-assets/js/respond.min.js"></script>
+<![[endif]]-->
+
+<!-- NNB Back Office theme -->
+<link rel="stylesheet" href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/css/backoffice.css">
+
+<script type="text/javascript">
+// Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[[0]].appendChild(msViewportStyle); // Fixed for the store
+    }
+</script>
+
+<script>
+// Fix for Android stock browser issue http://stackoverflow.com/questions/14744437/html-select-box-not-showing-drop-down-arrow-on-android-version-4-0-when-set-with
+$(function () {
+  var nua = navigator.userAgent
+  var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+  if (isAndroid) {
+    $('select.form-control').removeClass('form-control').css('width', '100%')
+  }
+})
+</script>

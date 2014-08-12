@@ -441,4 +441,7 @@
   <data name="ProcessingDiv.Text" xml:space="preserve">
     <value>&lt;div&gt;Processing...&lt;/div&gt;</value>
   </data>
+  <data name="cmdUpload.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
 </root>

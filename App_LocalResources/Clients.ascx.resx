@@ -178,6 +178,6 @@
     <value>View Address Book</value>
   </data>
   <data name="cmdViewClient.Text" xml:space="preserve">
-    <value>View Client</value>
+    <value>Client</value>
   </data>
 </root>

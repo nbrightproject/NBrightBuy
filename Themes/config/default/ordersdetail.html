@@ -1,45 +1,42 @@
-<div>
-    <h2>Billing Address</h2>
-    <div id="addressinput">
-        [<tag type='valueof' resourcekey='General.lblFirstName' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblLastName' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblAddress1' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblAddress2' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblTown' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblCity' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblPostCode' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblCountry' />][<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country'  />]<br/>
-        [<tag type='valueof' resourcekey='General.Email' />][<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email'  />]
-    </div>
-    <h2>Shipping Address</h2>
-    <div id="Div1">
-        [<tag type='valueof' resourcekey='General.lblFirstName' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblLastName' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblAddress1' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblAddress2' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblTown' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblCity' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblPostCode' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode'  />]<br/>
-        [<tag type='valueof' resourcekey='General.lblCountry' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country'  />]<br/>
-        [<tag type='valueof' resourcekey='General.Email' />][<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email'  />]
-    </div>
-    <div>
-        [<tag type="valueof" resourcekey="General.trackingcode" />] : [<tag id="trackingcode" type="textbox" width="150" />]
-        [<tag type="valueof" resourcekey="General.shippingdate" />] : [<tag id="shippingdate" type="textbox" width="100" datatype="date" />]
-        [<tag type="valueof" resourcekey="General.status" />] : [<tag id="orderstatus" type="orderstatus" />]
-    </div>
-    <div>
-        [<tag id="cmdPrintOrder" type="linkbutton" resourcekey="OrderAdmin.cmdPrintOrder" commandname="printorder" commandargument="ItemID" />] - 
-        [<tag id="cmdPrintReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdPrintReceipt" commandname="printreceipt" commandargument="ItemID" />] - 
-        [<tag id="cmdEmailAmended" type="linkbutton" resourcekey="OrderAdmin.cmdEmailAmended" commandname="emailamended" commandargument="ItemID" />] - 
-        [<tag id="cmdEmailValidated" type="linkbutton" resourcekey="OrderAdmin.cmdEmailValidated" commandname="emailvalidated" commandargument="ItemID" />] - 
-        [<tag id="cmdEmailShipped" type="linkbutton" resourcekey="OrderAdmin.cmdEmailShipped" commandname="emailshipped" commandargument="ItemID" />] - 
-        [<tag id="cmdEmailReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdEmailReceipt" commandname="emailreceipt" commandargument="ItemID" />] 
-    </div>
-    <div>
-        [<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" commandname="return" />] - 
-        [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" />] - 
-        [<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrder" commandname="reorder" commandargument="ItemID" />] - 
-        [<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" commandname="editorder" commandargument="ItemID" />] 
-    </div>
-</div>
+				<div class="col-xs-3 billaddress">
+					<b>Bill to:</b>
+					<address>
+						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</strong></div>
+						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
+						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/phone' />]</div>
+					</address>
+					<address>
+						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</strong></div>
+						<div><a href="mailto:[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]">[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]</a></div>
+					</address>
+				</div>
+				<div class="col-xs-3 shipaddress">
+					<b>Ship to:</b>
+					<address>
+						<div><strong>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</strong></div>
+						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
+						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
+						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/phone' />]</div>
+					</address>
+					<address>
+						<div><strong>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname' />]</strong></div>
+						<div><a href="mailto:[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]">[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]</a></div>
+					</address>
+				</div>
+				<div class="col-xs-6 text-right storeaddress">
+					<address>
+						<div><strong>Free Software Foundation</strong></div>
+						<div>51 Franklin Street, Fifth Floor</div>
+						<div>Boston, MA 02110-1301</div>
+						<div>Email: [Settings:manageremail]</div>
+						<div><abbr title="Phone">Ph:</abbr> (123) 456-7890</div>
+					</address>
+					<h3 class="invoice-header">Order #(123456)</h3>
+					<p>Date: (1/12/14)</p>
+					<div class="txt-danger"></div>
+				</div>

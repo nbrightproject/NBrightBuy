@@ -118,45 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdEditOrder.Text" xml:space="preserve">
-    <value>Edit Order</value>
+    <value>Edit</value>
   </data>
   <data name="cmdEmailAmended.confirm" xml:space="preserve">
     <value>Send Amended Email to Client ?</value>
   </data>
   <data name="cmdEmailAmended.Text" xml:space="preserve">
-    <value>Send Amended Email</value>
+    <value>Amended</value>
   </data>
   <data name="cmdEmailReceipt.confirm" xml:space="preserve">
     <value>Send Receipt Email to Client ?</value>
   </data>
   <data name="cmdEmailReceipt.Text" xml:space="preserve">
-    <value>Send Receipt Email</value>
+    <value>Receipt</value>
   </data>
   <data name="cmdEmailShipped.confirm" xml:space="preserve">
     <value>Send Shipped Email to Client ?</value>
   </data>
   <data name="cmdEmailShipped.Text" xml:space="preserve">
-    <value>Send Shipped Email</value>
+    <value>Shipped</value>
   </data>
   <data name="cmdEmailValidated.confirm" xml:space="preserve">
-    <value>Send Validated Email to Client ?</value>
+    <value>Send Confirmed Email to Client ?</value>
   </data>
   <data name="cmdEmailValidated.Text" xml:space="preserve">
-    <value>Send Validated Email</value>
+    <value>Confirmed</value>
   </data>
   <data name="cmdPrintOrder.Text" xml:space="preserve">
-    <value>Print Order</value>
+    <value>Print</value>
   </data>
   <data name="cmdPrintReceipt.Text" xml:space="preserve">
-    <value>Print Receipt</value>
+    <value>Receipt</value>
   </data>
   <data name="cmdReOrder.Text" xml:space="preserve">
-    <value>Re-Order</value>
+    <value>Repeat</value>
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
   </data>
   <data name="cmdView.Text" xml:space="preserve">
-    <value>View Order</value>
+    <value>View</value>
+  </data>
+  <data name="cmdPrintDeliveryLabel.Text" xml:space="preserve">
+    <value>Delivery Label</value>
   </data>
 </root>

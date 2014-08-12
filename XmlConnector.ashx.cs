@@ -97,9 +97,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "deldata":
                     break;
-                case "setcategoryadminform":
-                    if (CheckRights()) strOut = SetCategoryForm(context);
-                    break;
+                //case "setcategoryadminform":
+                //    if (CheckRights()) strOut = SetCategoryForm(context);
+                //    break;
                 case "getdata":
                     strOut = GetReturnData(context);
                     break;
@@ -174,6 +174,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "productcategories":
                     if (CheckRights()) strOut = GetProductCategories(context);
+                    break;
+                case "productrelated":
+                    if (CheckRights()) strOut = GetProductRelated(context);
                     break;
             }
 
@@ -255,42 +258,42 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Category Methods"
 
-        private string SetCategoryForm(HttpContext context)
-        {
-            try
-            {
-                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
-                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
-                var objInfo = new NBrightInfo();
-                objInfo.ItemID = -1;
-                objInfo.TypeCode = "AJAXDATA";
-                objInfo.XMLData = xmlData;
-                var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
+        //private string SetCategoryForm(HttpContext context)
+        //{
+        //    try
+        //    {
+        //        // get posted form data into a NBrigthInfo class so we can take the listbox value easily
+        //        var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+        //        var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+        //        var objInfo = new NBrightInfo();
+        //        objInfo.ItemID = -1;
+        //        objInfo.TypeCode = "AJAXDATA";
+        //        objInfo.XMLData = xmlData;
+        //        var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
 
-                var strOut = "No Category ID or Langauge ('itemid' and 'lang' hidden fields needed on input form)";
-                if (settings.ContainsKey("itemid") && settings.ContainsKey("lang"))
-                {
+        //        var strOut = "No Category ID or Langauge ('itemid' and 'lang' hidden fields needed on input form)";
+        //        if (settings.ContainsKey("itemid") && settings.ContainsKey("lang"))
+        //        {
 
-                    var strItemId = settings["itemid"];
-                    if (Utils.IsNumeric(strItemId))
-                    {
-                        var itemId = Convert.ToInt32(strItemId);
+        //            var strItemId = settings["itemid"];
+        //            if (Utils.IsNumeric(strItemId))
+        //            {
+        //                var itemId = Convert.ToInt32(strItemId);
 
-                        var catData = new CategoryData(itemId, settings["lang"]);
-                        catData.Update(objInfo);
-                        catData.Save();
-                        strOut = NBrightBuyUtils.GetResxMessage();
-                    }
-                }
+        //                var catData = new CategoryData(itemId, settings["lang"]);
+        //                catData.Update(objInfo);
+        //                catData.Save();
+        //                strOut = NBrightBuyUtils.GetResxMessage();
+        //            }
+        //        }
 
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
+        //        return strOut;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.ToString();
+        //    }
+        //}
 
         private String GetCategoryProductList(HttpContext context)
         {
@@ -772,6 +775,35 @@ namespace Nevoweb.DNN.NBrightBuy
                 //get data
                 var prodData = new ProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductRelated(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminrelated.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = new ProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetRelatedProducts(), bodyTempl);
 
                 return strOut;
 

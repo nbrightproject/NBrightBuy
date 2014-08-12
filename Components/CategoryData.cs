@@ -116,7 +116,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     // special processing for editor, to place code in standard place.
                     if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
-                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/message"));
+                    if (info.GetXmlProperty("genxml/textbox/message") == "")
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/edt/message"));
+                    else
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/message")); // ajax on ckeditor (Ajax diesn't work for telrik)
                 }
                 else
                     DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));

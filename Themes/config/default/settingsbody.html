@@ -1,21 +1,103 @@
-<h2>[<tag type="valueof" resourcekey="Settings.Settings" />]</h2>
-<div>
-[<tag id="debug.mode" type="checkbox" resourcekey="Settings.debugmode" />]<br/>
-[<tag type="valueof" resourcekey="Settings.pagesize" />] : [<tag id="pagesize" type="textbox" width="60" maxlength="5" Text="30" />]<br/>
-[<tag type="valueof" resourcekey="Settings.storagetypeclient" />] : [<tag id="storagetypeclient" type="dropdownlist" data="Cookie;SessionMemory" />]<br/>
-[<tag type="valueof" resourcekey="Settings.productlisttab" />] : [<tag id="productlisttab" type="dropdownlist" datatabs="1" />]<br/>
-[<tag type="valueof" resourcekey="Settings.carttab" />] : [<tag id="carttab" type="dropdownlist" datatabs="1" />]<br/>
-[<tag type="valueof" resourcekey="Settings.adminemail" />] : [<tag id="adminemail" type="textbox" width="300" maxlength="150" Text="" />]<br/>
-[<tag type="valueof" resourcekey="Settings.manageremail" />] : [<tag id="manageremail" type="textbox" width="300" maxlength="150" Text="" />]<br/>
-
-[<tag type="valueof" resourcekey="Settings.folderimages" />] : [<tag id="folderimages" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]<br/>
-[<tag type="valueof" resourcekey="Settings.folderdocs" />] : [<tag id="folderdocs" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]<br/>
-[<tag type="valueof" resourcekey="Settings.folderuploads" />] : [<tag id="folderuploads" type="textbox" width="300" maxlength="150" Text="NBStore\uploads" />]<br/>
-
-
+<div class="row">
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Settings</a></li>
+		</ol>
+	</div>
 </div>
-<hr/>
- <div>
-    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" />] - 
-    [<tag id="cmdCancel" type="linkbutton" resourcekey="General.cmdCancel" commandname="cancel" />]
- </div>
+<h4 class="page-header">[<tag type="valueof" resourcekey="Settings.Settings" />]</h4>
+<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Validator forms</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<legend>Email Addresses</legend>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.adminemail" />]</label>
+						<div class="col-sm-5">
+							[<tag id="adminemail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.manageremail" />]</label>
+						<div class="col-sm-5">
+							[<tag id="manageremail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Validator forms</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<legend>Developer Tools</legend>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Debug Mode</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="debug.mode" type="checkbox" resourcekey="Settings.debugmode" />]
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
+						<div class="col-sm-5">
+							[<tag id="pagesize" cssclass="form-control" type="textbox" maxlength="5" Text="30" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.storagetypeclient" />]</label>
+						<div class="col-sm-5">
+							[<tag id="storagetypeclient" cssclass="form-control" type="dropdownlist" data="Cookie;SessionMemory" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productlisttab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="productlisttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.carttab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="carttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+	</div>
+	<div class="form-group">
+		<div class="col-sm col-sm-6">
+			[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.cmdSave" commandname="save" />] 
+			[<tag id="cmdCancel" type="linkbutton" cssclass="btn btn-default btn-label-left" resourcekey="General.cmdCancel" commandname="cancel" />]
+		</div>
+	</div>
+</div>

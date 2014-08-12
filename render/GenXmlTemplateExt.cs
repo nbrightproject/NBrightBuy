@@ -2517,7 +2517,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (!StoreSettings.Current.DebugMode) objL = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
                         if (objL == null)
                         {
-                            objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
+                            var prodData = new ProductData(objInfo.ItemID,Utils.GetCurrentCulture());
+                            //objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
+                            objL = prodData.GetRelatedProducts();
                             if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(Convert.ToInt32(moduleid), strCacheKey, objL);                            
                         }
                         // render repeater

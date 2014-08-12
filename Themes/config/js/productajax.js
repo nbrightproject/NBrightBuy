@@ -35,7 +35,8 @@
         nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
         nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
         nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
-        nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load docs
+        nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
+        nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
     });
     $('#productoptions').change(function () {
         // select option
@@ -72,11 +73,6 @@
         $('.processing').show();
     });
 
-    // save the product data
-    $('#productsave').click(function () {
-        CKEditor_TextBoxEncode($('textarea[id*="message"]').attr('id'), 0); // need this to get ckeditor text
-        //nbxget('setproductadminform', '#productdata', 'setproduct');
-    });
 
     $('#returntolist').click(function () {
         $('#productsearchsection').show();

@@ -4,201 +4,25 @@
 <!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/categoryajax.js"></script>
 <!-- return field for ajax calls -->
-[<tag id="nbxrtn" type="hidden" />]
 [<tag id="nbxprocessing" type="hidden" />]
 [<tag id="nbxaction" type="hidden" />]
 
-<script>
 
-    $(document).ready(function () {
+<div id="confirmmsg" style="display:none;">
+[<tag type="valueof" resourcekey="General.Confirm" />]    
+</div>
 
-        $('input[[id*="nbxprocessing"]]').change(function () {
-            if ($(this).val() == 'BEFORE') $('.processing').show();
-            if ($(this).val() == 'AFTER') $('.processing').hide();
-        });
-
-
-        // ajax call returned data, so action based on the action being done.
-        $('input[[id*="nbxrtn"]]').change(function () {
-            //we need this event to pick up the data returned and move it into the correct div as html
-
-            $('#nbsnotify').html(''); // clear message on each load.
-            
-            // START: --------   Category Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'getcategoryproductlist') {
-                $('#productlist').html($(this).val());
-                $(this).val('');
-                //Do paging
-                $('.cmdPg').click(function () {
-                    $('input[[id*="pagenumber"]]').val($(this).attr("pagenumber"));
-                    nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
-                });
-                // select product
-                $('#productselect').click(function () {
-                    $("input[[id*='header']]").val("productselectheader.html");
-                    $("input[[id*='body']]").val("productselectbody.html");
-                    $("input[[id*='footer']]").val("productselectfooter.html");
-                    nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
-                    $('#categorydatasection').hide();
-                    $('#productselectsection').show();
-                });
-                // remove single product
-                $('.removeproduct').click(function () {
-                    nbxget('deletecatxref', '.productid' + $(this).attr('itemid'), 'deletecatxref');
-                    $('.productid' + $(this).attr('itemid')).hide();
-                });
-                $('#removeall').click(function() {
-                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
-                        nbxget('deleteallcatxref', '#productselectparams', 'deleteallcatxref');
-                    }
-                });
-                $('#copyto').click(function () {
-                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
-                        nbxget('copyallcatxref', '#productselectparams', 'copyallcatxref');
-                    }
-                });
-                $('#moveto').click(function () {
-                    if (confirm('[<tag type="valueof" resourcekey="General.Confirm" />]')) {
-                        nbxget('moveallcatxref', '#productselectparams', 'moveallcatxref');
-                    }
-                });
-
-                $('select[[id*="selectcatid"]]').change(function() {
-                    $('input[[id*="selectedcatid"]]').val($(this).val());
-                });
-
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------  Product Select ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'getproductlist') {
-                $('#productselectlist').html($(this).val());
-                $(this).val('');
-                //Do paging
-                $('.cmdPg').click(function () {
-                    $('input[[id*="pagenumber"]]').val($(this).attr("pagenumber"));
-                    nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
-                });
-                // return from select product
-                $('#returnfromselect').click(function () {
-                    $("input[[id*='header']]").val("categoryproductheader.html");
-                    $("input[[id*='body']]").val("categoryproductbody.html");
-                    $("input[[id*='footer']]").val("categoryproductfooter.html");
-                    nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
-                    $('#categorydatasection').show();
-                    $('#productselectsection').hide();
-                });
-                // select product
-                $('.selectproduct').click(function () {
-                    nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'), 'selectcatxref');
-                    $('.selectproductid' + $(this).attr('itemid')).hide();
-                });
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Remove Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'deletecatxref') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Remove ALL Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'deleteallcatxref') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-                nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Move ALL Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'moveallcatxref') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-                nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Copy ALL Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'copyallcatxref') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Select Product Xref ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'selectcatxref') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-            }
-            // END: -------------------------------------------------------
-
-            // START: --------   Save Category Data ----------------------
-            if ($('input[[id*="nbxaction"]]').val() == 'setcategory') {
-                $('#nbsnotify').html($(this).val());
-                $(this).val('');
-            }
-            // END: -------------------------------------------------------
-
-        });
-
-
-        // START: --------   Search products ----------------------
-        // select search
-        $('#selectsearch').click(function () {
-            $('input[[id*="searchtext"]]').val($('input[[id*="txtSearch"]]').val());
-            $('input[[id*="searchcategory"]]').val($('select[[id*="ddlsearchcategory"]]').val());
-            nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
-        });
-
-        // select search reset
-        $('#selectreset').click(function () {
-            $('input[[id*="txtSearch"]]').val('');
-            $('select[[id*="ddlsearchcategory"]]').val('');
-            $('input[[id*="searchtext"]]').val('');
-            $('input[[id*="searchcategory"]]').val('');
-            nbxget('getproductselectlist', '#productselectparams', 'getproductlist');
-        });
-        // END: -------------------------------------------------------
-
-        //show processing on postback for image.
-        $("body").on("click", ".postbacklink", function() {
-            //$('.processing').show();
-        });
-
-        // save the category data
-        $('#categorysave').click(function () {
-            CKEditor_TextBoxEncode($('textarea[[id*="message"]]').attr('id'), 0); // need this to get ckeditor text
-            nbxget('setcategoryadminform', '#categorydata', 'setcategory');
-        });
-
-
-        $("#tabs").tabs();
-
-
-        nbxget('getcategoryproductlist', '#categorydata', 'getcategoryproductlist');
-
-    });
-
-</script>
 <div id="nbsnotify"></div>
 <span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
 <div id="categorydatasection">
-    
-
-<br />
-[<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 
-<a href="#" id="categorysave">[<tag type="valueof" resourcekey="General.cmdSave" />]</a>
-
-<br /><br /><br />
-
-<div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">General</a></li>
-    <li><a href="#tabs-2">Description</a></li>
-    <li><a href="#tabs-3">Products</a></li>
-  </ul>
+    <br />
+    [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 
+    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
+    <br />
+    <hr/>
+    <br />
     <div id="categorydata">
         
         <div id="productselectparams">
@@ -218,45 +42,35 @@
         [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
-        <div id="tabs-1">
-     
-
-            <h2>CATEGORY DATA</h2>
-            <br />
-            Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
-            Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
-            Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
-            Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-            Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" showhidden="true" />] <br />
-            Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
-            List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
-
-            SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
-            SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
-            Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-            Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-            Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] 
-            <br />
-            <div>
-                [<tag id="image" type="fileupload" />]    <br/>
-                [<tag id="cmdUpload" type="linkbutton" resourcekey="General.cmdUploadFile" commandname="uploadimage" commandargument="ItemID" />]  
-                [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
-            </div>
-
-        </div>
+        <h2>General</h2>     
         <br />
-        <div id="tabs-2">
-            [<tag id="message" type="ckeditor" height="400" width="800"  />]
-        </div>
-        <div id="tabs-3">
-            <div id="productlist">
+        Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
+        Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
+        Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
+        Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+        Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" showhidden="true" />] <br />
+        Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
+        List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
 
-            </div>
+        SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
+        SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
+        Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+        Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
+        Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] 
+        <br />
+        <div>
+            [<tag id="image" type="fileupload" />]    <br/>
+            [<tag id="cmdUpload" type="linkbutton" resourcekey="General.cmdUpload" commandname="save" commandargument="ItemID" />]  
+            [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
         </div>
+        <div>
+        [<tag id="message" type="dnn:dnntexteditor" height="400" width="800"  />]
+        </div>
+        <h2>Product List</h2>
+        <div id="productlist"></div>
     </div>
 </div>
 
-</div>
 <div id="productselectsection" style="display:none;">
 <div>
     <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  

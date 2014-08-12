@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="debugmode.Text" xml:space="preserve">
-    <value>Debug Mode</value>
+    <value></value>
   </data>
   <data name="pagesize.Text" xml:space="preserve">
     <value>Defaut Page Size</value>
@@ -155,14 +155,5 @@
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager Email</value>
-  </data>
-  <data name="folderdocs.Text" xml:space="preserve">
-    <value>Documents Folder</value>
-  </data>
-  <data name="folderimages.Text" xml:space="preserve">
-    <value>Images Folder</value>
-  </data>
-  <data name="folderuploads.Text" xml:space="preserve">
-    <value>Upload Folder</value>
   </data>
 </root>

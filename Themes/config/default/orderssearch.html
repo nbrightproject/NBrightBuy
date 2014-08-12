@@ -1,5 +1,5 @@
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.ui.datepicker-en-GB.js"></script>  
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.ui.datepicker-fr.js"></script>  
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-en-GB.js"></script>  
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-fr.js"></script>
 <script>
 
     $(function () {
@@ -11,15 +11,66 @@
         $('input[[name$="shippingdate"]]').datepicker();
     }); 
 
-</script>	
-<div>
-    [<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" commandname="viewclient" />] - 
-    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />]
-    [<tag type="valueof" resourcekey="General.From" />] : [<tag id="dateSearchFrom" type="textbox" width="90" />]
-    [<tag type="valueof" resourcekey="General.To" />] : [<tag id="dateSearchTo" type="textbox" width="90" />]
-    [<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="" commandname="search"/>]
-    [<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdReset" cssclass="" commandname="resetsearch"/>]
+</script>
+
+<div class="row">
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Sales</li>
+			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Orders</a></li>
+		</ol>
+	</div>
 </div>
+<h4 class="page-header">Orders</h4>
+<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Find an Order</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="form-group">
+						<div class="col-sm-1">
+						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-default" commandname="viewclient" />]
+						</div>
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
+						<div class="col-sm-2">
+							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
+						</div>
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.From" />]</label>
+						<div class="col-sm-2">
+							[<tag id="dateSearchFrom" cssclass="form-control" type="textbox" />]
+						</div>
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.To" />]</label>
+						<div class="col-sm-2">
+							[<tag id="dateSearchTo" cssclass="form-control" type="textbox" />]
+						</div>
+						<div class="col-sm-2">
+						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="btn btn-primary" commandname="search"/>]
+						[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdReset" cssclass="btn btn-default" commandname="resetsearch"/>]
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 [<tag id="search0" type="meta" action="open" />]
 [<tag id="search1" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/firstname" />]
 [<tag id="search2" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/lastname" sqloperator="or" />]
@@ -39,4 +90,28 @@
 [<tag id="search16" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/email" sqloperator="or" />]
 [<tag id="search17" type="meta" action="close" />]
 [<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlcol="ModifiedDate" sqltype="datetime" sqloperator="and"  />]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

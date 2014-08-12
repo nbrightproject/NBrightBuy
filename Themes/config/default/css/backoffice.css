@@ -1,0 +1,27 @@
+﻿
+/* Common */
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+.NBB{}
+
+
+/* Overrides for DNN-included Bootstrap styles 
+.nav {margin-left:0;}
+a, a:visited {color:#428BCA}
+*/
+
+/* Fixes 
+.checkbox input[type=checkbox]{margin-left: 0;}
+*/
+
+.fa {margin-right: 6px;}
+
+
+/* Adjustments to theme */
+.no-box-header{display:none}/* Hide panel head section */
+.orderdetailitems th{text-transform:uppercase}
+.orderdetail .billaddress b,.orderdetail .shipaddress b{text-transform:uppercase}
+.orderdetail .storeaddress{}

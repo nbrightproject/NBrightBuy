@@ -2,11 +2,11 @@
 .dnnEditState .DnnModule{opacity:1 !important;transition:none !important;}/* Fix DNN */
 
 /* Common */
-@-webkit-viewport{width:device-width}
-@-moz-viewport{width:device-width}
-@-ms-viewport{width:device-width}
-@-o-viewport{width:device-width}
-@viewport{width:device-width}
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
 .NBB{}
 
 

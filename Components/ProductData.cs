@@ -123,10 +123,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objCtrl = new NBrightBuyController();
             var strSelectedIds = "";
-            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF"," and ");
+            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF"," and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
             {
-                strSelectedIds += obj.ItemID.ToString("") + ",";
+                strSelectedIds += obj.XrefItemId.ToString("") + ",";
             }
             var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
             var relList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");

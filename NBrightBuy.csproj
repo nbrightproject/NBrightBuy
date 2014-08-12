@@ -236,6 +236,13 @@
     <Compile Include="PrintView.aspx.designer.cs">
       <DependentUpon>PrintView.aspx.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductSearch.ascx.cs">
+      <DependentUpon>ProductSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductSearch.ascx.designer.cs">
+      <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProfileForm.ascx.cs">
       <DependentUpon>ProfileForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -273,13 +280,6 @@
     </Compile>
     <Compile Include="ProductSearchSettings.ascx.designer.cs">
       <DependentUpon>ProductSearchSettings.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductSearch.ascx.cs">
-      <DependentUpon>ProductSearch.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductSearch.ascx.designer.cs">
-      <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="render\GenXmlTemplateExt.cs" />
     <Compile Include="Components\DataProvider.cs" />
@@ -370,6 +370,7 @@
     <Content Include="PrintView.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="ProductSearch.ascx" />
     <Content Include="ProfileForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -383,7 +384,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductSearch.ascx" />
     <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -432,6 +432,7 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\productadminrelated.html" />
     <Content Include="Themes\config\default\productadmincategories.html" />
     <Content Include="Themes\config\default\productadmindocs.html" />
     <Content Include="Themes\config\default\productadminimages.html" />
@@ -473,6 +474,7 @@
     <Content Include="Themes\config\default\ProductView_Settings.html" />
     <Content Include="Themes\config\default\ProfileForm_Settings.html" />
     <Content Include="Themes\config\default\settingsbody.html" />
+    <Content Include="Themes\config\js\categoryajax.js" />
     <Content Include="Themes\config\js\ckeditor\adapters\jquery.js" />
     <Content Include="Themes\config\js\ckeditor\build-config.js" />
     <Content Include="Themes\config\js\ckeditor\ckeditor.js" />
