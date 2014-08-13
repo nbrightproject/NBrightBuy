@@ -1,0 +1,42 @@
+<!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
+<!-- return field for ajax calls -->
+[<tag id="nbxprocessing" type="hidden" />]
+[<tag id="nbxaction" type="hidden" />]
+
+<script>
+    $(document).ready(function () {
+        // start load all ajax data, continued by js in product.js file
+        nbxget('getproductlist', '#productselectparams', 'getproductlist', '#productlist');
+    });
+</script>
+
+<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
+
+<div id="productsearchsection">
+    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
+    [<tag id="ddllistsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
+    <a href="#" id="listsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
+    <a href="#" id="listreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+</div>
+
+<div id="productselectparams">
+    [<tag id="itemid" type="hidden" databind="ItemId" />]
+    [<tag id="lang" type="hidden" databind="Lang" />]
+    [<tag id="header" type="hidden" value="productlistheader.html"/>]
+    [<tag id="body" type="hidden" value="productlistbody.html"/>]
+    [<tag id="footer" type="hidden" value="productlistfooter.html"/>]
+    [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
+    [<tag id="pagesize" type="hidden" value="30"/>]
+    [<tag id="pagenumber" type="hidden" value="1"/>]
+    [<tag id="selectedcatid" type="hidden" value=""/>]            
+    [<tag id="searchtext" type="hidden" value=""/>]     
+    [<tag id="searchcategory" type="hidden" value=""/>]
+    [<tag id="selectedoptionid" type="hidden" value=""/>]            
+</div>
+
+<div id="productlistsection">
+    <div id="productlist"></div>        
+</div>

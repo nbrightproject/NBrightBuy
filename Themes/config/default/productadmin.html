@@ -1,9 +1,6 @@
-<!-- jQuery style just for dev, to be removed as needed -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-
 <!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 <!-- return field for ajax calls -->
 [<tag id="nbxprocessing" type="hidden" />]
@@ -12,22 +9,30 @@
 <div id="nbsnotify"></div>
 <span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
 
-<div id="productsearchsection">
-    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
-    [<tag id="ddllistsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
-    <a href="#" id="listsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
-    <a href="#" id="listreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
-</div>
+<script>
+$(document).ready(function () {
+    // start load all ajax data
+    nbxget('productmodels', '#productselectparams', 'productmodels', '#productmodels'); // load models
+    nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
+    nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
+    nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
+    nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
+    nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
+});
+</script>
 
-<div id="productlistsection">
-    <div id="productlist"></div>        
-</div>
+<!-- postback fields to keep ajax populated data for update -->
+[<tag id="updatemodeldata" type="postback" value=""/>]
+[<tag id="updateproductoptions" type="postback" value=""/>]
+[<tag id="updateproductoptionvalues" type="postback" value=""/>]
+[<tag id="updateproductimages" type="postback" value=""/>]
+[<tag id="updateproductdocs" type="postback" value=""/>]
 
 
-<div id="productdatasection" style="display:none;">
+<div id="productdatasection">
 
     <br />
-    <a href="#" id="returntolist">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a> - 
+    [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" commandargument="ItemID" />]  
     [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
     <hr/>
     <div id="productdata">
@@ -47,13 +52,21 @@
             [<tag id="selectedoptionid" type="hidden" value=""/>]            
         </div>
 
-        [<tag id="fields" type="postback" value="" />]
-        [<tag id="localizedfields" type="postback" value="" />]
+        [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
+        [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
 
         <h2>General</h2>
-        <div id="productgeneral"></div>
-        <div>[<tag id="description" type="ckeditor" height="400" width="800"  />]</div>
+        ref:   [<tag id="txtproductref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
+Name:   [<tag id="txtproductname" type="textbox" width="300" maxlength="250" />]<br />
+Summary:   [<tag id="txtsummary" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
+seoname:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br/>
+seopagetitle:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br/>
+tagwords:   [<tag id="txttagwords" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
+Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
+<hr/>
+        <div>[<tag id="description" type="dnn:dnntexteditor" height="400" width="800"  />]</div>
         <h2>Models</h2>
+        <a id="modelsave">Save Models</a>
         <div id="productmodels"></div>
         <h2>Options</h2>
         <div id="productoptions"></div>                

@@ -491,6 +491,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return levelList;
         }
 
+        public static List<NBrightInfo> GetGenXmlListByAjax(string xmlAjaxData, string originalXml, string lang = "en-US", string xmlRootName = "genxml")
+        {
+            var rtnList = new List<NBrightInfo>();
+            var xmlDoc = new XmlDataDocument();
+            xmlDoc.LoadXml(xmlAjaxData);
+            var nodList = xmlDoc.SelectNodes("root/root");
+            if (nodList != null)
+                foreach (XmlNode nod in nodList)
+                {                    
+                    var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "");
+                    var objInfo = new NBrightInfo();
+                    objInfo.ItemID = -1;
+                    objInfo.TypeCode = "AJAXDATA";
+                    objInfo.XMLData = xmlData;
+                    rtnList.Add(objInfo);
+                }
+            return rtnList;
+        }
+
+
     }
 
 }

@@ -158,8 +158,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 settings.GUIDKey = "NBrightBuySettings";
             }
             settings.XMLData = GenXmlFunctions.GetGenXml(rpData);
+            settings.SetXmlProperty("genxml/hidden/backofficetabid", PortalSettings.Current.ActiveTab.TabID.ToString(""));
+            
             ModCtrl.Update(settings);
-            //remove currebt setting from cache an reload
+
+            //remove current setting from cache for reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");
             Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
 

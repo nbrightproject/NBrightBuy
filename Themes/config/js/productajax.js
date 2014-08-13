@@ -9,35 +9,13 @@
     });
 
     $('#productlist').change(function () {
-        //-------------------------------------------------------
-        // ---------------  Product Select ----------------------
-        //-------------------------------------------------------
-        if ($('input[id*="nbxaction"]').val() == 'getproductlist') {
-            //Do paging
-            $('.cmdPg').click(function () {
-                $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
-                nbxget('getproductselectlist', '#productselectparams', 'getproductlist', '#productlist');
-            });
-            // select product
-            $('.selectproduct').click(function () {
-                $('input[id*="itemid"]').val($(this).attr('itemid'));
-                nbxget('editproduct', '#productselectparams', 'editproduct', '#productgeneral');
-                $('#productsearchsection').hide();
-                $('#productlistsection').hide();
-                $('#productdatasection').show();
-            });
-        }
+        //Do paging
+        $('.cmdPg').click(function () {
+            $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
+            nbxget('getproductselectlist', '#productselectparams', 'getproductlist', '#productlist');
+        });
     });
 
-    $('#productgeneral').change(function () {
-        nbxget('productdescription', '#productselectparams', 'productdescription', 'textarea[id*="description"]'); // load description data into ckeditor
-        nbxget('productmodels', '#productselectparams', 'productmodels', '#productmodels'); // load models
-        nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
-        nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
-        nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
-        nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
-        nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
-    });
     $('#productoptions').change(function () {
         // select option
         $('.selectoption').click(function () {
@@ -55,7 +33,7 @@
     $('#listsearch').click(function () {
         $('input[id*="searchtext"]').val($('input[id*="txtSearch"]').val());
         $('input[id*="searchcategory"]').val($('select[id*="ddllistsearchcategory"]').val());
-        nbxget('getproductlist', '#productselectparams', 'getproductlist');
+        nbxget('getproductlist', '#productselectparams', 'getproductlist', '#productlist');
     });
 
     // select search reset
@@ -64,23 +42,21 @@
         $('select[id*="ddllistsearchcategory"]').val('');
         $('input[id*="searchtext"]').val('');
         $('input[id*="searchcategory"]').val('');
-        nbxget('getproductlist', '#productselectparams', 'getproductlist');
+        nbxget('getproductlist', '#productselectparams', 'getproductlist', '#productlist');
     });
     // END: -------------------------------------------------------
 
     //show processing on postback for image.
-    $("body").on("click", ".postbacklink", function () {
+    $('a[id*="cmdReturn"]').click(function () {
         $('.processing').show();
     });
-
-
-    $('#returntolist').click(function () {
-        $('#productsearchsection').show();
-        $('#productlistsection').show();
-        $('#productdatasection').hide();
+    $('a[id*="cmdSave"]').click(function () {
+        $('.processing').show();
+        $('input[id*="updatemodeldata"]').val($.fn.genxmlajaxitems('#productmodels', '.modelitem')); //move model data to update postback field
+        $('input[id*="updateproductoptions"]').val($.fn.genxmlajaxitems('#productoptions', '.optionitem')); //move model data to update postback field
+        $('input[id*="updateproductoptionvalues"]').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem')); //move model data to update postback field
+        $('input[id*="updateproductimages"]').val($.fn.genxmlajaxitems('#productimages', '.imageitem')); //move model data to update postback field
+        $('input[id*="updateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem')); //move model data to update postback field
     });
-
-
-    nbxget('getproductlist', '#productselectparams', 'getproductlist', '#productlist');
 
 });

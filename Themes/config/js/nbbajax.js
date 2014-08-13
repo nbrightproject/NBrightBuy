@@ -16,18 +16,24 @@ function nbxonchange(selector,cmd,selformdiv,action)
 	});
 }
 
-function nbxget(cmd,selformdiv,action,target)
-{		 
+function nbxget(cmd, selformdiv, action, target, selformitemdiv)
+{
     $.ajaxSetup({ cache: false });
 
 	$(nbxprocessing).val("BEFORE").trigger('change');
 
 	// set the nbxaction field to action, so we know which ajax action is processing.
     $('input[id*="nbxaction"]').val(action);
-	
-	var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd;
-	var values = $.fn.genxmlajax(selformdiv);
-	var request = $.ajax({ type: "POST",
+
+    var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd;
+    var values = '';
+    if (selformitemdiv == null) {
+        values = $.fn.genxmlajax(selformdiv);        
+    }
+    else {
+        values = $.fn.genxmlajaxitems(selformdiv, selformitemdiv);
+    }
+    var request = $.ajax({ type: "POST",
 		url: cmdupdate,
 		cache: false,
 		data: { inputxml: encodeURI(values) }		

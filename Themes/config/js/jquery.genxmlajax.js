@@ -1,10 +1,14 @@
 // NBright JQuery plugin to generate ajax post of input fields - v1.0.1
 (function ($) {
 
-	// Usage: var values = $.fn.genxmlajax(selectordiv);
-	// selectordiv: The div selector whcih encapsulates the controls for whcih data will be passed tothe server.
+    // Usage: var values = $.fn.genxmlajax(selectordiv);
+    // selectordiv: The div selector whcih encapsulates the controls for whcih data will be passed tothe server.
     $.fn.genxmlajax = function (selectordiv) {
         return getgenxml(selectordiv);
+    };
+
+    $.fn.genxmlajaxitems = function (selectordiv, selectoritemdiv) {
+        return getgenxmlitems(selectordiv, selectoritemdiv);
     };
 
     $.fn.popupformlist = function (selformdiv, sellistdiv, selpopupbutton, ajaxbutton, cmdupdate, width) {
@@ -54,7 +58,7 @@
         $.ajaxSetup({ cache: false });
         $.get(cmdget, function (data) {
             displayList(data, ajaxbutton, sellistdiv);
-        });	
+        });
     };
 
     function displayList(data, ajaxbutton, sellistdiv) {
@@ -67,6 +71,55 @@
         });
     };
 
+    function getgenxmlitems(selectordiv, selectoritemdiv) {
+        // get each item div into xml format.
+        var values = "<root>";
+
+        var $inputs = $(selectordiv).children(':input');
+        $inputs.each(function () {
+            values += getctrlxml($(this));
+        });
+
+        var $selects = $(selectordiv).children(' select');
+        $selects.each(function () {
+            strID = $(this).attr("id");
+            nam = strID.split('_');
+            var shortID = nam[nam.length - 1];
+            var lp = 1
+            while (shortID.length < 3) {
+                lp++;
+                shortID = nam[nam.length - lp];
+            }
+            values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
+        });
+        
+        $(selectoritemdiv).each(function () {
+            values += '<root>';
+            var $iteminputs = $(this).find(':input');
+            $iteminputs.each(function () {
+                values += getctrlxml($(this));
+            });
+
+            var $itemselects = $(this).find(' select');
+            $itemselects.each(function () {
+                strID = $(this).attr("id");
+                nam = strID.split('_');
+                var shortID = nam[nam.length - 1];
+                var lp = 1
+                while (shortID.length < 3) {
+                    lp++;
+                    shortID = nam[nam.length - lp];
+                }
+                values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
+            });
+
+            values += '</root>';
+        });
+
+        values += '</root>';
+        return values;
+    };
+
     function getgenxml(selectordiv) {
 
         // get all the inputs into an array.
@@ -74,58 +127,67 @@
 
         var $inputs = $(selectordiv + ' :input');
         $inputs.each(function () {
-            var strID = $(this).attr("id");
-			var nam = strID.split('_');			
-			var shortID = nam[nam.length - 1];
-			var lp = 1
-			while (shortID.length < 3)
-			{
-				lp++;
-				shortID = nam[nam.length - lp];
-			}
-            if ($(this).attr("type") == 'radio') {
-                values += '<f t="rb"  id="' + shortID + '" val="' + $(this).attr("value") + '"><![CDATA[' + $(this).is(':checked') + ']]></f>';
-            }
-            else if ($(this).attr("type") == 'checkbox') {
-				values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + $(this).attr("value") + '">' + $(this).is(':checked') + '</f>';
-            }
-            else if ($(this).attr("type") == 'text') {
-				if ($(this).attr("datatype")===undefined){
-					values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + $(this).val() + ']]></f>';}
-				else{
-					values += '<f t="txt"  id="' + shortID + '" dt="' + $(this).attr("datatype") + '"><![CDATA[' + $(this).val() + ']]></f>';}
-            }
-            else if ($(this).attr("type") == 'hidden') {
-					values += '<f t="hid"  id="' + shortID + '"><![CDATA[' + $(this).val() + ']]></f>';
-            }
-            else {			
-                values += '<f id="' + shortID + '"><![CDATA[' + $(this).val() + ']]></f>';
-            }
+            values += getctrlxml($(this));
         });
 
-
-		
-		var $selects = $(selectordiv + ' select');
+        var $selects = $(selectordiv + ' select');
         $selects.each(function () {
             strID = $(this).attr("id");
-			nam = strID.split('_');			
-			var shortID = nam[nam.length - 1];
-			var lp = 1
-			while (shortID.length < 3)
-			{
-				lp++;
-				shortID = nam[nam.length - lp];
-			}
+            nam = strID.split('_');
+            var shortID = nam[nam.length - 1];
+            var lp = 1
+            while (shortID.length < 3) {
+                lp++;
+                shortID = nam[nam.length - lp];
+            }
             values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
         });
 
-        values += '</root>'
+        values += '</root>';
 
         return values;
 
     };
 
-	
+
+    function getctrlxml(element) {
+
+        var values = "";
+        var strID = element.attr("id");
+        var nam = strID.split('_');
+        var shortID = nam[nam.length - 1];
+        var lp = 1
+        while (shortID.length < 3) {
+            lp++;
+            shortID = nam[nam.length - lp];
+        }
+        if (element.attr("type") == 'radio') {
+            values += '<f t="rb"  id="' + shortID + '" val="' + element.attr("value") + '"><![CDATA[' + element.is(':checked') + ']]></f>';
+        }
+        else if (element.attr("type") == 'checkbox') {
+            values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
+        }
+        else if (element.attr("type") == 'text') {
+            if (element.attr("datatype") === undefined) {
+                values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+            }
+            else {
+                values += '<f t="txt"  id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
+            }
+        }
+        else if (element.attr("type") == 'hidden') {
+            values += '<f t="hid"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+        }
+        else {
+            values += '<f id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+        }
+
+        return values;
+
+    };
+
+
+
 })(jQuery);
 
 

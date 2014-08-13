@@ -105,7 +105,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-
         public void Update(NBrightInfo info)
         {
             var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');

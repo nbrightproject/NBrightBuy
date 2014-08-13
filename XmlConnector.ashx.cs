@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Xml;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using Microsoft.ApplicationBlocks.Data;
@@ -178,6 +179,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "productrelated":
                     if (CheckRights()) strOut = GetProductRelated(context);
                     break;
+                case "updateproductmodels":
+                    if (CheckRights()) strOut = UpdateProductModels(context);
+                    break;
+                    
             }
 
             #endregion
@@ -257,43 +262,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
         #region "Category Methods"
-
-        //private string SetCategoryForm(HttpContext context)
-        //{
-        //    try
-        //    {
-        //        // get posted form data into a NBrigthInfo class so we can take the listbox value easily
-        //        var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-        //        var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
-        //        var objInfo = new NBrightInfo();
-        //        objInfo.ItemID = -1;
-        //        objInfo.TypeCode = "AJAXDATA";
-        //        objInfo.XMLData = xmlData;
-        //        var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
-
-        //        var strOut = "No Category ID or Langauge ('itemid' and 'lang' hidden fields needed on input form)";
-        //        if (settings.ContainsKey("itemid") && settings.ContainsKey("lang"))
-        //        {
-
-        //            var strItemId = settings["itemid"];
-        //            if (Utils.IsNumeric(strItemId))
-        //            {
-        //                var itemId = Convert.ToInt32(strItemId);
-
-        //                var catData = new CategoryData(itemId, settings["lang"]);
-        //                catData.Update(objInfo);
-        //                catData.Save();
-        //                strOut = NBrightBuyUtils.GetResxMessage();
-        //            }
-        //        }
-
-        //        return strOut;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ex.ToString();
-        //    }
-        //}
 
         private String GetCategoryProductList(HttpContext context)
         {
@@ -814,6 +782,44 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
         }
+
+        private String UpdateProductModels(HttpContext context)
+        {
+
+            try
+            {
+                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
+                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                var xmlDoc = new XmlDataDocument();
+                xmlDoc.LoadXml(strIn);
+
+                var strItemId = "";
+                var lang = "";
+                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='itemid']");
+                if (itemnod != null) strItemId = itemnod.InnerText;
+                var langnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='lang']");
+                if (langnod != null) lang = langnod.InnerText;
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                    if (Utils.IsNumeric(strItemId))
+                    {
+                        var itemId = Convert.ToInt32(strItemId);
+                        var prodData = new ProductData(itemId, lang);
+                        prodData.UpdateModels(strIn);
+                        prodData.Save();
+                        strOut = NBrightBuyUtils.GetResxMessage();
+                    }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
 
         #endregion
 

@@ -128,11 +128,91 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 strSelectedIds += obj.XrefItemId.ToString("") + ",";
             }
-            var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
-            var relList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
+            var relList = new List<NBrightInfo>();
+            if (strSelectedIds.TrimEnd(',') != "")
+            {
+                var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
+                relList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
+            }
             return relList;
         }
 
+        public void Save()
+        {
+            var objCtrl = new NBrightBuyController();
+            objCtrl.Update(DataRecord);
+            objCtrl.Update(DataLangRecord);
+        }
+
+        public void Update(String xmlData)
+        {
+            var info = new NBrightInfo();
+            info.ItemID = -1;
+            info.TypeCode = "UPDATEDATA";
+            info.XMLData = xmlData;
+
+            var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+            foreach (var f in localfields)
+            {
+                if (f != "")
+                {
+                    if (f == "genxml/edt/description")
+                    {
+                        // special processing for editor, to place code in standard place.
+                        if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
+                        if (info.GetXmlProperty("genxml/textbox/description") == "")
+                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/edt/description"));
+                        else
+                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
+                    }
+                    else
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+
+                    DataRecord.RemoveXmlNode(f);                    
+                }
+            }
+
+            var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
+            foreach (var f in fields)
+            {
+                if (f != "")
+                {
+                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                    // if we have a image field then we need to create the imageurl field
+                    if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
+                        DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+
+                    DataLangRecord.RemoveXmlNode(f);
+                }
+            }
+        }
+
+        public void UpdateModels(String xmlData)
+        {
+            var info = new NBrightInfo();
+            info.ItemID = -1;
+            info.TypeCode = "UPDATEDATA";
+            info.XMLData = xmlData;
+            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlData, "");
+
+            var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+            foreach (var f in localfields)
+            {
+                if (f != "")
+                {
+
+                }
+            }
+
+            var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
+            foreach (var f in fields)
+            {
+                if (f != "")
+                {
+
+                }
+            }
+        }
 
         #endregion
 
@@ -177,7 +257,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         var entityId = obj.GetXmlProperty("genxml/hidden/" + entityIdName);
                         if (Utils.IsNumeric(entityId))
                         {
-                            obj.ItemID = Convert.ToInt32(entityId);
+                            obj.ItemID = Info.ItemID;
+                            obj.Lang = Info.Lang;
                             var nodLang = "<genxml>" + Info.GetXmlNode("genxml/lang/genxml/" + entityName + "/genxml[./hidden/" + entityIdName + "/text()='" + entityId + "']") + "</genxml>";
                             if (nodLang != "")
                             {

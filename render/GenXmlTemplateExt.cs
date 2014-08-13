@@ -2597,17 +2597,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 if (lk.NavigateUrl != "") entryid = lk.NavigateUrl; // use the itemid passed in (XSL loop in display header)
 
-                //[TODO: change for v3 BO]
-                var url = "Unable to find NB_Store_BackOffice module";
-                var mCtrl = new ModuleController();
-                var mInfo = mCtrl.GetModuleByDefinition(PortalSettings.Current.PortalId, "NB_Store_BackOffice");
-                if (mInfo != null)
+                var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
+                if (Utils.IsNumeric(entryid) && StoreSettings.Current.GetInt("backofficetabid") > 0)
                 {
                     var paramlist = new string[4];
-                    paramlist[0] = "mid=" + mInfo.ModuleID.ToString("");
-                    paramlist[1] = "ProdID=" + NBrightBuyV2Utils.GetLegacyProductId(Convert.ToInt32(entryid));
-                    paramlist[2] = "RtnTab=" + PortalSettings.Current.ActiveTab.TabID.ToString("");
-                    paramlist[3] = "rtnmid=" + _settings["moduleid"];
+                    paramlist[1] = "eid=" + entryid;
+                    paramlist[2] = "ctrl=Products";
+                    if (_settings != null && _settings.ContainsKey("currenttabid")) paramlist[3] = "rtntab=" + _settings["currenttabid"];
+                    if (_settings != null && _settings.ContainsKey("moduleid")) paramlist[3] = "rtnmid=" + _settings["moduleid"];
                     var urlpage = Utils.RequestParam(HttpContext.Current, "page");
                     if (urlpage.Trim() != "")
                     {
@@ -2618,10 +2615,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (urlcatid.Trim() != "")
                     {
                         IncreaseArray(ref paramlist, 1);
-                        paramlist[paramlist.Length - 1] = "CatID=" + urlcatid.Trim();
+                        paramlist[paramlist.Length - 1] = "catid=" + urlcatid.Trim();
                     }
-
-                    url = Globals.NavigateURL(mInfo.TabID, "AdminProduct", paramlist);
+                    url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);                    
                 }
                 lk.NavigateUrl = url;
             }

@@ -21,14 +21,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class Products : NBrightBuyAdminBase
     {
 
+        private int _eid = 0;
+
         #region Load Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
 
+            if (Utils.IsNumeric(Utils.RequestParam(Context, "eid"))) _eid = Convert.ToInt32(Utils.RequestParam(Context, "eid"));
+
             base.OnInit(e);
 
-            var t2 = "productadmin.html";
+            var t2 = "productadminlist.html";
+            if (_eid > 0) t2 = "productadmin.html";
 
             // Get Display Body
             var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
@@ -58,7 +63,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             if (UserId > 0) // only logged in users can see data on this module.
             {
-                base.DoDetail(rpData);
+                var prodData = new ProductData(_eid, StoreSettings.Current.EditLanguage);
+                base.DoDetail(rpData,prodData.Info);
             }
         }
 
@@ -73,8 +79,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             switch (e.CommandName.ToLower())
             {
-                case "uploadimage":
+                case "save":
+                    Update();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "edit":
                     param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "return":
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
 
@@ -84,6 +97,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
         #endregion
+
+        private void Update()
+        {
+            if (_eid > 0)
+            {
+                var prodData = new ProductData(_eid, StoreSettings.Current.EditLanguage);
+                var strXml = GenXmlFunctions.GetGenXml(rpData);
+                prodData.Update(strXml);
+                prodData.Save();
+            }
+        }
 
 
 
