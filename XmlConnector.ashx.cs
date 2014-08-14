@@ -533,7 +533,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var productitemid = settings["itemid"];
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
 
                 return  HttpUtility.HtmlDecode(prodData.Info.GetXmlProperty("genxml/lang/genxml/edt/description"));
 
@@ -561,7 +561,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadmingeneral.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.Info, bodyTempl);
 
                 return strOut;
@@ -590,7 +590,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.Models, bodyTempl);
 
                 return strOut;
@@ -619,7 +619,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl);
 
                 return strOut;
@@ -653,7 +653,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strOut = "";
                 if (Utils.IsNumeric(selectedoptionid) && Utils.IsNumeric(productitemid))
                 {
-                    var prodData = new ProductData(productitemid, _lang);
+                    var prodData = ProductUtils.GetProductData(productitemid, _lang);
                     strOut = GenXmlFunctions.RenderRepeater(prodData.GetOptionValues(Convert.ToInt32(selectedoptionid)), bodyTempl);  
                 }
 
@@ -683,7 +683,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.Imgs, bodyTempl);
 
                 return strOut;
@@ -712,7 +712,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadmindocs.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.Docs, bodyTempl);
 
                 return strOut;
@@ -741,7 +741,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadmincategories.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);
 
                 return strOut;
@@ -770,7 +770,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var bodyTempl = templCtrl.GetTemplateData("productadminrelated.html", Utils.GetCurrentCulture());
 
                 //get data
-                var prodData = new ProductData(productitemid, _lang);
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.GetRelatedProducts(), bodyTempl);
 
                 return strOut;
@@ -804,7 +804,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (Utils.IsNumeric(strItemId))
                     {
                         var itemId = Convert.ToInt32(strItemId);
-                        var prodData = new ProductData(itemId, lang);
+                        var prodData = ProductUtils.GetProductData(itemId, lang);
                         prodData.UpdateModels(strIn);
                         prodData.Save();
                         strOut = NBrightBuyUtils.GetResxMessage();

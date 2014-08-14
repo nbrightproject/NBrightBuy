@@ -2,6 +2,8 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
+
+
 <!-- return field for ajax calls -->
 [<tag id="nbxprocessing" type="hidden" />]
 [<tag id="nbxaction" type="hidden" />]
@@ -10,23 +12,23 @@
 <span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
 
 <script>
-$(document).ready(function () {
-    // start load all ajax data
-    nbxget('productmodels', '#productselectparams', 'productmodels', '#productmodels'); // load models
-    nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
-    nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
-    nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
-    nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
-    nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
-});
+    $(document).ready(function () {
+        // start load all ajax data
+        nbxget('productmodels', '#productselectparams', 'productmodels', '#productmodels'); // load models
+        nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
+        nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
+        nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
+        nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
+        nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
+    });
 </script>
 
 <!-- postback fields to keep ajax populated data for update -->
-[<tag id="updatemodeldata" type="postback" value=""/>]
-[<tag id="updateproductoptions" type="postback" value=""/>]
-[<tag id="updateproductoptionvalues" type="postback" value=""/>]
-[<tag id="updateproductimages" type="postback" value=""/>]
-[<tag id="updateproductdocs" type="postback" value=""/>]
+[<tag id="xmlupdatemodeldata" type="postback" value=""/>]
+[<tag id="xmlupdateproductoptions" type="postback" value=""/>]
+[<tag id="xmlupdateproductoptionvalues" type="postback" value=""/>]
+[<tag id="xmlupdateproductimages" type="postback" value=""/>]
+[<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 
 
 <div id="productdatasection">
@@ -67,14 +69,21 @@ Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
         <div>[<tag id="description" type="dnn:dnntexteditor" height="400" width="800"  />]</div>
         <h2>Models</h2>
         <a id="modelsave">Save Models</a>
-        <div id="productmodels"></div>
+        <ul id="productmodels"></ul>
         <h2>Options</h2>
-        <div id="productoptions"></div>                
-        <div id="productoptionvalues"></div>                
+        <div>            
+        <div style="float:left;">
+        <ul id="productoptions"></ul>                            
+        </div>
+        <div style="float:left;">
+            <ul id="productoptionvalues"></ul>                
+        </div>
+        <div style="clear:both"></div>
+        </div>
         <h2>Images</h2>
-        <div id="productimages"></div>
+        <ul id="productimages"></ul>
         <h2>Documents</h2>
-        <div id="productdocs"></div>
+        <ul id="productdocs"></ul>
         <h2>Categories</h2>
         <div id="productcategories"></div>
         <h2>Related Products</h2>

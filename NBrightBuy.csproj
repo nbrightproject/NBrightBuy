@@ -440,7 +440,6 @@
     <Content Include="Themes\config\default\productadminoptionvalues.html" />
     <Content Include="Themes\config\default\productadminoptions.html" />
     <Content Include="Themes\config\default\productadminmodels.html" />
-    <Content Include="Themes\config\default\productadmingeneral.html" />
     <Content Include="Themes\config\default\productlistbody.html" />
     <Content Include="Themes\config\default\productlistfooter.html" />
     <Content Include="Themes\config\default\productlistheader.html" />

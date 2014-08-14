@@ -2255,7 +2255,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
 
-        private String GetItemDisplay(NBrightInfo obj,String templ,Boolean displayPrices)
+        private String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
         {
             var isDealer = CmsProviderManager.Default.IsInRole(_settings["dealer.role"]);
             var outText = templ;
@@ -2271,27 +2271,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 if (displayPrices)
                 {
-                    var strprice = obj.GetXmlProperty("genxml/hidden/saleprice");
-                    if (strprice == "-1") strprice = obj.GetXmlProperty("genxml/textbox/txtunitcost");
-                    Double price = 0;
-                    if (Utils.IsNumeric(strprice))
-                    {
-                        price = Convert.ToDouble(strprice);
-                        strprice = SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, price);
-                    }
+                    var price = obj.GetXmlPropertyDouble("genxml/hidden/saleprice");
+                    if (price == -1) price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    var strprice = SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, price);
 
-                    var strdealerprice = obj.GetXmlProperty("genxml/textbox/txtdealercost");
+                    var strdealerprice = "";
+                    var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
                     if (isDealer)
                     {
-                        if (Utils.IsNumeric(strdealerprice))
-                        {
-                            var dealerprice = Convert.ToDouble(strdealerprice);
-                            strdealerprice = SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, dealerprice);
-                            if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
-                        }
+                        strdealerprice = SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, dealerprice);
+                        if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
                     }
-                    else                       
-                        strdealerprice = "";
 
                     outText = outText.Replace("{price}", "(" + strprice + ")");
                     outText = outText.Replace("{dealerprice}", strdealerprice);
@@ -2517,7 +2507,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (!StoreSettings.Current.DebugMode) objL = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
                         if (objL == null)
                         {
-                            var prodData = new ProductData(objInfo.ItemID,Utils.GetCurrentCulture());
+                            var prodData = ProductUtils.GetProductData(objInfo.ItemID, Utils.GetCurrentCulture());
                             //objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
                             objL = prodData.GetRelatedProducts();
                             if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(Convert.ToInt32(moduleid), strCacheKey, objL);                            
@@ -3281,11 +3271,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                             var cartStock = 0;
                                             cartStock = CurrentCart.GetCartStockInModel(PortalSettings.Current.PortalId, modelId);
 
-                                            o.AddSingleNode("stockincart", cartStock.ToString(""), "genxml/hidden");
+                                            o.AddSingleNode("stockincart", cartStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
                                             var actualStock = Convert.ToInt32(modelStock);
                                             actualStock = actualStock - cartStock;
                                             if (actualStock < 0) actualStock = 0;
-                                            o.AddSingleNode("calcstock", actualStock.ToString(""), "genxml/hidden");
+                                            o.AddSingleNode("calcstock", actualStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
                                         }
                                     }
                                 }
@@ -3303,7 +3293,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                         var objPCtrl = new ProductController();
                                         var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
                                         var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
-                                        o.AddSingleNode("saleprice", salePrice.ToString(""), "genxml/hidden");
+                                        o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
                                     }
                                 }
 
@@ -3320,18 +3310,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetSalePrice(NBrightInfo dataItemObj)
         {
-            var saleprice = "-1";
+            Double saleprice = -1;
             var l = BuildModelList(dataItemObj, false, true);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/hidden/saleprice");
-                if (Utils.IsNumeric(s))
-                {
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US"))) | (saleprice == "-1")) saleprice = s;
-                }
+                var s = m.GetXmlPropertyDouble("genxml/hidden/saleprice");
+                if ((s < saleprice) || (saleprice == -1)) saleprice = s;
             }
-            return saleprice;
+            return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
         }
+
 
         private String GetDealerPrice(NBrightInfo dataItemObj)
         {

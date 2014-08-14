@@ -63,7 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             if (UserId > 0) // only logged in users can see data on this module.
             {
-                var prodData = new ProductData(_eid, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
                 base.DoDetail(rpData,prodData.Info);
             }
         }
@@ -102,7 +102,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             if (_eid > 0)
             {
-                var prodData = new ProductData(_eid, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
                 var strXml = GenXmlFunctions.GetGenXml(rpData);
                 prodData.Update(strXml);
                 prodData.Save();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Xml;
+using NBrightCore.TemplateEngine;
 using NBrightCore.render;
 using NBrightDNN;
 using NBrightCore.common;
@@ -180,7 +181,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 var objCtrl = new NBrightBuyController();
 
-                var templCtrl = new NBrightCore.TemplateEngine.TemplateController(controlMapPath);
+                var templCtrl = new TemplateController(controlMapPath);
 
                 var hTempl = templCtrl.GetTemplateData(templatePrefix + "_" + ModuleEventCodes.selectedheader + ".html", Utils.GetCurrentCulture());
                 var bTempl = templCtrl.GetTemplateData(templatePrefix + "_" + ModuleEventCodes.selectedbody + ".html", Utils.GetCurrentCulture());
@@ -209,10 +210,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         }
                     }
 
-                    var obj = new NBrightDNN.NBrightInfo();
-                    strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(obj, hTempl);
-                    strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(objList, bTempl);
-                    strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(obj, fTempl);
+                    var obj = new NBrightInfo();
+                    strOut += GenXmlFunctions.RenderRepeater(obj, hTempl);
+                    strOut += GenXmlFunctions.RenderRepeater(objList, bTempl);
+                    strOut += GenXmlFunctions.RenderRepeater(obj, fTempl);
                 }
             }
 
@@ -223,7 +224,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (Utils.IsNumeric(itemId))
             {
-                var xrefList = new List<String>();
+                var xrefList = new List<string>();
                 xrefList.Add("prdimg");
                 xrefList.Add("prdxref");
                 xrefList.Add("prddoc");
@@ -272,7 +273,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 var objCtrl = new NBrightBuyController();
 
-                var templCtrl = new NBrightCore.TemplateEngine.TemplateController(controlMapPath);
+                var templCtrl = new TemplateController(controlMapPath);
 
                 var hTempl = templCtrl.GetTemplateData(templatePrefix + "_" + ModuleEventCodes.selectedheader + ".html", Utils.GetCurrentCulture());
                 var bTempl = templCtrl.GetTemplateData(templatePrefix + "_" + ModuleEventCodes.selectedbody + ".html", Utils.GetCurrentCulture());
@@ -311,10 +312,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
-                var obj = new NBrightDNN.NBrightInfo();
-                strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(obj, hTempl);
-                strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(objList, bTempl);
-                strOut += NBrightCore.render.GenXmlFunctions.RenderRepeater(obj, fTempl);
+                var obj = new NBrightInfo();
+                strOut += GenXmlFunctions.RenderRepeater(obj, hTempl);
+                strOut += GenXmlFunctions.RenderRepeater(objList, bTempl);
+                strOut += GenXmlFunctions.RenderRepeater(obj, fTempl);
 
             }
 
@@ -354,7 +355,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //Build modelCode list
             int lp1 = 0;
-            var mcList = new List<String>();
+            var mcList = new List<string>();
             lp1 = 0;
             if (optList.Count == 1)
             {
@@ -379,7 +380,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             //Merge with existing models
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(controlMapPath,controlMapPath);
+            var templCtrl = new TemplateGetter(controlMapPath,controlMapPath);
             Repeater rpEntity;
             var strTemplate = templCtrl.GetTemplateData("AdminProducts_Models.html", Utils.GetCurrentCulture());
             
@@ -418,7 +419,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     GenXmlFunctions.SetHiddenField(rpEntity.Items[0], "modelcode", modelCode);
                     GenXmlFunctions.SetHiddenField(rpEntity.Items[0], "entityindex", idx.ToString(CultureInfo.InvariantCulture));
                     var strXml = GenXmlFunctions.GetGenXml(rpEntity, 0);
-                    objInfo = ProductUtils.AddEntity(objInfo, "models", 1, strXml);
+                    objInfo = AddEntity(objInfo, "models", 1, strXml);
                     idx += 1;
                 }
             }
@@ -426,7 +427,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objInfo;
         }
 
-        private static List<String> BuildModelCodes(List<NBrightInfo> optList, int lpPos, String pmodelCode, String modelCode, List<String> mcList)
+        private static List<string> BuildModelCodes(List<NBrightInfo> optList, int lpPos, String pmodelCode, String modelCode, List<string> mcList)
         {
             // COMMENT(Dave Lee): Dave, if your looking at this in the future... 
             // YES!!! you did stuggle to pop this out of your tiny mad mind...
@@ -454,6 +455,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return mcList;
         }
 
+        public static ProductData GetProductData(String productid, String lang, Boolean debugMode = false)
+        {
+            if (Utils.IsNumeric(productid)) return GetProductData(Convert.ToInt32(productid), lang, debugMode);
+            return null;
+        }
 
+	    public static ProductData GetProductData(int productid, String lang, Boolean debugMode = false)
+	    {
+	        if (debugMode) return new ProductData(productid, lang, true);
+	        var cacheKey = "NBSProductData*" + productid.ToString("") + "*" + lang;
+	        var prodData = (ProductData)Utils.GetCache(cacheKey);
+	        if (prodData == null) prodData = new ProductData(productid, lang, true);
+	        return prodData;
+	    }
 	}
 }

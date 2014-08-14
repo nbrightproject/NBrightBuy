@@ -25,6 +25,29 @@
     });
 
 
+    $('#productmodels').change(function () {
+            $(this).sortable();
+            $(this).disableSelection();
+    });
+
+    $('#productoptions').change(function () {
+        $(this).sortable();
+        $(this).disableSelection();
+    });
+    $('#productoptionvalues').change(function () {
+        $(this).sortable();
+        $(this).disableSelection();
+    });
+    $('#productimages').change(function () {
+        $(this).sortable();
+        $(this).disableSelection();
+    });
+    $('#productdocs').change(function () {
+        $(this).sortable();
+        $(this).disableSelection();
+    });
+
+
 
     //-------------------------------------------------------
     // -------------   Search products ----------------------
@@ -52,11 +75,12 @@
     });
     $('a[id*="cmdSave"]').click(function () {
         $('.processing').show();
-        $('input[id*="updatemodeldata"]').val($.fn.genxmlajaxitems('#productmodels', '.modelitem')); //move model data to update postback field
-        $('input[id*="updateproductoptions"]').val($.fn.genxmlajaxitems('#productoptions', '.optionitem')); //move model data to update postback field
-        $('input[id*="updateproductoptionvalues"]').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem')); //move model data to update postback field
-        $('input[id*="updateproductimages"]').val($.fn.genxmlajaxitems('#productimages', '.imageitem')); //move model data to update postback field
-        $('input[id*="updateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem')); //move model data to update postback field
+        $('input[id*="xmlupdatemodeldata"]').val($.fn.genxmlajaxitems('#productmodels', '.modelitem')); //move model data to update postback field
+        $('input[id*="xmlupdateproductoptions"]').val($.fn.genxmlajaxitems('#productoptions', '.optionitem')); //move model data to update postback field
+        $('input[id*="xmlupdateproductoptionvalues"]').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem')); //move model data to update postback field
+        $('input[id*="xmlupdateproductimages"]').val($.fn.genxmlajaxitems('#productimages', '.imageitem')); //move model data to update postback field
+        $('input[id*="xmlupdateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem')); //move model data to update postback field        
     });
+
 
 });

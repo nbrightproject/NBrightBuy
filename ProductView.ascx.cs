@@ -482,7 +482,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void DisplayDataEntryRepeater(String entryId)
         {
-            var productData = new ProductData(entryId,Utils.GetCurrentCulture(),false);
+            var productData = ProductUtils.GetProductData(entryId, Utils.GetCurrentCulture());
 
             if (productData.Exists)
             {

@@ -98,7 +98,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(strproductid))
             {
                 var itemcode = ""; // The itemcode var is used to decide if a cart item is new or already existing in the cart.
-                var productData = new ProductData(Convert.ToInt32(strproductid),Utils.GetCurrentCulture());
+                var productData = ProductUtils.GetProductData(Convert.ToInt32(strproductid), Utils.GetCurrentCulture());
 
                 objInfo.AddSingleNode("productid", strproductid, "genxml");
                 itemcode += strproductid + "-";

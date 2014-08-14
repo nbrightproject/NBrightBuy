@@ -4,7 +4,7 @@
 <ul class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
 
 	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button -->
-	<li class="edit">[<tag resourcekey="ProductView.editicon" type="editlink"  />]</li>[<tag type="endtestof" />]
+	<li class="edit">[<tag resourcekey="ProductView.editicon" type="nbs:editlink"  />]</li>[<tag type="endtestof" />]
 	
 <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="entryurl"><!-- Link to details -->
 	
