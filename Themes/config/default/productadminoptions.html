@@ -1,11 +1,13 @@
 ﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
 <!-- class="optionitem" is needed for JS postback update -->
-<li class="optionitem ui-state-default" style="width:400;">
+<li class="optionitem" style="width:400;">
     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+    <a class="removemodel">Remove</a>
+    [<tag id="optionid" type="hidden" value="" />]
     [<tag id="fields" type="hidden" value="genxml/hidden/optionid" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptiondesc" />]
-
+    <!-- required: class="selectoption" -->
     <a class="selectoption" itemid="[<tag type="valueof" xpath="genxml/hidden/optionid" />]">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a>	-     
-    option:   [<tag id="txtoptiondesc" type="textbox" width="50" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/optionid" />] - 
+    option:   [<tag id="txtoptiondesc" type="textbox" width="250" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/optionid" />] - 
 </li>

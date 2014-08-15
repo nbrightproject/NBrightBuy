@@ -182,7 +182,31 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "updateproductmodels":
                     if (CheckRights()) strOut = UpdateProductModels(context);
                     break;
-                    
+                case "addproductmodels":
+                    if (CheckRights())
+                    {
+                        AddProductModels(context);
+                        strOut = GetProductModels(context);
+                    }
+                    break;
+                case "updateproductoptionvalues":
+                    if (CheckRights()) strOut = UpdateOptionValues(context);
+                    break;
+                case "addproductoptions":
+                    if (CheckRights())
+                    {
+                        AddProductOptions(context);
+                        strOut = GetProductOptions(context);
+                    }
+                    break;
+                case "addproductoptionvalues":
+                    if (CheckRights())
+                    {
+                        AddProductOptionValues(context);
+                        strOut = GetProductOptionValues(context);
+                    }
+                    break;
+
             }
 
             #endregion
@@ -783,6 +807,37 @@ namespace Nevoweb.DNN.NBrightBuy
 
         }
 
+        private String AddProductModels(HttpContext context)
+        {
+
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                var productitemid = settings["itemid"];
+                var qty = settings["addqty"];
+                if (!Utils.IsNumeric(qty)) qty = "1";
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                if (Utils.IsNumeric(productitemid))
+                {
+                    var itemId = Convert.ToInt32(productitemid);
+                    var prodData = ProductUtils.GetProductData(itemId, _lang);
+                    ProductUtils.AddEntity(prodData.DataRecord, "models", Convert.ToInt32(qty));
+                    prodData.Save();
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         private String UpdateProductModels(HttpContext context)
         {
 
@@ -795,7 +850,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 var strItemId = "";
                 var lang = "";
-                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='itemid']");
+                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='parentitemid']");
                 if (itemnod != null) strItemId = itemnod.InnerText;
                 var langnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='lang']");
                 if (langnod != null) lang = langnod.InnerText;
@@ -820,6 +875,117 @@ namespace Nevoweb.DNN.NBrightBuy
 
         }
 
+        private String UpdateOptionValues(HttpContext context)
+        {
+
+            try
+            {
+                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
+                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                if (strIn.Trim() == "<root></root>") return ""; // no data so skip
+                var xmlDoc = new XmlDataDocument();
+                xmlDoc.LoadXml(strIn);
+
+                var strItemId = "";
+                var lang = "";
+                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='productid']");
+                if (itemnod != null) strItemId = itemnod.InnerText;
+                var langnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='lang']");
+                if (langnod != null) lang = langnod.InnerText;
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                if (Utils.IsNumeric(strItemId))
+                {
+                    var itemId = Convert.ToInt32(strItemId);
+                    var prodData = ProductUtils.GetProductData(itemId, lang);
+                    prodData.UpdateOptionValues(strIn);
+                    prodData.Save();
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+        private String AddProductOptions(HttpContext context)
+        {
+
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                var productitemid = settings["itemid"];
+                var qty = settings["addqty"];
+                if (!Utils.IsNumeric(qty)) qty = "1";
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                if (Utils.IsNumeric(productitemid))
+                {
+                    var itemId = Convert.ToInt32(productitemid);
+                    var prodData = ProductUtils.GetProductData(itemId, _lang);
+                    ProductUtils.AddEntity(prodData.DataRecord, "options", Convert.ToInt32(qty), "<genxml><hidden><optionid>" + NBrightBuyUtils.GetUniqueKey() + "</optionid></hidden></genxml>");
+                    prodData.Save();
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private String AddProductOptionValues(HttpContext context)
+        {
+
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                if (!settings.ContainsKey("selectedoptionid")) return "";
+
+                var optionid = settings["selectedoptionid"];
+                var productitemid = settings["itemid"];
+                var qty = settings["addqty"];
+                if (!Utils.IsNumeric(qty)) qty = "1";
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                if (Utils.IsNumeric(productitemid))
+                {
+                    var itemId = Convert.ToInt32(productitemid);
+                    var prodData = ProductUtils.GetProductData(itemId, _lang);
+                    var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid></hidden></genxml></optionvalues></genxml>";
+                    if (prodData.DataRecord.GetXmlNode("genxml/optionvalues[@optionid='" + optionid + "']") == "")
+                    {
+                        prodData.DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");                        
+                    }
+                    var lp = 1;
+                    while (lp < Convert.ToInt32(qty))
+                    {
+                        prodData.DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']/genxml", "genxml/optionvalues[@optionid='" + optionid + "']");                         
+                    }
+                    prodData.Save();
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
         #endregion
 

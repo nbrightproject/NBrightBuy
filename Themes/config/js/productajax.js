@@ -19,32 +19,39 @@
     $('#productoptions').change(function () {
         // select option
         $('.selectoption').click(function () {
+            nbxget('updateproductoptionvalues', '#productoptionvalues', 'updateproductoptionvalues', '#notifymsg', '.optionvalueitem'); // update optionvalues
             $('input[id*="selectedoptionid"]').val($(this).attr('itemid'));
-            nbxget('productoptionvalues', '#productselectparams', 'productoptionvalues', '#productoptionvalues'); // load options
+            nbxget('productoptionvalues', '#productselectparams', 'productoptionvalues', '#productoptionvalues'); // load optionvalues
         });
     });
 
 
     $('#productmodels').change(function () {
-            $(this).sortable();
-            $(this).disableSelection();
+        $(this).sortable();
+        $(this).disableSelection();
+        $('.removemodel').click(function () { $(this).parent().remove(); });
     });
 
     $('#productoptions').change(function () {
         $(this).sortable();
         $(this).disableSelection();
+        $('.removeoption').click(function () { $(this).parent().remove(); });
     });
     $('#productoptionvalues').change(function () {
         $(this).sortable();
         $(this).disableSelection();
+        $('.removeoptionvalue').click(function () { $(this).parent().remove(); });
+        $('#optionvaluecontrol').show();
     });
     $('#productimages').change(function () {
         $(this).sortable();
         $(this).disableSelection();
+        $('.removeimage').click(function () { $(this).parent().remove(); });
     });
     $('#productdocs').change(function () {
         $(this).sortable();
         $(this).disableSelection();
+        $('.removedoc').click(function () { $(this).parent().remove(); });
     });
 
 
@@ -73,13 +80,34 @@
     $('a[id*="cmdReturn"]').click(function () {
         $('.processing').show();
     });
+    // save form with postback
     $('a[id*="cmdSave"]').click(function () {
         $('.processing').show();
-        $('input[id*="xmlupdatemodeldata"]').val($.fn.genxmlajaxitems('#productmodels', '.modelitem')); //move model data to update postback field
-        $('input[id*="xmlupdateproductoptions"]').val($.fn.genxmlajaxitems('#productoptions', '.optionitem')); //move model data to update postback field
-        $('input[id*="xmlupdateproductoptionvalues"]').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem')); //move model data to update postback field
-        $('input[id*="xmlupdateproductimages"]').val($.fn.genxmlajaxitems('#productimages', '.imageitem')); //move model data to update postback field
-        $('input[id*="xmlupdateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem')); //move model data to update postback field        
+        //move data to update postback field   
+        $('input[id*="xmlupdatemodeldata"]').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+        $('input[id*="xmlupdateproductoptions"]').val($.fn.genxmlajaxitems('#productoptions', '.optionitem'));
+        $('input[id*="xmlupdateproductoptionvalues"]').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem'));
+        $('input[id*="xmlupdateproductimages"]').val($.fn.genxmlajaxitems('#productimages', '.imageitem'));
+        $('input[id*="xmlupdateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem'));
+    });
+
+    //Add models
+    $('#addmodels').click(function () {
+        $('.processing').show();
+        $('input[id*="addqty"]').val($('input[id*="txtaddmodelqty"]').val());
+        nbxget('addproductmodels', '#productselectparams', 'addproductmodels', '#productmodels'); // load models
+    });
+    //Add options
+    $('#addopt').click(function () {
+        $('.processing').show();
+        $('input[id*="addqty"]').val($('input[id*="txtaddoptqty"]').val());
+        nbxget('addproductoptions', '#productselectparams', 'addproductoptions', '#productoptions'); // load options
+    });
+    //Add optionvalues
+    $('#addoptvalues').click(function () {
+        $('.processing').show();
+        $('input[id*="addqty"]').val($('input[id*="txtaddoptvalueqty"]').val());
+        nbxget('addproductoptionvalues', '#productselectparams', 'addproductoptionvalues', '#productoptionvalues'); // load optionvalues
     });
 
 

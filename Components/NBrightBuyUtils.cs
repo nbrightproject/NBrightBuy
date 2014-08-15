@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
@@ -33,13 +35,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //var controlMapPath = objSettings.GetXmlProperty("genxml/hidden/controlmappath");
             var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy");
             themeFolder = "Themes\\" + themeFolder;
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath,  "Themes\\config", themeFolder);
+            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder);
             return templCtrl;
         }
 
         public static NBrightInfo GetSettings(int portalId, int moduleId, String ctrlTypeCode = "", bool useCache = true)
         {
-            var obj = (NBrightInfo)GetModCache("NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""));
+            var obj = (NBrightInfo) GetModCache("NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""));
             if (obj == null | !useCache)
             {
                 // single record for EntityTypeCode settings, so get record directly.
@@ -47,7 +49,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 obj = objCtrl.GetByType(portalId, moduleId, "SETTINGS");
                 if (obj == null)
                 {
-                    obj = new NBrightInfo { ItemID = -1 };
+                    obj = new NBrightInfo {ItemID = -1};
                     obj.TypeCode = "SETTINGS";
                     obj.ModuleId = moduleId;
                     obj.PortalId = portalId;
@@ -62,7 +64,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static NBrightInfo GetGlobalSettings(int portalId, bool useCache = true)
         {
-            var obj = (NBrightInfo)GetModCache("NBrightBuy_Global" + portalId.ToString(""));
+            var obj = (NBrightInfo) GetModCache("NBrightBuy_Global" + portalId.ToString(""));
 
 
             //[TODO: NB_Store v2.4 code for setting, needs to be changed/removed for v3]
@@ -81,7 +83,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //save these as the global settings record [TODO: change this for v3]
                 var objCtrl = new NBrightBuyController();
                 obj = objCtrl.GetByType(portalId, -1, "GLOBAL");
-                if (obj == null) obj = new NBrightInfo { ItemID = -1 };
+                if (obj == null) obj = new NBrightInfo {ItemID = -1};
                 obj.TypeCode = "GLOBAL";
                 obj.PortalId = portalId;
                 obj.XMLData = objNbsv2.XMLData;
@@ -125,7 +127,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (strTemplateText.ToLower().Contains("<xsl:stylesheet"))
             {
                 var xmlOut = "<root>";
-                var l = new List<NBrightInfo> { objInfo };
+                var l = new List<NBrightInfo> {objInfo};
                 xmlOut += NBrightBuyUtils.FormatListtoXml(l);
                 xmlOut += "</root>";
                 return XslUtils.XslTransInMemory(xmlOut, strTemplateText);
@@ -140,7 +142,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var strFilter = " and ModuleId != " + ModuleId + " and GUIDKey = '" + rtnKeyRef + "' ";
 
-            var l = CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(PortalId, -1, "SETTINGS", strFilter, "", 1, 1, 1, 1, "",""));
+            var l = CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(PortalId, -1, "SETTINGS", strFilter, "", 1, 1, 1, 1, "", ""));
             if (l.Count >= 1)
             {
                 rtnKeyRef = GetUniqueKeyRef(PortalId, ModuleId, KeyRef, LoopCount + 1);
@@ -309,7 +311,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="objObject"></param>
         public static void SetModCache(int moduleid, string CacheKey, object objObject)
         {
-            var cList = (List<String>)NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
+            var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
             if (cList == null) cList = new List<String>();
             if (!cList.Contains(CacheKey))
             {
@@ -326,7 +328,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void RemoveModCache(int moduleid)
         {
-            var cList = (List<String>)NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
+            var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
             if (cList != null)
             {
                 foreach (var s in cList)
@@ -374,7 +376,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         var includetext = modCtrl.GetTemplateData(moduleId, templ, Utils.GetCurrentCulture(), settings, debugMode);
                         if (objInfo == null) objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
                         includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
-                        if (includetext != "") PageIncludes.IncludeTextInHeader(page, includetext);                        
+                        if (includetext != "") PageIncludes.IncludeTextInHeader(page, includetext);
                     }
                 }
             }
@@ -388,7 +390,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="settingsDic"></param>
         /// <param name="portalHomeDirectory"></param>
         /// <returns></returns>
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic,String portalHomeDirectory)
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory)
         {
             if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
 
@@ -410,7 +412,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleId"></param>
         /// <param name="msgcode"></param>
         /// <param name="result"></param>
-        public static void SetNotfiyMessage(int moduleId, String msgcode,NotifyCode result)
+        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result)
         {
             if (msgcode != "")
             {
@@ -423,11 +425,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var msgcode = "";
             var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
-            if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String)HttpContext.Current.Session[sessionkey];
+            if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String) HttpContext.Current.Session[sessionkey];
             if (msgcode != "")
             {
                 var msgtempl = GetResxMessage(msgcode);
-                HttpContext.Current.Session.Remove(sessionkey); 
+                HttpContext.Current.Session.Remove(sessionkey);
                 return msgtempl;
             }
             return "";
@@ -452,7 +454,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail);
         }
 
-        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj,String emailsubjectresxkey = "", String fromEmail = "" )
+        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
         {
             var emaillist = toEmail;
             if (emaillist != "")
@@ -462,7 +464,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
                     emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, Utils.GetCurrentCulture());
-                    if (emailsubject == null) emailsubject = "";                    
+                    if (emailsubject == null) emailsubject = "";
                 }
 
                 var objTempl = NBrightBuyUtils.GetTemplateGetter("Cygnus");
@@ -508,11 +510,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         objInfo.TypeCode = "AJAXDATA";
                         objInfo.XMLData = xmlData;
                         rtnList.Add(objInfo);
-                    }                
+                    }
             }
             return rtnList;
         }
-    }
 
+
+        public static string GetUniqueKey(int maxSize = 8)
+        {
+            var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            var chars = a.ToCharArray();
+            var data = new byte[1];
+            var crypto = new RNGCryptoServiceProvider();
+            crypto.GetNonZeroBytes(data);
+            data = new byte[maxSize];
+            crypto.GetNonZeroBytes(data);
+            var result = new StringBuilder(maxSize);
+            foreach (byte b in data)
+            {
+                result.Append(chars[b % (chars.Length - 1)]);
+            }
+            return result.ToString();
+        }
+
+    }
 }
 

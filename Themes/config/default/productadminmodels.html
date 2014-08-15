@@ -1,18 +1,22 @@
-﻿<!-- class="modelitem" is needed for JS postback update -->
-<li class="modelitem ui-state-default" style="width:800;">
+﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<!-- class="modelitem" is needed for JS postback update -->
+<li class="modelitem" style="width:800;">
     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+    <a class="removemodel">Remove</a>
+    [<tag id="itemid" type="hidden" value="" />]
     [<tag id="fields" type="hidden" value="genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtmodelname,genxml/textbox/txtextra" />]
 
     ref:   [<tag id="txtmodelref" type="textbox" width="50" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/modelid" />] - 
     Name:   [<tag id="txtmodelname" type="textbox" width="100" maxlength="250" />] - 
     extra:   [<tag id="txtextra" type="textbox" width="100" maxlength="250"/>] - 
-    unitcost:   [<tag id="txtunitcost" type="textbox" width="50" maxlength="250" />] - 
+    unitcost:   [<tag id="txtunitcost" type="textbox" width="50" maxlength="250" Text="0.00"/>] - 
     barcode:   [<tag id="txtbarcode" type="textbox" width="100" maxlength="250" />] - 
-    qty remianing:   [<tag id="txtqtyremaining" type="textbox" width="20" maxlength="250" />] - 
-    max qty:   [<tag id="txtqtystockset" type="textbox" width="20" maxlength="250" />] - 
-    dealer cost:   [<tag id="txtdealercost" type="textbox" width="50" maxlength="250" />] - 
-    purchase cost:   [<tag id="txtpurchasecost" type="textbox" width="50" maxlength="250" />] - 
+    qty remianing:   [<tag id="txtqtyremaining" type="textbox" width="20" maxlength="250" Text="-1" />] - 
+    max qty:   [<tag id="txtqtystockset" type="textbox" width="20" maxlength="250" Text="0"/>] - 
+    dealer cost:   [<tag id="txtdealercost" type="textbox" width="50" maxlength="250" Text="0.00" />] - 
+    purchase cost:   [<tag id="txtpurchasecost" type="textbox" width="50" maxlength="250" Text="0.00" />] - 
 
     Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] - 
     Deleted : [<tag id="chkdeleted" type="checkbox" Text="" />] - 

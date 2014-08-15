@@ -30,15 +30,17 @@
 [<tag id="xmlupdateproductimages" type="postback" value=""/>]
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 
-
+<!-- Required: id="productdatasection" -->
 <div id="productdatasection">
 
     <br />
     [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" commandargument="ItemID" />]  
     [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
     <hr/>
+    <!-- Required: id="productdata" -->
     <div id="productdata">
         
+        <!-- Required: id="productselectparams" -->
         <div id="productselectparams">
             [<tag id="itemid" type="hidden" databind="ItemId" />]
             [<tag id="lang" type="hidden" databind="Lang" />]
@@ -51,9 +53,11 @@
             [<tag id="selectedcatid" type="hidden" value=""/>]            
             [<tag id="searchtext" type="hidden" value=""/>]     
             [<tag id="searchcategory" type="hidden" value=""/>]
-            [<tag id="selectedoptionid" type="hidden" value=""/>]            
+            [<tag id="selectedoptionid" type="hidden" value=""/>]
+            [<tag id="addqty" type="hidden" value=""/>]
         </div>
 
+        <!-- Required for update: fields,localizedfields -->
         [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
 
@@ -67,17 +71,23 @@ tagwords:   [<tag id="txttagwords" type="textbox" height="100" width="300" maxle
 Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
 <hr/>
         <div>[<tag id="description" type="dnn:dnntexteditor" height="400" width="800"  />]</div>
+        
+        <!-- All "id" for the divs/ul are required for ajax in this section -->
         <h2>Models</h2>
-        <a id="modelsave">Save Models</a>
+        <a id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddmodelqty" type="textbox" width="30" maxlength="2" text="1" />]
         <ul id="productmodels"></ul>
         <h2>Options</h2>
         <div>            
         <div style="float:left;">
+        <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
         <ul id="productoptions"></ul>                            
         </div>
-        <div style="float:left;">
-            <ul id="productoptionvalues"></ul>                
-        </div>
+            <div style="float:left;">
+                <span id="optionvaluecontrol" style="display:none;">
+                <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
+                </span>
+                <ul id="productoptionvalues"></ul>
+            </div>
         <div style="clear:both"></div>
         </div>
         <h2>Images</h2>
@@ -88,9 +98,11 @@ Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
         <div id="productcategories"></div>
         <h2>Related Products</h2>
         <div id="productrelated"></div>
+
     </div>
 </div>
 
+<!-- All "id" for the divs/ul are required for ajax in this section -->
 <div id="productselectsection" style="display:none;">
     <div id="productselectlist">
         
