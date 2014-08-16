@@ -151,7 +151,7 @@
     <value>Receipt</value>
   </data>
   <data name="cmdReOrder.Text" xml:space="preserve">
-    <value>Re-Order</value>
+    <value>Repeat</value>
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>

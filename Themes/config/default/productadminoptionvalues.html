@@ -1,9 +1,8 @@
 ﻿<!-- class="optionvalueitem" is needed for JS postback update -->
-<li class="optionvalueitem" style="width:400;">
+<li class="optionvalueitem [<tag type="valueof" xpath="genxml/hidden/optionid" />]" style="width:500;">
     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-    <a class="removemodel">Remove</a>
-    [<tag id="productid" type="hidden" value="" />]
-    [<tag id="lang" type="hidden" value="" />]
+    <a class="removeoptionvalue">Remove</a>
+
     [<tag id="optionid" type="hidden" value="" />] <!-- required optionid to link to option in DB -->
     [<tag id="fields" type="hidden" value="genxml/hidden/optionid,genxml/hidden/txtaddedcost" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptionvaluedesc,genxml/textbox/txtaddedcost" />]

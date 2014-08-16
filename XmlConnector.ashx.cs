@@ -179,18 +179,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "productrelated":
                     if (CheckRights()) strOut = GetProductRelated(context);
                     break;
-                case "updateproductmodels":
-                    if (CheckRights()) strOut = UpdateProductModels(context);
-                    break;
                 case "addproductmodels":
                     if (CheckRights())
                     {
                         AddProductModels(context);
                         strOut = GetProductModels(context);
                     }
-                    break;
-                case "updateproductoptionvalues":
-                    if (CheckRights()) strOut = UpdateOptionValues(context);
                     break;
                 case "addproductoptions":
                     if (CheckRights())
@@ -337,40 +331,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void DeleteCatXref(String xrefitemid, String parentitemid)
         {
-            var objCtrl = new NBrightBuyController();
-            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-            var dbOwner = DataProvider.Instance().DatabaseOwner;
-            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-            objCtrl.GetSqlxml(stmt);
-            //remove all cascade xref 
-            var objGrpCtrl = new GrpCatController(_lang, true);
-            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
-            if (parentcats != null)
+            if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
             {
-                foreach (var p in parentcats.Parents)
-                {
-                    var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF"," and NB1.parentitemid = " + parentitemid);
-                    if (xreflist != null)
-                    {
-                        var deleterecord = true;
-                        foreach (var xref in xreflist)
-                        {
-                            var catid = xref.XrefItemId;
-                            var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
-                            if (xrefparentcats != null && xrefparentcats.Parents.Contains(p))
-                            {
-                                deleterecord = false;
-                                break;
-                            }
-                        }
-                        if (deleterecord)
-                        {
-                            stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
-                            objCtrl.GetSqlxml(stmt);
-                        }
-                        
-                    }
-                }
+                var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
             }
         }
 
@@ -385,43 +349,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var strGuid = xrefitemid + "x" + parentitemid;
-                    var objCtrl = new NBrightBuyController();
-                    var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
-                    if (nbi == null)
-                    {
-                        nbi = new NBrightInfo();
-                        nbi.ItemID = -1;
-                        nbi.PortalId = PortalSettings.Current.PortalId;
-                        nbi.ModuleId = -1;
-                        nbi.TypeCode = "CATXREF";
-                        nbi.XrefItemId = Convert.ToInt32(xrefitemid);
-                        nbi.ParentItemId = Convert.ToInt32(parentitemid);
-                        nbi.XMLData = null;
-                        nbi.TextData = null;
-                        nbi.Lang = null;
-                        nbi.GUIDKey = strGuid;
-                        objCtrl.Update(nbi);
-                        //add all cascade xref 
-                        var objGrpCtrl = new GrpCatController(_lang,true);
-                        var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
-                        if (parentcats != null)
-                        {
-                            foreach (var p in parentcats.Parents)
-                            {
-                                strGuid = p.ToString("") + "x" + parentitemid;
-                                var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                                if (obj == null)
-                                {
-                                    nbi.XrefItemId = p;
-                                    nbi.TypeCode = "CATCASCADE";
-                                    nbi.GUIDKey = strGuid;
-                                    objCtrl.Update(nbi);
-                                }
-                            }                            
-                        }
-                    }
-
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
                 }
                 else
                     return "Invalid parentitemid or xrefitmeid";
@@ -663,9 +592,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 //get uploaded params
                 var settings = GetAjaxFields(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
-                if (!settings.ContainsKey("selectedoptionid")) settings.Add("selectedoptionid", "");
                 var productitemid = settings["itemid"];
-                var selectedoptionid = settings["selectedoptionid"];
 
                 // get template
                 var themeFolder = StoreSettings.Current.ThemeFolder;
@@ -675,10 +602,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 //get data
                 var strOut = "";
-                if (Utils.IsNumeric(selectedoptionid) && Utils.IsNumeric(productitemid))
+                if (Utils.IsNumeric(productitemid))
                 {
                     var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                    strOut = GenXmlFunctions.RenderRepeater(prodData.GetOptionValues(Convert.ToInt32(selectedoptionid)), bodyTempl);  
+                    strOut = GenXmlFunctions.RenderRepeater(prodData.OptionValues, bodyTempl);  
                 }
 
                 return strOut;
@@ -825,80 +752,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
-                    ProductUtils.AddEntity(prodData.DataRecord, "models", Convert.ToInt32(qty));
-                    prodData.Save();
-                    strOut = NBrightBuyUtils.GetResxMessage();
-                }
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String UpdateProductModels(HttpContext context)
-        {
-
-            try
-            {
-                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
-                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-                var xmlDoc = new XmlDataDocument();
-                xmlDoc.LoadXml(strIn);
-
-                var strItemId = "";
-                var lang = "";
-                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='parentitemid']");
-                if (itemnod != null) strItemId = itemnod.InnerText;
-                var langnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='lang']");
-                if (langnod != null) lang = langnod.InnerText;
-
-                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
-                    if (Utils.IsNumeric(strItemId))
+                    var lp = 1;
+                    while (lp <= Convert.ToInt32(qty))
                     {
-                        var itemId = Convert.ToInt32(strItemId);
-                        var prodData = ProductUtils.GetProductData(itemId, lang);
-                        prodData.UpdateModels(strIn);
-                        prodData.Save();
-                        strOut = NBrightBuyUtils.GetResxMessage();
+                        prodData.AddNewModel();
+                        lp += 1;
+                        if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
-        private String UpdateOptionValues(HttpContext context)
-        {
-
-            try
-            {
-                // get posted form data into a NBrigthInfo class so we can take the listbox value easily
-                var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-                if (strIn.Trim() == "<root></root>") return ""; // no data so skip
-                var xmlDoc = new XmlDataDocument();
-                xmlDoc.LoadXml(strIn);
-
-                var strItemId = "";
-                var lang = "";
-                var itemnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='productid']");
-                if (itemnod != null) strItemId = itemnod.InnerText;
-                var langnod = xmlDoc.SelectSingleNode("root/root[1]/f[@id='lang']");
-                if (langnod != null) lang = langnod.InnerText;
-
-                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
-                if (Utils.IsNumeric(strItemId))
-                {
-                    var itemId = Convert.ToInt32(strItemId);
-                    var prodData = ProductUtils.GetProductData(itemId, lang);
-                    prodData.UpdateOptionValues(strIn);
                     prodData.Save();
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }
@@ -909,8 +769,6 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 return ex.ToString();
             }
-
-
         }
 
         private String AddProductOptions(HttpContext context)
@@ -931,7 +789,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
-                    ProductUtils.AddEntity(prodData.DataRecord, "options", Convert.ToInt32(qty), "<genxml><hidden><optionid>" + NBrightBuyUtils.GetUniqueKey() + "</optionid></hidden></genxml>");
+                    var lp = 1;
+                    while (lp <= Convert.ToInt32(qty))
+                    {
+                        prodData.AddNewOption();
+                        lp += 1;
+                        if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
+                    }
                     prodData.Save();
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }
@@ -965,15 +829,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
-                    var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid></hidden></genxml></optionvalues></genxml>";
-                    if (prodData.DataRecord.GetXmlNode("genxml/optionvalues[@optionid='" + optionid + "']") == "")
-                    {
-                        prodData.DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");                        
-                    }
                     var lp = 1;
-                    while (lp < Convert.ToInt32(qty))
+                    while (lp <= Convert.ToInt32(qty))
                     {
-                        prodData.DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']/genxml", "genxml/optionvalues[@optionid='" + optionid + "']");                         
+                        prodData.AddNewOptionValue(optionid);
+                        lp += 1;
+                        if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
                     strOut = NBrightBuyUtils.GetResxMessage();

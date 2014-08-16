@@ -92,8 +92,8 @@
             }
             values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
         });
-        
-        $(selectoritemdiv).each(function () {
+
+        $(selectordiv).children(selectoritemdiv).each(function () {
             values += '<root>';
             var $iteminputs = $(this).find(':input');
             $iteminputs.each(function () {

@@ -25,3 +25,6 @@ a, a:visited {color:#428BCA}
 .orderdetailitems th{text-transform:uppercase}
 .orderdetail .billaddress b,.orderdetail .shipaddress b{text-transform:uppercase}
 .orderdetail .storeaddress{}
+.centered{text-align:center}
+#logo a{background: none;}/* Hide devoops logo*/
+.top-panel-right{display: none;}/* Hide top right menu section */

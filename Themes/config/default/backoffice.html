@@ -29,7 +29,7 @@
 	<div class="container-fluid expanded-panel">
 		<div class="row">
 			<div id="logo" class="col-xs-12 col-sm-2">
-				<a href="DesktopModules/NBright/NBrightBuy/Themes/config/default/backoffice.html">DevOOPS</a>
+				<a href="/Default.aspx?tabid=96&ctrl=dashsummary">NB-Store</a>
 			</div>
 			<div id="top-panel" class="col-xs-12 col-sm-10">
 				<div class="row">
@@ -148,6 +148,34 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrap/bootstrap.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops.js"></script><!-- need to replace with minimised version -->
+<!-- Run Select2 plugin on elements -->
+
+<script type="text/javascript">
+// Run Select2 plugin on elements
+function DemoSelect2(){
+	$('.s2_with_tag').select2({placeholder: "Please Select"});
+	$('.s2_country').select2();
+}
+// Run timepicker
+function DemoTimePicker(){
+	$('#input_time').timepicker({setDate: new Date()});
+}
+$(document).ready(function() {
+	// Add slider for change test input length
+	FormLayoutExampleInputLength($( ".slider-style" ));
+	// Initialize datepicker
+	$('#input_date').datepicker({setDate: new Date()});
+	// Load Timepicker plugin
+	LoadTimePickerScript(DemoTimePicker);
+	// Add tooltip to form-controls
+	$('.form-control').tooltip();
+	LoadSelect2Script(DemoSelect2);
+	// Load example of form validation
+	LoadBootstrapValidatorScript(DemoFormValidator);
+	// Add drag-n-drop feature to boxes
+	WinMove();
+});
+</script>
 
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -81,6 +82,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "save":
                     Update();
+                    param[0] = "eid=" + cArg;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "saveexit":
+                    Update();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "edit":
@@ -104,7 +110,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
                 var strXml = GenXmlFunctions.GetGenXml(rpData);
-                prodData.Update(strXml);
+                var updInfo = new NBrightInfo(true);
+                updInfo.XMLData = strXml;
+
+                GenXmlFunctions.UploadImgFile(rpData, "image", StoreSettings.Current.FolderImagesMapPath);
+                var fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hidimage")).Attributes["value"];
+                updInfo.SetXmlProperty("genxml/hidden/hidimage",fName);
+
+                GenXmlFunctions.UploadFile(rpData, "document", StoreSettings.Current.FolderDocumentsMapPath);
+                fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hiddocument")).Attributes["value"];
+                updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
+                
+                var imgCtrl = (FileUpload)rpData.Items[0].FindControl("image");
+                updInfo.SetXmlProperty("genxml/hidden/postedimagename", imgCtrl.PostedFile.FileName);
+                var docCtrl = (FileUpload)rpData.Items[0].FindControl("document");
+                updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
+
+                prodData.Update(updInfo.XMLData);
                 prodData.Save();
             }
         }

@@ -1,6 +1,9 @@
 <!-- hidden fields to store auto populated data -->
 [<tag id="backofficetabid" type="hidden" value="" />]
 
+[<tag type="valueof" resourcekey="Settings.folderimages" />] : [<tag id="folderimages" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]<br/>
+[<tag type="valueof" resourcekey="Settings.folderdocs" />] : [<tag id="folderdocs" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]<br/>
+[<tag type="valueof" resourcekey="Settings.folderuploads" />] : [<tag id="folderuploads" type="textbox" width="300" maxlength="150" Text="NBStore\uploads" />]<br/>
 
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
@@ -16,7 +19,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Validator forms</span>
+					<i class="fa fa-search"></i><span>Merchant Details</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -27,7 +30,24 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<legend>Email Addresses</legend>
+				
+
+					<p class="page-header">Branding</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Store Name</label>
+						<div class="col-sm-5">
+							[<tag id="storename" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Logo Image</label>
+						<div class="col-sm-5">
+							[<tag id="storelogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
+						</div>
+					</div>
+					
+					
+					<p class="page-header">Email Addresses</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.adminemail" />]</label>
 						<div class="col-sm-5">
@@ -40,6 +60,113 @@
 							[<tag id="manageremail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Support</label>
+						<div class="col-sm-5">
+							[<tag id="supportemail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					
+					
+					<p class="page-header">Address</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Attention</label>
+						<div class="col-sm-5">
+							[<tag id="storeattention" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company</label>
+						<div class="col-sm-5">
+							[<tag id="storecompany" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Post Box</label>
+						<div class="col-sm-5">
+							[<tag id="storepostbox" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Address Line 1</label>
+						<div class="col-sm-5">
+							[<tag id="storeaddressline1" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Address Line 2</label>
+						<div class="col-sm-5">
+							[<tag id="storeaddressline2" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">City</label>
+						<div class="col-sm-5">
+							[<tag id="storecity" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Region</label>
+						<div class="col-sm-5">
+							[<tag id="storeregion" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Post Code</label>
+						<div class="col-sm-5">
+							[<tag id="storepostcode" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Country</label>
+						<div class="col-sm-5">
+							[<tag id="storecountry" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Phone</label>
+						<div class="col-sm-5">
+							[<tag id="storephone" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Tax Number</label>
+						<div class="col-sm-5">
+							[<tag id="storetaxnumber" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					
+					
+					
+					
+					<p class="page-header">Banking Details</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Bank</label>
+						<div class="col-sm-5">
+							[<tag id="bankname" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Account Name</label>
+						<div class="col-sm-5">
+							[<tag id="bankaccountname" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Account Number</label>
+						<div class="col-sm-5">
+							[<tag id="bankaccountnumber" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Instructions</label>
+						<div class="col-sm-5">
+							[<tag id="bankinginstructions" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+
+
+					
 				</div>
 			</div>
 		</div>
@@ -48,7 +175,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Validator forms</span>
+					<i class="fa fa-search"></i><span>Store Configuration</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -59,7 +186,28 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<legend>Developer Tools</legend>
+					<p class="page-header">Apply Default Values</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
+						<div class="col-sm-5">
+							[<tag id="pagesize" cssclass="form-control" type="textbox" maxlength="5" Text="30" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productlisttab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="productlisttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.carttab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="carttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+
+
+					<p class="page-header">Developer Tools</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Debug Mode</label>
 						<div class="col-sm-5">
@@ -69,27 +217,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
-						<div class="col-sm-5">
-							[<tag id="pagesize" cssclass="form-control" type="textbox" maxlength="5" Text="30" />]
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.storagetypeclient" />]</label>
 						<div class="col-sm-5">
-							[<tag id="storagetypeclient" cssclass="form-control" type="dropdownlist" data="Cookie;SessionMemory" />]
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productlisttab" />]</label>
-						<div class="col-sm-5">
-							[<tag id="productlisttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.carttab" />]</label>
-						<div class="col-sm-5">
-							[<tag id="carttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+							[<tag id="storagetypeclient" cssclass="s2_with_tag populate placeholder" type="dropdownlist" data="Cookie;SessionMemory" />]
 						</div>
 					</div>
 				</div>
@@ -105,3 +235,6 @@
 		</div>
 	</div>
 </div>
+
+
+

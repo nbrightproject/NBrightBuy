@@ -1,12 +1,18 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
-<li class="docitem ui-state-default" style="width:800;">
+<!-- class needed for recycle bin -->
+<li class="docitem" style="width:800;">
     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+    <a class="removedoc">Remove</a>
+    
+    [<tag id="fileext" type="hidden" value="" />]
+    [<tag id="filepath" type="hidden" value="" />]
 
-name:   [<tag id="txtfilename" type="textbox" width="200" maxlength="250" />] - 
+    [<tag id="fields" type="hidden" value="genxml/checkbox/chkhidden,genxml/checkbox/chkpurchase,genxml/hidden/fileext,genxml/hidden/filepath,genxml/textbox/txtfilename" />]
+    [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtdocdesc" />]
+
+    name:   [<tag id="txtfilename" type="textbox" width="200" maxlength="250" />] - 
 desc:   [<tag id="txtdocdesc" type="textbox" width="200" maxlength="250" />] - 
 Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] - 
 Purchase : [<tag id="chkpurchase" type="checkbox" Text="" />] - 
-
-        <a href="#" class="deletedoc" itemid="[<tag type="valueof" xpath="genxml/hidden/docid" />]">[<tag type="valueof" resourcekey="General.cmdDelete" />]</a>	    
 
 </li>	

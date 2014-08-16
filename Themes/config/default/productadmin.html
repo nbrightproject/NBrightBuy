@@ -3,6 +3,14 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
+<!-- just a class for devlopment to highlight selected -->
+<style>
+  .selected {background: grey; }
+</style>
+
+<!-- this div is used as a recycle bin for undo JS-->
+<div id="recyclebin" style="display:none;"></div>
+
 
 <!-- return field for ajax calls -->
 [<tag id="nbxprocessing" type="hidden" />]
@@ -14,12 +22,13 @@
 <script>
     $(document).ready(function () {
         // start load all ajax data
+        nbxget('productoptionvalues', '#productselectparams', 'productoptionvalues', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
         nbxget('productmodels', '#productselectparams', 'productmodels', '#productmodels'); // load models
-        nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options
         nbxget('productimages', '#productselectparams', 'productimages', '#productimages'); // load images
         nbxget('productdocs', '#productselectparams', 'productdocs', '#productdocs'); // load docs
         nbxget('productcategories', '#productselectparams', 'productcategories', '#productcategories'); // load categories
         nbxget('productrelated', '#productselectparams', 'productrelated', '#productrelated'); // load releated
+        nbxget('productoptions', '#productselectparams', 'productoptions', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
     });
 </script>
 
@@ -29,6 +38,8 @@
 [<tag id="xmlupdateproductoptionvalues" type="postback" value=""/>]
 [<tag id="xmlupdateproductimages" type="postback" value=""/>]
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
+[<tag id="xmlupdateproductcategories" type="postback" value=""/>]
+[<tag id="xmlupdateproductrelated" type="postback" value=""/>]
 
 <!-- Required: id="productdatasection" -->
 <div id="productdatasection">
@@ -75,29 +86,43 @@ Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
         <!-- All "id" for the divs/ul are required for ajax in this section -->
         <h2>Models</h2>
         <a id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddmodelqty" type="textbox" width="30" maxlength="2" text="1" />]
+                <a id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productmodels"></ul>
         <h2>Options</h2>
         <div>            
         <div style="float:left;">
         <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
+                <a id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productoptions"></ul>                            
         </div>
             <div style="float:left;">
                 <span id="optionvaluecontrol" style="display:none;">
-                <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
+                    <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
                 </span>
+                <a id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
                 <ul id="productoptionvalues"></ul>
             </div>
         <div style="clear:both"></div>
         </div>
         <h2>Images</h2>
+        <div>
+            [<tag id="image" type="fileupload" />] [<tag id="cmdSaveImg" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+        </div>
+          <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productimages"></ul>
         <h2>Documents</h2>
+        <div>
+            [<tag id="document" type="fileupload" textwidth="150" maxlength="50" />]
+            [<tag id="cmdSaveDoc" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+        </div>
+          <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productdocs"></ul>
         <h2>Categories</h2>
-        <div id="productcategories"></div>
+          <a id="undocategory" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        <ul id="productcategories"></ul>
         <h2>Related Products</h2>
-        <div id="productrelated"></div>
+          <a id="undorelated" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        <ul id="productrelated"></ul>
 
     </div>
 </div>

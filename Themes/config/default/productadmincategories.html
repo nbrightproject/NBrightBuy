@@ -1,9 +1,13 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+<!-- class needed for recycle bin -->
+<li class="categoryitem" style="width:800;">
+    <a class="removedoc">Remove</a>  
+    
+    [<tag id="categoryid" type="hidden" value="databind:categoryid" />]
 
-categoryname: [<tag type="valueof" databind="categoryname" />]
-breadcrumb: [<tag type="valueof" databind="breadcrumb" />]
+    categoryname: [<tag type="valueof" databind="categoryname" />]
+    breadcrumb: [<tag type="valueof" databind="breadcrumb" />]
 
-<a href="#" class="deletedoc" itemid="[<tag type="valueof" xpath="genxml/hidden/docid" />]">[<tag type="valueof" resourcekey="General.cmdDelete" />]</a>	    
 
-<hr />	
+</li>	
 	

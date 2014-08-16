@@ -192,7 +192,4 @@
   <data name="groupactionsave_ok.Text" xml:space="preserve">
     <value>Group update Successful</value>
   </data>
-  <data name="categoryactionsave_fail.Text" xml:space="preserve">
-    <value>Category update Error</value>
-  </data>
 </root>

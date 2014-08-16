@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -18,6 +19,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> Models;
         public List<NBrightInfo> Options;
+        public List<NBrightInfo> OptionValues;
         public List<NBrightInfo> Imgs;
         public List<NBrightInfo> Docs;
 
@@ -49,31 +51,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
                 if (seoname == "") seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
-                return seoname;                
+                return seoname;
             }
         }
 
         public String SEOTitle
         {
-            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");}
+            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle"); }
         }
 
         public String SEOTagwords
         {
-            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords");}
+            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords"); }
         }
 
         public String SEODescription
         {
-            get{return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");}
+            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"); }
         }
 
-        public List<NBrightInfo> GetOptionValues(int optionid)
+        public List<NBrightInfo> GetOptionValuesById(String optionid)
         {
             var l = new List<NBrightInfo>();
             if (Info != null)
             {
-                var xmlNodList = Info.XMLDoc.SelectNodes("genxml/optionvalues[@optionid='" + optionid.ToString("") + "']/*");
+                var xmlNodList = Info.XMLDoc.SelectNodes("genxml/optionvalues[@optionid='" + optionid + "']/*");
                 if (xmlNodList != null && xmlNodList.Count > 0)
                 {
                     var lp = 1;
@@ -81,12 +83,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     {
                         var obj = new NBrightInfo();
                         obj.XMLData = xNod.OuterXml;
-                        var nodLang = "<genxml>" + Info.GetXmlNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid.ToString("") + "']/genxml[" + lp + "]") + "</genxml>";
+                        var nodLang = "<genxml>" + Info.GetXmlNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp + "]") + "</genxml>";
                         if (nodLang != "")
                         {
                             obj.SetXmlProperty("genxml/hidden/productid", Info.ItemID.ToString(""));
                             obj.SetXmlProperty("genxml/hidden/lang", Info.Lang);
-                            obj.SetXmlProperty("genxml/hidden/optionid", optionid.ToString(""));
+                            obj.SetXmlProperty("genxml/hidden/optionid", optionid);
                             obj.AddSingleNode("lang", "", "genxml");
                             obj.AddXmlNode(nodLang, "genxml", "genxml/lang");
                         }
@@ -99,6 +101,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+
         public List<GroupCategoryData> GetCategories()
         {
             var objGrpCtrl = new GrpCatController(_lang);
@@ -109,7 +112,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objCtrl = new NBrightBuyController();
             var strSelectedIds = "";
-            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF"," and NB1.parentitemid = " + Info.ItemID.ToString(""));
+            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
             {
                 strSelectedIds += obj.XrefItemId.ToString("") + ",";
@@ -134,14 +137,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void ClearCache()
         {
             var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-            Utils.RemoveCache(cacheKey); 
+            Utils.RemoveCache(cacheKey);
         }
 
         public void ResetCache()
         {
             LoadData(Info.ItemID);
             var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-            Utils.SetCache(cacheKey,this);
+            Utils.SetCache(cacheKey, this);
         }
 
         public void Update(String xmlData)
@@ -168,7 +171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     else
                         DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
-                    DataRecord.RemoveXmlNode(f);                    
+                    DataRecord.RemoveXmlNode(f);
                 }
             }
 
@@ -198,13 +201,109 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
             UpdateOptionValues(strXml);
-            
+            // update images
+            UpdateImages(info);
+            // update docs
+            UpdateDocs(info);
+            // update categories
+            strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductcategories");
+            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            UpdateCategories(strXml);
 
         }
 
-        public void UpdateModels(String xmlData)
+        public void UpdateDocs(NBrightInfo info)
         {
-            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlData, "");
+            var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductdocs");
+            strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
+            var imgList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");
+
+            // build xml for data records
+            var strXml = "<genxml><docs>";
+            var strXmlLang = "<genxml><docs>";
+            foreach (var imgInfo in imgList)
+            {
+                var objInfo = new NBrightInfo(true);
+                var objInfoLang = new NBrightInfo(true);
+
+                var localfields = imgInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                foreach (var f in localfields.Where(f => f != ""))
+                {
+                    objInfoLang.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
+                }
+                strXmlLang += objInfoLang.XMLData;
+
+                var fields = imgInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                foreach (var f in fields.Where(f => f != ""))
+                {
+                    objInfo.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
+                }
+                strXml += objInfo.XMLData;
+            }
+            strXml += "</docs></genxml>";
+            strXmlLang += "</docs></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/docs", "genxml");
+            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/docs", "genxml");
+
+            //add new doc if uploaded
+            var docFile = info.GetXmlProperty("genxml/hidden/hiddocument");
+            if (docFile != "")
+            {
+                var postedFile = info.GetXmlProperty("genxml/hidden/posteddocumentname");
+                AddNewDoc(StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + docFile, postedFile);
+            }
+
+        }
+
+        public void UpdateImages(NBrightInfo info)
+        {
+            var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductimages");
+            strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
+            var imgList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");
+
+            // build xml for data records
+            var strXml = "<genxml><imgs>";
+            var strXmlLang = "<genxml><imgs>";
+            foreach (var imgInfo in imgList)
+            {
+                var objInfo = new NBrightInfo(true);
+                var objInfoLang = new NBrightInfo(true);
+
+                var localfields = imgInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                foreach (var f in localfields.Where(f => f != ""))
+                {
+                    objInfoLang.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
+                }
+                strXmlLang += objInfoLang.XMLData;
+
+                var fields = imgInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                foreach (var f in fields.Where(f => f != ""))
+                {
+                    objInfo.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
+                }
+                strXml += objInfo.XMLData;
+            }
+            strXml += "</imgs></genxml>";
+            strXmlLang += "</imgs></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/imgs", "genxml");
+            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/imgs", "genxml");
+
+            //add new image if uploaded
+            var imgFile = info.GetXmlProperty("genxml/hidden/hidimage");
+            if (imgFile != "")
+            {
+                AddNewImage(StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imgFile, StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imgFile);
+            }
+
+        }
+
+        public void UpdateModels(String xmlAjaxData)
+        {
+            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
 
             // build xml for data records
             var strXml = "<genxml><models>";
@@ -217,7 +316,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var localfields = modelInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
                 foreach (var f in localfields.Where(f => f != ""))
                 {
-                    objInfoLang.SetXmlProperty(f,modelInfo.GetXmlProperty(f));
+                    objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
 
@@ -236,9 +335,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/models", "genxml");
         }
 
-        public void UpdateOptions(String xmlData)
+        public void UpdateOptions(String xmlAjaxData)
         {
-            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlData, "");
+            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
 
             // build xml for data records
             var strXml = "<genxml><options>";
@@ -270,45 +369,56 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/options", "genxml");
         }
 
-        public void UpdateOptionValues(String xmlData)
+        public void UpdateOptionValues(String xmlAjaxData)
         {
-            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlData, "");
+            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
             if (objList.Count > 0)
             {
-                // get optionid for attr on node, for linking to option.  (All optionvalues should have the optionid included, so just take the first)
-                var optid = objList[0].GetXmlProperty("genxml/hidden/optionid");
-                // build xml for data records
-                var strXml = "<genxml><optionvalues optionid='" + optid + "'>";
-                var strXmlLang = "<genxml><optionvalues optionid='" + optid + "'>";
-                foreach (var objDataInfo in objList)
+                // get a list of optionid that need to be processed
+                var distinctOptionIds = new Dictionary<String, String>();
+                foreach (var o in objList)
                 {
-                    var objInfo = new NBrightInfo(true);
-                    var objInfoLang = new NBrightInfo(true);
-
-                    var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-                    foreach (var f in localfields.Where(f => f != ""))
-                    {
-                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
-                    }
-                    strXmlLang += objInfoLang.XMLData;
-
-                    var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                    foreach (var f in fields.Where(f => f != ""))
-                    {
-                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
-                    }
-                    strXml += objInfo.XMLData;
+                    if (!distinctOptionIds.ContainsKey(o.GetXmlProperty("genxml/hidden/optionid"))) distinctOptionIds.Add(o.GetXmlProperty("genxml/hidden/optionid"), o.GetXmlProperty("genxml/hidden/optionid"));
                 }
-                strXml += "</optionvalues></genxml>";
-                strXmlLang += "</optionvalues></genxml>";
 
-                // replace  xml 
-                DataRecord.ReplaceXmlNode(strXml, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
-                DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
-                
+                foreach (var optid in distinctOptionIds.Keys)
+                {
+                    // build xml for data records
+                    var strXml = "<genxml><optionvalues optionid='" + optid + "'>";
+                    var strXmlLang = "<genxml><optionvalues optionid='" + optid + "'>";
+                    foreach (var objDataInfo in objList)
+                    {
+                        if (objDataInfo.GetXmlProperty("genxml/hidden/optionid") == optid)
+                        {
+                            var objInfo = new NBrightInfo(true);
+                            var objInfoLang = new NBrightInfo(true);
+
+                            var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                            foreach (var f in localfields.Where(f => f != ""))
+                            {
+                                objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                            }
+                            strXmlLang += objInfoLang.XMLData;
+
+                            var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                            foreach (var f in fields.Where(f => f != ""))
+                            {
+                                objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                            }
+                            strXml += objInfo.XMLData;
+                        }
+                    }
+                    strXml += "</optionvalues></genxml>";
+                    strXmlLang += "</optionvalues></genxml>";
+
+                    // replace  xml 
+                    DataRecord.ReplaceXmlNode(strXml, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
+                    DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
+                }
+
                 // tidy up any invlid option values (usually created in a migration phase)
                 var nodList = DataRecord.XMLDoc.SelectNodes("genxml/options/genxml");
-                var optionids = new Dictionary<String,String>();
+                var optionids = new Dictionary<String, String>();
                 if (nodList != null)
                     foreach (XmlNode nod in nodList)
                     {
@@ -331,6 +441,184 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void AddNewOptionValue(String optionid)
+        {
+            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid></hidden></genxml></optionvalues></genxml>";
+            if (DataRecord.GetXmlNode("genxml/optionvalues[@optionid='" + optionid + "']") == "")
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']/genxml", "genxml/optionvalues[@optionid='" + optionid + "']");
+            }
+        }
+
+        public void AddNewOption()
+        {
+            var strXml = "<genxml><options><genxml><hidden><optionid>" + NBrightBuyUtils.GetUniqueKey() + "</optionid></hidden></genxml></options></genxml>";
+            if (DataRecord.GetXmlNode("genxml/options") == "")
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/options", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/options/genxml", "genxml/options");
+            }
+        }
+
+        public void AddNewModel()
+        {
+            var strXml = "<genxml><models><genxml></genxml></models></genxml>";
+            if (DataRecord.GetXmlNode("genxml/models") == "")
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
+            }
+        }
+
+        public void AddNewImage(String imageurl, String imagepath)
+        {
+            var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" + imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
+            if (DataRecord.GetXmlNode("genxml/imgs") == "")
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/imgs", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/imgs/genxml", "genxml/imgs");
+            }
+        }
+
+        public void AddNewDoc(String docpath, String postedFileName)
+        {
+
+            var strXml = "<genxml><docs><genxml><hidden><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
+            if (DataRecord.GetXmlNode("genxml/docs") == "")
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/docs/genxml", "genxml/docs");
+            }
+        }
+
+        public void AddCategory(int categoryid)
+        {
+            var strGuid = categoryid.ToString("") + "x" + Info.ItemID.ToString("");
+            var objCtrl = new NBrightBuyController();
+            var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
+            if (nbi == null)
+            {
+                nbi = new NBrightInfo();
+                nbi.ItemID = -1;
+                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.ModuleId = -1;
+                nbi.TypeCode = "CATXREF";
+                nbi.XrefItemId = categoryid;
+                nbi.ParentItemId = Info.ItemID;
+                nbi.XMLData = null;
+                nbi.TextData = null;
+                nbi.Lang = null;
+                nbi.GUIDKey = strGuid;
+                objCtrl.Update(nbi);
+                //add all cascade xref 
+                var objGrpCtrl = new GrpCatController(_lang, true);
+                var parentcats = objGrpCtrl.GetCategory(categoryid);
+                if (parentcats != null)
+                {
+                    foreach (var p in parentcats.Parents)
+                    {
+                        strGuid = p.ToString("") + "x" + Info.ItemID.ToString("");
+                        var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                        if (obj == null)
+                        {
+                            nbi.XrefItemId = p;
+                            nbi.TypeCode = "CATCASCADE";
+                            nbi.GUIDKey = strGuid;
+                            objCtrl.Update(nbi);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        public void RemoveCategory(int categoryid)
+        {
+            var parentitemid = Info.ItemID.ToString("");
+            var xrefitemid = categoryid.ToString("");
+            var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+            objCtrl.GetSqlxml(stmt);
+            //remove all cascade xref 
+            var objGrpCtrl = new GrpCatController(_lang, true);
+            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
+            if (parentcats != null)
+            {
+                foreach (var p in parentcats.Parents)
+                {
+                    var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.parentitemid = " + parentitemid);
+                    if (xreflist != null)
+                    {
+                        var deleterecord = true;
+                        foreach (var xref in xreflist)
+                        {
+                            var catid = xref.XrefItemId;
+                            var xrefparentcats = objGrpCtrl.GetCategory(Convert.ToInt32(catid));
+                            if (xrefparentcats != null && xrefparentcats.Parents.Contains(p))
+                            {
+                                deleterecord = false;
+                                break;
+                            }
+                        }
+                        if (deleterecord)
+                        {
+                            stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
+                            objCtrl.GetSqlxml(stmt);
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        public void UpdateCategories(String xmlAjaxData)
+        {
+            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            if (objList.Count > 0)
+            {
+
+                // get a list of categories to keep
+                var keepCategories = new Dictionary<Int32, Int32>();
+                foreach (var o in objList)
+                {
+                    if (!keepCategories.ContainsKey(Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")))) keepCategories.Add(Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")), Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")));
+                }
+                // get current categories
+                var currentCategories = GetCategories();
+
+                //remove unrequired categories
+                foreach (var c in currentCategories)
+                {
+                    if (!keepCategories.ContainsKey(c.categoryid))
+                    {
+                        RemoveCategory(c.categoryid);
+                    }
+                }
+
+                //NOTE: added categories are done by ajax call to SelectCatXref in XmlConnector.ashx.cs 
+
+            }
+        }
+
         #endregion
 
         #region " private functions"
@@ -350,6 +638,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     Options = GetEntityList("options");
                     Imgs = GetEntityList("imgs");
                     Docs = GetEntityList("docs");
+
+                    OptionValues = new List<NBrightInfo>();
+                    foreach (var o in Options)
+                    {
+                        var l = GetOptionValuesById(o.GetXmlProperty("genxml/hidden/optionid"));
+                        OptionValues.AddRange(l);   
+                    }
                 }
                 Exists = true;
                 DataRecord = objCtrl.GetData(productId);

@@ -2,9 +2,20 @@
 				</table>
 			</div>
 		</div>
+
+<!-- Hide Cient Details button when URL doesn't contain uid - This does not work, needs to be fixed or a function created -->
+[<tag type="if" function="setting" key="dummy" testvalue="{url:uid}" display="{OFF}" displayelse="{ON}" />]
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="form-group">
+						<div class="col-sm-2">
+						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-primary btn-block" commandname="viewclient" />]
+						</div>
+					</div>
+				</div>
+			</div>
+[<tag type="endif"  />]
+
 	</div>
 </div>
 
-
-
-</div>
