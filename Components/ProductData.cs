@@ -87,8 +87,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (nodLang != "")
                         {
                             obj.SetXmlProperty("genxml/hidden/productid", Info.ItemID.ToString(""));
-                            obj.SetXmlProperty("genxml/hidden/lang", Info.Lang);
+                            obj.SetXmlProperty("genxml/hidden/lang", Info.Lang.Trim());
                             obj.SetXmlProperty("genxml/hidden/optionid", optionid);
+                            var selectSingleNode = xNod.SelectSingleNode("hidden/optionvalueid");
+                            if (selectSingleNode != null) obj.SetXmlProperty("genxml/hidden/optionvalueid", selectSingleNode.InnerText);                                
                             obj.AddSingleNode("lang", "", "genxml");
                             obj.AddXmlNode(nodLang, "genxml", "genxml/lang");
                         }
@@ -366,85 +368,113 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // replace models xml 
             DataRecord.ReplaceXmlNode(strXml, "genxml/options", "genxml");
-            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/options", "genxml");
+            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/options", "genxml");        
         }
 
         public void UpdateOptionValues(String xmlAjaxData)
         {
             var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
-            if (objList.Count > 0)
+            if (objList != null)
             {
-                // get a list of optionid that need to be processed
-                var distinctOptionIds = new Dictionary<String, String>();
-                foreach (var o in objList)
+                if (objList.Count == 0)
                 {
-                    if (!distinctOptionIds.ContainsKey(o.GetXmlProperty("genxml/hidden/optionid"))) distinctOptionIds.Add(o.GetXmlProperty("genxml/hidden/optionid"), o.GetXmlProperty("genxml/hidden/optionid"));
-                }
-
-                foreach (var optid in distinctOptionIds.Keys)
-                {
-                    // build xml for data records
-                    var strXml = "<genxml><optionvalues optionid='" + optid + "'>";
-                    var strXmlLang = "<genxml><optionvalues optionid='" + optid + "'>";
-                    foreach (var objDataInfo in objList)
-                    {
-                        if (objDataInfo.GetXmlProperty("genxml/hidden/optionid") == optid)
+                    // no optionvalues, so remove all 
+                    var nodList = DataRecord.XMLDoc.SelectNodes("genxml/optionvalues");
+                    if (nodList != null)
+                        for (int i = nodList.Count - 1; i >= 0; i--)
                         {
-                            var objInfo = new NBrightInfo(true);
-                            var objInfoLang = new NBrightInfo(true);
-
-                            var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-                            foreach (var f in localfields.Where(f => f != ""))
-                            {
-                                objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
-                            }
-                            strXmlLang += objInfoLang.XMLData;
-
-                            var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                            foreach (var f in fields.Where(f => f != ""))
-                            {
-                                objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
-                            }
-                            strXml += objInfo.XMLData;
+                            var parentNode = nodList[i].ParentNode;
+                            if (parentNode != null) parentNode.RemoveChild(nodList[i]);
                         }
-                    }
-                    strXml += "</optionvalues></genxml>";
-                    strXmlLang += "</optionvalues></genxml>";
-
-                    // replace  xml 
-                    DataRecord.ReplaceXmlNode(strXml, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
-                    DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
-                }
-
-                // tidy up any invlid option values (usually created in a migration phase)
-                var nodList = DataRecord.XMLDoc.SelectNodes("genxml/options/genxml");
-                var optionids = new Dictionary<String, String>();
-                if (nodList != null)
-                    foreach (XmlNode nod in nodList)
-                    {
-                        var selectSingleNode = nod.SelectSingleNode("hidden/optionid");
-                        if (selectSingleNode != null) optionids.Add(selectSingleNode.InnerText, selectSingleNode.InnerText);
-                    }
-                nodList = DataRecord.XMLDoc.SelectNodes("genxml/optionvalues");
-                if (nodList != null)
-                    foreach (XmlNode nod in nodList)
-                    {
-                        if (nod.Attributes != null && nod.Attributes["optionid"] != null)
+                    nodList = DataLangRecord.XMLDoc.SelectNodes("genxml/optionvalues");
+                    if (nodList != null)
+                        for (int i = nodList.Count - 1; i >= 0; i--)
                         {
-                            if (!optionids.ContainsKey(nod.Attributes["optionid"].InnerText))
+                            var parentNode = nodList[i].ParentNode;
+                            if (parentNode != null) parentNode.RemoveChild(nodList[i]);
+                        }
+                }
+                else
+                {
+
+                    // get a list of optionid that need to be processed
+                    var distinctOptionIds = new Dictionary<String, String>();
+                    foreach (var o in objList)
+                    {
+                        if (!distinctOptionIds.ContainsKey(o.GetXmlProperty("genxml/hidden/optionid")))
+                            distinctOptionIds.Add(o.GetXmlProperty("genxml/hidden/optionid"),
+                                o.GetXmlProperty("genxml/hidden/optionid"));
+                    }
+
+                    foreach (var optid in distinctOptionIds.Keys)
+                    {
+                        // build xml for data records
+                        var strXml = "<genxml><optionvalues optionid='" + optid + "'>";
+                        var strXmlLang = "<genxml><optionvalues optionid='" + optid + "'>";
+                        foreach (var objDataInfo in objList)
+                        {
+                            if (objDataInfo.GetXmlProperty("genxml/hidden/optionid") == optid)
                             {
-                                DataRecord.RemoveXmlNode("genxml/optionvalues[@optionid='" + nod.Attributes["optionid"].InnerText + "']");
-                                DataLangRecord.RemoveXmlNode("genxml/optionvalues[@optionid='" + nod.Attributes["optionid"].InnerText + "']");
+                                var objInfo = new NBrightInfo(true);
+                                var objInfoLang = new NBrightInfo(true);
+
+                                var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                                foreach (var f in localfields.Where(f => f != ""))
+                                {
+                                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                }
+                                strXmlLang += objInfoLang.XMLData;
+
+                                var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                                foreach (var f in fields.Where(f => f != ""))
+                                {
+                                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                }
+                                strXml += objInfo.XMLData;
                             }
                         }
+                        strXml += "</optionvalues></genxml>";
+                        strXmlLang += "</optionvalues></genxml>";
+
+                        // replace  xml 
+                        DataRecord.ReplaceXmlNode(strXml, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
+                        DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']",
+                            "genxml");
                     }
+
+                    // tidy up any invlid option values (usually created in a migration phase)
+                    var nodList = DataRecord.XMLDoc.SelectNodes("genxml/options/genxml");
+                    var optionids = new Dictionary<String, String>();
+                    if (nodList != null)
+                        foreach (XmlNode nod in nodList)
+                        {
+                            var selectSingleNode = nod.SelectSingleNode("hidden/optionid");
+                            if (selectSingleNode != null)
+                                optionids.Add(selectSingleNode.InnerText, selectSingleNode.InnerText);
+                        }
+                    nodList = DataRecord.XMLDoc.SelectNodes("genxml/optionvalues");
+                    if (nodList != null)
+                        foreach (XmlNode nod in nodList)
+                        {
+                            if (nod.Attributes != null && nod.Attributes["optionid"] != null)
+                            {
+                                if (!optionids.ContainsKey(nod.Attributes["optionid"].InnerText))
+                                {
+                                    DataRecord.RemoveXmlNode("genxml/optionvalues[@optionid='" +
+                                                             nod.Attributes["optionid"].InnerText + "']");
+                                    DataLangRecord.RemoveXmlNode("genxml/optionvalues[@optionid='" +
+                                                                 nod.Attributes["optionid"].InnerText + "']");
+                                }
+                            }
+                        }
+                }
             }
         }
 
         public void AddNewOptionValue(String optionid)
         {
-            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid></hidden></genxml></optionvalues></genxml>";
-            if (DataRecord.GetXmlNode("genxml/optionvalues[@optionid='" + optionid + "']") == "")
+            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid><optionvalueid>" + NBrightBuyUtils.GetUniqueKey() + "</optionvalueid></hidden></genxml></optionvalues></genxml>";
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/optionvalues[@optionid='" + optionid + "']") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");
             }
@@ -457,7 +487,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AddNewOption()
         {
             var strXml = "<genxml><options><genxml><hidden><optionid>" + NBrightBuyUtils.GetUniqueKey() + "</optionid></hidden></genxml></options></genxml>";
-            if (DataRecord.GetXmlNode("genxml/options") == "")
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/options") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/options", "genxml");
             }
@@ -469,8 +499,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewModel()
         {
-            var strXml = "<genxml><models><genxml></genxml></models></genxml>";
-            if (DataRecord.GetXmlNode("genxml/models") == "")
+            var strXml = "<genxml><models><genxml><modelid>" + NBrightBuyUtils.GetUniqueKey() + "</modelid></genxml></models></genxml>";
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/models") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
             }
@@ -483,7 +513,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AddNewImage(String imageurl, String imagepath)
         {
             var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" + imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
-            if (DataRecord.GetXmlNode("genxml/imgs") == "")
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/imgs") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/imgs", "genxml");
             }
@@ -497,7 +527,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
 
             var strXml = "<genxml><docs><genxml><hidden><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
-            if (DataRecord.GetXmlNode("genxml/docs") == "")
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");
             }

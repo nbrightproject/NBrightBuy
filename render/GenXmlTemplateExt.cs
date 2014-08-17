@@ -351,18 +351,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "imgexists":
                                 dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + dataValue + "]/hidden/imageid");
-                                if (nod == null || nod.InnerText == "") dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + dataValue + "]");
+                                if (nod == null) dataValue = "FALSE";
                                 break;
                             case "modelexists":
                                 dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + dataValue + "]/hidden/modelid");
-                                if (nod == null || nod.InnerText == "") dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + dataValue + "]");
+                                if (nod == null) dataValue = "FALSE";
                                 break;
                             case "optionexists":
                                 dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + dataValue + "]/hidden/optionid");
-                                if (nod == null || nod.InnerText == "") dataValue = "FALSE";
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + dataValue + "]");
+                                if (nod == null) dataValue = "FALSE";
                                 break;
                             case "isinstock":
                                 dataValue = "FALSE";
