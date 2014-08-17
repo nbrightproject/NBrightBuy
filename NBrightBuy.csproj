@@ -194,20 +194,6 @@
     <Compile Include="CartViewSettings.ascx.designer.cs">
       <DependentUpon>CartViewSettings.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Checkout.ascx.cs">
-      <DependentUpon>Checkout.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Checkout.ascx.designer.cs">
-      <DependentUpon>Checkout.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CheckoutSettings.ascx.cs">
-      <DependentUpon>CheckoutSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CheckoutSettings.ascx.designer.cs">
-      <DependentUpon>CheckoutSettings.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddressAdmin.ascx.cs">
       <DependentUpon>AddressAdmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -228,6 +214,20 @@
     </Compile>
     <Compile Include="Admin\Container.ascx.designer.cs">
       <DependentUpon>Container.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment.ascx.cs">
+      <DependentUpon>Payment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Payment.ascx.designer.cs">
+      <DependentUpon>Payment.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentSettings.ascx.cs">
+      <DependentUpon>PaymentSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentSettings.ascx.designer.cs">
+      <DependentUpon>PaymentSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="PrintView.aspx.cs">
       <DependentUpon>PrintView.aspx</DependentUpon>
@@ -352,12 +352,6 @@
     <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Checkout.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="CheckoutSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
     <Content Include="AddressAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -367,10 +361,18 @@
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Payment.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="PaymentSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="PrintView.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductSearch.ascx" />
+    <Content Include="ProductSearch.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProfileForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

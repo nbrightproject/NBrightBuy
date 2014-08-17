@@ -10,7 +10,7 @@
 namespace Nevoweb.DNN.NBrightBuy {
     
     
-    public partial class Checkout {
+    public partial class Payment {
         
         /// <summary>
         /// rpDetailDisplay control.

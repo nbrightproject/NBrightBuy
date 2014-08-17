@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Checkout : NBrightBuyBase
+    public partial class Payment : NBrightBuyBase
     {
 
         private String _catid = "";
@@ -66,8 +66,8 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
 
-                const string templOK = "checkoutOK.html";
-                const string templFAIL = "checkoutFAIL.html";
+                const string templOK = "paymentOK.html";
+                const string templFAIL = "paymentFAIL.html";
 
                 var displayTempl = templOK;
                 if (!_cartInfo.IsValidated()) displayTempl = templFAIL;

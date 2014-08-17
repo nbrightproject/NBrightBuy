@@ -10,6 +10,6 @@
 namespace Nevoweb.DNN.NBrightBuy {
     
     
-    public partial class CheckoutSettings {
+    public partial class PaymentSettings {
     }
 }

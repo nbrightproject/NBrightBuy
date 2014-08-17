@@ -12,12 +12,12 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The Settings class manages Module Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class CheckoutSettings : NBrightBuySettingBase
+    public partial class PaymentSettings : NBrightBuySettingBase
     {
 
         protected override void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "Checkout";
+            base.CtrlTypeCode = "Payment";
             base.OnInit(e);
         }
 
