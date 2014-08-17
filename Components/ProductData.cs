@@ -103,6 +103,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        public NBrightInfo GetOption(String optionid)
+        {
+            var obj = Options.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid);
+            return obj.First();
+        }
+
+        public NBrightInfo GetOptionValue(String optionid, String optionvalueid)
+        {
+            var obj = OptionValues.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid && i.GetXmlProperty("genxml/hidden/optionvalueid") == optionvalueid);
+            return obj.First();
+        }
 
         public List<GroupCategoryData> GetCategories()
         {

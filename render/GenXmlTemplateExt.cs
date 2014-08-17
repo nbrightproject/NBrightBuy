@@ -1977,6 +1977,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 ddl.Attributes.Remove("blank");
                             }
 
+                            var lp = 1;
                             foreach (XmlNode nodOptVal in nodList)
                             {
                                 var nodVal = nodOptVal.SelectSingleNode("hidden/optionvalueid");
@@ -1984,7 +1985,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 {
                                     var optionvalueid = nodVal.InnerText;
                                     var li = new ListItem();
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[hidden/optionvalueid='" + optionvalueid + "']/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("D") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         li.Text = nodLang.InnerText;
@@ -1992,6 +1993,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                         if (li.Text != "") ddl.Items.Add(li);
                                     }
                                 }
+                                lp += 1;
                             }
                             if (nodList.Count > 0) ddl.SelectedIndex = 0;
                         }
@@ -2011,13 +2013,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         chk.Enabled = true;
                         if (nodList != null)
                         {
+                            var lp = 1;
                             foreach (XmlNode nodOptVal in nodList)
                             {
                                 var nodVal = nodOptVal.SelectSingleNode("hidden/optionvalueid");
                                 if (nodVal != null)
                                 {
                                     var optionvalueid = nodVal.InnerText;
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[hidden/optionvalueid='" + optionvalueid + "']/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("D") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         chk.Text = nodLang.InnerText;
@@ -2025,6 +2028,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                         chk.Attributes.Add("optionid", optionid);
                                     }
                                 }
+                                lp += 1;
                             }
                         }
 
@@ -2158,6 +2162,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") rbl.Items.Add(li);
                     }
+                    if (rbl.Items.Count > 0) rbl.SelectedIndex = 0;
                 }
 
             }
@@ -2220,7 +2225,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") ddl.Items.Add(li);
                     }
-                    if (objL.Count > 0) ddl.SelectedIndex = 0;
+                    if (ddl.Items.Count > 0) ddl.SelectedIndex = 0;
                 }
 
             }
@@ -3225,6 +3230,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 #endregion
 
+                var lp = 1;
                 foreach (XmlNode nod in nodList)
                 {
                     // check if Deleted
@@ -3247,7 +3253,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             {
                                 #region "Add Lanaguge Data"
 
-                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[hidden/modelid='" + modelId.ToString("") + "']");
+                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("D") + "]");
                                 if (nodLang != null)
                                 {
                                     o.AddSingleNode("lang", "", "genxml");
@@ -3303,6 +3309,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             objL.Add(o);
                         }
                     }
+                    lp += 1;
                 }
             }
             return objL;

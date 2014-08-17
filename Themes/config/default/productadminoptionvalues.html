@@ -6,8 +6,8 @@
 
     [<tag id="optionid" type="hidden" value="" />] <!-- required optionid to link to option in DB -->
     [<tag id="optionvalueid" type="hidden" value="" />] <!-- required optionvalueid to link to checkout selected-->
-    [<tag id="fields" type="hidden" value="genxml/hidden/optionid,genxml/hidden/optionvalueid,genxml/hidden/txtaddedcost" />] <!-- update fields -->
-    [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptionvaluedesc,genxml/textbox/txtaddedcost" />] <!-- update localized fields -->
+    [<tag id="fields" type="hidden" value="genxml/hidden/optionid,genxml/hidden/optionvalueid,genxml/textbox/txtaddedcost" />] <!-- update fields -->
+    [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptionvaluedesc" />] <!-- update localized fields -->
 
     desc:   [<tag id="txtoptionvaluedesc" type="textbox" width="150" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/optionid" />]-[<tag type="valueof" xpath="genxml/hidden/optionvalueid" />] ss
     cost:   [<tag id="txtaddedcost" type="textbox" width="50" maxlength="50" />] - 

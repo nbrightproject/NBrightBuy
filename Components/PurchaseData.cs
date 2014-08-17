@@ -131,6 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 #region "Get option Data"
 
                 //build option data for cart
+                Double additionalCosts = 0;
                 var strXmlIn = "<options>";
                 var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/textbox/*[starts-with(name(), 'optiontxt')]");
                 if (nodList != null)
@@ -139,13 +140,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         strXmlIn += "<option>";
                         var idx = nod.Name.Replace("optiontxt", "");
                         var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                        var optionInfo = productData.GetOption(optionid);
                         var optvaltext = nod.InnerText;
                         strXmlIn += "<optid>" + optionid + "</optid>";
                         strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
                         var itemcodeText = "";
                         if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
                         itemcode += optionid + itemcodeText + "-";
-                        strXmlIn += "<optname>" + productData.Info.GetXmlProperty("genxml/lang/genxml/options/genxml[./hidden/optionid='" + optionid + "']/textbox/txtoptiondesc") + "</optname>";
+                        strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
                         strXmlIn += "</option>";
                     }
                 nodList = objInfoIn.XMLDoc.SelectNodes("genxml/dropdownlist/*[starts-with(name(), 'optionddl')]");
@@ -155,13 +157,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         strXmlIn += "<option>";
                         var idx = nod.Name.Replace("optionddl", "");
                         var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                        var optionvalueid = nod.InnerText;
+                        var optionValueInfo = productData.GetOptionValue(optionid, optionvalueid);
+                        var optionInfo = productData.GetOption(optionid);
                         strXmlIn += "<optid>" + optionid + "</optid>";
-                        strXmlIn += "<optval>" + nod.InnerText + "</optval>";
-                        itemcode += optionid + ":" + nod.InnerText + "-";
-                        strXmlIn += "<optname>" + productData.Info.GetXmlProperty("genxml/lang/genxml/options/genxml[./hidden/optionid='" + optionid + "']/textbox/txtoptiondesc") + "</optname>";
-                        strXmlIn += "<optvalcost>" + productData.Info.GetXmlProperty("genxml/optionvalues/genxml[./hidden/optionvalueid='" + nod.InnerText + "']/textbox/txtaddedcost") + "</optvalcost>";
-                        strXmlIn += "<optvaltext>" + productData.Info.GetXmlProperty("genxml/lang/genxml/optionvalues/genxml[./hidden/optionvalueid='" + nod.InnerText + "']/textbox/txtoptionvaluedesc") + "</optvaltext>";
+                        strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
+                        itemcode += optionid + ":" + optionvalueid + "-";
+                        strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
+                        strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
+                        strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                         strXmlIn += "</option>";
+                        additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
                     }
                 nodList = objInfoIn.XMLDoc.SelectNodes("genxml/checkbox/*[starts-with(name(), 'optionchk')]");
                 if (nodList != null)
@@ -172,13 +178,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             strXmlIn += "<option>";
                             var idx = nod.Name.Replace("optionchk", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                            var optionvalueid = nod.InnerText;
+                            var optionValueInfo = productData.GetOptionValue(optionid, optionvalueid);
+                            var optionInfo = productData.GetOption(optionid);
                             strXmlIn += "<optid>" + optionid + "</optid>";
-                            itemcode += optionid + "-";
-                            strXmlIn += "<optname>" + productData.Info.GetXmlProperty("genxml/lang/genxml/options/genxml[./hidden/optionid='" + optionid + "']/textbox/txtoptiondesc") + "</optname>";
-                            strXmlIn += "<optvalueid>" + productData.Info.GetXmlProperty("genxml/optionvalues[@optionid='" + optionid + "']/genxml/hidden/optionvalueid") + "</optvalueid>";
-                            strXmlIn += "<optvalcost>" + productData.Info.GetXmlProperty("genxml/optionvalues[@optionid='" + optionid + "']/genxml/textbox/txtaddedcost") + "</optvalcost>";
-                            strXmlIn += "<optvaltext>" + productData.Info.GetXmlProperty("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
+                            strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
+                            itemcode += optionid + ":" + optionvalueid + "-";
+                            strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
+                            strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
+                            strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                             strXmlIn += "</option>";
+                            additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
                         }
                     }
 
@@ -187,8 +197,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 #endregion
 
-                objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'), "genxml");
+                //add additional costs from optionvalues (Add to both dealer and unit cost)
+                if (additionalCosts > 0)
+                {
+                    var uc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
+                    var dc = objInfo.GetXmlPropertyDouble("genxml/dealercost");
+                    uc += additionalCosts;
+                    dc += additionalCosts;
+                    objInfo.SetXmlPropertyDouble("genxml/unitcost", uc);
+                    objInfo.SetXmlPropertyDouble("genxml/dealercost", dc);
+                }
 
+
+                objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'), "genxml");
 
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
