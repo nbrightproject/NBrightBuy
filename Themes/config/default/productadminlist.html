@@ -2,14 +2,21 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
-<!-- return field for ajax calls -->
-[<tag id="nbxprocessing" type="hidden" />]
-[<tag id="nbxaction" type="hidden" />]
+
+<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
 
 <script>
     $(document).ready(function () {
         // start load all ajax data, continued by js in product.js file
-        nbxget('getproductlist', '#productselectparams', 'getproductlist', '#productlist');
+        nbxget('getproductlist', '#productselectparams', '#productlist');
+
+        $('#productlist').change(function () {
+            $('.editlink').unbind();
+            $('.editlink').click(function () {
+                $('.processing').show();
+            });
+        });
+
     });
 </script>
 

@@ -1,29 +1,9 @@
 
 var nbxrtn = 'input[id*="nbxrtn"]';
-var nbxaction = 'input[id*="nbxaction"]';
-var nbxprocessing = 'input[id*="nbxprocessing"]';
 
-function nbxonclick(selector,cmd,selformdiv,action)
-{
-	$(selector).click(function () {
-		nbxget(cmd,selformdiv,action);
-	});
-}
-function nbxonchange(selector,cmd,selformdiv,action)
-{		 
-	$(selector).change(function () {
-		nbxget(cmd,selformdiv,action);
-	});
-}
-
-function nbxget(cmd, selformdiv, action, target, selformitemdiv, appendreturn)
+function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 {
     $.ajaxSetup({ cache: false });
-
-	$(nbxprocessing).val("BEFORE").trigger('change');
-
-	// set the nbxaction field to action, so we know which ajax action is processing.
-    $('input[id*="nbxaction"]').val(action);
 
     var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd;
     var values = '';
@@ -49,13 +29,14 @@ function nbxget(cmd, selformdiv, action, target, selformitemdiv, appendreturn)
 	                CKEDITOR.instances[editorid].setData(data);
 	            }
 	        } else if (data != 'noaction') {
-	            if (appendreturn == null)
+	            if (appendreturn == null) {
+	                $(target).children().remove();
 	                $(target).html(data).trigger('change');
+	            }
 	            else
 	                $(target).append(data).trigger('change');
 	        }
 	    }
-	    $(nbxprocessing).val("AFTER").trigger('change');
 	});
 
 	request.fail(function (jqXHR, textStatus) {

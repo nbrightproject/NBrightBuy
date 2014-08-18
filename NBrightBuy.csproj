@@ -361,9 +361,7 @@
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Payment.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="Payment.ascx" />
     <Content Include="PaymentSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
