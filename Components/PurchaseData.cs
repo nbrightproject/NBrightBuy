@@ -105,8 +105,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 // Get ModelID
                 var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
-                if (!Utils.IsNumeric(strmodelId)) strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
-                if (!Utils.IsNumeric(strmodelId)) strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
+                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
+                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
                 objInfo.AddSingleNode("modelid", strmodelId, "genxml");
                 itemcode += strmodelId + "-";
 
@@ -119,11 +119,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("productname", productData.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"), "genxml");
                 objInfo.AddSingleNode("summary", productData.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"), "genxml");
 
-                objInfo.AddSingleNode("modelref", productData.Info.GetXmlProperty("genxml/models/genxml[./hidden/modelid='" + strmodelId + "']/textbox/txtmodelref"), "genxml");
-                objInfo.AddSingleNode("modeldesc", productData.Info.GetXmlProperty("genxml/lang/genxml/models/genxml[./hidden/modelid='" + strmodelId + "']/textbox/txtmodelname"), "genxml");
-                objInfo.AddSingleNode("modelextra", productData.Info.GetXmlProperty("genxml/lang/genxml/models/genxml[./hidden/modelid='" + strmodelId + "']/textbox/txtextra"), "genxml");
-                objInfo.AddSingleNode("unitcost", productData.Info.GetXmlProperty("genxml/models/genxml[./hidden/modelid='" + strmodelId + "']/textbox/txtunitcost"), "genxml");
-                objInfo.AddSingleNode("dealercost", productData.Info.GetXmlProperty("genxml/models/genxml[./hidden/modelid='" + strmodelId + "']/textbox/txtdealercost"), "genxml");
+                var modelInfo = productData.GetModel(strmodelId);
+
+                objInfo.AddSingleNode("modelref", modelInfo.GetXmlProperty("genxml/textbox/txtmodelref"), "genxml");
+                objInfo.AddSingleNode("modeldesc", modelInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"), "genxml");
+                objInfo.AddSingleNode("modelextra", modelInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtextra"), "genxml");
+                objInfo.AddSingleNode("unitcost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
+                objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
 
                 #endregion
 

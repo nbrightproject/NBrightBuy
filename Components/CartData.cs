@@ -132,6 +132,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #endregion
 
+        #region "Stock control"
+
+        public int GetQtyOfModelInCart(String modelid)
+        {
+            var itemList = GetCartItemList();
+            return itemList.Where(c => c.GetXmlProperty("genxml/modelid") == modelid).Sum(c => c.GetXmlPropertyInt("genxml/qty"));
+        }
+
+        #endregion
+
         #region "cart validation and calculation"
 
         public void ValidateCart()

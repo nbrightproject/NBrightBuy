@@ -155,6 +155,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catlistbox":
                     CreateCatListBox(container, xmlNod);
                     return true;
+                case "grouplistbox":
+                    CreateGroupListBox(container, xmlNod);
+                    return true;
                 case "catcheckboxlist":
                     CreateCatCheckBoxList(container, xmlNod);
                     return true;
@@ -1199,6 +1202,35 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+        private void CreateGroupListBox(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+                var ddl = new ListBox();
+                ddl = (ListBox)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+
+                var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true);
+                foreach (var tItem in tList)
+                {
+                    if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")
+                    {
+                        var li = new ListItem();
+                        li.Text = tItem.GetXmlProperty("genxml/lang/genxml/textbox/groupname");
+                        li.Value = tItem.GetXmlProperty("genxml/textbox/groupref");
+                        ddl.Items.Add(li);                        
+                    }
+                }
+
+                ddl.DataBinding += DdListBoxDataBinding;
+                container.Controls.Add(ddl);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
+        }
         private void DdListBoxDataBinding(object sender, EventArgs e)
         {
             var ddl = (ListBox)sender;
@@ -3243,69 +3275,70 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         {
                             // get modelid
                             var nodModelId = nod.SelectSingleNode("hidden/modelid");
-                            var modelId = -1;
-                            if (nodModelId != null && Utils.IsNumeric(nodModelId.InnerText)) modelId = Convert.ToInt32(nodModelId.InnerText);
+                            var modelId = "";
+                            if (nodModelId != null) modelId = nodModelId.InnerText;
 
                             //Build NBrightInfo class for model
                             var o = new NBrightInfo();
                             o.XMLData = nod.OuterXml;
-                            if (modelId >= 0)
+
+                            #region "Add Lanaguge Data"
+
+                            var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("D") + "]");
+                            if (nodLang != null)
                             {
-                                #region "Add Lanaguge Data"
-
-                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("D") + "]");
-                                if (nodLang != null)
-                                {
-                                    o.AddSingleNode("lang", "", "genxml");
-                                    o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
-                                }
-
-                                #endregion
-
-                                #region "stock calcs"
-
-                                if (addCartStock)
-                                {
-                                    // Get the stock levels that exists in the cart. (this could also be for all carts if the "lockstockoncart" setting is set)
-                                    var nodModelStock = nod.SelectSingleNode("textbox/txtqtyremaining");
-                                    if (nodModelStock != null)
-                                    {
-                                        var modelStock = nodModelStock.InnerText;
-                                        // only create nodes if stock is active (modelstock of -1, stock is turned off)                                       
-                                        if (Utils.IsNumeric(modelStock) && Convert.ToInt32(modelStock) >= 0)
-                                        {
-                                            var cartStock = 0;
-                                            cartStock = CurrentCart.GetCartStockInModel(PortalSettings.Current.PortalId, modelId);
-
-                                            o.AddSingleNode("stockincart", cartStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                            var actualStock = Convert.ToInt32(modelStock);
-                                            actualStock = actualStock - cartStock;
-                                            if (actualStock < 0) actualStock = 0;
-                                            o.AddSingleNode("calcstock", actualStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                        }
-                                    }
-                                }
-
-                                #endregion
-
-                                #region "Prices"
-
-                                if (addSalePrices)
-                                {
-                                    var uInfo = UserController.GetCurrentUserInfo();
-                                    if (uInfo != null)
-                                    {
-                                        var objPromoCtrl = new PromoController();
-                                        var objPCtrl = new ProductController();
-                                        var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
-                                        var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
-                                        o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                    }
-                                }
-
-                                #endregion
-
+                                o.AddSingleNode("lang", "", "genxml");
+                                o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
                             }
+
+                            #endregion
+
+                            #region "stock calcs"
+
+                            if (addCartStock)
+                            {
+                                // Get the stock levels that exists in the cart. (this could also be for all carts if the "lockstockoncart" setting is set)
+                                var nodModelStock = nod.SelectSingleNode("textbox/txtqtyremaining");
+                                if (nodModelStock != null)
+                                {
+                                    var modelStock = nodModelStock.InnerText;
+                                    // only create nodes if stock is active (modelstock of -1, stock is turned off)                                       
+                                    if (Utils.IsNumeric(modelStock) && Convert.ToInt32(modelStock) >= 0)
+                                    {
+                                        var cartStock = 0;
+                                        var cartData = new CartData(PortalSettings.Current.PortalId);
+                                        cartStock = cartData.GetQtyOfModelInCart(modelId);
+
+                                        o.AddSingleNode("stockincart", cartStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                        var actualStock = Convert.ToInt32(modelStock);
+                                        actualStock = actualStock - cartStock;
+                                        if (actualStock < 0) actualStock = 0;
+                                        o.AddSingleNode("calcstock", actualStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                    }
+                                }
+                            }
+
+                            #endregion
+
+                            #region "Prices"
+
+                            if (addSalePrices)
+                            {
+                                var uInfo = UserController.GetCurrentUserInfo();
+                                if (uInfo != null)
+                                {
+                                    o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
+                                    //[TODO: convert to new promotion provider]
+                                    //var objPromoCtrl = new PromoController();
+                                    //var objPCtrl = new ProductController();
+                                    //var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
+                                    //var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
+                                    //o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                }
+                            }
+
+                            #endregion
+
                             objL.Add(o);
                         }
                     }

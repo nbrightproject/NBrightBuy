@@ -16,7 +16,7 @@ function nbxonchange(selector,cmd,selformdiv,action)
 	});
 }
 
-function nbxget(cmd, selformdiv, action, target, selformitemdiv)
+function nbxget(cmd, selformdiv, action, target, selformitemdiv, appendreturn)
 {
     $.ajaxSetup({ cache: false });
 
@@ -48,7 +48,12 @@ function nbxget(cmd, selformdiv, action, target, selformitemdiv)
 	                var editorid = $(target).attr('id');
 	                CKEDITOR.instances[editorid].setData(data);
 	            }
-	        } else if (data != 'noaction') $(target).html(data).trigger('change');
+	        } else if (data != 'noaction') {
+	            if (appendreturn == null)
+	                $(target).html(data).trigger('change');
+	            else
+	                $(target).append(data).trigger('change');
+	        }
 	    }
 	    $(nbxprocessing).val("AFTER").trigger('change');
 	});

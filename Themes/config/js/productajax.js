@@ -64,11 +64,25 @@
         $('.removedoc').click(function () { removeelement($(this).parent()); });
     });
     $('#productcategories').change(function () {
-        $('.removedoc').click(function () { removeelement($(this).parent()); });
+        $('.removedoc').click(function () {
+            $('input[id*="selectedcatid"]').val($(this).attr('categoryid'));
+            nbxget('removeproductcategory', '#productselectparams', 'removeproductcategory', '#productcategories'); // load             
+        });
     });
+
+    $('#groupcategorylist').change(function () {
+        // select group category
+        $('.selectgroupcategory').click(function() {
+            alert($(this).val());
+            $('input[id*="selectedcatid"]').val($(this).val());
+            //nbxget('addproductgroupcategory', '#productselectparams', 'addproductgroupcategory', '#productgroupcategories'); // load 
+        });
+    });
+
     $('#productrelated').change(function () {
         $('.removedoc').click(function () { removeelement($(this).parent()); });
     });
+
 
 
     $('#undomodel').click(function () { undoremove('.modelitem', '#productmodels'); });
@@ -76,7 +90,6 @@
     $('#undooptionvalue').click(function () { undoremove('.optionvalueitem', '#productoptionvalues'); });
     $('#undoimage').click(function () { undoremove('.imageitem', '#productimages'); });
     $('#undodoc').click(function () { undoremove('.docitem', '#productdocs'); });
-    $('#undocategory').click(function () { undoremove('.categoryitem', '#productcategories'); });
     $('#undorelated').click(function () { undoremove('.relateditem', '#productrelated'); });
 
     function removeelement(elementtoberemoved) {
@@ -101,7 +114,7 @@
             if (itemselector == '.optionvalueitem') $('#undooptionvalue').hide();
             if (itemselector == '.imageitem') $('#undoimage').hide();
             if (itemselector == '.docitem') $('#undodoc').hide();
-            if (itemselector == '.categoryitem') $('#undocategory').hide(); dc
+            if (itemselector == '.categoryitem') $('#undocategory').hide();
             if (itemselector == '.relateditem') $('#undorelated').hide();
         }
     }
@@ -170,5 +183,19 @@
         $('input[id*="addqty"]').val($('input[id*="txtaddoptvalueqty"]').val());
         nbxget('addproductoptionvalues', '#productselectparams', 'addproductoptionvalues', '#productoptionvalues'); // load optionvalues
     });
+
+    //Add category
+    $('select[id*="selectcategory"]').click(function () {
+        $('input[id*="selectedcatid"]').val($(this).val());
+        nbxget('addproductcategory', '#productselectparams', 'addproductcategory', '#productcategories'); // load 
+    });
+
+    //select group category
+    $('select[id*="selectgroup"]').click(function () {
+        $('input[id*="selectedgroupref"]').val($(this).val());
+        nbxget('populatecategorylist', '#productselectparams', 'populatecategorylist', '#groupcategorylist'); // load 
+    });
+
+
 
 });

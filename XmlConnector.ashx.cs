@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -200,7 +201,15 @@ namespace Nevoweb.DNN.NBrightBuy
                         strOut = GetProductOptionValues(context);
                     }
                     break;
-
+                case "addproductcategory":
+                    if (CheckRights()) strOut = AddProductCategory(context);
+                    break;
+                case "removeproductcategory":
+                    if (CheckRights()) strOut = RemoveProductCategory(context);
+                    break;
+                case "populatecategorylist":
+                    if (CheckRights()) strOut = GetGroupCategoryListBox(context);
+                    break;                    
             }
 
             #endregion
@@ -453,6 +462,14 @@ namespace Nevoweb.DNN.NBrightBuy
             return strOut;
         }
 
+        private String GetGroupCategoryListBox(HttpContext context)
+        {
+            var settings = GetAjaxFields(context);
+            var groupref = "";
+            if (settings.ContainsKey("selectedgroupref")) groupref = settings["selectedgroupref"];
+            var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory' type='catlistbox' groupref='" + groupref + "'/>]";
+            return GenXmlFunctions.RenderRepeater(new NBrightInfo(),templ);    
+        }
 
         #endregion
 
@@ -693,8 +710,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);
-
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);                
+                
                 return strOut;
 
             }
@@ -847,6 +864,54 @@ namespace Nevoweb.DNN.NBrightBuy
                 return ex.ToString();
             }
         }
+
+        private string AddProductCategory(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
+                if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    return GetProductCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        private string RemoveProductCategory(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
+                if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    return GetProductCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+
 
         #endregion
 

@@ -1,8 +1,10 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 <!-- class needed for recycle bin -->
 <li class="categoryitem" style="width:800;">
-    <a class="removedoc">Remove</a>  
+    <a class="removedoc" categoryid="[<tag type="valueof" databind="categoryid" />]">Remove</a>  
     
+    ====[<tag type="valueof" databind="categoryid" />]
+
     [<tag id="categoryid" type="hidden" value="databind:categoryid" />]
 
     categoryname: [<tag type="valueof" databind="categoryname" />]

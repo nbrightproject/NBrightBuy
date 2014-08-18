@@ -103,6 +103,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        public NBrightInfo GetModel(String modelid)
+        {
+            var obj = Models.Where(i => i.GetXmlProperty("genxml/hidden/modelid") == modelid);
+            return obj.First();
+        }
+
         public NBrightInfo GetOption(String optionid)
         {
             var obj = Options.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid);
@@ -218,11 +224,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UpdateImages(info);
             // update docs
             UpdateDocs(info);
-            // update categories
-            strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductcategories");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            UpdateCategories(strXml);
-
         }
 
         public void UpdateDocs(NBrightInfo info)
@@ -510,7 +511,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewModel()
         {
-            var strXml = "<genxml><models><genxml><modelid>" + NBrightBuyUtils.GetUniqueKey() + "</modelid></genxml></models></genxml>";
+            var strXml = "<genxml><models><genxml><hidden><modelid>" + NBrightBuyUtils.GetUniqueKey() + "</modelid></hidden></genxml></models></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/models") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
@@ -586,7 +587,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
             }
-
         }
 
         public void RemoveCategory(int categoryid)
@@ -629,35 +629,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
-        }
-
-        public void UpdateCategories(String xmlAjaxData)
-        {
-            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
-            if (objList.Count > 0)
-            {
-
-                // get a list of categories to keep
-                var keepCategories = new Dictionary<Int32, Int32>();
-                foreach (var o in objList)
-                {
-                    if (!keepCategories.ContainsKey(Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")))) keepCategories.Add(Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")), Convert.ToInt32(o.GetXmlProperty("genxml/hidden/categoryid")));
-                }
-                // get current categories
-                var currentCategories = GetCategories();
-
-                //remove unrequired categories
-                foreach (var c in currentCategories)
-                {
-                    if (!keepCategories.ContainsKey(c.categoryid))
-                    {
-                        RemoveCategory(c.categoryid);
-                    }
-                }
-
-                //NOTE: added categories are done by ajax call to SelectCatXref in XmlConnector.ashx.cs 
-
-            }
         }
 
         #endregion

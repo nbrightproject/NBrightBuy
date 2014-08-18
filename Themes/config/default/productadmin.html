@@ -38,7 +38,6 @@
 [<tag id="xmlupdateproductoptionvalues" type="postback" value=""/>]
 [<tag id="xmlupdateproductimages" type="postback" value=""/>]
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
-[<tag id="xmlupdateproductcategories" type="postback" value=""/>]
 [<tag id="xmlupdateproductrelated" type="postback" value=""/>]
 
 <!-- Required: id="productdatasection" -->
@@ -66,6 +65,7 @@
             [<tag id="searchcategory" type="hidden" value=""/>]
             [<tag id="selectedoptionid" type="hidden" value=""/>]
             [<tag id="addqty" type="hidden" value=""/>]
+            [<tag id="selectedgroupref" type="hidden" value=""/>]
         </div>
 
         <!-- Required for update: fields,localizedfields -->
@@ -118,9 +118,32 @@ Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
           <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productdocs"></ul>
         <h2>Categories</h2>
-        [<tag id="selectcategory" type="catdropdown" />]<a id="addcategory">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> 
-          <a id="undocategory" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        
+        <div>            
+        <div style="float:left;">
+        [<tag id="selectcategory" type="catlistbox" height="200px" groupref="cat"/>]
+        </div>
+        <div style="float:left;">          
         <ul id="productcategories"></ul>
+        </div>
+        <div style="clear:both"></div>
+        </div>
+
+        <h2>Groups</h2>
+        
+        <div>    
+        <div style="float:left;">
+        [<tag id="selectgroup" type="grouplistbox" />]
+        </div>
+        <div id="groupcategorylist" style="float:left;">
+            [<tag id='selectgroupcategory' cssclass='selectgroupcategory' type='catlistbox' groupref='none'/>]
+        </div>
+        <div style="float:left;">
+        <ul id="productgroupcategories"></ul>
+        </div>
+        <div style="clear:both"></div>
+        </div>
+        
         <h2>Related Products</h2>
           <a id="undorelated" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productrelated"></ul>
