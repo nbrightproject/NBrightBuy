@@ -16,6 +16,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String _lang = "";
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
+        public List<NBrightInfo> GroupList;
+        public Dictionary<String, String> GroupsDictionary; 
 
         public GrpCatController(String lang,Boolean debugMode = false)
         {
@@ -259,15 +261,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
-        public List<GroupCategoryData> GetProductCategories(int productid)
+        /// <summary>
+        /// Select categories linked to product, by groupref
+        /// </summary>
+        /// <param name="productid"></param>
+        /// <param name="groupref">groupref for select, "" = all, "cat"= Category only, "!cat" = all non-category, "{groupref}"=this group only</param>
+        /// <returns></returns>
+        public List<GroupCategoryData> GetProductCategories(int productid, String groupref = "")
         {
             var objCtrl = new NBrightBuyController();
             var catxrefList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.[ParentItemId] = " + productid);
+
+            var notcat = "";
+            if (groupref == "!cat")
+            {
+                groupref = "";
+                notcat = "cat";
+            }
+
             var joinItems = (from d1 in GrpCategoryList
                              join d2 in catxrefList on d1.categoryid equals d2.XrefItemId
-                             select d1).ToList<GroupCategoryData>();
+                             where (d1.grouptyperef == groupref || groupref == "") && d1.grouptyperef != notcat
+                             select d1).OrderBy(d1 => d1.grouptyperef).ThenBy(d1 => d1.breadcrumb).ToList<GroupCategoryData>();
             return joinItems;
         }
+
         #endregion
 
         #region "breadcrumbs"
@@ -359,6 +377,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _objCtrl = new NBrightBuyController();
             _lang = lang;
 
+            // get groups
+            GroupList = NBrightBuyUtils.GetCategoryGroups(_lang, true);
+
+            GroupsDictionary = new Dictionary<String, String>();
+            foreach (var g in GroupList)
+            {
+                if (!GroupsDictionary.ContainsKey(g.GetXmlProperty("genxml/textbox/groupref"))) GroupsDictionary.Add(g.GetXmlProperty("genxml/textbox/groupref"), g.GetXmlProperty("genxml/lang/genxml/textbox/groupname"));
+            }
+
             // build group category list
             var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
@@ -442,7 +469,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.grouptyperef = i.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                 grpcat.parentcatid = i.ParentItemId;
                 grpcat.entrycount = GetEntryCount(lx, grpcat.categoryid);
-                
+                if (GroupsDictionary.ContainsKey(grpcat.grouptyperef)) grpcat.groupname = GroupsDictionary[grpcat.grouptyperef];
+
                 // get the language data
                 var langItem =  GetLangData(lg,grpcat.categoryid);
                 if (langItem != null)

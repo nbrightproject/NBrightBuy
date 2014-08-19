@@ -79,12 +79,24 @@
         $('.selectgroupcategory').unbind();  //remove event so we don't get duplicate on the element click.
         $('.selectgroupcategory').click(function () {
             $('input[id*="selectedcatid"]').val($(this).val());
-            //nbxget('addproductgroupcategory', '#productselectparams', '#productgroupcategories'); // load 
+            nbxget('addproductgroupcategory', '#productselectparams', '#productgroupcategories'); // load 
         });
     });
 
+    $('#productgroupcategories').change(function () {
+        $('.removegroupcategory').unbind();
+        $('.removegroupcategory').click(function () {
+            $('input[id*="selectedcatid"]').val($(this).attr('categoryid'));
+            nbxget('removeproductgroupcategory', '#productselectparams', '#productgroupcategories'); // load             
+        });
+    });
+
+
     $('#productrelated').change(function () {
-        $('.removedoc').click(function () { removeelement($(this).parent()); });
+        $('.removerelated').click(function () {
+            $('input[id*="selectedrelatedid"]').val($(this).attr('productid'));
+            nbxget('removerelatedproduct', '#productselectparams', '#productrelated'); // load releated
+        });
     });
 
 
@@ -133,7 +145,7 @@
 
 
     //-------------------------------------------------------
-    // -------------   Search products ----------------------
+    // -------------   Search LIST products ----------------------
     //-------------------------------------------------------
     // select search
     $('#listsearch').click(function () {
@@ -173,19 +185,19 @@
     $('#addmodels').click(function () {
         $('.processing').show();
         $('input[id*="addqty"]').val($('input[id*="txtaddmodelqty"]').val());
-        nbxget('addproductmodels', '#productselectparams', '#productmodels'); // load models
+        nbxget('addproductmodels', '#productselectparams', '#productmodels',null,'true'); // load models
     });
     //Add options
     $('#addopt').click(function () {
         $('.processing').show();
         $('input[id*="addqty"]').val($('input[id*="txtaddoptqty"]').val());
-        nbxget('addproductoptions', '#productselectparams', '#productoptions'); // load options
+        nbxget('addproductoptions', '#productselectparams', '#productoptions', null, 'true'); // load options
     });
     //Add optionvalues
     $('#addoptvalues').click(function () {
         $('.processing').show();
         $('input[id*="addqty"]').val($('input[id*="txtaddoptvalueqty"]').val());
-        nbxget('addproductoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues
+        nbxget('addproductoptionvalues', '#productselectparams', '#productoptionvalues', null, 'true'); // load optionvalues
     });
 
     //Add category
@@ -195,9 +207,72 @@
     });
 
     //select group category
-    $('select[id*="selectgroup"]').click(function () {
+    $('select[id*="selectgrouptype"]').click(function () {
         $('input[id*="selectedgroupref"]').val($(this).val());
         nbxget('populatecategorylist', '#productselectparams', '#groupcategorylist'); // load 
     });
+
+    $('#productselect').click(function () {
+        $(this).hide();
+        $("input[id*='header']").val("productselectheader.html");
+        $("input[id*='body']").val("productselectbody.html");
+        $("input[id*='footer']").val("productselectfooter.html");
+        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        $('#productdatasection').hide();
+        $('#productselectsection').show();
+    });
+
+    $('#returnfromselect').click(function () {
+        $('#productselect').show();
+        $("input[id*='header']").val("productlistheader.html");
+        $("input[id*='body']").val("productlistbody.html");
+        $("input[id*='footer']").val("productlistfooter.html");
+        $("input[id*='searchtext']").val('');
+        $("input[id*='searchcategory']").val('');
+        nbxget('getcategoryproductlist', '#categorydata', '#productlist');
+        $('#productselectsection').hide();
+        $('#productdatasection').show();
+    });
+
+
+    //--------------------------------------------------------------------------------
+    //----- related product select ---------------------------------------------------
+    //--------------------------------------------------------------------------------
+
+    $('#productselectlist').change(function () {
+        //Do paging
+        $('.cmdPg').unbind();
+        $('.cmdPg').click(function () {
+            $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
+            nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        });
+        // select product
+        $('.selectproduct').unbind();
+        $('.selectproduct').click(function () {
+            $('.selectproductid' + $(this).attr('itemid')).hide();
+            $('input[id*="selectedrelatedid"]').val($(this).attr('itemid'));
+            nbxget('addrelatedproduct', '#productselectparams', '#productrelated'); // load releated
+        });
+
+    });
+
+
+    // START: --------   Search SELECT products ----------------------
+    // select search
+    $('#selectsearch').click(function () {
+        $('input[id*="searchtext"]').val($('input[id*="txtSearch"]').val());
+        $('input[id*="searchcategory"]').val($('select[id*="ddlsearchcategory"]').val());
+        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+    });
+
+    // select search reset
+    $('#selectreset').click(function () {
+        $('input[id*="txtSearch"]').val('');
+        $('select[id*="ddlsearchcategory"]').val('');
+        $('input[id*="searchtext"]').val('');
+        $('input[id*="searchcategory"]').val('');
+        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+    });
+    // END: -------------------------------------------------------
 
 });

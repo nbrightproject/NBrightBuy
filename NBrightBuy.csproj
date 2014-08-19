@@ -432,6 +432,7 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\productadmingroupcategories.html" />
     <Content Include="Themes\config\default\productadminlist.html" />
     <Content Include="Themes\config\default\productadminrelated.html" />
     <Content Include="Themes\config\default\productadmincategories.html" />

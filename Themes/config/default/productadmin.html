@@ -21,8 +21,9 @@
         nbxget('productoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
         nbxget('productmodels', '#productselectparams', '#productmodels'); // load models
         nbxget('productimages', '#productselectparams', '#productimages'); // load images
-        nbxget('productdocs', '#productselectparams', '#productdocs'); // load docs
+        nbxget('productdocs', '#productselectparams', '#productdocs'); // load docs        
         nbxget('productcategories', '#productselectparams', '#productcategories'); // load categories
+        nbxget('productgroupcategories', '#productselectparams', '#productgroupcategories'); // load categories
         nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
         nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
     });
@@ -56,12 +57,13 @@
             [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
             [<tag id="pagesize" type="hidden" value="30"/>]
             [<tag id="pagenumber" type="hidden" value="1"/>]
-            [<tag id="selectedcatid" type="hidden" value=""/>]            
+            [<tag id="selectedcatid" type="hidden" value=""/>]   
             [<tag id="searchtext" type="hidden" value=""/>]     
             [<tag id="searchcategory" type="hidden" value=""/>]
             [<tag id="selectedoptionid" type="hidden" value=""/>]
+            [<tag id="selectedgroupref" type="hidden" value=""/>]            
+            [<tag id="selectedrelatedid" type="hidden" value=""/>]   
             [<tag id="addqty" type="hidden" value=""/>]
-            [<tag id="selectedgroupref" type="hidden" value=""/>]
         </div>
 
         <!-- Required for update: fields,localizedfields -->
@@ -70,27 +72,27 @@
 
         <h2>General</h2>
         ref:   [<tag id="txtproductref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
-Name:   [<tag id="txtproductname" type="textbox" width="300" maxlength="250" />]<br />
-Summary:   [<tag id="txtsummary" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
-seoname:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br/>
-seopagetitle:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br/>
-tagwords:   [<tag id="txttagwords" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
-Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
-<hr/>
+        Name:   [<tag id="txtproductname" type="textbox" width="300" maxlength="250" />]<br />
+        Summary:   [<tag id="txtsummary" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
+        seoname:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br/>
+        seopagetitle:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br/>
+        tagwords:   [<tag id="txttagwords" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
+        Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
+        <hr/>
         <div>[<tag id="description" type="dnn:dnntexteditor" height="400" width="800"  />]</div>
         
         <!-- All "id" for the divs/ul are required for ajax in this section -->
         <h2>Models</h2>
         <a id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddmodelqty" type="textbox" width="30" maxlength="2" text="1" />]
-                <a id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        <a id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productmodels"></ul>
         <h2>Options</h2>
         <div>            
-        <div style="float:left;">
-        <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
+            <div style="float:left;">
+                <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
                 <a id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-        <ul id="productoptions"></ul>                            
-        </div>
+                <ul id="productoptions"></ul>                            
+            </div>
             <div style="float:left;">
                 <span id="optionvaluecontrol" style="display:none;">
                     <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
@@ -98,57 +100,64 @@ Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
                 <a id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
                 <ul id="productoptionvalues"></ul>
             </div>
-        <div style="clear:both"></div>
+            <div style="clear:both"></div>
         </div>
         <h2>Images</h2>
         <div>
             [<tag id="image" type="fileupload" />] [<tag id="cmdSaveImg" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
         </div>
-          <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productimages"></ul>
         <h2>Documents</h2>
         <div>
             [<tag id="document" type="fileupload" textwidth="150" maxlength="50" />]
             [<tag id="cmdSaveDoc" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
         </div>
-          <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+        <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
         <ul id="productdocs"></ul>
         <h2>Categories</h2>
         
         <div>            
-        <div style="float:left;">
-        [<tag id="selectcategory" type="catlistbox" height="200px" groupref="cat"/>]
-        </div>
-        <div style="float:left;">          
-        <ul id="productcategories"></ul>
-        </div>
-        <div style="clear:both"></div>
+            <div style="float:left;">
+                [<tag id="selectcategory" type="catlistbox" height="200px" groupref="cat"/>]
+            </div>
+            <div style="float:left;">          
+                <ul id="productcategories"></ul>
+            </div>
+            <div style="clear:both"></div>
         </div>
 
         <h2>Groups</h2>
         
         <div>    
-        <div style="float:left;">
-        [<tag id="selectgroup" type="grouplistbox" />]
-        </div>
-        <div id="groupcategorylist" style="float:left;">
-            [<tag id='selectgroupcategory' cssclass='selectgroupcategory' type='catlistbox' groupref='none'/>]
-        </div>
-        <div style="float:left;">
-        <ul id="productgroupcategories"></ul>
-        </div>
-        <div style="clear:both"></div>
+            <div style="float:left;">
+                [<tag id="selectgrouptype" type="grouplistbox" />]
+            </div>
+            <div id="groupcategorylist" style="float:left;"></div>
+            <div style="float:left;">
+                <ul id="productgroupcategories"></ul>
+            </div>
+            <div style="clear:both"></div>
         </div>
         
-        <h2>Related Products</h2>
-          <a id="undorelated" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-        <ul id="productrelated"></ul>
-
     </div>
 </div>
 
+<!-- Moved this out of productdata section, so it displays when we are adding related products -->
+<h2>Related Products</h2>
+<a id="productselect">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a> - 
+<ul id="productrelated"></ul>
+
+
 <!-- All "id" for the divs/ul are required for ajax in this section -->
 <div id="productselectsection" style="display:none;">
+<div>
+    <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  
+    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
+    [<tag id="ddlsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
+    <a href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
+    <a href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+</div>
     <div id="productselectlist">
         
     </div>

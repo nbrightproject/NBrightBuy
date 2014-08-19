@@ -96,6 +96,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "return":
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "addnew":
+                    param[0] = "eid=" + AddNew();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
 
             }
 
@@ -103,6 +107,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
         #endregion
+
+        private String AddNew()
+        {
+            var prodData = new ProductData(-1, StoreSettings.Current.EditLanguage);
+            if (!prodData.Exists) return prodData.CreateNew().ToString("D");
+            return prodData.Info.ItemID.ToString("D");
+        }
 
         private void Update()
         {

@@ -1,11 +1,13 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 <li style="width:800;">
-    <a class="removecategory" categoryid="[<tag type="valueof" databind="categoryid" />]">Remove</a>  
+    <a class="removegroupcategory" categoryid="[<tag type="valueof" databind="categoryid" />]">Remove</a>  
     
     ====[<tag type="valueof" databind="categoryid" />]
 
     [<tag id="categoryid" type="hidden" value="databind:categoryid" />]
 
+    groupref: [<tag type="valueof" databind="grouptyperef" />]
+    groupname: [<tag type="valueof" databind="groupname" />]
     categoryname: [<tag type="valueof" databind="categoryname" />]
     breadcrumb: [<tag type="valueof" databind="breadcrumb" />]
 

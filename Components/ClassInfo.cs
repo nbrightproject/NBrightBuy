@@ -17,6 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int categoryid { get; set; }
         public string categoryref { get; set; }
         public string grouptyperef { get; set; }
+        public string groupname { get; set; }
         public bool archived { get; set; }
         public bool ishidden { get; set; }
         public int parentcatid { get; set; }

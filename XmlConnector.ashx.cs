@@ -177,39 +177,42 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "productcategories":
                     if (CheckRights()) strOut = GetProductCategories(context);
                     break;
+                case "productgroupcategories":
+                    if (CheckRights()) strOut = GetProductGroupCategories(context);
+                    break;                    
                 case "productrelated":
                     if (CheckRights()) strOut = GetProductRelated(context);
                     break;
                 case "addproductmodels":
-                    if (CheckRights())
-                    {
-                        AddProductModels(context);
-                        strOut = GetProductModels(context);
-                    }
+                    if (CheckRights()) strOut = AddProductModels(context);
                     break;
                 case "addproductoptions":
-                    if (CheckRights())
-                    {
-                        AddProductOptions(context);
-                        strOut = GetProductOptions(context);
-                    }
+                    if (CheckRights()) strOut = AddProductOptions(context);
                     break;
                 case "addproductoptionvalues":
-                    if (CheckRights())
-                    {
-                        AddProductOptionValues(context);
-                        strOut = GetProductOptionValues(context);
-                    }
+                    if (CheckRights()) strOut = AddProductOptionValues(context);
                     break;
                 case "addproductcategory":
                     if (CheckRights()) strOut = AddProductCategory(context);
                     break;
+                case "addproductgroupcategory":
+                    if (CheckRights()) strOut = AddProductGroupCategory(context);
+                    break;
                 case "removeproductcategory":
                     if (CheckRights()) strOut = RemoveProductCategory(context);
                     break;
+                case "removeproductgroupcategory":
+                    if (CheckRights()) strOut = RemoveProductGroupCategory(context);
+                    break;                    
                 case "populatecategorylist":
                     if (CheckRights()) strOut = GetGroupCategoryListBox(context);
-                    break;                    
+                    break;
+                case "addrelatedproduct":
+                    if (CheckRights()) strOut = AddRelatedProduct(context);
+                    break;
+                case "removerelatedproduct":
+                    if (CheckRights()) strOut = RemoveRelatedProduct(context);
+                    break;
             }
 
             #endregion
@@ -710,8 +713,37 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories(), bodyTempl);                
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories("cat"), bodyTempl);                
                 
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductGroupCategories(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadmingroupcategories.html", Utils.GetCurrentCulture());
+
+                //get data
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetCategories("!cat"), bodyTempl);
+
                 return strOut;
 
             }
@@ -777,7 +809,22 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    strOut = NBrightBuyUtils.GetResxMessage();
+
+                    var rtnList = new List<NBrightInfo>();
+                    for (var i = 1; i < lp;i++ )
+                    {
+                        rtnList.Add(prodData.Models.Last());                        
+                    }
+
+
+                    // get template
+                    var themeFolder = StoreSettings.Current.ThemeFolder;
+                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                    var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", Utils.GetCurrentCulture());
+
+                    //get data
+                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
 
                 return strOut;
@@ -814,7 +861,22 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    strOut = NBrightBuyUtils.GetResxMessage();
+
+                    var rtnList = new List<NBrightInfo>();
+                    for (var i = 1; i < lp; i++)
+                    {
+                        rtnList.Add(prodData.Options.Last());
+                    }
+
+
+                    // get template
+                    var themeFolder = StoreSettings.Current.ThemeFolder;
+                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                    var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", Utils.GetCurrentCulture());
+
+                    //get data
+                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
 
                 return strOut;
@@ -854,7 +916,22 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    strOut = NBrightBuyUtils.GetResxMessage();
+
+                    var rtnList = new List<NBrightInfo>();
+                    for (var i = 1; i < lp; i++)
+                    {
+                        rtnList.Add(prodData.OptionValues.Where(ov => ov.GetXmlProperty("genxml/hidden/optionid") == optionid).Select(o => o).Last());
+                    }
+
+
+                    // get template
+                    var themeFolder = StoreSettings.Current.ThemeFolder;
+                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                    var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", Utils.GetCurrentCulture());
+
+                    //get data
+                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
 
                 return strOut;
@@ -888,6 +965,29 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        private string AddProductGroupCategory(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
+                if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    return GetProductGroupCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
         private string RemoveProductCategory(HttpContext context)
         {
             try
@@ -911,7 +1011,74 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        private string RemoveProductGroupCategory(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
+                if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    return GetProductGroupCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
 
+        private string RemoveRelatedProduct(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var productid = "";
+                var selectedrelatedid = "";
+                if (settings.ContainsKey("itemid")) productid = settings["itemid"];
+                if (settings.ContainsKey("selectedrelatedid")) selectedrelatedid = settings["selectedrelatedid"];
+                if (Utils.IsNumeric(productid) && Utils.IsNumeric(selectedrelatedid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(productid), _lang, false);
+                    prodData.RemoveRelatedProduct(Convert.ToInt32(selectedrelatedid));
+                    return GetProductRelated(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        private string AddRelatedProduct(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var productid = "";
+                var selectedrelatedid = "";
+                if (settings.ContainsKey("itemid")) productid = settings["itemid"];
+                if (settings.ContainsKey("selectedrelatedid")) selectedrelatedid = settings["selectedrelatedid"];
+                if (Utils.IsNumeric(selectedrelatedid) && Utils.IsNumeric(productid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(productid), _lang, false);
+                    prodData.AddRelatedProduct(Convert.ToInt32(selectedrelatedid));
+                    return GetProductRelated(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
 
         #endregion
 

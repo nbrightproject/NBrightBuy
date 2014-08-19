@@ -1,6 +1,4 @@
 
-var nbxrtn = 'input[id*="nbxrtn"]';
-
 function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 {
     $.ajaxSetup({ cache: false });
@@ -20,22 +18,17 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	});
 
 	request.done(function (data) {
-	    if (target == null) {
-	        if (data != 'noaction') $(nbxrtn).val(data).trigger('change');
-	    } else {
-	        if (target.substring(0, 9) == 'textarea[') {
-	            if (data != 'noaction') {
-	                var editorid = $(target).attr('id');
-	                CKEDITOR.instances[editorid].setData(data);
-	            }
-	        } else if (data != 'noaction') {
-	            if (appendreturn == null) {
-	                $(target).children().remove();
-	                $(target).html(data).trigger('change');
-	            }
-	            else
-	                $(target).append(data).trigger('change');
+	    if (target.substring(0, 9) == 'textarea[') {
+	        if (data != 'noaction') {
+	            var editorid = $(target).attr('id');
+	            CKEDITOR.instances[editorid].setData(data);
 	        }
+	    } else if (data != 'noaction') {
+	        if (appendreturn == null) {
+	            $(target).children().remove();
+	            $(target).html(data).trigger('change');
+	        } else
+	            $(target).append(data).trigger('change');
 	    }
 	});
 

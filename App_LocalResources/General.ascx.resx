@@ -461,4 +461,7 @@
   <data name="MoveTo.Text" xml:space="preserve">
     <value>Move To</value>
   </data>
+  <data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

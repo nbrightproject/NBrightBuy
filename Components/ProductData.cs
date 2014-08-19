@@ -121,10 +121,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return obj.First();
         }
 
-        public List<GroupCategoryData> GetCategories()
+        public List<GroupCategoryData> GetCategories(String groupref = "")
         {
             var objGrpCtrl = new GrpCatController(_lang);
-            return objGrpCtrl.GetProductCategories(Info.ItemID);
+            return objGrpCtrl.GetProductCategories(Info.ItemID, groupref);
         }
 
         public List<NBrightInfo> GetRelatedProducts()
@@ -629,6 +629,71 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+        }
+
+        public void AddRelatedProduct(int productid)
+        {
+            if (productid!= Info.ItemID)  //cannot be related to itself
+            {
+                var strGuid = productid.ToString("") + "x" + Info.ItemID.ToString("");
+                var objCtrl = new NBrightBuyController();
+                var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PRDXREF", strGuid);
+                if (nbi == null)
+                {
+                    nbi = new NBrightInfo();
+                    nbi.ItemID = -1;
+                    nbi.PortalId = PortalSettings.Current.PortalId;
+                    nbi.ModuleId = -1;
+                    nbi.TypeCode = "PRDXREF";
+                    nbi.XrefItemId = productid;
+                    nbi.ParentItemId = Info.ItemID;
+                    nbi.XMLData = null;
+                    nbi.TextData = null;
+                    nbi.Lang = null;
+                    nbi.GUIDKey = strGuid;
+                    objCtrl.Update(nbi);
+                }                
+            }
+        }
+
+        public void RemoveRelatedProduct(int productid)
+        {
+            var parentitemid = Info.ItemID.ToString("");
+            var xrefitemid = productid.ToString("");
+            var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+            objCtrl.GetSqlxml(stmt);
+        }
+
+
+        public int CreateNew()
+        {
+
+            var nbi = new NBrightInfo(true);
+            nbi.PortalId = PortalSettings.Current.PortalId;
+            nbi.TypeCode = "PRD";
+            nbi.ModuleId = -1;
+            nbi.ItemID = -1;
+            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+            var objCtrl = new NBrightBuyController();
+            var itemId = objCtrl.Update(nbi);
+
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                nbi = new NBrightInfo(true);
+                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.TypeCode = "PRDLANG";
+                nbi.ModuleId = -1;
+                nbi.ItemID = -1;
+                nbi.Lang = lang;
+                nbi.ParentItemId = itemId;
+                objCtrl.Update(nbi);
+            }
+
+            LoadData(itemId);
+            return itemId;
         }
 
         #endregion
