@@ -12,7 +12,6 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -64,7 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="rpData"></param>
         public String AddPlugin(Repeater rpData)
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+            var strXml = GenXmlFunctions.GetGenXml(rpData);
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
@@ -120,7 +119,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (_pluginList.Count > index)
             {
-                var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+                var strXml = GenXmlFunctions.GetGenXml(rpData);
                 UpdatePlugin(strXml, index);
             }
         }

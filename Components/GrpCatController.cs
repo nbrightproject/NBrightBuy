@@ -210,13 +210,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var setcatid = settings["defaultcatid"];
                     if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
                 }
-
-                if (Utils.IsNumeric(portalId) && defcatid == 0)
-                {
-                    var nbSettings = NBrightBuyUtils.GetGlobalSettings(Convert.ToInt32(portalId));
-                    var setcatid = nbSettings.GetXmlProperty("genxml/hidden/defaultcatid");
-                    if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
-                }
             }
 
             return GetCategory(defcatid);
@@ -231,15 +224,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
 
-            if (defcatid == 0)
-            {
-                if (Utils.IsNumeric(portalId))
-                {
-                    var nbSettings = NBrightBuyUtils.GetGlobalSettings(Convert.ToInt32(portalId));
-                    var setcatid = nbSettings.GetXmlProperty("genxml/hidden/defaultcatid");
-                    if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
-                }
-            }
             var objCtrl = new NBrightBuyController();
             return objCtrl.GetData(defcatid,"CATEGORYLANG");
         }

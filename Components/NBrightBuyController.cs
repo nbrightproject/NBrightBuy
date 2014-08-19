@@ -13,7 +13,7 @@ using DotNetNuke.Services.Search;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {

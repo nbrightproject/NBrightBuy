@@ -18,7 +18,6 @@ using NBrightCore.TemplateEngine;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -31,8 +30,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public static TemplateGetter GetTemplateGetter(string themeFolder)
         {
-            var objSettings = GetGlobalSettings(PortalSettings.Current.PortalId);
-            //var controlMapPath = objSettings.GetXmlProperty("genxml/hidden/controlmappath");
             var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy");
             themeFolder = "Themes\\" + themeFolder;
             var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder);
@@ -62,37 +59,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return obj;
         }
 
-        public static NBrightInfo GetGlobalSettings(int portalId, bool useCache = true)
-        {
-            var obj = (NBrightInfo) GetModCache("NBrightBuy_Global" + portalId.ToString(""));
-
-
-            //[TODO: NB_Store v2.4 code for setting, needs to be changed/removed for v3]
-            if (obj == null || !useCache)
-            {
-                var objNbsv2 = new NBrightInfo();
-                objNbsv2.XMLData = "<genxml><hidden></hidden></genxml>";
-                // load up NB_Store v2 settings
-                var NBS2Ctrl = new SettingsController();
-                var l = NBS2Ctrl.GetSettingList(portalId, Utils.GetCurrentCulture(), true, "");
-                foreach (NB_Store_SettingsInfo i in l)
-                {
-                    objNbsv2.AddSingleNode(i.SettingName, i.SettingValue, "genxml/hidden");
-                }
-
-                //save these as the global settings record [TODO: change this for v3]
-                var objCtrl = new NBrightBuyController();
-                obj = objCtrl.GetByType(portalId, -1, "GLOBAL");
-                if (obj == null) obj = new NBrightInfo {ItemID = -1};
-                obj.TypeCode = "GLOBAL";
-                obj.PortalId = portalId;
-                obj.XMLData = objNbsv2.XMLData;
-                objCtrl.Update(obj);
-                SetModCache(-1, "NBrightBuy_Global" + portalId.ToString(""), obj);
-            }
-
-            return obj;
-        }
 
         public static string FormatListtoXml(IEnumerable<NBrightInfo> objList)
         {
@@ -531,6 +497,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 result.Append(chars[b % (chars.Length - 1)]);
             }
             return result.ToString();
+        }
+
+        public static String FormatToStoreCurrency(double value)
+        {
+            var currencycode = StoreSettings.Current.Get("currencyculturecode");
+            if (currencycode.StartsWith("\"")) return value.ToString(currencycode.Replace("\"", ""));
+            if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
+            if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
+            try
+            {
+                return value.ToString("c", new CultureInfo(currencycode, false));
+            }
+            catch (Exception)
+            {
+                return value.ToString("c", new CultureInfo(PortalSettings.Current.CultureCode, false));
+            }
+        }
+
+        public static String GetCurrencyIsoCode()
+        {
+            var currencycode = StoreSettings.Current.Get("currencyculturecode");
+            if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
+            if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
+            try
+            {
+                return new RegionInfo(currencycode).ISOCurrencySymbol;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
 
     }

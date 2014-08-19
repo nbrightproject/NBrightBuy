@@ -12,7 +12,6 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -137,7 +136,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (_addressList.Count > index)
             {
-                var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER);
+                var strXml = GenXmlFunctions.GetGenXml(rpData);
                 UpdateAddress(strXml, index);
             }
         }

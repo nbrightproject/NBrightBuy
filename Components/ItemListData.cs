@@ -26,15 +26,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleid"> </param>
         /// <param name="storageType">"cookie" or "sessionmemory"</param>
         /// <param name="listName"></param>
-        public ItemListData(int moduleid, String storageType = "Cookie", String listName = "ItemList")
+        public ItemListData(int moduleid, DataStorageType storageType = DataStorageType.Cookie, String listName = "ItemList")
         {
-            if (storageType != null)
-                if (storageType.ToLower() == "sessionmemory")
-                    _storageType = DataStorageType.SessionMemory;
-                else
-                    _storageType = DataStorageType.Cookie;
-            else
-                _storageType = DataStorageType.Cookie;
+            _storageType = storageType;
 
             Exists = false;
             CookieName = "NBrightBuy_" + moduleid.ToString("") + "_" + listName;
@@ -169,6 +163,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return gl;
         }
 
+        public Boolean IsInList(String itemid)
+        {
+            if (ItemList == "") return false;
+            return GetItemList().Contains(itemid);
+        }
 
         /// <summary>
         /// Cookie name

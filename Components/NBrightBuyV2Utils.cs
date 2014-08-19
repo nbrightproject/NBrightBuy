@@ -24,7 +24,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -281,7 +281,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String FormatToStoreCurrency(Double value)
         {
-            return SharedFunctions.FormatToStoreCurrency(PortalSettings.Current.PortalId, value);
+            return NBrightBuyUtils.FormatToStoreCurrency(PortalSettings.Current.PortalId, value);
         }
 
         public static String GetCurrencyIsoCode()

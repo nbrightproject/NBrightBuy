@@ -12,7 +12,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {

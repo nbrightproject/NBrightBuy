@@ -22,12 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             DebugMode = false;
 
-            //[TODO: NB_Store v2.4 code for settings, needs to be changed/removed for v3]
-            SettingsInfo = NBrightBuyUtils.GetGlobalSettings(PortalSettings.Current.PortalId);
-            if (SettingsInfo != null)
-            {
-                _settingDic = SettingsInfo.ToDictionary();
-            }
+            _settingDic = new Dictionary<string, string>();
 
             //Get NBrightBuy Portal Settings.
             var modCtrl = new NBrightBuyController();

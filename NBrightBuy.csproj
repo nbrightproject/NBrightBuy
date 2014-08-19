@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CKEditor.NET">
-      <HintPath>..\..\..\..\..\..\Support\CKEditor\CKEditor.NET.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\..\..\..\Support\DNN6x\bin610\DotNetNuke.dll</HintPath>
     </Reference>
@@ -163,7 +160,6 @@
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
     <Compile Include="Components\NavigationData.cs" />
-    <Compile Include="Components\NBrightBuyV2Utils.cs" />
     <Compile Include="Components\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
     <Compile Include="CategoryMenu.ascx.cs">
@@ -826,10 +822,6 @@
     <ProjectReference Include="..\..\..\..\..\..\Support\NBrightDNN\NBrightDNN.csproj">
       <Project>{EC815D38-62CF-4B46-8177-CF40CE1AAB62}</Project>
       <Name>NBrightDNN</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NB_Store\NB_Store.vbproj">
-      <Project>{981AF709-BC75-4D90-84B0-34B66F5ED2A6}</Project>
-      <Name>NB_Store</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

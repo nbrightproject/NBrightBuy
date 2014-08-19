@@ -12,7 +12,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -78,7 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String AddItem(Repeater rpData, NBrightInfo nbSettings, int rowIndex, Boolean debugMode = false)
         {
 
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", PortalSettings.Current.HomeDirectoryMapPath + SharedFunctions.ORDERUPLOADFOLDER, rowIndex);
+            var strXml = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderUploadsMapPath, rowIndex);
 
             if (debugMode)
             {

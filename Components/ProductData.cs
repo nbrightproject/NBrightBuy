@@ -538,7 +538,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AddNewDoc(String docpath, String postedFileName)
         {
 
-            var strXml = "<genxml><docs><genxml><hidden><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
+            var strXml = "<genxml><docs><genxml><hidden><docid>" + NBrightBuyUtils.GetUniqueKey() + "</docid><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");

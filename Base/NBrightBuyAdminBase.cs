@@ -8,7 +8,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using NBrightDNN;
 using NBrightDNN.controls;
-using NEvoWeb.Modules.NB_Store;
 using NBrightCore.common;
 using System.Xml;
 using Nevoweb.DNN.NBrightBuy.Components;

@@ -18,7 +18,7 @@ using DotNetNuke.Common;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
@@ -52,6 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private NavigationData _navigationdata;
         private const String EntityTypeCode = "PRD";
         private const String EntityTypeCodeLang = "PRDLANG";
+        private String _itemListName = "";
 
         #region Event Handlers
 
@@ -360,13 +361,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "itemlists (wishlist)"
 
                     // if we have a itemListName field then get the itemlist cookie.
-                    var itemListName = "";
                     var itemListAction = "";
-                    if (_templateHeader != null) itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
+                    if (_templateHeader != null) _itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
                     if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
                     if (itemListAction == "wishlist" || itemListAction == "both")
                     {
-                        var cw = new ItemListData(0, itemListName);
+                        var cw = new ItemListData(-1,StoreSettings.Current.StorageTypeClient, _itemListName);
                         var showList = !(itemListAction == "both" && !cw.Active);
                         if (showList)
                         {
@@ -452,16 +452,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "wishlistadd":
                     if (Utils.IsNumeric(cArg))
                     {
-                        var legacyItemId = NBrightBuyV2Utils.GetLegacyProductId(Convert.ToInt32(cArg));
-                        WishList.AddProduct(PortalId, legacyItemId.ToString(""), UserInfo);                        
+                        var wl = new ItemListData(-1, StoreSettings.Current.StorageTypeClient, _itemListName);
+                        wl.Add(cArg);                        
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "wishlistremove":
                     if (Utils.IsNumeric(cArg))
                     {
-                        var legacyItemId = NBrightBuyV2Utils.GetLegacyProductId(Convert.ToInt32(cArg));
-                        WishList.RemoveProduct(PortalId, legacyItemId.ToString(""));                        
+                        var wl = new ItemListData(-1, StoreSettings.Current.StorageTypeClient, _itemListName);
+                        wl.Remove(cArg);
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
