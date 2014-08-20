@@ -3232,9 +3232,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     //var countries = CultureInfo.GetCultures(CultureTypes.AllCultures).Except(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
                     var cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-                    var dnnCultureCode = DnnUtils.GetCultureCodeList();
+                    var dnnCultureCode = DnnUtils.GetCountryCodeList();
 
-                    var joinItems = (from d1 in cultures where dnnCultureCode.Contains(d1.Name) select d1).ToList<CultureInfo>();
+                    var joinItems = (from d1 in cultures where dnnCultureCode.ContainsKey(d1.Name.Split('-').Last()) select d1).ToList<CultureInfo>();
 
 
                     if (ddl.Attributes["blank"] != null)
@@ -3254,6 +3254,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (li.Text != "") ddl.Items.Add(li);
                     }
                     var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                    if (strValue == "") strValue = Utils.GetCurrentCulture();
                     if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
                 }
 
