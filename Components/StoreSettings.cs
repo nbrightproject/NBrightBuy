@@ -26,14 +26,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //Get NBrightBuy Portal Settings.
             var modCtrl = new NBrightBuyController();
-            var indexSettings = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SETTINGS", "NBrightBuySettings");
-            if (indexSettings != null)
+            SettingsInfo = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SETTINGS", "NBrightBuySettings");
+            if (SettingsInfo != null)
             {
-                AddToSettingDic(indexSettings, "genxml/hidden/*");
-                AddToSettingDic(indexSettings, "genxml/textbox/*");
-                AddToSettingDic(indexSettings, "genxml/checkbox/*");
-                AddToSettingDic(indexSettings, "genxml/dropdownlist/*");
-                AddToSettingDic(indexSettings, "genxml/radiobuttonlist/*");
+                AddToSettingDic(SettingsInfo, "genxml/hidden/*");
+                AddToSettingDic(SettingsInfo, "genxml/textbox/*");
+                AddToSettingDic(SettingsInfo, "genxml/checkbox/*");
+                AddToSettingDic(SettingsInfo, "genxml/dropdownlist/*");
+                AddToSettingDic(SettingsInfo, "genxml/radiobuttonlist/*");
             }
 
             //add DNN Portalsettings

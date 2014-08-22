@@ -65,7 +65,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var c1 = LoadControl("/DesktopModules/NBright/NBrightBuy/Admin/Container.ascx");
                         phData.Controls.Add(c1);
-                    }
+                    } 
                     else
                     {
                         var lc = new Literal { Text = s };

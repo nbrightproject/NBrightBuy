@@ -530,6 +530,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public static Dictionary<String, String> GetCountryList(String dnnlistname = "Country")
+        {
+             const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/CountryNames.ascx.resx";
+
+            var objCtrl = new DotNetNuke.Common.Lists.ListController();
+            var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname);
+            var rtnDic = new Dictionary<String, String>();
+
+            var xmlNodeList = StoreSettings.Current.SettingsInfo.XMLDoc.SelectNodes("genxml/checkboxlist/countrycodelist/chk[@value='True']");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode xmlNoda in xmlNodeList)
+                {
+                    if (xmlNoda.Attributes != null)
+                    {
+                        if (xmlNoda.Attributes.GetNamedItem("data") != null)
+                        {
+                            var datavalue = xmlNoda.Attributes["data"].Value;
+                            //use the data attribute if there
+                            if (tList.ContainsKey(datavalue))
+                            {
+                                var countryname = DnnUtils.GetLocalizedString(tList[datavalue].Text, resxpath, Utils.GetCurrentCulture());
+                                if (String.IsNullOrEmpty(countryname)) countryname = tList[datavalue].Text;
+                                rtnDic.Add(datavalue.Replace(dnnlistname + ":", ""),countryname);
+                            }
+                        }
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
     }
 }
 
