@@ -159,6 +159,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catcheckboxlist":
                     CreateCatCheckBoxList(container, xmlNod);
                     return true;
+                case "countrycheckboxlist":
+                    CreateCountryCheckBoxList(container, xmlNod);
+                    return true;
+                case "countrydropdown":
+                    CreateCountryDropDownList(container, xmlNod);
+                    return true;
                 case "catbreadcrumb":
                     CreateCatBreadCrumb(container, xmlNod);
                     return true;
@@ -3251,7 +3257,122 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var li = new ListItem();
                         li.Text = obj.DisplayName + " : " + obj.Name;
                         li.Value = obj.Name;
-                        if (li.Text != "") ddl.Items.Add(li);
+                        ddl.Items.Add(li);
+                    }
+                    var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                    if (strValue == "") strValue = Utils.GetCurrentCulture();
+                    if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
+        }
+
+        private void CreateCountryCheckBoxList(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+
+                var cbl = new CheckBoxList();
+                cbl = (CheckBoxList)GenXmlFunctions.AssignByReflection(cbl, xmlNod);
+                var selected = false;
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["selected"] != null))
+                {
+                    if (xmlNod.Attributes["selected"].InnerText.ToLower() == "true") selected = true;
+                }
+
+                var objCtrl = new DotNetNuke.Common.Lists.ListController();
+                var tList = objCtrl.GetListEntryInfoDictionary("Country");
+                foreach (var tItem in tList)
+                {
+                    var li = new ListItem();
+                    li.Text = tItem.Value.Text;
+                    li.Value = tItem.Key;
+                    li.Selected = selected;
+                    cbl.Items.Add(li);
+                }
+
+                cbl.DataBinding += CbListDataBinding;
+                container.Controls.Add(cbl);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
+
+        }
+
+        private void CreateCountryDropDownList(Control container, XmlNode xmlNod)
+        {
+            var rbl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+            {
+                rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            }
+            rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
+            rbl.DataBinding += CountryCodeDropdownDataBind;
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+            {
+                rbl.ID = xmlNod.Attributes["id"].InnerText;
+                container.Controls.Add(rbl);
+            }
+        }
+
+        private void CountryCodeDropdownDataBind(object sender, EventArgs e)
+        {
+
+
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+                    var cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+                    var dnnCultureCode = DnnUtils.GetCountryCodeList();
+
+                    var joinItems = (from d1 in cultures where dnnCultureCode.ContainsKey(d1.Name.Split('-').Last()) select d1).ToList<CultureInfo>();
+
+                    var objDic = new Dictionary<string, string>();
+
+                    foreach (var objInfo in joinItems)
+                    {
+                        try
+                        {
+                            var objRegionInfo = new RegionInfo(objInfo.Name);
+                            if (!objDic.ContainsKey(objRegionInfo.DisplayName))
+                            {
+                                objDic.Add(objRegionInfo.DisplayName, objRegionInfo.TwoLetterISORegionName.ToUpper());
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            //skip any invalid
+                        }
+                    }
+
+
+                    if (ddl.Attributes["blank"] != null)
+                    {
+                        var li = new ListItem();
+                        li.Text = ddl.Attributes["blank"];
+                        li.Value = "0";
+                        ddl.Items.Add(li);
+                        ddl.Attributes.Remove("blank");
+                    }
+
+                    foreach (var obj in objDic)
+                    {
+                        var li = new ListItem();
+                        li.Text = obj.Key;
+                        li.Value = obj.Value;
+                        ddl.Items.Add(li);
                     }
                     var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
                     if (strValue == "") strValue = Utils.GetCurrentCulture();

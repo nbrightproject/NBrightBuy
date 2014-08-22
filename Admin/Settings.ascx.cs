@@ -162,6 +162,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             
             ModCtrl.Update(settings);
 
+            if (StoreSettings.Current.DebugMode) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
+
             //remove current setting from cache for reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");
             Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
