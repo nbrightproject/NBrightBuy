@@ -17,6 +17,7 @@ using NBrightCore.providers;
 using NBrightCore.render;
 using DotNetNuke.Entities.Users;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
 
 namespace Nevoweb.DNN.NBrightBuy.render
@@ -3333,34 +3334,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void CreateSelectLangaugeButton(Control container, XmlNode xmlNod)
         {
-            var cmd = new LinkButton();
-            cmd = (LinkButton)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
-
-            if (xmlNod.Attributes != null && (xmlNod.Attributes["src"] != null))
-            {
-                cmd.Text = "<img src=\"" + xmlNod.Attributes["src"].InnerXml + "\" border=\"0\" />" + cmd.Text;
-            }
-
-            cmd.DataBinding += LinkButtonDataBinding;
+            var cmd = new EditLanguage();
+            cmd = (EditLanguage)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
             container.Controls.Add(cmd);
         }
-
-        private void LinkButtonDataBinding(object sender, EventArgs e)
-        {
-            var cmd = (LinkButton)sender;
-            var container = (IDataItemContainer)cmd.NamingContainer;
-            try
-            {
-                cmd.Visible = NBrightGlobal.IsVisible;
-                cmd.Text = cmd.Text.Replace("{Code}", Convert.ToString(DataBinder.Eval(container.DataItem, "Code")));
-                cmd.CommandArgument = Convert.ToString(DataBinder.Eval(container.DataItem, "Code"));
-            }
-            catch (Exception)
-            {
-                //do nothing
-            }
-        }
-
 
         #endregion
 

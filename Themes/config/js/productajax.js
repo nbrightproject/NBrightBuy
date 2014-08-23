@@ -30,12 +30,14 @@
 
 
     $('#productmodels').change(function () {
-        $(this).sortable();
-        $('.removemodel').click(function () { removeelement($(this).parent()); });
+        $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
+        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
     });
 
     $('#productoptions').change(function () {
-        $(this).sortable();
+        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoption').click(function () {
             removeelement($(this).parent());
             if ($(this).parent().hasClass('selected')) {
@@ -47,17 +49,20 @@
         $('.selectoption').first().trigger('click');
     });
     $('#productoptionvalues').change(function () {
-        $(this).sortable();
+        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoptionvalue').click(function () { removeelement($(this).parent()); });
         $('#optionvaluecontrol').show();
         showoptionvalues();
     });
     $('#productimages').change(function () {
-        $(this).sortable();
+        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeimage').click(function () { removeelement($(this).parent()); });
     });
     $('#productdocs').change(function () {
-        $(this).sortable();
+        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removedoc').unbind();
         $('.removedoc').click(function () { removeelement($(this).parent()); });
     });
@@ -180,7 +185,7 @@
     $('#addmodels').click(function () {
         $('.processing').show();
         $('input[id*="addqty"]').val($('input[id*="txtaddmodelqty"]').val());
-        nbxget('addproductmodels', '#productselectparams', '#productmodels',null,'true'); // load models
+        nbxget('addproductmodels', '#productselectparams', '#productmodels', null, 'true'); // load models
     });
     //Add options
     $('#addopt').click(function () {
@@ -269,5 +274,28 @@
         nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
     });
     // END: -------------------------------------------------------
+
+    function moveUp(item) {
+        var prev = item.prev();
+        if (prev.length == 0)
+            return;
+        prev.css('z-index', 999).css('position', 'relative').animate({ top: item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + prev.height() }, 300, function () {
+            prev.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertBefore(prev);
+        });
+    }
+    function moveDown(item) {
+        var next = item.next();
+        if (next.length == 0)
+            return;
+        next.css('z-index', 999).css('position', 'relative').animate({ top: '-' + item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: next.height() }, 300, function () {
+            next.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertAfter(next);
+        });
+    }
 
 });

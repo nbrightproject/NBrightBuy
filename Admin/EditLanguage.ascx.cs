@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Localization;
@@ -36,83 +37,43 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
         private String _entryid = "";
 
-        public event AfterChangeEventHandler AfterChange;
-        public delegate void AfterChangeEventHandler(object source, RepeaterCommandEventArgs e, string previousEditLang);
-        public event BeforeChangeEventHandler BeforeChange;
-        public delegate void BeforeChangeEventHandler(object source, RepeaterCommandEventArgs e, string newEditLang);
-        public event ItemCommandEventHandler ItemCommand;
-        public delegate void ItemCommandEventHandler(object source, RepeaterCommandEventArgs e);
-
+        public String Size { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             _entryid = Utils.RequestParam(Context, "eid");
 
-            // Get Display Body
-            var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, "selecteditlanguage.html", Utils.GetCurrentCulture(), DebugMode);
-            rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            try
-            {
+            base.OnLoad(e);
 
-                base.OnLoad(e);
-                if (Page.IsPostBack == false)
+            if (Size != "16" & Size != "24" & Size != "32") Size = "32";
+
+            //NOTE: We need to recreate dynamically created controls on postback for them to pickup the event. 
+                var enabledlanguages = LocaleController.Instance.GetLocales(PortalId);
+                Controls.Add(new LiteralControl("<ul class='editlanguage'>"));
+                foreach (var l in enabledlanguages)
                 {
-                    var enabledlanguages = LocaleController.Instance.GetLocales(PortalId);
-                    var dispList = new List<Locale>();
-                    foreach (var l in enabledlanguages)
-                    {
-                        dispList.Add(l.Value);
-                    }
-                    rpData.DataSource = dispList;
-                    rpData.DataBind();
+                    Controls.Add(new LiteralControl("<li>"));
+                    var cmd = new LinkButton();
+                    cmd.Text = "<img src='/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/" + Size + "/" + l.Value.Code + ".png' alt='" + l.Value.EnglishName + "' />";
+                    cmd.CommandArgument = l.Value.Code;
+                    cmd.CommandName = "selectlang";
+                    cmd.Command += (s, cmde) =>
+                                       {
+                                           var param = new string[1];
+                                           if (_entryid != "") param[0] = "eid=" + _entryid;
+                                           StoreSettings.Current.EditLanguage = cmde.CommandArgument.ToString();
+                                           Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                                       };
+                    Controls.Add(cmd);
+                    Controls.Add(new LiteralControl("</li>"));
                 }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
-                var l = new Literal();
-                l.Text = exc.ToString();
-                phData.Controls.Add(l);
-            }
+                Controls.Add(new LiteralControl("</ul>"));
         }
-
-
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
-
-            switch (e.CommandName.ToLower())
-            {
-                case "selectlang":
-                    if (_entryid != "") param[0] = "eid=" + _entryid;
-                    if (BeforeChange != null) BeforeChange(source, e, StoreSettings.Current.EditLanguage);
-                    StoreSettings.Current.EditLanguage = cArg;
-                    if (AfterChange != null) AfterChange(source, e, StoreSettings.Current.EditLanguage);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                default:
-                    if (ItemCommand != null)
-                    {
-                        ItemCommand(source, e);
-                    }
-                    break;
-
-            }
-
-        }
-
-        #endregion
-
 
     }
-
 }
