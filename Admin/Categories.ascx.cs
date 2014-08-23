@@ -24,6 +24,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String _entryid = "";
         private String _templatType = "list";
 
+        public String Edittype { get; set; }
+
         private const string NotifyRef = "categoryaction";
 
         #region Load Event Handlers
@@ -36,10 +38,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             _entryid = Utils.RequestParam(Context, "eid");
             if (_entryid != "") _templatType = "detail";
 
-            // Get Search
-            var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
-            _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-            rpSearch.ItemTemplate = _templSearch;
+            if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")  // This code is dual use by Categories.ascx and GroupCategories.ascx.  The "Edittype" attr identifies this.
+            {
+                // Get Search
+                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
+                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpSearch.ItemTemplate = _templSearch;                
+            }
 
             var t1 = "category" + _templatType + "header.html";
             var t2 = "category" + _templatType + "body.html";
@@ -93,6 +98,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
                 else
                 {
+
                     var navigationData = new NavigationData(PortalId, "CategoryAdmin");
 
                     // get search data
@@ -102,9 +108,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     // display search
                     base.DoDetail(rpSearch, sInfo);
 
-                    //Default orderby if not set
                     var grpCats = new List<NBrightInfo>();
-                    grpCats = GetTreeCatList(grpCats,0,0,GenXmlFunctions.GetGenXmlValue(navigationData.XmlData,"genxml/dropdownlist/groupsel"));
+                    if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                        grpCats = GetTreeCatList(grpCats, 0, 0, GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel"));
+                    else
+                        grpCats = GetTreeCatList(grpCats, 0, 0, "cat");
 
                     rpData.DataSource = grpCats;
                     rpData.DataBind();
@@ -131,7 +139,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
             var navigationData = new NavigationData(PortalId, "CategoryAdmin");
-
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
@@ -184,6 +191,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             {
                                 catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                                 ModCtrl.Update(catData.DataLangRecord);
+                                if (catname != "")
+                                {
+                                    // updat eall lanaguge records that have no name
+                                    foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                                    {
+                                        var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
+                                        if (catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
+                                        {
+                                            catLangUpd.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
+                                            ModCtrl.Update(catLangUpd.DataLangRecord);                                            
+                                        }
+                                    }                                    
+                                }
                             }
                         }
                     }

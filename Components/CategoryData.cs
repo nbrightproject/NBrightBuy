@@ -158,7 +158,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void LoadData(int categoryId)
         {
             Exists = false;
-            if (categoryId == -1) AddNew(); // add new record if -1 is used as id.
+            if (categoryId == -1) categoryId = AddNew(); // add new record if -1 is used as id.
             var objCtrl = new NBrightBuyController();
             Info = objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
             if (Info != null)
@@ -169,13 +169,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        private void AddNew()
+        private static int AddNew()
         {
             var nbi = new NBrightInfo(true);
             nbi.PortalId = PortalSettings.Current.PortalId;
             nbi.TypeCode = "CATEGORY";
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
+            nbi.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
+            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
             var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
@@ -190,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 nbi.ParentItemId = itemId;
                 objCtrl.Update(nbi);
             }
-
+            return itemId;
         }
 
 

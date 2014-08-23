@@ -3089,6 +3089,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
             }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["groupsonly"] != null))
+            {
+                rbl.Attributes.Add("groupsonly", xmlNod.Attributes["groupsonly"].Value);
+            }
             rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += GroupdropdownDataBind;
             if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
@@ -3119,12 +3123,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         ddl.Attributes.Remove("blank");
                     }
 
+                    var gref = "";
+                    if (ddl.Attributes["groupsonly"] != null) gref = "cat";
+
                     foreach (var obj in objL)
                     {
-                        var li = new ListItem();
-                        li.Text = obj.GetXmlProperty("genxml/lang/genxml/textbox/groupname");
-                        li.Value = obj.GetXmlProperty("genxml/textbox/groupref");
-                        if (li.Text != "") ddl.Items.Add(li);
+                        if (obj.GetXmlProperty("genxml/textbox/groupref") != gref)
+                        {
+                            var li = new ListItem();
+                            li.Text = obj.GetXmlProperty("genxml/lang/genxml/textbox/groupname");
+                            li.Value = obj.GetXmlProperty("genxml/textbox/groupref");
+                            if (li.Text != "") ddl.Items.Add(li);
+                        }
                     }
                     var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
                     if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
