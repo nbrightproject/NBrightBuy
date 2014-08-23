@@ -31,13 +31,11 @@
 
     $('#productmodels').change(function () {
         $(this).sortable();
-        $(this).disableSelection();
         $('.removemodel').click(function () { removeelement($(this).parent()); });
     });
 
     $('#productoptions').change(function () {
         $(this).sortable();
-        $(this).disableSelection();
         $('.removeoption').click(function () {
             removeelement($(this).parent());
             if ($(this).parent().hasClass('selected')) {
@@ -50,19 +48,16 @@
     });
     $('#productoptionvalues').change(function () {
         $(this).sortable();
-        $(this).disableSelection();
         $('.removeoptionvalue').click(function () { removeelement($(this).parent()); });
         $('#optionvaluecontrol').show();
         showoptionvalues();
     });
     $('#productimages').change(function () {
         $(this).sortable();
-        $(this).disableSelection();
         $('.removeimage').click(function () { removeelement($(this).parent()); });
     });
     $('#productdocs').change(function () {
         $(this).sortable();
-        $(this).disableSelection();
         $('.removedoc').unbind();
         $('.removedoc').click(function () { removeelement($(this).parent()); });
     });
