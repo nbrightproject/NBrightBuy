@@ -126,9 +126,7 @@ $(function() {
 
 $( document ).ready(function() {
 
-var $container = $('#relatedwrapper');
-// initialize
-$container.masonry({
+var $container = $('#relatedwrapper').masonry({
   columnWidth: [Settings:relateditemwidth], // List item width - Can also use CSS width of first list item
   itemSelector: '.relateditem',
   gutter: [Settings:relateditemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap

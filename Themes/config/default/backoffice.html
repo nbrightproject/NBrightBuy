@@ -129,9 +129,9 @@
 		[<tag:menu>]
 		</div>
 		<!--Start Content-->
-	    <div id="content" class="col-xs-12 col-sm-10">
-	         [<tag:container>]
-	    </div>
+		<div id="content" class="col-xs-12 col-sm-10">
+		[<tag:container>]
+		</div>
 		<!--End Content-->
 	</div>
 </div>
@@ -162,6 +162,13 @@ function DemoTimePicker(){
 	$('#input_time').timepicker({setDate: new Date()});
 }
 $(document).ready(function() {
+	// Run beauty tables plugin on every table with class .beauty-table
+	$('.beauty-table').each(function(){
+		// Run keyboard navigation in table
+		$(this).beautyTables();
+		// Nice CSS-hover row and col for current cell
+		$(this).beautyHover();
+	});
 	// Add slider for change test input length
 	FormLayoutExampleInputLength($( ".slider-style" ));
 	// Initialize datepicker
@@ -177,5 +184,4 @@ $(document).ready(function() {
 	WinMove();
 });
 </script>
-
 

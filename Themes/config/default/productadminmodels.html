@@ -1,29 +1,39 @@
 ﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
-<li class="modelitem" style="width:800;"> <!-- class="modelitem" is needed for JS postback update -->
-
-    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+<li class="modelitem form-group"> <!-- class="modelitem" is needed for JS postback update -->
+<div style="display:none">[<tag type="valueof" xpath="genxml/hidden/modelid" />]</div>
     
-    <a class="removemodel">Remove</a> <!-- class required for ajax -->
     [<tag id="modelid" type="hidden" value="" />] <!-- required modelid to link to checkout selected-->
-    
     [<tag id="fields" type="hidden" value="genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost" />] <!-- update fields -->
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtmodelname,genxml/textbox/txtextra" />] <!-- update localized fields -->
 
-    ref:   [<tag id="txtmodelref" type="textbox" width="50" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/modelid" />] - 
-    Name:   [<tag id="txtmodelname" type="textbox" width="100" maxlength="250" />] - 
-    extra:   [<tag id="txtextra" type="textbox" width="100" maxlength="250"/>] - 
-    unitcost:   [<tag id="txtunitcost" type="textbox" width="50" maxlength="250" Text="0.00"/>] - 
-    barcode:   [<tag id="txtbarcode" type="textbox" width="100" maxlength="250" />] - 
-    qty remianing:   [<tag id="txtqtyremaining" type="textbox" width="20" maxlength="250" Text="-1" />] - 
-    max qty:   [<tag id="txtqtystockset" type="textbox" width="20" maxlength="250" Text="0"/>] - 
-    dealer cost:   [<tag id="txtdealercost" type="textbox" width="50" maxlength="250" Text="0.00" />] - 
-    purchase cost:   [<tag id="txtpurchasecost" type="textbox" width="50" maxlength="250" Text="0.00" />] - 
-
-    Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] - 
-    Deleted : [<tag id="chkdeleted" type="checkbox" Text="" />] - 
-    Dealer Only : [<tag id="chkdealeronly" type="checkbox" Text="" />] <br/>
-
+	<div class="col-sm-12 form-horizontal">
+		<div class="row">
+	        <div class="col-sm-4"><label class="control-label">Name</label>[<tag id="txtmodelname" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-sm-2"><label class="control-label">Code</label>[<tag id="txtmodelref" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-sm-2"><label class="control-label">Price</label>[<tag id="txtunitcost" type="textbox" cssclass="form-control" maxlength="250" Text="0.00"/>]</div>
+	        <div class="col-sm-2"><label class="control-label">Dealer</label>[<tag id="txtdealercost" type="textbox" cssclass="form-control" maxlength="250" Text="0.00" />]</div>
+	        <div class="col-sm-2"><label class="control-label">Cost</label>[<tag id="txtpurchasecost" type="textbox" cssclass="form-control" maxlength="250" Text="0.00" />]</div>
+		</div>
+		<div class="row">
+	        <div class="col-sm-4"><label class="control-label">Extra</label>[<tag id="txtextra" type="textbox" cssclass="form-control" maxlength="250"/>]</div>
+	        <div class="col-sm-2"><label class="control-label">Barcode</label>[<tag id="txtbarcode" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-sm-2"><label class="control-label">Stock</label>[<tag id="txtqtyremaining" type="textbox" cssclass="form-control" maxlength="250" Text="-1" />]</div>
+	        <div class="col-sm-2"><label class="control-label">Max</label>[<tag id="txtqtystockset" type="textbox" cssclass="form-control" maxlength="250" Text="0"/>]</div>
+	        <div class="col-sm-2"><label class="control-label">&nbsp;</label><br><a class="removemodel col-sm-12 btn btn-danger">Remove</a><!-- class required for ajax -->
+	        </div>
+		</div>
+		<div class="row">
+			<label class="col-sm-1 control-label">Hidden</label>
+			<div class="col-sm-1">[<tag id="chkishidden" type="checkbox" Text="" />]
+			</div>
+			<label class="col-sm-1 control-label">Deleted</label>
+			<div class="col-sm-1">[<tag id="chkdeleted" type="checkbox" Text="" />]
+			</div>
+			<label class="col-sm-1 control-label">Dealer</label>
+			<div class="col-sm-1">[<tag id="chkdealeronly" type="checkbox" Text="" />]
+			</div>
+		</div>
+	</div>
 </li>
-
 

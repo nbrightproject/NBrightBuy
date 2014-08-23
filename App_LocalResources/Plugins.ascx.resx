@@ -226,21 +226,21 @@
     <value>Icon html</value>
   </data>
   <data name="Admin_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Catalog_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-bar-chart-o"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="OrdersGrp_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-shopping-cart"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Utilities_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Exit_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-power-off"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
   </data>
 </root>

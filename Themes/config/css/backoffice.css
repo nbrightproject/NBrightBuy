@@ -1,0 +1,57 @@
+﻿
+/* Common */
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+.NBB{}
+
+
+/* Overrides for DNN-included Bootstrap styles 
+.nav {margin-left:0;}
+a, a:visited {color:#428BCA}
+*/
+
+/* Fixes 
+.checkbox input[type=checkbox]{margin-left: 0;}
+*/
+
+.fa {margin-right: 6px;}
+
+
+/* Adjustments to theme */
+.no-box-header{display:none}/* Hide panel head section */
+.orderdetailitems th{text-transform:uppercase}
+.orderdetail .billaddress b,.orderdetail .shipaddress b{text-transform:uppercase}
+.orderdetail .storeaddress{}
+.centered{text-align:center}
+#logo a{background: none;}/* Hide devoops logo*/
+.top-panel-right{display: none;}/* Hide top right menu section */
+a.btn-primary {color:#FFFFFF}/* When buttons are inside anchors */
+a.btn-default {color:#929292}
+#loader{color:#FFFFFF;position:absolute;right:3px;top:6px;z-index: 9999;}/* Loading graphic */
+
+
+/* Productlist items */
+.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;float:left}
+.productadminlist .productlistitem li{text-align:center;}
+.productadminlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;}
+.productadminlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
+.productadminlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
+.productadminlist .productlistitem .edititem{top:0;left:0;position:absolute;}
+
+/* Pager */
+.NBrightPagingDiv{font-size:18px;margin:24px 0;text-align:left;}
+.NBrightPagingDiv ul{list-style:none;margin:0;}
+.NBrightPagingDiv ul li{display:inline-block;}
+.NBrightPagingDiv a{background:#F2F2F2;border:1px solid #DDDDDD;color:#777777;display:inline-block;font-size:14px;margin-right:4px;padding:6px 10px;text-decoration: none;cursor: pointer;}
+.NBrightPagingDiv a:hover{color:#FFFFFF;background:#3B96B6}
+.NBrightNormalPg a{}
+.NBrightSelectPg a{background:#FFFFFF}
+.NBrightNextPg a{}
+.NBrightPrevPg a{}
+
+/* Product Editor */
+#productmodels{list-style: none outside none;margin: 0;padding: 0;}
+#productmodels .modelitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;}

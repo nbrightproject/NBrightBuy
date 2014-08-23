@@ -13,7 +13,7 @@
 
 
 <div id="nbsnotify"></div>
-<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
+<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 
 <script>
     $(document).ready(function () {
@@ -37,13 +37,25 @@
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 [<tag id="xmlupdateproductrelated" type="postback" value=""/>]
 
+
+
+<div class="row">
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Catalogue</li>
+			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Product</a></li>
+		</ol>
+	</div>
+</div>
+<h4 class="page-header">Product</h4>
+<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+
+
+
+
 <!-- Required: id="productdatasection" -->
 <div id="productdatasection">
 
-    <br />
-    [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" commandargument="ItemID" />]  
-    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
-    <hr/>
     <!-- Required: id="productdata" -->
     <div id="productdata">
         
@@ -70,95 +82,350 @@
         [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
 
-        <h2>General</h2>
-        ref:   [<tag id="txtproductref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
-        Name:   [<tag id="txtproductname" type="textbox" width="300" maxlength="250" />]<br />
-        Summary:   [<tag id="txtsummary" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
-        seoname:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br/>
-        seopagetitle:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br/>
-        tagwords:   [<tag id="txttagwords" type="textbox" height="100" width="300" maxlength="200" textmode="MultiLine" />]<br/>
-        Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] <br/>
-        <hr/>
-        <div>[<tag id="description" type="dnn:dnntexteditor" height="400" width="800"  />]</div>
-        
-        <!-- All "id" for the divs/ul are required for ajax in this section -->
-        <h2>Models</h2>
-        <a id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddmodelqty" type="textbox" width="30" maxlength="2" text="1" />]
-        <a id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-        <ul id="productmodels"></ul>
-        <h2>Options</h2>
-        <div>            
-            <div style="float:left;">
-                <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
-                <a id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-                <ul id="productoptions"></ul>                            
-            </div>
-            <div style="float:left;">
-                <span id="optionvaluecontrol" style="display:none;">
-                    <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
-                </span>
-                <a id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-                <ul id="productoptionvalues"></ul>
-            </div>
-            <div style="clear:both"></div>
-        </div>
-        <h2>Images</h2>
-        <div>
-            [<tag id="image" type="fileupload" />] [<tag id="cmdSaveImg" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
-        </div>
-        <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-        <ul id="productimages"></ul>
-        <h2>Documents</h2>
-        <div>
-            [<tag id="document" type="fileupload" textwidth="150" maxlength="50" />]
-            [<tag id="cmdSaveDoc" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
-        </div>
-        <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-        <ul id="productdocs"></ul>
-        <h2>Categories</h2>
-        
-        <div>            
-            <div style="float:left;">
-                [<tag id="selectcategory" type="catlistbox" height="200px" groupref="cat"/>]
-            </div>
-            <div style="float:left;">          
-                <ul id="productcategories"></ul>
-            </div>
-            <div style="clear:both"></div>
-        </div>
 
-        <h2>Groups</h2>
-        
-        <div>    
-            <div style="float:left;">
-                [<tag id="selectgrouptype" type="grouplistbox" />]
-            </div>
-            <div id="groupcategorylist" style="float:left;"></div>
-            <div style="float:left;">
-                <ul id="productgroupcategories"></ul>
-            </div>
-            <div style="clear:both"></div>
-        </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Product ID: [<tag type="valueof" databind="ItemId" />]</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-2 control-label">Name</label>
+						<div class="col-md-4">
+							[<tag id="txtproductname" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+						<label class="col-md-2 control-label">Code</label>
+						<div class="col-md-4">
+							[<tag id="txtproductref" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">Summary</label>
+						<div class="col-md-10">
+							[<tag id="txtsummary" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
+						</div>
+					</div>
+					</div>
+					<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-2 control-label">SEO Name</label>
+						<div class="col-md-4">
+							[<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+						<label class="col-md-2 control-label">SEO Title</label>
+						<div class="col-md-4">
+							[<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">Tags</label>
+						<div class="col-md-10">
+							[<tag id="txttagwords" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
+						</div>
+					</div>
+					</div>
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-1 control-label">Description</label>
+						<div class="col-md-11">
+							[<tag id="description" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%"  />]
+						</div>
+					</div>
+					</div>
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-1 control-label">Hidden</label>
+						<div class="col-md-1">
+							[<tag id="chkishidden" type="checkbox" Text="" />]
+						</div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Models</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-12">
+					<div class="">
+				        <!-- All "id" for the divs/ul are required for ajax in this section -->
+				        <ul id="productmodels"></ul>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-2">
+				        <a class="col-sm-12 btn btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        </div>
+				        <div class="col-sm-2">[<tag id="txtaddmodelqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
+				        </div>
+				        <div class="col-sm-2">
+				        <a class="col-sm-12 btn btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        </div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Options</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+			            <div style="float:left;">
+			                <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
+			                <a id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+			                <ul id="productoptions"></ul>                            
+			            </div>
+			            <div style="float:left;">
+			                <span id="optionvaluecontrol" style="display:none;">
+			                    <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
+			                </span>
+			                <a id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+			                <ul id="productoptionvalues"></ul>
+			            </div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Images</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+				        <div>
+				            [<tag id="image" type="fileupload" />] [<tag id="cmdSaveImg" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+				        </div>
+				        <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <ul id="productimages"></ul>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Documents &amp; Downloads</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+				        <div>
+				            [<tag id="document" type="fileupload" textwidth="150" maxlength="50" />]
+				            [<tag id="cmdSaveDoc" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+				        </div>
+				
+				        <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <ul id="productdocs"></ul>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Categories</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+			            <div style="float:left;">
+			                [<tag id="selectcategory" type="catlistbox" height="200px" groupref="cat"/>]
+			            </div>
+			            <div style="float:left;">          
+			                <ul id="productcategories"></ul>
+			            </div>
+			            <div style="clear:both"></div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Groups</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+			            <div style="float:left;">
+			                [<tag id="selectgrouptype" type="grouplistbox" />]
+			            </div>
+			            <div id="groupcategorylist" style="float:left;"></div>
+			            <div style="float:left;">
+			                <ul id="productgroupcategories"></ul>
+			            </div>
+			            <div style="clear:both"></div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+      
         
     </div>
 </div>
+
 
 <!-- Moved this out of productdata section, so it displays when we are adding related products -->
-<h2>Related Products</h2>
-<a id="productselect">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a> - 
-<ul id="productrelated"></ul>
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Related Products</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<a id="productselect">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a> - 
+						<ul id="productrelated"></ul>
+						<!-- All "id" for the divs/ul are required for ajax in this section -->
+						<div id="productselectsection" style="display:none;">
+						<div>
+						    <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  
+						    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
+						    [<tag id="ddlsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
+						    <a href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
+						    <a href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+						</div>
+						    <div id="productselectlist">
+						    </div>
+						</div>
+					</div>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
-<!-- All "id" for the divs/ul are required for ajax in this section -->
-<div id="productselectsection" style="display:none;">
-<div>
-    <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  
-    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
-    [<tag id="ddlsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
-    <a href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
-    <a href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
-</div>
-    <div id="productselectlist">
-        
-    </div>
-</div>
+    [<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
+    [<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" commandargument="ItemID" />]  
