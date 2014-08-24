@@ -31,13 +31,13 @@
 
     $('#productmodels').change(function () {
         $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
-        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
-        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementUp').click(function () {moveUp($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
     });
 
     $('#productoptions').change(function () {
-        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
-        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoption').click(function () {
             removeelement($(this).parent());
             if ($(this).parent().parent().parent().parent().hasClass('selected')) {
@@ -49,20 +49,20 @@
         $('.selectoption').first().trigger('click');
     });
     $('#productoptionvalues').change(function () {
-        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
-        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoptionvalue').click(function () { removeelement($(this).parent()); });
         $('#optionvaluecontrol').show();
         showoptionvalues();
     });
     $('#productimages').change(function () {
-        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
-        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeimage').click(function () { removeelement($(this).parent()); });
     });
     $('#productdocs').change(function () {
-        $('.sortelementUp').click(function () { moveUp($(this).parent()); });
-        $('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removedoc').unbind();
         $('.removedoc').click(function () { removeelement($(this).parent()); });
     });

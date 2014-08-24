@@ -1,4 +1,4 @@
-<%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.Admin.Groups" AutoEventWireup="false"  Codebehind="Groups.ascx.cs" %>
+<%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.Admin.Properties" AutoEventWireup="false"  Codebehind="Properties.ascx.cs" %>
 <asp:PlaceHolder ID="notifymsg" runat="server"></asp:PlaceHolder>
 <asp:Repeater ID="rpDataH" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>
 <asp:Repeater ID="rpData" runat="server" OnItemCommand="CtrlItemCommand" ></asp:Repeater>

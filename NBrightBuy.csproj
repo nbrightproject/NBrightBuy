@@ -95,12 +95,12 @@
     <Compile Include="Admin\Products.ascx.designer.cs">
       <DependentUpon>Products.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Groups.ascx.cs">
-      <DependentUpon>Groups.ascx</DependentUpon>
+    <Compile Include="Admin\Properties.ascx.cs">
+      <DependentUpon>Properties.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Groups.ascx.designer.cs">
-      <DependentUpon>Groups.ascx.cs</DependentUpon>
+    <Compile Include="Admin\Properties.ascx.designer.cs">
+      <DependentUpon>Properties.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -325,13 +325,13 @@
     <Content Include="Admin\EditLanguage.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Admin\CategoryGroups.ascx">
+    <Content Include="Admin\CategoryProperties.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\Products.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Admin\Groups.ascx">
+    <Content Include="Admin\Properties.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\Settings.ascx">

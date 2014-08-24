@@ -3,11 +3,6 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
-<!-- just a class for devlopment to highlight selected -->
-<style>
-  .selected {background: grey; }
-</style>
-
 <!-- this div is used as a recycle bin for undo JS-->
 <div id="recyclebin" style="display:none;"></div>
 
@@ -39,13 +34,14 @@
 
 [<tag type="selectlocalebutton" size="32"/>]
 
+
 <div class="row">
-    <div id="breadcrumb" class="col-md-12">
-        <ol class="breadcrumb">
-            <li>Catalogue</li>
-            <li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Product</a></li>
-        </ol>        
-    </div>
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Catalogue</li>
+			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Product</a></li>
+		</ol>
+	</div>
 </div>
 <h4 class="page-header">Product</h4>
 <p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
@@ -83,7 +79,7 @@
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
 
 
-<div class="row">
+<div class="row editdetails">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -99,55 +95,55 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<div class="col-md-6">
+					<div class="col-sm-6">
 					<div class="form-group">
-						<label class="col-md-2 control-label">Name</label>
-						<div class="col-md-4">
+						<div class="col-sm-8">
+						<label class="control-label">Name</label>
 							[<tag id="txtproductname" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
-						<label class="col-md-2 control-label">Code</label>
-						<div class="col-md-4">
+						<div class="col-sm-4">
+						<label class="control-label">Code</label>
 							[<tag id="txtproductref" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-2 control-label">Summary</label>
-						<div class="col-md-10">
+						<div class="col-sm-12">
+						<label class="control-label">Summary</label>
 							[<tag id="txtsummary" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
 						</div>
 					</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-sm-6">
 					<div class="form-group">
-						<label class="col-md-2 control-label">SEO Name</label>
-						<div class="col-md-4">
+						<div class="col-sm-6">
+						<label class="control-label">SEO Name</label>
 							[<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
-						<label class="col-md-2 control-label">SEO Title</label>
-						<div class="col-md-4">
+						<div class="col-sm-6">
+						<label class="control-label">SEO Title</label>
 							[<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-2 control-label">Tags</label>
-						<div class="col-md-10">
+						<div class="col-sm-12">
+						<label class="control-label">Tags</label>
 							[<tag id="txttagwords" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
 						</div>
 					</div>
 					</div>
 					<div class="col-md-12">
 					<div class="form-group">
-						<label class="col-md-1 control-label">Description</label>
-						<div class="col-md-11">
+						<div class="col-md-12">
+						<label class="control-label">Description</label>
 							[<tag id="description" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%"  />]
 						</div>
 					</div>
 					</div>
-					<div class="col-md-12">
+					<div class="col-sm-12">
 					<div class="form-group">
-						<label class="col-md-1 control-label">Hidden</label>
-						<div class="col-md-1">
+						<div class="col-sm-2">
 							[<tag id="chkishidden" type="checkbox" Text="" />]
+						<label class="control-label">Hidden</label>
 						</div>
 					</div>
 					</div>
@@ -159,7 +155,7 @@
 </div>
 
 
-<div class="row">
+<div class="row editmodels">
 	<div class="col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -184,7 +180,7 @@
 				        <div class="col-sm-2">
 				        <a class="col-sm-12 btn btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
 				        </div>
-				        <div class="col-sm-2">[<tag id="txtaddmodelqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
+				        <div class="col-sm-1">[<tag id="txtaddmodelqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
 				        </div>
 				        <div class="col-sm-2">
 				        <a class="col-sm-12 btn btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
@@ -200,9 +196,8 @@
 
 
 
-
-<div class="row">
-	<div class="col-md-12">
+<div class="row editoptions">
+	<div class="col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
@@ -217,22 +212,41 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<div class="col-md-12">
+				
+					<div class="col-sm-6">
 					<div class="form-group">
-			            <div style="float:left;">
-			                <a id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptqty" type="textbox" width="30" maxlength="2" text="1" />]
-			                <a id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-			                <ul id="productoptions"></ul>                            
-			            </div>
-			            <div style="float:left;">
-			                <span id="optionvaluecontrol" style="display:none;">
-			                    <a id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a> [<tag id="txtaddoptvalueqty" type="textbox" width="30" maxlength="2" text="1" />]                    
-			                </span>
-			                <a id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-			                <ul id="productoptionvalues"></ul>
-			            </div>
+				        <div class="col-sm-4">
+				        <a class="col-sm-12 btn btn-primary" id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        </div>
+				        <div class="col-sm-2">[<tag id="txtaddoptqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
+				        </div>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-12">
+				        <a class="col-sm-12 btn btn-warning" id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <ul id="productoptions"></ul>
+				        </div>
 					</div>
 					</div>
+					
+					<div class="col-sm-6">
+					<div class="form-group">
+				        <div id="optionvaluecontrol" style="display:none;">
+				        <div class="col-sm-4">
+				        <a class="col-sm-12 btn btn-primary" id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        </div>
+				        <div class="col-sm-2">[<tag id="txtaddoptvalueqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
+				        </div>
+				        </div>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-12">
+				        <a class="col-sm-12 btn btn-warning" id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <ul id="productoptionvalues"></ul>
+				        </div>
+					</div>
+					</div>
+					
 				</div>
 				<div style="clear:both;"></div>
 			</div>
@@ -241,7 +255,8 @@
 </div>
 
 
-<div class="row">
+
+<div class="row editimages">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -274,7 +289,7 @@
 </div>
 
 
-<div class="row">
+<div class="row editdocuments">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -309,7 +324,7 @@
 </div>
 
 
-<div class="row">
+<div class="row editcategories">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -344,7 +359,7 @@
 </div>
 
 
-<div class="row">
+<div class="row editgroups">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -385,7 +400,7 @@
 
 
 <!-- Moved this out of productdata section, so it displays when we are adding related products -->
-<div class="row">
+<div class="row editrelated">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">

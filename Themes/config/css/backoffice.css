@@ -53,5 +53,25 @@ a.btn-default {color:#929292}
 .NBrightPrevPg a{}
 
 /* Product Editor */
-#productmodels{list-style: none outside none;margin: 0;padding: 0;}
-#productmodels .modelitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;}
+.sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;}
+.sortelementUp{top:0;right:0}
+.sortelementDown{bottom:0;right:0}
+
+.editdetails{}
+
+.editmodels{}
+.editmodels #productmodels{list-style: none outside none;margin: 0;padding: 0;}
+.editmodels .modelitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+
+.editoptions{}
+.editoptions #productoptions,.editoptions #productoptionvalues{list-style: none outside none;margin: 0;padding: 0;}
+.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+
+
+
+.editimages{}
+.editdocuments{}
+.editcategories{}
+.editgroups{}
+.editrelated{}
+

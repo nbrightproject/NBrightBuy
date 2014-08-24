@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// The EditNBrightIndex class is used to manage content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Groups : NBrightBuyAdminBase
+    public partial class Properties : NBrightBuyAdminBase
     {
 
         private const string NotifyRef = "groupaction";
