@@ -1,13 +1,21 @@
 ﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
-<!-- class="optionitem" is needed for JS postback update -->
-<li class="optionitem" style="width:500;">
-    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-    <a class="removeoption">Remove</a>
+<li class="optionitem form-group"><!-- class="optionitem" is needed for JS postback update -->
+    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+    
     [<tag id="optionid" type="hidden" value="" />]
     [<tag id="fields" type="hidden" value="genxml/hidden/optionid" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptiondesc" />]
-    <!-- required: class="selectoption" -->
-    <a class="selectoption" itemid="[<tag type="valueof" xpath="genxml/hidden/optionid" />]">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a>	-     
-    option:   [<tag id="txtoptiondesc" type="textbox" width="250" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/optionid" />] - 
+
+	<div class="col-sm-12 form-horizontal">
+		<div class="row">
+	        <div class="col-sm-6"><label class="control-label">Name</label>[<tag id="txtoptiondesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-sm-3"><label class="control-label">&nbsp;</label><a class="selectoption col-sm-12 btn btn-success" itemid="[<tag type='valueof' xpath='genxml/hidden/optionid' />]">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a></div><!-- required: class="selectoption" -->
+	        <div class="col-sm-3"><label class="control-label">&nbsp;</label><a class="removeoption col-sm-12 btn btn-danger">Remove</a></div><!-- required: class="removeoption" -->
+
+	        <span style="display:none">[<tag type="valueof" xpath="genxml/hidden/optionid" />]</span>
+		</div>
+	</div>
 </li>
+

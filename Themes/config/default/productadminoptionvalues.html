@@ -1,14 +1,21 @@
-﻿<li class="optionvalueitem [<tag type="valueof" xpath="genxml/hidden/optionid" />]" style="width:500;"> <!-- class="optionvalueitem" is needed for JS postback update -->
-
-<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-
-    <a class="removeoptionvalue">Remove</a> <!-- class required for ajax -->
-
+﻿
+<li class="optionvalueitem [<tag type='valueof' xpath='genxml/hidden/optionid' />] form-group"><!-- class="optionvalueitem" is needed for JS postback update -->
+    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+    
     [<tag id="optionid" type="hidden" value="" />] <!-- required optionid to link to option in DB -->
     [<tag id="optionvalueid" type="hidden" value="" />] <!-- required optionvalueid to link to checkout selected-->
     [<tag id="fields" type="hidden" value="genxml/hidden/optionid,genxml/hidden/optionvalueid,genxml/textbox/txtaddedcost" />] <!-- update fields -->
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptionvaluedesc" />] <!-- update localized fields -->
 
-    desc:   [<tag id="txtoptionvaluedesc" type="textbox" width="150" maxlength="250" />]&nbsp;[<tag type="valueof" xpath="genxml/hidden/optionid" />]-[<tag type="valueof" xpath="genxml/hidden/optionvalueid" />] ss
-    cost:   [<tag id="txtaddedcost" type="textbox" width="50" maxlength="50" />] - 
+	<div class="col-sm-12 form-horizontal">
+		<div class="row">
+	        <div class="col-sm-4"><label class="control-label">Value</label>[<tag id="txtoptionvaluedesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-sm-3"><label class="control-label">Cost</label>[<tag id="txtaddedcost" type="textbox" cssclass="form-control" maxlength="50" />]</div>
+	        <div class="col-sm-3"><label class="control-label">&nbsp;</label><a class="removeoptionvalue col-sm-12 btn btn-danger">Remove</a></div><!-- required: class="removeoptionvalue" -->
+
+	        <span style="display:none">[<tag type="valueof" xpath="genxml/hidden/optionid" />] - [<tag type="valueof" xpath="genxml/hidden/optionvalueid" />]</span>
+		</div>
+	</div>
 </li>
+

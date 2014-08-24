@@ -22,8 +22,8 @@
         // select option
         $('.selectoption').click(function () {
             $('input[id*="selectedoptionid"]').val($(this).attr('itemid'));
-            $(this).parent().parent().children().removeClass('selected');
-            $(this).parent().addClass('selected');
+            $(this).parent().parent().parent().parent().parent().children().removeClass('selected');
+            $(this).parent().parent().parent().parent().addClass('selected');
             showoptionvalues();
         });
     });
@@ -40,9 +40,9 @@
         $('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoption').click(function () {
             removeelement($(this).parent());
-            if ($(this).parent().hasClass('selected')) {
+            if ($(this).parent().parent().parent().parent().hasClass('selected')) {
                 $('#productoptionvalues').hide();
-                $(this).parent().removeClass('selected');
+                $(this).parent().parent().parent().parent().removeClass('selected');
             }
         });
         //trigger select option, to display correct option values
