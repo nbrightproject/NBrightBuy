@@ -81,6 +81,13 @@
     <Compile Include="Admin\BackOffice.ascx.designer.cs">
       <DependentUpon>BackOffice.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Export.ascx.cs">
+      <DependentUpon>Export.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Export.ascx.designer.cs">
+      <DependentUpon>Export.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\EditLanguage.ascx.cs">
       <DependentUpon>EditLanguage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -322,6 +329,9 @@
     <Content Include="Admin\BackOffice.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\Export.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\EditLanguage.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -441,6 +451,7 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\export.html" />
     <Content Include="Themes\config\default\selecteditlanguage.html" />
     <Content Include="Themes\config\default\productadmingroupcategories.html" />
     <Content Include="Themes\config\default\productadminlist.html" />

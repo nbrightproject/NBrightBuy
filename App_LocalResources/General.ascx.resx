@@ -453,4 +453,10 @@
   <data name="New.Text" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
 </root>
