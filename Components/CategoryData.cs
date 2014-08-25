@@ -132,7 +132,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
                 // if we have a image field then we need to create the imageurl field
                 if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
+                {
                     DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+                    DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "path", StoreSettings.Current.FolderImagesMapPath  + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+                }
                 if (f == "genxml/dropdownlist/ddlparentcatid")
                 {
                     var parentitemid = info.GetXmlProperty(f);

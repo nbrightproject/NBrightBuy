@@ -173,6 +173,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             info.TypeCode = "UPDATEDATA";
             info.XMLData = xmlData;
 
+            //check we have valid strutre for XML
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/hidden") == null) DataRecord.SetXmlProperty("genxml/hidden","");
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/textbox") == null) DataRecord.SetXmlProperty("genxml/textbox", "");
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/checkbox") == null) DataRecord.SetXmlProperty("genxml/checkbox", "");
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/dropdownlist") == null) DataRecord.SetXmlProperty("genxml/dropdownlist", "");
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/radiobuttonlist") == null) DataRecord.SetXmlProperty("genxml/radiobuttonlist", "");
+            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/hidden") == null) DataLangRecord.SetXmlProperty("genxml/hidden", "");
+            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/textbox") == null) DataLangRecord.SetXmlProperty("genxml/textbox", "");
+            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/checkbox") == null) DataLangRecord.SetXmlProperty("genxml/checkbox", "");
+            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/dropdownlist") == null) DataLangRecord.SetXmlProperty("genxml/dropdownlist", "");
+            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/radiobuttonlist") == null) DataLangRecord.SetXmlProperty("genxml/radiobuttonlist", "");
+
+
             var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
             foreach (var f in localfields)
             {

@@ -459,4 +459,43 @@
   <data name="Import.Text" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="Orders.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Products.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Properties.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="ExportImages.Text" xml:space="preserve">
+    <value>Export Images</value>
+  </data>
+  <data name="ExportImages.confirm" xml:space="preserve">
+    <value>Export Images? </value>
+  </data>
+  <data name="Export.confirm" xml:space="preserve">
+    <value>Export selected data?</value>
+  </data>
+  <data name="ExportDocuments.confirm" xml:space="preserve">
+    <value>Export Documents?</value>
+  </data>
+  <data name="ExportDocuments.Text" xml:space="preserve">
+    <value>Export Documents</value>
+  </data>
+  <data name="DataXML.Text" xml:space="preserve">
+    <value>Data XML File</value>
+  </data>
+  <data name="DocumentZip.Text" xml:space="preserve">
+    <value>Document Zip File</value>
+  </data>
+  <data name="ImageZip.Text" xml:space="preserve">
+    <value>Image Zip File</value>
+  </data>
+  <data name="Import.confirm" xml:space="preserve">
+    <value>Import data?</value>
+  </data>
+  <data name="ImportAsNew.Text" xml:space="preserve">
+    <value>Import As New Records</value>
+  </data>
 </root>

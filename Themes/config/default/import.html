@@ -6,18 +6,18 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li>[<tag type="valueof" resourcekey="General.Export" />]</li>
+			<li>[<tag type="valueof" resourcekey="General.Import" />]</li>
 		</ol>
 	</div>
 </div>
-<h4 class="page-header">[<tag type="valueof" resourcekey="General.Export" />]</h4>
+<h4 class="page-header">[<tag type="valueof" resourcekey="General.Import" />]</h4>
 <p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-				    <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Export" />]</span>
+				    <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Import" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -34,7 +34,7 @@
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Products" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="exportproducts" type="checkbox" resourcekey="" checked="True" />]
+				                [<tag id="importproducts" type="checkbox" resourcekey="" checked="True" />]
 				            </div>
 				        </div>
 				    </div>
@@ -43,7 +43,7 @@
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Categories" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="exportcategories" type="checkbox" resourcekey="" checked="True"  />]
+				                [<tag id="importcategories" type="checkbox" resourcekey="" checked="True"  />]
 				            </div>
 				        </div>
 				    </div>
@@ -52,7 +52,7 @@
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Properties" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="exportproperties" type="checkbox" resourcekey="" checked="True" />]
+				                [<tag id="importproperties" type="checkbox" resourcekey="" checked="True" />]
 				            </div>
 				        </div>
 				    </div>
@@ -61,7 +61,7 @@
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Settings" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="exportsettings" type="checkbox" resourcekey="" />]
+				                [<tag id="importsettings" type="checkbox" resourcekey="" />]
 				            </div>
 				        </div>
 				    </div>
@@ -70,7 +70,43 @@
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Orders" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="exportorders" type="checkbox" resourcekey="" />]
+				                [<tag id="importorders" type="checkbox" resourcekey="" />]
+				            </div>
+				        </div>
+				    </div>
+
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.ImportAsNew" />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="importasnew" type="checkbox" resourcekey="" />]
+				            </div>
+				        </div>
+				    </div>
+
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.DataXML" />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                 [<tag id="datafile" type="fileupload" textwidth="0" />]
+				            </div>
+				        </div>
+				    </div>
+
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.ImageZip" />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                 [<tag id="imagefile" type="fileupload" textwidth="0" />]				                
+				            </div>
+				        </div>
+				    </div>
+
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.DocumentZip" />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                 [<tag id="docsfile" type="fileupload" textwidth="0" />]  				                
 				            </div>
 				        </div>
 				    </div>
@@ -83,9 +119,7 @@
 	</div>
 	<div class="form-group">
 		<div class="col-sm col-sm-6">
-			[<tag id="cmdExport" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.Export" commandname="export" />] 
-			[<tag id="cmdExportImages" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.ExportImages" commandname="exportimages" />] 
-			[<tag id="cmdExportDocuments" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.ExportDocuments" commandname="exportdocs" />] 
+			[<tag id="cmdImport" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.Import" commandname="import" />] 
 		</div>
 	</div>
 </div>

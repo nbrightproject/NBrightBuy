@@ -12,6 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -112,6 +113,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     DoExport();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "exportimages":
+                    param[0] = "";
+                    DoExportImages();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "exportdocs":
+                    param[0] = "";
+                    DoExportDocs();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
@@ -132,7 +143,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 foreach (var i in l) { strXml += i.ToXmlItem(); }
 
                 l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }                
+                foreach (var i in l) { strXml += i.ToXmlItem(); }
+            
+                l = ModCtrl.GetList(PortalId, -1, "PRDXREF");
+                foreach (var i in l) { strXml += i.ToXmlItem(); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True")
@@ -161,12 +175,78 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 foreach (var i in l) { strXml += i.ToXmlItem(); }
             }
 
+            if (GenXmlFunctions.GetField(rpData, "exportsettings") == "True")
+            {
+                var l = ModCtrl.GetList(PortalId, -1, "SETTINGS");
+                foreach (var i in l) { strXml += i.ToXmlItem(); }
+            }
+
+            if (GenXmlFunctions.GetField(rpData, "exportorders") == "True")
+            {
+                var l = ModCtrl.GetList(PortalId, -1, "ORDER");
+                foreach (var i in l) { strXml += i.ToXmlItem(); }
+            }
+
             strXml += "</root>";
 
             var doc = new XmlDataDocument();
             doc.LoadXml(strXml);
             doc.Save(StoreSettings.Current.FolderUploadsMapPath + "\\export.xml");
 
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\export.xml", PortalSettings.PortalAlias.HTTPAlias + "_export.xml", Response);
+        }
+
+        private void DoExportImages()
+        {
+            var fileMapPathList = new List<string>();
+
+            var l = ModCtrl.GetList(PortalId, -1, "PRD");
+            foreach (var i in l)
+            {
+                var nodlist = i.XMLDoc.SelectNodes("genxml/imgs/*");
+                if (nodlist != null)
+                {
+                    foreach (XmlNode nod in nodlist)
+                    {
+                        var fname = nod.SelectSingleNode("./hidden/imagepath");
+                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                    }
+                }
+            }
+
+            l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
+            foreach (var i in l)
+            {
+                var fname = i.GetXmlProperty("genxml/hidden/imagepath");
+                if (fname != "") fileMapPathList.Add(fname);
+            }
+
+            DnnUtils.Zip(StoreSettings.Current.FolderUploadsMapPath + "\\exportimages.zip", fileMapPathList);
+
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\exportimages.zip", PortalSettings.PortalAlias.HTTPAlias + "_exportimages.zip", Response);
+        }
+
+        private void DoExportDocs()
+        {
+            var fileMapPathList = new List<string>();
+
+            var l = ModCtrl.GetList(PortalId, -1, "PRD");
+            foreach (var i in l)
+            {
+                var nodlist = i.XMLDoc.SelectNodes("genxml/docs/*");
+                if (nodlist != null)
+                {
+                    foreach (XmlNode nod in nodlist)
+                    {
+                        var fname = nod.SelectSingleNode("./hidden/docpath");
+                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                    }
+                }
+            }
+
+            DnnUtils.Zip(StoreSettings.Current.FolderUploadsMapPath + "\\exportdocs.zip", fileMapPathList);
+
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\exportdocs.zip", PortalSettings.PortalAlias.HTTPAlias + "_exportdocs.zip", Response);
         }
     }
 
