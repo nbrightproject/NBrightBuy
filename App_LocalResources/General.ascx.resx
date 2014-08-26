@@ -495,7 +495,19 @@
   <data name="Import.confirm" xml:space="preserve">
     <value>Import data?</value>
   </data>
-  <data name="ImportAsNew.Text" xml:space="preserve">
-    <value>Import As New Records</value>
+  <data name="Enter.Text" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RemovefromStore.confirm" xml:space="preserve">
+    <value>Clear ALL selected data from store. Are You Sure?</value>
+  </data>
+  <data name="RemovefromStore.Text" xml:space="preserve">
+    <value>Remove from Store</value>
+  </data>
+  <data name="Tools.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
 </root>

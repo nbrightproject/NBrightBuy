@@ -177,7 +177,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (GenXmlFunctions.GetField(rpData, "exportsettings") == "True")
             {
-                var l = ModCtrl.GetList(PortalId, -1, "SETTINGS");
+                var l = ModCtrl.GetList(PortalId, 0, "SETTINGS");
                 foreach (var i in l) { strXml += i.ToXmlItem(); }
             }
 

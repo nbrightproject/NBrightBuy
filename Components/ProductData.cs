@@ -174,16 +174,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             info.XMLData = xmlData;
 
             //check we have valid strutre for XML
-            if (DataRecord.XMLDoc.SelectSingleNode("genxml/hidden") == null) DataRecord.SetXmlProperty("genxml/hidden","");
-            if (DataRecord.XMLDoc.SelectSingleNode("genxml/textbox") == null) DataRecord.SetXmlProperty("genxml/textbox", "");
-            if (DataRecord.XMLDoc.SelectSingleNode("genxml/checkbox") == null) DataRecord.SetXmlProperty("genxml/checkbox", "");
-            if (DataRecord.XMLDoc.SelectSingleNode("genxml/dropdownlist") == null) DataRecord.SetXmlProperty("genxml/dropdownlist", "");
-            if (DataRecord.XMLDoc.SelectSingleNode("genxml/radiobuttonlist") == null) DataRecord.SetXmlProperty("genxml/radiobuttonlist", "");
-            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/hidden") == null) DataLangRecord.SetXmlProperty("genxml/hidden", "");
-            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/textbox") == null) DataLangRecord.SetXmlProperty("genxml/textbox", "");
-            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/checkbox") == null) DataLangRecord.SetXmlProperty("genxml/checkbox", "");
-            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/dropdownlist") == null) DataLangRecord.SetXmlProperty("genxml/dropdownlist", "");
-            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/radiobuttonlist") == null) DataLangRecord.SetXmlProperty("genxml/radiobuttonlist", "");
+            DataRecord.ValidateXmlFormat();
+            DataLangRecord.ValidateXmlFormat();
 
 
             var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
@@ -708,6 +700,60 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             LoadData(itemId);
             return itemId;
         }
+
+        public int Validate()
+        {
+            var errorcount = 0;
+
+            DataRecord.ValidateXmlFormat();
+            DataLangRecord.ValidateXmlFormat();
+
+
+            //Fix image paths
+            foreach (var i in Imgs)
+            {
+                if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(StoreSettings.Current.FolderImages))
+                {
+                    var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
+                    i.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('\\') + "\\" + iname);
+                    errorcount += 1;
+                }
+                if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(StoreSettings.Current.FolderImagesMapPath))
+                {
+                    var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
+                    i.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
+                    errorcount += 1;
+                }                
+            }
+
+            //Fix document paths
+            foreach (var d in Docs)
+            {
+                if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(StoreSettings.Current.FolderDocumentsMapPath))
+                {
+                    d.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
+                    errorcount += 1;
+                }
+            }
+
+            // fix langauge records
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                var objCtrl = new NBrightBuyController();
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                if (l.Count == 0)
+                {
+                    var nbi = (NBrightInfo)DataLangRecord.Clone();
+                    nbi.ItemID = -1;
+                    nbi.Lang = lang;
+                    objCtrl.Update(nbi);
+                    errorcount += 1;
+                }
+            }
+
+            return errorcount;
+        }
+
 
         #endregion
 
