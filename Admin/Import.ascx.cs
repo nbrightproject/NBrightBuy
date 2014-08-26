@@ -36,6 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
 
         private Dictionary<int, int> _recordXref;
+        private List<int> _productList;
 
         override protected void OnInit(EventArgs e)
         {
@@ -115,9 +116,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var nbi = new NBrightInfo(false);
                     nbi.XMLData = importXML;
                     _recordXref = new Dictionary<int, int>();
+                    _productList = new List<int>();
                     DoImport(nbi);
                     DoImportImages(nbi);
                     DoImportDocs(nbi);
+                    Validate();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "cancel":
@@ -190,6 +193,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             Utils.DeleteSysFile(fname);
         }
 
+        private void Validate()
+        {
+            foreach (var r in _productList)
+            {
+                // if product then validate the data.
+                var prodData = new ProductData(r, StoreSettings.Current.EditLanguage);
+                if (prodData.Exists)
+                {
+                    prodData.Validate();
+                    prodData.Save();
+                }
+            }
+        }
+
         private void ImportRecord(XmlDataDocument xmlFile, String typeCode, Boolean updaterecordsbyref = true)
         {
             var nodList = xmlFile.SelectNodes("root/item[./typecode='" + typeCode + "']");
@@ -201,7 +218,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var nbi = new NBrightInfo();
                     nbi.FromXmlItem(nod.OuterXml);
                     var olditemid = nbi.ItemID;
-                    
+
                     // check to see if we have a new record or updating a existing one, use the ref field to find out.
                     nbi.ItemID = -1;
                     if (typeCode == "PRD" && updaterecordsbyref)
@@ -215,8 +232,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     if (typeCode == "PRDLANG" && updaterecordsbyref)
                     {
-                        var l = ModCtrl.GetList(PortalId, -1, "PRDLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
-                        if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        if (_recordXref.ContainsKey(nbi.ParentItemId))
+                        {
+                            var l = ModCtrl.GetList(PortalId, -1, "PRDLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
+                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        }
                     }
                     if (typeCode == "CATEGORY" && updaterecordsbyref)
                     {
@@ -229,8 +249,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     if (typeCode == "CATEGORYLANG" && updaterecordsbyref)
                     {
+                        if (_recordXref.ContainsKey(nbi.ParentItemId))
+                        {
                         var l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
-                        if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        if (l.Count > 0) nbi.ItemID = l[0].ItemID;                            
+                        }
                     }
                     if (typeCode == "GROUP" && updaterecordsbyref)
                     {
@@ -243,8 +266,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     if (typeCode == "GROUPLANG" && updaterecordsbyref)
                     {
-                        var l = ModCtrl.GetList(PortalId, -1, "GROUPLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
-                        if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        if (_recordXref.ContainsKey(nbi.ParentItemId))
+                        {
+                            var l = ModCtrl.GetList(PortalId, -1, "GROUPLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
+                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        }
                     }
                     if (typeCode == "SETTINGS") // the setting exported are only the portal settings, not module.  So always update and don;t create new.
                     {
@@ -271,18 +297,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         if (c > 0) update = false;
                     }
 
-                    if (update)
-                    {
-                        newitemid = ModCtrl.Update(nbi);
-                        if (typeCode == "PRD")
-                        { // if product then validate the data.
-                            var prodData = new ProductData(newitemid, Utils.GetCurrentCulture());
-                            prodData.Validate();
-                            prodData.Save();
-                        }
-                    }
+                    if (update) newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
-                }                
+                    if (typeCode == "PRD") _productList.Add(newitemid);
+
+                }
             }
         }
     }

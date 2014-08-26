@@ -741,7 +741,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var objCtrl = new NBrightBuyController();
                 var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
-                if (l.Count == 0)
+                if (l.Count == 0 && DataLangRecord != null)
                 {
                     var nbi = (NBrightInfo)DataLangRecord.Clone();
                     nbi.ItemID = -1;

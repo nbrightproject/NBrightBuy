@@ -236,7 +236,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             foreach (GroupCategoryData tInfo in levelList)
             {
                 var nInfo = tInfo;
-                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7, breadcrumbseparator,false);
+                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 50, breadcrumbseparator,false);
                 nInfo.depth = level;
                 rtnList.Add(nInfo);
                 GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);

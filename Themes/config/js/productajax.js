@@ -58,13 +58,13 @@
     $('#productimages').change(function () {
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
-        $('.removeimage').click(function () { removeelement($(this).parent()); });
+        $('.removeimage').click(function () { removeelement($(this).parent().parent().parent().parent()); });
     });
     $('#productdocs').change(function () {
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removedoc').unbind();
-        $('.removedoc').click(function () { removeelement($(this).parent()); });
+        $('.removedoc').click(function () { removeelement($(this).parent().parent().parent().parent()); });
     });
     $('#productcategories').change(function () {
         $('.removecategory').unbind();
