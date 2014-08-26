@@ -21,13 +21,14 @@
 	        <div class="col-sm-2"><label class="control-label">Barcode</label>[<tag id="txtbarcode" type="textbox" cssclass="form-control" maxlength="250" />]</div>
 	        <div class="col-sm-2"><label class="control-label">Stock</label>[<tag id="txtqtyremaining" type="textbox" cssclass="form-control" maxlength="250" Text="-1" />]</div>
 	        <div class="col-sm-2"><label class="control-label">Max</label>[<tag id="txtqtystockset" type="textbox" cssclass="form-control" maxlength="250" Text="0"/>]</div>
-	        <div class="col-sm-2"><label class="control-label">&nbsp;</label><a class="removemodel col-sm-12 btn btn-danger">Remove</a></div><!-- class required for ajax -->
+	        <div class="col-sm-2"><label class="control-label">&nbsp;</label><a class="removemodel btn-block btn btn-danger">Remove</a></div><!-- class required for ajax -->
 		</div>
 		<div class="row">
 			<div class="col-sm-2">[<tag id="chkishidden" type="checkbox" Text="" />]<label class="control-label">Hidden</label></div>
 			<div class="col-sm-2">[<tag id="chkdeleted" type="checkbox" Text="" />]<label class="control-label">Deleted</label></div>
 			<div class="col-sm-2">[<tag id="chkdealeronly" type="checkbox" Text="" />]<label class="control-label">Dealer</label></div>
-			<div class="col-sm-2"><label class="control-label">Model ID:</label> [<tag type="valueof" xpath="genxml/hidden/modelid" />]</div>
+			<div class="col-sm-2" style="display:none"><label class="control-label">Model ID:</label> [<tag type="valueof" xpath="genxml/hidden/modelid" />]</div><!-- model id not displayed -->
+
 		</div>
 	</div>
 </li>

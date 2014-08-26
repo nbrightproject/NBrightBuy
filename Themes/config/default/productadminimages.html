@@ -1,20 +1,29 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
-<!-- class needed for recycle bin -->
-<li class="imageitem" style="width:800;">
-    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-    <a class="removeimage">Remove</a>
+<li class="imageitem form-group"><!-- class="imageitem" is needed for JS postback update -->
+    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="imageurl" type="hidden" value="" />]
     [<tag id="imagepath" type="hidden" value="" />]
-
     [<tag id="fields" type="hidden" value="genxml/checkbox/chkhidden,genxml/hidden/imageurl,genxml/hidden/imagepath" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtimagedesc" />]
 
-    <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=150&h=0&src=[<tag type='valueof' xpath='genxml/hidden/imageurl'/>]" />
-    desc:   [<tag id="txtimagedesc" type="textbox" width="200" maxlength="250" />] -    
-    Hidden : [<tag id="chkhidden" type="checkbox" Text="" />] - 
+	<div class="col-md-12 form-horizontal">
+		<div class="row">
+	        <div class="col-md-12 imagewrapper"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=200&h=0&src=[<tag type='valueof' xpath='genxml/hidden/imageurl'/>]" /></div>
+		</div>
+		<div class="row">
+	        <div class="col-md-12">[<tag id="txtimagedesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+		</div>
+		<div class="row">
+	        <div class="col-xs-6">[<tag id="chkhidden" type="checkbox" Text="" />]<label class="control-label">Hidden</label></div>
+	        <div class="col-xs-6"><a class="removeimage btn-block btn btn-danger">Remove</a></div><!-- required: class="removeimage" -->
 
+	        <span style="display:none">[<tag type="valueof" xpath="genxml/hidden/optionid" />]</span>
+		</div>
+	</div>
 </li>
-	
-	
+
+
+

@@ -6,7 +6,6 @@
 <!-- this div is used as a recycle bin for undo JS-->
 <div id="recyclebin" style="display:none;"></div>
 
-
 <div id="nbsnotify"></div>
 <div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 
@@ -34,7 +33,6 @@
 
 [<tag type="selectlocalebutton" size="32"/>]
 
-
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
@@ -45,8 +43,6 @@
 </div>
 <h4 class="page-header">Product</h4>
 <p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-
-
 
 
 <!-- Required: id="productdatasection" -->
@@ -77,7 +73,6 @@
         <!-- Required for update: fields,localizedfields -->
         [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
-
 
 <div class="row editdetails">
 	<div class="col-md-12">
@@ -154,7 +149,6 @@
 	</div>
 </div>
 
-
 <div class="row editmodels">
 	<div class="col-sm-12">
 		<div class="box">
@@ -170,12 +164,9 @@
 				</div>
 			</div>
 			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-12">
-					<div class="">
-				        <!-- All "id" for the divs/ul are required for ajax in this section -->
-				        <ul id="productmodels"></ul>
-					</div>
 					<div class="form-group">
 				        <div class="col-sm-2">
 				        <a class="col-sm-12 btn btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
@@ -186,6 +177,7 @@
 				        <a class="col-sm-12 btn btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        </div>
 					</div>
+				        <ul id="productmodels"></ul>
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -193,8 +185,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 <div class="row editoptions">
 	<div class="col-sm-12">
@@ -211,6 +201,7 @@
 				</div>
 			</div>
 			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 				
 					<div class="col-sm-6">
@@ -254,8 +245,6 @@
 	</div>
 </div>
 
-
-
 <div class="row editimages">
 	<div class="col-md-12">
 		<div class="box">
@@ -271,14 +260,22 @@
 				</div>
 			</div>
 			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
-				        <div>
-				            [<tag id="image" type="fileupload" />] [<tag id="cmdSaveImg" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+						<div class="col-sm-12">
+				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveImg" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
+						</div>
+				            				              
+				        <div class="col-sm-2">
+				        <a class="col-sm-12 btn btn-warning" id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        </div>
-				        <a id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-12">
 				        <ul id="productimages"></ul>
+				        </div>
 					</div>
 					</div>
 				</div>
@@ -287,7 +284,6 @@
 		</div>
 	</div>
 </div>
-
 
 <div class="row editdocuments">
 	<div class="col-md-12">
@@ -304,16 +300,19 @@
 				</div>
 			</div>
 			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
-				        <div>
-				            [<tag id="document" type="fileupload" textwidth="150" maxlength="50" />]
-				            [<tag id="cmdSaveDoc" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]         
+						<div class="col-md-12">
+				            [<tag id="document" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
+						</div>
+				        <div class="col-md-2">
+				        <a class="col-xs-12 btn btn-warning" id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        </div>
-				
-				        <a id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <div class="col-md-12">
 				        <ul id="productdocs"></ul>
+				        </div>
 					</div>
 					</div>
 				</div>

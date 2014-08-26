@@ -8,14 +8,13 @@
 .NBB{}
 
 
-/* Overrides for DNN-included Bootstrap styles 
+/* Overrides for DNN-included Bootstrap styles */
 .nav {margin-left:0;}
 a, a:visited {color:#428BCA}
-*/
+.dnnInputFileWrapper{font-family:"Lucida Grande","Lucida Sans","Lucida Sans Unicode","Segoe UI",Verdana,sans-serif;font-size:12px;line-height:23px;padding:inherit;text-shadow:none;margin-right: 12px !important;}
 
-/* Fixes 
+/* Fixes */
 .checkbox input[type=checkbox]{margin-left: 0;}
-*/
 
 .fa {margin-right: 6px;}
 
@@ -31,7 +30,7 @@ a, a:visited {color:#428BCA}
 a.btn-primary {color:#FFFFFF}/* When buttons are inside anchors */
 a.btn-default {color:#929292}
 #loader{color:#FFFFFF;position:absolute;right:3px;top:6px;z-index: 9999;}/* Loading graphic */
-
+.nowrap{white-space:nowrap}
 
 /* Productlist items */
 .productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;float:left}
@@ -53,7 +52,7 @@ a.btn-default {color:#929292}
 .NBrightPrevPg a{}
 
 /* Product Editor */
-.sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;}
+.sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;color:#DDDDDD;z-index:1;}
 .sortelementUp{top:0;right:0}
 .sortelementDown{bottom:0;right:0}
 
@@ -61,17 +60,44 @@ a.btn-default {color:#929292}
 
 .editmodels{}
 .editmodels #productmodels{list-style: none outside none;margin: 0;padding: 0;}
-.editmodels .modelitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+.editmodels .modelitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
 
 .editoptions{}
 .editoptions #productoptions,.editoptions #productoptionvalues{list-style: none outside none;margin: 0;padding: 0;}
-.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dashed #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
-
+.editoptions #productoptions{margin-right:12px}
+.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+.editoptions .optionitem{opacity:0.4;transition:all 0.4s ease-in-out 0s;}
+.editoptions .optionitem:hover{opacity:1}
+.editoptions .optionitem.selected{opacity:1}
 
 
 .editimages{}
+.editimages #productimages{list-style: none outside none;margin: 0;padding: 0;}
+.editimages .imageitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;margin:0 15px 15px 0;position:relative;float:left}
+.editimages .imagewrapper{height:200px;line-height:200px;text-align:center;width:230px;margin-bottom:15px;}
+.editimages .imagewrapper img{max-height:100%}
+
 .editdocuments{}
+.editdocuments #productdocs{list-style: none outside none;margin: 0;padding: 0;}
+.editdocuments .docitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+
+
 .editcategories{}
 .editgroups{}
 .editrelated{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

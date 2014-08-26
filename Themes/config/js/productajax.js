@@ -39,7 +39,7 @@
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeoption').click(function () {
-            removeelement($(this).parent());
+            removeelement($(this).parent().parent().parent().parent());
             if ($(this).parent().parent().parent().parent().hasClass('selected')) {
                 $('#productoptionvalues').hide();
                 $(this).parent().parent().parent().parent().removeClass('selected');
@@ -51,7 +51,7 @@
     $('#productoptionvalues').change(function () {
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
-        $('.removeoptionvalue').click(function () { removeelement($(this).parent()); });
+        $('.removeoptionvalue').click(function () { removeelement($(this).parent().parent().parent().parent()); });
         $('#optionvaluecontrol').show();
         showoptionvalues();
     });

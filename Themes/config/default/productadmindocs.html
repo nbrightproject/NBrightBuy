@@ -1,18 +1,23 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
-<!-- class needed for recycle bin -->
-<li class="docitem" style="width:800;">
-    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-    <a class="removedoc">Remove</a>
+
+<li class="docitem form-group"> <!-- class="docitem" is needed for JS postback update -->
+    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="fileext" type="hidden" value="" />]
     [<tag id="filepath" type="hidden" value="" />]
-
     [<tag id="fields" type="hidden" value="genxml/checkbox/chkhidden,genxml/checkbox/chkpurchase,genxml/hidden/fileext,genxml/hidden/filepath,genxml/textbox/txtfilename" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtdocdesc" />]
 
-    name:   [<tag id="txtfilename" type="textbox" width="200" maxlength="250" />] - 
-desc:   [<tag id="txtdocdesc" type="textbox" width="200" maxlength="250" />] - 
-Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] - 
-Purchase : [<tag id="chkpurchase" type="checkbox" Text="" />] - 
-
-</li>	
+	<div class="col-xs-12 form-horizontal">
+		<div class="row">
+	        <div class="col-xs-4"><label class="control-label">Title</label>[<tag id="txtfilename" type="textbox" cssclass="form-control" maxlength="250"/>]</div>
+	        <div class="col-xs-6"><label class="control-label">Description</label>[<tag id="txtdocdesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-xs-2"><label class="control-label">&nbsp;</label><a class="removedoc btn-block btn btn-danger">Remove</a></div><!-- class required for ajax -->
+		</div>
+		<div class="row">
+			<div class="col-xs-2 nowrap">[<tag id="chkishidden" type="checkbox" Text="" />]<label class="control-label">Hidden</label></div>
+			<div class="col-xs-2 nowrap">[<tag id="chkpurchase" type="checkbox" Text="" />]<label class="control-label">Purchase</label></div>
+		</div>
+	</div>
+</li>
