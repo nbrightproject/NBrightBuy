@@ -235,36 +235,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductdocs");
             strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
-            var imgList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");
-
-            // build xml for data records
-            var strXml = "<genxml><docs>";
-            var strXmlLang = "<genxml><docs>";
-            foreach (var imgInfo in imgList)
-            {
-                var objInfo = new NBrightInfo(true);
-                var objInfoLang = new NBrightInfo(true);
-
-                var localfields = imgInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-                foreach (var f in localfields.Where(f => f != ""))
-                {
-                    objInfoLang.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
-                }
-                strXmlLang += objInfoLang.XMLData;
-
-                var fields = imgInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                foreach (var f in fields.Where(f => f != ""))
-                {
-                    objInfo.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
-                }
-                strXml += objInfo.XMLData;
-            }
-            strXml += "</docs></genxml>";
-            strXmlLang += "</docs></genxml>";
-
-            // replace models xml 
-            DataRecord.ReplaceXmlNode(strXml, "genxml/docs", "genxml");
-            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/docs", "genxml");
+            var docList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");            
+            UpdateDocs(docList);
 
             //add new doc if uploaded
             var docFile = info.GetXmlProperty("genxml/hidden/hiddocument");
@@ -276,12 +248,57 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
+        public void UpdateDocs(List<NBrightInfo> docList)
+        {
+            // build xml for data records
+            var strXml = "<genxml><docs>";
+            var strXmlLang = "<genxml><docs>";
+            foreach (var docInfo in docList)
+            {
+                var objInfo = new NBrightInfo(true);
+                var objInfoLang = new NBrightInfo(true);
+
+                var localfields = docInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                foreach (var f in localfields.Where(f => f != ""))
+                {
+                    objInfoLang.SetXmlProperty(f, docInfo.GetXmlProperty(f));
+                }
+                strXmlLang += objInfoLang.XMLData;
+
+                var fields = docInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                foreach (var f in fields.Where(f => f != ""))
+                {
+                    objInfo.SetXmlProperty(f, docInfo.GetXmlProperty(f));
+                }
+                strXml += objInfo.XMLData;
+            }
+            strXml += "</docs></genxml>";
+            strXmlLang += "</docs></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/docs", "genxml");
+            DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/docs", "genxml");
+
+        }
+
         public void UpdateImages(NBrightInfo info)
         {
             var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductimages");
             strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
             var imgList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");
+            UpdateImages(imgList);
 
+            //add new image if uploaded
+            var imgFile = info.GetXmlProperty("genxml/hidden/hidimage");
+            if (imgFile != "")
+            {
+                AddNewImage(StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imgFile, StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imgFile);
+            }
+
+        }
+
+        public void UpdateImages(List<NBrightInfo> imgList)
+        {
             // build xml for data records
             var strXml = "<genxml><imgs>";
             var strXmlLang = "<genxml><imgs>";
@@ -310,13 +327,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // replace models xml 
             DataRecord.ReplaceXmlNode(strXml, "genxml/imgs", "genxml");
             DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/imgs", "genxml");
-
-            //add new image if uploaded
-            var imgFile = info.GetXmlProperty("genxml/hidden/hidimage");
-            if (imgFile != "")
-            {
-                AddNewImage(StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imgFile, StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imgFile);
-            }
 
         }
 
@@ -708,32 +718,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ValidateXmlFormat();
             DataLangRecord.ValidateXmlFormat();
 
-
             //Fix image paths
+            var lp = 1;
             foreach (var i in Imgs)
             {
                 if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(StoreSettings.Current.FolderImages))
                 {
                     var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    i.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('\\') + "\\" + iname);
+                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + iname);
                     errorcount += 1;
                 }
                 if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(StoreSettings.Current.FolderImagesMapPath))
                 {
                     var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    i.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
+                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
                     errorcount += 1;
-                }                
+                }
+                lp += 1;
             }
-
             //Fix document paths
+            lp = 1;
             foreach (var d in Docs)
             {
                 if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(StoreSettings.Current.FolderDocumentsMapPath))
                 {
-                    d.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
+                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
                     errorcount += 1;
                 }
+                lp += 1;
             }
 
             // fix langauge records
@@ -750,6 +762,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     errorcount += 1;
                 }
             }
+
 
             return errorcount;
         }
