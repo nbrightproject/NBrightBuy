@@ -125,7 +125,10 @@ namespace Nevoweb.DNN.NBrightBuy
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, NotifyCode.ok);
                     else
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+
+                    var redirecttabid = ModSettings.Get("ddlredirecttabid");
+                    if (!Utils.IsNumeric(redirecttabid)) redirecttabid = TabId.ToString("");
+                    Response.Redirect(Globals.NavigateURL(Convert.ToInt32(redirecttabid), "", param), true);
                     break;
             }
 

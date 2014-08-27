@@ -147,4 +147,10 @@
   <data name="lblclientrole.Text" xml:space="preserve">
     <value>Activate Client Role Security : </value>
   </data>
+  <data name="lblredirecttab.Help" xml:space="preserve">
+    <value>Redirect Page after update</value>
+  </data>
+  <data name="lblredirecttab.Text" xml:space="preserve">
+    <value>Redirect Page : </value>
+  </data>
 </root>
