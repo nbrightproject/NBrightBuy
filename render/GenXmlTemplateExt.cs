@@ -274,7 +274,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                var info = (NBrightInfo)container.DataItem;
+                NBrightInfo info;
+                                
                 ProductData prodData;
 
                 lc.Visible = NBrightGlobal.IsVisible;
@@ -415,6 +416,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "hasrelateditems":
                                 dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
                                 prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
                                 if (prodData.GetRelatedProducts().Count > 0)
                                 {
@@ -424,6 +426,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "hasdocuments":
                                 dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
                                 prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
                                 if (prodData.Docs.Count > 0)
                                 {
@@ -433,6 +436,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "haspurchasedocuments":
                                 dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
                                 prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
                                 if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True").Any())
                                 {
@@ -445,6 +449,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
                                 if (nod != null)
                                 {
+                                    info = (NBrightInfo)container.DataItem;
                                     prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
                                     if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True" && i.GetXmlProperty("genxml/hidden/docid") == nod.InnerText).Any())
                                     {
@@ -488,6 +493,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             case "isproductincart":
                                 dataValue = "FALSE";
                                 var cartData = new CartData(PortalSettings.Current.PortalId);
+                                info = (NBrightInfo)container.DataItem;
                                 if (cartData.GetCartItemList().Select(i => i.GetXmlProperty("genxml/productid") == info.ItemID.ToString("")).Any())
                                 {
                                     dataValue = "TRUE";
