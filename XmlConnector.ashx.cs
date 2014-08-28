@@ -470,7 +470,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var settings = GetAjaxFields(context);
             var groupref = "";
             if (settings.ContainsKey("selectedgroupref")) groupref = settings["selectedgroupref"];
-            var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory' type='catlistbox' groupref='" + groupref + "'/>]";
+            var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory form-control' type='catlistbox' groupref='" + groupref + "'/>]";
             return GenXmlFunctions.RenderRepeater(new NBrightInfo(),templ);    
         }
 

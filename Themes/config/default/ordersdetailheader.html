@@ -1,4 +1,7 @@
 <div class="orderdetail">
+    
+    [<tag id="invoicedocext" type="hidden" value="" />]
+    [<tag id="invoicedocpath" type="hidden" value="" />]
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -33,6 +36,12 @@
 						<div class="col-sm-5">
 							[<tag id="orderstatus" cssclass="form-control" type="orderstatus" />]
 						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Invoice" />]</label>
+					    <div class="col-sm-5">
+				            [<tag id="invoicedoc" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]					        
+					    </div>
 					</div>
 
 					<div class="col-sm-offset-3 col-sm-6">

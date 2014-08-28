@@ -348,6 +348,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var trackingcode = GenXmlFunctions.GetField(rpData, "trackingcode");
             var shippingdate = GenXmlFunctions.GetField(rpData, "shippingdate");
             var orderstatus = GenXmlFunctions.GetField(rpData, "orderstatus");
+            //GenXmlFunctions.UploadFile(rpData,"invoicedoc",StoreSettings.Current.FolderUploadsMapPath);
 
             if (!Utils.IsNumeric(_entryid)) return NotifyCode.error;
             var ordData = new OrderData(PortalId, Convert.ToInt32(_entryid));

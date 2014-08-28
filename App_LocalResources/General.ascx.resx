@@ -510,4 +510,7 @@
   <data name="Tools.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="Invoice.Text" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
 </root>

@@ -473,6 +473,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 }
                                 break;
                             case "hasmodelsoroptions":
+
                                 dataValue = "FALSE";
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[2]/hidden/modelid");
                                 if (nod != null && nod.InnerText != "")
