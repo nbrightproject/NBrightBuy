@@ -101,6 +101,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/textbox/trackingcode", value);
             }
         }
-        
+
+        public String InvoiceFilePath
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath", value);
+            }
+        }
+        public String InvoiceFileName
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilename");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", value);
+            }
+        }
+        public String InvoiceFileExt
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefileext");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", value);
+            }
+        }
+
     }
 }

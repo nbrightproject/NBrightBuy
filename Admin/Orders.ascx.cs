@@ -345,10 +345,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private NotifyCode Update()
         {
             // we don;t have the full field set on this form, so only update the fields we know are there.
-            var trackingcode = GenXmlFunctions.GetField(rpData, "trackingcode");
-            var shippingdate = GenXmlFunctions.GetField(rpData, "shippingdate");
-            var orderstatus = GenXmlFunctions.GetField(rpData, "orderstatus");
-            //GenXmlFunctions.UploadFile(rpData,"invoicedoc",StoreSettings.Current.FolderUploadsMapPath);
+            var trackingcode = GenXmlFunctions.GetField(rpDataH, "trackingcode");
+            var shippingdate = GenXmlFunctions.GetField(rpDataH, "shippingdate");
+            var orderstatus = GenXmlFunctions.GetField(rpDataH, "orderstatus");
+            var strUpd = GenXmlFunctions.GetGenXml(rpDataH,"",StoreSettings.Current.FolderUploadsMapPath);
+            var nbi = new NBrightInfo(true);
+            nbi.XMLData = strUpd;
+
 
             if (!Utils.IsNumeric(_entryid)) return NotifyCode.error;
             var ordData = new OrderData(PortalId, Convert.ToInt32(_entryid));
@@ -356,6 +359,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.ShippedDate = shippingdate;
             ordData.OrderStatus = orderstatus;
             ordData.TrackingCode = trackingcode;
+            ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidinvoicedocext");
+            ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
+            ordData.InvoiceFilePath = "";
+
             ordData.SavePurchaseData();
             return NotifyCode.ok;
         }
