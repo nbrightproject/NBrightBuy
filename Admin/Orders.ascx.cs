@@ -13,6 +13,7 @@
 
 using System;
 using System.Web.UI.WebControls;
+using System.Windows.Forms.VisualStyles;
 using DotNetNuke.Common;
 using DotNetNuke.UI.Skins;
 using NBrightCore.common;
@@ -337,8 +338,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "forcedownload":
-                    GenXmlFunctions.ForceDocDownload((Repeater)source, cArg, StoreSettings.Current.FolderUploadsMapPath, Response);
+                case "downloadinvoice":
+                    DownloadInvoice(Convert.ToInt32(cArg));
+                    break;
+                case "deleteinvoice":
+                    DeleteInvoice(Convert.ToInt32(cArg));
+                    param[0] = "eid=" + _entryid;
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
 
@@ -366,11 +372,29 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidextinvoicedoc");
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName + ordData.InvoiceFileExt;
+            ordData.InvoiceDownloadName = ordData.OrderNumber + ordData.InvoiceFileExt;
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = ordData.PortalId.ToString("D") + "-" + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2,2) + "-" + _entryid;
 
             ordData.SavePurchaseData();
             return NotifyCode.ok;
+        }
+
+        private void DownloadInvoice(int orderid)
+        {
+            var orderData = new OrderData(PortalId, orderid);
+            Utils.ForceDocDownload(orderData.InvoiceFilePath,orderData.InvoiceDownloadName,Response);
+        }
+
+        private void DeleteInvoice(int orderid)
+        {
+            var orderData = new OrderData(PortalId, orderid);
+            GenXmlFunctions.DeleteFile(orderData.InvoiceFileName, StoreSettings.Current.FolderUploadsMapPath,"");
+            orderData.InvoiceDownloadName = "";
+            orderData.InvoiceFileExt = "";
+            orderData.InvoiceFileName = "";
+            orderData.InvoiceFilePath = "";
+            orderData.SavePurchaseData();
         }
 
         private void DisplayDataEntryRepeater(String entryId)

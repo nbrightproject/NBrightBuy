@@ -20,14 +20,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class OrderData : PurchaseData
     {
 
-        public OrderData(int portalId, CartData cartData)
-        {
-            PurchaseTypeCode = "ORDER";
-            PortalId = portalId;
-            PopulatePurchaseData(cartData.GetInfo().ItemID); // move cart from "CART" type to "ORDER" (Cart no loanger exists at this point, it becomes an order.)
-            CreatedDate = String.Format("{0:s}", new DateTime());
-        }
-
         public OrderData(int portalId, int entryid)
         {
             PurchaseTypeCode = "ORDER";

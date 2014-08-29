@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -53,6 +54,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (IsValidated())
             {
                 PurchaseTypeCode = "ORDER";
+                base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Today.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
+                base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", PortalId.ToString("D") + "-" + DateTime.Today.Year.ToString("D").Substring(2, 2) + "-" + _cartId);
                 base.SavePurchaseData();
                 if (debugMode) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;                

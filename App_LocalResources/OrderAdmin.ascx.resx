@@ -162,4 +162,10 @@
   <data name="cmdPrintDeliveryLabel.Text" xml:space="preserve">
     <value>Delivery Label</value>
   </data>
+  <data name="cmdDeleteInvoice.confirm" xml:space="preserve">
+    <value>Delete Invoice ?</value>
+  </data>
+  <data name="cmdDeleteInvoice.Text" xml:space="preserve">
+    <value>Delete Invoice</value>
+  </data>
 </root>

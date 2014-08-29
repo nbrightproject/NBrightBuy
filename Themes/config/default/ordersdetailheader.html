@@ -2,6 +2,8 @@
     
 [<tag id="HiddenFileNames" type="hidden" value=".pdf" />] 
 
+[<tag id="hidExtinvoicedoc" type="hidden" value="" />] <!-- stores file extension of the invoice -->
+
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
@@ -40,7 +42,13 @@
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Invoice" />]</label>
 					    <div class="col-sm-5">
 					        [<tag id="invoicedoc" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
-                            [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]					        
+                            [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{ON}' />]
+					            [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
+					        [<tag type="endtestof" />]
+                            [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{OFF}' />]
+                                [<tag id="cmdDownload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Download" commandname="downloadinvoice" commandargument="ItemID" />]
+                                [<tag id="cmdDeleteInvoice" type="linkbutton" cssclass="btn btn-primary" resourcekey="OrderAdmin.cmdDeleteInvoice" commandname="deleteinvoice" commandargument="ItemID" />]
+					        [<tag type="endtestof" />]
 					    </div>
 					</div>
 
