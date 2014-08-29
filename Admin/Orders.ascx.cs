@@ -204,6 +204,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         CtrlPaging.BindPageLinks();
                     }
 
+                    // display header (Do header after the data return so the productcount works)
+                    base.DoDetail(rpDataH);
+
                 }
 
                 #endregion
@@ -211,8 +214,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             #endregion
 
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
 
             // display footer
             base.DoDetail(rpDataF);
@@ -336,6 +337,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "forcedownload":
+                    GenXmlFunctions.ForceDocDownload((Repeater)source, cArg, StoreSettings.Current.FolderUploadsMapPath, Response);
+                    break;
             }
 
         }
@@ -359,9 +363,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.ShippedDate = shippingdate;
             ordData.OrderStatus = orderstatus;
             ordData.TrackingCode = trackingcode;
-            ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidinvoicedocext");
+            ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidextinvoicedoc");
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
-            ordData.InvoiceFilePath = "";
+            ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName + ordData.InvoiceFileExt;
+
+            if (ordData.OrderNumber == "") ordData.OrderNumber = ordData.PortalId.ToString("D") + "-" + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2,2) + "-" + _entryid;
 
             ordData.SavePurchaseData();
             return NotifyCode.ok;
@@ -380,6 +386,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 rpItem.DataSource = orderData.GetCartItemList();
                 rpItem.DataBind();
                 base.DoDetail(rpItemF, orderData.GetInfo());
+
+                // display header (Do header so we pickup the special invoice document field in the header)
+                base.DoDetail(rpDataH, orderData.GetInfo());
 
             }
         }

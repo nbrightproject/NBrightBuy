@@ -2398,20 +2398,23 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var aryText = orderstatustext.Split(',');
 
                         var lp = 0;
-                    foreach (var c in aryCode)
-                    {
-                        var li = new ListItem();
-                        li.Text = aryText[lp];
-                        li.Value = c;
-                        if (li.Text != "")
-                            ddl.Items.Add(li);
-                        else
+                        foreach (var c in aryCode)
                         {
-                            if (lp == 0) ddl.Items.Add(li); // allow the first entry to be blank.
+                            var li = new ListItem();
+                            li.Text = aryText[lp];
+                            li.Value = c;
+                            if (li.Text != "")
+                                ddl.Items.Add(li);
+                            else
+                            {
+                                if (lp == 0) ddl.Items.Add(li); // allow the first entry to be blank.
+                            }
+                            lp += 1;
                         }
-                        lp += 1;
-                    }
-                    if (aryCode.Length > 0) ddl.SelectedIndex = 0;
+                        var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        if ((ddl.Items.FindByValue(strValue) != null))
+                            ddl.SelectedValue = strValue;
+                        else if (aryCode.Length > 0) ddl.SelectedIndex = 0;
                     }
                 }
 

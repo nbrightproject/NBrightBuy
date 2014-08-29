@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
@@ -24,6 +25,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseTypeCode = "ORDER";
             PortalId = portalId;
             PopulatePurchaseData(cartData.GetInfo().ItemID); // move cart from "CART" type to "ORDER" (Cart no loanger exists at this point, it becomes an order.)
+            CreatedDate = String.Format("{0:s}", new DateTime());
         }
 
         public OrderData(int portalId, int entryid)
@@ -59,11 +61,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String OrderStatus { 
             get
             {
-                return PurchaseInfo.GetXmlProperty("genxml/textbox/orderstatus");
+                return PurchaseInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
             } 
             set
             {
-                PurchaseInfo.SetXmlProperty("genxml/textbox/orderstatus", value);
+                PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
             }  
         }
@@ -133,6 +135,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set
             {
                 PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", value);
+            }
+        }
+        public String InvoiceDownloadName
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/hidden/invoicedownloadname");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", value);
+            }
+        }
+
+        public String OrderNumber
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/ordernumber");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/ordernumber", value);
+            }
+        }
+        public String CreatedDate
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/createddate");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/createddate", value,TypeCode.DateTime);
             }
         }
 
