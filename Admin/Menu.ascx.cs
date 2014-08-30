@@ -82,8 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", Resxpath, Utils.GetCurrentCulture());
                 var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", Resxpath, Utils.GetCurrentCulture());
-
-                
+               
                 //get group list (these are the sections/first level of the menu)
                 var rootList = new Dictionary<String, String>();
                 foreach (var p in pluginData.GetPluginList())
