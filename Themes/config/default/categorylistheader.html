@@ -1,7 +1,5 @@
 [<tag type="selectlocalebutton" size="32"/>] 
 
-    [<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="" commandname="addnew"/>] - 
-    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton" commandname="saveall"/>] - 
 
 <script>
 
@@ -37,12 +35,58 @@ $(document).ready(function() {
 </script>
 [<tag id="selecteditemid" type="postback" value="" />]
 
-<table>
-<tr>
-<td align="right"></td>
-<td align="right"></td>
-<td align="right">[<tag type="valueof" resourcekey="General.Name" />]</td>
-<td align="right">[<tag type="valueof" resourcekey="General.Group" />]</td>
-<td align="right">[<tag type="valueof" resourcekey="General.Parent" />]</td>
-<td align="right"></td>
-</tr>
+
+<div class="row">
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Catalogue</li>
+			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Categories</a></li>
+		</ol>
+	</div>
+</div>
+<h4 class="page-header">Categories</h4>
+<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+
+
+<div class="row">
+	
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header no-box-header">
+				<div class="box-name">
+					<i class="fa fa-table"></i>
+					<span>Categories</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+					<a class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="close-link">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content">
+
+				        <div class="col-sm-2">
+				        [<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary btn-block" commandname="addnew"/>]
+				        </div>
+				        <div class="col-sm-2">
+				        [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-primary btn-default" commandname="saveall"/>]
+				        </div>
+
+						<table class="table table-striped categorylist">
+							<thead>
+								<tr>
+									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
+									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
+									<th> </th>
+									<th> </th>
+									<th> </th>
+								</tr>
+							</thead>
+							<tbody>

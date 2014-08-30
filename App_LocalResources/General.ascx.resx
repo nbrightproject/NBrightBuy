@@ -141,6 +141,9 @@
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="cmdDeleteIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Delete" class="fa fa-minus-square fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
   <data name="cmdDelete.ToolTip" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -154,7 +157,10 @@
     <value>Delete Langauge Record</value>
   </data>
   <data name="cmdEdit.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-edit"&gt;&lt;/i&gt;</value>
+    <value>Edit</value>
+  </data>
+  <data name="cmdEditIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Edit" class="fa fa-edit fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdEdit.ToolTip" xml:space="preserve">
     <value>Edit</value>
@@ -428,6 +434,9 @@
   </data>
   <data name="cmdMove.Text" xml:space="preserve">
     <value>Move</value>
+  </data>
+  <data name="cmdMoveIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Move to here" class="fa fa-arrow-circle-left fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Undo.Text" xml:space="preserve">
     <value>Undo</value>

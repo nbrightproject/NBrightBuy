@@ -1,8 +1,8 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
-
-	<ul class="productlistitem" style="width:120px;height:160px;margin-bottom:6px">
+<li>
+	<ul class="productlistitem">
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<li class="image" style="width:120px;height:120px"><img src="[<tag type='thumbnail' w='100' h='' />]"></li>
+	<li class="image"><img src="[<tag type='thumbnail' w='100' h='' />]"></li>
 	[<tag type="endif" />]
 	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
@@ -11,5 +11,6 @@
 	[<tag type="endif" />]
 	<li class="title">
 	[<tag type="if" xpath="genxml/lang/genxml/textbox/txtmanufacturer" testvalue="" display="{OFF}" displayelse="{ON}" />][<tag type="manufacturer" />] [<tag type="endif" />][<tag type="productname" />]</li>
-	<li class="edititem">[<tag type="nbs:editlink" cssclass="editlink" resourcekey="General.cmdEdit" />]</li><!-- editlink class added to show processing -->
+	<li class="edititem">[<tag type="nbs:editlink" cssclass="editlink" resourcekey="General.cmdEditIcon" />]</li><!-- editlink class added to show processing -->
 	</ul>
+</li>

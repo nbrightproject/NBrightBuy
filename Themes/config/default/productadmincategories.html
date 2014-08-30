@@ -1,14 +1,9 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
-<li style="width:800;">
-    <a class="removecategory" categoryid="[<tag type="valueof" databind="categoryid" />]">Remove</a>  
-    
-    ====[<tag type="valueof" databind="categoryid" />]
 
-    [<tag id="categoryid" type="hidden" value="databind:categoryid" />]
+[<tag id="categoryid" type="hidden" value="databind:categoryid" />]
 
-    categoryname: [<tag type="valueof" databind="categoryname" />]
-    breadcrumb: [<tag type="valueof" databind="breadcrumb" />]
-
-
-</li>	
-	
+<tr>	
+	<td style="white-space:nowrap">[<tag type="valueof" databind="categoryname" />]</td>
+	<td>[<tag type="valueof" databind="breadcrumb" />]</td>
+	<td><a class="removecategory btn-block btn btn-danger" categoryid="[<tag type='valueof' databind='categoryid' />]">Remove</a></td>
+</tr>

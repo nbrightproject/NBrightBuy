@@ -27,18 +27,20 @@ a, a:visited {color:#428BCA}
 .centered{text-align:center}
 #logo a{background: none;}/* Hide devoops logo*/
 .top-panel-right{display: none;}/* Hide top right menu section */
-a.btn-primary {color:#FFFFFF}/* When buttons are inside anchors */
+a.btn-primary,a.btn-success{color:#FFFFFF}/* When buttons are inside anchors */
 a.btn-default {color:#929292}
 #loader{color:#FFFFFF;position:absolute;right:3px;top:6px;z-index: 9999;}/* Loading graphic */
 .nowrap{white-space:nowrap}
 
 /* Productlist items */
-.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;float:left}
+.productadminlist{list-style: none outside none;margin: 0;padding: 0;}
+.productadminlist > li{float:left}
+.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px}
 .productadminlist .productlistitem li{text-align:center;}
-.productadminlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;}
+.productadminlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
 .productadminlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
 .productadminlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
-.productadminlist .productlistitem .edititem{top:0;left:0;position:absolute;}
+.productadminlist .productlistitem .edititem{top:0;right:0;position:absolute;}
 
 /* Pager */
 .NBrightPagingDiv{font-size:18px;margin:24px 0;text-align:left;}
@@ -55,43 +57,65 @@ a.btn-default {color:#929292}
 .sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;color:#DDDDDD;z-index:1;}
 .sortelementUp{top:0;right:0}
 .sortelementDown{bottom:0;right:0}
-
 .editdetails{}
-
 .editmodels{}
 .editmodels #productmodels{list-style: none outside none;margin: 0;padding: 0;}
 .editmodels .modelitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
-
 .editoptions{}
 .editoptions #productoptions,.editoptions #productoptionvalues{list-style: none outside none;margin: 0;padding: 0;}
 .editoptions #productoptions{margin-right:12px}
-.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dotted #E3E3E3;overflow: hidden;padding: 15px 0;position:relative}
 .editoptions .optionitem{opacity:0.4;transition:all 0.4s ease-in-out 0s;}
 .editoptions .optionitem:hover{opacity:1}
 .editoptions .optionitem.selected{opacity:1}
-
-
 .editimages{}
 .editimages #productimages{list-style: none outside none;margin: 0;padding: 0;}
 .editimages .imageitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;margin:0 15px 15px 0;position:relative;float:left}
 .editimages .imagewrapper{height:200px;line-height:200px;text-align:center;width:230px;margin-bottom:15px;}
 .editimages .imagewrapper img{max-height:100%}
-
+.editimages .imageitem .sortelementUp{top:4px;left:-6px}
+.editimages .imageitem .sortelementDown{top:4px;right:-6px}
 .editdocuments{}
 .editdocuments #productdocs{list-style: none outside none;margin: 0;padding: 0;}
 .editdocuments .docitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
-
-
 .editcategories{}
-.editgroups{}
+.editcategories .selectcategory{height:300px}
+.editcategories .removecategory.btn{margin-bottom:0}
+.editproperties{}
+.editproperties .selectgroupcategory option:first-child{display:none} /* Hides first property from value listbox */
+.editproperties .selectgroupcategory{height:260px}
+.editproperties .removecategory.btn{margin-bottom:0}
 .editrelated{}
+.editrelated .productrelated{list-style: none outside none;margin: 0;padding: 0;}
+.editrelated .productrelated > li{float:left}
+.editrelated .relatedlistitem{list-style: none outside none;margin: 0 6px 6px 0;padding: 0;background:#FFFFFF;width:120px;height:160px;position: relative;border:1px dotted #E3E3E3}
+.editrelated .relatedlistitem li{text-align:center;}
+.editrelated .relatedlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.editrelated .relatedlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
+.editrelated .relatedlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
+.editrelated .relatedlistitem .removeitem{top:0;right:0;position:absolute;cursor: pointer;}
+.editrelated .relatedlistitem .removeitem .fa{color: #C44343;}
+.editrelated .relatedlistitem .removeitem .fa:hover{color: #F42D2D;}
 
+.selectrelated{}
+.selectrelated .productlist{list-style: none outside none;margin:15px 0 0;padding: 0;}
+.selectrelated .productlist > li{float:left}
+.selectrelated .selectlistitem{list-style: none outside none;margin: 0 6px 6px 0;padding: 0;background:#FFFFFF;width:96px;height:140px;position: relative;border:1px dotted #E3E3E3}
+.selectrelated .selectlistitem li{text-align:center;}
+.selectrelated .selectlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:96px;height:96px}
+.selectrelated .selectlistitem li.noimage{font-size:80px;line-height:96px;text-align:center;}
+.selectrelated .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 11px;height:38px;overflow:hidden}
+.selectrelated .selectlistitem .selectproduct{top:0;right:0;position:absolute;cursor: pointer;}
+.selectrelated .selectlistitem .selectproduct .fa{color: #DDDDDD;}
+.selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
 
-
-
-
-
-
+/* Category Editor */
+.categorylist .fa{color:#DDDDDD;font-size:200%}
+.categorylist .fa-minus-square:hover{color:#D33030}
+.categorylist .fa-edit:hover{color:#47BE27}
+.categorylist .fa-sort:hover{color:#549ACC}
+.categorylist .fa-times-circle{color:#D33030}
+.categorylist .fa-arrow-circle-left{color:#47BE27}
 
 
 
