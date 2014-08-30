@@ -1,25 +1,3 @@
-<!-- hidden fields to store auto populated data -->
-[<tag id="backofficetabid" type="hidden" value="" />]
-
-
-<!-------------------------------------->
-<!-- DCL Add fields for setting -->
-<!-------------------------------------->
-
-
-<br/>
-[<tag type="valueof" resourcekey="Settings.folderimages" />] : [<tag id="folderimages" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]<br/>
-[<tag type="valueof" resourcekey="Settings.folderdocs" />] : [<tag id="folderdocs" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]<br/>
-[<tag type="valueof" resourcekey="Settings.folderuploads" />] : [<tag id="folderuploads" type="textbox" width="300" maxlength="150" Text="NBStore\uploads" />]<br/>
-<br/>
-Merchant Culture : [<tag id="merchantculturecode" type="culturecodedropdown" />] - Currency code: [<tag id="currencyculturecode" type="culturecodedropdown" />]
-<br/>
-
-[<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
-
-<!-------------------------------------->
-<!-- DCL END: Add fields for setting -->
-<!-------------------------------------->
 
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
@@ -31,7 +9,83 @@ Merchant Culture : [<tag id="merchantculturecode" type="culturecodedropdown" />]
 <h4 class="page-header">[<tag type="valueof" resourcekey="Settings.Settings" />]</h4>
 <p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 <div class="row">
-	<div class="col-xs-12 col-sm-12">
+    	<div class="col-xs-12 col-sm-12">
+
+<!-------------------------------------->
+<!-- DCL Add fields for setting -->
+<!-------------------------------------->
+
+    <!-- hidden fields to store auto populated data -->
+[<tag id="backofficetabid" type="hidden" value="" />]
+
+
+    <div class="box">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-search"></i><span>Country Details</span>
+        </div>
+        <div class="box-icons">
+            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
+            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+            <a class="close-link"><i class="fa fa-times"></i></a></div>
+        <div class="no-move">
+        </div>
+    </div>
+
+    <div class="box-content">
+        <div class="form-horizontal dnnForm">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Merchant Culture</label>
+                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Currency Code</label>
+                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+            </div>
+        </div>
+        <div class="form-horizontal dnnForm">
+            <p class="page-header">Validate countries for the store</p>
+            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-search"></i><span>Folders</span>
+        </div>
+        <div class="box-icons">
+            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
+            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+            <a class="close-link"><i class="fa fa-times"></i></a></div>
+        <div class="no-move">
+        </div>
+    </div>
+
+    <div class="box-content">
+        <div class="form-horizontal dnnForm">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderimages" />]</label>
+                <div class="col-sm-5">[<tag id="folderimages" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]</div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderdocs" />]</label>
+                <div class="col-sm-5">[<tag id="folderdocs" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderuploads" />]</label>
+                <div class="col-sm-5">[<tag id="Tag1" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-------------------------------------->
+<!-- DCL END: Add fields for setting -->
+<!-------------------------------------->
+
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">

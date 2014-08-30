@@ -1,5 +1,5 @@
 [<tag type="selectlocalebutton" size="32"/>] 
-
+[<tag id="selecteditemid" type="postback" value="" />]
 
 <script>
 
@@ -15,6 +15,13 @@ $(document).ready(function() {
 		$(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
 		$(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
 		$("input[[id*='selecteditemid']]").val($(this).attr("itemid"));
+
+		var selectid = $(this).attr("itemid");
+		$(".selectmove").each(function (index) {
+		    if ($(this).attr("parentlist").indexOf(selectid + ";") > -1) $(this).hide();
+        });
+
+
     });
 
     $(".selectcancel").click(function() {
@@ -30,22 +37,15 @@ $(document).ready(function() {
 		$(".savebutton").show();
     });
 
+    if ('[Url:ctrl]' == 'propertiesvalue') $('.propertiesheader').show();
+    if ('[Url:ctrl]' == 'Categories') {
+        $('.searchheader').hide();
+        $('.categoriesheader').show();
+    }
+
 });
 
 </script>
-[<tag id="selecteditemid" type="postback" value="" />]
-
-
-<div class="row">
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>Catalogue</li>
-			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Categories</a></li>
-		</ol>
-	</div>
-</div>
-<h4 class="page-header">Categories</h4>
-<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 
 
 <div class="row">

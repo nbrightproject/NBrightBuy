@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -23,8 +24,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch;
         private String _entryid = "";
         private String _templatType = "list";
+        private String _ctrl = "";
 
         public String Edittype { get; set; }
+        //NOTE:  This code is dual use: by Categories.ascx and PropertiesValue.ascx.  The "Edittype" attr identifies this.
+        //eg: if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
 
         private const string NotifyRef = "categoryaction";
 
@@ -35,16 +39,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             base.OnInit(e);
 
+            _ctrl = Utils.RequestParam(Context, "ctrl");
+
             _entryid = Utils.RequestParam(Context, "eid");
             if (_entryid != "") _templatType = "detail";
 
-            if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")  // This code is dual use by Categories.ascx and GroupCategories.ascx.  The "Edittype" attr identifies this.
-            {
                 // Get Search
                 var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
                 _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 rpSearch.ItemTemplate = _templSearch;                
-            }
 
             var t1 = "category" + _templatType + "header.html";
             var t2 = "category" + _templatType + "body.html";
@@ -138,15 +141,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
+            param[0] = "ctrl=" + _ctrl;
+
             var navigationData = new NavigationData(PortalId, "CategoryAdmin");
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
-                    param[0] = "eid=" + cArg;
+                    param[1] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "return":
-                    param[0] = "";
+                    param[1] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "search":
@@ -193,7 +198,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 ModCtrl.Update(catData.DataLangRecord);
                                 if (catname != "")
                                 {
-                                    // updat eall lanaguge records that have no name
+                                    // update all lanaguge records that have no name
                                     foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                                     {
                                         var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
@@ -220,7 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "save":
                     UpodateRecord();
-                    param[0] = "eid=" + cArg;
+                    param[1] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
 
@@ -262,31 +267,37 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
-                var reindex = movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid") != selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
                 var fromParentItemid = selData.DataRecord.ParentItemId;
-                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
-                selData.DataRecord.ParentItemId = movData.DataRecord.ParentItemId;
-                selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype",movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
-                var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                if (!Utils.IsNumeric(selorder)) selorder = "1";
-                var neworder = Convert.ToDouble(strneworder);
-                if (Convert.ToDouble(strneworder) < Convert.ToDouble(selorder))
-                    neworder = neworder - 0.5;
-                else
-                    neworder = neworder + 0.5;                    
-                selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
-                ModCtrl.Update(selData.DataRecord);
+                var toParentItemid = movData.DataRecord.ParentItemId;
+                var reindex = toParentItemid != fromParentItemid;
 
-                FixRecordSortOrder(selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid"));
-                FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
-
-                if (reindex)
+                var objGrpCtrl = new GrpCatController(StoreSettings.Current.EditLanguage);
+                var movGrp = objGrpCtrl.GetGrpCategory(movData.Info.ItemID);
+                if (!movGrp.Parents.Contains(selData.Info.ItemID)) // cannot move a category into itself (i.e. move parent into sub-category)
                 {
-                    var objGrpCtrl = new GrpCatController(StoreSettings.Current.EditLanguage);
-                    objGrpCtrl.ReIndexCascade(fromParentItemid); // reindex from parent and parents.
-                    objGrpCtrl.ReIndexCascade(selData.Info.ItemID); // reindex select and parents
+                    selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", toParentItemid.ToString("D"));
+                    selData.DataRecord.ParentItemId = toParentItemid;
+                    selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+                    var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+                    var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+                    if (!Utils.IsNumeric(strneworder)) strneworder = "1";
+                    if (!Utils.IsNumeric(selorder)) selorder = "1";
+                    var neworder = Convert.ToDouble(strneworder);
+                    if (Convert.ToDouble(strneworder) < Convert.ToDouble(selorder))
+                        neworder = neworder - 0.5;
+                    else
+                        neworder = neworder + 0.5;
+                    selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", neworder.ToString(""), TypeCode.Double);
+                    ModCtrl.Update(selData.DataRecord);
+
+                    FixRecordSortOrder(toParentItemid.ToString("D")); //reindex all siblings (this is so we get a int on the recordsortorder)
+                    FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+
+                    if (reindex)
+                    {
+                        objGrpCtrl.ReIndexCascade(fromParentItemid); // reindex from parent and parents.
+                        objGrpCtrl.ReIndexCascade(selData.Info.ItemID); // reindex select and parents
+                    }
                 }
             }
         }
@@ -333,21 +344,27 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         }
 
 
-        private List<NBrightInfo> GetTreeCatList(List<NBrightInfo> rtnList, int level = 0, int parentid = 0, string groupref = "", int displaylevels = 50)
+        private List<NBrightInfo> GetTreeCatList(List<NBrightInfo> rtnList, int level = 0, int parentid = 0, string groupref = "", string parentlist = "", int displaylevels = 50)
         {
             if (level > displaylevels) return rtnList; // stop infinate loop
 
             var strFilter = " and NB1.ParentItemId = " + parentid + " ";
-            if (groupref != "") strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
-            
+            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";  
+            else
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+
+            if (parentid > 0 ) parentlist += parentid.ToString("D") + ";";
+
             var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
             foreach (NBrightInfo catinfo in levelList)
             {
-                var str = new string('.',level);
-                str = str.Replace(".", "&nbsp;");
+                var str = new string('.', level);
+                str = str.Replace(".", "....");
                 catinfo.SetXmlProperty("genxml/hidden/levelprefix",str);
                 rtnList.Add(catinfo);
-                rtnList = GetTreeCatList(rtnList, level + 1, catinfo.ItemID, groupref, displaylevels);
+                catinfo.SetXmlProperty("genxml/parentlist",parentlist);
+                rtnList = GetTreeCatList(rtnList, level + 1, catinfo.ItemID, groupref, parentlist, displaylevels);
             }
 
             return rtnList;

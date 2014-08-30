@@ -1311,7 +1311,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 l.Visible = NBrightGlobal.IsVisible;
                 l.Text = "";
-                 var strValue = GenXmlFunctions.GetGenXmlValue("ddlParentCatId", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                 var strValue = Convert.ToString(DataBinder.Eval(container.DataItem, "ParentItemId"));
                 if (Utils.IsNumeric(strValue))
                 {
                     var pCat = new CategoryData(Convert.ToInt32(strValue), StoreSettings.Current.EditLanguage);
