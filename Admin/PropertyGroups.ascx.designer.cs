@@ -10,7 +10,7 @@
 namespace Nevoweb.DNN.NBrightBuy.Admin {
     
     
-    public partial class Properties {
+    public partial class PropertyGroups {
         
         /// <summary>
         /// notifymsg control.

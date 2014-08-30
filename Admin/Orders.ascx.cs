@@ -383,7 +383,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private void DownloadInvoice(int orderid)
         {
             var orderData = new OrderData(PortalId, orderid);
-            Utils.ForceDocDownload(orderData.InvoiceFilePath,orderData.InvoiceDownloadName,Response);
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\" +  orderData.InvoiceFileName, orderData.InvoiceDownloadName, Response);
         }
 
         private void DeleteInvoice(int orderid)
