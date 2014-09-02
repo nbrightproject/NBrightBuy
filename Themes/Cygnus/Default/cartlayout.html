@@ -144,11 +144,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $("#selectshipaddress").hide();
 
         //hide/show shipping option
-        if ($("input[id*='rblshippingoptions']:checked").val() == "2") {
-            $('#shippinginput').show();
-            $("a[id*='cmdSaveShipAddress']").show();
-            $("#selectshipaddress").show();
-        }
+        if ($("input[id*='rblshippingoptions']:checked").val() == "2") $('#shippinginput').show();
         if ($("input[id*='rblshippingoptions']:checked").val() == "3") $('.checkoutship').show();
 
         $("input[id*='rblshippingoptions']").change(function () {
@@ -162,36 +158,27 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
                 $("#selectshipaddress").show();
             }
             if ($(this).val() == "3") $('.checkoutship').show();
-            hideaddressbook();
-        });
-
-        $("#selectbilladdress").click(function () {
-            $("#cartdetails").hide();
-            $("#addressbook").show();
-            $("input[id*='selectaddresstype']").val("bill"); //update postback, so the server knows which address type
-        });
-        $("#selectshipaddress").click(function () {
-            $("#cartdetails").hide();
-            $("#addressbook").show();
-            $("input[id*='selectaddresstype']").val("ship"); //update postback, so the server knows which address type
-        });
-        $("#cancelselectaddress").click(function () {
-            $("#cartdetails").show();
-            $("#addressbook").hide();
         });
 
 
-        function hideaddressbook() {
-            //if we have no address book, hide the option to select and save.
-            if ($("#addressbook").length == 0) {
-                $("a[id*='cmdSaveBillAddress']").hide();
-                $("a[id*='cmdSaveShipAddress']").hide();
-                $("#selectshipaddress").hide();
-                $("#selectbilladdress").hide();
+        $("select[id*='selectaddress']").change(function () {
+            populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalue'), $(this).find('option:selected').attr('data'));
+        });
+
+        function populateAddressForm(selectordiv, datavalue, data) {
+            // Take the address dropdown data and popluate the address for with it.
+            // selectordiv = the selector for the form section that needs popluating
+            // datavalue = the list of field ids that need popluating (in seq order matching the "data" param)
+            // data = the list of data values to be populated.
+            if (data != null && data != '') {
+                var datarray = data.split(',');
+                var valuearray = datavalue.split(',');
+                var arrayLength = valuearray.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $(selectordiv).find("[id*='" + valuearray[i] + "']").val(datarray[i]);
+                }
             }
         }
-
-        hideaddressbook();
 
     });
 </script>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,7 @@ using DotNetNuke.Entities.Users;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Image = System.Web.UI.WebControls.Image;
 
 namespace Nevoweb.DNN.NBrightBuy.render
 {
@@ -162,6 +164,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "countrydropdown":
                     CreateCountryDropDownList(container, xmlNod);
+                    return true;
+                case "addressdropdown":
+                    CreateAddressDropDownList(container, xmlNod);
                     return true;
                 case "catbreadcrumb":
                     CreateCatBreadCrumb(container, xmlNod);
@@ -3360,6 +3365,114 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
         #endregion
+
+#region "Addressdropdown"
+
+        private void CreateAddressDropDownList(Control container, XmlNode xmlNod)
+        {
+            var rbl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+            {
+                rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                rbl.Attributes.Add("template", xmlNod.Attributes["template"].Value);
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["data"] != null))
+            {
+                rbl.Attributes.Add("data", xmlNod.Attributes["data"].Value);
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["datavalue"] != null))
+            {
+                rbl.Attributes.Add("datavalue", xmlNod.Attributes["datavalue"].Value);
+            }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["datavalue"] != null))
+            {
+                rbl.Attributes.Add("formselector", xmlNod.Attributes["formselector"].Value);
+            }
+
+            rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
+            rbl.DataBinding += AddressDropdownDataBind;
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+            {
+                rbl.ID = xmlNod.Attributes["id"].InnerText;
+                container.Controls.Add(rbl);
+            }
+        }
+
+        private void AddressDropdownDataBind(object sender, EventArgs e)
+        {
+
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+
+                    var usr = UserController.GetCurrentUserInfo();
+                    var addressData = new AddressData(usr.UserID.ToString(""));
+
+                    if (ddl.Attributes["blank"] != null)
+                    {
+                        var li = new ListItem();
+                        li.Text = ddl.Attributes["blank"];
+                        li.Value = "-1";
+                        ddl.Items.Add(li);
+                        ddl.Attributes.Remove("blank");
+                    }
+
+                    var addrlist = addressData.GetAddressList();
+                    foreach (var tItem in addrlist)
+                    {
+                        var itemtext = tItem.GetXmlProperty("genxml/textbox/firstname") + "," + tItem.GetXmlProperty("genxml/textbox/lastname") + "," + tItem.GetXmlProperty("genxml/textbox/unit") + "," + tItem.GetXmlProperty("genxml/textbox/street") + "," + tItem.GetXmlProperty("genxml/textbox/city");
+                        if (ddl.Attributes["template"] != null)
+                        {
+                            itemtext = "";
+                            var xpathList = ddl.Attributes["template"].Split(',');
+                            foreach (var xp in xpathList)
+                            {
+                                itemtext += "," + tItem.GetXmlProperty(xp);
+                            }
+                        }
+                        var datatext = "";
+                        if (ddl.Attributes["data"] != null)
+                        {
+                            var xpathList = ddl.Attributes["data"].Split(',');
+                            foreach (var xp in xpathList)
+                            {
+                                datatext += "," + tItem.GetXmlProperty(xp).Replace(","," ");
+                            }
+                        }
+                        var datavalue = "";
+                        if (ddl.Attributes["datavalue"] != null) datavalue += ddl.Attributes["datavalue"];
+
+                        var idx = tItem.GetXmlProperty("genxml/hidden/index");
+                        if (ddl.Items.FindByValue(idx) == null)
+                        {
+                            var li = new ListItem();
+                            li.Text = itemtext.TrimStart(',');
+                            li.Value = idx;
+                            li.Attributes.Add("data", datatext.TrimStart(','));
+                            li.Attributes.Add("datavalue", datavalue);
+                            ddl.Items.Add(li);                            
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
+        }
+
+
+
+#endregion
 
         #region "Functions"
 

@@ -72,47 +72,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String AddAddress(NBrightInfo addressInfo, Boolean debugMode = false)
         {
-            // load into NBrigthInfo class, so it's easier to get at xml values.
+            var addressIndex = addressInfo.GetXmlProperty("genxml/dropdownlist/selectaddress");
+            if (!Utils.IsNumeric(addressIndex)) return "";
+            var addrIdx = Convert.ToInt32(addressIndex);
+
             if (debugMode) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
             var addrExists = AddressExists(addressInfo);
-
-            if (addressInfo.GetXmlPropertyBool("genxml/hidden/default"))
+            if (!addrExists)
             {
-                // if we have a default DNN address, we don;t want to ONLY update it from here.
-                //NOTE: Email address is not part of the Profile
-                var strIdx = addressInfo.GetXmlProperty("genxml/hidden/index");
-                if (Utils.IsNumeric(strIdx))
-                {
-                    var idx = Convert.ToInt32(strIdx);
-                    UpdateAddress(addressInfo.XMLData, idx);
-                }
-                else
-                {
-                    _addressList.Add(addressInfo);
-                    Save(debugMode);                    
-                }
-            }
-            else
-            {
-                if (Utils.IsNumeric(addressInfo.GetXmlProperty("genxml/hidden/index")))
-                {
-                    if (addressInfo.GetXmlProperty("genxml/hidden/index") == "-1") // index of -1, add the address
+                    if (addrIdx >= 0)
                     {
-                        _addressList.Add(addressInfo);
-                        Save();
+                        UpdateAddress(addressInfo.XMLData, addrIdx);
                     }
                     else
                     {
-                        var idx = Convert.ToInt32(addressInfo.GetXmlProperty("genxml/hidden/index"));
-                        UpdateAddress(addressInfo.XMLData, idx);
+                        _addressList.Add(addressInfo);
+                        Save(debugMode);
                     }
-                }
-                else
-                {
-                    _addressList.Add(addressInfo);
-                    Save(debugMode);
-                }
             }
+
             return ""; // if everything is OK, don't send a message back.
         }
 
@@ -198,6 +176,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private Boolean AddressExists(NBrightInfo nInfo)
         {
             var newAddr = GetCompareAddress(nInfo);
+            if (newAddr == "") return true; // if we don;t have an address return that it exists.(we don;t want to create ablank address)
             //we don;t know the index, so search for it, if not found then create a new one. If found ignore
             var found = false;
             foreach (var a in _addressList)

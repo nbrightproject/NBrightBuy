@@ -72,9 +72,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templDfoot = ModSettings.Get("txtdisplaybodyfoot");
                 _templF = ModSettings.Get("txtdisplayfooter");
 
-                const string templASH = "cartselectaddressheader.html";
-                const string templASB = "cartselectaddressbody.html";
-                const string templASF = "cartselectaddressfooter.html";
                 const string templAB = "cartbillingaddress.html";
                 const string templAS = "cartshippingaddress.html";
                 const string templS = "cartshipment.html";
@@ -103,9 +100,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 var carttype = ModSettings.Get("ddlcarttype");
                 if (carttype == "2")
                 {
-                    rpAddrListH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASH, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    rpAddrListB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    rpAddrListF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templASF, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
@@ -309,13 +303,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();
+                    _addressData.AddAddress(rpAddrS);
+                    _addressData.AddAddress(rpAddrB);
                     var paytabid = ModSettings.Get("paymenttab");
                     if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
                     Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
-                    break;
-                case "selectaddress":
-                    AddSelectedAddress(_addressData.GetAddress(e.Item.ItemIndex));
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "saveshipaddress":
                     UpdateCartAddresses();
@@ -336,24 +328,6 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
         #region "Methods"
-
-        private void AddSelectedAddress(NBrightInfo selectedAddr)
-        {
-            var strXml = GenXmlFunctions.GetGenXml(rpAddrListH);
-            switch (GenXmlFunctions.GetGenXmlValue(strXml, "genxml/hidden/selectaddresstype"))
-            {
-                case "ship":
-                    _cartInfo.AddShippingAddress(selectedAddr); ///add shipping address to cart
-                    UpdateCartInfo();
-                    SaveCart();
-                    break;
-                case "bill":
-                    _cartInfo.AddBillingAddress(selectedAddr); ///add billing address to cart
-                    UpdateCartInfo();
-                    SaveCart();
-                    break;
-            }
-        }
 
         private void SaveCart()
         {

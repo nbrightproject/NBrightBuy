@@ -800,9 +800,6 @@
     <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
     <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
     <Content Include="Themes\Cygnus\Default\cartpromo.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressbody.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressfooter.html" />
-    <Content Include="Themes\Cygnus\Default\cartselectaddressheader.html" />
     <Content Include="Themes\Cygnus\Default\cartshipment.html" />
     <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
     <Content Include="Themes\Cygnus\Default\carttax.html" />
