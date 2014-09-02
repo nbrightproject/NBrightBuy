@@ -1,4 +1,4 @@
-// --- Copyright (c) notice NevoWeb ---
+﻿// --- Copyright (c) notice NevoWeb ---
 //  Copyright (c) 2014 SARL NevoWeb.  www.nevoweb.com. The MIT License (MIT).
 // Author: D.C.Lee
 // ------------------------------------------------------------------------
@@ -16,7 +16,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.UserControls;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -110,14 +117,15 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
+            var redirecttabid = "";
+            var emailtemplate = "";
 
             switch (e.CommandName.ToLower())
             {
                 case "saveprofile":
                     _profileData.UpdateProfile(rpInp, DebugMode);
-                    var addr = new AddressData(); //this will update the default profile addres int he addressbook.
 
-                    var emailtemplate = ModSettings.Get("emailtemplate");
+                    emailtemplate = ModSettings.Get("emailtemplate");
                     NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
 
                     param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
@@ -126,7 +134,29 @@ namespace Nevoweb.DNN.NBrightBuy
                     else
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
 
-                    var redirecttabid = ModSettings.Get("ddlredirecttabid");
+                    redirecttabid = ModSettings.Get("ddlredirecttabid");
+                    if (!Utils.IsNumeric(redirecttabid)) redirecttabid = TabId.ToString("");
+                    Response.Redirect(Globals.NavigateURL(Convert.ToInt32(redirecttabid), "", param), true);
+                    break;
+                case "register":
+
+                    var notifyCode = CreateUser(); //create a new user and login
+                    if (notifyCode == NotifyCode.ok)
+                    {
+                        var objUserInfo = UserController.GetCurrentUserInfo();
+                        _profileData = new ProfileData(objUserInfo.UserID, rpInp, DebugMode); //craete and update a profile for this new logged in user.
+                        emailtemplate = ModSettings.Get("emailtemplate");
+                        NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
+                    }
+
+
+                    param[0] = "msg=" + NotifyRef + "_" + notifyCode;
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True")
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, notifyCode);
+                    else
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", notifyCode);
+
+                    if (notifyCode == NotifyCode.ok) redirecttabid = ModSettings.Get("ddlredirecttabid");
                     if (!Utils.IsNumeric(redirecttabid)) redirecttabid = TabId.ToString("");
                     Response.Redirect(Globals.NavigateURL(Convert.ToInt32(redirecttabid), "", param), true);
                     break;
@@ -135,6 +165,53 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         #endregion
+
+        private NotifyCode CreateUser()
+        {
+
+            if (!this.UserInfo.IsInRole("Registered Users"))
+            {
+                // Create and hydrate User
+                var objUser = new UserInfo();
+                objUser.Profile.InitialiseProfile(this.PortalId, true);
+                objUser.PortalID = PortalId;
+                objUser.DisplayName = GenXmlFunctions.GetField(rpInp, "DisplayName"); 
+                objUser.Email = GenXmlFunctions.GetField(rpInp,"Email");
+                objUser.FirstName = GenXmlFunctions.GetField(rpInp, "FirstName"); 
+                objUser.LastName = GenXmlFunctions.GetField(rpInp, "LastName");
+                objUser.Username = GenXmlFunctions.GetField(rpInp, "Username");
+                if (objUser.Username == "") objUser.Username = GenXmlFunctions.GetField(rpInp, "Email");                
+                objUser.Membership.CreatedDate = System.DateTime.Now;
+                objUser.Membership.Password = DotNetNuke.Entities.Users.UserController.GeneratePassword(9);
+                objUser.Membership.UpdatePassword = true;
+                objUser.Membership.Approved = PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PublicRegistration;
+
+                // Create the user
+                var createStatus = UserController.CreateUser(ref objUser);
+
+                DataCache.ClearPortalCache(PortalId, true);
+                bool boNotify = false;
+                switch (createStatus)
+                {
+                    case UserCreateStatus.Success:
+                        //boNotify = true;
+                        if (objUser.Membership.Approved) UserController.UserLogin(this.PortalId, objUser,PortalSettings.PortalName, AuthenticationLoginBase.GetIPAddress(),false);
+                        return NotifyCode.ok;
+                    case UserCreateStatus.DuplicateEmail:
+                    case UserCreateStatus.DuplicateUserName:
+                    case UserCreateStatus.UsernameAlreadyExists:
+                    case UserCreateStatus.UserAlreadyRegistered:
+                    default:
+                        // registration error
+                        boNotify = false;
+                        break;
+                }
+
+            }
+
+            return NotifyCode.fail;
+                 
+        }
 
 
     }

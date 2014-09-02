@@ -522,4 +522,10 @@
   <data name="Invoice.Text" xml:space="preserve">
     <value>Invoice</value>
   </data>
+  <data name="Register.Text" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Submit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
 </root>

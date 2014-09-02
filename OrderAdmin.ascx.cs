@@ -100,8 +100,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpSearch.ItemTemplate = _templSearch;
 
                 // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
+                 var templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpDataH.ItemTemplate = templateHeader;
+
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, templateHeader, ModSettings.Settings(), null, DebugMode);
+
+
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);

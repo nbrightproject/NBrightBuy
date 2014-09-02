@@ -71,10 +71,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 _templinp = ModSettings.Get("txtinputform");
 
                 // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
+                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
+                _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpDataH.ItemTemplate = _templateHeader;
+
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
 
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);

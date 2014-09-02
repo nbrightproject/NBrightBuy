@@ -19,6 +19,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private UserData _uData;
 
+        public ProfileData(int userid,Repeater rpData, Boolean debugMode = false)
+        {
+            Exists = true;
+            PopulateData(userid.ToString("D"));
+            UpdateProfile(rpData, debugMode);
+        }
+
         public ProfileData()
         {
             PopulateData("");
