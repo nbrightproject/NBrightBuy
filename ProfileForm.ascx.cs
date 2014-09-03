@@ -210,8 +210,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     param[0] = "msg=" + NotifyRef + "_" + notifyCode;
-                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True" && failreason == "")
-                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True" && notifyCode == NotifyCode.ok)
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", notifyCode);
                     else
                     {
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + failreason, notifyCode);
