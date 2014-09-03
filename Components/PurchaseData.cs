@@ -127,6 +127,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("unitcost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
                 objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
 
+                //move all product and model data into cart item, so we can display bespoke fields.
+                objInfo.AddSingleNode("productxml", productData.Info.XMLData, "genxml");
+
                 #endregion
 
 

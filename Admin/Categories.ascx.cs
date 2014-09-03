@@ -98,13 +98,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
 
-                if (_templatType == "detail")
+                if (Utils.IsNumeric(_entryid) && _entryid != "0")
                 {
-                    if (Utils.IsNumeric(_entryid) && _entryid != "0")
-                    {
-                        var categoryData = new CategoryData(Convert.ToInt32(_entryid), EditLanguage);
-                        base.DoDetail(rpData, categoryData.Info);
-                    }
+                    var categoryData = new CategoryData(Convert.ToInt32(_entryid), EditLanguage);
+                    base.DoDetail(rpData, categoryData.Info);
                 }
                 else
                 {
@@ -220,7 +217,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         }
                     }
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
-                    NBrightBuyUtils.RemoveModCache(-1); //clear any cache
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "move":
@@ -264,6 +261,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.fail);
             }
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
         }
 
         private void MoveRecord(int itemId)
@@ -305,6 +303,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         objGrpCtrl.ReIndexCascade(fromParentItemid); // reindex from parent and parents.
                         objGrpCtrl.ReIndexCascade(selData.Info.ItemID); // reindex select and parents
                     }
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
                 }
             }
         }
