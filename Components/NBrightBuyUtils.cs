@@ -373,6 +373,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Save temnpoary form data into memory.  This save data we want to repopulate a formwith after pstback into memory, rather than the DB.
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="msgcode"></param>
+        /// <param name="result"></param>
+        public static void SetFormTempData(int moduleId, String xmlData)
+        {
+            if (xmlData != "")
+            {
+                var sessionkey = "NBrightBuyForm*" + moduleId.ToString("");
+                HttpContext.Current.Session[sessionkey] = xmlData;
+            }
+        }
+        public static String GetFormTempData(int moduleId)
+        {
+            var xmlData = "";
+            var sessionkey = "NBrightBuyForm*" + moduleId.ToString("");
+            if (HttpContext.Current.Session[sessionkey] != null) xmlData = (String)HttpContext.Current.Session[sessionkey];
+            if (xmlData != "")
+            {
+                HttpContext.Current.Session.Remove(sessionkey);
+                return xmlData;
+            }
+            return "";
+        }
+
+        /// <summary>
         /// Set Notify Message
         /// </summary>
         /// <param name="moduleId"></param>

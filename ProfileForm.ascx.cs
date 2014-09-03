@@ -103,7 +103,11 @@ namespace Nevoweb.DNN.NBrightBuy
         {
 
             var objprof = _profileData.GetProfile();
-            if (objprof == null) objprof = new NBrightInfo(true); //assume new address
+            if (!_profileData.Exists || objprof == null)
+            {
+                objprof = new NBrightInfo(true); //assume new address
+                objprof.XMLData = NBrightBuyUtils.GetFormTempData(ModuleId); // get any saved data
+            }
             base.DoDetail(rpInp, objprof);
 
         }
@@ -126,35 +130,92 @@ namespace Nevoweb.DNN.NBrightBuy
                     _profileData.UpdateProfile(rpInp, DebugMode);
 
                     emailtemplate = ModSettings.Get("emailtemplate");
-                    NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
+                    if (emailtemplate != "") NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
 
                     param[0] = "msg=" + NotifyRef + "_" + NotifyCode.ok;
-                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True")
-                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, NotifyCode.ok);
-                    else
-                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
-
-                    redirecttabid = ModSettings.Get("ddlredirecttabid");
-                    if (!Utils.IsNumeric(redirecttabid)) redirecttabid = TabId.ToString("");
-                    Response.Redirect(Globals.NavigateURL(Convert.ToInt32(redirecttabid), "", param), true);
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, NotifyCode.ok);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "register":
 
-                    var notifyCode = CreateUser(); //create a new user and login
-                    if (notifyCode == NotifyCode.ok)
+                    var notifyCode = NotifyCode.fail;
+                    var failreason = "";
+
+                    var cap = (DotNetNuke.UI.WebControls.CaptchaControl)rpInp.Controls[0].FindControl("captcha");;
+                    if (cap == null || cap.IsValid)
                     {
-                        var objUserInfo = UserController.GetCurrentUserInfo();
-                        _profileData = new ProfileData(objUserInfo.UserID, rpInp, DebugMode); //craete and update a profile for this new logged in user.
-                        emailtemplate = ModSettings.Get("emailtemplate");
-                        NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileupdated_emailsubject.Text");
+                        //create a new user and login
+                        if (!this.UserInfo.IsInRole("Registered Users"))
+                        {
+                            // Create and hydrate User
+                            var objUser = new UserInfo();
+                            objUser.Profile.InitialiseProfile(this.PortalId, true);
+                            objUser.PortalID = PortalId;
+                            objUser.DisplayName = GenXmlFunctions.GetField(rpInp, "DisplayName");
+                            objUser.Email = GenXmlFunctions.GetField(rpInp, "Email");
+                            objUser.FirstName = GenXmlFunctions.GetField(rpInp, "FirstName");
+                            objUser.LastName = GenXmlFunctions.GetField(rpInp, "LastName");
+                            objUser.Username = GenXmlFunctions.GetField(rpInp, "Username");
+                            if (objUser.Username == "") objUser.Username = GenXmlFunctions.GetField(rpInp, "Email");
+                            objUser.Membership.CreatedDate = System.DateTime.Now;
+                            objUser.Membership.Password = DotNetNuke.Entities.Users.UserController.GeneratePassword(9);
+                            objUser.Membership.UpdatePassword = true;
+                            objUser.Membership.Approved = PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PublicRegistration;
+
+                            // Create the user
+                            var createStatus = UserController.CreateUser(ref objUser);
+
+                            DataCache.ClearPortalCache(PortalId, true);
+
+                            switch (createStatus)
+                            {
+                                case UserCreateStatus.Success:
+                                    //boNotify = true;
+                                    if (objUser.Membership.Approved) UserController.UserLogin(this.PortalId, objUser, PortalSettings.PortalName, AuthenticationLoginBase.GetIPAddress(), false);
+                                    notifyCode = NotifyCode.ok;
+                                    break;
+                                case UserCreateStatus.DuplicateEmail:
+                                    failreason = "exists";
+                                    break;
+                                case UserCreateStatus.DuplicateUserName:
+                                    failreason = "exists";
+                                    break;
+                                case UserCreateStatus.UsernameAlreadyExists:
+                                    failreason = "exists";
+                                    break;
+                                case UserCreateStatus.UserAlreadyRegistered:
+                                    failreason = "exists";
+                                    break;
+                                default:
+                                    // registration error
+                                    break;
+                            }
+
+                            if (notifyCode == NotifyCode.ok)
+                            {
+                                _profileData = new ProfileData(objUser.UserID, rpInp, DebugMode); //create and update a profile for this new logged in user.
+                                emailtemplate = ModSettings.Get("emailregisteredtemplate");
+                                if (emailtemplate != "") NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileregistered_emailsubject.Text");
+                                emailtemplate = ModSettings.Get("emailregisteredclienttemplate");
+                                if (emailtemplate != "") NBrightBuyUtils.SendEmail(objUser.Email,emailtemplate, _profileData.GetProfile(), "profileregistered_emailsubject.Text");
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        NBrightBuyUtils.SetFormTempData(ModuleId,GenXmlFunctions.GetGenXml(rpInp));
+                        failreason = "captcha";
                     }
 
-
                     param[0] = "msg=" + NotifyRef + "_" + notifyCode;
-                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True")
-                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, notifyCode);
+                    if (!UserInfo.IsInRole("Client") && ModSettings.Get("clientrole") == "True" && failreason == "")
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", NotifyCode.ok);
                     else
-                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "clientrole", notifyCode);
+                    {
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + failreason, notifyCode);
+                    }
 
                     if (notifyCode == NotifyCode.ok) redirecttabid = ModSettings.Get("ddlredirecttabid");
                     if (!Utils.IsNumeric(redirecttabid)) redirecttabid = TabId.ToString("");

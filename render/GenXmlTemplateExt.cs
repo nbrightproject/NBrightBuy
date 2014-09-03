@@ -3366,7 +3366,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-#region "Addressdropdown"
+
+        #region "Addressdropdown"
 
         private void CreateAddressDropDownList(Control container, XmlNode xmlNod)
         {
@@ -3473,6 +3474,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 #endregion
+
 
         #region "Functions"
 

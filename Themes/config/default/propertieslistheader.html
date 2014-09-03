@@ -1,0 +1,92 @@
+[<tag type="selectlocalebutton" size="32"/>] 
+[<tag id="selecteditemid" type="postback" value="" />]
+
+<script>
+
+$(document).ready(function() {
+
+	$(".selectmove").hide();
+	$(".selectcancel").hide();		
+	$(".savebutton").hide();
+
+    $(".selectrecord").click(function() {
+		$(".selectrecord").hide();
+		$(".selectmove").show();
+		$(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
+		$(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
+		$("input[[id*='selecteditemid']]").val($(this).attr("itemid"));
+
+		var selectid = $(this).attr("itemid");
+		$(".selectmove").each(function (index) {
+		    if ($(this).attr("parentlist").indexOf(selectid + ";") > -1) $(this).hide();
+        });
+
+
+    });
+
+    $(".selectcancel").click(function() {
+		$(".selectmove").hide();
+		$(".selectcancel").hide();		
+		$(".selectrecord").show();		
+		$("input[[id*='selecteditemid']]").val('');
+    });
+
+    $("input[[id*='txtcategoryname']]").keyup(function() {
+		var id = $(this).attr("id").replace('txtcategoryname','isdirty');
+		$('#' + id).val(true);
+		$(".savebutton").show();
+    });
+
+    if ('[Url:ctrl]' == 'propertiesvalue') $('.propertiesheader').show();
+    if ('[Url:ctrl]' == 'Categories') {
+        $('.searchheader').hide();
+        $('.categoriesheader').show();
+    }
+
+});
+
+</script>
+
+
+<div class="row">
+	
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header no-box-header">
+				<div class="box-name">
+					<i class="fa fa-table"></i>
+					<span>Categories</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+					<a class="expand-link">
+						<i class="fa fa-expand"></i>
+					</a>
+					<a class="close-link">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+				<div class="no-move"></div>
+			</div>
+			<div class="box-content">
+
+				        <div class="col-sm-2">
+				        [<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary btn-block" commandname="addnew"/>]
+				        </div>
+				        <div class="col-sm-2">
+				        [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-primary btn-default" commandname="saveall"/>]
+				        </div>
+
+						<table class="table table-striped categorylist">
+							<thead>
+								<tr>
+									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
+									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
+									<th> </th>
+									<th> </th>
+									<th> </th>
+								</tr>
+							</thead>
+							<tbody>

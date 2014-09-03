@@ -133,7 +133,7 @@
     <value>Input form Template : </value>
   </data>
   <data name="lblemailtemplate.Help" xml:space="preserve">
-    <value>Email to be sent when a profile is updated.</value>
+    <value>Email to be sent when a profile is updated.  (If empty no email is sent)</value>
   </data>
   <data name="lblemailtemplate.Text" xml:space="preserve">
     <value>Email Template : </value>
@@ -152,5 +152,17 @@
   </data>
   <data name="lblredirecttab.Text" xml:space="preserve">
     <value>Redirect Page : </value>
+  </data>
+  <data name="lblemailregisteredclienttemplate.Help" xml:space="preserve">
+    <value>Email to be sent to Client when they register. (If empty no email is sent)</value>
+  </data>
+  <data name="lblemailregisteredclienttemplate.Text" xml:space="preserve">
+    <value>Email Registered Client Template : </value>
+  </data>
+  <data name="lblemailregisteredtemplate.Help" xml:space="preserve">
+    <value>Email to be sent to Manager when a client registers. (If empty no email is sent)</value>
+  </data>
+  <data name="lblemailregisteredtemplate.Text" xml:space="preserve">
+    <value>Email Registered Template : </value>
   </data>
 </root>

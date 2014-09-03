@@ -1,0 +1,16 @@
+<tr>
+<td style="white-space:nowrap;padding-right:30px">[<tag type="valueof" xpath="genxml/hidden/levelprefix" />][<tag id="ddlParentCatId" type="categoryparentname" />]</td>
+<td style="width:100%">[<tag id="txtcategoryname" type="textbox" cssclass="form-control" maxlength="150" />]</td>
+<td>
+                                                                        
+[<tag id="itemid" type="hidden" databind="ItemID" />]
+[<tag id="isdirty" type="postback" value="false" />]
+<a title="Move" href="#" class="selectrecord" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-sort fa-fw"></i></a>
+    <a title="Cancel Move" href="#" class="selectcancel" itemid="[<tag type='valueof' databind='ItemID' />]"><i class="fa fa-times-circle fa-fw"></i></a>
+<span class="selectmove" itemid="[<tag type='valueof' databind='ItemID' />]" parentlist="[<tag type='valueof' xpath='genxml/parentlist' />]" >
+[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMoveIcon" commandname="move" commandargument="ItemID" />]
+</span>
+</td>
+<td>[<tag id="cmdEdit" type="linkbutton" resourcekey="General.cmdEditIcon" commandname="entrydetail" commandargument="ItemID" />]</td>
+<td>[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteIcon" commandname="delete" commandargument="ItemID" />]</td>
+</tr>

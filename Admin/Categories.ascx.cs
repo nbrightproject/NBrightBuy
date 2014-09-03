@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Diagnostics.Eventing.Reader;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -44,14 +45,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             _entryid = Utils.RequestParam(Context, "eid");
             if (_entryid != "") _templatType = "detail";
 
-                // Get Search
+            // create different templates for properties
+            if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                _templatType = "properties" + _templatType;
+            else
+                _templatType = "category" + _templatType;
+            
+            // Get Search
                 var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
                 _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 rpSearch.ItemTemplate = _templSearch;                
 
-            var t1 = "category" + _templatType + "header.html";
-            var t2 = "category" + _templatType + "body.html";
-            var t3 = "category" + _templatType + "footer.html";
+            var t1 = _templatType + "header.html";
+            var t2 = _templatType + "body.html";
+            var t3 = _templatType + "footer.html";
 
             // Get Display Header
             var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);

@@ -192,4 +192,16 @@
   <data name="groupactionsave_ok.Text" xml:space="preserve">
     <value>Group update Successful</value>
   </data>
+  <data name="profileupdatedexists_fail.Text" xml:space="preserve">
+    <value>User already registered.  To register please try a different username/email.</value>
+  </data>
+  <data name="profileupdated_fail.Text" xml:space="preserve">
+    <value>Unable to register user, please check you profile information.</value>
+  </data>
+  <data name="profileregistered_emailsubject.Text" xml:space="preserve">
+    <value>New Profile Registered</value>
+  </data>
+  <data name="profileupdatedcaptcha_fail.Text" xml:space="preserve">
+    <value>Invalid Security Code.</value>
+  </data>
 </root>
