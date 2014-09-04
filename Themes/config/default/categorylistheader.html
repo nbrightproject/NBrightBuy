@@ -36,16 +36,26 @@ $(document).ready(function() {
 		$('#' + id).val(true);
 		$(".savebutton").show();
     });
-
-    if ('[Url:ctrl]' == 'propertiesvalue') $('.propertiesheader').show();
-    if ('[Url:ctrl]' == 'Categories') {
-        $('.searchheader').hide();
-        $('.categoriesheader').show();
-    }
+    $("input[[id*='chkishidden']]").change(function () {
+        var id = $(this).attr("id").replace('chkishidden', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
+    });
 
 });
 
 </script>
+
+<div class="row">
+    <div id="breadcrumb" class="col-md-12">
+        <ol class="breadcrumb">
+            <li>Catalogue</li>
+            <li></li>
+        </ol>
+    </div>
+</div>
+<h4 class="page-header">Categories</h4>
+<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 
 
 <div class="row">
@@ -84,6 +94,7 @@ $(document).ready(function() {
 								<tr>
 									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
 									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
+									<th>[<tag type="valueof" resourcekey="General.Hidden" />]</th>
 									<th> </th>
 									<th> </th>
 									<th> </th>

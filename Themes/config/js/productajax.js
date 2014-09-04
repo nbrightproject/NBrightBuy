@@ -203,13 +203,13 @@
     //Add category
     $('select[id*="selectcategory"]').click(function () {
         $('input[id*="selectedcatid"]').val($(this).val());
-        nbxget('addproductcategory', '#productselectparams', '#productcategories'); // load 
+        if ($(this).val() != null) nbxget('addproductcategory', '#productselectparams', '#productcategories'); // load 
     });
 
     //select group category
     $('select[id*="selectgrouptype"]').click(function () {
         $('input[id*="selectedgroupref"]').val($(this).val());
-        nbxget('populatecategorylist', '#productselectparams', '#groupcategorylist'); // load 
+        if ($(this).val() != null) nbxget('populatecategorylist', '#productselectparams', '#groupcategorylist'); // load 
     });
 
     $('#productselect').click(function () {

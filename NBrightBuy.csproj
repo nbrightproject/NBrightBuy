@@ -464,7 +464,6 @@
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
     <Content Include="Themes\config\default\categoryproductheader.html" />
-    <Content Include="Themes\config\default\categorysearch.html" />
     <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\clientsbody.html" />
     <Content Include="Themes\config\default\clientsdetail.html" />
@@ -479,6 +478,7 @@
     <Content Include="Themes\config\default\propertieslistbody.html" />
     <Content Include="Themes\config\default\propertieslistfooter.html" />
     <Content Include="Themes\config\default\propertieslistheader.html" />
+    <Content Include="Themes\config\default\propertiessearch.html" />
     <Content Include="Themes\config\default\Tools.html" />
     <Content Include="Themes\config\default\import.html" />
     <Content Include="Themes\config\default\export.html" />

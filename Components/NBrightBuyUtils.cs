@@ -313,7 +313,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 RemoveModCache(obj.ModuleId);
             }
-
+            RemoveModCache(-1);
         }
 
         #endregion
@@ -509,22 +509,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static string GetUniqueKey(int maxSize = 8)
-        {
-            var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            var chars = a.ToCharArray();
-            var data = new byte[1];
-            var crypto = new RNGCryptoServiceProvider();
-            crypto.GetNonZeroBytes(data);
-            data = new byte[maxSize];
-            crypto.GetNonZeroBytes(data);
-            var result = new StringBuilder(maxSize);
-            foreach (byte b in data)
-            {
-                result.Append(chars[b % (chars.Length - 1)]);
-            }
-            return result.ToString();
-        }
+
 
         public static String FormatToStoreCurrency(double value)
         {
@@ -588,7 +573,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnDic;
         }
-
     }
 }
 

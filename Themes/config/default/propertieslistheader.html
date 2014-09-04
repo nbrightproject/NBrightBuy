@@ -36,12 +36,11 @@ $(document).ready(function() {
 		$('#' + id).val(true);
 		$(".savebutton").show();
     });
-
-    if ('[Url:ctrl]' == 'propertiesvalue') $('.propertiesheader').show();
-    if ('[Url:ctrl]' == 'Categories') {
-        $('.searchheader').hide();
-        $('.categoriesheader').show();
-    }
+    $("input[[id*='chkishidden']]").change(function () {
+        var id = $(this).attr("id").replace('chkishidden', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
+    });
 
 });
 
@@ -84,6 +83,7 @@ $(document).ready(function() {
 								<tr>
 									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
 									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
+									<th>[<tag type="valueof" resourcekey="General.Hidden" />]</th>
 									<th> </th>
 									<th> </th>
 									<th> </th>

@@ -106,6 +106,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objCtrl.Update(nbi);
             }
 
+            LoadData(itemId);
+
         }
 
 

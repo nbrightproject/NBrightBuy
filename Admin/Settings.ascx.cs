@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -175,7 +176,34 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             folder = StoreSettings.Current.FolderUploadsMapPath ;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+            //Create default category grouptype
+            var l = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
+            var g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "cat" select i; 
+            if (!g.Any()) CreateGroup("cat", "Categories");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "promo" select i;
+            if (!g.Any()) CreateGroup("promo", "Promotions");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "man" select i;
+            if (!g.Any()) CreateGroup("man", "Manufacturer");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "supp" select i;
+            if (!g.Any()) CreateGroup("supp", "Supplier");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "fea" select i;
+            if (!g.Any()) CreateGroup("fea","Features");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "spec" select i;
+            if (!g.Any()) CreateGroup("spec", "Specifications");
+            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
+            if (!g.Any()) CreateGroup("temp", "Temp");
+
         }
+
+        private void CreateGroup(String groupref, String name)
+        {
+            var n = new GroupData(-1, StoreSettings.Current.EditLanguage);
+            n.Ref = groupref;
+            n.Name = name;
+            n.Save();
+        }
+
 
         private void DisplayDataEntryRepeater()
         {

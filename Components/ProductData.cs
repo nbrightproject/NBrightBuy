@@ -500,7 +500,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewOptionValue(String optionid)
         {
-            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid><optionvalueid>" + NBrightBuyUtils.GetUniqueKey() + "</optionvalueid></hidden></genxml></optionvalues></genxml>";
+            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid><optionvalueid>" + Utils.GetUniqueKey() + "</optionvalueid></hidden></genxml></optionvalues></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/optionvalues[@optionid='" + optionid + "']") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");
@@ -513,7 +513,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewOption()
         {
-            var strXml = "<genxml><options><genxml><hidden><optionid>" + NBrightBuyUtils.GetUniqueKey() + "</optionid></hidden></genxml></options></genxml>";
+            var strXml = "<genxml><options><genxml><hidden><optionid>" + Utils.GetUniqueKey() + "</optionid></hidden></genxml></options></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/options") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/options", "genxml");
@@ -526,7 +526,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewModel()
         {
-            var strXml = "<genxml><models><genxml><hidden><modelid>" + NBrightBuyUtils.GetUniqueKey() + "</modelid></hidden></genxml></models></genxml>";
+            var strXml = "<genxml><models><genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml></models></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/models") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
@@ -553,7 +553,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AddNewDoc(String docpath, String postedFileName)
         {
 
-            var strXml = "<genxml><docs><genxml><hidden><docid>" + NBrightBuyUtils.GetUniqueKey() + "</docid><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
+            var strXml = "<genxml><docs><genxml><hidden><docid>" + Utils.GetUniqueKey() + "</docid><docpath>" + docpath + "</docpath><fileext>" + Path.GetExtension(postedFileName) + "</fileext></hidden><textbox><txtfilename>" + postedFileName + "</txtfilename></textbox></genxml></docs></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");

@@ -47,15 +47,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             // create different templates for properties
             if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+            {
                 _templatType = "properties" + _templatType;
+                // Get Search
+                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "propertiessearch.html", Utils.GetCurrentCulture(), DebugMode);
+                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                rpSearch.ItemTemplate = _templSearch;                                
+            }
             else
                 _templatType = "category" + _templatType;
             
-            // Get Search
-                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "categorysearch.html", Utils.GetCurrentCulture(), DebugMode);
-                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpSearch.ItemTemplate = _templSearch;                
-
             var t1 = _templatType + "header.html";
             var t2 = _templatType + "body.html";
             var t3 = _templatType + "footer.html";
@@ -151,6 +152,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
+                    SaveAll();
                     param[1] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -177,7 +179,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addnew":
+                    var strXml2 = GenXmlFunctions.GetGenXml(rpSearch, "", "");
+                    navigationData.XmlData = strXml2;
+                    navigationData.Save();
                     var categoryData = new CategoryData(-1, EditLanguage);
+                    if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                    {
+                        categoryData.GroupType = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
+                        if (categoryData.GroupType == "") categoryData.GroupType = "cat";
+                        categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False"); // don't hide property groups by default
+                    }
+                    categoryData.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "delete":
@@ -188,39 +200,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "saveall":
-                    foreach (RepeaterItem rtnItem in rpData.Items)
-                    {
-                        var isdirty = GenXmlFunctions.GetField(rtnItem, "isdirty");
-                        var itemid = GenXmlFunctions.GetField(rtnItem, "itemid");
-                        if (isdirty == "true" && Utils.IsNumeric(itemid))
-                        {
-                            var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
-                            var catData = new CategoryData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
-                            if (catData.Exists)
-                            {
-                                catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
-                                ModCtrl.Update(catData.DataLangRecord);
-                                if (catname != "")
-                                {
-                                    // update all lanaguge records that have no name
-                                    foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
-                                    {
-                                        var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
-                                        if (catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
-                                        {
-                                            catLangUpd.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
-                                            ModCtrl.Update(catLangUpd.DataLangRecord);                                            
-                                        }
-                                    }                                    
-                                }
-                            }
-                        }
-                    }
+                    SaveAll();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
                     NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "move":
+                    SaveAll();
                     if (Utils.IsNumeric(cArg))
                     {
                         MoveRecord(Convert.ToInt32(cArg));
@@ -239,6 +225,41 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
         #endregion
+
+        private void SaveAll()
+        {
+            foreach (RepeaterItem rtnItem in rpData.Items)
+            {
+                var isdirty = GenXmlFunctions.GetField(rtnItem, "isdirty");
+                var itemid = GenXmlFunctions.GetField(rtnItem, "itemid");
+                if (isdirty == "true" && Utils.IsNumeric(itemid))
+                {
+                    var catData = new CategoryData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
+                    if (catData.Exists)
+                    {
+                        var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
+                        var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
+                        catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
+                        ModCtrl.Update(catData.DataRecord);
+                        catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
+                        ModCtrl.Update(catData.DataLangRecord);
+                        if (catname != "")
+                        {
+                            // update all lanaguge records that have no name
+                            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                            {
+                                var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
+                                if (catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
+                                {
+                                    catLangUpd.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
+                                    ModCtrl.Update(catLangUpd.DataLangRecord);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         private void UpodateRecord()
         {

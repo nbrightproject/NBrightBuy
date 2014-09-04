@@ -159,4 +159,16 @@
   <data name="resetpasswordonclientvalidate.Text" xml:space="preserve">
     <value>Reset Password on Client Validation</value>
   </data>
+  <data name="cataloguemode.Text" xml:space="preserve">
+    <value>Catalogue mode</value>
+  </data>
+  <data name="folderdocs.Text" xml:space="preserve">
+    <value>Document Folder</value>
+  </data>
+  <data name="folderimages.Text" xml:space="preserve">
+    <value>Image Folder</value>
+  </data>
+  <data name="folderuploads.Text" xml:space="preserve">
+    <value>Upload Folder</value>
+  </data>
 </root>

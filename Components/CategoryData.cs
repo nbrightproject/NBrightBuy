@@ -52,6 +52,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public bool Exists { get; private set; }
 
+        public String GroupType {
+            get
+            {
+                return DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+            }
+            set
+            {
+                DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", value);
+            }
+        }
+
         public String SEOName
         {
             get
@@ -103,6 +114,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objGrpCtrl.ReIndexCascade(DataRecord.ItemID); // reindex self
                 objGrpCtrl.Reload();
             }
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
         }
 
         public void Update(NBrightInfo info)
@@ -172,7 +184,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        private static int AddNew()
+        private int AddNew()
         {
             var nbi = new NBrightInfo(true);
             nbi.PortalId = PortalSettings.Current.PortalId;
@@ -195,6 +207,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 nbi.ParentItemId = itemId;
                 objCtrl.Update(nbi);
             }
+
+            LoadData(itemId);
+
             return itemId;
         }
 
