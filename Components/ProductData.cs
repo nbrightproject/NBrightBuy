@@ -692,6 +692,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+            nbi.AddSingleNode("models", "<genxml/>","genxml");
             var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
