@@ -13,6 +13,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using NBrightCore.common;
@@ -466,11 +467,45 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addtobasket":
-                    //NBrightBuyV2Utils.AddToCart(rpData, StoreSettings.Current.SettingsInfo, Request, e.Item.ItemIndex, DebugMode);
                     var currentcart = new CartData(PortalId);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     currentcart.Save(DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "docdownload":
+                    var s = cArg.Split(':');
+                    if (s.Length == 2)
+                    {
+                        var itemid = s[0];
+                        var idx = s[1];
+                        if (Utils.IsNumeric(idx) && Utils.IsNumeric(itemid))
+                        {
+                            var index = Convert.ToInt32(idx);
+                            var prdData = new ProductData(Convert.ToInt32(itemid), Utils.GetCurrentCulture());
+                            if (prdData.Docs.Count >= index)
+                            {
+                                var docInfo = prdData.Docs[index -1];
+                                var docFilePath = docInfo.GetXmlProperty("genxml/hidden/filepath");
+                                var fileName = docInfo.GetXmlProperty("genxml/textbox/txtfilename"); ;
+                                var fileExt = docInfo.GetXmlProperty("genxml/hidden/fileext");
+                                var purchase = docInfo.GetXmlProperty("genxml/checkbox/chkpurchase");
+
+                                if (fileName == "") fileName = "filename";
+                                if (!docFilePath.EndsWith(fileExt)) docFilePath += fileExt;
+                                if (!fileName.EndsWith(fileExt)) fileName += fileExt;
+
+                                if (purchase == "True")
+                                {
+                                    //[TODO: check if the document has been purchased]                                    
+                                }
+                                else
+                                {
+                                    Utils.ForceDocDownload(docFilePath, fileName, Response);                                                                    
+                                }
+                            }
+                        }
+                        
+                    }
                     break;
             }
 

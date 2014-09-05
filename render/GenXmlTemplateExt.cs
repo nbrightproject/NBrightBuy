@@ -69,6 +69,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "productdocfilename":
                     CreateProductDocFileName(container, xmlNod);
                     return true;
+                case "productdoctitle":
+                    CreateProductDocTitle(container, xmlNod);
+                    return true;
                 case "productoptionname":
                     CreateProductOptionName(container, xmlNod);
                     return true;
@@ -598,7 +601,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/imgs/genxml[./hidden/imgid=../../../../imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/imgid]/textbox/txtimagedesc";
+                    l.Text = "genxml/lang/genxml/imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtimagedesc";
                     container.Controls.Add(l);
                 }
             }
@@ -613,7 +616,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/docs/genxml[./hidden/docid=../../../../docs/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/docid]/textbox/txtdocdesc";
+                    l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtdocdesc";
                     container.Controls.Add(l);
                 }
             }
@@ -628,6 +631,20 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
                     l.Text = "genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtfilename";
+                    container.Controls.Add(l);
+                }
+            }
+        }
+        private void CreateProductDocTitle(Control container, XmlNode xmlNod)
+        {
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["index"] != null))
+            {
+                if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
+                {
+                    var l = new Literal();
+                    l.DataBinding += ShortcutDataBinding;
+                    l.Text = xmlNod.Attributes["index"].Value;
+                    l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txttitle";
                     container.Controls.Add(l);
                 }
             }
@@ -2494,7 +2511,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     cmd.Attributes.Remove("index");
 
                     var objInfo = (NBrightInfo) container.DataItem;
-                    cmd.CommandName = "DocDownload";
+                    cmd.CommandName = "docdownload";
                     if (cmd.Text == "")
                     {
                         var nodDesc = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/docs/genxml[" + index + "]/textbox/txtdocdesc");
@@ -2505,12 +2522,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var nodName = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/textbox/txtfilename");
                         if (nodName != null) cmd.ToolTip = nodName.InnerText;
                     }
+                    cmd.CommandArgument = objInfo.ItemID.ToString("D") + ":" + index;
 
                     cmd.Visible = true;
-                    var nodDocId = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/hidden/docid");
-                    if (nodDocId != null && Utils.IsNumeric(nodDocId.InnerText))
+                    var nodPurchase = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/checkbox/chkpurchase");
+                    if (nodPurchase != null && nodPurchase.InnerText == "True")
                     {
-                        //[TODO: work out purchase document logic]
+                        //[TODO: work out purchase document logic]                        
                         //if (NBrightBuyV2Utils.DocIsPurchaseOnlyByDocId(Convert.ToInt32(nodDocId.InnerText)))
                         //{
                         //    cmd.Visible = false;

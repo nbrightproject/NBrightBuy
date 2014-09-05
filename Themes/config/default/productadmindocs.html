@@ -7,12 +7,13 @@
     [<tag id="fileext" type="hidden" value="" />]
     [<tag id="filepath" type="hidden" value="" />]
     [<tag id="fields" type="hidden" value="genxml/checkbox/chkhidden,genxml/checkbox/chkpurchase,genxml/hidden/fileext,genxml/hidden/filepath,genxml/textbox/txtfilename" />]
-    [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtdocdesc" />]
+    [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtdocdesc,genxml/textbox/txttitle" />]
 
 	<div class="col-xs-12 form-horizontal">
 		<div class="row">
-	        <div class="col-xs-4"><label class="control-label">Title</label>[<tag id="txtfilename" type="textbox" cssclass="form-control" maxlength="250"/>]</div>
-	        <div class="col-xs-6"><label class="control-label">Description</label>[<tag id="txtdocdesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-xs-4"><label class="control-label">[<tag type="valueof" resourcekey="General.FileName" />]</label>[<tag id="txtfilename" type="textbox" cssclass="form-control" maxlength="250"/>]</div>
+	        <div class="col-xs-4"><label class="control-label">[<tag type="valueof" resourcekey="General.Title" />]</label>[<tag id="txttitle" type="textbox" cssclass="form-control" maxlength="250" />]</div>
+	        <div class="col-xs-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Description" />]</label>[<tag id="txtdocdesc" type="textbox" cssclass="form-control" maxlength="250" />]</div>
 	        <div class="col-xs-2"><label class="control-label">&nbsp;</label><a class="removedoc btn-block btn btn-danger">Remove</a></div><!-- class required for ajax -->
 		</div>
 		<div class="row">
