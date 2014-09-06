@@ -19,6 +19,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
@@ -156,8 +157,13 @@ namespace Nevoweb.DNN.NBrightBuy
                             objUser.Username = GenXmlFunctions.GetField(rpInp, "Username");
                             if (objUser.Username == "") objUser.Username = GenXmlFunctions.GetField(rpInp, "Email");
                             objUser.Membership.CreatedDate = System.DateTime.Now;
-                            objUser.Membership.Password = DotNetNuke.Entities.Users.UserController.GeneratePassword(9);
-                            objUser.Membership.UpdatePassword = true;
+                            var passwd = GenXmlFunctions.GetField(rpInp, "Password");
+                            if (passwd == "")
+                            {
+                                objUser.Membership.UpdatePassword = true;
+                                passwd = UserController.GeneratePassword(9);
+                            }
+                            objUser.Membership.Password = passwd; 
                             objUser.Membership.Approved = PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PublicRegistration;
 
                             // Create the user
@@ -224,52 +230,6 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         #endregion
-
-        private NotifyCode CreateUser()
-        {
-
-            if (!this.UserInfo.IsInRole("Registered Users"))
-            {
-                // Create and hydrate User
-                var objUser = new UserInfo();
-                objUser.Profile.InitialiseProfile(this.PortalId, true);
-                objUser.PortalID = PortalId;
-                objUser.DisplayName = GenXmlFunctions.GetField(rpInp, "DisplayName"); 
-                objUser.Email = GenXmlFunctions.GetField(rpInp,"Email");
-                objUser.FirstName = GenXmlFunctions.GetField(rpInp, "FirstName"); 
-                objUser.LastName = GenXmlFunctions.GetField(rpInp, "LastName");
-                objUser.Username = GenXmlFunctions.GetField(rpInp, "Username");
-                if (objUser.Username == "") objUser.Username = GenXmlFunctions.GetField(rpInp, "Email");                
-                objUser.Membership.CreatedDate = System.DateTime.Now;
-                objUser.Membership.Password = DotNetNuke.Entities.Users.UserController.GeneratePassword(9);
-                objUser.Membership.UpdatePassword = true;
-                objUser.Membership.Approved = false;
-                //if (ModSettings.Get("clientrole") != "True") objUser.Membership.Approved = PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;                    
- 
-                // Create the user
-                var createStatus = UserController.CreateUser(ref objUser);
-
-                DataCache.ClearPortalCache(PortalId, true);
-                bool boNotify = false;
-                switch (createStatus)
-                {
-                    case UserCreateStatus.Success:
-                        return NotifyCode.ok;
-                    case UserCreateStatus.DuplicateEmail:
-                    case UserCreateStatus.DuplicateUserName:
-                    case UserCreateStatus.UsernameAlreadyExists:
-                    case UserCreateStatus.UserAlreadyRegistered:
-                    default:
-                        // registration error
-                        boNotify = false;
-                        break;
-                }
-
-            }
-
-            return NotifyCode.fail;
-                 
-        }
 
 
     }
