@@ -444,9 +444,10 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
-            var param = new string[2];
+            var param = new string[3];
             if (_eid != "") param[0] = "eid=" + _eid;
             if (_modkey != "") param[1] = "modkey=" + _modkey;
+            if (_catid != "") param[2] = "catid=" + _catid;
 
             switch (e.CommandName.ToLower())
             {
@@ -470,6 +471,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     var currentcart = new CartData(PortalId);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     currentcart.Save(DebugMode);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "addalltobasket":
+                    var currentcart2 = new CartData(PortalId);
+                    foreach (RepeaterItem ri in rpData.Items)
+                    {
+                        var qty = GenXmlFunctions.GetFieldAsInteger(ri, "selectedaddqty");
+                        if (qty > 0)
+                        {
+                            currentcart2.AddItem(rpData, StoreSettings.Current.SettingsInfo, ri.ItemIndex, DebugMode);
+                            currentcart2.Save(DebugMode);                                                    
+                        }
+                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "docdownload":

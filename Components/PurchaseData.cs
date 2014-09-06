@@ -320,9 +320,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     foreach (XmlNode nod in nods)
                     {
                         if (nod.Name.ToLower() == "qty")
-                            _itemList[index].SetXmlProperty("genxml/" + nod.Name, nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
+                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
                         else
-                            _itemList[index].SetXmlProperty("genxml/textbox/" + nod.Name, nod.InnerText);
+                            _itemList[index].SetXmlProperty("genxml/textbox/" + nod.Name.ToLower(), nod.InnerText);
                     }
                 }
                 nods = inputInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
@@ -331,10 +331,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     foreach (XmlNode nod in nods)
                     {
                         if (nod.Name.ToLower() == "qty")
-                            _itemList[index].SetXmlProperty("genxml/" + nod.Name, nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
+                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
                         else
                         {
-                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name, nod.InnerText);
+                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name.ToLower(), nod.InnerText);
                             if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
                         }
                     }
@@ -345,10 +345,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     foreach (XmlNode nod in nods)
                     {
                         if (nod.Name.ToLower() == "qty")
-                            _itemList[index].SetXmlProperty("genxml/" + nod.Name, nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
+                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
                         else
                         {
-                            _itemList[index].SetXmlProperty("genxml/radiobuttonlist/" + nod.Name, nod.InnerText);
+                            _itemList[index].SetXmlProperty("genxml/radiobuttonlist/" + nod.Name.ToLower(), nod.InnerText);
                             if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/radiobuttonlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
                         }
                     }
@@ -358,7 +358,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     foreach (XmlNode nod in nods)
                     {
-                        _itemList[index].SetXmlProperty("genxml/checkbox/" + nod.Name, nod.InnerText);
+                        _itemList[index].SetXmlProperty("genxml/checkbox/" + nod.Name.ToLower(), nod.InnerText);
                     }
                 }
 
@@ -592,11 +592,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get
             {
-                return PurchaseInfo.GetXmlProperty("genxml/textbox/emailaddress");
+                return PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/cartemailaddress");
             }
             set
             {
-                PurchaseInfo.SetXmlProperty("genxml/textbox/emailaddress", value);
+                PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/textbox/cartemailaddress", value);
+            }
+        }
+        public String EmailBillingAddress
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/billaddress/genxml/textbox/email");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/billaddress/genxml/textbox/email", value);
+            }
+        }
+        public String EmailShippingAddress
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/shipaddress/genxml/textbox/deliveryemail");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/shipaddress/genxml/textbox/deliveryemail", value);
             }
         }
 

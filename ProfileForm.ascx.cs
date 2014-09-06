@@ -69,8 +69,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 // Get Display
                 var rpInpTempl = ModCtrl.GetTemplateData(ModSettings, _templinp, Utils.GetCurrentCulture(), DebugMode);
                 rpInp.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpInpTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
-
-
             }
             catch (Exception exc)
             {
@@ -245,8 +243,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 objUser.Membership.CreatedDate = System.DateTime.Now;
                 objUser.Membership.Password = DotNetNuke.Entities.Users.UserController.GeneratePassword(9);
                 objUser.Membership.UpdatePassword = true;
-                objUser.Membership.Approved = PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PublicRegistration;
-
+                objUser.Membership.Approved = false;
+                //if (ModSettings.Get("clientrole") != "True") objUser.Membership.Approved = PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;                    
+ 
                 // Create the user
                 var createStatus = UserController.CreateUser(ref objUser);
 
@@ -255,8 +254,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 switch (createStatus)
                 {
                     case UserCreateStatus.Success:
-                        //boNotify = true;
-                        if (objUser.Membership.Approved) UserController.UserLogin(this.PortalId, objUser,PortalSettings.PortalName, AuthenticationLoginBase.GetIPAddress(),false);
                         return NotifyCode.ok;
                     case UserCreateStatus.DuplicateEmail:
                     case UserCreateStatus.DuplicateUserName:

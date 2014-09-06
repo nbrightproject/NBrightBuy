@@ -420,7 +420,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private void SendOrderEmail(int orderid, String emailtemplate,String emailsubjectresxkey)
         {
             var ordData = new OrderData(PortalId, orderid);
-            NBrightBuyUtils.SendEmail(ordData.EmailAddress, emailtemplate, ordData.PurchaseInfo, emailsubjectresxkey);
+            NBrightBuyUtils.SendEmailOrderToClient(emailtemplate,orderid, emailsubjectresxkey);
         }
 
     }

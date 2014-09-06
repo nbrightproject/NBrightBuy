@@ -57,6 +57,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Today.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
                 base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", PortalId.ToString("D") + "-" + DateTime.Today.Year.ToString("D").Substring(2, 2) + "-" + _cartId);
                 base.SavePurchaseData();
+                var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
+                
+                // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
+                var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
+                if (objUser.Email != ordData.EmailAddress)
+                {
+                    var clientData = new ClientData(PortalId, ordData.UserId);
+                    clientData.UpdateEmail(ordData.EmailAddress);
+                }
+
+                // Send emails
+                NBrightBuyUtils.SendEmailOrderToClient("ordercreatedemail.html", base.PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", ordData.PurchaseInfo);
+
                 if (debugMode) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;                
             }

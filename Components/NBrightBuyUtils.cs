@@ -13,6 +13,7 @@ using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using NBrightCore.TemplateEngine;
 using NBrightCore.common;
@@ -447,6 +448,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail);
         }
 
+        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "")
+        {
+            var ordData = new OrderData(PortalSettings.Current.PortalId, orderId);
+            if (ordData.GetInfo().UserId > 0)
+            {
+                // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
+                var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.GetInfo().UserId);
+                if (ordData.EmailAddress != objUser.Email)
+                {
+                    ordData.EmailAddress = objUser.Email;
+                    ordData.SavePurchaseData();
+                }
+            }
+            // we're going to send email to all email addreses linked to the order.
+            var emailList = ordData.EmailAddress;
+            if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
+            if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
+            SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail);
+        }
+
         public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
         {
             var emaillist = toEmail;
@@ -470,7 +491,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 emailsubject = PortalSettings.Current.PortalName + " : " + emailsubject;
                 foreach (var email in emailarray)
                 {
-                    if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail))
+                    if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))
                     {
                         DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
                     }

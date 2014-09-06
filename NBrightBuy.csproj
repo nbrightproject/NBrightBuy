@@ -464,7 +464,6 @@
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
     <Content Include="Themes\config\default\categoryproductheader.html" />
-    <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\clientsbody.html" />
     <Content Include="Themes\config\default\clientsdetail.html" />
     <Content Include="Themes\config\default\clientsdetailfooter.html" />
@@ -472,6 +471,7 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\propertiesdetailbody.html" />
     <Content Include="Themes\config\default\propertiesdetailfooter.html" />
     <Content Include="Themes\config\default\propertiesdetailheader.html" />
@@ -822,6 +822,7 @@
     <Content Include="Themes\Cygnus\Default\cattreebody.html" />
     <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\PaymentSettings.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
