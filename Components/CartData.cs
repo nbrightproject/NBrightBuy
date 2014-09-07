@@ -13,6 +13,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -200,7 +201,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             //add shipping
-            Double shippingcost = 0;
+            var shipcost = ShippingInterface.Instance("Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider").CalculateShipping(PurchaseInfo);
+            Double shippingcost = shipcost.GetXmlPropertyDouble("genxml/totaltest");
             Double shippingdealercost = 0;
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);
