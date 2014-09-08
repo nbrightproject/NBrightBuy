@@ -138,6 +138,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 prodData.Update(updInfo.XMLData);
                 prodData.Save();
+
+                if (StoreSettings.Current.DebugMode) prodData.OutputDebugFile("debug_productupdate.xml");
+
+                
             }
         }
 

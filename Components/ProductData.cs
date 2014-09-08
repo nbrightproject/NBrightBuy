@@ -109,6 +109,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return obj.First();
         }
 
+        public void UpdateModelQty(String modelid,Double qty)
+        {
+            var model = GetModel(modelid);
+            var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining");
+            newqty = newqty - qty;
+            if (newqty < 0) newqty = 0;
+            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining", newqty);
+        }
+
         public NBrightInfo GetOption(String optionid)
         {
             var obj = Options.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid);
@@ -768,6 +777,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return errorcount;
         }
 
+        public void OutputDebugFile(String fileName)
+        {
+            Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
+        }
 
         #endregion
 

@@ -3727,7 +3727,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private Boolean IsInStock(NBrightInfo dataItem,String qtyTestAmt = "0",Boolean includeCart = false)
         {
-            var amtTest = 0;
+            var amtTest = StoreSettings.Current.GetInt("minimumstocklevel"); 
 
             if (Utils.IsNumeric(qtyTestAmt)) amtTest = Convert.ToInt32(qtyTestAmt);
             var nodList = BuildModelList(dataItem, includeCart);

@@ -171,4 +171,7 @@
   <data name="folderuploads.Text" xml:space="preserve">
     <value>Upload Folder</value>
   </data>
+  <data name="minimumstocklevel.Text" xml:space="preserve">
+    <value>Minimum Stock</value>
+  </data>
 </root>

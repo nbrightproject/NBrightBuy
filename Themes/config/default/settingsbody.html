@@ -80,7 +80,13 @@
     	                    <div class="col-sm-5">[<tag id="Tag1" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
     	                </div>
                         
-                        <!-- added a categorymode here, so that all modules (including minicart) can pickup the setting -->
+                        <div class="form-group">
+    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
+    	                    <div class="col-sm-5">[<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]</div>
+    	                </div>
+
+                        
+    	                <!-- added a categorymode here, so that all modules (including minicart) can pickup the setting -->
     	                <div class="dnnFormItem">
     	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label>
                         [<tag id="cataloguemode" type="checkbox" checked="False" />]

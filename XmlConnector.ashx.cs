@@ -55,27 +55,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #region "setup language"
 
-            if (lang == "") lang = language; //if we don't have a lang param use the langauge one.
-
-            if (!string.IsNullOrEmpty(lang) && System.Threading.Thread.CurrentThread.CurrentCulture.ToString() != lang)
-            {
-                // because we are using a webservice the system current thread culture might not be set correctly,
-                //  so use the lang/lanaguge param to set it.
-                // TODO: see if we can find a nicer way to do this.
-                try
-                {
-                    var c = new System.Globalization.CultureInfo(lang);
-                    System.Threading.Thread.CurrentThread.CurrentCulture = c;
-                }
-                catch
-                {
-                    // invalid lang culture, so ignore and use the system default.
-                    lang = UserController.GetCurrentUserInfo().Profile.PreferredLocale;
-                }
-            }
+            // because we are using a webservice the system current thread culture might not be set correctly,
+            //  so use the lang/lanaguge param to set it.
+            if (lang == "") lang = language;
+            if (!string.IsNullOrEmpty(lang)) _lang = lang;
             // default to current thread if we have no language.
-            if (lang == "") lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-            _lang = lang;
+            if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
 
             #endregion
 
@@ -267,8 +252,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 // run SQL and template to return html
                 if (settings.ContainsKey("sqltpl") && settings.ContainsKey("xsltpl"))
                 {
-                    var strSql = templCtrl.GetTemplateData(settings["sqltpl"], Utils.GetCurrentCulture());
-                    var xslTemp = templCtrl.GetTemplateData(settings["xsltpl"], Utils.GetCurrentCulture());
+                    var strSql = templCtrl.GetTemplateData(settings["sqltpl"], _lang);
+                    var xslTemp = templCtrl.GetTemplateData(settings["xsltpl"], _lang);
 
                     // replace any settings tokens (This is used to place the form data into the SQL)
                     strSql = Utils.ReplaceSettingTokens(strSql, settings);
@@ -531,7 +516,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadmingeneral.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadmingeneral.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -560,7 +545,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -589,7 +574,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -618,7 +603,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", _lang);
 
                 //get data
                 var strOut = "";
@@ -651,7 +636,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -680,7 +665,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadmindocs.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadmindocs.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -709,7 +694,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadmincategories.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadmincategories.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -738,7 +723,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadmingroupcategories.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadmingroupcategories.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -767,7 +752,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminrelated.html", Utils.GetCurrentCulture());
+                var bodyTempl = templCtrl.GetTemplateData("productadminrelated.html", _lang);
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
@@ -821,7 +806,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var themeFolder = StoreSettings.Current.ThemeFolder;
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", Utils.GetCurrentCulture());
+                    var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", _lang);
 
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
@@ -873,7 +858,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var themeFolder = StoreSettings.Current.ThemeFolder;
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", Utils.GetCurrentCulture());
+                    var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", _lang);
 
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
@@ -928,7 +913,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var themeFolder = StoreSettings.Current.ThemeFolder;
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", Utils.GetCurrentCulture());
+                    var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", _lang);
 
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
@@ -1131,9 +1116,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var objCtrl = new NBrightBuyController();
 
-            var headerTempl = templCtrl.GetTemplateData(header, Utils.GetCurrentCulture());
-            var bodyTempl = templCtrl.GetTemplateData(body, Utils.GetCurrentCulture());
-            var footerTempl = templCtrl.GetTemplateData(footer, Utils.GetCurrentCulture());
+            var headerTempl = templCtrl.GetTemplateData(header, _lang);
+            var bodyTempl = templCtrl.GetTemplateData(body, _lang);
+            var footerTempl = templCtrl.GetTemplateData(footer, _lang);
 
             // replace any settings tokens (This is used to place the form data into the SQL)
             headerTempl = Utils.ReplaceSettingTokens(headerTempl, settings);
@@ -1177,7 +1162,10 @@ namespace Nevoweb.DNN.NBrightBuy
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";
             objInfo.XMLData = xmlData;
-            return objInfo.ToDictionary();
+            var dic =  objInfo.ToDictionary();
+            // set langauge if we have it passed.
+            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
+            return dic;
         }
 
         private Boolean CheckRights()

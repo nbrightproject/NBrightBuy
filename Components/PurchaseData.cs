@@ -571,7 +571,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public Boolean IsClientOrderMode()
         {
-            if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True") return true;
+            if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
+            {
+                if (!UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) // user not editor, so stop edit mode.
+                {                    
+                    PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
+                    SavePurchaseData();
+                    return false;
+                }
+                return true;
+            }
             return false;
         }
 

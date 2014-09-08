@@ -210,4 +210,10 @@
   <data name="ordercreatedemailsubject.Text" xml:space="preserve">
     <value>Order Confirmed</value>
   </data>
+  <data name="outofstock.Text" xml:space="preserve">
+    <value>Out of Stock</value>
+  </data>
+  <data name="stockadjusted.Text" xml:space="preserve">
+    <value>Qty adjusted to match available stock</value>
+  </data>
 </root>
