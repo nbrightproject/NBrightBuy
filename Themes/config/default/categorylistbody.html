@@ -1,9 +1,7 @@
 <tr>
-<td style="white-space:nowrap;padding-right:30px">[<tag type="valueof" xpath="genxml/hidden/levelprefix" />][<tag id="ddlParentCatId" type="categoryparentname" />]</td>
+<td class="text-nowrap" style="padding-right:30px">[<tag type="valueof" xpath="genxml/hidden/levelprefix" />][<tag id="ddlParentCatId" type="categoryparentname" />]</td>
 <td style="width:100%">[<tag id="txtcategoryname" type="textbox" cssclass="form-control" maxlength="150" />]</td>
-<td>[<tag id="chkishidden" type="checkbox" />]</td>
 <td>
-                                                                        
 [<tag id="itemid" type="hidden" databind="ItemID" />]
 [<tag id="isdirty" type="postback" value="false" />]
 <a title="Move" href="#" class="selectrecord" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-sort fa-fw"></i></a>
@@ -14,4 +12,5 @@
 </td>
 <td>[<tag id="cmdEdit" type="linkbutton" resourcekey="General.cmdEditIcon" commandname="entrydetail" commandargument="ItemID" />]</td>
 <td>[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteIcon" commandname="delete" commandargument="ItemID" />]</td>
+<td class="text-center"><div class="dnnForm dnnFormItem">[<tag id="chkishidden" type="checkbox" />]</div></td><!-- wrap checkboxes in "dnnForm dnnFormItem" classes to pick up DNN styles -->
 </tr>

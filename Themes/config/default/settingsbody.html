@@ -1,131 +1,48 @@
+[<tag id="backofficetabid" type="hidden" value="" />]<!-- hidden fields to store auto populated data -->
 
-<div class="row">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
+        $('.merchantdetails div.box-content').toggle(); // Then open specific ones
+        $('.pageactions div.box-content').toggle();
+    });
+</script>
+
+<div class="row hidden"><!-- Not being used/yet -->
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Settings</a></li>
+			<li>Admin</li>
+			<li><a href="#">Settings</a></li>
 		</ol>
 	</div>
 </div>
-<h4 class="page-header">[<tag type="valueof" resourcekey="Settings.Settings" />]</h4>
-<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-<div class="row">
-    	<div class="col-xs-12 col-sm-12">
 
-<!-------------------------------------->
-<!-- DCL Add fields for setting -->
-<!-------------------------------------->
-
-    <!-- hidden fields to store auto populated data -->
-[<tag id="backofficetabid" type="hidden" value="" />]
-
-
-    <div class="box">
-    <div class="box-header">
-        <div class="box-name">
-            <i class="fa fa-search"></i><span>Country Details</span>
-        </div>
-        <div class="box-icons">
-            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
-            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-            <a class="close-link"><i class="fa fa-times"></i></a></div>
-        <div class="no-move">
-        </div>
-    </div>
-
-    <div class="box-content">
-        <div class="form-horizontal dnnForm">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Merchant Culture</label>
-                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Currency Code</label>
-                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
-            </div>
-        </div>
-        <div class="form-horizontal dnnForm">
-            <p class="page-header">Validate countries for the store</p>
-            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
-        </div>
-    </div>
+<div class="row hidden"><!-- Not being used/yet -->
+	<div class="col-md-12">
+		<h4 class="page-header">Settings</h4>
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+	</div>
 </div>
 
-    	    <div class="box">
-    	        
+<br />
 
-    	        <div class="box-header">
-    	            <div class="box-name">
-    	                <i class="fa fa-search"></i><span>Folders</span>
-    	            </div>
-    	            <div class="box-icons">
-    	                <a class="collapse-link"><i class="fa fa-chevron-up"></i>
-    	                </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-    	                <a class="close-link"><i class="fa fa-times"></i></a></div>
-    	            <div class="no-move">
-    	            </div>
-    	        </div>
+<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+	<div class="col-xs-9 col-sm-9">
+		<a href="#" class="show-sidebar">
+		  <i class="fa fa-bars"></i>
+		</a>
+		<div class="actionbuttonwrapper">
+			[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" />] 
+			[<tag id="cmdCancel" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancel" commandname="cancel" />]
+	    </div>
+	</div>
+	<div class="col-xs-3 col-sm-3 top-panel-right">
+		<!-- No language in this page -->
+	</div>
+</div>
 
-    	        <div class="box-content">
-    	            <div class="form-horizontal dnnForm">
-    	                <div class="form-group">
-    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderimages" />]</label>
-    	                    <div class="col-sm-5">[<tag id="folderimages" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]</div>
-    	                </div>
-    	                <div class="form-group">
-    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderdocs" />]</label>
-    	                    <div class="col-sm-5">[<tag id="folderdocs" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
-    	                </div>
-    	                <div class="form-group">
-    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderuploads" />]</label>
-    	                    <div class="col-sm-5">[<tag id="Tag1" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
-    	                </div>
-                        
-                        <div class="form-group">
-    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
-    	                    <div class="col-sm-5">[<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]</div>
-    	                </div>
-
-                        
-    	                <!-- added a categorymode here, so that all modules (including minicart) can pickup the setting -->
-    	                <div class="dnnFormItem">
-    	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label>
-                        [<tag id="cataloguemode" type="checkbox" checked="False" />]
-                        </div>
-
-    	            </div>
-    	        </div>
-    	    </div>
-
-    	    <div class="box">
-    	        
-
-    	        <div class="box-header">
-    	            <div class="box-name">
-   	            <i class="fa fa-search"></i><span>Email options</span>
-     	            </div>
-    	            <div class="box-icons">
-    	                <a class="collapse-link"><i class="fa fa-chevron-up"></i>
-    	                </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-    	                <a class="close-link"><i class="fa fa-times"></i></a></div>
-    	            <div class="no-move">
-    	            </div>
-    	        </div>
-
-    	        <div class="box-content">
-    	            <div class="form-horizontal dnnForm">
-    	                <div class="form-group">
-    	                    <div class="col-sm-5">[<tag id="resetpasswordonclientvalidate" type="checkbox" Text="" resourcekey="Settings.resetpasswordonclientvalidate" />]</div>
-    	                </div>
-    	            </div>
-    	        </div>
-    	    </div>
-              
-
-
-<!-------------------------------------->
-<!-- DCL END: Add fields for setting -->
-<!-------------------------------------->
-
+<div class="row merchantdetails">
+    	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
@@ -140,8 +57,6 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-				
-
 					<p class="page-header">Branding</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Store Name</label>
@@ -155,8 +70,6 @@
 							[<tag id="storelogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
 						</div>
 					</div>
-					
-					
 					<p class="page-header">Email Addresses</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.adminemail" />]</label>
@@ -176,8 +89,6 @@
 							[<tag id="supportemail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
 					</div>
-					
-					
 					<p class="page-header">Address</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Attention</label>
@@ -245,10 +156,6 @@
 							[<tag id="storetaxnumber" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
 					</div>
-					
-					
-					
-					
 					<p class="page-header">Banking Details</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Bank</label>
@@ -274,13 +181,73 @@
 							[<tag id="bankinginstructions" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
 					</div>
-
-
-					
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+	    <div class="box">
+	        <div class="box-header">
+	            <div class="box-name">
+	                <i class="fa fa-search"></i><span>Folders</span>
+	            </div>
+	            <div class="box-icons">
+	                <a class="collapse-link"><i class="fa fa-chevron-down"></i>
+	                </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+	                <a class="close-link"><i class="fa fa-times"></i></a></div>
+	            <div class="no-move">
+	            </div>
+	        </div>
+	        <div class="box-content">
+	            <div class="form-horizontal dnnForm">
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderimages" />]</label>
+	                    <div class="col-sm-5">[<tag id="folderimages" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\images" />]</div>
+	                </div>
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderdocs" />]</label>
+	                    <div class="col-sm-5">[<tag id="folderdocs" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
+	                </div>
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderuploads" />]</label>
+	                    <div class="col-sm-5">[<tag id="Tag1" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+	    <div class="box">
+	        <div class="box-header">
+	            <div class="box-name">
+            <i class="fa fa-search"></i><span>Email options</span>
+ 	            </div>
+	            <div class="box-icons">
+	                <a class="collapse-link"><i class="fa fa-chevron-down"></i>
+	                </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+	                <a class="close-link"><i class="fa fa-times"></i></a></div>
+	            <div class="no-move">
+	            </div>
+	        </div>
+
+	        <div class="box-content">
+	            <div class="form-horizontal dnnForm">
+	                <div class="form-group">
+	                    <div class="col-sm-5">[<tag id="resetpasswordonclientvalidate" type="checkbox" Text="" resourcekey="Settings.resetpasswordonclientvalidate" />]</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
@@ -288,7 +255,7 @@
 					<i class="fa fa-search"></i><span>Store Configuration</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
 					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
 					<a class="close-link"><i class="fa fa-times"></i></a></div>
 				<div class="no-move">
@@ -315,7 +282,20 @@
 							[<tag id="carttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
-
+                    <div class="form-group">
+                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
+                    	<div class="col-sm-5">
+                    		[<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]
+                    	</div>
+                    </div>
+	                <div class="dnnFormItem">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label><!-- Need to move this -->
+                    	<div class="col-sm-5">
+							<div class="dnnFormItem">
+		                    	[<tag id="cataloguemode" type="checkbox" checked="False" />]
+							</div>
+                    	</div>
+                    </div>
 
 					<p class="page-header">Developer Tools</p>
 					<div class="form-group">
@@ -336,15 +316,68 @@
 			</div>
 		</div>
 	</div>
-	<div class="clearfix">
-	</div>
-	<div class="form-group">
-		<div class="col-sm col-sm-6">
-			[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary btn-label-left" resourcekey="General.cmdSave" commandname="save" />] 
-			[<tag id="cmdCancel" type="linkbutton" cssclass="btn btn-default btn-label-left" resourcekey="General.cmdCancel" commandname="cancel" />]
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box culturesettings">
+		    <div class="box-header">
+		        <div class="box-name">
+		            <i class="fa fa-search"></i><span>Country Details</span>
+		        </div>
+		        <div class="box-icons">
+		            <a class="collapse-link"><i class="fa fa-chevron-down"></i>
+		            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+		            <a class="close-link"><i class="fa fa-times"></i></a></div>
+		        <div class="no-move">
+		        </div>
+		    </div>
+		
+		    <div class="box-content">
+		        <div class="form-horizontal dnnForm">
+		            <div class="form-group">
+		                <label class="col-sm-3 control-label">Merchant Culture</label>
+		                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		            </div>
+		            <div class="form-group">
+		                <label class="col-sm-3 control-label">Currency Code</label>
+		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		            </div>
+		        </div>
+		        <div class="form-horizontal dnnForm countryselection">
+		            <p class="page-header">Valid countries for the store</p>
+		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
+		        </div>
+		    </div>
 		</div>
 	</div>
 </div>
 
-
+<div class="row pageactions"><!-- Page actions - also at top -->
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Page Actions</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="col-sm-6">
+					[<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" />] 
+					[<tag id="cmdCancel2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancel" commandname="cancel" />]
+				</div>
+				<div class="col-sm-6 text-right">
+				<!-- No language selector on this page-->
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
 

@@ -1,25 +1,30 @@
 <tr>
+
+<td>[<tag id="groupname" type="textbox" cssclass="form-control" maxlength="150" />]</td>
+
 <td>
 [<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{OFF}" />]
-[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDelete" commandname="delete" commandargument="ItemID" />]
-[<tag type="endif" />]
-</td>
-<td>
-[<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{OFF}" />]
-[<tag id="groupref" type="textbox" width="250" maxlength="150" />]
+[<tag id="groupref" type="textbox" cssclass="form-control" maxlength="150" />]
 [<tag type="endif" />]
 [<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{ON}" />]
 [<tag type="valueof" xpath="genxml/textbox/groupref" />]
 [<tag type="endif" />]
 </td>
-<td>[<tag id="groupname" type="textbox" width="250" maxlength="150" />]</td>
-<td>
+
+<td style="width:0">
 [<tag id="itemid" type="hidden" databind="ItemID" />]
 [<tag id="isdirty" type="postback" value="false" />]
-<a href="#" class="selectrecord" itemid="[<tag type="valueof" databind="ItemID" />]" >[<tag type="valueof" resourcekey="General.cmdSelect" />]</a>
-<a href="#" class="selectcancel" itemid="[<tag type="valueof" databind="ItemID" />]" >[<tag type="valueof" resourcekey="General.cmdCancelSelect" />]</a>
-<span class="selectmove" itemid="[<tag type="valueof" databind="ItemID" />]">
-[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMove" commandname="move" commandargument="ItemID" />]
+<a title="Move" href="#" class="selectrecord" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-sort fa-fw"></i></a>
+<a title="Cancel Move" href="#" class="selectcancel" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-times-circle fa-fw"></i></a>
+<span class="selectmove" itemid="[<tag type='valueof' databind='ItemID' />]">
+[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMoveIcon" commandname="move" commandargument="ItemID" />]
 </span>
 </td>
+
+<td style="width:0">
+[<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{OFF}" />]
+[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteIcon" commandname="delete" commandargument="ItemID" />]
+[<tag type="endif" />]
+</td>
+
 </tr>

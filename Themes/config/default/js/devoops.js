@@ -13,7 +13,7 @@
 function LoadCalendarScript(callback){
 	function LoadFullCalendarScript(){
 		if(!$.fn.fullCalendar){
-			$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fullcalendar/fullcalendar.js', callback);
+			$.getScript('plugins/fullcalendar/fullcalendar.js', callback);
 		}
 		else {
 			if (callback && typeof(callback) === "function") {
@@ -22,7 +22,7 @@ function LoadCalendarScript(callback){
 		}
 	}
 	if (!$.fn.moment){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/moment/moment.min.js', LoadFullCalendarScript);
+		$.getScript('plugins/moment/moment.min.js', LoadFullCalendarScript);
 	}
 	else {
 		LoadFullCalendarScript();
@@ -48,7 +48,7 @@ function LoadOpenLayersScript(callback){
 //
 function LoadTimePickerScript(callback){
 	if (!$.fn.timepicker){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', callback);
+		$.getScript('plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -62,7 +62,7 @@ function LoadTimePickerScript(callback){
 //
 function LoadBootstrapValidatorScript(callback){
 	if (!$.fn.bootstrapValidator){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrapvalidator/bootstrapValidator.min.js', callback);
+		$.getScript('plugins/bootstrapvalidator/bootstrapValidator.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -76,7 +76,7 @@ function LoadBootstrapValidatorScript(callback){
 //
 function LoadSelect2Script(callback){
 	if (!$.fn.select2){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/select2/select2.min.js', callback);
+		$.getScript('plugins/select2/select2.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -90,10 +90,10 @@ function LoadSelect2Script(callback){
 //
 function LoadDataTablesScripts(callback){
 	function LoadDatatables(){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/datatables/jquery.dataTables.js', function(){
-			$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/datatables/ZeroClipboard.js', function(){
-				$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/datatables/TableTools.js', function(){
-					$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/datatables/dataTables.bootstrap.js', callback);
+		$.getScript('plugins/datatables/jquery.dataTables.js', function(){
+			$.getScript('plugins/datatables/ZeroClipboard.js', function(){
+				$.getScript('plugins/datatables/TableTools.js', function(){
+					$.getScript('plugins/datatables/dataTables.bootstrap.js', callback);
 				});
 			});
 		});
@@ -113,7 +113,7 @@ function LoadDataTablesScripts(callback){
 //
 function LoadFineUploader(callback){
 	if (!$.fn.fineuploader){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fineuploader/jquery.fineuploader-5.0.1.min.js', callback);
+		$.getScript('plugins/fineuploader/jquery.fineuploader-5.0.1.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -128,11 +128,11 @@ function LoadFineUploader(callback){
 //
 function LoadXChartScript(callback){
 	function LoadXChart(){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/xcharts/xcharts.min.js', callback);
+		$.getScript('plugins/xcharts/xcharts.min.js', callback);
 	}
 	function LoadD3Script(){
 		if (!$.fn.d3){
-			$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/d3/d3.v3.min.js', LoadXChart)
+			$.getScript('plugins/d3/d3.v3.min.js', LoadXChart)
 		}
 		else {
 			LoadXChart();
@@ -153,13 +153,13 @@ function LoadXChartScript(callback){
 //
 function LoadFlotScripts(callback){
 	function LoadFlotScript(){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/flot/jquery.flot.js', LoadFlotResizeScript);
+		$.getScript('plugins/flot/jquery.flot.js', LoadFlotResizeScript);
 	}
 	function LoadFlotResizeScript(){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/flot/jquery.flot.resize.js', LoadFlotTimeScript);
+		$.getScript('plugins/flot/jquery.flot.resize.js', LoadFlotTimeScript);
 	}
 	function LoadFlotTimeScript(){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/flot/jquery.flot.time.js', callback);
+		$.getScript('plugins/flot/jquery.flot.time.js', callback);
 	}
 	if (!$.fn.flot){
 		LoadFlotScript();
@@ -178,7 +178,7 @@ function LoadFlotScripts(callback){
 function LoadMorrisScripts(callback){
 	function LoadMorrisScript(){
 		if(!$.fn.Morris){
-			$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/morris/morris.min.js', callback);
+			$.getScript('plugins/morris/morris.min.js', callback);
 		}
 		else {
 			if (callback && typeof(callback) === "function") {
@@ -187,7 +187,7 @@ function LoadMorrisScripts(callback){
 		}
 	}
 	if (!$.fn.raphael){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/raphael/raphael-min.js', LoadMorrisScript);
+		$.getScript('plugins/raphael/raphael-min.js', LoadMorrisScript);
 	}
 	else {
 		LoadMorrisScript();
@@ -199,7 +199,7 @@ function LoadMorrisScripts(callback){
 //
 function LoadFancyboxScript(callback){
 	if (!$.fn.fancybox){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fancybox/jquery.fancybox.js', callback);
+		$.getScript('plugins/fancybox/jquery.fancybox.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -213,7 +213,7 @@ function LoadFancyboxScript(callback){
 //
 function LoadKnobScripts(callback){
 	if(!$.fn.knob){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jQuery-Knob/jquery.knob.js', callback);
+		$.getScript('plugins/jQuery-Knob/jquery.knob.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -227,7 +227,7 @@ function LoadKnobScripts(callback){
 //
 function LoadSparkLineScript(callback){
 	if(!$.fn.sparkline){
-		$.getScript('/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/sparkline/jquery.sparkline.min.js', callback);
+		$.getScript('plugins/sparkline/jquery.sparkline.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -2303,7 +2303,7 @@ $(document).ready(function () {
 	if (ajax_url.length < 1) {
 		ajax_url = 'ajax/dashboard.html';
 	}
-//	LoadAjaxContent(ajax_url);  This commented out for NBB
+	LoadAjaxContent(ajax_url);
 	$('.main-menu').on('click', 'a', function (e) {
 		var parents = $(this).parents('li');
 		var li = $(this).closest('li.dropdown');

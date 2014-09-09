@@ -1,4 +1,4 @@
-[<tag type="selectlocalebutton" size="32"/>] 
+
 [<tag id="selecteditemid" type="postback" value="" />]
 
 <script>
@@ -46,23 +46,47 @@ $(document).ready(function() {
 
 </script>
 
-<div class="row">
-    <div id="breadcrumb" class="col-md-12">
-        <ol class="breadcrumb">
-            <li>Catalogue</li>
-            <li></li>
-        </ol>
-    </div>
+
+<div class="row hidden"><!-- Not being used/yet -->
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Catalogue</li>
+			<li><a href="#">Categories</a></li>
+		</ol>
+	</div>
 </div>
-<h4 class="page-header">Categories</h4>
-<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+
+
+<div class="row hidden"><!-- Not being used/yet -->
+	<div class="col-md-12">
+		<h4 class="page-header">Categories</h4>
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+	</div>
+</div>
+
+<br />
+
+<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+	<div class="col-xs-9 col-sm-9">
+		<a href="#" class="show-sidebar">
+		  <i class="fa fa-bars"></i>
+		</a>
+		<div class="actionbuttonwrapper">
+		[<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary" commandname="addnew"/>]
+	    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-warning" commandname="saveall"/>]
+	    </div>
+	</div>
+	<div class="col-xs-3 col-sm-3 top-panel-right">
+		[<tag type="selectlocalebutton" size="32"/>]
+	</div>
+</div>
 
 
 <div class="row">
 	
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
-			<div class="box-header no-box-header">
+			<div class="box-header">
 				<div class="box-name">
 					<i class="fa fa-table"></i>
 					<span>Categories</span>
@@ -81,23 +105,15 @@ $(document).ready(function() {
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-
-				        <div class="col-sm-2">
-				        [<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary btn-block" commandname="addnew"/>]
-				        </div>
-				        <div class="col-sm-2">
-				        [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-primary btn-default" commandname="saveall"/>]
-				        </div>
-
-						<table class="table table-striped categorylist">
+						<table class="table table-striped table-hover categorylist">
 							<thead>
 								<tr>
 									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
 									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
+									<th> </th>
+									<th> </th>
+									<th> </th>
 									<th>[<tag type="valueof" resourcekey="General.Hidden" />]</th>
-									<th> </th>
-									<th> </th>
-									<th> </th>
 								</tr>
 							</thead>
 							<tbody>

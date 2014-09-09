@@ -207,6 +207,9 @@
   <data name="cmdSelect.ToolTip" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="cmdAddProducts.Text" xml:space="preserve">
+    <value>Add Products</value>
+  </data>
   <data name="cmdSort.Text" xml:space="preserve">
     <value>Sort</value>
   </data>
@@ -452,6 +455,9 @@
   </data>
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload </value>
+  </data>
+  <data name="UploadImage.Text" xml:space="preserve">
+    <value>Upload Image</value>
   </data>
   <data name="CopyTo.Text" xml:space="preserve">
     <value>Copy To</value>

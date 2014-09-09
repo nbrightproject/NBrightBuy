@@ -32,88 +32,7 @@
 				<a href="/Default.aspx?tabid=96&ctrl=dashsummary">NB-Store</a>
 			</div>
 			<div id="top-panel" class="col-xs-12 col-sm-10">
-				<div class="row">
-					<div class="col-xs-8 col-sm-4">
-						<a href="#" class="show-sidebar">
-						  <i class="fa fa-bars"></i>
-						</a>
-						<div id="search">
-							<input type="text" placeholder="search"/>
-							<i class="fa fa-search"></i>
-						</div>
-					</div>
-					<div class="col-xs-4 col-sm-8 top-panel-right">
-						<ul class="nav navbar-nav pull-right panel-menu">
-							<li class="hidden-xs">
-								<a href="DesktopModules/NBright/NBrightBuy/Themes/config/default/backoffice.html" class="modal-link">
-									<i class="fa fa-bell"></i>
-									<span class="badge">7</span>
-								</a>
-							</li>
-							<li class="hidden-xs">
-								<a class="ajax-link" href="DesktopModules/NBright/NBrightBuy/Themes/config/default/ajax/calendar.html">
-									<i class="fa fa-calendar"></i>
-									<span class="badge">7</span>
-								</a>
-							</li>
-							<li class="hidden-xs">
-								<a href="DesktopModules/NBright/NBrightBuy/Themes/config/default/ajax/page_messages.html" class="ajax-link">
-									<i class="fa fa-envelope"></i>
-									<span class="badge">7</span>
-								</a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
-									<div class="avatar">
-										<img src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/img/avatar.jpg" class="img-rounded" alt="avatar" />
-									</div>
-									<i class="fa fa-angle-down pull-right"></i>
-									<div class="user-mini pull-right">
-										<span class="welcome">Welcome,</span>
-										<span>Jane Devoops</span>
-									</div>
-								</a>
-								<ul class="dropdown-menu">
-									<li>
-										<a href="#">
-											<i class="fa fa-user"></i>
-											<span>Profile</span>
-										</a>
-									</li>
-									<li>
-										<a href="ajax/page_messages.html" class="ajax-link">
-											<i class="fa fa-envelope"></i>
-											<span>Messages</span>
-										</a>
-									</li>
-									<li>
-										<a href="ajax/gallery_simple.html" class="ajax-link">
-											<i class="fa fa-picture-o"></i>
-											<span>Albums</span>
-										</a>
-									</li>
-									<li>
-										<a href="ajax/calendar.html" class="ajax-link">
-											<i class="fa fa-tasks"></i>
-											<span>Tasks</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fa fa-cog"></i>
-											<span>Settings</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fa fa-power-off"></i>
-											<span>Logout</span>
-										</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
+				<div id="pageactionstarget" class="row">
 				</div>
 			</div>
 		</div>
@@ -148,10 +67,15 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrap/bootstrap.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops.js"></script><!-- need to replace with minimised version -->
-<!-- Run Select2 plugin on elements -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops-nbb.js"></script><!-- need to replace with minimised version -->
+<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/imagesloaded.pkgd.min.js"></script>
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/masonry.pkgd.min.js"></script>
 
 <script type="text/javascript">
+	// Move page actions to header bar
+	$('#pageactionssource').prependTo('#pageactionstarget');
 // Run Select2 plugin on elements
 function DemoSelect2(){
 	$('.s2_with_tag').select2({placeholder: "Please Select"});

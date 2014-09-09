@@ -204,16 +204,14 @@
   <data name="profileupdatedcaptcha_fail.Text" xml:space="preserve">
     <value>Invalid Security Code.</value>
   </data>
-  <data name="terms.Text" xml:space="preserve">
-    <value>The Terms and Conditions must be accepted.</value>
-  </data>
-  <data name="ordercreatedemailsubject.Text" xml:space="preserve">
-    <value>Order Confirmed</value>
+  <data name="stockadjusted.Text" xml:space="preserve">
+    <value>Qty adjusted to match available stock</value>
   </data>
   <data name="outofstock.Text" xml:space="preserve">
     <value>Out of Stock</value>
   </data>
-  <data name="stockadjusted.Text" xml:space="preserve">
-    <value>Qty adjusted to match available stock</value>
-  </data>
-</root>
+  <data name="terms.Text" xml:space="preserve">
+    <value>The Terms and Conditions must be accepted.</value>
+  </data>  <data name="ordercreatedemailsubject.Text" xml:space="preserve">
+    <value>Order Confirmed</value>
+  </data></root>

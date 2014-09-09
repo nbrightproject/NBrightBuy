@@ -1,7 +1,16 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
-<div class="row">
-	<div class="col-xs-8">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
+        $('.customerdetails div.box-content').toggle(); // Then open specific ones
+        $('.pageactions div.box-content').toggle();
+    });
+</script>
+
+
+<div class="row customerdetails">
+	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
@@ -23,9 +32,6 @@
 			</div>
 			<div class="box-content">
 				<div class="card">
-					<p class="page-header">User Profile</p>
-
-				
 
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblUserID" />]</label>
 						<div class="col-sm-4">
@@ -80,83 +86,104 @@
 						<div class="col-sm-5">
 							[<tag type="textbox" cssclass="form-control" id="email" />]
 						</div>
-						<div class="col-sm-2">
-							[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="btn btn-default" commandname="updateemail" commandargument="ItemID" />]
-						</div>
 						<div class="clearfix"></div>
-
-						<div class="col-md-3 col-md-offset-3">
-						[<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" cssclass="btn btn-primary" commandname="return" />]
-						</div>
-						<div class="clearfix"></div>
-						<br />
 
 				</div>
 				
-						<p class="page-header">Notes</p>
-						[<tag id="message" type="dnn:texteditor" height="400" width="100%" />]
-						<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
 	
-	<div class="col-xs-4">
+	
+</div>
+
+<div class="row customernotes">
+	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-user"></i>
-					<span>Actions</span>
+					<i class="fa fa-search"></i><span>Notes</span>
 				</div>
 				<div class="box-icons">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-					<a class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
-					<a class="close-link">
-						<i class="fa fa-times"></i>
-					</a>
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
 				</div>
-				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-					<p class="page-header">Ordering</p>
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
 					<div class="form-group">
-						<div class="col-sm-6">
-						[<tag id="cmdViewOrders" type="linkbutton" resourcekey="Clients.cmdViewOrders" commandname="vieworders" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
-						</div>
-						<div class="col-sm-6">
-						[<tag id="cmdCreateOrder" type="linkbutton" resourcekey="Clients.cmdCreateOrder" commandname="createorder" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						<div class="col-md-12">
+						<label class="control-label sr-only">Notes</label>
+							[<tag id="message" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%" />]
 						</div>
 					</div>
-			    <div class="form-group">
-			        <div class="col-sm-6">
-			            [<tag id="cmdViewAddressBook" type="linkbutton" resourcekey="Clients.cmdViewAddressBook" commandname="viewaddressbook" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
-			        </div>
-			        <div class="clearfix"></div>
-			        <br />
-			        <p class="page-header">User Account</p>
-			        <div class="form-group">
-			            <div class="col-sm-6">
-			                [<tag id="cmdValidateUser" type="linkbutton" resourcekey="Clients.cmdValidateUser" commandname="validateuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
-			            </div>
-			        </div>
-			        <div class="form-group">
-			            <div class="col-sm-6">
-			                [<tag id="cmdResetPass" type="linkbutton" resourcekey="Clients.cmdResetPass" commandname="resetpass" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
-			            </div>
-			            <div class="col-sm-6">
-			                [<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
-			            </div>
-			        </div>
+			  	  	</div>
 			    </div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
-		
-		
 	</div>
 </div>
 
+
+
+<div class="row customeractions">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Actions</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm col-sm-6">
+					<p class="page-header">Ordering</p>
+					<div class="form-group">
+						<div class="col-sm-4">
+						[<tag id="cmdViewOrders" type="linkbutton" resourcekey="Clients.cmdViewOrders" commandname="vieworders" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						</div>
+						<div class="col-sm-4">
+						[<tag id="cmdCreateOrder" type="linkbutton" resourcekey="Clients.cmdCreateOrder" commandname="createorder" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4">
+						[<tag id="cmdViewAddressBook" type="linkbutton" resourcekey="Clients.cmdViewAddressBook" commandname="viewaddressbook" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						</div>
+					</div>
+					</div>
+					<div class="col-sm col-sm-6">
+					<p class="page-header">User Account</p>
+					<div class="form-group">
+						<div class="col-sm-4">
+						[<tag id="cmdValidateUser" type="linkbutton" resourcekey="Clients.cmdValidateUser" commandname="validateuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						</div>
+						<div class="col-sm-4">
+						[<tag id="cmdResetPass" type="linkbutton" resourcekey="Clients.cmdResetPass" commandname="resetpass" cssclass="btn btn-danger btn-block" commandargument="ItemID" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4">
+						[<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+						</div>
+					</div>
+					</div>
+
+	<div class="clearfix">
+	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 

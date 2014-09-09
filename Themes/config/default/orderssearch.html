@@ -13,18 +13,40 @@
 
 </script>
 
-<div class="row">
+<div class="row hidden"><!-- Not being used/yet -->
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
 			<li>Sales</li>
-			<li><a href="/Default.aspx?tabid=96&amp;ctrl=settings">Orders</a></li>
+			<li><a href="#">Orders</a></li>
 		</ol>
 	</div>
 </div>
-<h4 class="page-header">Orders</h4>
-<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 
+<div class="row hidden"><!-- Not being used/yet -->
+	<div class="col-md-12">
+		<h4 class="page-header">Orders</h4>
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+	</div>
+</div>
 
+<br />
+
+<!-- Hide Cient Details button when URL doesn't contain uid - This does not work, needs to be fixed or a function created -->
+[<tag type="if" function="setting" key="dummy" testvalue="{url:uid}" display="{OFF}" displayelse="{ON}" />]
+	<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+		<div class="col-xs-9 col-sm-9">
+			<a href="#" class="show-sidebar">
+			  <i class="fa fa-bars"></i>
+			</a>
+			<div class="actionbuttonwrapper">
+				[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-primary" commandname="viewclient" />]
+		    </div>
+		</div>
+		<div class="col-xs-3 col-sm-3 top-panel-right">
+			<!-- No language in this page -->
+		</div>
+	</div>
+[<tag type="endif"  />]
 
 
 <div class="row">

@@ -20,22 +20,33 @@ a, a:visited {color:#428BCA}
 
 
 /* Adjustments to theme */
+#sidebar-left{position:fixed}#content{float:right}/* Fix menu in place */
 .no-box-header{display:none}/* Hide panel head section */
 .orderdetailitems th{text-transform:uppercase}
 .orderdetail .billaddress b,.orderdetail .shipaddress b{text-transform:uppercase}
 .orderdetail .storeaddress{}
 .centered{text-align:center}
 #logo a{background: none;}/* Hide devoops logo*/
-.top-panel-right{display: none;}/* Hide top right menu section */
+/* .top-panel-right{display: none;}Hide top right menu section */
 a.btn-primary,a.btn-success{color:#FFFFFF}/* When buttons are inside anchors */
 a.btn-default {color:#929292}
 #loader{color:#FFFFFF;position:absolute;right:3px;top:6px;z-index: 9999;}/* Loading graphic */
-.nowrap{white-space:nowrap}
+.text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
+.nowrap{white-space:nowrap}/* remove this one */
+.btn{padding: 0 15px;margin-right:10px}/* default buttons */
+.cmdPg{display:none !important}/* hide pager ears */
+.actionbuttonwrapper{height:50px;padding-top:12px;margin-left:30px;white-space:nowrap;}
+span.dnnInputFileWrapper{padding: 0 15px;}/* fix for file upload buttons */
+
+/* Language selector */
+.editlanguage{list-style: none outside none;margin: 0;padding: 0;}
+.editlanguage > li{float:right}
+.editlanguage li img{margin-left:10px}
 
 /* Productlist items */
 .productadminlist{list-style: none outside none;margin: 0;padding: 0;}
 .productadminlist > li{float:left}
-.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px}
+.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative}
 .productadminlist .productlistitem li{text-align:center;}
 .productadminlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
 .productadminlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
@@ -100,16 +111,16 @@ a.btn-default {color:#929292}
 .selectrelated{}
 .selectrelated .productlist{list-style: none outside none;margin:15px 0 0;padding: 0;}
 .selectrelated .productlist > li{float:left}
-.selectrelated .selectlistitem{list-style: none outside none;margin: 0 6px 6px 0;padding: 0;background:#FFFFFF;width:96px;height:140px;position: relative;border:1px dotted #E3E3E3}
+.selectrelated .selectlistitem{list-style: none outside none;margin: 0 6px 6px 0;padding: 0;background:#FFFFFF;width:120px;height:160px;position: relative;border:1px dotted #E3E3E3}
 .selectrelated .selectlistitem li{text-align:center;}
-.selectrelated .selectlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:96px;height:96px}
-.selectrelated .selectlistitem li.noimage{font-size:80px;line-height:96px;text-align:center;}
-.selectrelated .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 11px;height:38px;overflow:hidden}
+.selectrelated .selectlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.selectrelated .selectlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
+.selectrelated .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
 .selectrelated .selectlistitem .selectproduct{top:0;right:0;position:absolute;cursor: pointer;}
 .selectrelated .selectlistitem .selectproduct .fa{color: #DDDDDD;}
 .selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
 
-/* Category Editor */
+/* Category and Properties Editors */
 .categorylist .fa{color:#DDDDDD;font-size:200%}
 .categorylist .fa-minus-square:hover{color:#D33030}
 .categorylist .fa-edit:hover{color:#47BE27}
@@ -117,11 +128,41 @@ a.btn-default {color:#929292}
 .categorylist .fa-times-circle{color:#D33030}
 .categorylist .fa-arrow-circle-left{color:#47BE27}
 
+/* Category Editor Productlist items */
+.productlist{list-style: none outside none;margin: 0;padding: 0;}
+.productlist > li{float:left}
+.productlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative;}
+.productlist .productlistitem li{text-align:center;}
+.productlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.productlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
+.productlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
+.productlist .productlistitem .removeitem{top:0;right:0;position:absolute;}
+.productlist .productlistitem .removeproduct{color:#D33030;cursor:pointer;}
+
+/* Category Editor Productlist adding items This section not working with masonry */
+.productlist{list-style: none outside none;margin: 0;padding: 0;}
+.productlist > li{float:left}
+.productlist .selectlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative;}
+.productlist .selectlistitem li{text-align:center;}
+.productlist .selectlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.productlist .selectlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
+.productlist .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
+.productlist .selectlistitem .additem{top:0;right:0;position:absolute;}
+.productlist .selectlistitem .selectproduct{cursor:pointer;}
+
+/* Plugins */
+.plugins .fa {color:#DDDDDD;font-size:200%;}
+.plugins .fa-edit:hover{color:#47BE27}
+.plugins .fa-arrow-circle-up:hover{color:#47BE27}
+.plugins .fa-arrow-circle-down:hover{color:#47BE27}
 
 
+/* Property Groups Editor */
+.propertygroupslist .fa{color:#DDDDDD;font-size:200%}
+.propertygroupslist .fa-minus-square:hover{color:#D33030}
+.propertygroupslist .fa-sort:hover{color:#549ACC}
+.propertygroupslist .fa-times-circle{color:#D33030}
+.propertygroupslist .fa-arrow-circle-left{color:#47BE27}
 
-
-
-
-
-
+/* Store settings */
+.countryselection .dnnBoxLabel{font-weight:normal}

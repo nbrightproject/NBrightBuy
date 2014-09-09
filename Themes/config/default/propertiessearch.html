@@ -1,23 +1,28 @@
 
-
-
-<div class="row">
-    <div id="breadcrumb" class="col-md-12">
-        <ol class="breadcrumb">
-            <li>Catalogue</li>
-            <li></li>
-        </ol>
-    </div>
+<div class="row hidden"><!-- Not being used/yet -->
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Catalogue</li>
+			<li><a href="#">Properties</a></li>
+		</ol>
+	</div>
 </div>
-<h4 class="page-header">Properties</h4>
-<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+
+<div class="row hidden"><!-- Not being used/yet -->
+	<div class="col-md-12">
+		<h4 class="page-header">Properties</h4>
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+	</div>
+</div>
+
+<br />
 
 <div class="row searchheader">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i>
+					<i class="fa fa-search"></i><span>Properties List Filter</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -29,10 +34,11 @@
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
 					<div class="form-group">
-						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
 						<div class="col-sm-2">
-                        [<tag type="groupdropdown" id="groupsel" groupsonly="true" />] 
-                        [<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="btn btn-primary" commandname="search"/>]  
+							[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="btn btn-primary" commandname="search"/>] 
+						</div>
+						<div class="col-sm-3">
+							[<tag type="groupdropdown" cssclass="s2_with_tag populate placeholder" id="groupsel" groupsonly="true" />]
 						</div>
 					</div>
 				</div>
