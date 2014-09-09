@@ -537,4 +537,55 @@
   <data name="FileName.Text" xml:space="preserve">
     <value>FileName</value>
   </data>
+  <data name="modelstatus.Code" xml:space="preserve">
+    <value>010,020,030,040,050</value>
+  </data>
+  <data name="modelstatus.Text" xml:space="preserve">
+    <value>Available,Out of Stock,In Stock With Supplier,Pre-Order,Special</value>
+  </data>
+  <data name="ActivateStock.Text" xml:space="preserve">
+    <value>Activate Stock</value>
+  </data>
+  <data name="availabledate.Text" xml:space="preserve">
+    <value>Available Date</value>
+  </data>
+  <data name="Barcode.Text" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="Code.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Cost.Text" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="Dealer.Text" xml:space="preserve">
+    <value>Dealer</value>
+  </data>
+  <data name="Deleted.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Extra.Text" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Price.Text" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Max.Text" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="Min.Text" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Stock.Text" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="Disable.Text" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="delay.Text" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="unit.Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
 </root>

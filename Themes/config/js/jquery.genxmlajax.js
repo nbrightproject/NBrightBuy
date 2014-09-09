@@ -167,7 +167,7 @@
         else if (element.attr("type") == 'checkbox') {
             values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
         }
-        else if (element.attr("type") == 'text') {
+        else if (element.attr("type") == 'text' || element.attr("type") == 'date' || element.attr("type") == 'email' || element.attr("type") == 'url') {
             if (element.attr("datatype") === undefined) {
                 values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
             }

@@ -8,6 +8,16 @@ using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
+    /// <summary>
+    /// Class to hold transient stock data
+    /// </summary>
+    public class ModelTransData
+    {
+        public String modelid { get; set; }
+        public int orderid { get; set; }
+        public Double qty { get; set; }
+        public DateTime setdate { get; set; }
+    }
 
     /// <summary>
     /// Class to hold Category data, so we can use linq and help speed up access from the memory var CategoryList

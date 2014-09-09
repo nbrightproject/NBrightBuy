@@ -109,14 +109,73 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return obj.First();
         }
 
-        public void UpdateModelQty(String modelid,Double qty)
+        public void AdjustModelQtyBy(String modelid,Double qty)
         {
             var model = GetModel(modelid);
             var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining");
             newqty = newqty - qty;
-            if (newqty < 0) newqty = 0;
             DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining", newqty);
         }
+
+        /// <summary>
+        /// Update transient model qty.  
+        /// When a order is places and redirected to the bank, the stock is placed into a transient status. So the stock is effectly calculated as being taken.
+        /// On successful return from the bank the transient qty is removed from the model qty.  On payment failure, the stock is released after 20 mins
+        /// </summary>
+        /// <param name="modelid"></param>
+        /// <param name="orderid"></param>
+        /// <param name="addqty"></param>
+        public void UpdateModelTransQty(String modelid,int orderid, Double addqty)
+        {
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var l = (List<ModelTransData>)Utils.GetCache(key);
+            if (l == null) l = new List<ModelTransData>();
+
+            l.RemoveAll(s => s.setdate < DateTime.Now.AddMinutes(-20)); // remove timed out records
+            var t = new ModelTransData();
+            t.qty = addqty;
+            t.orderid = orderid;
+            t.modelid = modelid;
+            t.setdate = DateTime.Now;
+            l.Add(t);
+            Utils.SetCache(key,l);
+        }
+
+        public Double GetModelTransQty(String modelid, int orderid)
+        {
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var l = (List<ModelTransData>)Utils.GetCache(key);
+            if (l == null) return 0;
+            Double tot = 0;
+            foreach (var i in l)
+            {
+                if (i.setdate > DateTime.Now.AddMinutes(-20) && i.orderid != orderid)
+                {
+                    tot += i.qty;
+                }
+            }
+            return tot;
+        }
+
+        public void ReleaseModelTransQty(String modelid, int orderid, Double addqty)
+        {
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var l = (List<ModelTransData>)Utils.GetCache(key);
+            if (l != null)
+            {
+                l.RemoveAll(s => s.setdate < DateTime.Now.AddMinutes(-20)); // remove timed out records
+                l.RemoveAll(s => s.orderid == orderid); // remove orderid
+                Utils.SetCache(key, l);                
+            }
+        }
+
+        public void ApplyModelTransQty(String modelid, int orderid, Double addqty)
+        {
+            AdjustModelQtyBy(modelid, addqty);
+            Save();
+            ReleaseModelTransQty(modelid, orderid, addqty);
+        }
+
 
         public NBrightInfo GetOption(String optionid)
         {
@@ -156,6 +215,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
+            foreach (var model in Models)
+            {
+                var qty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining");
+                var minqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyminstock");
+                var currentstatus = DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus");
+                if (currentstatus != "040" && currentstatus != "050")
+                {
+                    if (qty > 0) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "010");
+                    if (minqty == qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "020");
+                    if (qty <= 0 && minqty < qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "030");
+                }                
+            }
+
+
             var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);

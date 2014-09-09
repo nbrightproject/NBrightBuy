@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -59,23 +60,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Today.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
                 base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", PortalId.ToString("D") + "-" + DateTime.Today.Year.ToString("D").Substring(2, 2) + "-" + _cartId);
 
-                //update stock levels.
-                var itemList = GetCartItemList();
-                foreach (var cartItemInfo in itemList)
-                {
-                    var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
-                    var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
-                    var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
-
-                    //stock control
-                    var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-                    if (prd.Exists)
-                    {
-                        prd.UpdateModelQty(modelid,qty);
-                    }
-                    prd.Save();
-                }
-
                 base.SavePurchaseData();
                 var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
                 
@@ -96,6 +80,71 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Save transent model qty to cache.
+        /// </summary>
+        public void SaveModelTransQty()
+        {
+            //update trans stock levels.
+            var itemList = GetCartItemList();
+            foreach (var cartItemInfo in itemList)
+            {
+                var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
+                var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+                var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
+                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                if (prd.Exists)
+                {
+                    var model = prd.GetModel(modelid);
+                    if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Release transient qty for this cart
+        /// </summary>
+        public void ReleaseModelTransQty()
+        {
+            //update trans stock levels.
+            var itemList = GetCartItemList();
+            foreach (var cartItemInfo in itemList)
+            {
+                    var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
+                    var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+                    var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
+
+                    var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                    if (prd.Exists)
+                    {
+                        var model = prd.GetModel(modelid);
+                        if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.ReleaseModelTransQty(modelid, _cartId, qty);
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Apply Transient qty for this cart onto the model
+        /// </summary>
+        public void ApplyModelTransQty()
+        {
+            //update trans stock levels.
+            var itemList = GetCartItemList();
+            foreach (var cartItemInfo in itemList)
+            {
+                    var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
+                    var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+                    var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
+
+                    var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                    if (prd.Exists)
+                    {
+                        var model = prd.GetModel(modelid);
+                        if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.ApplyModelTransQty(modelid, _cartId, qty);
+                    }
+            }           
         }
 
 
@@ -266,12 +315,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prd = new ProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists) return null; //Invalid product remove from cart
 
-            var stocklevel = prd.GetModel(modelid).GetXmlPropertyInt("genxml/textbox/txtqtyremaining");
-            var minStock = StoreSettings.Current.GetInt("minimumstocklevel");
+            var stockon = prd.GetModel(modelid).GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            var stocklevel = prd.GetModel(modelid).GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
+            var minStock = prd.GetModel(modelid).GetXmlPropertyInt("genxml/textbox/txtqtyminstock");
+            if (minStock == 0 ) minStock = StoreSettings.Current.GetInt("minimumstocklevel");
             var maxStock = prd.GetModel(modelid).GetXmlPropertyInt("genxml/textbox/txtqtystockset");
-            if (stocklevel >= 0) // -1 stock control is off
+            if (stockon) 
             {
                 stocklevel = stocklevel - minStock;
+                stocklevel = stocklevel - prd.GetModelTransQty(modelid, _cartId);
                 if (stocklevel < qty)
                 {
                     qty = stocklevel;

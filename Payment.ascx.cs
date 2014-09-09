@@ -112,11 +112,17 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             //TODO: fix this to work for payment gateways.
             // First step is to make the cart turn into a order and accept the order...no payment proccessing
+            
 
             if (_cartInfo.IsValidated())
             {
 
+                _cartInfo.SaveModelTransQty(); // move qty into trnas
+
+
                 _cartInfo.ConvertToOrder(DebugMode);
+
+                _cartInfo.ApplyModelTransQty();
 
                 var cartL = new List<NBrightInfo>();
                 cartL.Add(_cartInfo.GetInfo());

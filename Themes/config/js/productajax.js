@@ -32,7 +32,8 @@
     $('#productmodels').change(function () {
         $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
         $(this).children().find('.sortelementUp').click(function () {moveUp($(this).parent()); });
-        $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
+        $(this).children().find('.sortelementDown').click(function () { alert('ass'); moveDown($(this).parent()); });
+        $('input[id*="availabledate"]').datepicker();
     });
 
     $('#productoptions').change(function () {
@@ -98,7 +99,6 @@
             nbxget('removerelatedproduct', '#productselectparams', '#productrelated'); // load releated
         });
     });
-
 
 
     $('#undomodel').click(function () { undoremove('.modelitem', '#productmodels'); });
@@ -274,6 +274,7 @@
         nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
     });
     // END: -------------------------------------------------------
+
 
     function moveUp(item) {
         var prev = item.prev();

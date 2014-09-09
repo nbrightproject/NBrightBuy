@@ -219,6 +219,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "orderstatus":
                     Createorderstatusdropdown(container, xmlNod);
                     return true;
+                case "modelstatus":
+                    Createmodelstatusdropdown(container, xmlNod);
+                    return true;
                 case "cartemailaddress":
                     CreateCartEmailAddress(container, xmlNod);
                     return true;
@@ -387,14 +390,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             case "isinstock":
                                 dataValue = "FALSE";
                                 if (IsInStock((NBrightInfo) container.DataItem, testValue))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isinstockcart":
-                                dataValue = "FALSE";
-                                if (IsInStock((NBrightInfo) container.DataItem, testValue, true))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -2163,7 +2158,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         //remove templName from template, so we don't get a loop.
                         if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
                         //build models list
-                        var objL = BuildModelList((NBrightInfo)container.DataItem,true,true);
+                        var objL = BuildModelList((NBrightInfo)container.DataItem,true);
                         // render repeater
                         try
                         {
@@ -2217,7 +2212,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         rbl.Attributes.Remove("template");
                     }
 
-                    var objL = BuildModelList((NBrightInfo) container.DataItem, true, true);
+                    var objL = BuildModelList((NBrightInfo) container.DataItem, true);
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
 
@@ -2280,7 +2275,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         ddl.Attributes.Remove("template");                        
                     }
 
-                    var objL = BuildModelList((NBrightInfo)container.DataItem, true, true);
+                    var objL = BuildModelList((NBrightInfo)container.DataItem, true);
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
 
@@ -2339,20 +2334,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var isDealer = CmsProviderManager.Default.IsInRole(_settings["dealer.role"]);
             var outText = templ;
-            var strStockOn = obj.GetXmlProperty("genxml/textbox/txtqtyremaining");
-            var strStock = obj.GetXmlProperty("genxml/hidden/calcstock");
-            var stock = 0;
-            if (Utils.IsNumeric(strStock)) stock = Convert.ToInt32(strStock);
-            if (stock > 0 | strStockOn == "-1")
+            var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
+            if (stock > 0 | stockOn)
             {
                 outText = outText.Replace("{ref}", obj.GetXmlProperty("genxml/textbox/txtmodelref"));
                 outText = outText.Replace("{name}", obj.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"));
-                outText = outText.Replace("{stock}", strStock);
+                outText = outText.Replace("{stock}", stock.ToString("D"));
 
                 if (displayPrices)
                 {
-                    var price = obj.GetXmlPropertyDouble("genxml/hidden/saleprice");
-                    if (price == -1) price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    //[TODO: add promotional calc]
+                    //var price = obj.GetXmlPropertyDouble("genxml/hidden/saleprice");
+                    var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
                     var strprice = NBrightBuyUtils.FormatToStoreCurrency(price);
 
                     var strdealerprice = "";
@@ -2408,6 +2402,77 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/General.ascx.resx";
                     var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", Resxpath, Utils.GetCurrentCulture());
                     var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", Resxpath, Utils.GetCurrentCulture());
+                    if (orderstatuscode != null && orderstatustext != null)
+                    {
+                        if (ddl.Attributes["blank"] != null)
+                        {
+                            orderstatuscode = "," + orderstatuscode;
+                            orderstatustext = "," + orderstatustext;
+                        }
+
+                        var aryCode = orderstatuscode.Split(',');
+                        var aryText = orderstatustext.Split(',');
+
+                        var lp = 0;
+                        foreach (var c in aryCode)
+                        {
+                            var li = new ListItem();
+                            li.Text = aryText[lp];
+                            li.Value = c;
+                            if (li.Text != "")
+                                ddl.Items.Add(li);
+                            else
+                            {
+                                if (lp == 0) ddl.Items.Add(li); // allow the first entry to be blank.
+                            }
+                            lp += 1;
+                        }
+                        var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        if ((ddl.Items.FindByValue(strValue) != null))
+                            ddl.SelectedValue = strValue;
+                        else if (aryCode.Length > 0) ddl.SelectedIndex = 0;
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
+        }
+
+
+        #endregion
+
+        #region "orderstatus"
+
+        private void Createmodelstatusdropdown(Control container, XmlNode xmlNod)
+        {
+            var ddl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null)) ddl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                ddl.ID = xmlNod.Attributes["id"].InnerText;
+            else
+                ddl.ID = "modelstatus";
+
+            ddl = (DropDownList)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+            ddl.DataBinding += ModelstatusDataBind;
+            container.Controls.Add(ddl);
+        }
+
+        private void ModelstatusDataBind(object sender, EventArgs e)
+        {
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+
+                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/General.ascx.resx";
+                    var orderstatuscode = DnnUtils.GetLocalizedString("modelstatus.Code", Resxpath, Utils.GetCurrentCulture());
+                    var orderstatustext = DnnUtils.GetLocalizedString("modelstatus.Text", Resxpath, Utils.GetCurrentCulture());
                     if (orderstatuscode != null && orderstatustext != null)
                     {
                         if (ddl.Attributes["blank"] != null)
@@ -3496,7 +3561,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #region "Functions"
 
-        private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj, Boolean addCartStock = false, Boolean addSalePrices = false)
+        private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj,Boolean addSalePrices = false)
         {
             //build models list
             var objL = new List<NBrightInfo>();
@@ -3544,33 +3609,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                             #endregion
 
-                            #region "stock calcs"
-
-                            if (addCartStock)
-                            {
-                                // Get the stock levels that exists in the cart. (this could also be for all carts if the "lockstockoncart" setting is set)
-                                var nodModelStock = nod.SelectSingleNode("textbox/txtqtyremaining");
-                                if (nodModelStock != null)
-                                {
-                                    var modelStock = nodModelStock.InnerText;
-                                    // only create nodes if stock is active (modelstock of -1, stock is turned off)                                       
-                                    if (Utils.IsNumeric(modelStock) && Convert.ToInt32(modelStock) >= 0)
-                                    {
-                                        var cartStock = 0;
-                                        var cartData = new CartData(PortalSettings.Current.PortalId);
-                                        cartStock = cartData.GetQtyOfModelInCart(modelId);
-
-                                        o.AddSingleNode("stockincart", cartStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                        var actualStock = Convert.ToInt32(modelStock);
-                                        actualStock = actualStock - cartStock;
-                                        if (actualStock < 0) actualStock = 0;
-                                        o.AddSingleNode("calcstock", actualStock.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                    }
-                                }
-                            }
-
-                            #endregion
-
                             #region "Prices"
 
                             if (addSalePrices)
@@ -3602,7 +3640,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private String GetSalePrice(NBrightInfo dataItemObj)
         {
             Double saleprice = -1;
-            var l = BuildModelList(dataItemObj, false, true);
+            var l = BuildModelList(dataItemObj, true);
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/hidden/saleprice");
@@ -3615,7 +3653,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private String GetDealerPrice(NBrightInfo dataItemObj)
         {
             var dealprice = "-1";
-            var l = BuildModelList(dataItemObj, false, false);
+            var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
                 var s = m.GetXmlProperty("genxml/textbox/txtdealercost");
@@ -3630,7 +3668,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private String GetFromPrice(NBrightInfo dataItemObj)
         {
             var price = "-1";
-            var l = BuildModelList(dataItemObj, false, false);
+            var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
                 var s = m.GetXmlProperty("genxml/textbox/txtunitcost");
@@ -3709,48 +3747,25 @@ namespace Nevoweb.DNN.NBrightBuy.render
             values = array;
         }
 
-        private String SumQtyinStock(NBrightInfo dataItemObj)
-        {
-            var stock = -1;  // -1 passed back if stock turned off for all models.
-            var l = BuildModelList(dataItemObj,true);
-            foreach (var m in l)
-            {
-                var s = m.GetXmlProperty("genxml/hidden/calcstock");
-                if (Utils.IsNumeric(s))
-                {
-                    // add only if stock is turn on for the model.
-                    if (Convert.ToInt32(s) > 0 ) stock += Convert.ToInt32(s);
-                }
-            }
-            return stock.ToString("");
-        }
-
-        private Boolean IsInStock(NBrightInfo dataItem,String qtyTestAmt = "0",Boolean includeCart = false)
+        private Boolean IsInStock(NBrightInfo dataItem,String qtyTestAmt = "0")
         {
             var amtTest = StoreSettings.Current.GetInt("minimumstocklevel"); 
 
             if (Utils.IsNumeric(qtyTestAmt)) amtTest = Convert.ToInt32(qtyTestAmt);
-            var nodList = BuildModelList(dataItem, includeCart);
-            var stockcount = 0;
-            var stockOn = true;
+            var nodList = BuildModelList(dataItem);
             foreach (var obj in nodList)
             {
-                var strStockOn = obj.GetXmlProperty("genxml/textbox/txtqtyremaining");
-                if (strStockOn == "-1")
-                { // stock must be availble, if stock turned off
-                    stockOn = false;
-                    break;
+                var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+                if (stockOn)
+                {
+                    var modelstatus = obj.GetXmlProperty("genxml/dropdownlist/modelstatus");
+                    if (modelstatus == "010") return true;                    
                 }
-                var stock = "0";
-                if (includeCart)
-                    stock = obj.GetXmlProperty("genxml/hidden/calcstock");
                 else
-                    stock = obj.GetXmlProperty("genxml/textbox/txtqtyremaining");
-
-                if (Utils.IsNumeric(stock)) stockcount += Convert.ToInt32(stock);
+                {
+                    return true;
+                }
             }
-            if (stockOn && (stockcount > amtTest)) return true;
-            if (!stockOn) return true;
             return false;
         }
 

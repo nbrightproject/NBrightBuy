@@ -3,6 +3,17 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-en-GB.js"></script>  
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-fr.js"></script>
+<script>
+
+    $(function () {
+        $.datepicker.setDefaults($.datepicker.regional[['']]);
+        if ('[<tag type="culturecode" />]' == 'en-GB') $.datepicker.setDefaults($.datepicker.regional[['en-GB']]);
+        if ('[<tag type="culturecode" />]' == 'fr-FR') $.datepicker.setDefaults($.datepicker.regional[['fr']]);
+    });
+
+</script>
 <!-- this div is used as a recycle bin for undo JS-->
 <div id="recyclebin" style="display:none;"></div>
 
@@ -23,6 +34,7 @@
         $('.box-content').toggle(); // Initially hide all panels
         $('.editdetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
+
     });
 </script>
 
