@@ -81,6 +81,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "modelslist":
                     Createmodelslist(container, xmlNod);
                     return true;
+                case "orderitemlist":
+                    CreateOrderItemlist(container, xmlNod);
+                    return true;                    
                 case "modelsradio":
                     Createmodelsradio(container, xmlNod);
                     return true;
@@ -3562,6 +3565,67 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 #endregion
 
+        #region "Order Itemlist"
+
+        private void CreateOrderItemlist(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                lc.Text = xmlNod.Attributes["template"].Value;
+            }
+            lc.DataBinding += OrderItemlistDataBind;
+            container.Controls.Add(lc);
+        }
+
+        private void OrderItemlistDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            try
+            {
+                var strOut = "";
+                lc.Visible = NBrightGlobal.IsVisible;
+                if (lc.Visible)
+                {
+
+                    var moduleid = _settings["moduleid"];
+                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                    var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
+                    if (lang == "") lang = Utils.GetCurrentCulture();
+                    var templName = lc.Text;
+                    if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
+                    {
+                        var buyCtrl = new NBrightBuyController();
+                        var rpTempl = buyCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, lang, _settings, StoreSettings.Current.DebugMode);
+
+                        //remove templName from template, so we don't get a loop.
+                        if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                        //build models list
+
+                        var objInfo = (NBrightInfo)container.DataItem;
+                        var ordData = new OrderData(objInfo.PortalId,objInfo.ItemID);
+                        // render repeater
+                        try
+                        {
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                        }
+                        catch (Exception exc)
+                        {
+                            strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
+                        }
+                    }
+                }
+                lc.Text = strOut;
+
+            }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+        }
+
+        #endregion
 
         #region "Functions"
 
