@@ -1343,17 +1343,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
-        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">")
+        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">",string lang = "")
         {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
             var rtnDic = new Dictionary<int, string>();
 
-            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref;
+            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
 
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
 
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
-                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var grpCatCtrl = new GrpCatController(lang);
                 var d = new Dictionary<int, string>();
                 var rtnList = new List<GroupCategoryData>();
                 rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref,breadcrumbseparator);
@@ -1414,6 +1416,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var modulekey = "";
             var redirecttabid = "";
             var tabid = "";
+            var lang = Utils.GetCurrentCulture(); 
 
             if (xmlNod.Attributes != null)
             {
@@ -1431,13 +1434,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
+                if (xmlNod.Attributes["lang"] != null) lang = xmlNod.Attributes["lang"].Value;
                 
                 if (showhidden.ToLower() == "true") showHidden = true;
                 if (showarchived.ToLower() == "true") showArchived = true;
                 if (showempty.ToLower() == "false") showEmpty = false;
                 if (displaycount.ToLower() == "true") displayCount = true;
                 if (xmlNod.Attributes["catreflist"] != null) catreflist = xmlNod.Attributes["catreflist"].Value;
-                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var grpCatCtrl = new GrpCatController(lang);
                 if (parentref != "")
                 {
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
@@ -1457,7 +1461,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             }
 
-            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
+            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref,">",lang);
 
             if (validCatList != null)
             {
