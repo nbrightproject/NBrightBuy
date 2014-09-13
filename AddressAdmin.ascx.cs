@@ -200,6 +200,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     param[0] = "addressid=-1";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "cancel":
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }

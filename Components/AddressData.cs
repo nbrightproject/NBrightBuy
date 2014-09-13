@@ -46,8 +46,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (defAddr != null) defIdex = defAddr.GetXmlPropertyInt("genxml/hidden/index");
                 foreach (var info in _addressList)
                 {
-                    if (lp == defIdex)
+                    if (lp == defIdex || defIdex == -1)
+                    {
+                        defIdex = lp;
                         info.SetXmlProperty("genxml/hidden/default", "True");
+                    }
                     else
                         info.SetXmlProperty("genxml/hidden/default", "False");
 
@@ -79,7 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objInfoIn.XMLData = strXml;
             var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from maager should have a index hidden field.
             if (addIndex == "") addIndex = objInfoIn.GetXmlProperty("genxml/dropdownlist/selectaddress"); // updated from cart should have a selected address
-            if (!Utils.IsNumeric(addIndex)) return "";
+            if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new address.
             var addressIndex = Convert.ToInt32(addIndex);
             AddAddress(objInfoIn,addressIndex);
             return ""; // if everything is OK, don't send a message back.
@@ -240,10 +243,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UserData = new UserData(userId);
             _addressList = GetAddressList();
             //if we have no address create a default one from DNN profile
-            if (GetDefaultAddress() == null && UserData.Exists)
+            if (_addressList.Count == 0 && UserData.Exists)
             {
                 var newDefault = new NBrightInfo(true);
-                newDefault.AddSingleNode("default", "True", "genxml/hidden");
+                newDefault.SetXmlProperty("genxml/hidden/default", "True");
                 newDefault.SetXmlProperty("genxml/hidden/index", _addressList.Count.ToString(""));
                 var prop = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
                 foreach (var p in prop)
