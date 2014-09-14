@@ -162,7 +162,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 // add exit button
                 strOut += "<li>";
-                strOut += GetRootLinkNode("Exit", "Exit", DnnUtils.GetLocalizedString("Exit_icon", Resxpath, Utils.GetCurrentCulture()), "/","");
+                var tabid = StoreSettings.Current.Get("exittab");
+                var exithref = "/";
+                if (Utils.IsNumeric(tabid)) exithref = Globals.NavigateURL(Convert.ToInt32(tabid));
+                strOut += GetRootLinkNode("Exit", "Exit", DnnUtils.GetLocalizedString("Exit_icon", Resxpath, Utils.GetCurrentCulture()),exithref,"");
                 strOut += "</li>";
 
                 strOut += "</ul>";
