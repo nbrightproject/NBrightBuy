@@ -106,6 +106,13 @@ $(document).ready(function() {
 	LoadBootstrapValidatorScript(DemoFormValidator);
 	// Add drag-n-drop feature to boxes
 	WinMove();
+
+
+    //NBS - BO status
+	$('a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
+	$('a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
+
+
 });
 </script>
 
