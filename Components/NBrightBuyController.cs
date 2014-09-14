@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -493,10 +494,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			if (objModInfo != null)
 			{
 				var portalId = objModInfo.PortalID;
+                var moduleSettings = NBrightBuyUtils.GetSettings(portalId, ModuleId, "", false);
 
-				xmlOut += "<root>";
-
-				xmlOut += "</root>";
+			    xmlOut += moduleSettings.ToXmlItem();
 			}
 
 			return xmlOut;
@@ -523,8 +523,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			var objModInfo = objModCtrl.GetModule(ModuleID);
 			if (objModInfo != null)
 			{
+			    var objImp = new NBrightInfo(false);
+                objImp.FromXmlItem(Content);
+			    objImp.ModuleId = ModuleID;
+			    objImp.PortalId = objModInfo.PortalID;
+			    objImp.ItemID = -1; // create new record
 
-				xmlDoc.LoadXml(Content);
+                //delete the old setting record.
+                var moduleSettings = NBrightBuyUtils.GetSettings(objModInfo.PortalID, ModuleID, "", false);
+                if (moduleSettings.ItemID > -1) Delete(moduleSettings.ItemID);
+
+			    Update(objImp);
+
+                NBrightBuyUtils.RemoveModCache(ModuleID);
 
 			}
 
