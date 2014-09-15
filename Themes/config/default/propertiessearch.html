@@ -35,7 +35,7 @@
 				<div class="form-horizontal dnnForm">
 					<div class="form-group">
 						<div class="col-sm-2">
-							[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="btn btn-primary" commandname="search"/>] 
+							[<tag id="cmdSearch" type="linkbutton" resourcekey="General.Refresh" cssclass="btn btn-primary" commandname="search"/>] 
 						</div>
 						<div class="col-sm-3">
 							[<tag type="groupdropdown" cssclass="s2_with_tag populate placeholder" id="groupsel" groupsonly="true" />]
@@ -46,3 +46,17 @@
 		</div>
 	</div>
 </div>
+
+<script>
+
+    $(document).ready(function() {
+
+        // auto fire postback when the group dropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
+        $("select[[id*='groupsel']]").change(function() {
+            var postcmd = $('a[[id*="cmdSearch"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
+            __doPostBack(postcmd, '');
+        });
+
+    });
+
+</script>

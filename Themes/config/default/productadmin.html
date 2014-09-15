@@ -34,6 +34,12 @@
         $('.box-content').toggle(); // Initially hide all panels
         $('.editdetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
+        boxstate = $.sessionStorage('boxstate');
+        alert(boxstate[[1]] + " : " + boxstate[[0]]);
+        $.sessionStorage('boxstate', [[
+            $('.editdetails div.box-content').is(":visible"),
+            $('.pageactions div.box-content').is(":visible")
+        ]]);
 
     });
 </script>

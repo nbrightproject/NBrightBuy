@@ -43,7 +43,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     else
                         HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
 
-                    if (ctrl == "") ctrl = "dashboard";
+                    if (String.IsNullOrEmpty(ctrl)) ctrl = "settings";
 
                     var ctlpath = GetControlPath(ctrl);
 

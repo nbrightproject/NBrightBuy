@@ -118,7 +118,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     var grpCats = new List<NBrightInfo>();
                     if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
-                        grpCats = GetTreeCatList(grpCats, 0, 0, GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel"));
+                    {
+                        var selgroup = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
+                        if (selgroup == "") selgroup = GenXmlFunctions.GetField(rpSearch, "groupsel");
+                        grpCats = GetTreeCatList(grpCats, 0, 0, selgroup);
+                    }
                     else
                         grpCats = GetTreeCatList(grpCats, 0, 0, "cat");
 
@@ -239,7 +243,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
                         var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
+                        var parentitemid = GenXmlFunctions.GetField(rtnItem, "ddlparentcatid");
+                        if (parentitemid == "") parentitemid = "0"; //set to no parent cat by default
                         catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
+                        if (Utils.IsNumeric(parentitemid) && Convert.ToInt32(parentitemid) != catData.DataRecord.ItemID) // don't set it to itself
+                        {
+                            catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", parentitemid);
+                            catData.DataRecord.ParentItemId = Convert.ToInt32(parentitemid);
+                        }
                         ModCtrl.Update(catData.DataRecord);
                         catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                         ModCtrl.Update(catData.DataLangRecord);
