@@ -66,6 +66,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set { _userId = value; }
         }
 
+        public String ShippingCountry
+        {
+            get { return PurchaseInfo.GetXmlProperty("genxml/shippingcountry"); }
+            set { PurchaseInfo.SetXmlProperty("genxml/shippingcountry",value); }
+        }
+
+        public String ShippingRegion
+        {
+            get { return PurchaseInfo.GetXmlProperty("genxml/shippingregion"); }
+            set { PurchaseInfo.SetXmlProperty("genxml/shippingregion", value); }
+        }
+
         #region "base methods"
 
         /// <summary>

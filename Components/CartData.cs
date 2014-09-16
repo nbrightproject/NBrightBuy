@@ -278,7 +278,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //add shipping
             var shipcost = ShippingInterface.Instance("Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider").CalculateShipping(PurchaseInfo);
             Double shippingcost = shipcost.GetXmlPropertyDouble("genxml/totaltest");
-            Double shippingdealercost = 0;
+            Double shippingdealercost = shipcost.GetXmlPropertyDouble("genxml/totaltest");
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
