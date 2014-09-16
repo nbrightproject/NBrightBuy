@@ -154,32 +154,30 @@
 
         var values = "";
         var strID = element.attr("id");
-        var nam = strID.split('_');
-        var shortID = nam[nam.length - 1];
-        var lp = 1
-        while (shortID.length < 3) {
-            lp++;
-            shortID = nam[nam.length - lp];
-        }
-        if (element.attr("type") == 'radio') {
-            values += '<f t="rb"  id="' + shortID + '" val="' + element.attr("value") + '"><![CDATA[' + element.is(':checked') + ']]></f>';
-        }
-        else if (element.attr("type") == 'checkbox') {
-            values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
-        }
-        else if (element.attr("type") == 'text' || element.attr("type") == 'date' || element.attr("type") == 'email' || element.attr("type") == 'url') {
-            if (element.attr("datatype") === undefined) {
-                values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+        if (strID != undefined) {
+
+            var nam = strID.split('_');
+            var shortID = nam[nam.length - 1];
+            var lp = 1
+            while (shortID.length < 3) {
+                lp++;
+                shortID = nam[nam.length - lp];
             }
-            else {
-                values += '<f t="txt"  id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
+            if (element.attr("type") == 'radio') {
+                values += '<f t="rb"  id="' + shortID + '" val="' + element.attr("value") + '"><![CDATA[' + element.is(':checked') + ']]></f>';
+            } else if (element.attr("type") == 'checkbox') {
+                values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
+            } else if (element.attr("type") == 'text' || element.attr("type") == 'date' || element.attr("type") == 'email' || element.attr("type") == 'url') {
+                if (element.attr("datatype") === undefined) {
+                    values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+                } else {
+                    values += '<f t="txt"  id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
+                }
+            } else if (element.attr("type") == 'hidden') {
+                values += '<f t="hid"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+            } else {
+                values += '<f id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
             }
-        }
-        else if (element.attr("type") == 'hidden') {
-            values += '<f t="hid"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
-        }
-        else {
-            values += '<f id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
         }
 
         return values;
