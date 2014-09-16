@@ -21,7 +21,23 @@
 <div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    
+    function savepagestate() {
+        $.sessionStorage('boxstate', [[
+            $('.editdetails div.box-content').is(":visible"),
+            $('.productdescription div.box-content').is(":visible"),
+            $('.editmodels div.box-content').is(":visible"),
+            $('.editoptions div.box-content').is(":visible"),
+            $('.editimages div.box-content').is(":visible"),
+            $('.editdocuments div.box-content').is(":visible"),
+            $('.editcategories div.box-content').is(":visible"),
+            $('.editproperties div.box-content').is(":visible"),
+            $('.editrelated div.box-content').is(":visible"),
+            $('.pageactions div.box-content').is(":visible")
+        ]]);
+    }
+
+    $(document).ready(function() {
         // start load all ajax data
         nbxget('productoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
         nbxget('productmodels', '#productselectparams', '#productmodels'); // load models
@@ -32,14 +48,29 @@
         nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
         nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
         $('.box-content').toggle(); // Initially hide all panels
-        $('.editdetails div.box-content').toggle(); // Then open specific ones
-        $('.pageactions div.box-content').toggle();
         boxstate = $.sessionStorage('boxstate');
-        alert(boxstate[[1]] + " : " + boxstate[[0]]);
-        $.sessionStorage('boxstate', [[
-            $('.editdetails div.box-content').is(":visible"),
-            $('.pageactions div.box-content').is(":visible")
-        ]]);
+        if (boxstate == undefined) {
+            $('.editdetails div.box-content').toggle(); // Then open specific ones
+            $('.pageactions div.box-content').toggle();
+        } else {
+            if (boxstate[[0]] == true) $('.editdetails div.box-content').toggle();
+            if (boxstate[[1]] == true) $('.productdescription div.box-content').toggle();
+            if (boxstate[[2]] == true) $('.editmodels div.box-content').toggle();
+            if (boxstate[[3]] == true) $('.editoptions div.box-content').toggle();
+            if (boxstate[[4]] == true) $('.editimages div.box-content').toggle();
+            if (boxstate[[5]] == true) $('.editdocuments div.box-content').toggle();
+            if (boxstate[[6]] == true) $('.editcategories div.box-content').toggle();
+            if (boxstate[[7]] == true) $('.editproperties div.box-content').toggle();
+            if (boxstate[[8]] == true) $('.editrelated div.box-content').toggle();
+            if (boxstate[[9]] == true) $('.pageactions div.box-content').toggle();
+        }
+
+        $('.main-menu').on('click', 'a', function (e) {
+            savepagestate();
+        });
+        $('a[[id*=cmdSave]]').click(function () {
+            savepagestate();
+        });
 
     });
 </script>
