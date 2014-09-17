@@ -74,6 +74,9 @@
     <Content Include="Shipping.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Themes\config\default\shippingbody.html" />
+    <Content Include="Themes\config\default\shippingfooter.html" />
+    <Content Include="Themes\config\default\shippingheader.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\Shipping.ascx.resx" />

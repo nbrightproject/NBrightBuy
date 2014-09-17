@@ -102,21 +102,18 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void PageLoad()
         {
-
-            #region "Data Repeater"
             if (UserId > 0) // only logged in users can see data on this module.
             {
-                DisplayDataEntryRepeater();
+                var shipping = new ShippingData();
+                rpData.DataSource = shipping.GetRuleList();
+                rpData.DataBind();
+
+                // display header
+                base.DoDetail(rpDataH);
+
+                // display footer
+                base.DoDetail(rpDataF);
             }
-
-            #endregion
-
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
-
-            // display footer
-            base.DoDetail(rpDataF);
-
         }
 
         #endregion
@@ -130,13 +127,26 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             switch (e.CommandName.ToLower())
             {
-                case "save":
+                case "addnew":
+                    var shipping = new ShippingData();
+                    shipping.AddNewRule();
+                    shipping.Save();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "delete":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var shipping2 = new ShippingData();
+                        shipping2.RemoveRule(Convert.ToInt32(cArg));
+                        shipping2.Save();                        
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "saveall":
                     Update();
-                    param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "cancel":
-                    param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
@@ -157,38 +167,19 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void Update()
         {
-            var shipping = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SHIPPING", "NBrightBuyShipping");
-            if (shipping == null)
-            {
-                shipping = new NBrightInfo(true);
-                shipping.PortalId = PortalId;
-                // use zero as moduleid so it's not picked up by the modules for their settings.
-                // The normal GetList will get all moduleid OR moduleid=-1 
-                shipping.ModuleId = 0; 
-                shipping.ItemID = -1;
-                shipping.TypeCode = "SHIPPING";
-                shipping.GUIDKey = "NBrightBuyShipping";
-            }
-            shipping.XMLData = GenXmlFunctions.GetGenXml(rpData);
-            
-            ModCtrl.Update(shipping);
+            var shipping = new ShippingData();
 
-            if (StoreSettings.Current.DebugMode) shipping.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Shipping.xml");
+            shipping.UpdateRule(rpData);
+            shipping.Save();
+
+            if (StoreSettings.Current.DebugMode) shipping.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Shipping.xml");
 
             //remove current setting from cache for reload
             Utils.RemoveCache("NBrightBuyShipping" + PortalSettings.Current.PortalId.ToString(""));
 
-
         }
 
 
-        private void DisplayDataEntryRepeater()
-        {
-            //render the detail page
-            var shipping = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SHIPPING", "NBrightBuyShipping");
-            if (shipping == null) shipping = new NBrightInfo(true);
-            base.DoDetail(rpData, shipping);
-        }
 
 
     }

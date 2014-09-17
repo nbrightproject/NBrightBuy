@@ -30,7 +30,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         /// <summary>
         /// Save cart
         /// </summary>
-        private void Save(Boolean debugMode = false)
+        public void Save(Boolean debugMode = false)
         {
                 //save cart
                 var strXML = "<list>";
@@ -48,67 +48,70 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 {
                     var modCtrl = new NBrightBuyController();
                     Info.ItemID = modCtrl.Update(Info);
-                    Exists = true;
                 }
         }
 
         #region "base methods"
 
-        /// <summary>
-        /// Add Adddress
-        /// </summary>
-        /// <param name="rpData"></param>
-        /// <param name="debugMode"></param>
-        public String AddAddress(Repeater rpData, Boolean debugMode = false)
+        public String AddNewRule()
         {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
+            var ruleInfo = new NBrightInfo(true);
+            ruleInfo.ItemID = -1;
+            ruleInfo.SetXmlProperty("genxml/hidden/index","-1");
+            return UpdateRule(ruleInfo);
+        }
+
+        public String UpdateRule(RepeaterItem rpItem, Boolean debugMode = false)
+        {
+            var strXml = GenXmlFunctions.GetGenXml(rpItem);
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
-            var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from maager should have a index hidden field.
-            if (addIndex == "") addIndex = objInfoIn.GetXmlProperty("genxml/dropdownlist/selectaddress"); // updated from cart should have a selected address
-            if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new address.
-            var addressIndex = Convert.ToInt32(addIndex);
-            AddAddress(objInfoIn,addressIndex);
+            UpdateRule(objInfoIn, debugMode);
             return ""; // if everything is OK, don't send a message back.
         }
 
-        public String AddAddress(NBrightInfo addressInfo, int addressIndex, Boolean debugMode = false)
+        public String UpdateRule(NBrightInfo ruleInfo, Boolean debugMode = false)
         {
-            if (debugMode) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
-                if (addressIndex >= 0)
+            var addIndex = ruleInfo.GetXmlProperty("genxml/hidden/index");
+            if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new .
+            var ruleIndex = Convert.ToInt32(addIndex);
+            if (debugMode) ruleInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_ruleadd.xml");
+            if (ruleIndex >= 0)
                 {
-                    UpdateAddress(addressInfo.XMLData, addressIndex);
+                    UpdateRule(ruleInfo.XMLData, ruleIndex);
                 }
                 else
                 {
-                    _shippingList.Add(addressInfo);
-                    Save(debugMode);
+                    _shippingList.Add(ruleInfo);
                 }
             return ""; // if everything is OK, don't send a message back.
         }
 
-        public void RemoveAddress(int index)
+        public void RemoveRule(int index)
         {
             _shippingList.RemoveAt(index);
-            Save();
         }
 
-        public void UpdateAddress(String xmlData, int index)
+        private void UpdateRule(String xmlData, int index)
         {
             if (_shippingList.Count > index)
             {
                 _shippingList[index].XMLData = xmlData;
-                Save();
             }
         }
 
-        public void UpdateAddress(Repeater rpData, int index)
+        public void UpdateRule(Repeater rpData)
         {
-            if (_shippingList.Count > index)
+            foreach (RepeaterItem i in rpData.Items)
             {
-                var strXml = GenXmlFunctions.GetGenXml(rpData);
-                UpdateAddress(strXml, index);
+                var strXml = GenXmlFunctions.GetGenXml(i);
+                var nbi = new NBrightInfo(true);
+                nbi.XMLData = strXml;
+                if (nbi.GetXmlPropertyBool("genxml/hidden/isdirty"))
+                {
+                    UpdateRule(i);                    
+                }
             }
         }
 
@@ -116,15 +119,16 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         /// Get Current Cart Item List
         /// </summary>
         /// <returns></returns>
-        public List<NBrightInfo> GetAddressList()
+        public List<NBrightInfo> GetRuleList()
         {
             var rtnList = new List<NBrightInfo>();
-                var xmlNodeList = Info.XMLDoc.SelectNodes("genxml/address/*");
+                var xmlNodeList = Info.XMLDoc.SelectNodes("genxml/list/*");
                 if (xmlNodeList != null)
                 {
                     foreach (XmlNode carNod in xmlNodeList)
                     {
                         var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                        newInfo.ItemID = rtnList.Count;
                         newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
                         rtnList.Add(newInfo);
                     }
@@ -132,16 +136,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             return rtnList;
         }
 
-        public NBrightInfo GetAddress(int index)
+        public NBrightInfo GetRule(int index)
         {
             if (index < 0 || index >= _shippingList.Count) return null;
             return _shippingList[index];
         }
-
-        /// <summary>
-        /// Set to true if cart exists
-        /// </summary>
-        public bool Exists { get; private set; }
 
         #endregion
 
@@ -149,9 +148,17 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void PopulateData()
         {
-            Exists = false;
-            _shippingList = GetAddressList();
-            Save();
+            var modCtrl = new NBrightBuyController();
+            Info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId,-1,"SHIPPING","NBSdefault");
+            if (Info == null)
+            {
+                Info = new NBrightInfo(true);
+                Info.GUIDKey = "NBSdefault";
+                Info.TypeCode = "SHIPPING";
+                Info.ModuleId = -1;
+                Info.PortalId = PortalSettings.Current.PortalId;
+            }
+            _shippingList = GetRuleList();
         }
 
         #endregion
