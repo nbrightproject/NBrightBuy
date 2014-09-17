@@ -11,7 +11,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public override NBrightInfo CalculateShipping(NBrightInfo cartInfo)
         {
             var nbi = new NBrightInfo(true);
-            nbi.SetXmlPropertyDouble("genxml/totaltest",99);
+            nbi.SetXmlPropertyDouble("genxml/totaltest",0);
             return nbi;
         }
     }
