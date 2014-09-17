@@ -97,6 +97,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
+                // Get CartLayout
+                var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
+                checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+
                 var carttype = ModSettings.Get("ddlcarttype");
                 if (carttype == "2")
                 {
@@ -166,9 +171,9 @@ namespace Nevoweb.DNN.NBrightBuy
             if (carttype == "2")
             {
 
-                var layout = new Literal();
-                layout.Text = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
-                checkoutlayout.Controls.Add(layout);
+                // display footer
+                checkoutlayout.DataSource = cartL;
+                checkoutlayout.DataBind();
 
                 #region "Address List Data Repeater"
 

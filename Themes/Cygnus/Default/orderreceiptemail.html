@@ -1,1 +1,126 @@
-<h1>Order Receipt Email</h1>
+<html>
+
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<base href="http://www.domain.com">
+<style type="text/css">
+#outlook a{padding:0;}
+/* Force Outlook to provide a "view in browser" button. */
+.ExternalClass{width:100%;display:block !important;}
+/* Force Hotmail to display emails at full width */
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height:100%;}
+/* Forces Hotmail to display normal line spacing */
+body{background-color:#efefef;margin:0;padding:0;}
+body, .notification .Normal,td,div,p,span{color:#666666;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:13px;font-weight:normal;line-height:150%;}
+body{-webkit-text-size-adjust:none;-ms-text-size-adjust:none;}
+/* Prevents Webkit and Windows Mobile platforms from changing default font sizes. */
+.notification{}
+.notification h1{color:#f88f1e;line-height:100%;font-family:"Arial Narrow", Arial, Helvetica, sans-serif;font-size:20px;font-weight:bold;margin:0 0 12px 0;}
+.notification h2{color:#f88f1e;line-height:100%;font-family:"Arial Narrow", Arial, Helvetica, sans-serif;font-size:20px;font-weight:normal;margin:0 0 12px 0;}
+.notification h3{color:#555555;line-height:100%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:15px;font-weight:bold;margin:0 0 9px 0;}
+.notification h4{color:#555555;line-height:100%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:13px;font-weight:bold;margin:0 0 9px 0;}
+.notification h5{color:inherit;line-height:100%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:11px;font-weight:bold;margin:0 0 6px 0;}
+.notification h6{color:inherit;line-height:100%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:10px;font-weight:bold;margin:0 0 6px 0;}
+.notification p{margin:0 0 9px 0;padding-bottom:1px;}
+.notification blockquote{font:inherit;color:inherit;padding:0 5px;white-space:normal;}
+.notification table{border:none;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;}
+.notification table td, .notification table tr{border-collapse:collapse;}
+.notification ul li{line-height:150%;}
+.notification img{border-color:#AAAAAA;border:0;outline:none;text-decoration:none;display:block;}
+.notification hr{height:1px;color:#aaaaaa;text-align:left;border:none;background-color:#aaaaaa;margin-bottom:24px;}
+.notification a, .notification a:link, .notification a:visited{color:#3C72AA;text-decoration:none;}
+.notification a:active, .notification a:hover{color:#3C72AA;text-decoration:underline;}
+</style>
+</head>
+
+<body>
+
+<div class="notification">
+	  <span style="font-size: 24px; line-height: 24px;">&nbsp;</span>
+	<table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#FFFFFF">
+		<tr>
+			<td style="line-height:100%"><a href="http://www.domain.com">
+			<img alt="Website description here" border="0" src="http://www.wonderwebs.com/Portals/18/Content/Images/News/Template/NewsHeader.png" style="display:block;width:700px;height:auto" title="Website description here" width="700"></a>
+			</td>
+		</tr>
+	</table>
+	<table align="center" border="0" cellpadding="24" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#FFFFFF">
+		<tr>
+			<td valign="top" align="left" style="line-height:150%;width:67%;vertical-align:top;text-align:left">
+			<h2>Order Confirmation</h2>
+			<p><strong>Thank you for your order, (Firstname)</strong></p>
+			<p>We're here to help! Call us 8am to 5pm Monday to Friday, or visit 
+			us instore if you have any questions about your order.</p>
+			</td>
+			<td valign="top" align="left" style="line-height:150%;width:33%;vertical-align:top;text-align:left">
+			<p><strong>Contact us</strong></p>
+			<p>(address)</p>
+			<p>Website: <a href="http://www.gia.org.nz">www.domain.com</a></p>
+			<div>(first/last name)</div><div>(Company)</div><div><a href="mailto:Harry.Ried@domain.com">(email)</a></div><div>(phone)</div>
+			</td>
+		</tr>
+	</table>
+	  <span style="font-size: 8px; line-height: 8px;">&nbsp;</span>
+	<table align="center" border="0" cellpadding="12" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#FFFFFF">
+		<tr>
+			<td valign="top" align="left" style="line-height:150%;width:50%;vertical-align:top;text-align:left">
+			<div>Order Number:</div><div>Order Date:</div>
+			</td>
+			<td valign="top" align="left" style="line-height:150%;width:50%;vertical-align:top;text-align:left">
+			<div>Shipping Method:</div><div>Tracking Number:</div></td>
+		</tr>
+		<tr>
+			<td valign="top" align="left" style="line-height:150%;vertical-align:top;text-align:left" colspan="2">
+			<div>Special Instructions</div></td>
+		</tr>
+	</table>
+	<table align="center" border="0" cellpadding="12" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#FFFFFF">
+		<tr>
+			<th align="left" style="text-align:left">Product</th>
+			<th align="center" style="text-align:center">Code</th>
+			<th align="center" style="text-align:center">Quantity</th>
+			<th align="right" style="text-align:right">Sub Total</th>
+		</tr>
+			[<tag type="orderitemlist" template="orderitemlist.html" />]
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+	  <span style="font-size: 8px; line-height: 8px;">&nbsp;</span>
+	<table align="center" border="0" cellpadding="24" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#FFFFFF">
+		<tr>
+			<td valign="top" align="left" style="line-height:150%;width:50%;vertical-align:top;text-align:left">
+			<p><strong>Shipping Address</strong></p>
+			<p>(address)</p>
+			<p>(first/last name)<br>(Company)<br>
+			<a href="mailto:Harry.Ried@domain.com">(email)</a><br>
+			(phone)</p>
+			</td>
+			<td valign="top" align="left" style="line-height:150%;width:50%;vertical-align:top;text-align:left">
+			<p><strong>Billing Address</strong></p>
+			<p>(address)</p>
+			<p>(first/last name)<br>(Company)<br>
+			<a href="mailto:Harry.Ried@domain.com">(email)</a><br>
+			(phone)</p>
+			</td>
+		</tr>
+	</table>
+	<table align="center" border="0" cellpadding="12" cellspacing="0" style="border-collapse:collapse;width:700px;background-color:#333333;color:#CCCCCC">
+		<tr>
+			<td align="center" style="line-height:100%;text-align:center">
+			<a href="http://www.domain.com"><strong>www.domain.com</strong></a><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			</strong><a href="mailto:emai@laddress.com"><strong>
+			emai@laddress.com</strong></a><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phonenumber&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FaceBook</strong></td>
+		</tr>
+	</table>
+</div>
+
+</body>
+
+</html>

@@ -105,8 +105,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public NBrightInfo GetModel(String modelid)
         {
-            var obj = Models.Where(i => i.GetXmlProperty("genxml/hidden/modelid") == modelid);
-            return obj.First();
+            if (Models.Count > 0)
+            {
+                var obj = Models.Where(i => i.GetXmlProperty("genxml/hidden/modelid") == modelid);
+                if (obj.Any()) return obj.First();                
+            }
+            return null;
         }
 
         public void AdjustModelQtyBy(String modelid,Double qty)
@@ -232,6 +236,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
+            ResetCache();
+        }
+
+        public void Delete()
+        {
+            var objCtrl = new NBrightBuyController();
+            objCtrl.Delete(DataRecord.ItemID);
             ResetCache();
         }
 
