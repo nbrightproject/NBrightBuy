@@ -261,7 +261,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
-                        _strOrder = _navigationdata.OrderBy; 
+                        _strOrder = _navigationdata.OrderBy;
                     }
                     else
                     {
@@ -413,6 +413,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     strFilter += " and (NB3.Visible = 1) "; // get only visible products
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
+
+                    if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 
                     if (pageSize > 0)
                     {

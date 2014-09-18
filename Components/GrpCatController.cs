@@ -250,11 +250,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="productid"></param>
         /// <param name="groupref">groupref for select, "" = all, "cat"= Category only, "!cat" = all non-category, "{groupref}"=this group only</param>
+        /// <param name="cascade">get all cascade records to get all parent categories</param>
         /// <returns></returns>
-        public List<GroupCategoryData> GetProductCategories(int productid, String groupref = "")
+        public List<GroupCategoryData> GetProductCategories(int productid, String groupref = "", Boolean cascade = false)
         {
             var objCtrl = new NBrightBuyController();
             var catxrefList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.[ParentItemId] = " + productid);
+
+            if (cascade)
+            {
+                var catcascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.[ParentItemId] = " + productid);
+                foreach (var c in catcascadeList)
+                {
+                    catxrefList.Add(c);
+                }                
+            }
+
 
             var notcat = "";
             if (groupref == "!cat")

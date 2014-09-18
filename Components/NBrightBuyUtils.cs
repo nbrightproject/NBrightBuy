@@ -486,7 +486,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
                 var modCtrl = new NBrightBuyController();
-                var strTempl = modCtrl.GetTemplateData(-1,templateName,lang,StoreSettings.Current.Settings());
+                var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
 
                 var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, StoreSettings.Current.Settings());
                 if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
