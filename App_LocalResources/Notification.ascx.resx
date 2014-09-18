@@ -121,16 +121,16 @@
     <value>Address Update Successful</value>
   </data>
   <data name="notifytemplate_error.Text" xml:space="preserve">
-    <value>&lt;div class="bg-danger"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotifyerror"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_fail.Text" xml:space="preserve">
-    <value>&lt;div class="bg-danger"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotifyfail"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_ok.Text" xml:space="preserve">
-    <value>&lt;div class="bg-success"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotifyok"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_warning.Text" xml:space="preserve">
-    <value>&lt;div class="bg-warning"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotifywarning"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="profileupdatedclientrole_ok.Text" xml:space="preserve">
     <value>Your details have been saved, you will recieve an email when your account has been validated and you are able to access the store.</value>

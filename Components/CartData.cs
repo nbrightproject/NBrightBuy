@@ -99,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
-                    if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
+                    if (model != null && model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
                 }
             }
         }
