@@ -237,6 +237,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "selectlocalebutton":
                     CreateSelectLangaugeButton(container, xmlNod);
                     return true;
+                case "editflag":
+                    CreateEditFlag(container, xmlNod);
+                    return true;                    
                 case "imageof":
                     CreateImage(container, xmlNod);
                     return true;
@@ -3446,13 +3449,34 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+        private void CreateEditFlag(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            var size = "16";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["size"] != null)) size = xmlNod.Attributes["size"].Value;
+            lc.Text = "<img src='/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/" + size + "/" + StoreSettings.Current.EditLanguage + ".png' />";
+            lc.DataBinding += EditFlagDataBind;
+            container.Controls.Add(lc);
+        }
+        private void EditFlagDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            lc.Visible = NBrightGlobal.IsVisible;
+        }
 
         private void CreateSelectLangaugeButton(Control container, XmlNode xmlNod)
         {
             var cmd = new EditLanguage();
             cmd = (EditLanguage)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
+            cmd.DataBinding += SelectLangaugeDataBind;
             container.Controls.Add(cmd);
         }
+        private void SelectLangaugeDataBind(object sender, EventArgs e)
+        {
+            var lc = (EditLanguage)sender;
+            lc.Visible = NBrightGlobal.IsVisible;
+        }
+
 
         #endregion
 
