@@ -201,7 +201,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                 emailtemplate = ModSettings.Get("emailregisteredtemplate");
                                 if (emailtemplate != "") NBrightBuyUtils.SendEmailToManager(emailtemplate, _profileData.GetProfile(), "profileregistered_emailsubject.Text");
                                 emailtemplate = ModSettings.Get("emailregisteredclienttemplate");
-                                if (emailtemplate != "") NBrightBuyUtils.SendEmail(objUser.Email,emailtemplate, _profileData.GetProfile(), "profileregistered_emailsubject.Text");
+                                if (emailtemplate != "") NBrightBuyUtils.SendEmail(objUser.Email, emailtemplate, _profileData.GetProfile(), "profileregistered_emailsubject.Text", "", objUser.Profile.PreferredLocale);
                             }
 
                         }

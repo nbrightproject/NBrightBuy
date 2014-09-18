@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -305,6 +306,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "order":
                     _cartInfo.SetValidated(true);
+                    _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same langauge the order was made in.
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();

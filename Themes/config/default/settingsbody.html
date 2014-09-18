@@ -241,6 +241,9 @@
 	                <div class="form-group">
 	                    <div class="col-sm-5">[<tag id="resetpasswordonclientvalidate" type="checkbox" Text="" resourcekey="Settings.resetpasswordonclientvalidate" />]</div>
 	                </div>
+	                <div class="form-group">
+	                    <div class="col-sm-5">[<tag id="sendclientroleemail" type="checkbox" Text="" resourcekey="Settings.sendclientroleemail" />]</div>
+	                </div>
 	            </div>
 	        </div>
 	    </div>
@@ -288,20 +291,27 @@
 							[<tag id="exittab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
-                    <div class="form-group">
-                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
+				        <div class="col-sm-5">
+				            [<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]
+				        </div>
+				    </div>
+    			    <div class="form-group">                
+                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.defaultthemefolder" />]</label><!-- Need to move this -->
                     	<div class="col-sm-5">
-                    		[<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]
+                    		[<tag id="themefolder" cssclass="form-control" type="textbox" width="200" maxlength="50" Text="Cygnus" />]                    	        
                     	</div>
-                    </div>
-	                <div class="dnnFormItem">
-	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label><!-- Need to move this -->
-                    	<div class="col-sm-5">
-							<div class="dnnFormItem">
-		                    	[<tag id="cataloguemode" type="checkbox" checked="False" />]
-							</div>
-                    	</div>
-                    </div>
+				    </div>
+    
+				    <div class="dnnFormItem">
+				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label><!-- Need to move this -->
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="cataloguemode" type="checkbox" checked="False" />]
+				            </div>
+				        </div>
+				    </div>
 
 					<p class="page-header">Developer Tools</p>
 					<div class="form-group">

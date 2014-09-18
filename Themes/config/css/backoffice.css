@@ -34,9 +34,9 @@ a.btn-default {color:#929292}
 .text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
 .nowrap{white-space:nowrap}/* remove this one */
 .btn{padding: 0 15px;margin-right:10px}/* default buttons */
-.cmdPg{display:none !important}/* hide pager ears */
 .actionbuttonwrapper{height:50px;padding-top:12px;margin-left:30px;white-space:nowrap;}
 span.dnnInputFileWrapper{padding: 0 15px;}/* fix for file upload buttons */
+.bg-primary,.bg-success,.bg-info,.bg-warning,.bg-danger {margin-top: 15px;padding: 15px;font-size: 21px;font-weight: bold;}
 
 /* Language selector */
 .editlanguage{list-style: none outside none;margin: 0;padding: 0;}
@@ -54,8 +54,8 @@ span.dnnInputFileWrapper{padding: 0 15px;}/* fix for file upload buttons */
 .productadminlist .productlistitem .edititem{top:0;right:0;position:absolute;}
 
 /* Pager */
-.NBrightPagingDiv{font-size:18px;margin:24px 0;text-align:left;}
-.NBrightPagingDiv ul{list-style:none;margin:0;}
+.NBrightPagingDiv{}
+.NBrightPagingDiv ul{font-size:18px;margin:24px 0;text-align:left;list-style:none;}
 .NBrightPagingDiv ul li{display:inline-block;}
 .NBrightPagingDiv a{background:#F2F2F2;border:1px solid #DDDDDD;color:#777777;display:inline-block;font-size:14px;margin-right:4px;padding:6px 10px;text-decoration: none;cursor: pointer;}
 .NBrightPagingDiv a:hover{color:#FFFFFF;background:#3B96B6}
@@ -63,6 +63,7 @@ span.dnnInputFileWrapper{padding: 0 15px;}/* fix for file upload buttons */
 .NBrightSelectPg a{background:#FFFFFF}
 .NBrightNextPg a{}
 .NBrightPrevPg a{}
+.NBrightPagingDiv ul > a.cmdPg{display:none !important}/* hide pager ears when empty */
 
 /* Product Editor */
 .sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;color:#DDDDDD;z-index:1;}
@@ -118,7 +119,8 @@ span.dnnInputFileWrapper{padding: 0 15px;}/* fix for file upload buttons */
 .selectrelated .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
 .selectrelated .selectlistitem .selectproduct{top:0;right:0;position:absolute;cursor: pointer;}
 .selectrelated .selectlistitem .selectproduct .fa{color: #DDDDDD;}
-.selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
+.selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}+
+#productlist .NBrightPagingDiv{}
 
 /* Category and Properties Editors */
 .categorylist .fa{color:#DDDDDD;font-size:200%}

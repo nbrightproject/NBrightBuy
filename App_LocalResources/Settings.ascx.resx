@@ -177,4 +177,10 @@
   <data name="backofficeexittab.Text" xml:space="preserve">
     <value>Back Office Exit Page</value>
   </data>
+  <data name="sendclientroleemail.Text" xml:space="preserve">
+    <value>Send Email to Client when added to Client role</value>
+  </data>
+  <data name="defaultthemefolder.Text" xml:space="preserve">
+    <value>Default Theme Folder</value>
+  </data>
 </root>

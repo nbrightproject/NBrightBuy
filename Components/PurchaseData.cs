@@ -60,6 +60,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _entryId;
         }
 
+        public String Lang
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/lang");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/lang", value);
+            }
+        }
+
         public int UserId
         {
             get { return _userId; }

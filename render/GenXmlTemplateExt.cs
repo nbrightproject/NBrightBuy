@@ -3589,15 +3589,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (lc.Visible)
                 {
 
-                    var moduleid = _settings["moduleid"];
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
                     if (lang == "") lang = Utils.GetCurrentCulture();
                     var templName = lc.Text;
-                    if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
+                    if (Utils.IsNumeric(id) && (templName != ""))
                     {
                         var buyCtrl = new NBrightBuyController();
-                        var rpTempl = buyCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, lang, _settings, StoreSettings.Current.DebugMode);
+                        var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
 
                         //remove templName from template, so we don't get a loop.
                         if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");

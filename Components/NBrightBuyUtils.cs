@@ -445,31 +445,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void SendEmailToManager(String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
         {
-            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail);
+            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
         public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "")
         {
             var ordData = new OrderData(PortalSettings.Current.PortalId, orderId);
+            var lang = ordData.Lang;
             if (ordData.GetInfo().UserId > 0)
             {
                 // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
                 var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.GetInfo().UserId);
-                if (ordData.EmailAddress != objUser.Email)
+                if (objUser != null && ordData.EmailAddress != objUser.Email)
                 {
                     ordData.EmailAddress = objUser.Email;
                     ordData.SavePurchaseData();
+                    if (objUser.Profile.PreferredLocale != "") lang = objUser.Profile.PreferredLocale;
                 }
             }
+            if (lang == "") lang = Utils.GetCurrentCulture();
             // we're going to send email to all email addreses linked to the order.
             var emailList = ordData.EmailAddress;
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
-            SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail);
+            SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 
-        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
+        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey, String fromEmail,String lang)
         {
+            if (lang == "") lang = Utils.GetCurrentCulture();
             var emaillist = toEmail;
             if (emaillist != "")
             {
@@ -477,14 +481,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (emailsubjectresxkey != "")
                 {
                     const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-                    emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, Utils.GetCurrentCulture());
-                    if (emailsubject == null) emailsubject = "";
+                    emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
+                    if (emailsubject == null) emailsubject = emailsubjectresxkey;
                 }
 
-                var objTempl = NBrightBuyUtils.GetTemplateGetter("Cygnus");
-                var strTempl = objTempl.GetTemplateData(templateName, Utils.GetCurrentCulture());
+                var modCtrl = new NBrightBuyController();
+                var strTempl = modCtrl.GetTemplateData(-1,templateName,lang,StoreSettings.Current.Settings());
 
-                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl);
+                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, StoreSettings.Current.Settings());
                 if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
                 if (fromEmail == "") fromEmail = StoreSettings.Current.AdminEmail;
                 var emailarray = emaillist.Split(',');
