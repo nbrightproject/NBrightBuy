@@ -2151,24 +2151,25 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //remove templName from template, so we don't get a loop.
                 if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
                 var rpt = new Repeater { ItemTemplate = new GenXmlTemplate(rpTempl, _settings) };
-                rpt.DataBinding += ModelslistDataBind;
+                rpt.Init += ModelslistInit; // use init so we don;t get a infinate loop on databind.
                 container.Controls.Add(rpt);
             }
         }
 
-        private void ModelslistDataBind(object sender, EventArgs e)
+        private void ModelslistInit(object sender, EventArgs e)
         {
             var rpt = (Repeater)sender;
             var container = (IDataItemContainer)rpt.NamingContainer;
             rpt.Visible = NBrightGlobal.IsVisible;
-            if (rpt.Visible)
+            if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
             {
                 //build models list
-                var objL = BuildModelList((NBrightInfo) container.DataItem, true);
+                var objL = BuildModelList((NBrightInfo)container.DataItem, true);
                 rpt.DataSource = objL;
                 rpt.DataBind();
             }
         }
+
 
         private void Createmodelsradio(Control container, XmlNode xmlNod)
         {
@@ -2704,6 +2705,22 @@ namespace Nevoweb.DNN.NBrightBuy.render
             txt.ID = "selectedmodelqty";
             txt.DataBinding += ModelQtyFieldDataBind;
             container.Controls.Add(txt);
+            var hid = new HiddenField();
+            hid.ID = "modelid";
+            hid.DataBinding += ModelHiddenFieldDataBind;
+            container.Controls.Add(hid);
+            
+        }
+
+        private void ModelHiddenFieldDataBind(object sender, EventArgs e)
+        {
+            var txt = (HiddenField)sender;
+            var container = (IDataItemContainer)txt.NamingContainer;
+            var strXml = DataBinder.Eval(container.DataItem, _databindColumn).ToString();
+            var nbi = new NBrightInfo();
+            nbi.XMLData = strXml;
+            txt.Value = nbi.GetXmlProperty("genxml/hidden/modelid");
+            txt.Visible = NBrightGlobal.IsVisible;
         }
 
         private void ModelQtyFieldDataBind(object sender, EventArgs e)

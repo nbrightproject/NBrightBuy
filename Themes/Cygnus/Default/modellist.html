@@ -36,14 +36,12 @@
 		[<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='-1' display='{ON}' displayelse='{OFF}' />]<!-- Infinite stock yes -->
 		<td>[<tag type="valueof" resourcekey="ProductView.instock" />]</td>
 		[<tag type="endif"  />]
-		[<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Infinite stock no -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtqtyremaining" />]</td>
 		<td></td>
-        <td class="pl-icon quantityoptions">
+        <td class="pl-icon quantityoptions">xxxxxxxxxx
 <a class="icon-minus" itemid="[<tag type="valueof" databind="itemid" />]" href="#"></a>
 <span class="jqselector[<tag type="valueof" databind="itemid" />]">[<tag type="modelqty" text="0" width="38" cssclass="quantity" />]</span>
 <a class="icon-plus"  itemid="[<tag type="valueof" databind="itemid" />]" href="#"></a>
 </td>
-		[<tag type="endif"  />]
 	    [<tag type="endif"  />]
 	</tr>
