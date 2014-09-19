@@ -88,7 +88,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 //    if (CheckRights()) strOut = SetCategoryForm(context);
                 //    break;
                 case "getdata":
-                    strOut = GetReturnData(context);
+                    // commented out for security reasons
+                    //strOut = GetReturnData(context);
                     break;
                 case "additemlist":
                     if (Utils.IsNumeric(itemId))
@@ -696,6 +697,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 var productitemid = settings["itemid"];
                 if (!settings.ContainsKey("categoryref")) settings.Add("categoryref", "0");
                 var categoryref = settings["categoryref"];
+
+                if (categoryref == "") return false;
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
