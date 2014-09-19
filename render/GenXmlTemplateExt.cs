@@ -243,6 +243,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "imageof":
                     CreateImage(container, xmlNod);
                     return true;
+                case "concatenate":
+                    CreateConcatenate(container, xmlNod);
+                    return true;                
                 default:
                     return false;
 
@@ -3649,6 +3652,56 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
         #endregion
+
+        #region "Sale Price"
+
+        private void CreateConcatenate(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            l.Text = "";
+            if (xmlNod.Attributes != null)
+            {
+                foreach (XmlAttribute attr in xmlNod.Attributes)
+                {
+                    if (attr.Name.StartsWith("xpath"))
+                    {
+                        l.Text += ";" + attr.InnerText;
+                    }
+                }
+            }
+            
+            l.DataBinding += ConcatenateDataBinding;
+ 
+            container.Controls.Add(l);
+        }
+
+        private void ConcatenateDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            var strXml = DataBinder.Eval(container.DataItem, _databindColumn).ToString();
+            var nbi = new NBrightInfo();
+            nbi.XMLData = strXml;
+            try
+            {
+                var xlist = l.Text.Split(';');
+                l.Text = "";
+                foreach (var s in xlist)
+                {
+                    if (s != "" && !l.Text.Contains(nbi.GetXmlProperty(s))) l.Text += " " + nbi.GetXmlProperty(s);
+                }
+                l.Visible = NBrightGlobal.IsVisible;
+
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
+
+        #endregion
+
 
         #region "Functions"
 
