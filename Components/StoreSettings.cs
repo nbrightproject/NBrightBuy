@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightDNN;
@@ -109,6 +110,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             return 0;
+        }
+
+        //get properties
+        public int CartTabId
+        {
+            get
+            {
+                var i = Get("carttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
         }
 
         // this section contain a set of properties that are assign commanly used setting.

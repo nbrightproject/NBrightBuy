@@ -391,7 +391,7 @@
     <value>Email</value>
   </data>
   <data name="Refresh.Text" xml:space="preserve">
-    <value>Save Changes</value>
+    <value>Refresh</value>
   </data>
   <data name="From.Text" xml:space="preserve">
     <value>From</value>
@@ -587,5 +587,23 @@
   </data>
   <data name="unit.Text" xml:space="preserve">
     <value>Unit</value>
+  </data>
+  <data name="SaveChanges.Text" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="cmdDeleteIcon.confirm" xml:space="preserve">
+    <value>Delete Item?</value>
+  </data>
+  <data name="Depth.Text" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="Weight.Text" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve">
+    <value>Width</value>
   </data>
 </root>

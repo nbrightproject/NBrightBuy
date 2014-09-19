@@ -41,7 +41,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
 
-
                 #region "load templates"
 
                 var t1 = "backoffice.html";

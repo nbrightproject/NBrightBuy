@@ -436,6 +436,7 @@
     <Content Include="Themes\config\default\addressbookinput.html" />
     <Content Include="Themes\config\default\ajaxincludes.html" />
     <Content Include="Themes\config\default\backoffice.html" />
+    <Content Include="Themes\config\default\backofficepageheader.html" />
     <Content Include="Themes\config\default\buttonsDiv_AddNew.txt" />
     <Content Include="Themes\config\default\buttonsDiv_Delete.txt" />
     <Content Include="Themes\config\default\buttonsDiv_Edit.txt" />

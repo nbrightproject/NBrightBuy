@@ -40,9 +40,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 //save cart
                 var strXML = "<address>";
+                var lp = 0;
+                var defAddr = GetDefaultAddress();
+                var defIdex = -1;
+                if (defAddr != null) defIdex = defAddr.GetXmlPropertyInt("genxml/hidden/index");
                 foreach (var info in _addressList)
                 {
+                    if (lp == defIdex || defIdex == -1)
+                    {
+                        defIdex = lp;
+                        info.SetXmlProperty("genxml/hidden/default", "True");
+                    }
+                    else
+                        info.SetXmlProperty("genxml/hidden/default", "False");
+
+                    info.SetXmlProperty("genxml/hidden/index",lp.ToString("D"));
                     strXML += info.XMLData;
+                    lp += 1;
                 }
                 strXML += "</address>";
                 UserData.Info.RemoveXmlNode("genxml/address");
@@ -66,29 +80,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
-            AddAddress(objInfoIn);
+            var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from maager should have a index hidden field.
+            if (addIndex == "") addIndex = objInfoIn.GetXmlProperty("genxml/dropdownlist/selectaddress"); // updated from cart should have a selected address
+            if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new address.
+            var addressIndex = Convert.ToInt32(addIndex);
+            AddAddress(objInfoIn,addressIndex);
             return ""; // if everything is OK, don't send a message back.
         }
 
-        public String AddAddress(NBrightInfo addressInfo, Boolean debugMode = false)
+        public String AddAddress(NBrightInfo addressInfo, int addressIndex, Boolean debugMode = false)
         {
-            var addressIndex = addressInfo.GetXmlProperty("genxml/dropdownlist/selectaddress");
-            if (!Utils.IsNumeric(addressIndex)) return "";
-            var addrIdx = Convert.ToInt32(addressIndex);
-
             if (debugMode) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
             var addrExists = AddressExists(addressInfo);
             if (!addrExists)
             {
-                    if (addrIdx >= 0)
-                    {
-                        UpdateAddress(addressInfo.XMLData, addrIdx);
-                    }
-                    else
-                    {
-                        _addressList.Add(addressInfo);
-                        Save(debugMode);
-                    }
+                if (addressIndex >= 0)
+                {
+                    UpdateAddress(addressInfo.XMLData, addressIndex);
+                }
+                else
+                {
+                    _addressList.Add(addressInfo);
+                    Save(debugMode);
+                }
             }
 
             return ""; // if everything is OK, don't send a message back.
@@ -229,10 +243,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UserData = new UserData(userId);
             _addressList = GetAddressList();
             //if we have no address create a default one from DNN profile
-            if (GetDefaultAddress() == null && UserData.Exists)
+            if (_addressList.Count == 0 && UserData.Exists)
             {
                 var newDefault = new NBrightInfo(true);
-                newDefault.AddSingleNode("default", "True", "genxml/hidden");
+                newDefault.SetXmlProperty("genxml/hidden/default", "True");
                 newDefault.SetXmlProperty("genxml/hidden/index", _addressList.Count.ToString(""));
                 var prop = DnnUtils.GetUserProfileProperties(UserData.Info.UserId.ToString(""));
                 foreach (var p in prop)
@@ -258,7 +272,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     da.SetXmlProperty("genxml/textbox/" + p.Key.ToLower(), p.Value);
                 }
-                AddAddress(da);
+                AddAddress(da,da.GetXmlPropertyInt("genxml/hidden/index"));
             }
         }
 

@@ -60,10 +60,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _entryId;
         }
 
+        public String Lang
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/lang");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/lang", value);
+            }
+        }
+
         public int UserId
         {
             get { return _userId; }
             set { _userId = value; }
+        }
+
+        public String ShippingCountry
+        {
+            get { return PurchaseInfo.GetXmlProperty("genxml/shippingcountry"); }
+            set { PurchaseInfo.SetXmlProperty("genxml/shippingcountry",value); }
+        }
+
+        public String ShippingRegion
+        {
+            get { return PurchaseInfo.GetXmlProperty("genxml/shippingregion"); }
+            set { PurchaseInfo.SetXmlProperty("genxml/shippingregion", value); }
         }
 
         #region "base methods"

@@ -321,5 +321,45 @@
 			<radiobuttonlist />
 			<edt />
 		</genxml>
-	</plugin>
+		<genxml>
+			<files />
+			<hidden>
+				<index />
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[Shipping]]>
+				</ctrl>
+				<name>
+					<![CDATA[Shipping]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Shipping]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Providers/ShippingProvider/Shipping.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		</plugin>
 </genxml>

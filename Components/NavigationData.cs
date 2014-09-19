@@ -451,7 +451,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string RecordCount { get; set; }
 
         /// <summary>
-        /// Mode:  "F" = filter will persist past category selection
+        /// Mode:  "F" = filter will persist past category selection, "S" = SingleSearchMode (The filter will only exist for 1 search) 
         /// </summary>
         public string Mode { get; set; }
 
@@ -463,6 +463,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get
             {
                 return Mode.ToLower() == "f";
+            }
+        }
+
+        public bool SingleSearchMode
+        {
+            get
+            {
+                return Mode.ToLower() == "s";
             }
         }
 

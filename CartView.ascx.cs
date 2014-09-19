@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -97,6 +98,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
+                // Get CartLayout
+                var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
+                checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+
                 var carttype = ModSettings.Get("ddlcarttype");
                 if (carttype == "2")
                 {
@@ -166,9 +172,9 @@ namespace Nevoweb.DNN.NBrightBuy
             if (carttype == "2")
             {
 
-                var layout = new Literal();
-                layout.Text = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
-                checkoutlayout.Controls.Add(layout);
+                // display footer
+                checkoutlayout.DataSource = cartL;
+                checkoutlayout.DataBind();
 
                 #region "Address List Data Repeater"
 
@@ -300,6 +306,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "order":
                     _cartInfo.SetValidated(true);
+                    _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same langauge the order was made in.
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();

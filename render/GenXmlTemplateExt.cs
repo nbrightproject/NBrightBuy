@@ -81,6 +81,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "modelslist":
                     Createmodelslist(container, xmlNod);
                     return true;
+                case "orderitemlist":
+                    CreateOrderItemlist(container, xmlNod);
+                    return true;                    
                 case "modelsradio":
                     Createmodelsradio(container, xmlNod);
                     return true;
@@ -234,6 +237,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "selectlocalebutton":
                     CreateSelectLangaugeButton(container, xmlNod);
                     return true;
+                case "editflag":
+                    CreateEditFlag(container, xmlNod);
+                    return true;                    
                 case "imageof":
                     CreateImage(container, xmlNod);
                     return true;
@@ -1343,17 +1349,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
-        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">")
+        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">",string lang = "")
         {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
             var rtnDic = new Dictionary<int, string>();
 
-            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref;
+            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
 
             var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
 
             if (objCache == null | StoreSettings.Current.DebugMode)
             {
-                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var grpCatCtrl = new GrpCatController(lang);
                 var d = new Dictionary<int, string>();
                 var rtnList = new List<GroupCategoryData>();
                 rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref,breadcrumbseparator);
@@ -1414,6 +1422,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var modulekey = "";
             var redirecttabid = "";
             var tabid = "";
+            var lang = Utils.GetCurrentCulture(); 
 
             if (xmlNod.Attributes != null)
             {
@@ -1431,13 +1440,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
+                if (xmlNod.Attributes["lang"] != null) lang = xmlNod.Attributes["lang"].Value;
                 
                 if (showhidden.ToLower() == "true") showHidden = true;
                 if (showarchived.ToLower() == "true") showArchived = true;
                 if (showempty.ToLower() == "false") showEmpty = false;
                 if (displaycount.ToLower() == "true") displayCount = true;
                 if (xmlNod.Attributes["catreflist"] != null) catreflist = xmlNod.Attributes["catreflist"].Value;
-                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var grpCatCtrl = new GrpCatController(lang);
                 if (parentref != "")
                 {
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
@@ -1457,7 +1467,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             }
 
-            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref);
+            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref,">",lang);
 
             if (validCatList != null)
             {
@@ -3439,13 +3449,34 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+        private void CreateEditFlag(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            var size = "16";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["size"] != null)) size = xmlNod.Attributes["size"].Value;
+            lc.Text = "<img src='/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/" + size + "/" + StoreSettings.Current.EditLanguage + ".png' />";
+            lc.DataBinding += EditFlagDataBind;
+            container.Controls.Add(lc);
+        }
+        private void EditFlagDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            lc.Visible = NBrightGlobal.IsVisible;
+        }
 
         private void CreateSelectLangaugeButton(Control container, XmlNode xmlNod)
         {
             var cmd = new EditLanguage();
             cmd = (EditLanguage)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
+            cmd.DataBinding += SelectLangaugeDataBind;
             container.Controls.Add(cmd);
         }
+        private void SelectLangaugeDataBind(object sender, EventArgs e)
+        {
+            var lc = (EditLanguage)sender;
+            lc.Visible = NBrightGlobal.IsVisible;
+        }
+
 
         #endregion
 
@@ -3558,6 +3589,66 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 #endregion
 
+        #region "Order Itemlist"
+
+        private void CreateOrderItemlist(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                lc.Text = xmlNod.Attributes["template"].Value;
+            }
+            lc.DataBinding += OrderItemlistDataBind;
+            container.Controls.Add(lc);
+        }
+
+        private void OrderItemlistDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            try
+            {
+                var strOut = "";
+                lc.Visible = NBrightGlobal.IsVisible;
+                if (lc.Visible)
+                {
+
+                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                    var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
+                    if (lang == "") lang = Utils.GetCurrentCulture();
+                    var templName = lc.Text;
+                    if (Utils.IsNumeric(id) && (templName != ""))
+                    {
+                        var buyCtrl = new NBrightBuyController();
+                        var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
+
+                        //remove templName from template, so we don't get a loop.
+                        if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                        //build models list
+
+                        var objInfo = (NBrightInfo)container.DataItem;
+                        var ordData = new OrderData(objInfo.PortalId,objInfo.ItemID);
+                        // render repeater
+                        try
+                        {
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                        }
+                        catch (Exception exc)
+                        {
+                            strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
+                        }
+                    }
+                }
+                lc.Text = strOut;
+
+            }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+        }
+
+        #endregion
 
         #region "Functions"
 

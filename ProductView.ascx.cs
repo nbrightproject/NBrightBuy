@@ -261,7 +261,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
-                        _strOrder = _navigationdata.OrderBy; 
+                        _strOrder = _navigationdata.OrderBy;
                     }
                     else
                     {
@@ -280,6 +280,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "Get Category select setup"
 
                     //get default catid.
+                    var catseo = _catid;
                     var defcatid = ModSettings.Get("defaultcatid");
                     if (Utils.IsNumeric(defcatid))
                     {
@@ -311,6 +312,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         // We have a category selected (in url), so overwrite categoryid navigationdata.
                         // This allows the return to the same category after a returning from a entry view.
                         _navigationdata.CategoryId = _catid;
+                        catseo = _catid;
                     }
 
                     if (Utils.IsNumeric(_catid))
@@ -324,31 +326,32 @@ namespace Nevoweb.DNN.NBrightBuy
                         else
                             strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
 
-                        if (Utils.IsNumeric(_catid)) objCat = ModCtrl.GetData(Convert.ToInt32(_catid), "CATEGORYLANG", Utils.GetCurrentCulture());
-                        if (objCat != null)
+                        if (Utils.IsNumeric(catseo))
                         {
-
-                            //Page Title
-                            var seoname = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                            if (seoname == "") seoname = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
-
-                            var newBaseTitle = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
-                            if (newBaseTitle != "") BasePage.Title = newBaseTitle;
-                            //Page KeyWords
-                            var newBaseKeyWords = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
-                            if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
-                            //Page Description
-                            var newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
-                            if (newBaseDescription == "") newBaseDescription = objCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
-                            if (newBaseDescription != "") BasePage.Description = newBaseDescription;
-
-                            if (PortalSettings.HomeTabId == TabId)
-                                PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
-                            else
+                            var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                            if (objSEOCat != null)
                             {
-                                PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objCat.ItemID, seoname, Utils.GetCurrentCulture()));
-                            }
+                                //Page Title
+                                var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
 
+                                var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                                if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                                //Page KeyWords
+                                var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                                if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                                //Page Description
+                                var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                                if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                                if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                                if (PortalSettings.HomeTabId == TabId)
+                                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                                else
+                                {
+                                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                }
+                            }
                         }
                     }
                     else
@@ -410,6 +413,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     strFilter += " and (NB3.Visible = 1) "; // get only visible products
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
+
+                    if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 
                     if (pageSize > 0)
                     {

@@ -79,6 +79,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             switch (e.CommandName.ToLower())
             {
+                case "delete":
+                    Delete(cArg);
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "save":
                     Update();
                     param[0] = "eid=" + cArg;
@@ -145,6 +150,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
+        private void Delete( String productId)
+        {
+            if (Utils.IsNumeric(productId) && Convert.ToInt32(productId) > 0)
+            {
+                var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
+                prodData.Delete();
+            }
+        }
 
 
     }

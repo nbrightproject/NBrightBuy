@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var rc = new DotNetNuke.Security.Roles.RoleController();
                     var ri = rc.GetRoleByName(PortalId, "Client");
                     if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate);
-                    NBrightBuyUtils.SendEmail(_userInfo.Email, "addclientrole.html", _clientInfo);
+                    if (StoreSettings.Current.Get("sendclientroleemail") == "True") NBrightBuyUtils.SendEmail(_userInfo.Email, "addclientrole.html", _clientInfo, "", "", _userInfo.Profile.PreferredLocale);
                 }
             }
         }

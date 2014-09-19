@@ -16,6 +16,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -98,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
-                    if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
+                    if (model != null && model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
                 }
             }
         }
@@ -275,8 +276,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             //add shipping
-            Double shippingcost = 0;
-            Double shippingdealercost = 0;
+            var shipcost = ShippingInterface.Instance("Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider").CalculateShipping(PurchaseInfo);
+            Double shippingcost = shipcost.GetXmlPropertyDouble("genxml/totaltest");
+            Double shippingdealercost = shipcost.GetXmlPropertyDouble("genxml/totaltest");
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
@@ -314,32 +316,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //stock control
             var prd = new ProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists) return null; //Invalid product remove from cart
-
-            var stockon = prd.GetModel(modelid).GetXmlPropertyBool("genxml/checkbox/chkstockon");
-            var stocklevel = prd.GetModel(modelid).GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
-            var minStock = prd.GetModel(modelid).GetXmlPropertyInt("genxml/textbox/txtqtyminstock");
-            if (minStock == 0 ) minStock = StoreSettings.Current.GetInt("minimumstocklevel");
-            var maxStock = prd.GetModel(modelid).GetXmlPropertyInt("genxml/textbox/txtqtystockset");
-            if (stockon) 
+            var prdModel = prd.GetModel(modelid);
+            if (prdModel != null)
             {
-                stocklevel = stocklevel - minStock;
-                stocklevel = stocklevel - prd.GetModelTransQty(modelid, _cartId);
-                if (stocklevel < qty)
+                var stockon = prdModel.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+                var stocklevel = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
+                var minStock = prdModel.GetXmlPropertyInt("genxml/textbox/txtqtyminstock");
+                if (minStock == 0) minStock = StoreSettings.Current.GetInt("minimumstocklevel");
+                var maxStock = prdModel.GetXmlPropertyInt("genxml/textbox/txtqtystockset");
+                if (stockon)
                 {
-                    qty = stocklevel;
-                    if (qty <= 0)
+                    stocklevel = stocklevel - minStock;
+                    stocklevel = stocklevel - prd.GetModelTransQty(modelid, _cartId);
+                    if (stocklevel < qty)
                     {
-                        qty = 0;
-                        cartItemInfo.SetXmlProperty("genxml/validatecode", "OUTOFSTOCK");
+                        qty = stocklevel;
+                        if (qty <= 0)
+                        {
+                            qty = 0;
+                            cartItemInfo.SetXmlProperty("genxml/validatecode", "OUTOFSTOCK");
+                        }
+                        else
+                        {
+                            cartItemInfo.SetXmlProperty("genxml/validatecode", "STOCKADJ");
+                        }
+                        base.SetValidated(false);
+                        cartItemInfo.SetXmlPropertyDouble("genxml/qty", qty.ToString(""));
                     }
-                    else
-                    {
-                        cartItemInfo.SetXmlProperty("genxml/validatecode", "STOCKADJ");
-                    }
-                    base.SetValidated(false);
-                    cartItemInfo.SetXmlPropertyDouble("genxml/qty",qty.ToString(""));
                 }
-            }
 
                 var totalcost = qty*unitcost;
                 var totaldealercost = qty*dealercost;
@@ -380,6 +384,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totaldiscount), totaldealercost));
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - discount), (dealercost - dealerdiscount)));
+            }
 
             return cartItemInfo;
         }

@@ -21,7 +21,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 		// singleton reference to the instantiated object 
 
-        private static ShippingInterface objProvider = null;
+        //private static ShippingInterface objProvider = null;
+	    private static Dictionary<String,ShippingInterface> _providerList; 
         // constructor
         static ShippingInterface()
 		{
@@ -31,28 +32,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 		// dynamically create provider
 		private static void CreateProvider()
 		{
-			ObjectHandle handle = null;
-			string[] Prov = null;
-			string ProviderName = null;
 
-            ProviderName = StoreSettings.Current.Get("shipping.provider");
-            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.ShippingProvider,Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider"; 
-            if (!string.IsNullOrEmpty(ProviderName))
-			{
-			    Prov = ProviderName.Split(',');
-				handle = Activator.CreateInstance(Prov[0], Prov[1]);
-                objProvider = (ShippingInterface)handle.Unwrap();
-			}
-        }
+			string providerName = null;
+
+		    _providerList = new Dictionary<string, ShippingInterface>(); 
+
+            providerName = StoreSettings.Current.Get("shipping.provider");
+            if (providerName != "") providerName += ";";
+            providerName += "NBrightBuy.ShippingProvider,Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider";
+
+		    var l = providerName.Split(';');
+            foreach (var p in l)
+            {
+                ObjectHandle handle = null;
+                string[] prov = null;
+                prov = p.Split(',');
+                handle = Activator.CreateInstance(prov[0], prov[1]);
+                var objProvider = (ShippingInterface) handle.Unwrap();
+                _providerList.Add(prov[1], objProvider);
+            }
+
+		}
 
 		// return the provider
-        public static new ShippingInterface Instance()
+        public static new ShippingInterface Instance(String key)
 		{
-            return objProvider;
+            return _providerList[key];
 		}
 
 		#endregion
-        
+
+        public abstract NBrightInfo CalculateShipping(NBrightInfo cartInfo);
 
 
 	}

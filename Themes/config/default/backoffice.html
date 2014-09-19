@@ -72,6 +72,9 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/imagesloaded.pkgd.min.js"></script>
 <!-- Masonry Grid http://masonry.desandro.com -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/masonry.pkgd.min.js"></script>
+<!-- local stoage to keep expanded state -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.storage.js"></script>
+
 
 <script type="text/javascript">
 	// Move page actions to header bar
@@ -106,6 +109,14 @@ $(document).ready(function() {
 	LoadBootstrapValidatorScript(DemoFormValidator);
 	// Add drag-n-drop feature to boxes
 	WinMove();
+
+
+	// NOTE: MAKES THE CKEDITOR SETTINGS POPUP ON SOME SITE?....NEED TO REFINE THIS CODE.
+    //NBS - BO status
+	//$('a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
+	//$('a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
+
+
 });
 </script>
 

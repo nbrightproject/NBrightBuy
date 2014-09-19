@@ -41,6 +41,11 @@ $(document).ready(function() {
         $('#' + id).val(true);
         $(".savebutton").show();
     });
+    $("select[[id*='ddlparentcatid']]").change(function () {
+        var id = $(this).attr("id").replace('ddlparentcatid', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
+    });
 
 });
 

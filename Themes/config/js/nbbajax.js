@@ -18,12 +18,7 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	});
 
 	request.done(function (data) {
-	    if (target.substring(0, 9) == 'textarea[') {
-	        if (data != 'noaction') {
-	            var editorid = $(target).attr('id');
-	            CKEDITOR.instances[editorid].setData(data);
-	        }
-	    } else if (data != 'noaction') {
+	    if (data != 'noaction') {
 	        if (appendreturn == null) {
 	            $(target).children().remove();
 	            $(target).html(data).trigger('change');

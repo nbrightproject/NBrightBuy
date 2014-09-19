@@ -228,7 +228,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
                         orderData.CopyToCart(DebugMode);
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(Globals.NavigateURL(StoreSettings.Current.CartTabId, "", param), true);
                     break;
                 case "return":
                     param[0] = "";

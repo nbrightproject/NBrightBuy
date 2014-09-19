@@ -88,7 +88,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 //    if (CheckRights()) strOut = SetCategoryForm(context);
                 //    break;
                 case "getdata":
-                    strOut = GetReturnData(context);
+                    // commented out for security reasons
+                    //strOut = GetReturnData(context);
                     break;
                 case "additemlist":
                     if (Utils.IsNumeric(itemId))
@@ -161,6 +162,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "productcategories":
                     if (CheckRights()) strOut = GetProductCategories(context);
+                    break;
+                case "productisincategory":
+                    if (CheckRights()) strOut = ProductIsInCategory(context).ToString();
                     break;
                 case "productgroupcategories":
                     if (CheckRights()) strOut = GetProductGroupCategories(context);
@@ -258,6 +262,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     // replace any settings tokens (This is used to place the form data into the SQL)
                     strSql = Utils.ReplaceSettingTokens(strSql, settings);
                     strSql = Utils.ReplaceUrlTokens(strSql);
+
+                    strSql = GenXmlFunctions.StripSqlCommands(strSql); // don't allow anything to update through here.
 
                     strOut = objCtrl.GetSqlxml(strSql);
                     strOut = "<root>" + strOut + "</root>";
@@ -455,7 +461,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var settings = GetAjaxFields(context);
             var groupref = "";
             if (settings.ContainsKey("selectedgroupref")) groupref = settings["selectedgroupref"];
-            var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory form-control' type='catlistbox' groupref='" + groupref + "'/>]";
+            var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory form-control' type='catlistbox' groupref='" + groupref + "' lang='" + _lang + "'/>]";
             return GenXmlFunctions.RenderRepeater(new NBrightInfo(),templ);    
         }
 
@@ -677,6 +683,37 @@ namespace Nevoweb.DNN.NBrightBuy
             catch (Exception ex)
             {
                 return ex.ToString();
+            }
+
+        }
+
+        private Boolean ProductIsInCategory(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+                if (!settings.ContainsKey("categoryref")) settings.Add("categoryref", "0");
+                var categoryref = settings["categoryref"];
+
+                if (categoryref == "") return false;
+
+                //get data
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
+
+                var l = prodData.GetCategories("",true);
+
+                var cat = from i in l where i.categoryref == categoryref select i;
+
+                if (cat.Any()) return true;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
 
         }
