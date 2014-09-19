@@ -51,6 +51,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "addqty":
                     CreateQtyField(container, xmlNod);
                     return true;
+                case "modelqty":
+                    CreateModelQtyField(container, xmlNod);
+                    return true;
                 case "relatedproducts":
                     CreateRelatedlist(container, xmlNod);
                     return true;
@@ -2139,56 +2142,31 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void Createmodelslist(Control container, XmlNode xmlNod)
         {
-            var lc = new Literal();
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
-                lc.Text = xmlNod.Attributes["template"].Value;
+                var templName = xmlNod.Attributes["template"].Value;
+                var buyCtrl = new NBrightBuyController();
+                var rpTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
+
+                //remove templName from template, so we don't get a loop.
+                if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                var rpt = new Repeater { ItemTemplate = new GenXmlTemplate(rpTempl, _settings) };
+                rpt.DataBinding += ModelslistDataBind;
+                container.Controls.Add(rpt);
             }
-            lc.DataBinding += ModelslistDataBind;
-            container.Controls.Add(lc);
         }
 
         private void ModelslistDataBind(object sender, EventArgs e)
         {
-            var lc = (Literal)sender;
-            var container = (IDataItemContainer)lc.NamingContainer;
-            try
+            var rpt = (Repeater)sender;
+            var container = (IDataItemContainer)rpt.NamingContainer;
+            rpt.Visible = NBrightGlobal.IsVisible;
+            if (rpt.Visible)
             {
-                var strOut = "";
-                lc.Visible = NBrightGlobal.IsVisible;
-                if (lc.Visible)
-                {
-
-                    var moduleid = _settings["moduleid"];
-                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                    var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
-                    var templName = lc.Text;
-                    if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
-                    {
-                        var buyCtrl = new NBrightBuyController();
-                        var rpTempl = buyCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
-                       
-                        //remove templName from template, so we don't get a loop.
-                        if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
-                        //build models list
-                        var objL = BuildModelList((NBrightInfo)container.DataItem,true);
-                        // render repeater
-                        try
-                        {
-                            strOut = GenXmlFunctions.RenderRepeater(objL, rpTempl, "", "XMLData", "", _settings);
-                        }
-                        catch (Exception exc)
-                        {
-                            strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
-                        }
-                    }
-                }
-                lc.Text = strOut;
-
-            }
-            catch (Exception)
-            {
-                lc.Text = "";
+                //build models list
+                var objL = BuildModelList((NBrightInfo) container.DataItem, true);
+                rpt.DataSource = objL;
+                rpt.DataBind();
             }
         }
 
@@ -2712,6 +2690,31 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void QtyFieldDataBind(object sender, EventArgs e)
         {
             var txt = (TextBox)sender;
+            txt.Visible = NBrightGlobal.IsVisible;
+        }
+
+        #endregion
+
+        #region "Model Qty Field"
+
+        private void CreateModelQtyField(Control container, XmlNode xmlNod)
+        {
+            var txt = new TextBox();
+            txt = (TextBox)GenXmlFunctions.AssignByReflection(txt, xmlNod);
+            txt.ID = "selectedmodelqty";
+            txt.DataBinding += ModelQtyFieldDataBind;
+            container.Controls.Add(txt);
+        }
+
+        private void ModelQtyFieldDataBind(object sender, EventArgs e)
+        {
+            var txt = (TextBox)sender;
+            var container = (IDataItemContainer)txt.NamingContainer;
+            var strXml = DataBinder.Eval(container.DataItem, _databindColumn).ToString();
+            var nbi = new NBrightInfo();
+            nbi.XMLData = strXml;
+            if (nbi.GetXmlProperty("genxml/hidden/modelid") == "") txt.Text = "ERR! - MODELQTY can only be used on modellist template";
+            txt.Attributes.Add("modelid", nbi.GetXmlProperty("genxml/hidden/modelid"));
             txt.Visible = NBrightGlobal.IsVisible;
         }
 
