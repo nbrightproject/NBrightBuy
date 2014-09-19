@@ -3,8 +3,7 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-en-GB.js"></script>  
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.ui.datepicker-fr.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.datepick.xlang.eur.js"></script>  
 <script>
 
     $(function () {
@@ -113,7 +112,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Product ID: [<tag type="valueof" databind="ItemId" />]</span>
+				    <i class="fa fa-search"></i><span>Product ID: [<tag type="valueof" databind="ItemId" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -164,7 +163,11 @@
 					<div class="form-group">
 						<div class="col-sm-2">
 							[<tag id="chkishidden" type="checkbox" Text="" />]
-						<label class="control-label">Hidden</label>
+						    <label class="control-label">Hidden</label>
+                            <div class="">
+  Ref: [<tag type="valueof" xpath="genxml/importref" />]
+</div>
+
 						</div>
 					</div>
 					</div>

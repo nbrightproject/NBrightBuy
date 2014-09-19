@@ -103,6 +103,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Save()
         {
             var objCtrl = new NBrightBuyController();
+            if (DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref") == "") DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", Utils.GetUniqueKey(10));
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
             

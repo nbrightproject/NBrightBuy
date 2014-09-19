@@ -240,6 +240,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
                         var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
                         catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
+                        if (catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref") == "") catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref",Utils.GetUniqueKey(10));
                         ModCtrl.Update(catData.DataRecord);
                         catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                         ModCtrl.Update(catData.DataLangRecord);

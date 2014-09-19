@@ -228,6 +228,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }                
             }
 
+            if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
 
             var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
