@@ -114,11 +114,48 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
+
+            var strproductid = objInfoIn.GetXmlProperty("genxml/hidden/productid");
+            // Get ModelID
+            var modelidlist = new List<String>();
+            var qtylist = new Dictionary<String, String>();
+            var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/repeaters/repeater[1]/*");
+            if (nodList != null && nodList.Count > 0)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    var nbi = new NBrightInfo();
+                    nbi.XMLData = nod.OuterXml;
+                    var strmodelId = nbi.GetXmlProperty("genxml/hidden/modelid");
+                    modelidlist.Add(strmodelId);
+                    var strqtyId = nbi.GetXmlProperty("genxml/textbox/selectedmodelqty");
+                    qtylist.Add(strmodelId, strqtyId);                                    
+                }
+            }
+            else
+            {
+                var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
+                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
+                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
+                modelidlist.Add(strmodelId);
+                var strqtyId = objInfoIn.GetXmlProperty("genxml/textbox/selectedaddqty");
+                qtylist.Add(strmodelId,strqtyId);
+            }
+
+            var strRtn = "";
+            foreach (var m in modelidlist)
+            {
+                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn);                
+            }
+            return strRtn;
+        }
+
+        private String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn)
+        {
             var objInfo = new NBrightInfo();
             objInfo.XMLData = "<genxml></genxml>";
 
             // get productid
-            var strproductid = objInfoIn.GetXmlProperty("genxml/hidden/productid");
             if (Utils.IsNumeric(strproductid))
             {
                 var itemcode = ""; // The itemcode var is used to decide if a cart item is new or already existing in the cart.
@@ -127,15 +164,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("productid", strproductid, "genxml");
                 itemcode += strproductid + "-";
 
-                // Get ModelID
-                var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
-                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
-                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
                 objInfo.AddSingleNode("modelid", strmodelId, "genxml");
                 itemcode += strmodelId + "-";
 
                 // Get Qty
-                var strqtyId = objInfoIn.GetXmlProperty("genxml/textbox/selectedaddqty");
                 objInfo.AddSingleNode("qty", strqtyId, "genxml");
 
                 #region "Get model and product data"
@@ -268,8 +300,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // return the message status code in textData, non-critical (usually empty)
                 return objInfo.TextData;
             }
-
-            return ""; // if everything is OK, don't send a message back.
+            return "";
         }
 
         public void RemoveItem(int index)
