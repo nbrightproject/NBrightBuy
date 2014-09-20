@@ -43,7 +43,7 @@
 		<a href="#" class="show-sidebar">
 		  <i class="fa fa-bars"></i>
 		</a>
-		<div style="height:50px;padding-top:12px;white-space: nowrap;">
+		<div class="actionbuttonwrapper">
 		[<tag id="cmdAddNew" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.New" commandname="addnew" />]
 		</div>
 	</div>
@@ -109,6 +109,7 @@
     <div id="productlist"></div>        
 </div>
 
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 <div class="row pageactions"><!-- Page actions - also at top -->
 	<div class="col-md-12">
 		<div class="box">
@@ -135,3 +136,4 @@
 		</div>
 	</div>
 </div>
+[<tag type="endif" />]

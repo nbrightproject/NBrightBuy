@@ -235,7 +235,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (qty > 0) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "010");
                     if (minqty == qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "020");
                     if (qty <= 0 && minqty < qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "030");
-                }                
+                }
+                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/hidden/modelid", Utils.GetUniqueKey());
             }
 
             if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
@@ -792,7 +793,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
-            nbi.AddSingleNode("models", "<genxml/>","genxml");
+            nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
             var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 

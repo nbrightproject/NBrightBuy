@@ -101,9 +101,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     case "printorder":
                         {
-                            var objTempl = NBrightBuyUtils.GetTemplateGetter(_theme);
-                            var strTempl = objTempl.GetTemplateData(_template,Utils.GetCurrentCulture());
-                            DisplayOrderData(portalId, objUserInfo, _itemid, strTempl);
+                            DisplayOrderData(portalId, objUserInfo, _itemid);
                             break;
                         }
                 }           
@@ -122,7 +120,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "print display functions"
 
-        private void DisplayOrderData(int portalId, UserInfo userInfo, String entryId, String xsltTemplate)
+        private void DisplayOrderData(int portalId, UserInfo userInfo, String entryId)
         {
             var strOut = "***ERROR***  Invalid Data";
             if (Utils.IsNumeric(entryId) && entryId != "0")
@@ -133,8 +131,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = "***ERROR***  Invalid Security";
                     if (userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
                     {
-                        xsltTemplate = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo,xsltTemplate); 
-                        strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, xsltTemplate);
+                        var modCtrl = new NBrightBuyController();
+                        var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+
+                        strOut = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, strOut);                       
                     }
                 }
             }

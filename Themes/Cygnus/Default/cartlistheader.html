@@ -4,7 +4,9 @@
 		<th class="imagecolumn">[<tag type='valueof' resourcekey='General.lblcartlist' />]</th>
 		<th class="detailscolumn">Details</th>
 		<th>Quantity</th>
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
 		<th>Price</th>
 		<th>Total</th>
+		[<tag type="endif"  />]
 		<th>Remove</th>
 	</tr>

@@ -3,21 +3,61 @@
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/categoryajax.js"></script>
 
-[<tag type="selectlocalebutton" size="32"/>] 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
+        $('.categorydetails div.box-content').toggle(); // Then open specific ones
+        $('.pageactions div.box-content').toggle();
+    });
+</script>
 
 <div id="confirmmsg" style="display:none;">
 [<tag type="valueof" resourcekey="General.Confirm" />]    
 </div>
 
 <div id="nbsnotify"></div>
-<span class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</span>
+<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+
+
+
+<div class="row hidden"><!-- Not being used/yet -->
+	<div id="breadcrumb" class="col-md-12">
+		<ol class="breadcrumb">
+			<li>Properties</li>
+			<li><a href="#">Properties</a></li>
+			<li><a href="#">Property Details</a></li>
+		</ol>
+	</div>
+</div>
+
+
+<div class="row hidden"><!-- Not being used/yet -->
+	<div class="col-md-12">
+		<h4 class="page-header">Property Details</h4>
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+	</div>
+</div>
+
+<br />
+
+<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+	<div class="col-xs-9 col-sm-9">
+		<a href="#" class="show-sidebar">
+		  <i class="fa fa-bars"></i>
+		</a>
+		<div class="actionbuttonwrapper">
+    	[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
+		[<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />] 
+	    </div>
+	</div>
+	<div class="col-xs-3 col-sm-3 top-panel-right">
+		[<tag type="selectlocalebutton" size="32"/>]
+	</div>
+</div>
+
+
 <div id="categorydatasection">
-    <br />
-    [<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturn" commandname="return" />] - 
-    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />]  
-    <br />
-    <hr/>
-    <br />
+
     <div id="categorydata">
         
         <div id="productselectparams">
@@ -37,45 +77,263 @@
         [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
-        <h2>General</h2>     
-        <br />
-        Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;[<tag type="valueof" databind="ItemId" />]<br />
-        Group Type:   [<tag id="ddlgrouptype" type="groupdropdown" />]<br />
-        Name:   [<tag id="txtcategoryname" type="textbox" width="300" maxlength="250" />]<br />
-        Description:   <br />[<tag id="txtcategorydesc" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-        Parent:   [<tag id="ddlparentcatid" type="catdropdown" allowblank="true" showhidden="true" />] <br />
-        Product Display Template:   [<tag id="producttemplate" type="textbox" width="300" maxlength="250" />]<br />
-        List Template:   [<tag id="listitemtemplate" type="textbox" width="300" maxlength="250" />]<br />
 
-        SEO Name:   [<tag id="txtseoname" type="textbox" width="300" maxlength="250" />]<br />
-        SEO Page Title:   [<tag id="txtseopagetitle" type="textbox" width="300" maxlength="250" />]<br />
-        Meta Description:   <br />[<tag id="txtmetadescription" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-        Meta Keywords: <br />[<tag id="txtmetakeywords" type="textbox" width="300" maxlength="250" height="100" textmode="MultiLine" />]<br />
-        Hidden : [<tag id="chkishidden" type="checkbox" Text="" />] 
-        <br />
-        <div>
-            [<tag id="image" type="fileupload" />]    <br/>
-            [<tag id="cmdUpload" type="linkbutton" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]  
-            [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="350" />] 
+
+<!-- Is this hidden tag required -->
+<div class="hidden">[<tag id="ddlgrouptype" type="groupdropdown" groupsonly="true" />]</div><!-- Required - Sets grouptype to only categories and hides the field -->
+
+
+
+<div class="row categorydetails">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Property ID: [<tag type="valueof" databind="ItemId" />]</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-6">
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">Name</label>
+							[<tag id="txtcategoryname" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">Property Group</label>
+							[<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="true" groupsonly="true" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">Description</label>
+							[<tag id="txtcategorydesc" cssclass="form-control" type="textbox" rows="4" maxlength="200" textmode="MultiLine" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label sr-only">Property Image</label>
+				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" commandargument="ItemID" />]
+				        </div>
+						<div class="col-sm-12">
+				            [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="160" />]
+				        </div>
+					</div>
+					</div>
+					<div class="col-sm-6">
+					<div class="form-group">
+						<div class="col-sm-6">
+						<label class="control-label">SEO Name</label>
+							[<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+						<div class="col-sm-6">
+						<label class="control-label">SEO Title</label>
+							[<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">Meta Tags</label>
+							[<tag id="txtmetakeywords" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+						<label class="control-label">Meta Description</label>
+							[<tag id="txtmetadescription" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							[<tag id="chkishidden" type="checkbox" Text="" />]
+						<label class="control-label">Hidden Property</label>
+						</div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row categorymessage">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Message Editor</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<div class="col-md-12">
+						<label class="control-label sr-only">Message</label>
+							[<tag id="message" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%" />]
+						</div>
+					</div>
+			  	  	</div>
+			    </div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row categorytemplates">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Display Templates</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-6">
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">List View</label>
+							[<tag id="listitemtemplate" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					</div>
+					<div class="col-sm-6">
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">Product View</label>
+							[<tag id="producttemplate" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="productlist"></div><!-- Injects categoryproductheader/body/footer -->
+
+    </div>
+
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
+<div class="row pageactions"><!-- Page actions - also at top -->
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Page Actions</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="col-sm-6">
+    				[<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
+				    [<tag id="cmdReturn2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />] 
+				</div>
+				<div class="col-sm-6 text-right">
+				[<tag type="selectlocalebutton" size="32"/>]
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+[<tag type="endif" />]
+
+</div>
+
+
+<div id="productselectsection" style="display:none;"><!-- Add products to property -->
+
+<div class="row categoryselectproducts">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Products with this Property</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+				<div class="form-horizontal dnnForm">
+					<div class="form-group">
+
+						<div class="col-sm-2">
+							<a href="#" class="btn btn-primary" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>
+						</div>
+						<div class="col-sm-3">
+							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
+						</div>
+						<div class="col-sm-3">
+							[<tag id="ddlsearchcategory" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="True" groupref="cat" />]<!-- Use groupref="cat" to restrict list to categories -->
         </div>
-        <div>
-        [<tag id="message" type="dnn:dnntexteditor" height="400" width="800"  />]
+						<div class="col-sm-2">
+							<a href="#" class="btn btn-default" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
         </div>
-        <h2>Product List</h2>
-        <div id="productlist"></div>
+						<div class="col-sm-2">
+							<a href="#" class="btn btn-default" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
     </div>
 </div>
 
-<div id="productselectsection" style="display:none;">
-<div>
-    <a href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>  
-    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />] - 
-    [<tag id="ddlsearchcategory" type="catdropdown" allowblank="true" showhidden="true" />]
-    <a href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
-    <a href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<div id="productselectlist" class="productlist"></div><!-- Injects productselectheader/body/footer -->
+						</div>
+					</div>
+
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
 </div>
 
-    <div id="productselectlist">
         
     </div>
+
+
+
+
+<!-- Use these items in developer mode later -->
+<div class="hidden">
+Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;<br />
 </div>

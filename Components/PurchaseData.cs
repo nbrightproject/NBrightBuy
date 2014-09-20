@@ -104,12 +104,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var strXml = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderUploadsMapPath, rowIndex);
 
-            if (debugMode)
-            {
-                var xmlDoc = new System.Xml.XmlDataDocument();
-                xmlDoc.LoadXml(strXml);
-                xmlDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
-            }
 
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
@@ -145,13 +139,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strRtn = "";
             foreach (var m in modelidlist)
             {
-                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn);                
+                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);                
             }
             return strRtn;
         }
 
-        private String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn)
+        private String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false)
         {
+            if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
+
+            if (debugMode) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
+
             var objInfo = new NBrightInfo();
             objInfo.XMLData = "<genxml></genxml>";
 

@@ -6,7 +6,7 @@
 						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
 						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
 						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
-						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/phone' />]</div>
+						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/phone' />]</div>
 					</address>
 					<address>
 						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</strong></div>
@@ -21,7 +21,7 @@
 						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
 						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
 						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
-						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/phone' />]</div>
+						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/phone' />]</div>
 					</address>
 					<address>
 						<div><strong>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname' />]</strong></div>
@@ -32,15 +32,17 @@
 					<address>
 						<div><strong>[Settings:storecompany]</strong></div>
 						<div>Att: [Settings:storeattention]</div>
-						<div>[Settings:storeaddressline1], [Settings:storeaddressline2]</div>
+						<div>[Settings:storeaddressline1]</div>
+						<div>[Settings:storeaddressline2]</div>
 						<div>[Settings:storecity], [Settings:storeregion] [Settings:storepostcode]</div>
 						<div>[Settings:storecountry]</div>
 						<div>Tax no:[Settings:storetaxnumber]</div>
 						<div>Sales: [Settings:manageremail]</div>
 						<div>Support: [Settings:supportemail]</div>
-						<div><abbr title="Phone">Ph:</abbr> [Settings:storephone]</div>
+						<div>Web:[<tag type="websiteurl" />]</div>
+						<div>Ph: [Settings:storephone]</div>
 					</address>
-				    <h3 class="invoice-header">Order #([<tag type="valueof" xpath="genxml/ordernumber" />])</h3>
-					<p>Date: ([<tag type="valueof" xpath="genxml/createddate" datatype="date" />])</p>
+				    <h3 class="invoice-header">Order #[<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
+					<p>Date: [<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</p>
 					<div class="txt-danger"></div>
 				</div>

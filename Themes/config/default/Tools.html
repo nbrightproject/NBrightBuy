@@ -22,8 +22,9 @@
 		<a href="#" class="show-sidebar">
 		  <i class="fa fa-bars"></i>
 		</a>
-		<div class="actionbuttonwrapper">
-			<!-- No head buttons in this page -->
+		<div class="actionbuttonwrapper tools form-inline">
+				[<tag id="cmdClearDown2" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.RemovefromStore" commandname="cleardownstore" />]&nbsp;&nbsp;
+				<label class="">[<tag type="valueof" resourcekey="General.Password" />]</label>&nbsp;&nbsp;[<tag id="txtclearpass2" type="textbox" cssclass="form-control" maxlength="50" />] 
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -46,39 +47,33 @@
 				</div>
 			</div>
 			<div class="box-content dnnForm">
-				<div class="form-horizontal dnnForm">
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Products" />]</label>
-						<div class="col-sm-5">
+		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+				<div class="form-inline dnnForm">
+					<div class="row spacer">
+						<label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Products" />]</label>
 							[<tag id="clearproducts" type="checkbox" resourcekey="" />]
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Categories" />]</label>
-						<div class="col-sm-5">
+					<div class="row spacer">
+						<label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Categories" />]</label>
 							[<tag id="clearcategories" type="checkbox" resourcekey="" />]
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Properties" />]</label>
-						<div class="col-sm-5">
+					<div class="row spacer">
+						<label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Properties" />]</label>
 							[<tag id="clearproperties" type="checkbox" resourcekey="" />]
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Orders" />]</label>
-						<div class="col-sm-5">
+					<div class="row spacer">
+						<label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Orders" />]</label>
 							[<tag id="clearorders" type="checkbox" resourcekey="" />]
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	<div class="clearfix">
 	</div>
 </div>
 
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 <div class="row pageactions"><!-- Page actions - also at top -->
 	<div class="col-md-12">
 		<div class="box">
@@ -103,5 +98,5 @@
 		</div>
 	</div>
 </div>
-
+[<tag type="endif" />]
 

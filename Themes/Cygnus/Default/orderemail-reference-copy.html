@@ -1,0 +1,209 @@
+﻿<html>
+
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title>Store Notification</title>
+<style type="text/css">
+#outlook a{padding:0;}/* Force Outlook to provide a "view in browser" button. */
+.ExternalClass{width:100%;display:block !important;}/* Force Hotmail to display emails at full width */
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height:100%;}/* Forces Hotmail to display normal line spacing */
+body{margin:0;padding:0;}
+body{-webkit-text-size-adjust:none;-ms-text-size-adjust:none;}/* Prevents Webkit and Windows Mobile platforms from changing default font sizes. */
+body,.Normal,td,th{font-family:Arial, Helvetica, sans-serif;font-weight:normal;font-size:13px;color:#555555}
+h1{color:inherit;line-height:100%;font-family:Arial, Helvetica, sans-serif;font-size:24px;font-weight:bold;margin:0 0 12px 0;}
+h2{color:inherit;line-height:100%;font-family:Arial, Helvetica, sans-serif;font-size:20px;font-weight:normal;margin:0 0 12px 0;}
+h3{color:inherit;line-height:100%;font-family:Arial, Helvetica, sans-serif;font-size:15px;font-weight:bold;margin:0 0 9px 0;}
+h4{color:inherit;line-height:100%;font-family:Arial, Helvetica, sans-serif;font-size:15px;font-weight:bold;margin:0 0 6px 0;padding-bottom:6px;border-bottom:1px solid #999999;}
+p{margin:0 0 9px 0;padding-bottom:1px;}
+a, a:link, a:visited{color:#3A45A1;text-decoration:none}
+a:active, a:hover{color:#6D94B9}
+</style>
+</head>
+
+<body bottommargin="0" leftmargin="0" rightmargin="0" topmargin="0" style="margin:0;padding:0">
+
+<!-- Wrapper -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0">
+	<tr>
+		<td width="100%" valign="top" bgcolor="#efefef">
+
+<div style="height:32px">&nbsp;</div><!-- spacer -->
+
+<!-- Logo -->
+	<table width="700" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td style="line-height:100%"><a href="http://[<tag type='websiteurl' />]">
+			<img alt="Website description here" border="0" src="http://www.wonderwebs.com/Portals/18/Content/Images/News/Template/NewsHeader.png" style="display:block;width:700px;height:auto" title="Website description here" width="700"></a>
+			</td>
+		</tr>
+	</table>
+
+<!-- orderemailmessage.html -->
+	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td width="67%" align="left" valign="top" style="line-height:150%">
+				<h2>Order Shipped</h2>
+				[Settings:emailmessage]
+				</td>
+			<td width="33%" align="left" valign="top" style="line-height:150%">
+				<p><b>Contact us</b></p>
+				<div>[Settings:storename]</div>
+				<div><a href="mailto:[Settings:supportemail]">[Settings:supportemail]</a></div>
+				<div>[Settings:storephone]</div>
+				<div><a href="http://[<tag type='websiteurl' />]" target="_blank">[<tag type="websiteurl" />]</a></div>
+			</td>
+		</tr>
+	</table>
+	
+<div style="height:8px">&nbsp;</div><!-- spacer -->
+
+<!-- Order Info -->
+	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td width="50%" align="left" valign="top" style="line-height:150%">
+			<div><b>Order Number: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
+			<div><b>Order Date: </b>[<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</div>
+			</td>
+			<td width="50%" align="left" valign="top" style="line-height:150%">
+			<div><b>Shipping Method: </b>(tag needed)</div>
+			<div><b>Tracking Number: </b>(tag needed)</div>
+			</td>
+		</tr>
+		<tr>
+			<td align="left" valign="top" colspan="2" style="line-height:150%">
+			<div><b>Special Instructions</b></div>
+			(tag needed)
+			</td>
+		</tr>
+	</table>
+	
+<!-- Items -->
+	<table width="700" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td>
+				<table width="100%" border="0" cellpadding="4" cellspacing="0">
+	                <tr>
+					<th style="border-bottom:1px solid #999999" width="100%" align="left"><b>Product</b></th>
+					<th style="border-bottom:1px solid #999999"><b>Code</b></th>
+					<th style="border-bottom:1px solid #999999"><b>Quantity</b></th>
+					<th style="border-bottom:1px solid #999999" nowrap="nowrap" align="right"><b>Sub Total</b></th>
+					</tr>
+						[<tag type="orderitemlist" template="orderitemlist.html" />]
+					<tr>
+						<td></td>
+						<td></td>
+						<td align="right">Subtotal</td>
+						<td align="right">$[<tag type='valueof' xpath='genxml/subtotalcost' />]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td align="right">Discount</td>
+						<td align="right">$[<tag type='valueof' xpath='genxml/totaldiscount' />]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td align="right">Shipping</td>
+						<td align="right">$[<tag type='valueof' xpath='genxml/shippingcost' />]</td>
+					</tr>
+					<tr>
+						<td align="left">Tax in/exclusive</td>
+						<td></td>
+						<td align="right">Tax</td>
+						<td align="right">$[<tag type='valueof' xpath='genxml/taxcost' />]</td>
+					</tr>
+					<tr class="active">
+						<td align="left">Payment method:</td>
+						<td></td>
+						<td align="right">Total</td>
+						<td align="right">$[<tag type='valueof' xpath='genxml/total' />]</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
+<div style="height:8px">&nbsp;</div><!-- spacer -->
+
+<!-- Bank payment -->
+	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td style="line-height:100%">
+			<h4>Cheque and Bank Payment</h4>
+			<div>[Settings:bankinginstructions]</div>
+			<div><b>Bank: </b>[Settings:bankname], <b>Account name: </b>[Settings:bankaccountname]</div>
+			<div><b>Account number: </b>[Settings:bankaccountnumber], <b>Insert reference: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
+			</td>
+		</tr>
+	</table>
+	
+<div style="height:8px">&nbsp;</div><!-- spacer -->
+
+<!-- Addresses -->
+	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+		<tr>
+			<td width="50%" align="left" valign="top" style="line-height:100%">
+			<h4>Billing Address</h4>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
+			<div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
+			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/phone' />]</div>
+			</td>
+			<td width="50%" align="left" valign="top" style="line-height:100%">
+			<h4>Shipping Address</h4>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
+			<div><a href="mailto:[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email' />]</a></div>
+			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/phone' />]</div>
+			</td>
+		</tr>
+	</table>
+	
+
+<!-- Footer -->
+	<table width="100%" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#363636">
+		<tr>
+			<td style="line-height:100%">
+				<table width="700" border="0" cellpadding="12" cellspacing="0" align="center">
+					<tr>
+						<td width="50%" align="left" valign="top" style="line-height:100%;color:#999999">
+							<div><b>[Settings:storecompany]</b></div>
+							<div>[Settings:storeaddressline1]</div>
+							<div>[Settings:storeaddressline2]</div>
+							<div>[Settings:storecity], [Settings:storeregion] [Settings:storepostcode]</div>
+							<div>[Settings:storecountry]</div>
+							<div>Tax no:[Settings:storetaxnumber]</div>
+						</td>
+						<td width="50%" align="right" valign="top" style="line-height:100%;color:#999999">
+			                <div>
+			                <a href="[Settings:twitterpage]"><img src="http://[<tag type='websiteurl' />]/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/img/email-twitter.gif" width="42" height="42" alt="Twitter" title="Follow us on Twitter" border="0" /></a>
+			                <a href="[Settings:facebookpage]"><img src="http://[<tag type='websiteurl' />]/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/img/email-facebook.gif" width="42" height="42" alt="Facebook" title="Visit our Facebook page" border="0" /></a>
+			                </div>
+			                <div><a href="#" style="text-decoration: none; color: #848484; font-weight: normal;">[Settings:storephone]</a></div>
+			                <div><a href="#" style="text-decoration: none; color: #848484; font-weight: normal;">[Settings:supportemail]</a></div>
+			                <div><a href="http://[<tag type='websiteurl' />]" style="text-decoration: none; color: #848484; font-weight: normal;">[<tag type="websiteurl" />]</a></div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+		</td>
+	</tr>
+</table>
+</body>
+</html>

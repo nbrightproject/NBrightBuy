@@ -74,12 +74,12 @@
             [<tag id="searchcategory" type="hidden" value=""/>]     
         </div>
 
-        [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+        [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
 
 
-
+<!-- Is this hidden tag required -->
 <div class="hidden">[<tag id="ddlgrouptype" type="groupdropdown" groupref="cat" />]</div><!-- Required - Sets grouptype to only categories and hides the field -->
 
 
@@ -120,11 +120,11 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-7">
+						<div class="col-sm-12">
 						<label class="control-label sr-only">Category Image</label>
 				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" commandargument="ItemID" />]
 				        </div>
-						<div class="col-sm-5">
+						<div class="col-sm-12">
 				            [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="160" />]
 				        </div>
 					</div>
@@ -245,7 +245,7 @@
 
     </div>
 
-
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 <div class="row pageactions"><!-- Page actions - also at top -->
 	<div class="col-md-12">
 		<div class="box">
@@ -273,7 +273,7 @@
 		</div>
 	</div>
 </div>
-
+[<tag type="endif" />]
 
 </div>
 
@@ -332,7 +332,11 @@
 
 </div>
 
+
+
+
 <!-- Use these items in developer mode later -->
-<div class="">
-Ref:   [<tag xpath="genxml/textbox/txtcategoryref" type="valueof" />]&nbsp;<br />
+<div class="hidden">
+Ref:   [<tag id="txtcategoryref" type="textbox" width="300" maxlength="250" />]&nbsp;<br />
 </div>
+

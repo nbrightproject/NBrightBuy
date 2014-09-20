@@ -482,13 +482,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     var currentcart2 = new CartData(PortalId);
                     foreach (RepeaterItem ri in rpData.Items)
                     {
-                        var qty = GenXmlFunctions.GetFieldAsInteger(ri, "selectedaddqty");
-                        if (qty > 0)
-                        {
-                            currentcart2.AddItem(rpData, StoreSettings.Current.SettingsInfo, ri.ItemIndex, DebugMode);
-                            currentcart2.Save(DebugMode);                                                    
-                        }
+                        currentcart2.AddItem(rpData, StoreSettings.Current.SettingsInfo, ri.ItemIndex, DebugMode);
                     }
+                    currentcart2.Save(DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "docdownload":

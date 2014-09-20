@@ -305,14 +305,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "printorder":
                         param[0] = "eid=" + _entryid;
                         param[1] = "print=printorder";
-                        param[2] = "template=printorder.xsl";
+                        param[2] = "template=printorder.html";
                         Response.Redirect(Globals.NavigateURL(TabId, "", param), true);                        
                     break;
                 case "printreceipt":
                         param[0] = "eid=" + _entryid;
                         param[1] = "print=printorder";
-                        param[2] = "template=printreceipt.xsl";
+                        param[2] = "template=printreceipt.html";
                         Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "printdeliverylabel":
+                    param[0] = "eid=" + _entryid;
+                    param[1] = "print=printorder";
+                    param[2] = "template=printdeliverylabel.html";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "emailamended":
                     param[0] = "eid=" + _entryid;

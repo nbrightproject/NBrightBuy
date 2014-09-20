@@ -824,6 +824,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
                     var lp = 1;
+                    var modelcount = prodData.Models.Count;
                     while (lp <= Convert.ToInt32(qty))
                     {
                         prodData.AddNewModel();
@@ -831,11 +832,11 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-
+                    var modelcount2 = prodData.Models.Count;
                     var rtnList = new List<NBrightInfo>();
-                    for (var i = 1; i < lp;i++ )
+                    for (var i = modelcount; i < modelcount2; i++)
                     {
-                        rtnList.Add(prodData.Models.Last());                        
+                        rtnList.Add(prodData.Models[i]);                        
                     }
 
 

@@ -5,6 +5,7 @@
 
 <!-- Hide Cient Details button when URL doesn't contain uid - This does not work, needs to be fixed or a function created -->
 [<tag type="if" function="setting" key="dummy" testvalue="{url:uid}" display="{OFF}" displayelse="{ON}" />]
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 	<div class="row pageactions"><!-- Page actions - also at top -->
 		<div class="col-md-12">
 			<div class="box">
@@ -32,7 +33,7 @@
 		</div>
 	</div>
 [<tag type="endif"  />]
-
+[<tag type="endif" />]
 	</div>
 </div>
 

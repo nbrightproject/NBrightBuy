@@ -57,19 +57,6 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<p class="page-header">Branding</p>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">Store Name</label>
-						<div class="col-sm-5">
-							[<tag id="storename" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label">Logo Image</label>
-						<div class="col-sm-5">
-							[<tag id="storelogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
-						</div>
-					</div>
 					<p class="page-header">Email Addresses</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.adminemail" />]</label>
@@ -181,6 +168,44 @@
 							[<tag id="bankinginstructions" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
 					</div>
+					<p class="page-header">Email Branding</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Store Name</label>
+						<div class="col-sm-5">
+							[<tag id="storename" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Logo Image</label>
+						<div class="col-sm-5">
+							[<tag id="emaillogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Email Message</label>
+						<div class="col-sm-5">
+							[<tag id="emailmessage" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
+						</div>
+					</div>
+					<p class="page-header">Social Networking</p>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Twitter Page</label>
+						<div class="col-sm-5">
+							[<tag id="twitterpage" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Facebook Page</label>
+						<div class="col-sm-5">
+							[<tag id="facebookpage" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Sharing Widget</label>
+						<div class="col-sm-5">
+							[<tag id="sharingwidget" cssclass="form-control" type="textbox" height="100" maxlength="1000" textmode="MultiLine" />]
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -266,7 +291,6 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<p class="page-header">Apply Default Values</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
 						<div class="col-sm-5">
@@ -303,17 +327,23 @@
                     		[<tag id="themefolder" cssclass="form-control" type="textbox" width="200" maxlength="50" Text="Cygnus" />]                    	        
                     	</div>
 				    </div>
-    
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label>
+                    	<div class="col-sm-5">
 				    <div class="dnnFormItem">
-				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label><!-- Need to move this -->
+		                    	[<tag id="cataloguemode" type="checkbox" checked="False" />]
+							</div>
+                    	</div>
+                    </div>
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pageactions" />]</label>
 				        <div class="col-sm-5">
 				            <div class="dnnFormItem">
-				                [<tag id="cataloguemode" type="checkbox" checked="False" />]
+		                    	[<tag id="pageactions" type="checkbox" checked="False" />]
 				            </div>
 				        </div>
 				    </div>
 
-					<p class="page-header">Developer Tools</p>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Debug Mode</label>
 						<div class="col-sm-5">
@@ -369,6 +399,7 @@
 	</div>
 </div>
 
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 <div class="row pageactions"><!-- Page actions - also at top -->
 	<div class="col-md-12">
 		<div class="box">
@@ -396,4 +427,5 @@
 		</div>
 	</div>
 </div>
+[<tag type="endif" />]
 

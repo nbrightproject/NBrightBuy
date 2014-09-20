@@ -5,9 +5,21 @@
 		</div>
 		</td>
 		<td class="detailscolumn">
-		<!-- [<tag type="valueof" xpath="genxml/productname" />] -->
-		<h5>[<tag type="valueof" xpath="genxml/modeldesc" />]</h5>
-		<h6 class="cartlistref">[<tag type="valueof" xpath="genxml/modelref" />]</h6>
+		<h5>
+		<a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">
+		[<tag type="valueof" xpath="genxml/modeldesc" />]<!-- this needs to concatenate with genxml/productname -->
+		</a>
+		</h5>
+		
+		<!-- Need to sort out placment of these messages -->
+		[<tag type="if" xpath="genxml/validatecode" testvalue="STOCKADJ" display="{ON}" />]
+		[<tag type="valueof" resourcekey="Notification.stockadjusted" />]
+		[<tag type="endif"  />]
+		[<tag type="if" xpath="genxml/validatecode" testvalue="OUTOFSTOCK" display="{ON}" />]
+		[<tag type="valueof" resourcekey="Notification.outofstock" />]
+		[<tag type="endif"  />]
+		
+		<h6 class="cartlistref">[<tag type="valueof" xpath="genxml/modelref" />]</h6><!-- this needs to concatenate with genxml/productxml/genxml/textbox/txtproductref -->
 		<div class="cartlistoptions">
 		<h6>Options</h6>
 		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]</div>
@@ -22,7 +34,9 @@
 		<div class="qtyadjust">[<tag id="cmdAddQty" type="linkbutton" cssclass="addqty" resourcekey="CartView.cmdAddItem" commandname="addqty" />][<tag id="cmdRemoveQty" type="linkbutton" cssclass="removeqty" resourcekey="CartView.cmdRemoveItem" commandname="removeqty" />]</div>
 		</div>
 		</td>
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
 		<td>[<tag type="valueof" xpath="genxml/appliedcost" />]</td>
 		<td>[<tag type="valueof" xpath="genxml/appliedtotalcost" />]</td>
+		[<tag type="endif"  />]
 		<td>[<tag id="cmdDeleteItem" type="linkbutton" cssclass="deleteitem" resourcekey="CartView.cmdDeleteItem" commandname="deletecartitem" />]</td>
 	</tr>
