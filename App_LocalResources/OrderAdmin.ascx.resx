@@ -168,4 +168,10 @@
   <data name="cmdDeleteInvoice.Text" xml:space="preserve">
     <value>Delete Invoice</value>
   </data>
+  <data name="ProcessOrder.Text" xml:space="preserve">
+    <value>Process Order</value>
+  </data>
+  <data name="VATincluded.Text" xml:space="preserve">
+    <value>* VAT included</value>
+  </data>
 </root>

@@ -23,9 +23,9 @@
 <div class="row hidden"><!-- Not being used/yet -->
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li>Catalogue</li>
-			<li><a href="#">Categories</a></li>
-			<li><a href="#">Category Details</a></li>
+			<li>[<tag type="valueof" resourcekey="General.Catalogue" />]</li>
+			<li><a href="#">[<tag type="valueof" resourcekey="General.Categories" />]</a></li>
+			<li><a href="#">[<tag type="valueof" resourcekey="General.Details" />]</a></li>
 		</ol>
 	</div>
 </div>
@@ -33,7 +33,7 @@
 
 <div class="row hidden"><!-- Not being used/yet -->
 	<div class="col-md-12">
-		<h4 class="page-header">Category Details</h4>
+		<h4 class="page-header">[<tag type="valueof" resourcekey="General.Details" />]</h4>
 		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
 	</div>
 </div>
@@ -89,7 +89,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Category ID: [<tag type="valueof" databind="ItemId" />]</span>
+					<i class="fa fa-search"></i><span>ID: [<tag type="valueof" databind="ItemId" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -103,25 +103,25 @@
 					<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">Name</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>
 							[<tag id="txtcategoryname" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">Parent</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Parent" />]</label>
 							[<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="true" groupref="cat" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">Description</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Description" />]</label>
 							[<tag id="txtcategorydesc" cssclass="form-control" type="textbox" rows="4" maxlength="200" textmode="MultiLine" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label sr-only">Category Image</label>
+						<label class="control-label sr-only">[<tag type="valueof" resourcekey="General.Image" />]</label>
 				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" commandargument="ItemID" />]
 				        </div>
 						<div class="col-sm-12">
@@ -132,23 +132,23 @@
 					<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-6">
-						<label class="control-label">SEO Name</label>
+						<label class="control-label">SEO [<tag type="valueof" resourcekey="General.Name" />]</label>
 							[<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 						<div class="col-sm-6">
-						<label class="control-label">SEO Title</label>
+						<label class="control-label">SEO [<tag type="valueof" resourcekey="General.Title" />]</label>
 							[<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">Meta Tags</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Tags" />]</label>
 							[<tag id="txtmetakeywords" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-12">
-						<label class="control-label">Meta Description</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Description" />]</label>
 							[<tag id="txtmetadescription" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
 						</div>
 					</div>
@@ -173,7 +173,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Message Editor</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Message" />] [<tag type="valueof" resourcekey="General.Editor" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
@@ -187,7 +187,7 @@
 					<div class="col-md-12">
 					<div class="form-group">
 						<div class="col-md-12">
-						<label class="control-label sr-only">Message</label>
+						<label class="control-label sr-only">[<tag type="valueof" resourcekey="General.Message" />]</label>
 							[<tag id="message" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%" />]
 						</div>
 					</div>
@@ -205,7 +205,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Display Templates</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Templates" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
@@ -220,7 +220,7 @@
 					<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">List View</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.List" />]</label>
 							[<tag id="listitemtemplate" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
@@ -228,7 +228,7 @@
 					<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-12">
-						<label class="control-label">Product View</label>
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Detail" />]</label>
 							[<tag id="producttemplate" cssclass="form-control" type="textbox" maxlength="250" />]
 						</div>
 					</div>
@@ -251,7 +251,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Page Actions</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Actions" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -285,7 +285,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Add Products to this Category</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Add" />] [<tag type="valueof" resourcekey="General.Products" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
