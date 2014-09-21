@@ -367,7 +367,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void MergeCartInputData(int index, NBrightInfo inputInfo)
         {
             //get cart item
-            _itemList = GetCartItemList();
+            //_itemList = GetCartItemList();  // Don;t get get here, it resets previous altered itemlist records.
             if (_itemList[index] != null)
             {
                 var nods = inputInfo.XMLDoc.SelectNodes("genxml/textbox/*");
