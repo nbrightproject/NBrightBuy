@@ -112,7 +112,6 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             //TODO: fix this to work for payment gateways.
             // First step is to make the cart turn into a order and accept the order...no payment proccessing
-            
 
             if (_cartInfo.IsValidated())
             {

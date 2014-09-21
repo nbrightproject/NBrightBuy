@@ -121,12 +121,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var nbi = new NBrightInfo();
                     nbi.XMLData = nod.OuterXml;
                     var strmodelId = nbi.GetXmlProperty("genxml/hidden/modelid");
-                    modelidlist.Add(strmodelId);
                     var strqtyId = nbi.GetXmlProperty("genxml/textbox/selectedmodelqty");
-                    qtylist.Add(strmodelId, strqtyId);                                    
+                    if (Utils.IsNumeric(strqtyId))
+                    {
+                        modelidlist.Add(strmodelId);
+                        qtylist.Add(strmodelId, strqtyId);                                                            
+                    }
                 }
             }
-            else
+            if (qtylist.Count == 0)
             {
                 var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
                 if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
@@ -238,7 +241,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             var idx = nod.Name.Replace("optionchk", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionvalueid = nod.InnerText;
-                            var optionValueInfo = productData.GetOptionValue(optionid, optionvalueid);
+                            var optionValueInfo = productData.GetOptionValue(optionid, ""); // checkbox does not have optionvalueid
                             var optionInfo = productData.GetOption(optionid);
                             strXmlIn += "<optid>" + optionid + "</optid>";
                             strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";

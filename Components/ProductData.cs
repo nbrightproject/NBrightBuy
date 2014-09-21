@@ -189,7 +189,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public NBrightInfo GetOptionValue(String optionid, String optionvalueid)
         {
-            var obj = OptionValues.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid && i.GetXmlProperty("genxml/hidden/optionvalueid") == optionvalueid);
+            var obj = OptionValues.Where(i => i.GetXmlProperty("genxml/hidden/optionid") == optionid && (i.GetXmlProperty("genxml/hidden/optionvalueid") == optionvalueid || optionvalueid == ""));
             return obj.First();
         }
 

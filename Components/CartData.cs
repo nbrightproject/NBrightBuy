@@ -54,7 +54,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public Boolean ConvertToOrder(Boolean debugMode = false)
         {
-            ValidateCart();
             if (IsValidated())
             {
                 PurchaseTypeCode = "ORDER";
