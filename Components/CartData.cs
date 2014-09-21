@@ -32,7 +32,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Exists = false;
             PortalId = portalId;
             _cartId = GetCartId(cartid);
-            Save();
         }
 
 

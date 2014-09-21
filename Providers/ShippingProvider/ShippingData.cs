@@ -20,6 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
     public class ShippingData
     {
         private List<NBrightInfo> _shippingList;
+        private List<RangeItem> _rangeData ;
         public NBrightInfo  Info;
 
         public ShippingData()
@@ -168,8 +169,16 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             if (total >= freeShipAmt && ("," + freeShipRefs + ",").Contains("," + countryRef + ",")) return 0;
 
             // calc range date
+            Double shippingAmt = 0;
+            foreach (var i in _rangeData)
+            {
+                if (i.RefCsv.Contains("," + countryRef + ",") || i.RefCsv.Contains("," + regionRef + ","))
+                {
+                    if (rangeValue >= i.RangeLow && rangeValue < i.RangeHigh && shippingAmt < i.Cost) shippingAmt = i.Cost;
+                }                
+            }
 
-            return 1;
+            return shippingAmt;
         }
 
         #endregion
@@ -189,6 +198,40 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 Info.PortalId = PortalSettings.Current.PortalId;
             }
             _shippingList = GetRuleList();
+
+            // build range Data
+            _rangeData = new List<RangeItem>();
+            foreach (var i in _shippingList)
+            {
+                var rangeList = i.GetXmlProperty("genxml/textbox/shiprange");
+                var rl = rangeList.Split(new string[] {"\n", "\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var s in rl)
+                {
+                    var ri = s.Split('=');
+                    if (ri.Count() == 2  && Utils.IsNumeric(ri[1]))
+                    {
+                        var riV = ri[0].Split('-');
+                        if (riV.Count() == 2 && Utils.IsNumeric(riV[0]) && Utils.IsNumeric(riV[1]))
+                        {
+                            var rItem = new RangeItem();
+                            rItem.RefCsv = "," + i.GetXmlProperty("genxml/textbox/shipref") + ",";
+                            rItem.RangeLow = Convert.ToInt32(riV[0]);
+                            rItem.Cost = Convert.ToInt32(ri[1]);
+                            rItem.RangeHigh = Convert.ToInt32(riV[1]);
+                            _rangeData.Add(rItem);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private class RangeItem
+        {
+            public String RefCsv { get; set; }
+            public Double RangeLow { get; set; }
+            public Double RangeHigh { get; set; }
+            public Double Cost { get; set; }
         }
 
         #endregion

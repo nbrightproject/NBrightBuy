@@ -12,23 +12,23 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             var nbi = new NBrightInfo(true);
             var shipData = new ShippingData();
-            var shipoption = cartInfo.GetXmlProperty("genxml/extrainfo/gexml/radiobuttonlist/rblshippingoptions");
-            var total = cartInfo.GetXmlPropertyDouble("genxml/appliedtotal");
+            var shipoption = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
+            var total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
             var countrycode = "";
             var regioncode = "";
             Double rangeValue = 0;
             switch (shipoption)
             {
                 case "1":
-                    countrycode = cartInfo.GetXmlProperty("genxml/billaddress/gexml/dropdownlist/country");
-                    regioncode = cartInfo.GetXmlProperty("genxml/billaddress/gexml/dropdownlist/region");
-                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/total");
+                    countrycode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
+                    regioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
+                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
                     nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode,regioncode, rangeValue, total));    
                     return nbi;
                 case "2":
-                    countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/gexml/dropdownlist/country");
-                    regioncode = cartInfo.GetXmlProperty("genxml/shipaddress/gexml/dropdownlist/region");
-                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/total");
+                    countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country");
+                    regioncode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");
+                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
                     nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode, regioncode, rangeValue, total));    
                     return nbi;
                 default:
