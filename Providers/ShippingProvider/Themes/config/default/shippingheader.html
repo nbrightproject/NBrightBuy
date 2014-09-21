@@ -27,6 +27,16 @@
             $(".savebutton").show();
         });
 
+        $("input[[id*='freeshiplimit']]").keyup(function () {
+            $(".savebutton").show();
+        });
+        $("input[[id*='freeshipcountrycodes']]").keyup(function () {
+            $(".savebutton").show();
+        });
+        $("input[[id*='rblUnit']]").change(function () {
+            $(".savebutton").show();
+        });
+
     });
 
 </script>
@@ -78,8 +88,7 @@
 						<thead>
 							<tr>
 								<th class="text-center">Ref</th>
-								<th class="text-center">Range</th>
-							    <th class="text-center">Cost</th>
+								<th class="text-center">Range &amp; Cost</th>
                                 <th></th>
 							</tr>
 						</thead>

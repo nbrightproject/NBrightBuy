@@ -107,9 +107,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 var shipping = new ShippingData();
                 rpData.DataSource = shipping.GetRuleList();
                 rpData.DataBind();
-
+                
                 // display header
-                base.DoDetail(rpDataH);
+                base.DoDetail(rpDataH,shipping.Info);
 
                 // display footer
                 base.DoDetail(rpDataF);
@@ -169,6 +169,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             var shipping = new ShippingData();
 
+            shipping.Update(rpDataH);
             shipping.UpdateRule(rpData);
             shipping.Save();
 

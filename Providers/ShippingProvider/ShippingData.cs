@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -51,7 +52,24 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 }
         }
 
+        #region "properties"
+
+        public String CalculationUnit
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/radiobuttonlist/rblunit");
+            }
+        }
+
+        #endregion
+
         #region "base methods"
+
+        public void Update(Repeater rpData)
+        {
+            Info.XMLData = GenXmlFunctions.GetGenXml(rpData);
+        }
 
         public String AddNewRule()
         {
@@ -140,6 +158,18 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             if (index < 0 || index >= _shippingList.Count) return null;
             return _shippingList[index];
+        }
+
+        public Double CalculateShipping(String countryRef, String regionRef, Double rangeValue, Double total)
+        {
+            // calc if we have free shipping limit
+            var freeShipAmt = Info.GetXmlPropertyDouble("genxml/textbox/freeshiplimit");
+            var freeShipRefs = Info.GetXmlProperty("genxml/textbox/freeshipcountrycodes");
+            if (total >= freeShipAmt && ("," + freeShipRefs + ",").Contains("," + countryRef + ",")) return 0;
+
+            // calc range date
+
+            return 1;
         }
 
         #endregion
