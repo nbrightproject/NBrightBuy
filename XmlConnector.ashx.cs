@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -1203,6 +1204,9 @@ namespace Nevoweb.DNN.NBrightBuy
             var dic =  objInfo.ToDictionary();
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
+
+            // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
+            if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
             return dic;
         }
 
