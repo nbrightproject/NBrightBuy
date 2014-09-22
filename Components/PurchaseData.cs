@@ -54,7 +54,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.ModuleId = -1;
             PurchaseInfo.TypeCode = PurchaseTypeCode;
             PurchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
-            if (UserId == -1) UserId = UserController.GetCurrentUserInfo().UserID;
+            if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
             PurchaseInfo.UserId = UserId;
             _entryId = modCtrl.Update(PurchaseInfo);
             return _entryId;
