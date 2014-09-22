@@ -3792,6 +3792,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                             #endregion
 
+                            // product data for display in modellist
+                            o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
+                            o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
+                            o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString("D"));
+
                             objL.Add(o);
                         }
                     }
