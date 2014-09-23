@@ -38,15 +38,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Save cart
         /// </summary>
-        private void Save(Boolean debugMode = false)
+        public void Save(Boolean debugMode = false)
         {
             if (Info != null)
             {
                 //save cart
                 var strXml = "<plugin>";
+                var lp = 0;
                 foreach (var info in _pluginList)
                 {
+                    info.SetXmlProperty("genxml/hidden/index", lp.ToString("D"), TypeCode.String, false);
+                    info.SetXmlProperty("genxml/textbox/ctrl", info.GetXmlProperty("genxml/textbox/ctrl").Trim().ToLower());
                     strXml += info.XMLData;
+                    lp += 1;
                 }
                 strXml += "</plugin>";
                 Info.RemoveXmlNode("genxml/plugin");
@@ -71,17 +75,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return ""; // if everything is OK, don't send a message back.
         }
 
+        public void AddNewPlugin()
+        {
+            var objInfoIn = new NBrightInfo(true);
+            AddPlugin(objInfoIn,0);
+        }
+
         public String AddPlugin(NBrightInfo pluginInfo, int index = -1)
         {
             if (Utils.IsNumeric(pluginInfo.GetXmlProperty("genxml/hidden/index")))
             {
-                if (pluginInfo.GetXmlProperty("genxml/hidden/index") == "-1") // index of -1, add the address
+                if (pluginInfo.GetXmlProperty("genxml/hidden/index") == "") // no index, add the address
                 {
                     if (index == -1)
                         _pluginList.Add(pluginInfo);
                     else
                         _pluginList.Insert(index,pluginInfo);
-                    Save();
                 }
                 else
                 {
@@ -95,7 +104,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     _pluginList.Add(pluginInfo);
                 else
                     _pluginList.Insert(index, pluginInfo);
-                Save();
             }
             return ""; // if everything is OK, don't send a message back.
         }
@@ -103,7 +111,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void RemovePlugin(int index)
         {
             _pluginList.RemoveAt(index);
-            Save();
         }
 
         public void UpdatePlugin(String xmlData, int index)
@@ -111,7 +118,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_pluginList.Count > index)
             {
                 _pluginList[index].XMLData = xmlData;
-                Save();
             }
         }
 

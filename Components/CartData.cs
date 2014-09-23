@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public CartData(int portalId, string nameAppendix = "",String cartid = "")
         {
-            _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" + nameAppendix;
+            _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" +  UserController.GetCurrentUserInfo().UserID.ToString("D") + "*" + nameAppendix;
             Exists = false;
             PortalId = portalId;
             _cartId = GetCartId(cartid);

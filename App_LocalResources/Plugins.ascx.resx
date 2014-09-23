@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin.Text" xml:space="preserve">
+  <data name="admin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
-  <data name="Catalog.Text" xml:space="preserve">
+  <data name="catalog.Text" xml:space="preserve">
     <value>Catalog</value>
   </data>
-  <data name="Dashboard.Text" xml:space="preserve">
+  <data name="dashboard.Text" xml:space="preserve">
     <value>Dashboard</value>
   </data>
   <data name="exit.Text" xml:space="preserve">
@@ -159,28 +159,25 @@
   <data name="lblpath.Text" xml:space="preserve">
     <value>Path to Control</value>
   </data>
-  <data name="OrdersGrp.Text" xml:space="preserve">
-    <value>Sales</value>
-  </data>
   <data name="settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="addressbook.Text" xml:space="preserve">
     <value>Address Book</value>
   </data>
-  <data name="Promotions.Text" xml:space="preserve">
+  <data name="promotions.Text" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="Shipping.Text" xml:space="preserve">
+  <data name="shipping.Text" xml:space="preserve">
     <value>Shipping</value>
   </data>
-  <data name="Shipping_icon.Text" xml:space="preserve">
+  <data name="shipping_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Tax.Text" xml:space="preserve">
+  <data name="tax.Text" xml:space="preserve">
     <value>Tax</value>
   </data>
-  <data name="Utilities.Text" xml:space="preserve">
+  <data name="utilities.Text" xml:space="preserve">
     <value>Utilities</value>
   </data>
   <data name="clients.Text" xml:space="preserve">
@@ -189,11 +186,8 @@
   <data name="cmdView.Text" xml:space="preserve">
     <value>View</value>
   </data>
-  <data name="dashsummary.Text" xml:space="preserve">
+  <data name="dashSummary.Text" xml:space="preserve">
     <value>Summary</value>
-  </data>
-  <data name="orders.Text" xml:space="preserve">
-    <value>Orders</value>
   </data>
   <data name="plugins.Text" xml:space="preserve">
     <value>Plugins</value>
@@ -237,22 +231,46 @@
   <data name="lblicon.Text" xml:space="preserve">
     <value>Icon html</value>
   </data>
-  <data name="Admin_icon.Text" xml:space="preserve">
+  <data name="admin_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Catalog_icon.Text" xml:space="preserve">
+  <data name="catalog_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Dashboard_icon.Text" xml:space="preserve">
+  <data name="dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="OrdersGrp_icon.Text" xml:space="preserve">
+  <data name="sales_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Utilities_icon.Text" xml:space="preserve">
+  <data name="utilities_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Exit_icon.Text" xml:space="preserve">
+  <data name="exit_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="properties.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="propertyGroups.Text" xml:space="preserve">
+    <value>Property Groups</value>
+  </data>
+  <data name="sales.Text" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="tools.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="orders.Text" xml:space="preserve">
+    <value>Orders</value>
   </data>
 </root>

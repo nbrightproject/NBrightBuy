@@ -823,7 +823,6 @@
     <Content Include="Themes\Cygnus\Default\cattreebody.html" />
     <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
-    <Content Include="Themes\Cygnus\Default\PaymentSettings.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
@@ -852,8 +851,6 @@
     <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
     <Content Include="Themes\Cygnus\Default\paymentFAIL.html" />
     <Content Include="Themes\Cygnus\Default\paymentOK.html" />
-    <Content Include="Themes\Cygnus\Default\printorder.xsl" />
-    <Content Include="Themes\Cygnus\Default\printreceipt.xsl" />
     <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
     <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
     <Content Include="Themes\Cygnus\Default\profileformemail.html" />
@@ -884,6 +881,7 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

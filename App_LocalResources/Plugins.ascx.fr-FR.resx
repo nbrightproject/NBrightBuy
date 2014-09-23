@@ -117,23 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Admin.Text" xml:space="preserve">
+  <data name="admin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
-  <data name="Catalog.Text" xml:space="preserve">
-    <value>Catalog</value>
+  <data name="catalog.Text" xml:space="preserve">
+    <value>Catalogue</value>
   </data>
-  <data name="Dashboard.Text" xml:space="preserve">
-    <value>Dashboard</value>
+  <data name="dashboard.Text" xml:space="preserve">
+    <value>Tableau de bord</value>
   </data>
   <data name="exit.Text" xml:space="preserve">
-    <value>Exit</value>
+    <value>Sortir</value>
   </data>
   <data name="lblctrl.Help" xml:space="preserve">
-    <value>Plugin Ref to identify the plugin to the system, must be unique and used to referece the resx file entry for the menu name.</value>
+    <value>Réf plugin pour identifier le plugin dans le système, doit être unique et utilisé pour référencer le fichier d'entrée resx de l'onglet menu.</value>
   </data>
   <data name="lblctrl.Text" xml:space="preserve">
-    <value>Plugin Ref</value>
+    <value>Réf Plugin</value>
   </data>
   <data name="lbldescription.Help" xml:space="preserve">
     <value>Description of the plugin</value>
@@ -142,73 +142,70 @@
     <value>Description</value>
   </data>
   <data name="lblhelp.Help" xml:space="preserve">
-    <value>Description of the public for menu tooltip.</value>
+    <value>Description du public pour le tooltip du menu.</value>
   </data>
   <data name="lblhelp.Text" xml:space="preserve">
-    <value>Help</value>
+    <value>Aide</value>
   </data>
   <data name="lblname.Help" xml:space="preserve">
-    <value>Friendly Name for the Plugin. (used as default name on menu if no resx entry in plugins.ascx.resx)</value>
+    <value>Nom d'usage pour le Plugin. (Utilisé comme nom par défaut dans le menu si l'entrée resx plugins.ascx.resx n'existe pas)</value>
   </data>
   <data name="lblname.Text" xml:space="preserve">
-    <value>Default Name</value>
+    <value>Nom par défaut</value>
   </data>
   <data name="lblpath.Help" xml:space="preserve">
-    <value>Relative path to the ascx control of the plugin.</value>
+    <value>Chemin relatif vers le contrôle acsx du plugin.</value>
   </data>
   <data name="lblpath.Text" xml:space="preserve">
-    <value>Path to Control</value>
-  </data>
-  <data name="OrdersGrp.Text" xml:space="preserve">
-    <value>Sales</value>
+    <value>Chemin vers contrôle</value>
   </data>
   <data name="settings.Text" xml:space="preserve">
-    <value>Settings</value>
+    <value>Paramètres</value>
   </data>
   <data name="addressbook.Text" xml:space="preserve">
-    <value>Address Book</value>
+    <value>Carnet d'adresses</value>
   </data>
-  <data name="Promotions.Text" xml:space="preserve">
+  <data name="promotions.Text" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="Shipping.Text" xml:space="preserve">
-    <value>Shipping</value>
+  <data name="shipping.Text" xml:space="preserve">
+    <value>Livraison</value>
   </data>
-  <data name="Shipping_icon.Text" xml:space="preserve">
+  <data name="shipping_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Tax.Text" xml:space="preserve">
-    <value>Tax</value>
+  <data name="tax.Text" xml:space="preserve">
+    <value>Taxes</value>
   </data>
-  <data name="Utilities.Text" xml:space="preserve">
-    <value>Utilities</value>
+  <data name="utilities.Text" xml:space="preserve">
+    <value>Outils</value>
   </data>
   <data name="clients.Text" xml:space="preserve">
     <value>Clients</value>
   </data>
   <data name="cmdView.Text" xml:space="preserve">
-    <value>View</value>
+    <value>Vue</value>
   </data>
-  <data name="dashsummary.Text" xml:space="preserve">
-    <value>Summary</value>
+  <data name="dashSummary.Text" xml:space="preserve">
+    <value>Résumé</value>
   </data>
   <data name="orders.Text" xml:space="preserve">
-    <value>Orders</value>
+    <value>Commandes</value>
   </data>
   <data name="plugins.Text" xml:space="preserve">
     <value>Plugins</value>
   </data>
   <data name="lblhidden.Help" xml:space="preserve">
-    <value>Do not display on menu.</value>
+    <value>Ne pas afficher dans le menu.</value>
   </data>
   <data name="lblhidden.Text" xml:space="preserve">
-    <value>Hidden</value>
+    <value>Caché</value>
   </data>
   <data name="lblroles.Help" xml:space="preserve">
-    <value>CSV list of roles that are able to view this control</value>
+    <value>Liste CSV des rôles autorisés à voir ce contrôle</value>
   </data>
   <data name="lblroles.Text" xml:space="preserve">
-    <value>Security Roles</value>
+    <value>Rôles de sécurité</value>
   </data>
   <data name="bomenuattributes.Text" xml:space="preserve">
     <value>class="nav main-menu"</value>
@@ -217,42 +214,63 @@
     <value>class="dropdown-menu"</value>
   </data>
   <data name="lblgroup.Text" xml:space="preserve">
-    <value>Group</value>
+    <value>Groupe</value>
   </data>
   <data name="cmdEdit.Text" xml:space="preserve">
-    <value>Edit</value>
+    <value>Editer</value>
   </data>
   <data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Edit" class="fa fa-edit"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Editer" class="fa fa-edit"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdUpIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Move Up" class="fa fa-arrow-circle-up"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="En haut" class="fa fa-arrow-circle-up"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDownIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Move Down" class="fa fa-arrow-circle-down"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="En bas" class="fa fa-arrow-circle-down"&gt;&lt;/i&gt;</value>
   </data>
   <data name="lblicon.Hep" xml:space="preserve">
-    <value>Icon to show on menu.</value>
+    <value>Icône à afficher dans le menu.</value>
   </data>
   <data name="lblicon.Text" xml:space="preserve">
     <value>Icon html</value>
   </data>
-  <data name="Admin_icon.Text" xml:space="preserve">
+  <data name="admin_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Catalog_icon.Text" xml:space="preserve">
+  <data name="catalog_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Dashboard_icon.Text" xml:space="preserve">
+  <data name="dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="OrdersGrp_icon.Text" xml:space="preserve">
+  <data name="sales_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Utilities_icon.Text" xml:space="preserve">
+  <data name="utilities_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Exit_icon.Text" xml:space="preserve">
+  <data name="exit_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="categories.Text" xml:space="preserve">
+    <value>Catégories</value>
+  </data>
+  <data name="export.Text" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="import.Text" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="properties.Text" xml:space="preserve">
+    <value>Propriétés</value>
+  </data>
+  <data name="propertyGroups.Text" xml:space="preserve">
+    <value>Groupes de propriétés</value>
+  </data>
+  <data name="sales.Text" xml:space="preserve">
+    <value>Ventes</value>
+  </data>
+  <data name="tools.Text" xml:space="preserve">
+    <value>Outils</value>
   </data>
 </root>

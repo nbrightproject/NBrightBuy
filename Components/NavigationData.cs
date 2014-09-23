@@ -112,7 +112,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         else
                             searchValFrom = "";
                         if (Utils.IsDate(searchValTo))
-                            searchValTo = Convert.ToDateTime(searchValTo).ToString("yyyy-MM-dd HH:mm:ss");
+                        {
+                            var searchToDate = Convert.ToDateTime(searchValTo);
+                            searchToDate = searchToDate.AddDays(1);
+                            var strippedToDate = searchToDate.Date;
+                            searchValTo = strippedToDate.ToString("yyyy-MM-dd HH:mm:ss");                            
+                        }
                         else
                             searchValTo = "";
                         if (Utils.IsDate(searchVal))

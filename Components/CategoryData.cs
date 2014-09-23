@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -147,7 +148,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
                 {
                     DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
-                    DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "path", StoreSettings.Current.FolderImagesMapPath  + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+                    DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "path", StoreSettings.Current.FolderImagesMapPath  + "\\" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
                 }
                 if (f == "genxml/dropdownlist/ddlparentcatid")
                 {
@@ -163,6 +164,45 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataLangRecord.RemoveXmlNode(f);
                 
             }
+        }
+
+
+        public int Validate()
+        {
+            var errorcount = 0;
+
+            DataRecord.ValidateXmlFormat();
+            DataLangRecord.ValidateXmlFormat();
+            // fix image
+            var imgpath = DataRecord.GetXmlProperty("genxml/hidden/imagepath");
+            var imgurl = DataRecord.GetXmlProperty("genxml/hidden/imageurl");
+            var imagefilename = Path.GetFileName(imgpath);
+            if (!imgpath.StartsWith(StoreSettings.Current.FolderImagesMapPath))
+            {
+                DataRecord.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imagefilename);
+            }
+            if (!imgurl.StartsWith(StoreSettings.Current.FolderImages))
+            {
+                DataRecord.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imagefilename);
+            }
+
+            // fix langauge records
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                var objCtrl = new NBrightBuyController();
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                if (l.Count == 0 && DataLangRecord != null)
+                {
+                    var nbi = (NBrightInfo)DataLangRecord.Clone();
+                    nbi.ItemID = -1;
+                    nbi.Lang = lang;
+                    objCtrl.Update(nbi);
+                    errorcount += 1;
+                }
+            }
+
+
+            return errorcount;
         }
 
         #endregion

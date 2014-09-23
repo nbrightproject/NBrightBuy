@@ -212,6 +212,14 @@
   </data>
   <data name="terms.Text" xml:space="preserve">
     <value>The Terms and Conditions must be accepted.</value>
-  </data>  <data name="ordercreatedemailsubject.Text" xml:space="preserve">
+  </data>
+  <data name="ordercreatedemailsubject.Text" xml:space="preserve">
     <value>Order Confirmed</value>
-  </data></root>
+  </data>
+  <data name="deletecompleted_ok.Text" xml:space="preserve">
+    <value>Deleted Completed.</value>
+  </data>
+  <data name="validatecompleted_ok.Text" xml:space="preserve">
+    <value>Validation Completed.</value>
+  </data>
+</root>

@@ -114,6 +114,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     DoClearDown();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "validatestore":
+                    param[0] = "";
+                    ValidateStore();
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "validatecompleted", NotifyCode.ok);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
@@ -123,11 +129,36 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         }
 
         #endregion
+
+        private int ValidateStore()
+        {
+            var objCtrl = new NBrightBuyController();
+            var errcount = 0;
+
+            // Validate Products
+            var prodList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");            
+            foreach (var p in prodList)
+            {
+                var prodData = new ProductData(p.ItemID, StoreSettings.Current.EditLanguage);
+                errcount += prodData.Validate();
+            }
+
+            // Validate Categories
+            var catList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");
+            foreach (var c in catList)
+            {
+                var catData = new CategoryData(c.ItemID, StoreSettings.Current.EditLanguage);
+                errcount += catData.Validate();
+            }
+            return errcount;
+        }
+
         private void DoClearDown()
         {
             var pass = GenXmlFunctions.GetField(rpData, "txtclearpass");
-            if (pass != "")
+            if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
             {
+                var done = false;
                 var objCtrl = new NBrightBuyController();
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
@@ -144,6 +175,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     objCtrl.GetSqlxml(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATXREF' ";
                     objCtrl.GetSqlxml(stmt);
+                    done = true;
                 }
 
                 if (GenXmlFunctions.GetField(rpData, "clearcategories") == "True")
@@ -152,6 +184,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     objCtrl.GetSqlxml(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORYLANG' ";
                     objCtrl.GetSqlxml(stmt);
+                    done = true;
                 }
 
 
@@ -161,13 +194,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     objCtrl.GetSqlxml(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'GROUPLANG' ";
                     objCtrl.GetSqlxml(stmt);
+                    done = true;
                 }
 
                 if (GenXmlFunctions.GetField(rpData, "clearorders") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'ORDER' ";
                     objCtrl.GetSqlxml(stmt);
+                    done = true;
                 }
+
+                if (done) NBrightBuyUtils.SetNotfiyMessage(ModuleId, "deletecompleted", NotifyCode.ok);
+
             }
 
         }

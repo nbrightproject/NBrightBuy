@@ -132,16 +132,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     rpData.DataSource = pluginData.GetPluginList();
                     rpData.DataBind();
 
+                    // display header (Do header after the data return so the productcount works)
+                    base.DoDetail(rpDataH);
+
+                    // display footer
+                    base.DoDetail(rpDataF);
+
                 }
             }
 
             #endregion
-
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
-
-            // display footer
-            base.DoDetail(rpDataF);
 
         }
 
@@ -166,10 +166,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (Utils.IsNumeric(cArg))
                     {
                         var idx = Convert.ToInt32(cArg);
-                        var p = pluginData.GetPlugin(idx);                        
-                        pluginData.RemovePlugin(idx);
-                        p.SetXmlProperty("genxml/hidden/index","");  //remove index so we add instead of update
-                        pluginData.AddPlugin(p, idx - 1);
+                        if (idx > 0)
+                        {
+                            var p = pluginData.GetPlugin(idx);
+                            pluginData.RemovePlugin(idx);
+                            p.SetXmlProperty("genxml/hidden/index", "");  //remove index so we add instead of update
+                            pluginData.AddPlugin(p, idx - 1);
+                            pluginData.Save();                            
+                        }
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -177,23 +181,39 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (Utils.IsNumeric(cArg))
                     {
                         var idx = Convert.ToInt32(cArg);
-                        var p = pluginData.GetPlugin(idx);
-                        pluginData.RemovePlugin(idx);
-                        p.SetXmlProperty("genxml/hidden/index", ""); //remove index so we add instead of update
-                        pluginData.AddPlugin(p, idx + 1);
+                        if (idx < pluginData.GetPluginList().Count-1)
+                        {
+                            var p = pluginData.GetPlugin(idx);
+                            pluginData.RemovePlugin(idx);
+                            p.SetXmlProperty("genxml/hidden/index", ""); //remove index so we add instead of update
+                            pluginData.AddPlugin(p, idx + 1);
+                            pluginData.Save();                            
+                        }
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "save":
                     if (Utils.IsNumeric(cArg))
+                    {
                         pluginData.UpdatePlugin(rpData,Convert.ToInt32(cArg));
-                    else
-                        pluginData.AddPlugin(rpData);
+                        pluginData.Save();
+                    }
                     HttpContext.Current.Session[strCacheKey] = "";                                          
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "add":
-                    param[0] = "eid=-1";
+                    pluginData.AddNewPlugin();
+                    pluginData.Save();
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "delete":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        pluginData.RemovePlugin(Convert.ToInt32(cArg));
+                        pluginData.Save();
+                    }
+                    param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "return":
@@ -216,6 +236,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 //render the detail page
                 base.DoDetail(rpData, pData);
 
+                base.DoDetail(rpDataH, pData);
+
+                base.DoDetail(rpDataF, pData);
             }
         }
 

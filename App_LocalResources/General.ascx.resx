@@ -696,4 +696,7 @@
   <data name="Qty.Text" xml:space="preserve">
     <value>Qty</value>
   </data>
+  <data name="AdminPin.Text" xml:space="preserve">
+    <value>Administrator PIN</value>
+  </data>
 </root>
