@@ -305,16 +305,20 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "order":
-                    _cartInfo.SetValidated(true);
-                    _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same langauge the order was made in.
-                    UpdateCartAddresses();
-                    UpdateCartInfo();
-                    SaveCart();
-                    _addressData.AddAddress(rpAddrS);
-                    _addressData.AddAddress(rpAddrB);
-                    var paytabid = ModSettings.Get("paymenttab");
-                    if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
-                    Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
+                    if (_cartInfo.GetCartItemList().Count > 0)
+                    {
+                        _cartInfo.SetValidated(true);
+                        _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same langauge the order was made in.
+                        UpdateCartAddresses();
+                        UpdateCartInfo();
+                        SaveCart();
+                        _addressData.AddAddress(rpAddrS);
+                        _addressData.AddAddress(rpAddrB);
+                        var paytabid = ModSettings.Get("paymenttab");
+                        if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
+                        Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "saveshipaddress":
                     UpdateCartAddresses();

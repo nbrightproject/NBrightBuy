@@ -121,16 +121,16 @@
     <value>Mise à jour adresse réussie</value>
   </data>
   <data name="notifytemplate_error.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotifyerror bg-danger"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotify nbsnotifyerror bg-danger"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_fail.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotifyfail bg-danger"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotify nbsnotifyfail bg-danger"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_ok.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotifyok bg-success"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotify bg-success"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="notifytemplate_warning.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotifywarning bg-warning"&gt;{message}&lt;/div&gt;</value>
+    <value>&lt;div class="nbsnotify nbsnotifywarning bg-warning"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="profileupdatedclientrole_ok.Text" xml:space="preserve">
     <value>Vos détails ont été sauvegardés, vous recevrez un e-mail lorsque votre compte aura été validé et que vous pourrez accéder à la boutique.</value>

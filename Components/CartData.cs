@@ -53,7 +53,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public Boolean ConvertToOrder(Boolean debugMode = false)
         {
-            if (IsValidated())
+            var itemList = GetCartItemList();
+            if (IsValidated() && itemList.Count > 0)
             {
                 PurchaseTypeCode = "ORDER";
                 base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Today.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
