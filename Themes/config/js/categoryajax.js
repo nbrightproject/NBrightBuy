@@ -1,14 +1,15 @@
 ﻿$(document).ready(function () {
 
+    var showprocessing = true;
+
     $(document).bind("ajaxSend", function () {
         $('#nbsnotify').html(''); // clear message on each load.          
-        $('.processing').show();
+        if (showprocessing) $('.processing').show();
     }).bind("ajaxComplete", function () {
         $("#loading").hide();
         $('.processing').hide();
+        showprocessing = true;
     });
-
-
 
     $('#productlist').change(function () {
         //Do paging
@@ -25,13 +26,16 @@
             $("input[id*='footer']").val("productselectfooter.html");
             nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
             $('#categorydatasection').hide();
+            $('.actionbuttonwrapper').hide();
             $('#productselectsection').show();
         });
         // remove single product
         $('.removeproduct').unbind();
         $('.removeproduct').click(function () {
+            showprocessing = false;
             nbxget('deletecatxref', '.productid' + $(this).attr('itemid'), '#nbsnotify');
-            $('.productid' + $(this).attr('itemid')).hide();
+            //$('.productid' + $(this).attr('itemid')).hide();
+            nbxget('getcategoryproductlist', '#categorydata', '#productlist');
         });
         $('#removeall').unbind();
         $('#removeall').click(function () {
@@ -75,10 +79,12 @@
             nbxget('getcategoryproductlist', '#categorydata', '#productlist');
             $('#productselectsection').hide();
             $('#categorydatasection').show();
+            $('.actionbuttonwrapper').show();
         });
         // select product
         $('.selectproduct').unbind();
         $('.selectproduct').click(function () {
+            showprocessing = false;
             nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'));
             $('.selectproductid' + $(this).attr('itemid')).hide();
         });
@@ -109,7 +115,7 @@
         $('.processing').show();
     });
 
-
+    showprocessing = false;
     nbxget('getcategoryproductlist', '#categorydata', '#productlist');
 
 });

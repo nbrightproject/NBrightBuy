@@ -107,6 +107,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 objprof = new NBrightInfo(true); //assume new address
                 objprof.XMLData = NBrightBuyUtils.GetFormTempData(ModuleId); // get any saved data
             }
+            if (UserId >= 0)
+            {
+                var cData = new ClientData(PortalSettings.PortalId, UserId);
+                objprof.AddXmlNode("<client>" + cData.GetInfo().XMLData + "</client>", "client", "genxml");
+                if (StoreSettings.Current.DebugMode) objprof.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_profile.xml");
+            }
             base.DoDetail(rpInp, objprof);
 
         }

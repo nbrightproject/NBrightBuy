@@ -696,4 +696,7 @@
   <data name="Qty.Text" xml:space="preserve">
     <value>Qté</value>
   </data>
+  <data name="RemoveAll.confirm" xml:space="preserve">
+    <value>Be careful. You are going to remove all your products. If you agree, click Validate. To come back to your cart, click Cancel</value>
+  </data>
 </root>
