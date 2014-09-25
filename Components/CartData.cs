@@ -396,7 +396,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var userInfo = UserController.GetUserById(portalId, userId);
             if (userInfo != null)
             {
-                if (userInfo.IsInRole(StoreSettings.EditorRole)) return dealercost;
+                if (userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True") return dealercost;
             }
             return cost;
         }
