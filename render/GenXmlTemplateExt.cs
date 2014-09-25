@@ -3350,7 +3350,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-        #region "Country and culture"
+        #region "Country, Region and culture"
 
        
         private void Createculturecodedropdown(Control container, XmlNode xmlNod)
@@ -3415,7 +3415,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 ddl.Visible = false;
             }
         }
-
 
         private void CreateCountryDropDownList(Control container, XmlNode xmlNod)
         {
@@ -3484,6 +3483,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             lc.DataBinding += EditFlagDataBind;
             container.Controls.Add(lc);
         }
+
         private void EditFlagDataBind(object sender, EventArgs e)
         {
             var lc = (Literal)sender;
@@ -3497,10 +3497,72 @@ namespace Nevoweb.DNN.NBrightBuy.render
             cmd.DataBinding += SelectLangaugeDataBind;
             container.Controls.Add(cmd);
         }
+
         private void SelectLangaugeDataBind(object sender, EventArgs e)
         {
             var lc = (EditLanguage)sender;
             lc.Visible = NBrightGlobal.IsVisible;
+        }
+
+        private void CreateRegionControl(Control container, XmlNode xmlNod)
+        {
+            var rbl = new DropDownList();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null)) rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+            rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
+            rbl.DataBinding += RegionControlDataBind;
+
+            var txt = new TextBox();
+            txt.DataBinding += RegionControlDataBind;
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+            {
+                rbl.ID = xmlNod.Attributes["id"].InnerText;
+                container.Controls.Add(rbl);
+            }
+
+
+        }
+
+        private void RegionControlDataBind(object sender, EventArgs e)
+        {
+
+            var ddl = (DropDownList)sender;
+            var container = (IDataItemContainer)ddl.NamingContainer;
+            try
+            {
+                ddl.Visible = NBrightGlobal.IsVisible;
+                if (ddl.Visible)
+                {
+
+                    if (ddl.Attributes["blank"] != null)
+                    {
+                        var li = new ListItem();
+                        li.Text = ddl.Attributes["blank"];
+                        li.Value = "0";
+                        ddl.Items.Add(li);
+                        ddl.Attributes.Remove("blank");
+                    }
+
+                    var tList = NBrightBuyUtils.GetCountryList();
+                    foreach (var tItem in tList)
+                    {
+                        var li = new ListItem();
+                        li.Text = tItem.Value;
+                        li.Value = tItem.Key;
+                        ddl.Items.Add(li);
+                    }
+
+                    var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                    if (strValue == "") strValue = Utils.GetCurrentCulture();
+                    if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
+
+                }
+
+            }
+            catch (Exception)
+            {
+                ddl.Visible = false;
+            }
         }
 
 

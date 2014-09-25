@@ -158,7 +158,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 settings.TypeCode = "SETTINGS";
                 settings.GUIDKey = "NBrightBuySettings";
             }
-            settings.XMLData = GenXmlFunctions.GetGenXml(rpData);
+            settings.XMLData = GenXmlFunctions.GetGenXml(rpData,"",StoreSettings.Current.FolderImagesMapPath);
             settings.SetXmlProperty("genxml/hidden/backofficetabid", PortalSettings.Current.ActiveTab.TabID.ToString(""));
             
             ModCtrl.Update(settings);

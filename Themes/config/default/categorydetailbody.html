@@ -8,8 +8,12 @@
         $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
         $('.categorydetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
-        $('.categoryselectproducts div.box-content').toggle();        
+        $('.categoryselectproducts div.box-content').toggle();
+        $('.categoryproducts div.box-content').toggle();
+
+        
     });
+
 </script>
 
 <div id="confirmmsg" style="display:none;">
@@ -236,8 +240,55 @@
         </div>
 
         <!--  PRODUCT LIST AJAX  (Ajax populates this div with the html)-->
-        <div id="productlist"></div><!-- Injects categoryproductheader/body/footer -->
-        <!--  PRODUCT LIST FOOTER-->
+        [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<div class="row categoryproducts">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Products in this Category</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+			<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
+				<div class="form-horizontal dnnForm">
+					<div class="form-group">
+						<div class="col-sm-4">
+							<a id="productselect" class="btn btn-primary">[<tag type="valueof" resourcekey="General.cmdAddProducts" />]</a>
+							<a id="removeall" class="btn btn-danger">[<tag type="valueof" resourcekey="General.RemoveAll" />]</a>
+						</div>
+						<div class="col-sm-4">
+							<a id="moveto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="valueof" resourcekey="General.MoveTo" />]</a>
+							<a id="copyto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="valueof" resourcekey="General.CopyTo" />]</a>
+						</div>
+						<div class="col-sm-4">
+							[<tag id="selectcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="True" groupref="cat" />]<!-- Use groupref="cat" to restrict list to categories -->
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+                                
+
+
+						    <div id="productlist"></div><!-- Injects categoryproductheader/body/footer -->
+
+                              
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+						    <!--  PRODUCT LIST FOOTER-->
 
         [<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
         <div class="row pageactions"><!-- Page actions - also at top -->
