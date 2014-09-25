@@ -43,10 +43,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     else
                         HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
 
-                    if (String.IsNullOrEmpty(ctrl) && StoreSettings.Current.Settings().Count == 0)
-                        ctrl = "settings";
-                    else
+                    if (String.IsNullOrEmpty(ctrl))
+                    {
                         ctrl = "orders";
+                        if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";                        
+                    }
 
                     var ctlpath = GetControlPath(ctrl);
 
