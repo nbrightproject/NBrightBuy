@@ -80,7 +80,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // load into NBrigthInfo class, so it's easier to get at xml values.
             var objInfoIn = new NBrightInfo();
             objInfoIn.XMLData = strXml;
-            var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from maager should have a index hidden field.
+            var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from manager should have a index hidden field.
             if (addIndex == "") addIndex = objInfoIn.GetXmlProperty("genxml/dropdownlist/selectaddress"); // updated from cart should have a selected address
             if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new address.
             var addressIndex = Convert.ToInt32(addIndex);
@@ -212,7 +212,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (nodlist != null)
                 foreach (XmlNode n in nodlist)
                 {
-                    newAddr += n.InnerText.Replace(" ", "").ToLower();
+                    var s = n.InnerText.Replace(" ", "").ToLower();
+                    if (!s.StartsWith("<script"))  // ignore any scripts added by the template to spamsafe emails, etc
+                    {
+                        newAddr += s;                        
+                    }
                 }
             return newAddr;
         }

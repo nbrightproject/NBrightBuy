@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -139,7 +139,7 @@
     <value>Profile Update</value>
   </data>
   <data name="profileupdated_ok.Text" xml:space="preserve">
-    <value>Your profie has been updated.</value>
+    <value>Your profile has been updated.</value>
   </data>
   <data name="general_error.Text" xml:space="preserve">
     <value>Unknowm Error</value>
@@ -221,5 +221,17 @@
   </data>
   <data name="validatecompleted_ok.Text" xml:space="preserve">
     <value>Validation Completed.</value>
+  </data>
+  <data name="OrderCreated.Text" xml:space="preserve">
+    <value>Order Created</value>
+  </data>
+  <data name="ProfileRegistered.Text" xml:space="preserve">
+    <value>Profile Registered</value>
+  </data>
+  <data name="OrderValidated.Text" xml:space="preserve">
+    <value>Order Validated</value>
+  </data>
+  <data name="AddressUpdate.Text" xml:space="preserve">
+    <value>Address Update</value>
   </data>
 </root>
