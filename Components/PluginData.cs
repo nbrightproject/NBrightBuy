@@ -172,7 +172,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public NBrightInfo GetPluginByCtrl(String ctrlname)
         {
-            var p = new NBrightInfo();
+            var p = new NBrightInfo(true);
+            p.SetXmlProperty("genxml/checkbox/hidden", "True");
             var nod = Info.XMLDoc.SelectSingleNode("genxml/plugin/*[./textbox/ctrl='"+ ctrlname + "']");
             if (nod != null) p.XMLData = nod.OuterXml;
             return p;

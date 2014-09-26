@@ -109,6 +109,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     prop2[p.Key] = n.InnerText;
                     flag = true;
                 }
+                n = profile.XMLDoc.SelectSingleNode("genxml/dropdownlist/" + p.Key.ToLower());
+                if (n != null)
+                {
+                    prop2[p.Key] = n.InnerText;
+                    flag = true;
+                }
+                n = profile.XMLDoc.SelectSingleNode("genxml/radiobuttonlist/" + p.Key.ToLower());
+                if (n != null)
+                {
+                    prop2[p.Key] = n.InnerText;
+                    flag = true;
+                }
             }
             if (flag) DnnUtils.SetUserProfileProperties(_uData.Info.UserId.ToString(""), prop2);
 

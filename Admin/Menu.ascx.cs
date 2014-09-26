@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String GetMenu()
         {
-            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
+            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("") + "*" + UserId.ToString("D");
 
             var strOut = "";
             if (HttpContext.Current.Session[strCacheKey] != null) strOut = (String)HttpContext.Current.Session[strCacheKey];
@@ -107,12 +107,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 foreach (var rootname in rootList)
                 {
-                    var sublist = pluginData.GetSubList(rootname.Key);
+                    var rtnlist = pluginData.GetSubList(rootname.Key);
+                    var sublist = new List<NBrightInfo>();
+                    // check security
+                    foreach (var p in rtnlist)
+                    {
+                        if (CheckSecurity(p)) sublist.Add(p);
+                    }
+
+
                     var href = "#";
                     var ctrl = "";
                     var name = "unknown";
                     var icon = "";
                     var hrefclass = "";
+                    var securityrootcheck = true;
                     if (sublist.Count > 0)
                     {
                         // has sub menus
@@ -129,12 +138,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
                         name = rootp.GetXmlProperty("genxml/textbox/name");
                         icon = rootp.GetXmlProperty("genxml/textbox/icon");
-                        strOut += "<li>";
-                        var param = new string[1];
-                        param[0] = "ctrl=" + ctrl;
-                        href = Globals.NavigateURL(TabId, "", param);
+
+                        securityrootcheck = CheckSecurity(rootp);
+                        if (securityrootcheck)
+                        {
+                            strOut += "<li>";
+                            var param = new string[1];
+                            param[0] = "ctrl=" + ctrl;
+                            href = Globals.NavigateURL(TabId, "", param);                            
+                        }
                     }
-                    strOut += GetRootLinkNode(name, ctrl, icon, href,hrefclass);
+                    if (securityrootcheck) strOut += GetRootLinkNode(name, ctrl, icon, href, hrefclass);
 
                     if (sublist.Count > 0)
                     {
@@ -155,7 +169,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         }
                         strOut += "</ul>";
                     }
-                    strOut += "</li>";
+                    if (securityrootcheck) strOut += "</li>";
                 }
 
 
@@ -178,6 +192,22 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             return strOut;
         }
 
+
+        private Boolean CheckSecurity(NBrightInfo pluginData)
+        {
+            if (pluginData.GetXmlPropertyBool("genxml/checkbox/hidden")) return false;
+
+            var roles = pluginData.GetXmlProperty("genxml/textbox/roles");
+            if (roles.Trim() == "") return true;
+            if (UserInfo.IsSuperUser) return true;
+            if (UserInfo.IsInRole("Administrator")) return true;
+            var rlist = roles.Split(',');
+            foreach (var r in rlist)
+            {
+                if (UserInfo.IsInRole(r)) return true;
+            }
+            return false;
+        }
 
         private String GetRootLinkNode(String name,String ctrl,String icon,String href,String hrefclass)
         {
