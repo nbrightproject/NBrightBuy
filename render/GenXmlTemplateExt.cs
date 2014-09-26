@@ -404,7 +404,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "isinstock":
                                 dataValue = "FALSE";
-                                if (IsInStock((NBrightInfo) container.DataItem, testValue))
+                                if (IsInStock((NBrightInfo) container.DataItem))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "ismodelinstock":
+                                dataValue = "FALSE";
+                                if (IsModelInStock((NBrightInfo)container.DataItem))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -4042,24 +4050,27 @@ namespace Nevoweb.DNN.NBrightBuy.render
             values = array;
         }
 
-        private Boolean IsInStock(NBrightInfo dataItem,String qtyTestAmt = "0")
+        private Boolean IsInStock(NBrightInfo dataItem)
         {
-            var amtTest = StoreSettings.Current.GetInt("minimumstocklevel"); 
-
-            if (Utils.IsNumeric(qtyTestAmt)) amtTest = Convert.ToInt32(qtyTestAmt);
             var nodList = BuildModelList(dataItem);
             foreach (var obj in nodList)
             {
-                var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
-                if (stockOn)
-                {
-                    var modelstatus = obj.GetXmlProperty("genxml/dropdownlist/modelstatus");
-                    if (modelstatus == "010") return true;                    
-                }
-                else
-                {
-                    return true;
-                }
+                if (IsModelInStock(obj)) return true;
+            }
+            return false;
+        }
+
+        private Boolean IsModelInStock(NBrightInfo dataItem)
+        {
+            var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            if (stockOn)
+            {
+                var modelstatus = dataItem.GetXmlProperty("genxml/dropdownlist/modelstatus");
+                if (modelstatus == "010") return true;
+            }
+            else
+            {
+                return true;
             }
             return false;
         }

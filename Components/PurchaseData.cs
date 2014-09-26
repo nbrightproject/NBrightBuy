@@ -565,6 +565,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnInfo = new NBrightInfo();
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
+            rtnInfo.SetXmlProperty("genxml/totalqty",PurchaseInfo.GetXmlProperty("genxml/totalqty"));
+            rtnInfo.SetXmlProperty("genxml/subtotalcost", PurchaseInfo.GetXmlProperty("genxml/subtotalcost"));
+            rtnInfo.SetXmlProperty("genxml/total", PurchaseInfo.GetXmlProperty("genxml/total"));
+            rtnInfo.SetXmlProperty("genxml/appliedtotal", PurchaseInfo.GetXmlProperty("genxml/appliedtotal"));
             return rtnInfo;
         }
 
