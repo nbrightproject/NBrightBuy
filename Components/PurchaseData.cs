@@ -562,7 +562,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public NBrightInfo GetExtraInfo()
         {
-            var rtnInfo = new NBrightInfo();
+            var rtnInfo = new NBrightInfo(true);
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             rtnInfo.SetXmlProperty("genxml/totalqty",PurchaseInfo.GetXmlProperty("genxml/totalqty"));

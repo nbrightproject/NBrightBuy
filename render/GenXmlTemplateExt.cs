@@ -3551,7 +3551,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         ddl.Attributes.Remove("blank");
                     }
 
-                    var tList = NBrightBuyUtils.GetCountryList();
+                    var tList = NBrightBuyUtils.GetRegionList("FR");
                     foreach (var tItem in tList)
                     {
                         var li = new ListItem();

@@ -254,6 +254,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     navigationData.Delete();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "downloadinvoice":
+                    DownloadInvoice(Convert.ToInt32(cArg));
+                    break;
                 case "orderby":
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
                     navigationData.Save();
@@ -263,6 +266,12 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         #endregion
+
+        private void DownloadInvoice(int orderid)
+        {
+            var orderData = new OrderData(PortalId, orderid);
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\" + orderData.InvoiceFileName, orderData.InvoiceDownloadName, Response);
+        }
 
 
         private void DisplayDataEntryRepeater(String entryId)

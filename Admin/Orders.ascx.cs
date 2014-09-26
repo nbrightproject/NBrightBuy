@@ -381,7 +381,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceDownloadName = ordData.OrderNumber + ordData.InvoiceFileExt;
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = ordData.PortalId.ToString("D") + "-" + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2,2) + "-" + _entryid;
-
+            ordData.EditMode = "E";  // set to edit mode, so we don;t update the userid to the manager.
             ordData.SavePurchaseData();
             return NotifyCode.ok;
         }

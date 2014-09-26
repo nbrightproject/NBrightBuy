@@ -598,6 +598,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnDic;
         }
+
+        public static Dictionary<String, String> GetRegionList(String countrycode, String dnnlistname = "Region")
+        {
+            const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/RegionNames.ascx.resx";
+
+            var parentkey = "Country." + countrycode;
+            var objCtrl = new DotNetNuke.Common.Lists.ListController();
+            var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname, parentkey);
+            var rtnDic = new Dictionary<String, String>();
+
+            foreach (var r in tList)
+            {
+                var datavalue = r.Value;
+                var regionname = DnnUtils.GetLocalizedString(datavalue.Text, resxpath, Utils.GetCurrentCulture());
+                if (String.IsNullOrEmpty(regionname)) regionname = datavalue.Text;
+                rtnDic.Add(countrycode + ":" + datavalue.Key, regionname);                
+            }
+
+            return rtnDic;
+        }
+
     }
 }
 
