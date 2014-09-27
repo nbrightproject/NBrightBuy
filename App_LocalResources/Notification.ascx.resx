@@ -231,6 +231,24 @@
   <data name="OrderValidated.Text" xml:space="preserve">
     <value>Order Validated</value>
   </data>
+  <data name="OrderReceipt.Text" xml:space="preserve">
+    <value>Order Receipt</value>
+  </data>
+  <data name="OrderShipped.Text" xml:space="preserve">
+    <value>Order Shipped</value>
+  </data>
+  <data name="Order.Text" xml:space="preserve">
+    <value>Order Shipped</value>
+  </data>
+  <data name="OrderCreatedClient.Text" xml:space="preserve">
+    <value>Order Created</value>
+  </data>
+  <data name="Order.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="printReceipt.Text" xml:space="preserve">
+    <value>Order Receipt</value>
+  </data>
   <data name="AddressUpdate.Text" xml:space="preserve">
     <value>Address Update</value>
   </data>
