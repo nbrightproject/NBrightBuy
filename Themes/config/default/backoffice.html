@@ -134,6 +134,10 @@ $(document).ready(function() {
 	// Add Drag-n-Drop to boxes
 	WinMove();
 
+    //NBS - BO status
+	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
+	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
+
 
 });
 </script>

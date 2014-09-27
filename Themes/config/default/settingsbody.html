@@ -177,9 +177,14 @@
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Logo Image</label>
-						<div class="col-sm-5">
-							[<tag id="emaillogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
-						</div>
+					    <div class="col-sm-5">
+					        [<tag id="emaillogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] 
+                			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" />] 
+                            [<tag type="if" xpath="genxml/hidden/hidemaillogo" textvalue="" display="{OFF}" />] 
+                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="Settings.removelogo" commandname="removelogo" />] 
+                                 [<tag type='imageof' xpath='genxml/hidden/emaillogourl' thumb="100" />]
+					        [<tag type="endif" />]
+					    </div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Email Message</label>

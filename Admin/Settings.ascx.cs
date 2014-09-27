@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -134,6 +135,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "removelogo":
+                    var settings = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SETTINGS", "NBrightBuySettings");
+                    if (settings != null && settings.GetXmlProperty("genxml/hidden/hidemaillogo") != "")
+                    {
+                        settings.SetXmlProperty("genxml/hidden/hidemaillogo", "");
+                        settings.SetXmlProperty("genxml/hidden/emaillogourl", "");
+                        settings.SetXmlProperty("genxml/hidden/emaillogopath", "");
+                        ModCtrl.Update(settings);
+                    }
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
@@ -159,6 +172,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 settings.GUIDKey = "NBrightBuySettings";
             }
             settings.XMLData = GenXmlFunctions.GetGenXml(rpData,"",StoreSettings.Current.FolderImagesMapPath);
+
+            if (settings.GetXmlProperty("genxml/hidden/hidemaillogo") != "")
+            {
+                settings.SetXmlProperty("genxml/hidden/emaillogourl", StoreSettings.Current.FolderImages + "/" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));
+                settings.SetXmlProperty("genxml/hidden/emaillogopath", StoreSettings.Current.FolderImagesMapPath + "/" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));                
+            }
+
+
             settings.SetXmlProperty("genxml/hidden/backofficetabid", PortalSettings.Current.ActiveTab.TabID.ToString(""));
             
             ModCtrl.Update(settings);

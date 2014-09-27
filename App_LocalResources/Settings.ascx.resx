@@ -192,4 +192,10 @@
   <data name="enabledealer.Text" xml:space="preserve">
     <value>Enable Dealer</value>
   </data>
+  <data name="removelogo.confirm" xml:space="preserve">
+    <value>Remove logo?</value>
+  </data>
+  <data name="removelogo.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>
