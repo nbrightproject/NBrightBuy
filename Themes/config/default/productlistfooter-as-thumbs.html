@@ -1,0 +1,27 @@
+﻿
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+var $container = $('#productlistwrapper').masonry({
+  columnWidth: 120, // List item width - Can also use CSS width of first list item
+  itemSelector: '.productlistitem',
+  gutter: 6, // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+  isOriginLeft: true, // Build from right to left if false
+  isOriginTop: true, // Build from bottom to top if false
+});
+
+// initialize Masonry after all images have loaded - Webkit needs this when image containers don't have a fixed height
+$container.imagesLoaded( function() {
+  $container.masonry();
+});
+
+});
+
+</script>
