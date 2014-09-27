@@ -1,6 +1,6 @@
 ﻿<tr>
 	<td align="left" valign="top" style="border-bottom:1px solid #aaaaaa">
-		<div><b>[<tag type='valueof' xpath='genxml/productname' />] - [<tag type='valueof' xpath='genxml/modeldesc' />]</b></div>
+		<div><b>[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</b></div>
 		<div>
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
 		<span>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />] [<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]</span>

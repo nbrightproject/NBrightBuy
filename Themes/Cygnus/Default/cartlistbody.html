@@ -7,7 +7,7 @@
 		<td class="detailscolumn">
 		<h5>
 		<a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">
-		[<tag type="valueof" xpath="genxml/modeldesc" />]<!-- this needs to concatenate with genxml/productname -->
+		[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]
 		</a>
 		</h5>
 		

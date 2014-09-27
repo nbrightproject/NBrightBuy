@@ -4,18 +4,23 @@
 	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
 		<tr>
 			<td width="50%" align="left" valign="top" style="line-height:150%">
-			<div><b>Order Number: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
-			<div><b>Order Date: </b>[<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</div>
+			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
+			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.orderdate" />]: </b>[<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</div>
 			</td>
 			<td width="50%" align="left" valign="top" style="line-height:150%">
 			<div><b>Shipping Method: </b>(tag needed)</div>
-			<div><b>Tracking Number: </b>(tag needed)</div>
+			<div><b>Tracking Number: </b>[<tag type="valueof" xpath="genxml/textbox/trackingcode" />]</div>
 			</td>
 		</tr>
 		<tr>
 			<td align="left" valign="top" colspan="2" style="line-height:150%">
-			<div><b>Special Instructions</b></div>
-			(tag needed)
+			<div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</b></div>
+				[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{ON}" />]
+				[<tag type='valueof' resourcekey='OrderAdmin.none' />]
+				[<tag type="endif" />]
+				[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
+				[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]
+				[<tag type="endif" />]
 			</td>
 		</tr>
 	</table>

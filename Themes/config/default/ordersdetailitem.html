@@ -1,5 +1,21 @@
 							<tr>
-								<td class="m-ticker"><b>[<tag type='valueof' xpath='genxml/productname' />]</b><span>[<tag type='valueof' xpath='genxml/modeldesc' />]</span></td>
+								<td class="m-ticker">
+									<div><b>[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</b></div>
+									<div>
+									[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+									<span>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />] [<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]</span>
+									[<tag type="endif" />]
+									[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+									<span>, [<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />] [<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />]</span>
+									[<tag type="endif" />]
+									[<tag type="if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
+									<span>, [<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />] [<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />]</span>
+									[<tag type="endif" />]
+									[<tag type="if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
+									<span>, [<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />] [<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />]</span>
+									[<tag type="endif" />]
+									</div>
+								</td>
 								<td class="text-center">[<tag type='valueof' xpath='genxml/modelref' />]</td>
 								<td class="text-center">[<tag type='valueof' xpath='genxml/qty' />]</td>
 								<td>[<tag type='valueof' xpath='genxml/unitcost' />]</td>

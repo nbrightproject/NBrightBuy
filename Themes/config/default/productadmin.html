@@ -3,16 +3,6 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.datepick.xlang.eur.js"></script>  
-<script>
-
-    $(function () {
-        $.datepicker.setDefaults($.datepicker.regional[['']]);
-        if ('[<tag type="culturecode" />]' == 'en-GB') $.datepicker.setDefaults($.datepicker.regional[['en-GB']]);
-        if ('[<tag type="culturecode" />]' == 'fr-FR') $.datepicker.setDefaults($.datepicker.regional[['fr']]);
-    });
-
-</script>
 <!-- this div is used as a recycle bin for undo JS-->
 <div id="recyclebin" style="display:none;"></div>
 
@@ -21,21 +11,6 @@
 
 <script type="text/javascript">
     
-    function savepagestate() {
-        $.sessionStorage('boxstate', [[
-            $('.editdetails div.box-content').is(":visible"),
-            $('.productdescription div.box-content').is(":visible"),
-            $('.editmodels div.box-content').is(":visible"),
-            $('.editoptions div.box-content').is(":visible"),
-            $('.editimages div.box-content').is(":visible"),
-            $('.editdocuments div.box-content').is(":visible"),
-            $('.editcategories div.box-content').is(":visible"),
-            $('.editproperties div.box-content').is(":visible"),
-            $('.editrelated div.box-content').is(":visible"),
-            $('.pageactions div.box-content').is(":visible")
-        ]]);
-    }
-
     $(document).ready(function() {
         // start load all ajax data
         nbxget('productoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
@@ -46,32 +21,8 @@
         nbxget('productgroupcategories', '#productselectparams', '#productgroupcategories'); // load categories
         nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
         nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
-        $('.box-content').toggle(); // Initially hide all panels
-        boxstate = $.sessionStorage('boxstate');
-        if (boxstate == undefined) {
-            $('.editdetails div.box-content').toggle(); // Then open specific ones
-            $('.pageactions div.box-content').toggle();
-        } else {
-            if (boxstate[[0]] == true) $('.editdetails div.box-content').toggle();
-            if (boxstate[[1]] == true) $('.productdescription div.box-content').toggle();
-            if (boxstate[[2]] == true) $('.editmodels div.box-content').toggle();
-            if (boxstate[[3]] == true) $('.editoptions div.box-content').toggle();
-            if (boxstate[[4]] == true) $('.editimages div.box-content').toggle();
-            if (boxstate[[5]] == true) $('.editdocuments div.box-content').toggle();
-            if (boxstate[[6]] == true) $('.editcategories div.box-content').toggle();
-            if (boxstate[[7]] == true) $('.editproperties div.box-content').toggle();
-            if (boxstate[[8]] == true) $('.editrelated div.box-content').toggle();
-            if (boxstate[[9]] == true) $('.pageactions div.box-content').toggle();
-        }
-
-        $('.main-menu').on('click', 'a', function (e) {
-            savepagestate();
-        });
-        $('a[[id*=cmdSave]]').click(function () {
-            savepagestate();
-        });
-
     });
+    
 </script>
 
 <!-- postback fields to keep ajax populated data for update -->
@@ -82,23 +33,6 @@
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 [<tag id="xmlupdateproductrelated" type="postback" value=""/>]
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>[<tag type="valueof" resourcekey="General.Catalogue" />]</li>
-			<li><a href="#">[<tag type="valueof" resourcekey="General.Product" />]</a></li>
-		</ol>
-	</div>
-</div>
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">[<tag type="valueof" resourcekey="General.Product" />]</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
-<br />
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
 	<div class="col-xs-9 col-sm-9">
@@ -116,6 +50,7 @@
 	</div>
 </div>
 
+<br />
 <!-- Required: id="productdatasection" -->
 <div id="productdatasection">
 
@@ -145,21 +80,22 @@
         [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
 
-<div class="row editdetails">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-				    <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Product" />] ID: [<tag type="valueof" databind="ItemId" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
+
+
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+			<div class="box" id="accordion">
+				<h3>[<tag type="valueof" resourcekey="General.Product" />] ID: [<tag type="valueof" databind="ItemId" />] 
+				[<tag type="if" function="settings" key="devoptions" testvalue="True" display="{ON}" />] 
+				<span> Ref: [<tag type="valueof" xpath="genxml/importref" />]</span>
+				[<tag type="endif" />]
+				</h3>
+
+				<div class="editdetails">
+
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-6">
 					<div class="form-group">
@@ -202,36 +138,18 @@
 						<div class="col-sm-2">
 							[<tag id="chkishidden" type="checkbox" Text="" />]
 						    <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
-                            <div class="">
-  Ref: [<tag type="valueof" xpath="genxml/importref" />]
-</div>
-
 						</div>
 					</div>
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
 
-<div class="row productdescription">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Description" />]</span>
 				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
+				<h3>[<tag type="valueof" resourcekey="General.Description" />]</h3>
+				<div class="productdescription">
+
+
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -243,78 +161,46 @@
 			  	  	</div>
 			    </div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
+				</div>
+				<h3>[<tag type="valueof" resourcekey="General.Models" />]</h3>
+				<div class="editmodels">
 
-<div class="row editmodels">
-	<div class="col-sm-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Models" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-12">
 					<div class="form-group">
 				        <div class="col-sm-2">
-				        <a class="btn btn-block btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        <a class="btn btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
 				        </div>
 				        <div class="col-sm-1">[<tag id="txtaddmodelqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
 				        </div>
 				        <div class="col-sm-2">
-				        <a class="btn btn-block btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <a class="btn btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        </div>
 					</div>
 				        <ul id="productmodels"></ul>
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="row editoptions">
-	<div class="col-sm-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Options" />]</span>
+
 				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
+				<h3>[<tag type="valueof" resourcekey="General.Options" />]</h3>
+				<div class="editoptions">
+
 				<div class="form-horizontal dnnForm">
 				
 					<div class="col-sm-6">
 					<div class="form-group">
 				        <div class="col-sm-4">
-				        <a class="btn btn-block btn-primary" id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        <a class="btn btn-primary" id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
 				        </div>
 				        <div class="col-sm-2">[<tag id="txtaddoptqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
 				        </div>
 					</div>
 					<div class="form-group">
 				        <div class="col-sm-12">
-				        <a class="btn btn-block btn-warning" id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <a class="btn btn-warning" id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        <ul id="productoptions"></ul>
 				        </div>
 					</div>
@@ -324,7 +210,7 @@
 					<div class="form-group">
 				        <div id="optionvaluecontrol" style="display:none;">
 				        <div class="col-sm-4">
-				        <a class="btn btn-block btn-primary" id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
+				        <a class="btn btn-primary" id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
 				        </div>
 				        <div class="col-sm-2">[<tag id="txtaddoptvalueqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
 				        </div>
@@ -332,7 +218,7 @@
 					</div>
 					<div class="form-group">
 				        <div class="col-sm-12">
-				        <a class="btn btn-block btn-warning" id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				        <a class="btn btn-warning" id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        <ul id="productoptionvalues"></ul>
 				        </div>
 					</div>
@@ -340,27 +226,12 @@
 					
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="row editimages">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Images" />]</span>
+
 				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
+				<h3>[<tag type="valueof" resourcekey="General.Images" />]</h3>
+				<div class="editimages">
+
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -377,27 +248,12 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="row editdocuments">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Documents" />] &amp; [<tag type="valueof" resourcekey="General.Downloads" />]</span>
+
 				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
+				<h3>[<tag type="valueof" resourcekey="General.Documents" />] &amp; [<tag type="valueof" resourcekey="General.Downloads" />]</h3>
+				<div class="editdocuments">
+				
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -412,28 +268,11 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
+				</div>
+				<h3>[<tag type="valueof" resourcekey="General.Categories" />]</h3>
+				<div class="editcategories">
 
-<div class="row editcategories">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Categories" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -457,28 +296,11 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
 
+				</div>
+				<h3>[<tag type="valueof" resourcekey="General.Properties" />]</h3>
+				<div class="editproperties">
 
-<div class="row editproperties">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Properties" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -503,33 +325,12 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
-      
-        
-    </div>
-</div>
 
 
-<!-- Moved this out of productdata section, so it displays when we are adding related products -->
-<div class="row editrelated">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</span>
 				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
+				<h3>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</h3>
+				<div class="editrelated">
+
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -540,12 +341,25 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
+
+
+
+				</div>
 			</div>
-			
-						
-		</div>
 	</div>
+	
 </div>
+
+
+
+
+
+
+        
+    </div>
+</div>
+
+
 						
 <!-- All "id" for the divs/ul are required for ajax in this section -->
 <div id="productselectsection" style="display:none;">
@@ -564,7 +378,6 @@
 				</div>
 			</div>
 			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options presented here.</p>
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -596,30 +409,9 @@
 </div>
 </div>
 
-<div class="row pageactions"><!-- Page actions - also at top -->
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Actions" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-				<div class="col-sm-6">
-    				[<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
-				    [<tag id="cmdReturn2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />] 
-				</div>
-				<div class="col-sm-6 text-right">
-				[<tag type="selectlocalebutton" size="32"/>]
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
+
+
+
+
+
+

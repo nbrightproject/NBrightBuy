@@ -22,7 +22,7 @@
 		isRTL: false
 	};
 
-﻿    $.datepick.regional['da'] = {
+	$.datepick.regional['da'] = {
         monthNames: ['Januar','Februar','Marts','April','Maj','Juni',
         'Juli','August','September','Oktober','November','December'],
         monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
@@ -47,7 +47,7 @@
 	};
 
 
-﻿	$.datepick.regional['de'] = {
+	$.datepick.regional['de'] = {
 		monthNames: ['Januar','Februar','März','April','Mai','Juni',
 		'Juli','August','September','Oktober','November','Dezember'],
 		monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun',
@@ -71,7 +71,7 @@
 		isRTL: false
 	};
 
-﻿	$.datepick.regional['en-GB'] = {
+	$.datepick.regional['en-GB'] = {
 		monthNames: ['January','February','March','April','May','June',
 		'July','August','September','October','November','December'],
 		monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -95,7 +95,7 @@
 		isRTL: false
 	};
 
-﻿	$.datepick.regional['es'] = {
+	$.datepick.regional['es'] = {
 		monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
 		'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
@@ -119,7 +119,7 @@
 		isRTL: false
 	};
 
-﻿	$.datepick.regional['fr'] = {
+	$.datepick.regional['fr'] = {
 		monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
 		'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
 		monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
@@ -144,7 +144,7 @@
 	};
 
 
-﻿	$.datepick.regional['it'] = {
+	$.datepick.regional['it'] = {
 		monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
 		'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
 		monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',

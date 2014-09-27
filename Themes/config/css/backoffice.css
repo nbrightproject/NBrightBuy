@@ -13,7 +13,9 @@
 
 
 /* Adjustments to theme */
-.nav {margin-left:0;}
+body{font-size:13px}
+.page-header{font-size:16px}
+.nav{margin-left:0;font-size:16px}
 a, a:visited {color:#428BCA}
 .dnnInputFileWrapper{font-family:"Lucida Grande","Lucida Sans","Lucida Sans Unicode","Segoe UI",Verdana,sans-serif;font-size:12px;line-height:23px;padding: 4px 12px;text-shadow:none;margin-right: 12px !important;background:#F5F5F5;box-shadow:none;}
 #sidebar-left{position:fixed}#content{float:right}/* Fix menu in place */
@@ -31,12 +33,30 @@ a.btn-default {color:#929292}
 #loader .fa{margin-right:2px;margin-top:3px;}
 .text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
 .nowrap{white-space:nowrap}/* remove this one */
-.btn{padding:4px 12px;margin-right:10px}/* default buttons */
+.btn{padding:4px 12px;margin-right:10px;min-width:110px}/* default buttons */
 /* span.dnnInputFileWrapper{padding: 0 15px;}fix for file upload buttons */
 .bg-primary,.bg-success,.bg-info,.bg-warning,.bg-danger {margin-top: 15px;padding: 15px;font-size: 21px;font-weight: bold;}
 .checkbox input[type=checkbox]{margin-left: 0;}
 .fa {margin-right: 6px;}
+.nav.main-menu .fa {font-size:20px;margin-right:12px;vertical-align:-1px;}
 .spacer{margin-bottom: 15px;}/* Gap between Bootstrap rows */
+.ui-accordion-header{font-size:17px;letter-spacing: 0.008em;}/* jQuery UI override */
+.ui-accordion-header.ui-state-default{border-color:#E4E4E4}
+select option{padding-bottom:3px}
+.close-link{display:none !important}
+
+/* Back Office colors for NBB */
+body{background:#646262}
+.navbar{background:#1AA8E3}
+.navbar #logo,.navbar #top-panel{background:transparent}
+.navbar a.btn-primary{}
+.navbar a.btn-default{}
+.navbar a.btn-danger{}
+.navbar a.btn-success{}
+#sidebar-left{background:#646262}
+#content{box-shadow:none}
+.show-sidebar .fa{color: #ffffff;font-size: 20px;}
+.ui-accordion-header.ui-state-active {background:#1aa8e3 !important;color: #ffffff;}
 
 /* Page action buttons */
 .actionbuttonwrapper{height:50px;padding-top:8px;margin-left:30px;white-space:nowrap;}
@@ -48,7 +68,12 @@ a.btn-default {color:#929292}
 .editlanguage > li{float:right}
 .editlanguage li img{margin-left:10px}
 
-/* Productlist items */
+/* Productlist items as table rows */
+.productadmintable .edititem{top:0;right:0;position:absolute;}
+.productadmintable .fa {color:#dddddd;font-size:200%;}
+
+/* Productlist items as thumbnails */
+#accordion{background:#F8F8F8;border:none;box-shadow:none}
 .productadminlist{list-style: none outside none;margin: 0;padding: 0;}
 .productadminlist > li{float:left}
 .productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative}
@@ -57,6 +82,8 @@ a.btn-default {color:#929292}
 .productadminlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
 .productadminlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
 .productadminlist .productlistitem .edititem{top:0;right:0;position:absolute;}
+.productadminlist .productlistitem .edititem a.editlink{color:#CCCCCC}
+.productadminlist .productlistitem .edititem a.editlink:hover{color:#47BE27}
 
 /* Pager */
 .NBrightPagingDiv{}
@@ -100,7 +127,8 @@ a.btn-default {color:#929292}
 .editcategories .removecategory.btn{margin-bottom:0}
 .editproperties{}
 .editproperties .selectgroupcategory option:first-child{display:none} /* Hides first property from value listbox */
-.editproperties .selectgroupcategory{height:260px}
+.editproperties .selectgrouptype{height:110px}
+.editproperties .selectgroupcategory{height:200px;margin-top:15px}
 .editproperties .removecategory.btn{margin-bottom:0}
 .editrelated{}
 .editrelated .productrelated{list-style: none outside none;margin: 0;padding: 0;}

@@ -174,4 +174,25 @@
   <data name="VATincluded.Text" xml:space="preserve">
     <value>* VAT included</value>
   </data>
+  <data name="qty.Text" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+  <data name="total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="myorders.Text" xml:space="preserve">
+    <value>My orders</value>
+  </data>
+  <data name="orderdate.Text" xml:space="preserve">
+    <value>Order date</value>
+  </data>
+  <data name="ordernumber.Text" xml:space="preserve">
+    <value>Order number</value>
+  </data>
+  <data name="orderreceipt.Text" xml:space="preserve">
+    <value>Order receipt</value>
+  </data>
+  <data name="none.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

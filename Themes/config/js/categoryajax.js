@@ -91,6 +91,35 @@
 
     });
 
+    $('#productselectlist').change(function () {
+        //Do paging
+        $('.cmdPg').unbind();
+        $('.cmdPg').click(function () {
+            $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
+            nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        });
+        // return from select product
+        $('#returnfromselect').unbind();
+        $('#returnfromselect').click(function () {
+            $("input[id*='header']").val("propertyproductheader.html");
+            $("input[id*='body']").val("propertyproductbody.html");
+            $("input[id*='footer']").val("propertyproductfooter.html");
+            $("input[id*='searchtext']").val('');
+            $("input[id*='searchcategory']").val('');
+            nbxget('getcategoryproductlist', '#categorydata', '#productlist');
+            $('#productselectsection').hide();
+            $('#categorydatasection').show();
+            $('.actionbuttonwrapper').show();
+        });
+        // select product
+        $('.selectproduct').unbind();
+        $('.selectproduct').click(function () {
+            showprocessing = false;
+            nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'));
+            $('.selectproductid' + $(this).attr('itemid')).hide();
+        });
+
+    });
 
     // START: --------   Search products ----------------------
     // select search

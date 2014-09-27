@@ -186,6 +186,9 @@
   <data name="defaultthemefolder.Text" xml:space="preserve">
     <value>Default Theme Folder</value>
   </data>
+  <data name="devoptions.Text" xml:space="preserve">
+    <value>Developer Options</value>
+  </data>
   <data name="enabledealer.Text" xml:space="preserve">
     <value>Enable Dealer</value>
   </data>
