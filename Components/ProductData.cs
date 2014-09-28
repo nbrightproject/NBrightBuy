@@ -262,9 +262,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ResetCache()
         {
-            LoadData(Info.ItemID);
-            var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-            Utils.SetCache(cacheKey, this);
+            if (Info != null)
+            {
+                LoadData(Info.ItemID);
+                if (Info != null)
+                {
+                    var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
+                    Utils.SetCache(cacheKey, this);
+                }
+            }
         }
 
         public void Update(String xmlData)
