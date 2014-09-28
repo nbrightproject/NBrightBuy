@@ -1,12 +1,14 @@
 				<div class="col-xs-3 billaddress">
 					<b>Bill to:</b>
 					<address>
-						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</strong></div>
-						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
-						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/phone' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
 					</address>
 					<address>
 						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</strong></div>
@@ -15,18 +17,40 @@
 				</div>
 				<div class="col-xs-3 shipaddress">
 					<b>Ship to:</b>
+       			[<tag type="if" xpath="genxml/billaddress/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
 					<address>
-						<div><strong>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</strong></div>
-						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />], [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
-						<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
-						<div><abbr title="Phone">Ph:</abbr> [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/phone' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/telephone' />]</div>
 					</address>
 					<address>
 						<div><strong>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname' />]</strong></div>
 						<div><a href="mailto:[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]">[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]</a></div>
 					</address>
+			    [<tag type="endif" />]
+                
+                [<tag type="if" xpath="genxml/billaddress/genxml/radiobuttonlist/rblshippingoptions" testvalue="1" display="{ON}" />]
+					<address>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
+			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
+					</address>
+					<address>
+						<div><strong>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</strong></div>
+						<div><a href="mailto:[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]">[<tag type='valueof' xpath='genxml/textbox/emailaddress' />]</a></div>
+					</address>
+                [<tag type="endif" />]
+					    
 				</div>
 				<div class="col-xs-6 text-right storeaddress">
 					<address>
@@ -37,7 +61,7 @@
 						<div>[Settings:storecity], [Settings:storeregion] [Settings:storepostcode]</div>
 						<div>[Settings:storecountry]</div>
 						<div>Tax no:[Settings:storetaxnumber]</div>
-						<div>Sales: [Settings:manageremail]</div>
+						<div>Sales: [Settings:salesemail]</div>
 						<div>Support: [Settings:supportemail]</div>
 						<div>Web:[<tag type="websiteurl" />]</div>
 						<div>Ph: [Settings:storephone]</div>
