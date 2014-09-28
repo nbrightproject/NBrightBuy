@@ -208,6 +208,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     // display header (Do header after the data return so the productcount works)
                     base.DoDetail(rpDataH);
 
+                    // display footer
+                    base.DoDetail(rpDataF);
+
                 }
 
                 #endregion
@@ -215,9 +218,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             #endregion
 
-
-            // display footer
-            base.DoDetail(rpDataF);
 
             // display search
             base.DoDetail(rpSearch);
@@ -378,9 +378,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidextinvoicedoc");
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName + ordData.InvoiceFileExt;
+
+            if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
+
             ordData.InvoiceDownloadName = ordData.OrderNumber + ordData.InvoiceFileExt;
 
-            if (ordData.OrderNumber == "") ordData.OrderNumber = ordData.PortalId.ToString("D") + "-" + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2,2) + "-" + _entryid;
             ordData.EditMode = "E";  // set to edit mode, so we don;t update the userid to the manager.
             ordData.SavePurchaseData();
             return NotifyCode.ok;
@@ -419,6 +421,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 // display header (Do header so we pickup the special invoice document field in the header)
                 base.DoDetail(rpDataH, orderData.GetInfo());
+
+                // display footer (Do here so we pickup the itemid of the order for the action buttons.)
+                base.DoDetail(rpDataF, orderData.GetInfo());
 
             }
         }

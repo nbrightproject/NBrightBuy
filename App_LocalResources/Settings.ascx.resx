@@ -198,4 +198,7 @@
   <data name="removelogo.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="orderprefix.Text" xml:space="preserve">
+    <value>Order Prefix</value>
+  </data>
 </root>
