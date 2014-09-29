@@ -273,4 +273,19 @@
   <data name="orders.Text" xml:space="preserve">
     <value>Orders</value>
   </data>
+  <data name="assembly.Text" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
+  <data name="lblprovidertype.Text" xml:space="preserve">
+    <value>Provider type</value>
+  </data>
+  <data name="namespaceclass.Text" xml:space="preserve">
+    <value>Namespace and Class</value>
+  </data>
+  <data name="providertype.data" xml:space="preserve">
+    <value>UI Only;Shipping;Tax;Promotions;Scheduler;Other</value>
+  </data>
+  <data name="providertype.datavalue" xml:space="preserve">
+    <value>01;02;03;04;05;06</value>
+  </data>
 </root>

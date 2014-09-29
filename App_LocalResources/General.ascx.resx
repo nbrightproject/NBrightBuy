@@ -705,4 +705,7 @@
   <data name="Product.Text" xml:space="preserve">
     <value>Product</value>
   </data>
+  <data name="Active.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>
