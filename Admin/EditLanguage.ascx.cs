@@ -36,6 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class EditLanguage : NBrightBuyBase
     {
         private String _entryid = "";
+        private String _ctrl = "";
 
         public String Size { get; set; }
 
@@ -43,6 +44,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             base.OnInit(e);
             _entryid = Utils.RequestParam(Context, "eid");
+            _ctrl = Utils.RequestParam(Context, "ctrl");
 
         }
 
@@ -66,6 +68,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                        {
                                            var param = new string[1];
                                            if (_entryid != "") param[0] = "eid=" + _entryid;
+                                           if (_ctrl != "") param[0] = "ctrl=" + _ctrl;
+                                           
                                            StoreSettings.Current.EditLanguage = cmde.CommandArgument.ToString();
                                            Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                                        };

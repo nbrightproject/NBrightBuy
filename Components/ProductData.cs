@@ -823,8 +823,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var errorcount = 0;
 
+            var objCtrl = new NBrightBuyController();
+
             DataRecord.ValidateXmlFormat();
-            DataLangRecord.ValidateXmlFormat();
+            if (DataLangRecord == null)
+            {
+                // we have no datalang record for this language, so get an existing one and save it.
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                if (l.Count > 0)
+                {
+                    DataLangRecord = (NBrightInfo)l[0].Clone();
+                    DataLangRecord.ItemID = -1;
+                    DataLangRecord.Lang = _lang;
+                    DataLangRecord.ValidateXmlFormat();
+                    objCtrl.Update(DataLangRecord);
+                }
+            }
 
             //Fix image paths
             var lp = 1;
@@ -859,7 +873,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
             {
-                var objCtrl = new NBrightBuyController();
                 var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
@@ -910,6 +923,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Exists = true;
                 DataRecord = objCtrl.GetData(productId);
                 DataLangRecord = objCtrl.GetDataLang(productId, _lang);
+                if (DataLangRecord == null) // rebuild langauge is we have a missing lang record
+                {
+                    Validate();
+                    DataLangRecord = objCtrl.GetDataLang(productId, _lang);
+                }
+
             }
         }
 

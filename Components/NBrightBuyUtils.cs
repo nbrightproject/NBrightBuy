@@ -613,7 +613,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var datavalue = r.Value;
                 var regionname = DnnUtils.GetLocalizedString(datavalue.Text, resxpath, Utils.GetCurrentCulture());
                 if (String.IsNullOrEmpty(regionname)) regionname = datavalue.Text;
-                rtnDic.Add(countrycode + ":" + datavalue.Key, regionname);                
+                rtnDic.Add(datavalue.Key, regionname);                
             }
 
             return rtnDic;

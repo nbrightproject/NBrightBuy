@@ -16,25 +16,34 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
             var countrycode = "";
             var regioncode = "";
+            var regionkey = "";
             Double rangeValue = 0;
             switch (shipoption)
             {
                 case "1":
                     countrycode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
-                    regioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
+                    regionkey = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
                     rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
-                    nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode,regioncode, rangeValue, total));    
-                    return nbi;
+                    break;
                 case "2":
                     countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country");
-                    regioncode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");
+                    regionkey = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");                    
                     rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
-                    nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode, regioncode, rangeValue, total));    
-                    return nbi;
+                    break;
                 default:
-                    nbi.SetXmlPropertyDouble("genxml/totaltest", 0);            
-                    return nbi;
+                    nbi.SetXmlPropertyDouble("genxml/totaltest", 0);
+                    break;
             }
+
+            if (regionkey != "")
+            {
+                var rl = regionkey.Split(':');
+                if (rl.Count() == 2) regioncode = rl[1];
+            }
+
+            nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode, regioncode, rangeValue, total));
+            return nbi;            
+
 
         }
 

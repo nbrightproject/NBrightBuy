@@ -262,7 +262,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                             {
                                 var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
-                                if (catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
+                                if (catLangUpd.DataLangRecord != null && catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
                                 {
                                     catLangUpd.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                                     ModCtrl.Update(catLangUpd.DataLangRecord);

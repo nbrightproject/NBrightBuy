@@ -65,7 +65,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 
                 // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
                 var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
-                if (objUser.Email != ordData.EmailAddress)
+                if (objUser != null && objUser.Email != ordData.EmailAddress)
                 {
                     var clientData = new ClientData(PortalId, ordData.UserId);
                     clientData.UpdateEmail(ordData.EmailAddress);

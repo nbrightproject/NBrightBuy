@@ -172,7 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             Double shippingAmt = 0;
             foreach (var i in _rangeData)
             {
-                if (i.RefCsv.Contains("," + countryRef + ",") || i.RefCsv.Contains("," + regionRef + ","))
+                if (i.RefCsv.Contains("," + countryRef + ",") || i.RefCsv.Contains("," + countryRef + ":" + regionRef + ","))
                 {
                     if (rangeValue >= i.RangeLow && rangeValue < i.RangeHigh && shippingAmt < i.Cost) shippingAmt = i.Cost;
                 }                

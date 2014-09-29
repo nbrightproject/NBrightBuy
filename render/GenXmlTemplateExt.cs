@@ -177,6 +177,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "countrydropdown":
                     CreateCountryDropDownList(container, xmlNod);
                     return true;
+                case "regioncontrol":
+                    CreateRegionControl(container, xmlNod);
+                    return true;
                 case "addressdropdown":
                     CreateAddressDropDownList(container, xmlNod);
                     return true;
@@ -3526,6 +3529,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.ID = xmlNod.Attributes["id"].InnerText;
                 container.Controls.Add(rbl);
+
+                txt.ID = "txt" + xmlNod.Attributes["id"].InnerText;
+                container.Controls.Add(txt);
             }
 
 
@@ -3533,44 +3539,95 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void RegionControlDataBind(object sender, EventArgs e)
         {
-
-            var ddl = (DropDownList)sender;
-            var container = (IDataItemContainer)ddl.NamingContainer;
-            try
+            if (sender is DropDownList)
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
-                if (ddl.Visible)
+                var ddl = (DropDownList)sender;
+                var container = (IDataItemContainer)ddl.NamingContainer;
+                try
                 {
-
-                    if (ddl.Attributes["blank"] != null)
+                    ddl.Visible = NBrightGlobal.IsVisible;
+                    if (ddl.Visible)
                     {
-                        var li = new ListItem();
-                        li.Text = ddl.Attributes["blank"];
-                        li.Value = "0";
-                        ddl.Items.Add(li);
-                        ddl.Attributes.Remove("blank");
-                    }
 
-                    var tList = NBrightBuyUtils.GetRegionList("FR");
-                    foreach (var tItem in tList)
-                    {
-                        var li = new ListItem();
-                        li.Text = tItem.Value;
-                        li.Value = tItem.Key;
-                        ddl.Items.Add(li);
-                    }
+                        if (ddl.Attributes["blank"] != null)
+                        {
+                            var li = new ListItem();
+                            li.Text = ddl.Attributes["blank"];
+                            li.Value = "0";
+                            ddl.Items.Add(li);
+                            ddl.Attributes.Remove("blank");
+                        }
+                        var show = false;
+                        var countryCode = GenXmlFunctions.GetGenXmlValue("Country", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        if (countryCode != "")
+                        {
+                            var tList = NBrightBuyUtils.GetRegionList(countryCode);
+                            if (tList.Count > 0)
+                            {
+                                show = true;
+                                foreach (var tItem in tList)
+                                {
+                                    var li = new ListItem();
+                                    li.Text = tItem.Value;
+                                    li.Value = tItem.Key;
+                                    ddl.Items.Add(li);
+                                }
+                                var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                                if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;                                
+                            }
+                        }
+                        ddl.Visible = show;
 
-                    var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
-                    if (strValue == "") strValue = Utils.GetCurrentCulture();
-                    if ((ddl.Items.FindByValue(strValue) != null)) ddl.SelectedValue = strValue;
+                    }
 
                 }
+                catch (Exception)
+                {
+                    ddl.Visible = false;
+                }                
+            }
 
-            }
-            catch (Exception)
+            if (sender is TextBox)
             {
-                ddl.Visible = false;
+                var txt = (TextBox)sender;
+                var container = (IDataItemContainer)txt.NamingContainer;
+                try
+                {
+                    txt.Visible = NBrightGlobal.IsVisible;
+                    if (txt.Visible)
+                    {
+                        var show = true;
+                        var countryCode = GenXmlFunctions.GetGenXmlValue("Country", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        if (countryCode != "")
+                        {
+                            var tList = NBrightBuyUtils.GetRegionList(countryCode);
+                            if (tList.Count > 0) show = false;
+                        }
+
+                        txt.Visible = show;
+                        if (txt.Visible)
+                        {
+                            var strData = GenXmlFunctions.GetGenXmlValue(txt.ID, "textbox", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                            if (txt.Text == "")
+                            {
+                                txt.Text = strData;
+                            }
+                            else
+                            {
+                                if (strData != "") txt.Text = strData;
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception)
+                {
+                    txt.Visible = false;
+                }
             }
+
+
         }
 
 

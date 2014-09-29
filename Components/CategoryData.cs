@@ -170,9 +170,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Validate()
         {
             var errorcount = 0;
+            var objCtrl = new NBrightBuyController();
 
             DataRecord.ValidateXmlFormat();
-            DataLangRecord.ValidateXmlFormat();
+            if (DataLangRecord == null)
+            {
+                // we have no datalang record for this language, so get an existing one and save it.
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                if (l.Count > 0)
+                {
+                    DataLangRecord = (NBrightInfo)l[0].Clone();
+                    DataLangRecord.ItemID = -1;
+                    DataLangRecord.Lang = _lang;
+                    DataLangRecord.ValidateXmlFormat();
+                    objCtrl.Update(DataLangRecord);
+                }
+            }
+            
             // fix image
             var imgpath = DataRecord.GetXmlProperty("genxml/hidden/imagepath");
             var imgurl = DataRecord.GetXmlProperty("genxml/hidden/imageurl");
@@ -189,7 +203,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
             {
-                var objCtrl = new NBrightBuyController();
                 var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
@@ -216,12 +229,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Exists = false;
             if (categoryId == -1) categoryId = AddNew(); // add new record if -1 is used as id.
             var objCtrl = new NBrightBuyController();
+            if (_lang == "") _lang = Utils.GetCurrentCulture();
             Info = objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
             if (Info != null)
             {
                 Exists = true;
                 DataRecord = objCtrl.GetData(categoryId);
                 DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
+                if (DataLangRecord == null) // rebuild langauge is we have a missing lang record
+                {
+                    Validate();
+                    DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
+                }
             }
         }
 
