@@ -554,6 +554,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "issuperuser":
+                                dataValue = "FALSE";
+                                if (UserController.GetCurrentUserInfo().IsSuperUser)
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             case "isclientordermode":
                                 dataValue = "FALSE";
                                 currentcart = new CartData(PortalSettings.Current.PortalId);

@@ -20,7 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
         protected override void OnLoad(EventArgs e)
         {
-            if (UserInfo.IsInRole(StoreSettings.EditorRole) || UserInfo.IsInRole(StoreSettings.ManagerRole))
+            if (UserInfo.IsInRole(StoreSettings.EditorRole) || UserInfo.IsInRole(StoreSettings.ManagerRole) || UserInfo.IsInRole("Administrators"))
             {
                 EditLanguage = StoreSettings.Current.EditLanguage;
                 base.OnLoad(e);

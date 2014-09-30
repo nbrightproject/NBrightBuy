@@ -46,6 +46,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         override protected void OnInit(EventArgs e)
         {
+            // setup a tempoary setting to edit portal or system level templates.
+            if (!StoreSettings.Current.Settings().ContainsKey("plugineditlevel")) StoreSettings.Current.Settings().Add("plugineditlevel", "0");
 
             base.OnInit(e);
 
@@ -57,6 +59,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 if (_entryid != "") _displayentrypage = true;
 
+      
                 #endregion
 
                 #region "load templates"
@@ -159,6 +162,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
+                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -213,6 +217,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         pluginData.RemovePlugin(Convert.ToInt32(cArg));
                         pluginData.Save();
                     }
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "resetportal":
+                    pluginData.RemovePortalLevel();
+                    param[0] = "";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "reload":
+                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;

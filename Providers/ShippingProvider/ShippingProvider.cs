@@ -47,5 +47,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         }
 
+        public override string Name()
+        {
+            return "Standard";
+        }
+
+        public override string Template(NBrightInfo cartInfo)
+        {
+            return "";
+        }
     }
 }

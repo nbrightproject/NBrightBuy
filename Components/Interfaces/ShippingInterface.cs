@@ -1,4 +1,5 @@
 ﻿
+using DotNetNuke.Entities.Portals;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -35,21 +36,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 			string providerName = null;
 
-		    _providerList = new Dictionary<string, ShippingInterface>(); 
+		    _providerList = new Dictionary<string, ShippingInterface>();
 
-            providerName = StoreSettings.Current.Get("shipping.provider");
-            if (providerName != "") providerName += ";";
-            providerName += "NBrightBuy.ShippingProvider,Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider";
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+		    var l = pluginData.GetPluginList();
 
-		    var l = providerName.Split(';');
             foreach (var p in l)
             {
-                ObjectHandle handle = null;
-                string[] prov = null;
-                prov = p.Split(',');
-                handle = Activator.CreateInstance(prov[0], prov[1]);
-                var objProvider = (ShippingInterface) handle.Unwrap();
-                _providerList.Add(prov[1], objProvider);
+                //UI Only;Shipping;Tax;Promotions;Scheduler;Events;Other
+                //01;02;03;04;05;06;07
+                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == "02" && p.GetXmlProperty("genxml/checkbox/active") == "True")
+                {
+                    ObjectHandle handle = null;
+                    handle = Activator.CreateInstance(p.GetXmlProperty("genxml/textbox/assembly"),
+                        p.GetXmlProperty("genxml/textbox/namespaceclass"));
+                    var objProvider = (ShippingInterface) handle.Unwrap();
+                    var key = p.GetXmlProperty("genxml/textbox/assembly");
+                    var lp = 1;
+                    while (_providerList.ContainsKey(key))
+                    {
+                        key = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
+                        lp += 1;
+                    }
+                    _providerList.Add(key, objProvider);
+                }
             }
 
 		}
@@ -64,8 +74,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract NBrightInfo CalculateShipping(NBrightInfo cartInfo);
 
+        public abstract String Name();
 
-	}
+        public abstract String Template(NBrightInfo cartInfo);
+
+    }
 
 }
 

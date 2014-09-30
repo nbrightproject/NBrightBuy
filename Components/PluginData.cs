@@ -24,7 +24,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _templCtrl = NBrightBuyUtils.GetTemplateGetter("config");
 
-            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture());
+            // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
+            var portallevel = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
+
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(),true,true,portallevel);
             if (menuplugin != "")
             {
                 Info = new NBrightInfo();
@@ -55,8 +58,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strXml += "</plugin>";
                 Info.RemoveXmlNode("genxml/plugin");
                 Info.AddXmlNode(strXml, "plugin", "genxml");
-                _templCtrl.SaveTemplate("menuplugin.xml",Info.XMLData);
+                // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
+                var portallevel  = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
+                _templCtrl.SaveTemplate("menuplugin.xml", Info.XMLData, portallevel);
             }
+        }
+
+        public void RemovePortalLevel()
+        {
+             _templCtrl.RemovePortalLevelTemplate("menuplugin.xml");
         }
 
         #region "base methods"

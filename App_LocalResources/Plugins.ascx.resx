@@ -283,9 +283,9 @@
     <value>Namespace and Class</value>
   </data>
   <data name="providertype.data" xml:space="preserve">
-    <value>UI Only;Shipping;Tax;Promotions;Scheduler;Other</value>
+    <value>UI Only;Shipping;Tax;Promotions;Scheduler;Events;Other</value>
   </data>
   <data name="providertype.datavalue" xml:space="preserve">
-    <value>01;02;03;04;05;06</value>
+    <value>01;02;03;04;05;06;07</value>
   </data>
 </root>
