@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -12,6 +13,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -160,6 +162,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnList;
         }
+
+        public Dictionary<String,NBrightInfo> GetShippingProviders(Boolean activeOnly = true)
+        {
+            var l = GetPluginList();
+            var pList = new Dictionary<String,NBrightInfo>();
+
+            foreach (var p in l)
+            {
+                //UI Only;Shipping;Tax;Promotions;Scheduler;Events;Other
+                //01;02;03;04;05;06;07
+                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == "02" && (p.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
+                {
+                    var ctrlkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                    var lp = 1;
+                    while (pList.ContainsKey(ctrlkey))
+                    {
+                        ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
+                        lp += 1;
+                    }
+                    pList.Add(ctrlkey, p);
+                }
+            }
+            return pList;
+        }
+
 
         public List<NBrightInfo> GetSubList(String groupname)
         {

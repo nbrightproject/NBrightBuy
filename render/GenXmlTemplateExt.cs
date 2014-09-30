@@ -254,7 +254,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "concatenate":
                     CreateConcatenate(container, xmlNod);
-                    return true;                
+                    return true;    
+                case "shippingproviders":
+                    CreateShippingProviderRadio(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -579,6 +582,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
+                                }
+                                break;
+                            case "hasshippingproviders":
+                                dataValue = "FALSE";
+                                var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                                var provList = pluginData.GetShippingProviders();
+                                if (provList.Count > 1)
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";                                    
                                 }
                                 break;
                             default:
@@ -2458,7 +2471,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-        #region "orderstatus"
+        #region "modelstatus"
 
         private void Createmodelstatusdropdown(Control container, XmlNode xmlNod)
         {
@@ -3917,6 +3930,64 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 l.Text = ex.ToString();
             }
         }
+
+
+        #endregion
+
+        #region "Shipping"
+
+        private void CreateShippingProviderRadio(Control container, XmlNode xmlNod)
+        {
+                var rbl = new RadioButtonList();
+                rbl = (RadioButtonList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
+                rbl.DataBinding += ShippingProviderDataBind;
+                rbl.ID = "shippingprovider";
+                container.Controls.Add(rbl);
+        }
+
+        private void ShippingProviderDataBind(object sender, EventArgs e)
+        {
+            var rbl = (RadioButtonList)sender;
+            var container = (IDataItemContainer)rbl.NamingContainer;
+            try
+            {
+                rbl.Visible = NBrightGlobal.IsVisible;
+                if (rbl.Visible)
+                {
+                    var strXML = Convert.ToString(DataBinder.Eval(container.DataItem, "XMLData"));
+                    var nbInfo = new NBrightInfo();
+                    nbInfo.XMLData = strXML;
+                    var selectval = nbInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider");
+
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetShippingProviders();
+                    if (provList.Count > 1) // Only add the option if we have more that 1 shipping provider.
+                    {
+                        foreach (var d in provList)
+                        {
+                            var p = d.Value;
+                            var li = new ListItem();
+                            li.Text = p.GetXmlProperty("genxml/textbox/name");
+                            li.Value = p.GetXmlProperty("genxml/textbox/ctrl");
+                            if (li.Value == selectval) li.Selected = true;
+                            rbl.Items.Add(li);
+                        }
+                        if (rbl.SelectedValue == "" && rbl.Items.Count > 0) rbl.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        rbl.Visible = false;
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+                rbl.Visible = false;
+            }
+        }
+
 
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using DotNetNuke.Entities.Portals;
 using Microsoft.VisualBasic;
 using System;
@@ -39,38 +40,39 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 		    _providerList = new Dictionary<string, ShippingInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-		    var l = pluginData.GetPluginList();
+		    var l = pluginData.GetShippingProviders();
 
             foreach (var p in l)
             {
-                //UI Only;Shipping;Tax;Promotions;Scheduler;Events;Other
-                //01;02;03;04;05;06;07
-                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == "02" && p.GetXmlProperty("genxml/checkbox/active") == "True")
-                {
+                    var prov = p.Value;
                     ObjectHandle handle = null;
-                    handle = Activator.CreateInstance(p.GetXmlProperty("genxml/textbox/assembly"),
-                        p.GetXmlProperty("genxml/textbox/namespaceclass"));
+                    handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
                     var objProvider = (ShippingInterface) handle.Unwrap();
-                    var key = p.GetXmlProperty("genxml/textbox/assembly");
+                    var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
                     var lp = 1;
-                    while (_providerList.ContainsKey(key))
+                    while (_providerList.ContainsKey(ctrlkey))
                     {
-                        key = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
+                        ctrlkey = prov.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
                         lp += 1;
                     }
-                    _providerList.Add(key, objProvider);
-                }
+                    objProvider.Shippingkey = ctrlkey;
+                    _providerList.Add(ctrlkey, objProvider);
             }
 
 		}
 
+
 		// return the provider
-        public static new ShippingInterface Instance(String key)
+        public static new ShippingInterface Instance(String ctrlkey)
 		{
-            return _providerList[key];
+            if (_providerList.ContainsKey(ctrlkey)) return _providerList[ctrlkey];
+            if (_providerList.Count > 0) return _providerList.Values.First();
+            return null;
 		}
 
 		#endregion
+
+        public abstract String Shippingkey { get; set; }
 
         public abstract NBrightInfo CalculateShipping(NBrightInfo cartInfo);
 

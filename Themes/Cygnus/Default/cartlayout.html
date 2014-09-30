@@ -181,12 +181,18 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         }
 
         // auto fire postback when the country dropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
-        $("select[[id*='_Country']]").change(function () {
+        $("select[[id*='_Country_']]").change(function () {
             var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
             __doPostBack(postcmd, '');
         });
         // auto fire postback when the region dropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
-        $("select[[id*='_Region']]").change(function () {
+        $("select[[id*='_Region_']]").change(function () {
+            var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
+            __doPostBack(postcmd, '');
+        });
+
+        // auto fire postback when the shipping providerdropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
+        $("input[[id*='_shippingprovider_']]").change(function () {
             var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
             __doPostBack(postcmd, '');
         });

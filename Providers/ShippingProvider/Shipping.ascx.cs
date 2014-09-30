@@ -42,6 +42,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         #region Event Handlers
 
+        private String _ctrlkey = ""; 
 
         override protected void OnInit(EventArgs e)
         {
@@ -49,6 +50,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             try
             {
+                _ctrlkey = (String)HttpContext.Current.Session["nbrightbackofficectrl"];
 
                 #region "load templates"
 
@@ -104,7 +106,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             if (UserId > 0) // only logged in users can see data on this module.
             {
-                var shipping = new ShippingData();
+                var shipping = new ShippingData(_ctrlkey);
                 rpData.DataSource = shipping.GetRuleList();
                 rpData.DataBind();
                 
@@ -128,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             switch (e.CommandName.ToLower())
             {
                 case "addnew":
-                    var shipping = new ShippingData();
+                    var shipping = new ShippingData(_ctrlkey);
                     shipping.AddNewRule();
                     shipping.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
@@ -136,7 +138,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 case "delete":
                     if (Utils.IsNumeric(cArg))
                     {
-                        var shipping2 = new ShippingData();
+                        var shipping2 = new ShippingData(_ctrlkey);
                         shipping2.RemoveRule(Convert.ToInt32(cArg));
                         shipping2.Save();                        
                     }
@@ -167,7 +169,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void Update()
         {
-            var shipping = new ShippingData();
+            var shipping = new ShippingData(_ctrlkey);
 
             shipping.Update(rpDataH);
             shipping.UpdateRule(rpData);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using NBrightDNN;
@@ -10,10 +11,19 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
     {
         public override NBrightInfo CalculateShipping(NBrightInfo cartInfo)
         {
-            var nbi = new NBrightInfo(true);
-            var shipData = new ShippingData();
+            var shipData = new ShippingData(Shippingkey);
             var shipoption = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
-            var total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
+            Double total = 0;
+            if (shipData.CalculationUnit == "1")
+            {
+                var totalweight = 0;
+
+                total = totalweight;
+            }
+            else
+            {
+                total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
+            }
             var countrycode = "";
             var regioncode = "";
             var regionkey = "";
@@ -30,9 +40,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     regionkey = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");                    
                     rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
                     break;
-                default:
-                    nbi.SetXmlPropertyDouble("genxml/totaltest", 0);
-                    break;
             }
 
             if (regionkey != "")
@@ -41,11 +48,15 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (rl.Count() == 2) regioncode = rl[1];
             }
 
-            nbi.SetXmlPropertyDouble("genxml/totaltest", shipData.CalculateShipping(countrycode, regioncode, rangeValue, total));
-            return nbi;            
+            var shippingcost = shipData.CalculateShipping(countrycode, regioncode, rangeValue, total);
+            var shippingdealercost = shippingcost;
+            cartInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
+            cartInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);
 
-
+            return cartInfo;            
         }
+
+        public override string Shippingkey { get; set; }
 
         public override string Name()
         {

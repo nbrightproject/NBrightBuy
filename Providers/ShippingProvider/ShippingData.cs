@@ -23,9 +23,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         private List<RangeItem> _rangeData ;
         public NBrightInfo  Info;
 
-        public ShippingData()
+        public ShippingData(String shippingkey)
         {
-            PopulateData();
+            PopulateData(shippingkey);
         }
 
 
@@ -185,14 +185,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         #region "private functions"
 
-        private void PopulateData()
+        private void PopulateData(String shippingkey)
         {
             var modCtrl = new NBrightBuyController();
-            Info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId,-1,"SHIPPING","NBSdefault");
+            Info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shippingkey);
             if (Info == null)
             {
                 Info = new NBrightInfo(true);
-                Info.GUIDKey = "NBSdefault";
+                Info.GUIDKey = shippingkey;
                 Info.TypeCode = "SHIPPING";
                 Info.ModuleId = -1;
                 Info.PortalId = PortalSettings.Current.PortalId;
