@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -1834,25 +1835,28 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 lc.Visible = NBrightGlobal.IsVisible;
-                var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
-                var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
-                if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleId))
-                {
-                    var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                    var objCInfo = grpCatCtrl.GetCurrentCategoryInfo(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
-                    if (objCInfo != null)
-                    {
-                        lc.Text = objCInfo.GetXmlProperty(lc.Text);
-                    }
-                    else
-                    {
-                        lc.Text = "";
-                    }
-                }
 
+                var id = 0;
+                try
+                {
+                    id = (int) DataBinder.Eval(container.DataItem, "ItemId");
+                }
+                catch (Exception)
+                {
+                    id = (int) DataBinder.Eval(container.DataItem, "categoryid");
+                }
+                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var objCInfo = grpCatCtrl.GetCurrentCategoryInfo(PortalSettings.Current.PortalId, lc.Page.Request, id);
+                if (objCInfo != null)
+                {
+                    lc.Text = objCInfo.GetXmlProperty(lc.Text);
+                }
+                else
+                {
+                    lc.Text = "";
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 lc.Text = "";
             }
@@ -1880,11 +1884,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 lc.Visible = NBrightGlobal.IsVisible;
-                var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
-                var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
-                if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleId))
+                var id = 0;
+                try
                 {
+                    id = (int) DataBinder.Eval(container.DataItem, "ItemId");
+                }
+                catch (Exception)
+                {
+                    id = (int) DataBinder.Eval(container.DataItem, "categoryid");
+                }
                     var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
                     var objCInfo = grpCatCtrl.GetCurrentCategoryInfo(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
                     if (objCInfo != null)
@@ -1897,8 +1905,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         lc.Text = "";
                     }
-                }
-
             }
             catch (Exception)
             {
@@ -1928,24 +1934,26 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 lc.Visible = NBrightGlobal.IsVisible;
-                var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
-                var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
-                var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
-                if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleId))
+                var id = 0;
+                try
                 {
-                    var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                    var objCInfo = grpCatCtrl.GetCurrentCategoryInfo(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
-                    if (objCInfo != null)
-                    {
-                        lc.Text = objCInfo.GetXmlProperty(lc.Text);
-                        lc.Text = System.Web.HttpUtility.HtmlDecode(lc.Text);
-                    }
-                    else
-                    {
-                        lc.Text = "";
-                    }
+                    id = (int) DataBinder.Eval(container.DataItem, "ItemId");
                 }
-
+                catch (Exception)
+                {
+                    id = (int) DataBinder.Eval(container.DataItem, "categoryid");
+                }
+                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var objCInfo = grpCatCtrl.GetCurrentCategoryInfo(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
+                if (objCInfo != null)
+                {
+                    lc.Text = objCInfo.GetXmlProperty(lc.Text);
+                    lc.Text = System.Web.HttpUtility.HtmlDecode(lc.Text);
+                }
+                else
+                {
+                    lc.Text = "";
+                }
             }
             catch (Exception)
             {
@@ -3987,6 +3995,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 rbl.Visible = false;
             }
         }
+
 
 
 

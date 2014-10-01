@@ -1,3 +1,11 @@
+
+<!-- These postback field save any product select for shipping providers, so they can be saved to cart and actioned server side -->
+<!-- In some cases they will not be used, but are placed here so they can be used by different payment providers as static fields to help data selection -->
+[<tag id="shippingproductcode" type="postback" value="" />]
+[<tag id="shippingdata1" type="postback" value="" />]
+[<tag id="shippingdata2" type="postback" value="" />]
+
+
 <div class="formrow">
     <div id="shippingoptions" style="display:none;"><!-- Shipping options radio buttons - What the hell is this doing in here -->
         <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>

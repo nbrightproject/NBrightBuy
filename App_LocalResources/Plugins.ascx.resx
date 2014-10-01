@@ -288,4 +288,7 @@
   <data name="providertype.datavalue" xml:space="preserve">
     <value>01;02;03;04;05;06;07</value>
   </data>
+  <data name="templatepath.Text" xml:space="preserve">
+    <value>Template File Relative Path</value>
+  </data>
 </root>

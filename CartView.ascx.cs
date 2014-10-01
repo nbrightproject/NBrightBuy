@@ -14,6 +14,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content.Common;
@@ -24,6 +26,7 @@ using NBrightDNN;
 
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -100,12 +103,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // Get CartLayout
                 var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
-                checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
 
                 var carttype = ModSettings.Get("ddlcarttype");
                 if (carttype == "2")
                 {
+                    // add any shiiping provider templates to the cart layout, so we can process any data required by them
+                    checkoutlayoutTempl += GetShippingProviderTemplates();
                     rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
@@ -114,6 +117,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     rpAddrB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpAddrS.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                 }
+
+                checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
             }
             catch (Exception exc)
             {
@@ -308,7 +314,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_cartInfo.GetCartItemList().Count > 0)
                     {
                         _cartInfo.SetValidated(true);
-                        _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same langauge the order was made in.
+                        _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same language the order was made in.
                         UpdateCartAddresses();
                         UpdateCartInfo();
                         SaveCart();
@@ -375,6 +381,25 @@ namespace Nevoweb.DNN.NBrightBuy
             _cartInfo.AddPromoCode(rpPromo);
             _cartInfo.AddTaxData(rpTax);
             _cartInfo.AddShipData(rpShip);
+        }
+
+
+        private String GetShippingProviderTemplates()
+        {
+            var strRtn = "";
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetShippingProviders();
+            foreach (var d in provList)
+            {
+                var p = d.Value;
+                var shippingkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                var shipprov = ShippingInterface.Instance(shippingkey);
+                if (shipprov != null)
+                {
+                    strRtn += shipprov.GetTemplate();
+                }
+            }
+            return strRtn;
         }
 
         #endregion
