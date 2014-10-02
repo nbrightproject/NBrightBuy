@@ -399,7 +399,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var shipprov = ShippingInterface.Instance(shippingkey);
                 if (shipprov != null)
                 {
-                    strRtn += shipprov.GetTemplate();
+                    strRtn += shipprov.GetTemplate(_cartInfo.PurchaseInfo);
                 }
             }
             return strRtn;

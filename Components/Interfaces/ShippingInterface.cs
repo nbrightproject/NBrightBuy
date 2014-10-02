@@ -78,7 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String Name();
 
-        public abstract String GetTemplate();
+        public abstract String GetTemplate(NBrightInfo cartInfo);
 
     }
 

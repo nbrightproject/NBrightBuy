@@ -63,7 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             return "Standard";
         }
 
-        public override string GetTemplate()
+        public override string GetTemplate(NBrightInfo cartInfo)
         {
             return "";
         }
