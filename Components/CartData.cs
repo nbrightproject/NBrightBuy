@@ -149,6 +149,52 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         /// <summary>
+        /// This function take a cookie created on the client and adds all items to the cart
+        /// NOTE: The cookie value is expected in a standard format, whcih is defined by the use of "nbbqtycookie.js"
+        /// Tdhis function will only work, if the product/model being added does not have any options.
+        /// </summary>
+        public void AddCookieToCart()
+        {
+            var foundCookie = HttpContext.Current.Request.Cookies["nbrightbuy_qtyselected"];
+            var data = new Dictionary<String, String>();
+
+            // extract cookie data
+            if (foundCookie != null && foundCookie.Value != "")
+            {
+                var list = foundCookie.Value.Split('*');
+                for (var c = 0; c < list.Count(); c++)
+                {
+                    var list2 = list[c].Split(':');
+                    if (list2.Count() == 2)
+                    {
+                        data.Add(list2[0], list2[1]);
+                    }
+                }
+
+                // do add to cart
+                foreach (var c in data)
+                {
+                    var s = c.Key.Split('-');
+                    if (s.Count() == 2)
+                    {
+                        var productid = s[0];
+                        var modelid = s[1];
+                        var qty = c.Value;
+                        if (Utils.IsNumeric(qty))
+                        {
+                            AddSingleItem(productid, modelid, qty, new NBrightInfo());
+                        }
+                    }
+                }
+
+                foundCookie.Expires = DateTime.Now.AddYears(-30);
+                HttpContext.Current.Response.Cookies.Add(foundCookie);
+
+            }
+        }
+
+
+        /// <summary>
         /// Set to true if cart exists
         /// </summary>
         public bool Exists { get; private set; }

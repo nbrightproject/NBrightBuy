@@ -61,6 +61,7 @@ namespace Nevoweb.DNN.NBrightBuy
             base.OnInit(e);
 
             _cartInfo = new CartData(PortalId);
+
             _addressData = new AddressData(_cartInfo.UserId.ToString(""));
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
@@ -108,6 +109,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 var carttype = ModSettings.Get("ddlcarttype");
                 if (carttype == "2")
                 {
+                    _cartInfo.AddCookieToCart();
+                    _cartInfo.Save();
+
                     // add any shiiping provider templates to the cart layout, so we can process any data required by them
                     rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);

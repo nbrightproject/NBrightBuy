@@ -142,12 +142,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strRtn = "";
             foreach (var m in modelidlist)
             {
-                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);                
+                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
             }
             return strRtn;
         }
 
-        private String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false)
+        public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false)
         {
             if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
 
@@ -195,53 +195,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //build option data for cart
                 Double additionalCosts = 0;
                 var strXmlIn = "<options>";
-                var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/textbox/*[starts-with(name(), 'optiontxt')]");
-                if (nodList != null)
-                    foreach (XmlNode nod in nodList)
-                    {
-                        strXmlIn += "<option>";
-                        var idx = nod.Name.Replace("optiontxt", "");
-                        var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
-                        var optionInfo = productData.GetOption(optionid);
-                        var optvaltext = nod.InnerText;
-                        strXmlIn += "<optid>" + optionid + "</optid>";
-                        strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
-                        var itemcodeText = "";
-                        if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
-                        itemcode += optionid + itemcodeText + "-";
-                        strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
-                        strXmlIn += "</option>";
-                    }
-                nodList = objInfoIn.XMLDoc.SelectNodes("genxml/dropdownlist/*[starts-with(name(), 'optionddl')]");
-                if (nodList != null)
-                    foreach (XmlNode nod in nodList)
-                    {
-                        strXmlIn += "<option>";
-                        var idx = nod.Name.Replace("optionddl", "");
-                        var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
-                        var optionvalueid = nod.InnerText;
-                        var optionValueInfo = productData.GetOptionValue(optionid, optionvalueid);
-                        var optionInfo = productData.GetOption(optionid);
-                        strXmlIn += "<optid>" + optionid + "</optid>";
-                        strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
-                        itemcode += optionid + ":" + optionvalueid + "-";
-                        strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
-                        strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
-                        strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
-                        strXmlIn += "</option>";
-                        additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
-                    }
-                nodList = objInfoIn.XMLDoc.SelectNodes("genxml/checkbox/*[starts-with(name(), 'optionchk')]");
-                if (nodList != null)
-                    foreach (XmlNode nod in nodList)
-                    {
-                        if (nod.InnerText.ToLower() == "true")
+                if (objInfoIn.XMLDoc != null)
+                {
+
+                    var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/textbox/*[starts-with(name(), 'optiontxt')]");
+                    if (nodList != null)
+                        foreach (XmlNode nod in nodList)
                         {
                             strXmlIn += "<option>";
-                            var idx = nod.Name.Replace("optionchk", "");
+                            var idx = nod.Name.Replace("optiontxt", "");
+                            var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                            var optionInfo = productData.GetOption(optionid);
+                            var optvaltext = nod.InnerText;
+                            strXmlIn += "<optid>" + optionid + "</optid>";
+                            strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
+                            var itemcodeText = "";
+                            if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
+                            itemcode += optionid + itemcodeText + "-";
+                            strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
+                            strXmlIn += "</option>";
+                        }
+                    nodList = objInfoIn.XMLDoc.SelectNodes("genxml/dropdownlist/*[starts-with(name(), 'optionddl')]");
+                    if (nodList != null)
+                        foreach (XmlNode nod in nodList)
+                        {
+                            strXmlIn += "<option>";
+                            var idx = nod.Name.Replace("optionddl", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionvalueid = nod.InnerText;
-                            var optionValueInfo = productData.GetOptionValue(optionid, ""); // checkbox does not have optionvalueid
+                            var optionValueInfo = productData.GetOptionValue(optionid, optionvalueid);
                             var optionInfo = productData.GetOption(optionid);
                             strXmlIn += "<optid>" + optionid + "</optid>";
                             strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
@@ -252,8 +234,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             strXmlIn += "</option>";
                             additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
                         }
-                    }
-
+                    nodList = objInfoIn.XMLDoc.SelectNodes("genxml/checkbox/*[starts-with(name(), 'optionchk')]");
+                    if (nodList != null)
+                        foreach (XmlNode nod in nodList)
+                        {
+                            if (nod.InnerText.ToLower() == "true")
+                            {
+                                strXmlIn += "<option>";
+                                var idx = nod.Name.Replace("optionchk", "");
+                                var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
+                                var optionvalueid = nod.InnerText;
+                                var optionValueInfo = productData.GetOptionValue(optionid, ""); // checkbox does not have optionvalueid
+                                var optionInfo = productData.GetOption(optionid);
+                                strXmlIn += "<optid>" + optionid + "</optid>";
+                                strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
+                                itemcode += optionid + ":" + optionvalueid + "-";
+                                strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
+                                strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
+                                strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
+                                strXmlIn += "</option>";
+                                additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                            }
+                        }
+                }
                 strXmlIn += "</options>";
                 objInfo.AddXmlNode(strXmlIn, "options", "genxml");
 
@@ -297,6 +300,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("dropdownlist", "", "genxml");
                 objInfo.AddSingleNode("radiobuttonlist", "", "genxml");
                 objInfo.AddSingleNode("checkbox", "", "genxml");
+
+                SavePurchaseData(); // need to save after each add, so it exists in data when we check it already exists for updating.
 
                 // return the message status code in textData, non-critical (usually empty)
                 return objInfo.TextData;

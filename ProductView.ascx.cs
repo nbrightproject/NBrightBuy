@@ -12,8 +12,10 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using NBrightCore.common;
@@ -475,7 +477,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "addtobasket":
                     var currentcart = new CartData(PortalId);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
-                    currentcart.Save(DebugMode);
+                    currentcart.Save(StoreSettings.Current.DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addalltobasket":
@@ -484,7 +486,13 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         currentcart2.AddItem(rpData, StoreSettings.Current.SettingsInfo, ri.ItemIndex, DebugMode);
                     }
-                    currentcart2.Save(DebugMode);
+                    currentcart2.Save(StoreSettings.Current.DebugMode);
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "addcookietobasket":
+                    var currentcart3 = new CartData(PortalId);
+                    currentcart3.AddCookieToCart();
+                    currentcart3.Save(StoreSettings.Current.DebugMode);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "docdownload":
@@ -555,6 +563,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
         }
+
 
         #endregion
 

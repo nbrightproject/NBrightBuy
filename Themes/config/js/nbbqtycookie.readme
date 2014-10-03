@@ -1,0 +1,83 @@
+The nbbqtycooki.js is a set of js functions which allows the add to cart function through the use of a cookie.
+
+This functionality will NOT update options selected on a product, so is only suitable for products with no options.
+
+The idea is to allow a user to add qty to their product list, but only update to cart after they have finished adding products from multiple pages.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Example Model list template
+
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Guerbet/resx/" />]<!-- Point to language file  -->
+
+<tr>
+<td class="pl-firstcol">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />] [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td>
+<td class="pl-code">[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td>
+<td class="pl-code">[<tag type="valueof" xpath="genxml/textbox/txtbarcode" />]</td>
+<td class="pl-price">[<tag type="valueof" xpath="genxml/textbox/txtpack" />] x [<tag type="valueof" xpath="genxml/textbox/txtvol" />]</td>
+[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+<td class="pl-price">
+[<tag type="if" function="price" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide price -->
+[<tag type="valueof" xpath="genxml/textbox/txtunitcost" datatype="Double" format="0.00" />]
+[<tag type="endif"  />]
+</td>
+[<tag type="endif"  />]
+<td class="pl-icon quantityoptions">
+[<tag type="if" function="ismodelinstock" display="{ON}" />]
+<a class="icon-minus" itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)"></a>
+<span class="jqselector[<tag type="valueof" xpath="genxml/hidden/modelid" />]">[<tag type="modelqty" text="0" width="38" cssclass="quantity" />]</span>
+<a class="icon-plus"  itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)"></a>
+[<tag type="endif"  />]
+[<tag type="if" function="ismodelinstock" display="{OFF}" />]
+<div class="outofstockflag">[<tag type="valueof" resourcekey="ProductView.outofstock" />]</div><!-- Out of stock -->
+[<tag type="endif"  />]
+</td>
+</tr>
+
+
+
+Example JS required in list header
+
+<script>
+    $(document).ready(function () {
+        
+        $('.icon-minus').click(function () {
+            if (parseInt($('.jqselector' + $(this).attr('itemid') + ' > .quantity').val()) > 0) {
+                $('.jqselector' + $(this).attr('itemid') + ' > .quantity').val(parseInt($('.jqselector' + $(this).attr('itemid') + ' > .quantity').val()) - 1);
+                SaveToCookie($(this));
+            }
+        });
+        $('.icon-plus').click(function () {
+            $('.jqselector' + $(this).attr('itemid') + ' > .quantity').val(parseInt($('.jqselector' + $(this).attr('itemid') + ' > .quantity').val()) + 1);
+            SaveToCookie($(this));
+        });
+
+        $(".quantity").keydown(function (e) {
+            if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
+            if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+        });
+        $(".quantity").keyup(function (e) {
+            SaveToCookie($('.icon-plus[[itemid="' + $(this).attr('modelid') + '"]]'));
+        });
+
+        $('.clearcookiebutton').click(function () {
+            var answer = confirm("Clear all quantity amounts from list?")
+            if (answer) eraseCookie('nbrightbuy_qtyselected');
+        });
+
+        displayQty();
+
+    });
+
+
+</script>
+
+ Example call button for update
+ 
+  [<tag type="linkbutton" resourcekey="ProductView.addtobasket" commandname="addcookietobasket" commandargument="ItemID" cssclass="addbtn" />]
+  
+ 
+ 
+
