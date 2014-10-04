@@ -22,6 +22,7 @@ using NBrightCore.common;
 using NBrightCore.render;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy
 {
@@ -131,6 +132,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = "***ERROR***  Invalid Security";
                     if (userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
                     {
+                        //check the payment provider for a print url
+                        var shippingprovider = orderData.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
+                        if (shippingprovider != "")
+                        {
+                            var shipprov = ShippingInterface.Instance(shippingprovider);
+                            if (shipprov != null)
+                            {
+                                var printurl = shipprov.GetDeliveryLabelUrl(orderData.PurchaseInfo);
+                                if (printurl != "") Response.Redirect(printurl);
+                            }
+                        }
+
+                        // not provider label, so print template
                         var modCtrl = new NBrightBuyController();
                         var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
 

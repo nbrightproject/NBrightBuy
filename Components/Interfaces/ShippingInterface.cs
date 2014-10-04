@@ -80,6 +80,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String GetTemplate(NBrightInfo cartInfo);
 
+        public abstract String GetDeliveryLabelUrl(NBrightInfo cartInfo);
+
     }
 
 }

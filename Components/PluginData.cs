@@ -163,6 +163,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        public NBrightInfo GetShippingProviderDefault()
+        {
+            var l = GetShippingProviders();
+            if (l.Count > 0) return l.First().Value;
+            return null;
+        }
+
         public Dictionary<String,NBrightInfo> GetShippingProviders(Boolean activeOnly = true)
         {
             var l = GetPluginList();

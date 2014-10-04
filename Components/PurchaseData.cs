@@ -90,6 +90,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set { PurchaseInfo.SetXmlProperty("genxml/shippingregion", value); }
         }
 
+
         #region "base methods"
 
         /// <summary>

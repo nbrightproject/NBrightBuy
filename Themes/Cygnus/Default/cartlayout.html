@@ -21,6 +21,8 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 <!-- Cygnus CSS -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
 
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.validate.min.js"></script>
+
 
 <style type="text/css">
     #cartdetails{}
@@ -180,21 +182,18 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             }
         }
 
-        // auto fire postback when the country dropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
+        // auto fire postback when the country dropdown is changed. 
         $("select[[id*='_Country_']]").change(function () {
-            var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
-            __doPostBack(postcmd, '');
+            $("input[[id*='_cmdConfirm']]").trigger("click");
         });
-        // auto fire postback when the region dropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
+        // auto fire postback when the region dropdown is changed. 
         $("select[[id*='_Region_']]").change(function () {
-            var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
-            __doPostBack(postcmd, '');
+            $("input[[id*='_cmdConfirm']]").trigger("click");
         });
 
-        // auto fire postback when the shipping providerdropdown is changed. (NOTE: Don't like this method, but only way I can get to work ATM)
+        // auto fire postback when the shipping providerdropdown is changed. 
         $("input[[id*='_shippingprovider_']]").change(function () {
-            var postcmd = $('a[[id*="_cmdConfirm"]]').attr('href').replace("javascript:__doPostBack('", "").replace("','')", "");
-            __doPostBack(postcmd, '');
+            $("input[[id*='_cmdConfirm']]").trigger("click");
         });
 
     });

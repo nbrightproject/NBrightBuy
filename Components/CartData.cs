@@ -286,6 +286,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double totaldiscount = 0;
             Double totaldealerdiscount = 0;
             Double totalqty = 0;
+            Double totalweight = 0;
             
             var strXml = "<items>";
             foreach (var info in itemList)
@@ -300,6 +301,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     totaldiscount += info.GetXmlPropertyDouble("genxml/totaldiscount");
                     totaldealerdiscount += info.GetXmlPropertyDouble("genxml/totaldealerdiscount");
                     totalqty += info.GetXmlPropertyDouble("genxml/qty");
+                    totalweight += info.GetXmlPropertyDouble("genxml/totalweight"); 
                 }
             }
             strXml += "</items>";
@@ -309,6 +311,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // calculate totals
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalqty", totalqty);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
@@ -372,9 +375,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var stockon = prdModel.GetXmlPropertyBool("genxml/checkbox/chkstockon");
                 var stocklevel = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
-                var minStock = prdModel.GetXmlPropertyInt("genxml/textbox/txtqtyminstock");
+                var minStock = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtyminstock");
                 if (minStock == 0) minStock = StoreSettings.Current.GetInt("minimumstocklevel");
-                var maxStock = prdModel.GetXmlPropertyInt("genxml/textbox/txtqtystockset");
+                var maxStock = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtystockset");
+                var weight = prdModel.GetXmlPropertyDouble("genxml/textbox/weight");
                 if (stockon)
                 {
                     stocklevel = stocklevel - minStock;
@@ -398,6 +402,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 var totalcost = qty*unitcost;
                 var totaldealercost = qty*dealercost;
+                var totalweight = weight * qty;
 
                 var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
                 if (optNods != null)
@@ -421,6 +426,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
+                cartItemInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight.ToString(""));
                 cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));

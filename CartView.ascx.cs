@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -403,7 +404,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 var shipprov = ShippingInterface.Instance(shippingkey);
                 if (shipprov != null)
                 {
-                    strRtn += shipprov.GetTemplate(_cartInfo.PurchaseInfo);
+                    var activeprovider = _cartInfo.GetInfo().GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
+                    // no shipping provider selected, so get the default one.
+                    if (activeprovider == "") activeprovider = provList.First().Key;
+                    if (activeprovider == d.Key) strRtn += shipprov.GetTemplate(_cartInfo.PurchaseInfo);
                 }
             }
             return strRtn;

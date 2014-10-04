@@ -67,5 +67,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             return "";
         }
+
+        public override string GetDeliveryLabelUrl(NBrightInfo cartInfo)
+        {
+            return "";
+        }
     }
 }
