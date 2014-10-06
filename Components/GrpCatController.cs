@@ -124,7 +124,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString(""), newBaseName.Replace(" ", "-") + ".aspx");
+                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-") + ".aspx");
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
                     }
                 }

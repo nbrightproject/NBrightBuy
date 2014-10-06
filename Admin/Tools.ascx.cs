@@ -144,12 +144,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
 
             // Validate Categories
-            var catList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "CAT");
+            var catList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "CATEGORY");
             foreach (var c in catList)
             {
                 var catData = new CategoryData(c.ItemID, StoreSettings.Current.EditLanguage);
                 errcount += catData.Validate();
             }
+
+            // Validate Groups
+            var grpList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "GROUP");
+            foreach (var c in grpList)
+            {
+                var grpData = new GroupData(c.ItemID, StoreSettings.Current.EditLanguage);
+                errcount += grpData.Validate();
+            }
+
             return errcount;
         }
 

@@ -64,6 +64,57 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objCtrl.Update(DataLangRecord);
         }
 
+        public int Validate()
+        {
+            var errorcount = 0;
+            var objCtrl = new NBrightBuyController();
+
+            DataRecord.ValidateXmlFormat();
+            if (DataLangRecord == null)
+            {
+                // we have no datalang record for this language, so get an existing one and save it.
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                if (l.Count > 0)
+                {
+                    DataLangRecord = (NBrightInfo)l[0].Clone();
+                    DataLangRecord.ItemID = -1;
+                    DataLangRecord.Lang = _lang;
+                    DataLangRecord.ValidateXmlFormat();
+                    objCtrl.Update(DataLangRecord);
+                }
+            }
+
+
+            // fix langauge records
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                if (l.Count == 0 && DataLangRecord != null)
+                {
+                    var nbi = (NBrightInfo)DataLangRecord.Clone();
+                    nbi.ItemID = -1;
+                    nbi.Lang = lang;
+                    objCtrl.Update(nbi);
+                    errorcount += 1;
+                }
+                if (l.Count > 1)
+                {
+                    // we have more records than shoudl exists, remove any old ones.
+                    var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var lp = 1;
+                    foreach (var i in l2)
+                    {
+                        if (lp >= 2) objCtrl.Delete(i.ItemID);
+                        lp += 1;
+                    }
+                }
+            }
+
+
+            return errorcount;
+        }
+
+
         #endregion
 
 
