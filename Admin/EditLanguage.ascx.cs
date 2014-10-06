@@ -66,9 +66,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     cmd.CommandName = "selectlang";
                     cmd.Command += (s, cmde) =>
                                        {
-                                           var param = new string[1];
+                                           var param = new string[2];
                                            if (_entryid != "") param[0] = "eid=" + _entryid;
-                                           if (_ctrl != "") param[0] = "ctrl=" + _ctrl;
+                                           if (_ctrl != "") param[1] = "ctrl=" + _ctrl;
                                            
                                            StoreSettings.Current.EditLanguage = cmde.CommandArgument.ToString();
                                            Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
