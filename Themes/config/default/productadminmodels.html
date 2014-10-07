@@ -1,4 +1,4 @@
-﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
 <li class="modelitem form-group"> <!-- class="modelitem" is needed for JS postback update -->
     <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
@@ -10,8 +10,8 @@
 
 	<div class="col-sm-12 form-horizontal">
 	    <div class="row">
-	        <div class="col-sm-2"><a class="removemodel btn btn-danger">Remove</a></div><!-- class required for ajax -->
-	        <div class="col-sm-2">[<tag id="chkstockon" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
+	        <div class="col-sm-2"><a class="removemodel">[<tag type="htmlof" resourcekey="General.cmdDeleteIcon" />]</a></div><!-- class required for ajax -->
+	        <div class="col-sm-2 activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />]">[<tag id="chkstockon" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkishidden" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdeleted" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Deleted" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdealeronly" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label></div>
@@ -31,7 +31,7 @@
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Width" />]</label>[<tag id="width" type="textbox" cssclass="form-control" maxlength="10" Text="0"/>]</div>
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Height" />]</label>[<tag id="height" type="textbox" cssclass="form-control" maxlength="10" Text="0"/>]</div>
 		</div>
-	    <div class="row">
+	    <div class="row stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]">
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Stock" />]</label>[<tag id="txtqtyremaining" type="textbox" cssclass="form-control" maxlength="250" Text="0" />]</div>
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Min" />]</label>[<tag id="txtqtyminstock" type="textbox" cssclass="form-control" maxlength="250" Text="0"/>]</div>
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Max" />]</label>[<tag id="txtqtystockset" type="textbox" cssclass="form-control" maxlength="250" Text="0"/>]</div>
@@ -44,3 +44,16 @@
 
 	</div>
 </li>
+<!-- Hides and shows row of stock options -->
+<script type="text/javascript">
+$(document).ready(function() {
+if ($('.activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />] input[[id*="_chkstockon_"]]:checked').val()  === undefined) $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").hide();
+$('.activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />] input[[id*="_chkstockon_"]]').click(function() {
+    if($(this).is(":checked")) {
+        $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").show();
+    } else {
+        $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").hide();
+    }
+});
+});
+</script>

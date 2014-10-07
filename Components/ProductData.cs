@@ -300,6 +300,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
                     }
                     else
+                    {
+                        DataLangRecord.RemoveXmlNode(f);
+                        var xpathDest = f.Split('/');
+                        if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+                    }
                         DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
                     DataRecord.RemoveXmlNode(f);
@@ -311,7 +316,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                    DataRecord.RemoveXmlNode(f);
+                    var xpathDest = f.Split('/');
+                    if (xpathDest.Count() >= 2) DataRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+
                     // if we have a image field then we need to create the imageurl field
                     if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
                         DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));

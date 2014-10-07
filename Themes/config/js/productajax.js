@@ -275,6 +275,12 @@
     });
     // END: -------------------------------------------------------
 
+    $('#productselect').click(function () {
+        $('#pageactionssource').toggle();
+    });
+    $('#returnfromselect').click(function () {
+        $('#pageactionssource').toggle();
+    });
 
     function moveUp(item) {
         var prev = item.prev();
