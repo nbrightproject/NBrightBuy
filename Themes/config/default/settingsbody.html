@@ -249,7 +249,7 @@
 	                </div>
 	                <div class="form-group">
 	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.folderuploads" />]</label>
-	                    <div class="col-sm-5">[<tag id="folderuploads" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\uploads" />]</div>
+	                    <div class="col-sm-5">[<tag id="Tag1" cssclass="form-control" type="textbox" width="300" maxlength="150" Text="NBStore\docs" />]</div>
 	                </div>
 	            </div>
 	        </div>
@@ -305,7 +305,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
 						<div class="col-sm-5">
-							[<tag id="pagesize" cssclass="form-control" type="textbox" maxlength="5" Text="30" />]
+							[<tag id="pagesize" cssclass="form-control" type="textbox" Text="30" />]
 						</div>
 					</div>
 					<div class="form-group">
@@ -329,13 +329,13 @@
 				    <div class="form-group">
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
 				        <div class="col-sm-5">
-				            [<tag id="minimumstocklevel" cssclass="form-control" type="textbox" width="60" maxlength="5" Text="0" />]
+				            [<tag id="minimumstocklevel" cssclass="form-control" type="textbox" Text="0" />]
 				        </div>
 				    </div>
     			    <div class="form-group">                
                     <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.defaultthemefolder" />]</label><!-- Need to move this -->
                     	<div class="col-sm-5">
-                    		[<tag id="themefolder" cssclass="form-control" type="textbox" width="200" maxlength="50" Text="Cygnus" />]                    	        
+                    		[<tag id="themefolder" cssclass="form-control" type="textbox" Text="Cygnus" />]                    	        
                     	</div>
 				    </div>
 	                <div class="form-group">
@@ -379,7 +379,7 @@
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.AdminPin" />]</label><!-- Need to move this -->
                     	<div class="col-sm-5">
-                    	    [<tag id="adminpin" cssclass="form-control" type="textbox" width="100" maxlength="4" Text="1234" />]
+                    	    [<tag id="adminpin" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
                     	</div>
 				    </div>
 				    <div class="form-group">
@@ -393,7 +393,7 @@
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.orderprefix" />]</label><!-- Need to move this -->
                     	<div class="col-sm-5">
-                    	    [<tag id="orderprefix" cssclass="form-control" type="textbox" width="100" maxlength="8" Text="" />]
+                    	    [<tag id="orderprefix" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
                     	</div>
 				    </div>                    
 				</div>
@@ -427,6 +427,12 @@
 		                <label class="col-sm-3 control-label">Currency Code</label>
 		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
 		            </div>
+    			    <div class="form-group">                
+                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol" />]</label>
+                    	<div class="col-sm-5">
+                    	    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$" />]
+                    	</div>
+				    </div>                    
 		        </div>
 		        <div class="form-horizontal dnnForm countryselection">
 		            <p class="page-header">Valid countries for the store</p>

@@ -123,6 +123,9 @@
   <data name="cmdAdd.ToolTip" xml:space="preserve">
     <value>Add New</value>
   </data>
+  <data name="cmdAddIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -142,7 +145,7 @@
     <value>Delete</value>
   </data>
   <data name="cmdDeleteIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Delete" class="fa fa-minus-square fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Delete" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDelete.ToolTip" xml:space="preserve">
     <value>Delete</value>
@@ -160,7 +163,7 @@
     <value>Edit</value>
   </data>
   <data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Edit" class="fa fa-edit fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdEdit.ToolTip" xml:space="preserve">
     <value>Edit</value>
@@ -179,6 +182,9 @@
   </data>
   <data name="cmdReset.ToolTip" xml:space="preserve">
     <value>Reset Data</value>
+  </data>
+  <data name="cmdResetIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Save</value>
@@ -200,6 +206,9 @@
   </data>
   <data name="cmdSearch.ToolTip" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="cmdSearchIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Search" class="fa fa-search fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSelect.Text" xml:space="preserve">
     <value>Select</value>
@@ -251,6 +260,9 @@
   </data>
   <data name="cmdReturn.ToolTip" xml:space="preserve">
     <value>Return</value>
+  </data>
+  <data name="cmdReturnIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
   </data>
   <data name="cmdExport.Text" xml:space="preserve">
     <value>Export</value>
@@ -344,6 +356,9 @@
   </data>
   <data name="Save.Text" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="cmdSaveIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save</value>
   </data>
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
@@ -439,7 +454,7 @@
     <value>Move</value>
   </data>
   <data name="cmdMoveIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Move to here" class="fa fa-arrow-circle-left fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Move to here" class="fa fa-arrow-circle-left fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Undo.Text" xml:space="preserve">
     <value>Undo</value>
@@ -704,6 +719,15 @@
   </data>
   <data name="Product.Text" xml:space="preserve">
     <value>Product</value>
+  </data>
+  <data name="OrderDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Customer.Text" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="OrderNumber.Text" xml:space="preserve">
+    <value>Order</value>
   </data>
   <data name="Active.Text" xml:space="preserve">
     <value>Active</value>

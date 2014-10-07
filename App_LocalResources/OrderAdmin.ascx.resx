@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdEditOrder.Text" xml:space="preserve">
-    <value>Edit</value>
+    <value>&lt;i  title="View and Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Edit</value>
   </data>
   <data name="cmdEmailAmended.confirm" xml:space="preserve">
     <value>Send Amended Email to Client ?</value>
@@ -151,13 +151,19 @@
     <value>Receipt</value>
   </data>
   <data name="cmdReOrder.Text" xml:space="preserve">
-    <value>Repeat</value>
+    <value>&lt;i  title="Repeat" class="fa fa-repeat fa-fw fa-lg"&gt;&lt;/i&gt; Repeat</value>
+  </data>
+  <data name="cmdReOrderIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Repeat" class="fa fa-repeat fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
   </data>
   <data name="cmdView.Text" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="cmdViewIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="View and Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdPrintDeliveryLabel.Text" xml:space="preserve">
     <value>Delivery Label</value>
@@ -194,5 +200,8 @@
   </data>
   <data name="none.Text" xml:space="preserve">
     <value>None</value>
+  </data>
+  <data name="PaymentMethod.Text" xml:space="preserve">
+    <value>Payment Method: </value>
   </data>
 </root>

@@ -201,4 +201,7 @@
   <data name="orderprefix.Text" xml:space="preserve">
     <value>Order Prefix</value>
   </data>
+  <data name="currencysymbol.Text" xml:space="preserve">
+    <value>Currency Symbol</value>
+  </data>
 </root>

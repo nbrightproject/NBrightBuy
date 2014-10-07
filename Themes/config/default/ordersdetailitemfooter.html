@@ -2,33 +2,38 @@
 								<td></td>
 								<td></td>
 								<td colspan="2" class="text-right">[<tag type="valueof" resourcekey="General.Subtotal" />]</td>
-								<td><b>$[<tag type='valueof' xpath='genxml/subtotalcost' />]</b></td>
+								<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/subtotalcost' />]</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td></td>
 								<td colspan="2" class="text-right">[<tag type="valueof" resourcekey="General.Discount" />]</td>
-								<td><b>$[<tag type='valueof' xpath='genxml/totaldiscount' />]</b></td>
+								<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/totaldiscount' />]</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td></td>
 								<td colspan="2" class="text-right">[<tag type="valueof" resourcekey="General.Shipping" />]</td>
-								<td><b>$[<tag type='valueof' xpath='genxml/shippingcost' />]</b></td>
+								<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/shippingcost' />]</td>
 							</tr>
 							<tr>
-								<td></td>
+								<td><small>[<tag type="valueof" resourcekey="OrderAdmin.VATincluded" />]</small></td>
 								<td></td>
 								<td colspan="2" class="text-right">[<tag type="valueof" resourcekey="General.Tax" />]</td>
-								<td><b>$[<tag type='valueof' xpath='genxml/taxcost' />]</b></td>
+								<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/taxcost' />]</td>
 							</tr>
 							<tr class="active">
+								<td><small>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]</small></td>
 								<td></td>
-								<td></td>
-								<td colspan="2" class="text-right">[<tag type="valueof" resourcekey="General.Total" />]</td>
-								<td><b>$[<tag type='valueof' xpath='genxml/total' />]</b></td>
+								<td colspan="2" class="text-right"><b>[<tag type="valueof" resourcekey="General.Total" />]</b></td>
+								<td><b>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/total' />]</b></td>
 							</tr>
 						</tbody>
 					</table>
-					<small>[<tag type="valueof" resourcekey="OrderAdmin.VATincluded" />]</small>
+				
+				[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
+				<div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</b></div>
+				[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]
+				[<tag type="endif" />]
+
 				</div>
