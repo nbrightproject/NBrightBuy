@@ -8,11 +8,8 @@
 .NBB{}
 
 
-/* Fixes */
 
-
-
-/* Adjustments to theme */
+/* Adjustments to devoops and DNN */
 body{font-size:13px}
 .page-header{font-size:16px}
 .nav{margin-left:0;font-size:16px}
@@ -21,42 +18,76 @@ a, a:visited {color:#428BCA}
 #sidebar-left{position:fixed}#content{float:right}/* Fix menu in place */
 .no-box-header{display:none}/* Hide panel head section */
 .orderdetailitems th{text-transform:uppercase}
-.orderdetail .billaddress b,.orderdetail .shipaddress b{text-transform:uppercase}
+.orderdetail .billaddress b,.orderdetail .shipaddress b{font-size:18px;text-transform:uppercase}
 .orderdetail .storeaddress{}
 .centered{text-align:center}
 #logo a{background: none;}/* Hide devoops logo*/
 /* .top-panel-right{display: none;}Hide top right menu section */
 a.btn-primary,a.btn-success{color:#FFFFFF}/* When buttons are inside anchors */
-a.btn-default {color:#929292}
+a.btn-default {color:#555555}
 #loader{opacity:0}
 #loader{background: none repeat scroll 0 0 #848D92;color: #000000;height: 100%;left: 0;opacity: 0.4;transition:all 0.4s ease-in-out 0s;position: absolute;text-align: right;top: 0;width: 100%;z-index: 9999;}/* Loading graphic */
 #loader .fa{margin-right:2px;margin-top:3px;}
 .text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
 .nowrap{white-space:nowrap}/* remove this one */
-.btn{padding:4px 12px;margin-right:10px;min-width:110px}/* default buttons */
+#content .btn,#top-panel .btn,#content .dropdown-toggle{padding:3px 12px;margin-right:10px;border-radius:0;border-color:transparent}/* default buttons */
+.btn:hover{border-color:transparent}/* default buttons */
 /* span.dnnInputFileWrapper{padding: 0 15px;}fix for file upload buttons */
 .bg-primary,.bg-success,.bg-info,.bg-warning,.bg-danger {margin-top: 15px;padding: 15px;font-size: 21px;font-weight: bold;}
 .checkbox input[type=checkbox]{margin-left: 0;}
-.fa {margin-right: 6px;}
+/*.fa {margin-right: 6px;}*/
 .nav.main-menu .fa {font-size:20px;margin-right:12px;vertical-align:-1px;}
 .spacer{margin-bottom: 15px;}/* Gap between Bootstrap rows */
 .ui-accordion-header{font-size:17px;letter-spacing: 0.008em;}/* jQuery UI override */
 .ui-accordion-header.ui-state-default{border-color:#E4E4E4}
 select option{padding-bottom:3px}
 .close-link{display:none !important}
+.form-control{border-radius: 0;}
+.dropup .btn-default .fa{vertical-align: 0;}
+.dropup .btn-default{color:#555555;vertical-align: 0;cursor: default;}
+.dropup .btn-default:hover{background:#d8d8d8}
+.dropdown-menu {border-radius: 0;}
+.dropup .btn{margin-right:0}
+.dropup .dropdown-toggle{background:#bbbbbb;cursor: pointer;}
+.dropup .dropdown-toggle:hover{background:#AAAAAA;}
+.select2-container .select2-choice{border-radius: 0;}
 
-/* Back Office colors for NBB */
+
+/* Back Office colours */
 body{background:#646262}
-.navbar{background:#1AA8E3}
-.navbar #logo,.navbar #top-panel{background:transparent}
+.navbar{}
+.navbar #logo{background:#1AA8E3}
+.navbar #top-panel{background:#efefef}
 .navbar a.btn-primary{}
 .navbar a.btn-default{}
 .navbar a.btn-danger{}
 .navbar a.btn-success{}
 #sidebar-left{background:#646262}
 #content{box-shadow:none}
-.show-sidebar .fa{color: #ffffff;font-size: 20px;}
+.show-sidebar .fa{color: #646262;font-size: 20px;}
 .ui-accordion-header.ui-state-active {background:#1aa8e3 !important;color: #ffffff;}
+
+/* Font-Awesome icons */
+.btn i.fa-lg {vertical-align: -1px;}
+.box-content .fa{color:#CCCCCC;}
+.box-content .btn .fa{color:#FFFFFF;}
+.box-content .fa-edit:hover{color:#47BE27;}
+.box-content .fa-refresh:hover{color:;}
+.box-content .fa-repeat:hover{color:#1AA8E3;}
+.box-content .fa-minus-square:hover{color:#D33030;}
+.box-content .fa-search:hover{color:;}
+.box-content .fa-times-circle{color:#D33030;}
+.box-content .fa-arrow-circle-left{color:#47BE27;}
+.box-content .fa-arrow-circle-up:hover{color:#47BE27;}
+.box-content .fa-arrow-circle-down:hover{color:#47BE27;}
+.box-content .fa-arrow-circle-left:hover{color:#47BE27;}
+.box-content .fa-cog:hover{color:;}
+.box-content .fa-sort:hover{color:#1AA8E3;}
+.box-content .fa-check-circle{color:#555555;}
+.box-content .btn .fa{color:#FFFFFF;}
+.box-content .btn-default .fa{color:#555555;}
+.categorylist .fa{font-size:200%}
+.plugins .fa {font-size:200%;}
 
 /* Page action buttons */
 .actionbuttonwrapper{height:50px;padding-top:8px;margin-left:30px;white-space:nowrap;}
@@ -82,8 +113,6 @@ body{background:#646262}
 .productadminlist .productlistitem li.noimage{font-size:80px;line-height:120px;text-align:center;}
 .productadminlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
 .productadminlist .productlistitem .edititem{top:0;right:0;position:absolute;}
-.productadminlist .productlistitem .edititem a.editlink{color:#CCCCCC}
-.productadminlist .productlistitem .edititem a.editlink:hover{color:#47BE27}
 
 /* Pager */
 .NBrightPagingDiv{}
@@ -152,16 +181,9 @@ body{background:#646262}
 .selectrelated .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
 .selectrelated .selectlistitem .selectproduct{top:0;right:0;position:absolute;cursor: pointer;}
 .selectrelated .selectlistitem .selectproduct .fa{color: #DDDDDD;}
-.selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}+
+.selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
 #productlist .NBrightPagingDiv{}
 
-/* Category and Properties Editors */
-.categorylist .fa{color:#DDDDDD;font-size:200%}
-.categorylist .fa-minus-square:hover{color:#D33030}
-.categorylist .fa-edit:hover{color:#47BE27}
-.categorylist .fa-sort:hover{color:#549ACC}
-.categorylist .fa-times-circle{color:#D33030}
-.categorylist .fa-arrow-circle-left{color:#47BE27}
 
 /* Category Editor Productlist items */
 .productlist{list-style: none outside none;margin: 0;padding: 0;}
@@ -185,19 +207,12 @@ body{background:#646262}
 .productlist .selectlistitem .additem{top:0;right:0;position:absolute;}
 .productlist .selectlistitem .selectproduct{cursor:pointer;}
 
-/* Plugins */
-.plugins .fa {color:#DDDDDD;font-size:200%;}
-.plugins .fa-edit:hover{color:#47BE27}
-.plugins .fa-arrow-circle-up:hover{color:#47BE27}
-.plugins .fa-arrow-circle-down:hover{color:#47BE27}
-
-
-/* Property Groups Editor */
-.propertygroupslist .fa{color:#DDDDDD;font-size:200%}
-.propertygroupslist .fa-minus-square:hover{color:#D33030}
-.propertygroupslist .fa-sort:hover{color:#549ACC}
-.propertygroupslist .fa-times-circle{color:#D33030}
-.propertygroupslist .fa-arrow-circle-left{color:#47BE27}
-
 /* Store settings */
 .countryselection .dnnBoxLabel{font-weight:normal}
+
+/* Orders */
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+.orderslist select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;height:inherit;line-height:inherit;opacity:1;padding:0;}
+.orderslist select.aspNetDisabled.form-control option{padding-bottom:0;}
+.orderslist select.aspNetDisabled.form-control::-ms-expand{display:none;}
+.orderdetail .dropdown-menu > li > a{display:inline-block;width: 100%;}

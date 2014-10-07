@@ -155,13 +155,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 #region "display list and detail"
 
+                var navigationData = new NavigationData(PortalId, "AdminOrders");
+                // get search data
+                var sInfo = new NBrightInfo();
+                sInfo.XMLData = navigationData.XmlData;
+                // display search
+                base.DoDetail(rpSearch, sInfo);
+
                 if (_displayentrypage)
                 {
                     DisplayDataEntryRepeater(_entryid);
                 }
                 else
                 {
-                    var navigationData = new NavigationData(PortalId, "AdminOrders");
 
                     //setup paging
                     var pagesize = StoreSettings.Current.GetInt("pagesize");
@@ -170,12 +176,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);
                     var recordcount = 0;
 
-                    // get search data
-                    var sInfo = new NBrightInfo();
-                    sInfo.XMLData = navigationData.XmlData;
-
-                    // display search
-                    base.DoDetail(rpSearch, sInfo);
 
                     var strFilter = navigationData.Criteria;
 
@@ -218,9 +218,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             #endregion
 
-
-            // display search
-            base.DoDetail(rpSearch);
         }
 
         #endregion

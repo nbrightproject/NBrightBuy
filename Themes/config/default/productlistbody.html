@@ -9,7 +9,10 @@
 	<td class="noimage"><i class="fa fa-camera"></i></td>
 	[<tag type="endif" />]
 	[<tag type="endif" />]
-    <td>[<tag type='valueof' xpath='genxml/textbox/txtproductref' />]</td>
-    <td>[<tag type="productname" />]</td>
+    <td><div>[<tag type="productname" />]</div>
+    [<tag type="if" xpath="genxml/textbox/txtproductref" testvalue="" display="{OFF}" />]
+    [<tag type="valueof" resourcekey="General.Code" />]: [<tag type='valueof' xpath='genxml/textbox/txtproductref' />]
+	[<tag type="endif" />]
+    </td>
     <td>[<tag type="nbs:editlink" cssclass="editlink" resourcekey="General.cmdEditIcon" />]</td><!-- editlink class added to show processing -->
 </tr>

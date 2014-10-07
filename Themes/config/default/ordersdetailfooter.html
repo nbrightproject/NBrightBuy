@@ -1,22 +1,40 @@
 				<div class="clearfix"></div>
-					<br /><br />
-					<div class="col-sm col-sm-6">
-					<p class="page-header">Order Options</p>
+
+					<div class="col-sm col-sm-12 form-inline text-right">
+					<hr/>
 					<div class="form-group">
-						<div class="col-sm-4">
-						[<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" cssclass="btn btn-success btn-block" commandname="editorder" commandargument="ItemID" />]
-						</div>
-						<div class="col-sm-4">
-						[<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrder" cssclass="btn btn-default btn-block" commandname="reorder" commandargument="ItemID" />]
-						</div>
-						<div class="col-sm-4">
-						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-default btn-block" commandname="viewclient" />]
-						</div>
+						[<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" cssclass="btn btn-success" commandname="editorder" commandargument="ItemID" />]
+						[<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrder" cssclass="btn btn-default" commandname="reorder" commandargument="ItemID" />]
+						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-default" commandname="viewclient" />]
+					<div class="btn-group dropup">
+					  <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> Email Order</button>
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+						<li>[<tag id="cmdEmailAmended" type="linkbutton" resourcekey="OrderAdmin.cmdEmailAmended" commandname="emailamended" />]</li>
+						<li>[<tag id="cmdEmailValidated" type="linkbutton" resourcekey="OrderAdmin.cmdEmailValidated" commandname="emailvalidated" />]</li>
+						<li>[<tag id="cmdEmailShipped" type="linkbutton" resourcekey="OrderAdmin.cmdEmailShipped" commandname="emailshipped" />]</li>
+						<li>[<tag id="cmdEmailReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdEmailReceipt" commandname="emailreceipt" />]</li>
+					  </ul>
+					</div>&nbsp;&nbsp;
+					<div class="btn-group dropup">
+					  <button type="button" class="btn btn-default"><i class="fa fa-print fa-fw fa-lg"></i> Print Order</button>
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+						<li>[<tag id="cmdPrintOrder" type="linkbutton" resourcekey="OrderAdmin.cmdPrintOrder" commandname="printorder" />]</li>
+						<li>[<tag id="cmdPrintReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdPrintReceipt" commandname="printreceipt" />]</li>
+						<li>[<tag id="cmdPrintDeliveryLabel" type="linkbutton" resourcekey="OrderAdmin.cmdPrintDeliveryLabel" commandname="Printdeliverylabel" />]</li>
+					  </ul>
+					</div>
 					</div>
 					</div>
 
 				<div class="clearfix"></div>
-
 
 			</div>
 		</div>
@@ -28,7 +46,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Print" />] &amp; [<tag type="valueof" resourcekey="General.Email" />]</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="OrderAdmin.ProcessOrder" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -39,49 +57,50 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<div class="col-sm col-sm-6">
-					<p class="page-header">[<tag type="valueof" resourcekey="General.Print" />]</p>
 					<div class="form-group">
-						<div class="col-sm-4">
-						[<tag id="cmdPrintOrder" type="linkbutton" resourcekey="OrderAdmin.cmdPrintOrder" cssclass="btn btn-default btn-block" commandname="printorder" />]
-						</div>
-						<div class="col-sm-4">
-						[<tag id="cmdPrintReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdPrintReceipt" cssclass="btn btn-default btn-block" commandname="printreceipt" />]
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.trackingcode" />]</label>
+						<div class="col-sm-5">
+							[<tag id="trackingcode" cssclass="form-control" type="textbox" />]
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-4">
-						[<tag id="cmdPrintDeliveryLabel" type="linkbutton" resourcekey="OrderAdmin.cmdPrintDeliveryLabel" cssclass="btn btn-default btn-block" commandname="Printdeliverylabel" />]
-						</div>
-					</div>
-					</div>
-					<div class="col-sm col-sm-6">
-					<p class="page-header">[<tag type="valueof" resourcekey="General.Email" />]</p>
-					<div class="form-group">
-						<div class="col-sm-4">
-						[<tag id="cmdEmailAmended" type="linkbutton" resourcekey="OrderAdmin.cmdEmailAmended" cssclass="btn btn-default btn-block" commandname="emailamended" />]
-						</div>
-						<div class="col-sm-4">
-						[<tag id="cmdEmailValidated" type="linkbutton" resourcekey="OrderAdmin.cmdEmailValidated" cssclass="btn btn-default btn-block" commandname="emailvalidated" />]
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.shippingdate" />]</label>
+						<div class="col-sm-5">
+							[<tag id="shippingdate" cssclass="form-control" type="textbox" datatype="date" />]
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-4">
-						[<tag id="cmdEmailShipped" type="linkbutton" resourcekey="OrderAdmin.cmdEmailShipped" cssclass="btn btn-default btn-block" commandname="emailshipped" />]
-						</div>
-						<div class="col-sm-4">
-						[<tag id="cmdEmailReceipt" type="linkbutton" resourcekey="OrderAdmin.cmdEmailReceipt" cssclass="btn btn-default btn-block" commandname="emailreceipt" />]
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.status" />]</label>
+						<div class="col-sm-5">
+							[<tag id="orderstatus" cssclass="form-control" type="orderstatus" />]
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.Invoice" />]</label>
+					    <div class="col-sm-5">
+					        [<tag id="invoicedoc" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
+                            [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{ON}' />]
+					            [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
+					        [<tag type="endtestof" />]
+                            [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{OFF}' />]
+                                [<tag id="cmdDownload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Download" commandname="downloadinvoice" commandargument="ItemID" />]
+                                [<tag id="cmdDeleteInvoice" type="linkbutton" cssclass="btn btn-primary" resourcekey="OrderAdmin.cmdDeleteInvoice" commandname="deleteinvoice" commandargument="ItemID" />]
+					        [<tag type="endtestof" />]
+					    </div>
 					</div>
 
-	<div class="clearfix">
-	</div>
+					<div class="col-sm-offset-3 col-sm-6">
+					<div class="form-group">
+						[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="btn btn-primary" commandname="save" />]
+						[<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" cssclass="btn btn-default" commandname="return" />]
+					</div>
+					</div>
+				<div class="clearfix"></div>
+
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 
 </div>

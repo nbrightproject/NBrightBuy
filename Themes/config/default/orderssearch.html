@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/js/jquery.datepick.xlang.eur.js"></script>  
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.datepick.xlang.eur.js"></script>  
 <script>
 
     $(function () {
@@ -12,40 +12,21 @@
 
 </script>
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>Sales</li>
-			<li><a href="#">[<tag type="valueof" resourcekey="General.Orders" />]</a></li>
-		</ol>
-	</div>
-</div>
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">[<tag type="valueof" resourcekey="General.Orders" />]</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
 <br />
 
-<!-- Hide Cient Details button when URL doesn't contain uid - This does not work, needs to be fixed or a function created -->
-[<tag type="if" function="setting" key="dummy" testvalue="{url:uid}" display="{OFF}" displayelse="{ON}" />]
 	<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
 		<div class="col-xs-9 col-sm-9">
 			<a href="#" class="show-sidebar">
 			  <i class="fa fa-bars"></i>
 			</a>
 			<div class="actionbuttonwrapper">
-				[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-primary" commandname="viewclient" />]
+				<!-- No button in this page -->
 		    </div>
 		</div>
 		<div class="col-xs-3 col-sm-3 top-panel-right">
 			<!-- No language in this page -->
 		</div>
 	</div>
-[<tag type="endif"  />]
 
 
 <div class="row">
@@ -78,8 +59,8 @@
 							[<tag id="dateSearchTo" cssclass="form-control" type="textbox" />]
 						</div>
 						<div class="col-sm-3">
-						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="btn btn-primary" commandname="search"/>]
-						[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdReset" cssclass="btn btn-default" commandname="resetsearch"/>]
+						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchIcon" cssclass="btn btn-primary" commandname="search"/>]
+						[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetIcon" cssclass="btn btn-default" commandname="resetsearch"/>]
 						</div>
 					</div>
 				</div>
@@ -105,28 +86,4 @@
 [<tag id="search17" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/ordernumber" sqloperator="or" />]
 [<tag id="search18" type="meta" action="close" />]
 [<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlcol="ModifiedDate" sqltype="datetime" sqloperator="and"  />]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

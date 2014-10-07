@@ -17,7 +17,7 @@
 				</div>
 				<div class="col-xs-3 shipaddress">
 					<b>Ship to:</b>
-       			[<tag type="if" xpath="genxml/billaddress/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
+       			[<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
 					<address>
 			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
 			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
@@ -34,7 +34,7 @@
 					</address>
 			    [<tag type="endif" />]
                 
-                [<tag type="if" xpath="genxml/billaddress/genxml/radiobuttonlist/rblshippingoptions" testvalue="1" display="{ON}" />]
+                [<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="1" display="{ON}" />]
 					<address>
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>

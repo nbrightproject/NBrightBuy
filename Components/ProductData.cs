@@ -300,6 +300,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
                     }
                     else
+                    {
+                        DataLangRecord.RemoveXmlNode(f);
+                        var xpathDest = f.Split('/');
+                        if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+                    }
                         DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
                     DataRecord.RemoveXmlNode(f);
@@ -311,7 +316,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                    DataRecord.RemoveXmlNode(f);
+                    var xpathDest = f.Split('/');
+                    if (xpathDest.Count() >= 2) DataRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+
                     // if we have a image field then we need to create the imageurl field
                     if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
                         DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
@@ -882,7 +890,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     objCtrl.Update(nbi);
                     errorcount += 1;
                 }
+                if (l.Count > 1)
+                {
+                    // we have more records than shoudl exists, remove any old ones.
+                    var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var lp2 = 1;
+                    foreach (var i in l2)
+                    {
+                        if (lp2 >= 2) objCtrl.Delete(i.ItemID);
+                        lp2 += 1;
+                    }
+                }
             }
+
 
 
             return errorcount;

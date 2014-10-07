@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
@@ -246,6 +247,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "selectlocalebutton":
                     CreateSelectLangaugeButton(container, xmlNod);
+                    return true;                    
+                case "editculture":
+                    CreateCurrentEditCulture(container, xmlNod);
                     return true;
                 case "editflag":
                     CreateEditFlag(container, xmlNod);
@@ -3536,6 +3540,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
             cmd = (EditLanguage)GenXmlFunctions.AssignByReflection(cmd, xmlNod);
             cmd.DataBinding += SelectLangaugeDataBind;
             container.Controls.Add(cmd);
+        }
+
+        private void CreateCurrentEditCulture(Control container, XmlNode xmlNod)
+        {
+            var hid = new HtmlGenericControl("input");
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                hid.ID = xmlNod.Attributes["id"].InnerXml.ToLower();
+            else
+                hid.Attributes.Add("id", "lang");
+            hid.Attributes.Add("type", "hidden");
+            hid.Attributes.Add("value", StoreSettings.Current.EditLanguage);
+            container.Controls.Add(hid);
         }
 
         private void SelectLangaugeDataBind(object sender, EventArgs e)

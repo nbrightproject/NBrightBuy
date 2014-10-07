@@ -212,6 +212,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     objCtrl.Update(nbi);
                     errorcount += 1;
                 }
+                if (l.Count > 1)
+                {
+                    // we have more records than shoudl exists, remove any old ones.
+                    var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var lp = 1;
+                    foreach (var i in l2)
+                    {
+                      if (lp >=2) objCtrl.Delete(i.ItemID);
+                      lp += 1;
+                    }
+                }
             }
 
 
