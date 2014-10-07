@@ -21,6 +21,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 <!-- Cygnus CSS -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
 
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.validate.min.js"></script>
 
 <style type="text/css">
     #cartdetails{}
@@ -179,6 +180,20 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
                 }
             }
         }
+
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $("input[[id*='_cmdConfirm']]").trigger("click");
+    });
+        // auto fire postback when the region dropdown is changed. 
+        $("select[[id*='_Region_']]").change(function () {
+            $("input[[id*='_cmdConfirm']]").trigger("click");
+        });
+
+        // auto fire postback when the shipping providerdropdown is changed. 
+        $("input[[id*='_shippingprovider_']]").change(function () {
+            $("input[[id*='_cmdConfirm']]").trigger("click");
+        });
 
     });
 </script>
