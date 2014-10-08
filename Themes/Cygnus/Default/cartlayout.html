@@ -153,10 +153,12 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             $('#shippinginput').hide();
             $("a[[id*='cmdSaveShipAddress']]").hide();
             $("#selectshipaddress").hide();
+            $("#shippinginput").find('input').attr('disabled', 'disabled');
             if ($(this).val() == "2") {
                 $('#shippinginput').show();
                 $("a[[id*='cmdSaveShipAddress']]").show();
                 $("#selectshipaddress").show();
+                $("#shippinginput").find('input').removeAttr('disabled');
             }
             if ($(this).val() == "3") $('.checkoutship').show();
         });
@@ -194,6 +196,14 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $("input[[id*='_shippingprovider_']]").change(function () {
             $("input[[id*='_cmdConfirm']]").trigger("click");
         });
+
+        // disable validation on hidden controls
+        if ($('#shippinginput').is(':visible')) {
+            $("#shippinginput").find('input').removeAttr('disabled');
+        }
+        else {
+            $("#shippinginput").find('input').attr('disabled', 'disabled');
+        }
 
     });
 </script>
