@@ -172,14 +172,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public Dictionary<String,NBrightInfo> GetShippingProviders(Boolean activeOnly = true)
         {
+            return GetProviders("02", activeOnly);
+        }
+
+        public NBrightInfo GetPaymentProviderDefault()
+        {
+            var l = GetPaymentProviders();
+            if (l.Count > 0) return l.First().Value;
+            return null;
+        }
+
+        public Dictionary<String, NBrightInfo> GetPaymentProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("07", activeOnly);
+        }
+
+        private Dictionary<String, NBrightInfo> GetProviders(String providerType, Boolean activeOnly = true)
+        {
             var l = GetPluginList();
-            var pList = new Dictionary<String,NBrightInfo>();
+            var pList = new Dictionary<String, NBrightInfo>();
 
             foreach (var p in l)
             {
-                //UI Only;Shipping;Tax;Promotions;Scheduler;Events;Other
-                //01;02;03;04;05;06;07
-                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == "02" && (p.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
+                //UI Only;Shipping;Tax;Promotions;Scheduler;Events;Payments;Other
+                //01;02;03;04;05;06;07;08
+                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == providerType && (p.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
                 {
                     var ctrlkey = p.GetXmlProperty("genxml/textbox/ctrl");
                     var lp = 1;
