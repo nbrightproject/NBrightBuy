@@ -21,7 +21,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 <!-- Cygnus CSS -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
 
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.validate.min.js"></script>
+
 
 <style type="text/css">
     #cartdetails{}
@@ -126,6 +126,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         // JQuery used to move cart elements into required area 
         $('#cartbilladdress').append($('.checkoutbillform'));
         $('#cartbilladdress').append($('#shippingoptions'));
+        $('#cartbilladdress').append($('#shippingmethods'));
         $('#cartshipaddress').append($('.checkoutshipform'));
         $('#cartextra').append($('.checkoutextra'));
         $('#cartextra').append($('.checkoutpromo'));
@@ -133,6 +134,8 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $('#carttotals').append($('.checkoutdetails'));
         $('#cartshipaddress').append($('.checkoutship'));
         $('#cartlist').append($('#checkoutitemlist'));
+        $('#positionextrafields').append($('.extrafieldsfordetail'));
+
         $('.checkoutbillform').show();
         $('.checkoutshipform').show();
         $('.checkoutpromo').show();
@@ -144,9 +147,17 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $("a[[id*='cmdSaveShipAddress']]").hide();
         $("#selectshipaddress").hide();
 
+        // moving provider tmeplates to under the billing address....THIS WILL PROBABLY NEED MOVING!!!
+        $('#cartbilladdress').append($('#providertemplates'));
+
+
         //hide/show shipping option
         if ($("input[[id*='rblshippingoptions']]:checked").val() == "2") $('#shippinginput').show();
-        if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") $('.checkoutship').show();
+        if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") {
+            $('.checkoutship').show();
+            $('#shippingmethods').hide();
+            $('#providertemplates').hide();
+        }
 
         $("input[[id*='rblshippingoptions']]").change(function () {
             $('.checkoutship').hide();
@@ -154,13 +165,19 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             $("a[[id*='cmdSaveShipAddress']]").hide();
             $("#selectshipaddress").hide();
             $("#shippinginput").find('input').attr('disabled', 'disabled');
+            $('#shippingmethods').show();
             if ($(this).val() == "2") {
                 $('#shippinginput').show();
                 $("a[[id*='cmdSaveShipAddress']]").show();
                 $("#selectshipaddress").show();
                 $("#shippinginput").find('input').removeAttr('disabled');
             }
-            if ($(this).val() == "3") $('.checkoutship').show();
+            if ($(this).val() == "3") {
+                $('.checkoutship').show();
+                $('#shippingmethods').hide();
+                $('#providertemplates').hide();
+            }
+            if ($(this).val() != "3") $("input[[id*='_cmdConfirm_']]").trigger("click");
         });
 
 
@@ -178,23 +195,23 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
                 var valuearray = datavalue.split(',');
                 var arrayLength = valuearray.length;
                 for (var i = 0; i < arrayLength; i++) {
-                    $(selectordiv).find("[[id*='" + valuearray[i] + "']]").val(datarray[i]);
+                    $(selectordiv).find("[[id*='" + valuearray[[i]] + "']]").val(datarray[[i]]);
                 }
             }
         }
 
         // auto fire postback when the country dropdown is changed. 
         $("select[[id*='_Country_']]").change(function () {
-            $("input[[id*='_cmdConfirm']]").trigger("click");
+            $("input[[id*='_cmdConfirm_']]").trigger("click");
     });
         // auto fire postback when the region dropdown is changed. 
         $("select[[id*='_Region_']]").change(function () {
-            $("input[[id*='_cmdConfirm']]").trigger("click");
+            $("input[[id*='_cmdConfirm_']]").trigger("click");
         });
 
         // auto fire postback when the shipping providerdropdown is changed. 
-        $("input[[id*='_shippingprovider_']]").change(function () {
-            $("input[[id*='_cmdConfirm']]").trigger("click");
+        $("input[[id*='_shippingprovider_']]").change(function (e) {
+            $("input[[id*='_cmdConfirm_']]").trigger("click");
         });
 
         // disable validation on hidden controls
@@ -204,6 +221,11 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         else {
             $("#shippinginput").find('input').attr('disabled', 'disabled');
         }
+
+        // update the order email with the billing email, if it's not already there
+        $('.checkoutbillform input[[id*="_Email_"]]').change(function(e) {
+            if ($('input[[id*="_cartemailaddress_"').val() == '') $('input[[id*="_cartemailaddress_"').val($(this).val());
+        });
 
     });
 </script>

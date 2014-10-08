@@ -6,6 +6,7 @@
     
         <h3>[<tag type="valueof" resourcekey="CartView.ShippingAddress" />]</h3> 
 
+    [<tag type="if" function="isuser" />] 
         <div class="formrow">
             <h6>Select existing address...</h6>
             [<tag id="selectaddress" formselector=".checkoutshipform" type="addressdropdown"  blank=""
@@ -14,6 +15,7 @@
                   data="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode,genxml/textbox/city,genxml/dropdownlist/country,genxml/textbox/phone,genxml/textbox/email" 
                 />]
         </div>
+	[<tag type="endif" />]
     
         <div class="formrow">
             <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>

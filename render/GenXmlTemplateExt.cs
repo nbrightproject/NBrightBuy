@@ -570,6 +570,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "isuser":
+                                dataValue = "FALSE";
+                                if (UserController.GetCurrentUserInfo().UserID >= 0)
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             case "isclientordermode":
                                 dataValue = "FALSE";
                                 currentcart = new CartData(PortalSettings.Current.PortalId);
@@ -3217,6 +3225,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             txt = (TextBox)GenXmlFunctions.AssignByReflection(txt, xmlNod);
             txt.ID = "cartemailaddress";
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["required"] != null))
+            {
+                txt.Attributes.Add("required", xmlNod.Attributes["required"].InnerXml);
+            }
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["datatype"] != null) && xmlNod.Attributes["datatype"].InnerXml == "email")
+            {
+                txt.Attributes.Add("type", "email");
+            }
+
             if (xmlNod.Attributes != null && (xmlNod.Attributes["text"] != null))
             {
                 txt.Text = xmlNod.Attributes["text"].InnerXml;
@@ -3240,7 +3259,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var strXML = Convert.ToString(DataBinder.Eval(container.DataItem, "XMLData"));
                     var nbInfo = new NBrightInfo();
                     nbInfo.XMLData = strXML;
-                    txt.Text = nbInfo.GetXmlProperty("genxml/textbox/emailaddress");
+                    txt.Text = nbInfo.GetXmlProperty("genxml/textbox/cartemailaddress");
                     if (txt.Text == "")
                     {
                         var usr = UserController.GetCurrentUserInfo();

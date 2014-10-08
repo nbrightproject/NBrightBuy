@@ -3,15 +3,17 @@
 <div class="checkoutbillform">
     <h3>[<tag type="valueof" resourcekey="CartView.BillingAddress" />]</h3> 
     
-<div class="formrow">
+    [<tag type="if" function="isuser" />] 
+    <div class="formrow">
     <h6>Select existing address...</h6>
     [<tag id="selectaddress" formselector=".checkoutbillform" type="addressdropdown" blank=""
     template="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode" 
     datavalue="FirstName,LastName,Company,Unit,Street,PostalCode,City,Country,Phone,Email" 
     data="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode,genxml/textbox/city,genxml/dropdownlist/country,genxml/textbox/phone,genxml/textbox/email" 
-    />]
-</div>
-	
+        />]
+    </div>
+	[<tag type="endif" />]
+
     <div class="formrow dnnFormItem">
         <div class="leftside">
         <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>

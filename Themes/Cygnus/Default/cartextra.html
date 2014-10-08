@@ -3,14 +3,20 @@
 [<tag id="pickuppointaddr" type="postback" aria-valuemax="" />]
 
 <div class="formrow">
-	<div id="shippingoptions" style="display:none;"><!-- Shipping options radio buttons - What the hell is this doing in here -->
-    	<h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
-		[<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
+    <div id="shippingoptions" style="display:none;"><!-- Shipping options radio buttons - What the hell is this doing in here -->
+        <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
+        [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
+    </div>
+    <!-- Shipping methods  -->
+    <div id="shippingmethods">
         [<tag type="if" function="hasshippingproviders" display="{ON}"/>]
-        <h3>Shipping Methods</h3>
-        [<tag type="shippingproviders" />]
+            <h3>Shipping Methods</h3>
+            [<tag type="shippingproviders" />]
         [<tag type="endif" />]
     </div>
+    <!-- Positional div for shipping provider tmeplates to be injected -->
+    <div id="providertemplates"></div>
+
 </div>
 
 <div class="checkoutextra" style="display:none;">
@@ -21,4 +27,21 @@
         <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
         [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
     </div>
+</div>
+
+<!-- These field want displaying in the order summary area, bt must be in this template so they save ok.  Moved using JQuery -->
+<div class="formrow extrafieldsfordetail">
+<table cellpadding="6" style="width:100%">
+	<tr>
+		<td>[<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]</td>
+	</tr>
+	<tr>
+		<td>[<tag id="chknews" type="checkbox" resourcekey="CartView.chknews"  />]</td>
+	</tr>
+</table>
+    <div class="formrow">
+        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+        [<tag type='cartemailaddress' required="" datatype="email"/>]
+    </div>
+
 </div>
