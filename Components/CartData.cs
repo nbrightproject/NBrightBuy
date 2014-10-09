@@ -82,70 +82,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
-        /// <summary>
-        /// Save transent model qty to cache.
-        /// </summary>
-        public void SaveModelTransQty()
-        {
-            //update trans stock levels.
-            var itemList = GetCartItemList();
-            foreach (var cartItemInfo in itemList)
-            {
-                var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
-                var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
-                var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-                if (prd.Exists)
-                {
-                    var model = prd.GetModel(modelid);
-                    if (model != null && model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.UpdateModelTransQty(modelid, _cartId, qty);
-                }
-            }
-        }
 
-        /// <summary>
-        /// Release transient qty for this cart
-        /// </summary>
-        public void ReleaseModelTransQty()
-        {
-            //update trans stock levels.
-            var itemList = GetCartItemList();
-            foreach (var cartItemInfo in itemList)
-            {
-                    var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
-                    var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
-                    var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
 
-                    var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-                    if (prd.Exists)
-                    {
-                        var model = prd.GetModel(modelid);
-                        if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.ReleaseModelTransQty(modelid, _cartId, qty);
-                    }
-            }
-        }
 
-        /// <summary>
-        /// Apply Transient qty for this cart onto the model
-        /// </summary>
-        public void ApplyModelTransQty()
-        {
-            //update trans stock levels.
-            var itemList = GetCartItemList();
-            foreach (var cartItemInfo in itemList)
-            {
-                    var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
-                    var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
-                    var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
-
-                    var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-                    if (prd.Exists)
-                    {
-                        var model = prd.GetModel(modelid);
-                        if (model.GetXmlPropertyBool("genxml/checkbox/chkstockon")) prd.ApplyModelTransQty(modelid, _cartId, qty);
-                    }
-            }           
-        }
 
 
         /// <summary>

@@ -1,14 +1,9 @@
 ﻿
 using System.Linq;
+using System.Web;
 using DotNetNuke.Entities.Portals;
-using Microsoft.VisualBasic;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-
-
 using System.Runtime.Remoting;
 using NBrightDNN;
 
@@ -74,9 +69,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String Paymentskey { get; set; }
 
-        public abstract String Name();
-
         public abstract String GetTemplate(NBrightInfo cartInfo);
+
+        public abstract String RedirectForPayment(NBrightInfo cartInfo);
+
+        public abstract String ProcessPaymentReturn(HttpContext context);
+
 
     }
 

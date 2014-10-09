@@ -20,6 +20,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class OrderData : PurchaseData
     {
 
+        public OrderData(int entryid)
+        {
+            PurchaseTypeCode = "ORDER";
+            PopulatePurchaseData(entryid);
+            PortalId = PurchaseInfo.PortalId;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="portalId">Left to ensure backward compatiblity</param>
+        /// <param name="entryid"></param>
         public OrderData(int portalId, int entryid)
         {
             PurchaseTypeCode = "ORDER";
@@ -47,7 +59,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (debugMode) OutputDebugFile("debug_copytocart.xml");
         }
 
-
+        /// <summary>
+        /// Order status
+        /// 010,020,030,040,050,060,070,080,090,100,110
+        /// Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Waiting,Shipped,Closed,Archived
+        /// </summary>
         public String OrderStatus { 
             get
             {
@@ -150,6 +166,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/ordernumber", value);
             }
         }
+
         public String CreatedDate
         {
             get
@@ -159,6 +176,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set
             {
                 PurchaseInfo.SetXmlProperty("genxml/createddate", value,TypeCode.DateTime);
+            }
+        }
+
+        /// <summary>
+        /// Save the internal key for to identify whcih payment provider is processing the order
+        /// </summary>
+        public String PaymentProviderKey
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/paymentproviderkey");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/paymentproviderkey", value);
+            }
+        }
+
+        /// <summary>
+        /// A payment passkey can be link to the order for security
+        /// </summary>
+        public String PaymentPassKey
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/paymentpasskey");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/paymentpasskey", value);
             }
         }
 

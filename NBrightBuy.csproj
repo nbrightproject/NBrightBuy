@@ -481,6 +481,9 @@
     <Content Include="Themes\config\default\propertieslistfooter.html" />
     <Content Include="Themes\config\default\propertieslistheader.html" />
     <Content Include="Themes\config\default\propertiessearch.html" />
+    <Content Include="Themes\config\default\propertyproductbody.html" />
+    <Content Include="Themes\config\default\propertyproductfooter.html" />
+    <Content Include="Themes\config\default\propertyproductheader.html" />
     <Content Include="Themes\config\default\Tools.html" />
     <Content Include="Themes\config\default\import.html" />
     <Content Include="Themes\config\default\export.html" />
@@ -637,6 +640,7 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
       <SubType>Designer</SubType>

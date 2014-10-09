@@ -13,7 +13,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -23,6 +25,7 @@ using NBrightDNN;
 
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -36,17 +39,12 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class Payment : NBrightBuyBase
     {
 
-        private String _catid = "";
-        private String _catname = "";
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
-        private String _templH = "";
-        private String _templD = "";
-        private String _templDfoot = "";
-        private String _templF = "";
-        private String _entryid = "";
-        private String _tabid = "";
         private CartData _cartInfo;
-
+        private Dictionary<String, NBrightInfo> _provList;
+        private OrderData _orderData;
+        private PaymentsInterface _prov;
+ 
         #region Event Handlers
 
 
@@ -54,8 +52,6 @@ namespace Nevoweb.DNN.NBrightBuy
         {
 
             base.OnInit(e);
-
-            _cartInfo = new CartData(PortalId);
 
             if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
             {
@@ -66,14 +62,65 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
 
-                const string templOK = "paymentOK.html";
-                const string templFAIL = "paymentFAIL.html";
+                var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                _provList = pluginData.GetPaymentProviders();
 
-                var displayTempl = templOK;
-                if (!_cartInfo.IsValidated()) displayTempl = templFAIL;
+                var templOk = ModSettings.Get("paymentoktemplate");
+                var templFail = ModSettings.Get("paymentfailtemplate");
+                var templPayment = "";               
 
-                rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, displayTempl, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
+                if (_provList.Count == 0)
+                {
+                    #region "No Payment providers, so process as a ordering system"
+
+                    _cartInfo = new CartData(PortalId);
+
+                    var displayTempl = templOk;
+                    if (!_cartInfo.IsValidated()) displayTempl = templFail;
+
+                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, displayTempl, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
+
+                    #endregion
+                }
+                else
+                {
+                    #region "Payment Details"
+
+                    // display the payment method by default
+                    templPayment = ModSettings.Get("paymentordersummary");
+                    
+                    var orderid = Utils.RequestQueryStringParam(Context, "orderid");
+                    if (Utils.IsNumeric(orderid))
+                    {
+                        // orderid exists, so must be return from bank; Process it!!
+                        _orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
+                        _prov = PaymentsInterface.Instance(_orderData.PaymentProviderKey);
+                        var msg = _prov.ProcessPaymentReturn(Context);
+                        if (msg == "") // no message so successful
+                        {
+                            _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
+                            _orderData.ApplyModelTransQty(); //add any transiant stock.
+                            templPayment = templOk;
+                        }
+                        else
+                        {
+                            templPayment = templFail + msg;
+                            _orderData.ReleaseModelTransQty();
+                        }
+                    }
+                    else
+                    {
+                        // not returning from bank, so display list of payment providers.
+                        templPayment += GetPaymentProviderTemplates();
+                    }
+
+                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
+
+                    #endregion
+                }
+                
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
@@ -110,26 +157,38 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            //TODO: fix this to work for payment gateways.
-            // First step is to make the cart turn into a order and accept the order...no payment proccessing
-
-            if (_cartInfo.IsValidated())
+            if (_provList.Count == 0)
             {
+                #region "No Payment providers, so process as a ordering system"
 
-                _cartInfo.SaveModelTransQty(); // move qty into trnas
+                if (_cartInfo != null && _cartInfo.IsValidated())
+                {
 
+                    _cartInfo.SaveModelTransQty(); // move qty into trans
+                    _cartInfo.ConvertToOrder(DebugMode);
+                    _cartInfo.ApplyModelTransQty();
 
-                _cartInfo.ConvertToOrder(DebugMode);
+                    var cartL = new List<NBrightInfo>();
+                    cartL.Add(_cartInfo.GetInfo());
 
-                _cartInfo.ApplyModelTransQty();
+                    // display payment OK for order
+                    rpDetailDisplay.DataSource = cartL;
+                    rpDetailDisplay.DataBind();
+                }
 
-                var cartL = new List<NBrightInfo>();
-                cartL.Add(_cartInfo.GetInfo());
-
-                // display header
-                rpDetailDisplay.DataSource = cartL;
-                rpDetailDisplay.DataBind();
+                #endregion
             }
+            else
+            {
+                #region "Payment Details"
+
+                // display return page
+                DoDetail(rpDetailDisplay,_orderData.PurchaseInfo);
+
+
+                #endregion
+            }
+
         }
 
         #endregion
@@ -146,11 +205,37 @@ namespace Nevoweb.DNN.NBrightBuy
             switch (e.CommandName.ToLower())
             {
                 case "pay":
+                    if (_cartInfo != null)
+                    {
+                        _cartInfo.SaveModelTransQty(); // move qty into trans
+                        _cartInfo.ConvertToOrder(DebugMode);
+                        var redirecturl = _prov.RedirectForPayment(_cartInfo.PurchaseInfo);
+                        Response.Redirect(redirecturl, true);
+                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
             }
 
         }
+
+        #endregion
+
+        #region "private methods"
+
+
+        private String GetPaymentProviderTemplates()
+        {
+            var strRtn = "";
+            foreach (var d in _provList)
+            {
+                var p = d.Value;
+                var key = p.GetXmlProperty("genxml/textbox/ctrl");
+                var prov = PaymentsInterface.Instance(key);
+                if (prov != null) strRtn += prov.GetTemplate(_cartInfo.PurchaseInfo);
+            }
+            return strRtn;
+        }
+
 
         #endregion
 
