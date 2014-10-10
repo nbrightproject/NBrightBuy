@@ -48,7 +48,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 		        var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
 		        if (!_providerList.ContainsKey(ctrlkey))
 		        {
-		            ctrlkey = prov.GetXmlProperty("genxml/textbox/assembly");
 		            objProvider.Paymentskey = ctrlkey;
 		            _providerList.Add(ctrlkey, objProvider);
 		        }

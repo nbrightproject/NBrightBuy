@@ -52,7 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
                     var lp = 1;
                     while (_providerList.ContainsKey(ctrlkey))
                     {
-                        ctrlkey = prov.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
+                        ctrlkey = ctrlkey + lp.ToString("D");
                         lp += 1;
                     }
                     objProvider.Shippingkey = ctrlkey;

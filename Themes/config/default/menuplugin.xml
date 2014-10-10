@@ -566,6 +566,59 @@
 		<genxml>
 			<files />
 			<hidden>
+				<index>12</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[cmcicpayment]]>
+				</ctrl>
+				<name>
+					<![CDATA[CMCIC Payment]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuyCMCIC/CMCICPayment.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Aministrators]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+					<![CDATA[NBrightBuyCMCICPaymentProvider]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[Nevoweb.DNN.NBrightBuyCMCIC.PaymentProvider]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[True]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="Payments">
+					<![CDATA[07]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
 				<index>13</index>
 			</hidden>
 			<textbox>
