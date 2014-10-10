@@ -3,9 +3,9 @@
 					<div class="col-sm col-sm-12 form-inline text-right">
 					<hr/>
 					<div class="form-group">
-						[<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" cssclass="btn btn-success" commandname="editorder" commandargument="ItemID" />]
-						[<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrder" cssclass="btn btn-default" commandname="reorder" commandargument="ItemID" />]
-						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClient" cssclass="btn btn-default" commandname="viewclient" />]
+						[<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrderButton" cssclass="btn btn-success" commandname="editorder" commandargument="ItemID" />]
+						[<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrderButton" cssclass="btn btn-default" commandname="reorder" commandargument="ItemID" />]
+						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClientButton" cssclass="btn btn-default" commandname="viewclient" />]
 					<div class="btn-group dropup">
 					  <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> Email Order</button>
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -80,19 +80,19 @@
 					    <div class="col-sm-5">
 					        [<tag id="invoicedoc" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />]
                             [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{ON}' />]
-					            [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
+					            [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
 					        [<tag type="endtestof" />]
                             [<tag type='if' xpath="genxml/hidden/invoicefilename" testvalue="" display='{OFF}' />]
-                                [<tag id="cmdDownload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Download" commandname="downloadinvoice" commandargument="ItemID" />]
-                                [<tag id="cmdDeleteInvoice" type="linkbutton" cssclass="btn btn-primary" resourcekey="OrderAdmin.cmdDeleteInvoice" commandname="deleteinvoice" commandargument="ItemID" />]
+                                [<tag id="cmdDownload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdDownloadButton" commandname="downloadinvoice" commandargument="ItemID" />]
+                                [<tag id="cmdDeleteInvoice" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdDeleteButton" commandname="deleteinvoice" commandargument="ItemID" />]
 					        [<tag type="endtestof" />]
 					    </div>
 					</div>
 
-					<div class="col-sm-offset-3 col-sm-6">
 					<div class="form-group">
-						[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="btn btn-primary" commandname="save" />]
-						[<tag id="cmdReturn" type="linkbutton" resourcekey="OrderAdmin.cmdReturn" cssclass="btn btn-default" commandname="return" />]
+					<div class="col-sm-offset-3 col-sm-6">
+						[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="btn btn-primary" commandname="save" />]
+						[<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturnButton" cssclass="btn btn-default" commandname="return" />]
 					</div>
 					</div>
 				<div class="clearfix"></div>

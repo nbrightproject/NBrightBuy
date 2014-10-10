@@ -21,22 +21,6 @@
 <div id="nbsnotify"></div>
 <div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>[<tag type="valueof" resourcekey="General.Catalogue" />]</li>
-			<li><a href="#">[<tag type="valueof" resourcekey="General.Categories" />]</a></li>
-			<li><a href="#">[<tag type="valueof" resourcekey="General.Details" />]</a></li>
-		</ol>
-	</div>
-</div>
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">[<tag type="valueof" resourcekey="General.Details" />]</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
 
 <br />
 
@@ -46,8 +30,8 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-    	[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
-		[<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />] 
+    	[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" commandargument="ItemID" />] 
+		[<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturnButton" commandname="return" />] 
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -77,14 +61,14 @@
         [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
-        <div class="hidden">[<tag id="ddlgrouptype" type="groupdropdown" groupsonly="true" />]</div><!-- Required - Sets grouptype to only categories and hides the field -->
+        <div class="hidden">[<tag id="ddlgrouptype" type="groupdropdown" groupsonly="true" />]</div><!-- Required - Sets grouptype to only properties and hides the field -->
 
         <div class="row categorydetails">
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
                         <div class="box-name">
-                            <i class="fa fa-search"></i><span>ID: [<tag type="valueof" databind="ItemId" />]</span>
+                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Property" />] ID: [<tag type="valueof" databind="ItemId" />]</span>
                         </div>
                         <div class="box-icons">
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -95,60 +79,17 @@
                     </div>
                     <div class="box-content">
                         <div class="form-horizontal dnnForm">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-4">
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>
                                         [<tag id="txtcategoryname" cssclass="form-control" type="textbox" maxlength="250" />]
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Parent" />]</label>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Type" />]</label>
                                         [<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" allowblank="true" showhidden="true" groupsonly="true" />]
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Description" />]</label>
-                                        [<tag id="txtcategorydesc" cssclass="form-control" type="textbox" rows="4" maxlength="200" textmode="MultiLine" />]
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label sr-only">[<tag type="valueof" resourcekey="General.Image" />]</label>
-                                        [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" commandargument="ItemID" />]
-                                    </div>
-                                    <div class="col-sm-12">
-                                        [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="160" />]
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-6">
-                                        <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Name" />]</label>
-                                        [<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Title" />]</label>
-                                        [<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Tags" />]</label>
-                                        [<tag id="txtmetakeywords" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Description" />]</label>
-                                        [<tag id="txtmetadescription" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-4"><br>
                                         [<tag id="chkishidden" type="checkbox" Text="" />]
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
                                         [<tag id="chkdisable" type="checkbox" Text="" />]
@@ -163,7 +104,49 @@
             </div>
         </div>
 
-        <div class="row categorymessage">
+        <!--  PRODUCT LIST AJAX  (Ajax populates this div with the html)-->
+        [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<div class="row categoryproducts">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>Products with this Property</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="form-group">
+						<div class="col-sm-4">
+							<a id="productselect" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+							<a id="removeall" class="btn btn-danger">[<tag type="htmlof" resourcekey="General.RemoveAllButton" />]</a>
+						</div>
+						<div class="col-sm-8">
+							<a id="moveto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="htmlof" resourcekey="General.MoveToButton" />]</a>
+							<a id="copyto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="htmlof" resourcekey="General.CopyToButton" />]</a>
+							[<tag id="selectcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" width="300" allowblank="true" showhidden="True" groupsonly="true" />]<!-- Use groupsonly="true" to restrict list to properties -->
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						    <div id="productlist"></div><!-- Injects propertyproductheader/body/footer -->
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+        <div class="row categorymessage hidden"><!-- Hidden for now -->
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
@@ -194,8 +177,7 @@
             </div>
         </div>
 
-
-        <div class="row categorytemplates">
+        <div class="row categorytemplates hidden"><!-- Hidden for now -->
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
@@ -236,76 +218,17 @@
             </div>
         </div>
 
-        <!--  PRODUCT LIST AJAX  (Ajax populates this div with the html)-->
-        [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
 
-<div class="row categoryproducts">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>Products with this Property</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
-			<div class="box-content">
-			<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-				<div class="form-horizontal dnnForm">
-					<div class="form-group">
-						<div class="col-sm-4">
-							<a id="productselect" class="btn btn-primary">[<tag type="valueof" resourcekey="General.cmdAddProducts" />]</a>
-							<a id="removeall" class="btn btn-danger">[<tag type="valueof" resourcekey="General.RemoveAll" />]</a>
-						</div>
-						<div class="col-sm-4">
-							<a id="moveto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="valueof" resourcekey="General.MoveTo" />]</a>
-							<a id="copyto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="valueof" resourcekey="General.CopyTo" />]</a>
-						</div>
-						<div class="col-sm-4">
-							[<tag id="selectcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" allowblank="true" showhidden="True" groupsonly="true" />]<!-- Use groupsonly="true" to restrict list to properties -->
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-12">
-                                
-
-
-						    <div id="productlist"></div><!-- Injects propertyproductheader/body/footer -->
-
-                              
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
-						    <!--  PRODUCT LIST FOOTER-->
+		<!--  PRODUCT LIST FOOTER-->
 
         [<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
         <div class="row pageactions"><!-- Page actions - also at top -->
             <div class="col-md-12">
                 <div class="box">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Actions" />]</span>
-                        </div>
-                        <div class="box-icons">
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
-                            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-                            <a class="close-link"><i class="fa fa-times"></i></a></div>
-                        <div class="no-move">
-                        </div>
-                    </div>
                     <div class="box-content">
                         <div class="col-sm-6">
-                            [<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
-                            [<tag id="cmdReturn2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />] 
+                            [<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" commandargument="ItemID" />] 
+                            [<tag id="cmdReturn2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturnButton" commandname="return" />] 
                         </div>
                         <div class="col-sm-6 text-right">
                             [<tag type="selectlocalebutton" size="32"/>]

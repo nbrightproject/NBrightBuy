@@ -8,22 +8,6 @@
     });
 </script>
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>Admin</li>
-			<li><a href="#">Settings</a></li>
-		</ol>
-	</div>
-</div>
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">Settings</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
 <br />
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
@@ -32,8 +16,8 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-			[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" />] 
-			[<tag id="cmdCancel" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancel" commandname="cancel" />]
+			[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" />] 
+			[<tag id="cmdCancel" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancelButton" commandname="cancel" />]
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -185,9 +169,9 @@
 						<label class="col-sm-3 control-label">Logo Image</label>
 					    <div class="col-sm-5">
 					        [<tag id="emaillogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] 
-                			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.UploadImage" commandname="save" />] 
+                			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" />] 
                             [<tag type="if" xpath="genxml/hidden/hidemaillogo" textvalue="" display="{OFF}" />] 
-                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="Settings.removelogo" commandname="removelogo" />] 
+                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="Settings.cmdRemoveButton" commandname="removelogo" />] 
                                  [<tag type='imageof' xpath='genxml/hidden/emaillogourl' thumb="100" />]
 					        [<tag type="endif" />]
 					    </div>
@@ -262,7 +246,7 @@
 	    <div class="box">
 	        <div class="box-header">
 	            <div class="box-name">
-            <i class="fa fa-search"></i><span>Email options</span>
+            <i class="fa fa-search"></i><span>Client Accounts</span>
  	            </div>
 	            <div class="box-icons">
 	                <a class="collapse-link"><i class="fa fa-chevron-down"></i>
@@ -304,37 +288,37 @@
 				<div class="form-horizontal dnnForm">
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.pagesize" />]</label>
-						<div class="col-sm-5">
+						<div class="col-sm-1">
 							[<tag id="pagesize" cssclass="form-control" type="textbox" Text="30" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productlisttab" />]</label>
 						<div class="col-sm-5">
-							[<tag id="productlisttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+							[<tag id="productlisttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.carttab" />]</label>
 						<div class="col-sm-5">
-							[<tag id="carttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+							[<tag id="carttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.paymenttab" />]</label>
 						<div class="col-sm-5">
-							[<tag id="paymenttab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+							[<tag id="paymenttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.backofficeexittab" />]</label>
 						<div class="col-sm-5">
-							[<tag id="exittab" cssclass="s2_with_tag populate placeholder" type="dropdownlist" datatabs="1" />]
+							[<tag id="exittab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 				    <div class="form-group">
 				        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.minimumstocklevel" />]</label>
-				        <div class="col-sm-5">
+				        <div class="col-sm-1">
 				            [<tag id="minimumstocklevel" cssclass="form-control" type="textbox" Text="0" />]
 				        </div>
 				    </div>
@@ -379,12 +363,12 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.storagetypeclient" />]</label>
 						<div class="col-sm-5">
-							[<tag id="storagetypeclient" cssclass="s2_with_tag populate placeholder" type="dropdownlist" data="Cookie;SessionMemory" />]
+							[<tag id="storagetypeclient" cssclass="form-control" type="dropdownlist" data="Cookie;SessionMemory" />]
 						</div>
 					</div>
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="General.AdminPin" />]</label><!-- Need to move this -->
-                    	<div class="col-sm-5">
+                    	<div class="col-sm-1">
                     	    [<tag id="adminpin" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
                     	</div>
 				    </div>
@@ -398,7 +382,7 @@
 				    </div>
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.orderprefix" />]</label><!-- Need to move this -->
-                    	<div class="col-sm-5">
+                    	<div class="col-sm-1">
                     	    [<tag id="orderprefix" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
                     	</div>
 				    </div>                    
@@ -435,7 +419,7 @@
 		            </div>
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol" />]</label>
-                    	<div class="col-sm-5">
+                    	<div class="col-sm-1">
                     	    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$" />]
                     	</div>
 				    </div>                    
@@ -453,21 +437,10 @@
 <div class="row pageactions"><!-- Page actions - also at top -->
 	<div class="col-md-12">
 		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-search"></i><span>Page Actions</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
 			<div class="box-content">
 				<div class="col-sm-6">
-					[<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" />] 
-					[<tag id="cmdCancel2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancel" commandname="cancel" />]
+					[<tag id="cmdSave2" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" />] 
+					[<tag id="cmdCancel2" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancelButton" commandname="cancel" />]
 				</div>
 				<div class="col-sm-6 text-right">
 				<!-- No language selector on this page-->

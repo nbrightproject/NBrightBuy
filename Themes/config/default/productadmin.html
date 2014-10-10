@@ -40,9 +40,9 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-		[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSave" commandname="save" commandargument="ItemID" />] 
-		[<tag id="cmdDelete" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdDelete" commandname="delete" commandargument="ItemID" />]
-	    [<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturn" commandname="return" />]
+		[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" commandargument="ItemID" />] 
+		[<tag id="cmdDelete" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.cmdDeleteButton" commandname="delete" commandargument="ItemID" />]
+	    [<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturnButton" commandname="return" />]
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -82,20 +82,16 @@
 
 
 
-
-
-
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 			<div class="box" id="accordion">
+			
 				<h3>[<tag type="valueof" resourcekey="General.Product" />] ID: [<tag type="valueof" databind="ItemId" />] 
 				[<tag type="if" function="settings" key="devoptions" testvalue="True" display="{ON}" />] 
 				<span> Ref: [<tag type="valueof" xpath="genxml/importref" />]</span>
 				[<tag type="endif" />]
 				</h3>
-
-				<div class="editdetails">
-
+				<div class="box-content editdetails">
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-6">
 					<div class="form-group">
@@ -143,13 +139,10 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Description" />]</h3>
-				<div class="productdescription">
-
-
+				<div class="box-content productdescription">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -161,83 +154,56 @@
 			  	  	</div>
 			    </div>
 				<div class="clearfix"></div>
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Models" />]</h3>
-				<div class="editmodels">
-
+				<div class="box-content editmodels">
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-12">
-					<div class="form-group">
-				        <div class="col-sm-2">
-				        <a class="btn btn-primary" id="addmodels">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
-				        </div>
-				        <div class="col-sm-1">[<tag id="txtaddmodelqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
-				        </div>
-				        <div class="col-sm-2">
-				        <a class="btn btn-warning" id="undomodel" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
-				        </div>
+					<div class="form-group form-inline">
+				        <a class="btn btn-primary" id="addmodels">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddmodelqty" cssclass="form-control onedigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undomodel" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoIcon" />]</a>
 					</div>
 				        <ul id="productmodels"></ul>
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
-
 				</div>
-				<h3>[<tag type="valueof" resourcekey="General.Options" />]</h3>
-				<div class="editoptions">
 
+				<h3>[<tag type="valueof" resourcekey="General.Options" />]</h3>
+				<div class="box-content editoptions">
 				<div class="form-horizontal dnnForm">
-				
 					<div class="col-sm-6">
-					<div class="form-group">
-				        <div class="col-sm-4">
-				        <a class="btn btn-primary" id="addopt">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
-				        </div>
-				        <div class="col-sm-2">[<tag id="txtaddoptqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
-				        </div>
+					<div class="form-group form-inline">
+				        <a class="btn btn-primary" id="addopt">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddoptqty" cssclass="form-control twodigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undooption" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoIcon" />]</a>
 					</div>
-					<div class="form-group">
-				        <div class="col-sm-12">
-				        <a class="btn btn-warning" id="undooption" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        <ul id="productoptions"></ul>
-				        </div>
 					</div>
-					</div>
-					
 					<div class="col-sm-6">
-					<div class="form-group">
+					<div class="form-group form-inline">
 				        <div id="optionvaluecontrol" style="display:none;">
-				        <div class="col-sm-4">
-				        <a class="btn btn-primary" id="addoptvalues">[<tag type="valueof" resourcekey="General.cmdAdd" />]</a>
-				        </div>
-				        <div class="col-sm-2">[<tag id="txtaddoptvalueqty" cssclass="form-control" type="textbox" maxlength="2" text="1" />]
-				        </div>
+				        <a class="btn btn-primary" id="addoptvalues">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddoptvalueqty" cssclass="form-control twodigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undooptionvalue" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoIcon" />]</a>
 				        </div>
 					</div>
-					<div class="form-group">
-				        <div class="col-sm-12">
-				        <a class="btn btn-warning" id="undooptionvalue" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
 				        <ul id="productoptionvalues"></ul>
-				        </div>
 					</div>
-					</div>
-					
 				</div>
 				<div class="clearfix"></div>
-
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Images" />]</h3>
-				<div class="editimages">
-
+				<div class="box-content editimages">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
 						<div class="col-sm-12">
-				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveImg" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
-				        <a class="btn btn-warning" id="undoimage" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveImg" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
+				        <a class="btn btn-warning" id="undoimage" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoIcon" />]</a>
 				        </div>
 					</div>
 					<div class="form-group">
@@ -248,18 +214,16 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
-
 				</div>
-				<h3>[<tag type="valueof" resourcekey="General.Documents" />] &amp; [<tag type="valueof" resourcekey="General.Downloads" />]</h3>
-				<div class="editdocuments">
 				
+				<h3>[<tag type="valueof" resourcekey="General.Documents" />] &amp; [<tag type="valueof" resourcekey="General.Downloads" />]</h3>
+				<div class="box-content editdocuments">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
 						<div class="col-md-12">
-				            [<tag id="document" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Upload" commandname="save" commandargument="ItemID" />]
-				        <a class="btn btn-warning" id="undodoc" style="display:none;">[<tag type="valueof" resourcekey="General.Undo" />]</a>
+				            [<tag id="document" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
+				        <a class="btn btn-warning" id="undodoc" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoIcon" />]</a>
 				        </div>
 				        <div class="col-md-12">
 				        <ul id="productdocs"></ul>
@@ -268,11 +232,10 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Categories" />]</h3>
-				<div class="editcategories">
-
+				<div class="box-content editcategories">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -283,7 +246,7 @@
 							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
-										<th>Name</th>
+										<th>[<tag type="valueof" resourcekey="General.Category" />]</th>
 										<th style="width:100%">[<tag type="valueof" resourcekey="General.Breadcrumb" />]</th>
 										<th></th>
 									</tr>
@@ -296,11 +259,10 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Properties" />]</h3>
-				<div class="editproperties">
-
+				<div class="box-content editproperties">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
@@ -325,40 +287,32 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-
-
 				</div>
+				
 				<h3>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</h3>
-				<div class="editrelated">
-
+				<div class="box-content editrelated">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
-						<ul id="productrelated" class="productrelated"></ul>
-						<div class="clearfix"></div>
+						<div class="col-sm-12">
+				        <a class="btn btn-primary" id="productselect">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				    </div>
 					</div>
-						<a class="btn btn-primary" id="productselect">[<tag type="valueof" resourcekey="General.cmdSelect" />]</a>
+					<div class="form-group">
+				        <div class="col-sm-12">
+				        <ul id="productrelated" class="productrelated"></ul>
+				        </div>
+					</div>
 					</div>
 				</div>
-				<div class="clearfix"></div>
-
-
-
 				</div>
+				
 			</div>
 	</div>
-	
 </div>
-
-
-
-
-
-
         
     </div>
 </div>
-
 
 						
 <!-- All "id" for the divs/ul are required for ajax in this section -->
@@ -381,7 +335,6 @@
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
-
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
 						<div class="col-sm-3">
 							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
@@ -391,11 +344,10 @@
 							[<tag id="ddlsearchcategory" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="true" />]<!-- Use groupref="cat" to restrict list to categories -->
 						</div>
 						<div class="col-md-4">
-							<a class="btn btn-primary" href="#" id="selectsearch">[<tag type="valueof" resourcekey="General.cmdSearch" />]</a>
-							<a class="btn btn-default" href="#" id="selectreset">[<tag type="valueof" resourcekey="General.cmdReset" />]</a>
-							<a class="btn btn-success" href="#" id="returnfromselect">[<tag type="valueof" resourcekey="General.cmdReturn" />]</a>
+							<a class="btn btn-primary" href="#" id="selectsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
+							<a class="btn btn-default" href="#" id="selectreset">[<tag type="htmlof" resourcekey="General.cmdResetIcon" />]</a>
+							<a class="btn btn-default" href="#" id="returnfromselect">[<tag type="htmlof" resourcekey="General.cmdReturnButton" />]</a>
 						</div>
-
 					</div>
 					</div>
 						<div class="clearfix"></div>
@@ -403,15 +355,7 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-
 		</div>
 	</div>
 </div>
 </div>
-
-
-
-
-
-
-

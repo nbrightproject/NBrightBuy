@@ -51,24 +51,6 @@ $(document).ready(function() {
 
 </script>
 
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>[<tag type="valueof" resourcekey="General.Catalogue" />]</li>
-			<li><a href="#">[<tag type="valueof" resourcekey="General.Categories" />]</a></li>
-		</ol>
-	</div>
-</div>
-
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">[<tag type="valueof" resourcekey="General.Categories" />]</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
 <br />
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
@@ -77,15 +59,14 @@ $(document).ready(function() {
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-		[<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary" commandname="addnew"/>]
-	    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-warning" commandname="saveall"/>]
+		[<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAddButton" cssclass="btn btn-primary" commandname="addnew"/>]
+	    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="savebutton btn btn-warning" commandname="saveall"/>]
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
 		[<tag type="selectlocalebutton" size="32"/>]
 	</div>
 </div>
-
 
 <div class="row">
 	

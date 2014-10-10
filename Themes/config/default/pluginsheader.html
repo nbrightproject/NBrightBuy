@@ -1,21 +1,4 @@
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>Admin</li>
-			<li><a href="#">Plugins</a></li>
-		</ol>
-	</div>
-</div>
-
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">Plugins</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
 <br />
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
@@ -24,7 +7,7 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-    	[<tag id="cmdAdd" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdAdd" commandname="add" />]
+    	[<tag id="cmdAdd" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdAddButton" commandname="add" />]
     	</div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -33,25 +16,20 @@
 </div>
 
 
-                    [<tag type="if" function="issuperuser" display="{ON}" />]
-<div class="row box">
-    <div class="box-content">
-        <table>
-            <tr>
-                <td>
-        [<tag id="editlevel" type="radiobuttonlist" data="Portal;System" datavalue="0;1" selectedvalue="{Settings:plugineditlevel}" repeatcolumns="2" />]                    
-                </td>
-                <td>
-        [<tag id="cmdRefresh" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.Refresh" commandname="reload" />]                     
-                </td>
-                <td>
-        [<tag id="cmdResetPortal" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdReset" commandname="resetportal" confirm="Reset Portals Plugins to system default?" />]                     
-                </td>
-            </tr>
-        </table>
-    </div>
-			        </div>
-			        [<tag type="endif" />]
+[<tag type="if" function="issuperuser" display="{ON}" />]
+<div class="row pageactions"><!-- Page actions - also at top -->
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-content">
+		        [<tag id="editlevel" type="radiobuttonlist" cssclass="radiobuttons" data="Portal;System" datavalue="0;1" selectedvalue="{Settings:plugineditlevel}" repeatcolumns="2" />]                    
+		        [<tag id="cmdRefresh" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSearchIcon" commandname="reload" />]                     
+		        [<tag id="cmdResetPortal" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdResetIcon" commandname="resetportal" confirm="Reset Portals Plugins to system default?" />]                     
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+[<tag type="endif" />]
 
 
 <div id="plugins"><!-- Is this ID required -->

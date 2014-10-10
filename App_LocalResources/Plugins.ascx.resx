@@ -217,13 +217,13 @@
     <value>Edit</value>
   </data>
   <data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Edit" class="fa fa-edit"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdUpIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Move Up" class="fa fa-arrow-circle-up"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Move Up" class="fa fa-arrow-circle-up fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDownIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Move Down" class="fa fa-arrow-circle-down"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Move Down" class="fa fa-arrow-circle-down fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="lblicon.Hep" xml:space="preserve">
     <value>Icon to show on menu.</value>

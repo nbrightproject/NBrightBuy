@@ -738,13 +738,13 @@ td.beauty-hover {
 }
 .well pre code {
   white-space: normal;
-}
+}/*
 .btn {
   border-width: 1px;
   border-style: solid;
   border-width: 1px;
   text-decoration: none;
-  /* border-color: rgba(0, 0, 0, 0.3); */
+  border-color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
   outline: none;
   font-family: "Lucida Grande","Lucida Sans","Lucida Sans Unicode","Segoe UI",Verdana,sans-serif;
@@ -754,9 +754,9 @@ td.beauty-hover {
   font-size: 12px;
   font-weight: bold;
   text-align: center;
-  /* background-color: #a2a2a2;*/
-  /* background: #a2a2a2 -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));*/
-  /* background: #a2a2a2 -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)));*/
+  background-color: #a2a2a2;
+  background: #a2a2a2 -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  background: #a2a2a2 -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)));
   line-height: 24px;
   margin: 0 0 10px 0;
   padding: 0 10px;
@@ -766,7 +766,8 @@ td.beauty-hover {
   -moz-user-select: none;
   -webkit-user-select: none;
   outline: none !important;
-}
+}*/
+*/
 .btn-label-left, .btn-label-right {
   padding: 0 10px;
 }
@@ -808,7 +809,7 @@ td.beauty-hover {
   font-size: 18px;
   line-height: 48px;
   display: block;
-}
+}/*
 .btn-circle {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -890,7 +891,7 @@ td.beauty-hover {
   color: #fff;
   background-color: #b25050;
   border-color: rgba(0, 0, 0, 0.3);
-}
+}*/
 .progress {
   overflow: visible;
 }
@@ -1299,13 +1300,13 @@ td.beauty-hover {
 /*.form-control {
   height: 26px;
   padding: 2px 12px;
-}*/
+}
 .input-lg {
   height:39px;
 }
 .input-sm {
   height:18px;
-}
+}*/
 .bg-default {
   background: #D8D8D8 !important;
 }

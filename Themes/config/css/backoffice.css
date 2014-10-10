@@ -23,19 +23,14 @@ a, a:visited {color:#428BCA}
 .centered{text-align:center}
 #logo a{background: none;}/* Hide devoops logo*/
 /* .top-panel-right{display: none;}Hide top right menu section */
-a.btn-primary,a.btn-success{color:#FFFFFF}/* When buttons are inside anchors */
-a.btn-default {color:#555555}
 #loader{opacity:0}
 #loader{background: none repeat scroll 0 0 #848D92;color: #000000;height: 100%;left: 0;opacity: 0.4;transition:all 0.4s ease-in-out 0s;position: absolute;text-align: right;top: 0;width: 100%;z-index: 9999;}/* Loading graphic */
 #loader .fa{margin-right:2px;margin-top:3px;}
 .text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
 .nowrap{white-space:nowrap}/* remove this one */
-#content .btn,#top-panel .btn,#content .dropdown-toggle{padding:3px 12px;margin-right:10px;border-radius:0;border-color:transparent}/* default buttons */
-.btn:hover{border-color:transparent}/* default buttons */
 /* span.dnnInputFileWrapper{padding: 0 15px;}fix for file upload buttons */
 .bg-primary,.bg-success,.bg-info,.bg-warning,.bg-danger {margin-top: 15px;padding: 15px;font-size: 21px;font-weight: bold;}
 .checkbox input[type=checkbox]{margin-left: 0;}
-/*.fa {margin-right: 6px;}*/
 .nav.main-menu .fa {font-size:20px;margin-right:12px;vertical-align:-1px;}
 .spacer{margin-bottom: 15px;}/* Gap between Bootstrap rows */
 .ui-accordion-header{font-size:17px;letter-spacing: 0.008em;}/* jQuery UI override */
@@ -43,14 +38,26 @@ a.btn-default {color:#555555}
 select option{padding-bottom:3px}
 .close-link{display:none !important}
 .form-control{border-radius: 0;}
+.select2-container .select2-choice{border-radius: 0;}
+.onedigit{width:40px !important}
+.twodigit{width:48px !important}
+.threedigit{width:60px !important}
+
+/* Buttons */
+.btn {cursor: pointer;outline: none;display: inline-block;vertical-align: top;position: relative;}
+a.btn-primary,a.btn-success{color:#FFFFFF}
+a.btn-default {color:#555555}
+#content .btn,#top-panel .btn{margin-right:10px}
 .dropup .btn-default .fa{vertical-align: 0;}
 .dropup .btn-default{color:#555555;vertical-align: 0;cursor: default;}
-.dropup .btn-default:hover{background:#d8d8d8}
+.dropup .btn-default:hover{background:#FFFFFF}
 .dropdown-menu {border-radius: 0;}
-.dropup .btn{margin-right:0}
-.dropup .dropdown-toggle{background:#bbbbbb;cursor: pointer;}
-.dropup .dropdown-toggle:hover{background:#AAAAAA;}
-.select2-container .select2-choice{border-radius: 0;}
+.dropup .btn{margin-right:0 !important}
+.dropup .btn:hover{border-color:#cccccc;}
+.dropup .dropdown-toggle{cursor: pointer;}
+.dropup .dropdown-toggle:hover{background:#EBEBEB;}
+#content .dropdown-toggle{margin-right:10px;}
+.dropup .caret{border-bottom: 8px solid;border-left: 6px solid transparent;border-right: 6px solid transparent}
 
 
 /* Back Office colours */
@@ -71,23 +78,22 @@ body{background:#646262}
 .btn i.fa-lg {vertical-align: -1px;}
 .box-content .fa{color:#CCCCCC;}
 .box-content .btn .fa{color:#FFFFFF;}
-.box-content .fa-edit:hover{color:#47BE27;}
-.box-content .fa-refresh:hover{color:;}
+.box-content .fa-edit:hover{color:#47BE27;cursor:pointer}
+.box-content .fa-refresh:hover{cursor:pointer}
 .box-content .fa-repeat:hover{color:#1AA8E3;}
-.box-content .fa-minus-square:hover{color:#D33030;}
-.box-content .fa-search:hover{color:;}
+.box-content .fa-minus-square:hover{color:#D33030;cursor:pointer}
+.box-content .fa-search:hover{cursor:pointer}
+.box-content .fa-undo:hover{color:#BEB360;cursor:pointer}
 .box-content .fa-times-circle{color:#D33030;}
 .box-content .fa-arrow-circle-left{color:#47BE27;}
-.box-content .fa-arrow-circle-up:hover{color:#47BE27;}
-.box-content .fa-arrow-circle-down:hover{color:#47BE27;}
-.box-content .fa-arrow-circle-left:hover{color:#47BE27;}
-.box-content .fa-cog:hover{color:;}
-.box-content .fa-sort:hover{color:#1AA8E3;}
+.box-content .fa-arrow-circle-up:hover{color:#47BE27;cursor:pointer}
+.box-content .fa-arrow-circle-down:hover{color:#47BE27;cursor:pointer}
+.box-content .fa-arrow-circle-left:hover{color:#47BE27;cursor:pointer}
+.box-content .fa-cog:hover{}
+.box-content .fa-sort:hover{color:#1AA8E3;cursor:pointer}
 .box-content .fa-check-circle{color:#555555;}
 .box-content .btn .fa{color:#FFFFFF;}
 .box-content .btn-default .fa{color:#555555;}
-.categorylist .fa{font-size:200%}
-.plugins .fa {font-size:200%;}
 
 /* Page action buttons */
 .actionbuttonwrapper{height:50px;padding-top:8px;margin-left:30px;white-space:nowrap;}
@@ -101,7 +107,7 @@ body{background:#646262}
 
 /* Productlist items as table rows */
 .productadmintable .edititem{top:0;right:0;position:absolute;}
-.productadmintable .fa {color:#dddddd;font-size:200%;}
+/*.productadmintable .fa {color:#dddddd;font-size:200%;}*/
 
 /* Productlist items as thumbnails */
 #accordion{background:#F8F8F8;border:none;box-shadow:none}
@@ -127,17 +133,20 @@ body{background:#646262}
 .NBrightPagingDiv ul > a.cmdPg{display:none !important}/* hide pager ears when empty */
 
 /* Product Editor */
-.sortelementUp,.sortelementDown{cursor:pointer;position:absolute;display:block;color:#DDDDDD;z-index:1;}
+a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block;z-index:1;}
+.box-content .sortelementUp .fa:hover,.box-content .sortelementDown .fa:hover{color:#555555;}
 .sortelementUp{top:0;right:0}
 .sortelementDown{bottom:0;right:0}
 .editdetails{}
 .editmodels{}
+.editmodels a.removemodel{cursor:pointer}
+.editmodels .onedigit{margin-right:10px}
 .editmodels #productmodels{list-style: none outside none;margin: 0;padding: 0;}
 .editmodels .modelitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
 .editoptions{}
 .editoptions #productoptions,.editoptions #productoptionvalues{list-style: none outside none;margin: 0;padding: 0;}
 .editoptions #productoptions{margin-right:12px}
-.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dotted #E3E3E3;overflow: hidden;padding: 15px 0;position:relative}
+.editoptions .optionitem,.editoptions .optionvalueitem{background:#FFFFFF;border: 1px dotted #E3E3E3;overflow: hidden;padding:5px 0 25px;position:relative}
 .editoptions .optionitem{opacity:0.4;transition:all 0.4s ease-in-out 0s;}
 .editoptions .optionitem:hover{opacity:1}
 .editoptions .optionitem.selected{opacity:1}
@@ -146,8 +155,8 @@ body{background:#646262}
 .editimages .imageitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;margin:0 15px 15px 0;position:relative;float:left}
 .editimages .imagewrapper{height:200px;line-height:200px;text-align:center;width:230px;margin-bottom:15px;}
 .editimages .imagewrapper img{max-height:100%}
-.editimages .imageitem .sortelementUp{top:4px;left:-6px}
-.editimages .imageitem .sortelementDown{top:4px;right:-6px}
+.editimages .imageitem .sortelementUp{top:4px;left:-6px;right:auto;}
+.editimages .imageitem .sortelementDown{top:4px;right:-6px;bottom:auto;}
 .editdocuments{}
 .editdocuments #productdocs{list-style: none outside none;margin: 0;padding: 0;}
 .editdocuments .docitem{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
@@ -184,6 +193,8 @@ body{background:#646262}
 .selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
 #productlist .NBrightPagingDiv{}
 
+/* Category and Property Lists */
+.categorylist td{vertical-align: middle !important;}
 
 /* Category Editor Productlist items */
 .productlist{list-style: none outside none;margin: 0;padding: 0;}
@@ -216,3 +227,12 @@ body{background:#646262}
 .orderslist select.aspNetDisabled.form-control option{padding-bottom:0;}
 .orderslist select.aspNetDisabled.form-control::-ms-expand{display:none;}
 .orderdetail .dropdown-menu > li > a{display:inline-block;width: 100%;}
+
+/* Plugins Manager */
+.plugins td{vertical-align: middle !important;}
+.radiobuttons{display:inline}
+.radiobuttons td {height: 34px;padding: 4px 15px 0 0;vertical-align: middle;}
+.radiobuttons input {margin-right:5px;vertical-align: -1px;}
+
+/* Property Types Manager */
+.propertygroupslist td{vertical-align: middle !important;}

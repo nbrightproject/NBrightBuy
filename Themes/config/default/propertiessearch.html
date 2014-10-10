@@ -1,20 +1,4 @@
 
-<div class="row hidden"><!-- Not being used/yet -->
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li>Catalogue</li>
-			<li><a href="#">Properties</a></li>
-		</ol>
-	</div>
-</div>
-
-<div class="row hidden"><!-- Not being used/yet -->
-	<div class="col-md-12">
-		<h4 class="page-header">Properties</h4>
-		<p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-	</div>
-</div>
-
 <br />
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
@@ -23,8 +7,8 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-		[<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAdd" cssclass="btn btn-primary" commandname="addnew"/>]
-	    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSave" cssclass="savebutton btn btn-warning" commandname="saveall"/>]
+		[<tag id="cmdAdd" type="linkbutton" resourcekey="General.cmdAddButton" cssclass="btn btn-primary" commandname="addnew"/>]
+	    [<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="savebutton btn btn-warning" commandname="saveall"/>]
 	    </div>
 	</div>
 	<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -48,12 +32,10 @@
 			</div>
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
-					<div class="form-group">
-						<div class="col-sm-2">
-							[<tag id="cmdSearch" type="linkbutton" resourcekey="General.Refresh" cssclass="btn btn-primary" commandname="search"/>] 
-						</div>
-						<div class="col-sm-3">
-							[<tag type="groupdropdown" cssclass="s2_with_tag populate placeholder" id="groupsel" groupsonly="true" />]
+					<div class="form-group form-inline">
+						<div class="col-sm-6">
+							[<tag type="groupdropdown" width="300" cssclass="populate placeholder form-control" id="groupsel" groupsonly="true" />]&nbsp;&nbsp;
+							[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchIcon" cssclass="btn btn-primary" commandname="search"/>] 
 						</div>
 					</div>
 				</div>

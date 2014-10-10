@@ -178,6 +178,12 @@
     <value>Address Book</value>
   </data>
   <data name="cmdViewClient.Text" xml:space="preserve">
+    <value>View Client</value>
+  </data>
+  <data name="cmdViewClientIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="View Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdViewClientButton.Text" xml:space="preserve">
     <value>&lt;i  title="View Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; View Client</value>
   </data>
 </root>
