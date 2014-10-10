@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="ManualPaymentProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\..\Support\NBrightCore\NBrightCore.csproj">
@@ -73,10 +74,14 @@
     <Content Include="ManualPayment.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Themes\config\default\header.html" />
+    <Content Include="Themes\config\default\methodselection.html" />
+    <Content Include="Themes\config\default\settings.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\ManualPayment.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Themes\config\resx\Method.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

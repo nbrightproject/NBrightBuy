@@ -20,6 +20,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using ManualPaymentProvider;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -45,7 +46,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private String _ctrlkey = "";
         private NBrightInfo _info;
-        private NBrightBuyController _modCtrl;
 
         override protected void OnInit(EventArgs e)
         {
@@ -53,21 +53,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             try
             {
-                _modCtrl = new NBrightBuyController();
-
-                _ctrlkey = (String)HttpContext.Current.Session["nbrightbackofficectrl"];
-
-                #region "load templates"
-
-                var t1 = "header.html";
-
-                // Get Display Header
-                var rpDataHTempl = GetTemplateData(t1);
+                _ctrlkey = "manualpayment";
+                _info = ProviderUtils.GetProviderSettings(_ctrlkey);
+                var rpDataHTempl = ProviderUtils.GetTemplateData("settings.html");
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
-
-                #endregion
-
-
             }
             catch (Exception exc)
             {
@@ -84,18 +73,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             try
             {
                 base.OnLoad(e);
-
-                _info = _modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "MANUALPAYMENT", _ctrlkey);
-
-                if (_info == null)
-                {
-                    _info = new NBrightInfo(true);
-                    _info.GUIDKey = _ctrlkey;
-                    _info.TypeCode = "MANUALPAYMENT";
-                    _info.ModuleId = -1;
-                    _info.PortalId = PortalSettings.Current.PortalId;
-                }
-
 
                 if (Page.IsPostBack == false)
                 {
@@ -145,22 +122,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         #endregion
 
-        private String GetTemplateData(String templatename)
-        {
-            var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBrightBuy/Providers/ManualPaymentProvider");
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", "");
-            var templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
-            templ = Utils.ReplaceSettingTokens(templ, StoreSettings.Current.Settings());
-            templ = Utils.ReplaceUrlTokens(templ);
-            return templ;
-        }
+
 
         private void Update()
         {
-
+            var modCtrl = new NBrightBuyController();
             var strXml = GenXmlFunctions.GetGenXml(rpDataH);
             _info.XMLData = strXml;
-            _modCtrl.Update(_info);
+            modCtrl.Update(_info);
 
             //remove current setting from cache for reload
             Utils.RemoveCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));

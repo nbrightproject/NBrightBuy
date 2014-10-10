@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using ManualPaymentProvider;
 using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -17,7 +19,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string GetTemplate(NBrightInfo cartInfo)
         {
-            return "[<tag id='cmdManualPay' type='button' text='Manual Payment' commandname='backoffice' commandargument='manualpayment' />]";
+            var info = ProviderUtils.GetProviderSettings("manualpayment");
+            var templ = ProviderUtils.GetTemplateData(info.GetXmlProperty("genxml/textbox/checkouttemplate"));
+
+            return templ;
         }
 
         public override string RedirectForPayment(OrderData orderData)

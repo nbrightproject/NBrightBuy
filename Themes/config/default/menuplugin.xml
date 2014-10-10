@@ -1,1 +1,715 @@
-<?xml version="1.0" encoding="utf-8"?><genxml><plugin><genxml><files /><hidden><index>0</index></hidden><textbox><ctrl><![CDATA[dashsummary]]></ctrl><name><![CDATA[Dashboard]]></name><icon><![CDATA[]]></icon><group><![CDATA[Dashboard]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/DashSummary.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description><assembly><![CDATA[]]></assembly><namespaceclass><![CDATA[]]></namespaceclass></textbox><checkbox><hidden><![CDATA[False]]></hidden><active><![CDATA[False]]></active></checkbox><dropdownlist><providertype selectedtext="UI_x0020_Only"><![CDATA[01]]></providertype></dropdownlist><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>1</index></hidden><textbox><ctrl><![CDATA[products]]></ctrl><name><![CDATA[Products]]></name><icon><![CDATA[]]></icon><group><![CDATA[Catalog]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Products.ascx ]]></path><help><![CDATA[]]></help><roles><![CDATA[Manager,Editor]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>2</index></hidden><textbox><ctrl><![CDATA[categories]]></ctrl><name><![CDATA[Categories]]></name><icon><![CDATA[]]></icon><group><![CDATA[Catalog]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Categories.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /><edt /></genxml><genxml><files /><hidden><index>3</index></hidden><textbox><ctrl><![CDATA[propertiesvalue]]></ctrl><name><![CDATA[Properties]]></name><icon><![CDATA[]]></icon><group><![CDATA[Catalog]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/PropertiesValue.ascx ]]></path><help><![CDATA[]]></help><roles><![CDATA[Manager,Editor]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>4</index></hidden><textbox><ctrl><![CDATA[orders]]></ctrl><name><![CDATA[Orders]]></name><icon><![CDATA[]]></icon><group><![CDATA[Sales]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Orders.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Editor,Manager]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>5</index></hidden><textbox><ctrl><![CDATA[clients]]></ctrl><name><![CDATA[Clients]]></name><icon><![CDATA[]]></icon><group><![CDATA[Sales]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Clients.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Editor,Manager]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>6</index></hidden><textbox><ctrl><![CDATA[export]]></ctrl><name><![CDATA[Export]]></name><icon><![CDATA[]]></icon><group><![CDATA[Utilities]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Export.ascx ]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>7</index></hidden><textbox><ctrl><![CDATA[import]]></ctrl><name><![CDATA[Import]]></name><icon><![CDATA[]]></icon><group><![CDATA[Utilities]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Import.ascx ]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /><edt /></genxml><genxml><files /><hidden><index>8</index></hidden><textbox><ctrl><![CDATA[settings]]></ctrl><name><![CDATA[Settings]]></name><icon><![CDATA[]]></icon><group><![CDATA[Admin]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Settings.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Administrator]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>9</index></hidden><textbox><ctrl><![CDATA[plugins]]></ctrl><name><![CDATA[Plugins]]></name><icon><![CDATA[]]></icon><group><![CDATA[Admin]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Plugins.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Administrators]]></roles><description><![CDATA[]]></description><assembly><![CDATA[]]></assembly><namespaceclass><![CDATA[]]></namespaceclass></textbox><checkbox><hidden><![CDATA[False]]></hidden><active><![CDATA[False]]></active></checkbox><dropdownlist><providertype selectedtext="UI_x0020_Only"><![CDATA[01]]></providertype></dropdownlist><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>10</index></hidden><textbox><ctrl><![CDATA[tools]]></ctrl><name><![CDATA[Tools]]></name><icon><![CDATA[]]></icon><group><![CDATA[Admin]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Tools.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /><edt /></genxml><genxml><files /><hidden><index>11</index></hidden><textbox><ctrl><![CDATA[propertygroups]]></ctrl><name><![CDATA[Property Groups]]></name><icon><![CDATA[]]></icon><group><![CDATA[Admin]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/PropertyGroups.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Manager]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[False]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>12</index></hidden><textbox><ctrl><![CDATA[addressbook]]></ctrl><name><![CDATA[Address Book]]></name><icon><![CDATA[]]></icon><group><![CDATA[OrdersGrp]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/AddressBook.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[Editor,Manager]]></roles><description><![CDATA[]]></description></textbox><checkbox><hidden><![CDATA[True]]></hidden></checkbox><dropdownlist /><checkboxlist /><radiobuttonlist /></genxml><genxml><files /><hidden><index>13</index></hidden><textbox><ctrl><![CDATA[shipping]]></ctrl><name><![CDATA[Shipping]]></name><icon><![CDATA[]]></icon><group><![CDATA[Shipping]]></group><path><![CDATA[/DesktopModules/NBright/NBrightBuy/Providers/ShippingProvider/Shipping.ascx]]></path><help><![CDATA[]]></help><roles><![CDATA[]]></roles><description><![CDATA[]]></description><assembly><![CDATA[NBrightBuy.ShippingProvider]]></assembly><namespaceclass><![CDATA[Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider]]></namespaceclass></textbox><checkbox><hidden><![CDATA[False]]></hidden><active><![CDATA[True]]></active></checkbox><dropdownlist><providertype selectedtext="Shipping"><![CDATA[02]]></providertype></dropdownlist><checkboxlist /><radiobuttonlist /></genxml></plugin></genxml>
+<?xml version="1.0" encoding="utf-8"?>
+<genxml>
+	<plugin>
+		<genxml>
+			<files />
+			<hidden>
+				<index>0</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[dashsummary]]>
+				</ctrl>
+				<name>
+					<![CDATA[Dashboard]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Dashboard]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/DashSummary.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+					<![CDATA[]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[False]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="UI_x0020_Only">
+					<![CDATA[01]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>1</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[products]]>
+				</ctrl>
+				<name>
+					<![CDATA[Products]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Catalog]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Products.ascx ]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Manager,Editor]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>2</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[categories]]>
+				</ctrl>
+				<name>
+					<![CDATA[Categories]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Catalog]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Categories.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+			<edt />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>3</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[propertiesvalue]]>
+				</ctrl>
+				<name>
+					<![CDATA[Properties]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Catalog]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/PropertiesValue.ascx ]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Manager,Editor]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>4</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[orders]]>
+				</ctrl>
+				<name>
+					<![CDATA[Orders]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Sales]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Orders.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Editor,Manager]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>5</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[clients]]>
+				</ctrl>
+				<name>
+					<![CDATA[Clients]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Sales]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Clients.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Editor,Manager]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>6</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[export]]>
+				</ctrl>
+				<name>
+					<![CDATA[Export]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Utilities]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Export.ascx ]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>7</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[import]]>
+				</ctrl>
+				<name>
+					<![CDATA[Import]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Utilities]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Import.ascx ]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+			<edt />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>8</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[settings]]>
+				</ctrl>
+				<name>
+					<![CDATA[Settings]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Settings.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Administrator]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>9</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[plugins]]>
+				</ctrl>
+				<name>
+					<![CDATA[Plugins]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Plugins.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Administrators]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+					<![CDATA[]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[False]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="UI_x0020_Only">
+					<![CDATA[01]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>10</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[tools]]>
+				</ctrl>
+				<name>
+					<![CDATA[Tools]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/Tools.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+			<edt />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>11</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[propertygroups]]>
+				</ctrl>
+				<name>
+					<![CDATA[Property Groups]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/PropertyGroups.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Manager]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>12</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[manualpayment]]>
+				</ctrl>
+				<name>
+					<![CDATA[Manual Payment]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Admin]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider/ManualPayment.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Aministrators]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+					<![CDATA[NBrightBuy.ManualPaymentProvider]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[Nevoweb.DNN.NBrightBuy.Providers.ManualPaymentProvider]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[True]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="Payments">
+					<![CDATA[07]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>13</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[addressbook]]>
+				</ctrl>
+				<name>
+					<![CDATA[Address Book]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[OrdersGrp]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Admin/AddressBook.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[Editor,Manager]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[True]]>
+				</hidden>
+			</checkbox>
+			<dropdownlist />
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+				<index>14</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[shipping]]>
+				</ctrl>
+				<name>
+					<![CDATA[Shipping]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Shipping]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuy/Providers/ShippingProvider/Shipping.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+					<![CDATA[NBrightBuy.ShippingProvider]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[Nevoweb.DNN.NBrightBuy.Providers.ShippingProvider]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[True]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="Shipping">
+					<![CDATA[02]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+		<genxml>
+			<files />
+			<hidden>
+
+				<index>15</index>
+			</hidden>
+			<textbox>
+				<ctrl>
+					<![CDATA[chronopost]]>
+				</ctrl>
+				<name>
+					<![CDATA[Chronopost]]>
+				</name>
+				<icon>
+					<![CDATA[]]>
+				</icon>
+				<group>
+					<![CDATA[Shipping]]>
+				</group>
+				<path>
+					<![CDATA[/DesktopModules/NBright/NBrightBuyChronopost/Chronopost.ascx]]>
+				</path>
+				<help>
+					<![CDATA[]]>
+				</help>
+				<roles>
+					<![CDATA[]]>
+				</roles>
+				<description>
+					<![CDATA[]]>
+				</description>
+				<assembly>
+
+					<![CDATA[NBrightBuyChronopost]]>
+				</assembly>
+				<namespaceclass>
+					<![CDATA[Nevoweb.DNN.NBrightBuyChronopost.Provider]]>
+				</namespaceclass>
+			</textbox>
+			<checkbox>
+				<hidden>
+					<![CDATA[False]]>
+				</hidden>
+				<active>
+					<![CDATA[True]]>
+				</active>
+			</checkbox>
+			<dropdownlist>
+				<providertype selectedtext="Shipping">
+					<![CDATA[02]]>
+				</providertype>
+			</dropdownlist>
+			<checkboxlist />
+			<radiobuttonlist />
+		</genxml>
+	</plugin>
+</genxml>

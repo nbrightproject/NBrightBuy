@@ -107,15 +107,14 @@ namespace Nevoweb.DNN.NBrightBuy
                             templPayment = templFail + msg;
                             _orderData.ReleaseModelTransQty();
                         }
-                        templPaymentText = ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode);                       
                     }
                     else
                     {
                         // not returning from bank, so display list of payment providers.
-                        templPaymentText = ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode);
-                        templPaymentText += GetPaymentProviderTemplates();
+                        rpPaymentGateways.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(GetPaymentProviderTemplates(), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     }
 
+                    templPaymentText = ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode);
                     rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText, ModSettings.Settings(), PortalSettings.HomeDirectory);
                     _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
 
@@ -186,6 +185,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // display return page
                 DoDetail(rpDetailDisplay,_cartInfo.PurchaseInfo);
+                DoDetail(rpPaymentGateways, _cartInfo.PurchaseInfo);
 
 
                 #endregion
