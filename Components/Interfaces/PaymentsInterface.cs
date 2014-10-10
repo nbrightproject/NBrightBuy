@@ -1,5 +1,6 @@
 ﻿
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using System;
@@ -35,24 +36,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             _providerList = new Dictionary<string, PaymentsInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-		    var l = pluginData.GetShippingProviders();
+		    var l = pluginData.GetPaymentProviders();
 
-            foreach (var p in l)
-            {
-                    var prov = p.Value;
-                    ObjectHandle handle = null;
-                    handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
-                    var objProvider = (PaymentsInterface)handle.Unwrap();
-                    var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
-                    var lp = 1;
-                    while (_providerList.ContainsKey(ctrlkey))
-                    {
-                        ctrlkey = prov.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
-                        lp += 1;
-                    }
-                    objProvider.Paymentskey = ctrlkey;
-                    _providerList.Add(ctrlkey, objProvider);
-            }
+		    foreach (var p in l)
+		    {
+		        var prov = p.Value;
+		        ObjectHandle handle = null;
+		        handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"),
+		            prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+		        var objProvider = (PaymentsInterface) handle.Unwrap();
+		        var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
+		        if (!_providerList.ContainsKey(ctrlkey))
+		        {
+		            ctrlkey = prov.GetXmlProperty("genxml/textbox/assembly");
+		            objProvider.Paymentskey = ctrlkey;
+		            _providerList.Add(ctrlkey, objProvider);
+		        }
+		    }
 
 		}
 
@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String GetTemplate(NBrightInfo cartInfo);
 
-        public abstract String RedirectForPayment(NBrightInfo cartInfo);
+        public abstract String RedirectForPayment(OrderData orderData);
 
         public abstract String ProcessPaymentReturn(HttpContext context);
 

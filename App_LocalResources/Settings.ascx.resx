@@ -204,4 +204,10 @@
   <data name="currencysymbol.Text" xml:space="preserve">
     <value>Currency Symbol</value>
   </data>
+  <data name="paymenttab.Help" xml:space="preserve">
+    <value>Tab where the client will be redirected to select a method of payment. (NBS_Payment module)</value>
+  </data>
+  <data name="paymenttab.Text" xml:space="preserve">
+    <value>Payment</value>
+  </data>
 </root>

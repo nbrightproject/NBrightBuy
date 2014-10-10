@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Web;
+using DotNetNuke.Common;
 using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -16,12 +17,17 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string GetTemplate(NBrightInfo cartInfo)
         {
-            return "Manual Payment TEST";
+            return "[<tag id='cmdManualPay' type='button' text='Manual Payment' commandname='backoffice' commandargument='manualpayment' />]";
         }
 
-        public override string RedirectForPayment(NBrightInfo cartInfo)
+        public override string RedirectForPayment(OrderData orderData)
         {
-            return "";
+            orderData.OrderStatus = "020";
+            orderData.SavePurchaseData();
+            var param = new string[3];
+            param[0] = "orderid=" + orderData.PurchaseInfo.ItemID.ToString("D");
+            param[1] = "status=1";
+            return Globals.NavigateURL(StoreSettings.Current.PaymentTabId, "", param);
         }
 
         public override string ProcessPaymentReturn(HttpContext context)

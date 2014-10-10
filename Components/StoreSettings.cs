@@ -132,6 +132,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public int PaymentTabId
+        {
+            get
+            {
+                var i = Get("paymenttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
