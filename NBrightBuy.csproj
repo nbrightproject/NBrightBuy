@@ -548,7 +548,6 @@
     <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
     <Content Include="Themes\Cygnus\Default\cartdetails.html" />
     <Content Include="Themes\Cygnus\Default\cartextra.html" />
-    <Content Include="Themes\Cygnus\Default\cartitemlist.html" />
     <Content Include="Themes\Cygnus\Default\cartlayout.html" />
     <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
     <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />

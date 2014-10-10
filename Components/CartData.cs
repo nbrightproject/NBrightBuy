@@ -71,10 +71,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     clientData.UpdateEmail(ordData.EmailAddress);
                 }
 
-                // Send emails
-                NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", base.PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", ordData.PurchaseInfo);
-
                 if (debugMode) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;
                 return true;

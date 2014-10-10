@@ -51,6 +51,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                         orderData.ApplyModelTransQty();
                         orderData.OrderStatus = "060";
                         orderData.SavePurchaseData();
+
+                        // Send emails
+                        NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", orderData.PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                        NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", orderData.PurchaseInfo);
+
                     }
                 }
 

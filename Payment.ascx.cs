@@ -169,6 +169,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     _cartInfo.ConvertToOrder(DebugMode);
                     _cartInfo.ApplyModelTransQty();
 
+                    // Send emails
+                    NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", _cartInfo.PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", _cartInfo.PurchaseInfo);
+
                     var cartL = new List<NBrightInfo>();
                     cartL.Add(_cartInfo.GetInfo());
 
