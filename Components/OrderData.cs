@@ -209,5 +209,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
+        {
+            ApplyModelTransQty();
+            OrderStatus = orderStatus;
+            SavePurchaseData();
+
+            // Send emails
+            NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
+            NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo);
+
+        }
+
+        public void PaymentFail()
+        {
+
+        }
+
     }
 }

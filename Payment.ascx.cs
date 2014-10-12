@@ -104,7 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                         else
                         {
-                            templPayment = templFail + msg;
+                            templPayment = templFail;
                             _orderData.ReleaseModelTransQty();
                         }
                     }
@@ -219,7 +219,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         orderData.PaymentProviderKey = cArg;
                         orderData.SavePurchaseData();
                         var redirecturl = PaymentsInterface.Instance(orderData.PaymentProviderKey).RedirectForPayment(orderData);
-                        Response.Redirect(redirecturl, true);
+                        if (redirecturl != "") Response.Redirect(redirecturl, true);
                     }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
