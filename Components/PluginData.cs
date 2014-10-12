@@ -52,7 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var lp = 0;
                 foreach (var info in _pluginList)
                 {
-                    info.SetXmlProperty("genxml/hidden/index", lp.ToString("D"), TypeCode.String, false);
+                    info.SetXmlProperty("genxml/hidden/index", lp.ToString(""), TypeCode.String, false);
                     info.SetXmlProperty("genxml/textbox/ctrl", info.GetXmlProperty("genxml/textbox/ctrl").Trim().ToLower());
                     strXml += info.XMLData;
                     lp += 1;
@@ -202,7 +202,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var lp = 1;
                     while (pList.ContainsKey(ctrlkey))
                     {
-                        ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("D");
+                        ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("");
                         lp += 1;
                     }
                     pList.Add(ctrlkey, p);

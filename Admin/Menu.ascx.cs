@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String GetMenu()
         {
-            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("") + "*" + UserId.ToString("D");
+            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("") + "*" + UserId.ToString("");
 
             var strOut = "";
             if (HttpContext.Current.Session[strCacheKey] != null) strOut = (String)HttpContext.Current.Session[strCacheKey];

@@ -493,7 +493,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void AddCatCascadeRecord(int categoryid,int productid)
         {
-            var strGuid = categoryid.ToString("D") + "x" + productid.ToString("D");
+            var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
             var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
             if (nbi == null)
             {
@@ -546,11 +546,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var subCats = GetSubCategoryList(catList, categoryid);
             foreach (var c in subCats)
             {
-                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString("D"));
+                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
                 prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
             }
             //Get the current catascade records
-            xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString("D"));
+            xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
             var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
 
             //Update the catcascade records.
@@ -562,7 +562,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //remove any cascade records that no longer exists
             foreach (var productid in casacdeProdItemIdList)
             {
-                var strGuid = categoryid.ToString("D") + "x" + productid.ToString("D");
+                var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
                 var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
                 if (nbi != null) _objCtrl.Delete(nbi.ItemID);
             }

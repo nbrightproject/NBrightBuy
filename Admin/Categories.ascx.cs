@@ -314,7 +314,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var movGrp = objGrpCtrl.GetGrpCategory(movData.Info.ItemID);
                 if (!movGrp.Parents.Contains(selData.Info.ItemID)) // cannot move a category into itself (i.e. move parent into sub-category)
                 {
-                    selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", toParentItemid.ToString("D"));
+                    selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", toParentItemid.ToString(""));
                     selData.DataRecord.ParentItemId = toParentItemid;
                     selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
                     var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
@@ -329,7 +329,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", neworder.ToString(""), TypeCode.Double);
                     ModCtrl.Update(selData.DataRecord);
 
-                    FixRecordSortOrder(toParentItemid.ToString("D")); //reindex all siblings (this is so we get a int on the recordsortorder)
+                    FixRecordSortOrder(toParentItemid.ToString("")); //reindex all siblings (this is so we get a int on the recordsortorder)
                     FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
 
                     if (reindex)
@@ -394,7 +394,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             else
                 strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
 
-            if (parentid > 0 ) parentlist += parentid.ToString("D") + ";";
+            if (parentid > 0 ) parentlist += parentid.ToString("") + ";";
 
             var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
             foreach (NBrightInfo catinfo in levelList)

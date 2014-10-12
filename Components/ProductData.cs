@@ -116,9 +116,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AdjustModelQtyBy(String modelid,Double qty)
         {
             var model = GetModel(modelid);
-            var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining");
+            var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining");
             newqty = newqty - qty;
-            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining", newqty);
+            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining", newqty);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="addqty"></param>
         public void UpdateModelTransQty(String modelid,int orderid, Double addqty)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l == null) l = new List<ModelTransData>();
 
@@ -147,7 +147,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public Double GetModelTransQty(String modelid, int orderid)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l == null) return 0;
             Double tot = 0;
@@ -163,7 +163,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ReleaseModelTransQty(String modelid, int orderid, Double addqty)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("D");
+            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l != null)
             {
@@ -227,16 +227,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             foreach (var model in Models)
             {
-                var qty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyremaining");
-                var minqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/textbox/txtqtyminstock");
-                var currentstatus = DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus");
+                var qty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining");
+                var minqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyminstock");
+                var currentstatus = DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus");
                 if (currentstatus != "040" && currentstatus != "050")
                 {
-                    if (qty > 0) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "010");
-                    if (minqty == qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "020");
-                    if (qty <= 0 && minqty < qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/dropdownlist/modelstatus", "030");
+                    if (qty > 0) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "010");
+                    if (minqty == qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "020");
+                    if (qty <= 0 && minqty < qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "030");
                 }
-                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("D") + "]/hidden/modelid", Utils.GetUniqueKey());
+                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
             }
 
             if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));

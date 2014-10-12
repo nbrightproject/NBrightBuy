@@ -54,7 +54,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     else
                         info.SetXmlProperty("genxml/hidden/default", "False");
 
-                    info.SetXmlProperty("genxml/hidden/index",lp.ToString("D"));
+                    info.SetXmlProperty("genxml/hidden/index",lp.ToString(""));
                     strXML += info.XMLData;
                     lp += 1;
                 }

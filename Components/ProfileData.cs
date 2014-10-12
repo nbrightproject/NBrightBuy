@@ -22,7 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public ProfileData(int userid,Repeater rpData, Boolean debugMode = false)
         {
             Exists = true;
-            PopulateData(userid.ToString("D"));
+            PopulateData(userid.ToString(""));
             UpdateProfile(rpData, debugMode);
         }
 

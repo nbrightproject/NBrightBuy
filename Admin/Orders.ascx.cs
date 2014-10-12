@@ -376,7 +376,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName + ordData.InvoiceFileExt;
 
-            if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("D").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
+            if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
 
             ordData.InvoiceDownloadName = ordData.OrderNumber + ordData.InvoiceFileExt;
 

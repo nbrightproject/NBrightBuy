@@ -2126,7 +2126,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 {
                                     var optionvalueid = nodVal.InnerText;
                                     var li = new ListItem();
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("D") + "]/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         li.Text = nodLang.InnerText;
@@ -2161,7 +2161,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 if (nodVal != null)
                                 {
                                     var optionvalueid = nodVal.InnerText;
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("D") + "]/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         chk.Text = nodLang.InnerText;
@@ -2379,15 +2379,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
         {
-            var isDealer = CmsProviderManager.Default.IsInRole(_settings["dealer.role"]);
+            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
             var outText = templ;
             var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
             var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
-            if (stock > 0 | stockOn)
+            if (stock > 0 || !stockOn)
             {
                 outText = outText.Replace("{ref}", obj.GetXmlProperty("genxml/textbox/txtmodelref"));
                 outText = outText.Replace("{name}", obj.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"));
-                outText = outText.Replace("{stock}", stock.ToString("D"));
+                outText = outText.Replace("{stock}", stock.ToString(""));
 
                 if (displayPrices)
                 {
@@ -2634,7 +2634,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var nodName = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/textbox/txtfilename");
                         if (nodName != null) cmd.ToolTip = nodName.InnerText;
                     }
-                    cmd.CommandArgument = objInfo.ItemID.ToString("D") + ":" + index;
+                    cmd.CommandArgument = objInfo.ItemID.ToString("") + ":" + index;
 
                     cmd.Visible = true;
                     var nodPurchase = objInfo.XMLDoc.SelectSingleNode("genxml/docs/genxml[" + index + "]/checkbox/chkpurchase");
@@ -4049,10 +4049,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 #region "Init"
 
-                var dealerrole = "Dealer"; //defualt dealer role
-                if (_settings.ContainsKey("dealer.role")) dealerrole = _settings["dealer.role"];
-                var isDealer = CmsProviderManager.Default.IsInRole(dealerrole);
-
+                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
 
                 #endregion
 
@@ -4078,7 +4075,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                             #region "Add Lanaguge Data"
 
-                            var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("D") + "]");
+                            var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
                             if (nodLang != null)
                             {
                                 o.AddSingleNode("lang", "", "genxml");
@@ -4109,7 +4106,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             // product data for display in modellist
                             o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
                             o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
-                            o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString("D"));
+                            o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
 
                             objL.Add(o);
                         }
@@ -4171,9 +4168,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj));
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
-            var role = "Dealer";
-            if (!String.IsNullOrEmpty(_settings["dealer.role"])) role = _settings["dealer.role"];
-            if (CmsProviderManager.Default.IsInRole(role))
+            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
             {
                 var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj));
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
@@ -4197,7 +4192,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //check if we really need to add prices (don't if all the same)
                 var holdPrice = "";
                 var holdDealerPrice = "";
-                var isDealer = CmsProviderManager.Default.IsInRole(_settings["dealer.role"]);
+                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
                 foreach (XmlNode nod in nodList)
                 {
                     var mPrice = nod.SelectSingleNode("textbox/txtunitcost");
