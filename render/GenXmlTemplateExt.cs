@@ -713,7 +713,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var l = new Literal();
                     l.DataBinding += ShortcutDataBinding;
                     l.Text = xmlNod.Attributes["index"].Value;
-                    l.Text = "genxml/lang/genxml/options/genxml[./hidden/optionid=../../../../options/genxml[" + xmlNod.Attributes["index"].Value + "]/hidden/optionid]/textbox/txtoptiondesc";
+                    l.Text = "genxml/lang/genxml/options/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtoptiondesc";
                     container.Controls.Add(l);
                 }
             }
