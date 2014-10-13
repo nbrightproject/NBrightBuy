@@ -223,7 +223,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentFail()
         {
-
+            ReleaseModelTransQty();
+            PurchaseTypeCode = "CART";
+            SavePurchaseData();
         }
 
     }

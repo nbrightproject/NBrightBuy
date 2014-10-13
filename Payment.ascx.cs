@@ -89,23 +89,22 @@ namespace Nevoweb.DNN.NBrightBuy
                     // display the payment method by default
                     templPayment = ModSettings.Get("paymentordersummary");
                     var templPaymentText = "";
+                    var msg = "";
                     var orderid = Utils.RequestQueryStringParam(Context, "orderid");
                     if (Utils.IsNumeric(orderid))
                     {
                         // orderid exists, so must be return from bank; Process it!!
                         _orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
                         _prov = PaymentsInterface.Instance(_orderData.PaymentProviderKey);
-                        var msg = _prov.ProcessPaymentReturn(Context);
+                        msg = _prov.ProcessPaymentReturn(Context);
                         if (msg == "") // no message so successful
                         {
                             _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
-                            _orderData.ApplyModelTransQty(); //add any transiant stock.
                             templPayment = templOk;
                         }
                         else
                         {
                             templPayment = templFail;
-                            _orderData.ReleaseModelTransQty();
                         }
                     }
                     else
@@ -115,7 +114,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     templPaymentText = ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode);
-                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText + msg, ModSettings.Settings(), PortalSettings.HomeDirectory);
                     _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
 
 

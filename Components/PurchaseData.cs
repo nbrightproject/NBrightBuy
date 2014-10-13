@@ -558,62 +558,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         /// <summary>
-        /// Add/Upate promotion code
-        /// </summary>
-        public void AddPromoCode(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddPromoCode(addInfo);
-        }
-
-        public void AddPromoCode(NBrightInfo info)
-        {
-            var strXml = "<promocode>";
-            strXml += info.XMLData;
-            strXml += "</promocode>";
-            PurchaseInfo.RemoveXmlNode("genxml/promocode");
-            PurchaseInfo.AddXmlNode(strXml, "promocode", "genxml");
-        }
-
-        public NBrightInfo GetPromoCode()
-        {
-            var rtnInfo = new NBrightInfo();
-            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/promocode");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
-            return rtnInfo;
-        }
-
-        /// <summary>
-        /// Add/Upate tax data
-        /// </summary>
-        public void AddTaxData(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddTaxData(addInfo);
-        }
-
-        public void AddTaxData(NBrightInfo info)
-        {
-            var strXml = "<taxdata>";
-            strXml += info.XMLData;
-            strXml += "</taxdata>";
-            PurchaseInfo.RemoveXmlNode("genxml/taxdata");
-            PurchaseInfo.AddXmlNode(strXml, "taxdata", "genxml");
-        }
-
-        public NBrightInfo GetTaxData()
-        {
-            var rtnInfo = new NBrightInfo();
-            var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/taxdata");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
-            return rtnInfo;
-        }
-
-        /// <summary>
         /// Add/Upate Extra Info
         /// </summary>
         public void AddExtraInfo(Repeater rpData)
@@ -638,10 +582,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnInfo = new NBrightInfo(true);
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
-            rtnInfo.SetXmlProperty("genxml/totalqty",PurchaseInfo.GetXmlProperty("genxml/totalqty"));
-            rtnInfo.SetXmlProperty("genxml/subtotalcost", PurchaseInfo.GetXmlProperty("genxml/subtotalcost"));
-            rtnInfo.SetXmlProperty("genxml/total", PurchaseInfo.GetXmlProperty("genxml/total"));
-            rtnInfo.SetXmlProperty("genxml/appliedtotal", PurchaseInfo.GetXmlProperty("genxml/appliedtotal"));
+
+            var nodList = PurchaseInfo.XMLDoc.SelectNodes("genxml/*");
+            if (nodList != null)
+                foreach (XmlNode nod in nodList)
+                {
+                    if (nod.FirstChild != null && nod.FirstChild.Name != "genxml") rtnInfo.SetXmlProperty("genxml/" + nod.Name, nod.InnerText);                
+                }
+
             return rtnInfo;
         }
 

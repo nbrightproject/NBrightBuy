@@ -2,23 +2,29 @@
 [<tag id="pickuppointref" type="postback" aria-valuemax="" />]
 [<tag id="pickuppointaddr" type="postback" aria-valuemax="" />]
 
-<div class="formrow">
-    <div id="shippingoptions" style="display:none;"><!-- Shipping options radio buttons - What the hell is this doing in here -->
-        <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
-        [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
-    </div>
-    <!-- Shipping methods  -->
-    <div id="shippingmethods">
-        [<tag type="if" function="hasshippingproviders" display="{ON}"/>]
-            <h3>Shipping Methods</h3>
-            [<tag type="shippingproviders" />]
-        [<tag type="endif" />]
-    </div>
-    <!-- Positional div for shipping provider tmeplates to be injected -->
-    <div id="providertemplates"></div>
+<!-- This template contains functionality that needs to be here in order to save properly. They are moved into position using JQuery -->
 
+<!-- Shipping options radio buttons -->
+<div id="shippingoptions" style="display:none;">
+    <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
+    [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
 </div>
 
+
+<!-- Shipping methods  -->
+<div id="shippingmethods">
+    [<tag type="if" function="hasshippingproviders" display="{ON}"/>]
+        <h3>Shipping Methods</h3>
+        [<tag type="shippingproviders" />]
+    [<tag type="endif" />]
+	    <div id="providertemplates"></div>
+</div>
+
+
+
+<!-- Order summary box from here down  -->
+
+<!-- Order summary text inputs  -->
 <div class="checkoutextra" style="display:none;">
     <div class="formrow">
         <h3>[<tag type='valueof' resourcekey='General.lblordersummary' />]</h3>
@@ -27,10 +33,42 @@
         <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
         [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
     </div>
-</div>
 
-<!-- These field want displaying in the order summary area, bt must be in this template so they save ok.  Moved using JQuery -->
-<div class="formrow extrafieldsfordetail">
+    <div class="formrow">
+        <h6>[<tag type='valueof' resourcekey='General.PromotionalCode' />]</h6>
+        [<tag id='promocode' type='textbox' />]
+    </div>
+    <div class="formrow">
+        <h6>[<tag type='valueof' resourcekey='General.TaxNumber' />]</h6>
+        [<tag id='taxnumber' type='textbox' />]
+    </div>
+
+
+<div class="checkoutdetails">
+    <div class="formrow">
+        <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
+        Subtotal : [<tag type="valueof" xpath="genxml/appliedsubtotal" />]<br/>
+        Discount : [<tag type="valueof" xpath="genxml/applieddiscount" />]<br/>
+        Shipping : [<tag type="valueof" xpath="genxml/appliedshipping" />]<br/>
+        Tax : [<tag type="valueof" xpath="genxml/appliedtax" />]<br/>
+        Total : [<tag type="valueof" xpath="genxml/appliedtotal" />]
+    </div>
+
+    [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
+    [<tag type='if' function='carteditmode' testvalue="C" display='{ON}' />]
+        <div class="debug">Order being created for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type='if' function='carteditmode' testvalue="R" display='{ON}' />]
+        <div class="debug">Order being re-ordered for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type='if' function='carteditmode' testvalue="E" display='{ON}' />]
+        <div class="debug">Order being edited for client</div>
+    [<tag type="endtestof"  />]
+    [<tag type="endtestof"  />]
+
+
+<!-- Terms and newsletter subscribe fields -->
+<div class="formrow">
 <table cellpadding="6" style="width:100%">
 	<tr>
 		<td>[<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]</td>
@@ -43,5 +81,15 @@
         <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
         [<tag type='cartemailaddress' required="" datatype="email"/>]
     </div>
+</div>
+
+<div class="formrow">
+		[<tag id="cmdConfirm" type="button" cssclass="secondarybutton" resourcekey="General.Refresh" commandname="confirm" />][<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
+</div>
+</div>
+
 
 </div>
+
+
+

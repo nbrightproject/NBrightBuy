@@ -81,8 +81,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templAB = "cartbillingaddress.html";
                 const string templAS = "cartshippingaddress.html";
                 const string templS = "cartshipment.html";
-                const string templT = "carttax.html";
-                const string templP = "cartpromo.html";
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
@@ -115,9 +113,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // add any shiiping provider templates to the cart layout, so we can process any data required by them
                     rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    rpTax.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templT, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    rpPromo.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templP, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templD, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpAddrB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpAddrS.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
 
@@ -190,28 +185,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 checkoutlayout.DataSource = cartL;
                 checkoutlayout.DataBind();
 
-                #region "Address List Data Repeater"
-
-                var addrlist = _addressData.GetAddressList();
-                if (addrlist.Count == 0)
-                {
-                    rpAddrListH.Visible = false;
-                    rpAddrListB.Visible = false;
-                    rpAddrListF.Visible = false;
-                }
-                else
-                {
-                    rpAddrListB.DataSource = addrlist;
-                    rpAddrListB.DataBind();
-                    // display header
-                    rpAddrListH.DataSource = cartL;
-                    rpAddrListH.DataBind();
-                    // display footer
-                    rpAddrListF.DataSource = cartL;
-                    rpAddrListF.DataBind();
-                }
-
-                #endregion
 
                 var objl = new List<NBrightInfo>();
                 var billaddr = _cartInfo.GetBillingAddress();
@@ -242,27 +215,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpShip.DataSource = objl;
                 rpShip.DataBind();
 
-                // display Promo input form
-                objl = new List<NBrightInfo>();
-                objl.Add(_cartInfo.GetPromoCode());
-                rpPromo.DataSource = objl;
-                rpPromo.DataBind();
-
-                // display Tax input form
-                objl = new List<NBrightInfo>();
-                objl.Add(_cartInfo.GetTaxData());
-                rpTax.DataSource = objl;
-                rpTax.DataBind();
-
                 // display extra input form
                 objl = new List<NBrightInfo>();
                 objl.Add(_cartInfo.GetExtraInfo());
                 rpExtra.DataSource = objl;
                 rpExtra.DataBind();
 
-                // display cart details
-                rpDetailDisplay.DataSource = cartL;
-                rpDetailDisplay.DataBind();
             }
 
         }
@@ -386,8 +344,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             //update data
             _cartInfo.AddExtraInfo(rpExtra);
-            _cartInfo.AddPromoCode(rpPromo);
-            _cartInfo.AddTaxData(rpTax);
             _cartInfo.AddShipData(rpShip);
         }
 

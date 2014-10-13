@@ -147,7 +147,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public Double GetModelTransQty(String modelid, int orderid)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
+            var key = "modeltrans*" + modelid + "*" + Info.PortalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l == null) return 0;
             Double tot = 0;
@@ -163,7 +163,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ReleaseModelTransQty(String modelid, int orderid, Double addqty)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
+            var key = "modeltrans*" + modelid + "*" + Info.PortalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l != null)
             {
