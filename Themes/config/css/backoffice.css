@@ -164,7 +164,6 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .editcategories .selectcategory{height:300px}
 .editcategories .removecategory.btn{margin-bottom:0}
 .editproperties{}
-.editproperties .selectgroupcategory option:first-child{display:none} /* Hides first property from value listbox */
 .editproperties .selectgrouptype{height:110px}
 .editproperties .selectgroupcategory{height:200px;margin-top:15px}
 .editproperties .removecategory.btn{margin-bottom:0}

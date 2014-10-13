@@ -216,8 +216,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SavePurchaseData();
 
             // Send emails
-            NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
-            NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo);
+            if (sendEmails)
+            {
+                NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo);                
+            }
 
         }
 

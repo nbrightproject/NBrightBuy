@@ -50,6 +50,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                     var ctlpath = GetControlPath(ctrl);
+                    if (ctlpath == "")  // orders ctrl may not exist in category system
+                    {
+                        ctrl = "products";
+                        ctlpath = GetControlPath(ctrl);                        
+                    }
 
                     if (ctlpath != "")
                     {
