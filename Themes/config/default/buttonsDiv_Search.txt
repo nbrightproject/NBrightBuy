@@ -1,5 +1,0 @@
-[<tag id="cmdNew" type="linkbutton" resourcekey="General.cmdAdd"  cssclass="nwb-button primary icon add" commandname="new" commandargument="0"/>]
-[<tag id="txtSearch" type="textbox" width="250" maxlength="200" tabindex="1" />]
-[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="nwb-button icon search" commandname="search"/>]
-[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdReset" cssclass="nwb-button" commandname="resetsearch"/>]
-<hr />

@@ -1093,7 +1093,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Utils.IsNumeric(selectedrelatedid) && Utils.IsNumeric(productid))
                 {
                     var prodData = new ProductData(Convert.ToInt32(productid), _lang, false);
-                    prodData.AddRelatedProduct(Convert.ToInt32(selectedrelatedid));
+                    if (prodData.Exists) prodData.AddRelatedProduct(Convert.ToInt32(selectedrelatedid));
+
+                    // do bi-direction
+                    var prodData2 = new ProductData(Convert.ToInt32(selectedrelatedid), _lang, false);
+                    if (prodData2.Exists) prodData2.AddRelatedProduct(Convert.ToInt32(productid));
+
                     return GetProductRelated(context);
                 }
                 return "Invalid itemid or selectedrelatedid";
@@ -1123,6 +1128,7 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
             if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
             if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
+            if (!settings.ContainsKey("cascade")) settings.Add("cascade", "False");
 
             var header = settings["header"];
             var body = settings["body"];
@@ -1132,6 +1138,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var returnLimit = Convert.ToInt32(settings["returnlimit"]);    
             var pageNumber = Convert.ToInt32(settings["pagenumber"]);            
             var pageSize = Convert.ToInt32(settings["pagesize"]);
+            var cascade = Convert.ToBoolean(settings["cascade"]);
 
             var searchText = settings["searchtext"];
             var searchCategory = settings["searchcategory"];
@@ -1142,7 +1149,10 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var objQual = DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
-                filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
+                if (!cascade)
+                    filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
+                else
+                    filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") or (typecode = 'CATCASCADE' and XrefItemId = " + searchCategory + ")) ";
             }
 
             var recordCount = 0;

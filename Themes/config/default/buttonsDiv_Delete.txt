@@ -1,1 +1,0 @@
-[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteImg" cssclass="nwb-button danger icon remove" commandname="Delete" commandargument="ItemID" />]

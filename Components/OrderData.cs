@@ -224,9 +224,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public void PaymentFail()
+        public void PaymentFail(String orderStatus = "010")
         {
             ReleaseModelTransQty();
+            OrderStatus = orderStatus;
             PurchaseTypeCode = "CART";
             SavePurchaseData();
         }

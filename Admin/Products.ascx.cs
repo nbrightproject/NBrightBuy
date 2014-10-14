@@ -85,12 +85,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "save":
-                    Update();
+                    Update(_eid);
                     param[0] = "eid=" + cArg;
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "copy":
+                    if (_eid > 0 && Utils.IsNumeric(cArg))
+                    {
+                        var newid = Copy(cArg);
+                        Update(Convert.ToInt32(newid));
+                        param[0] = "eid=" + newid;
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "saveexit":
-                    Update();
+                    Update(_eid);
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "edit":
@@ -119,11 +128,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             return prodData.Info.ItemID.ToString("");
         }
 
-        private void Update()
+        private void Update(int productid)
         {
-            if (_eid > 0)
+            if (productid > 0)
             {
-                var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(productid, StoreSettings.Current.EditLanguage);
                 var strXml = GenXmlFunctions.GetGenXml(rpData);
                 var updInfo = new NBrightInfo(true);
                 updInfo.XMLData = strXml;
@@ -157,6 +166,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
                 prodData.Delete();
             }
+        }
+
+        private String Copy(String productId)
+        {
+            if (Utils.IsNumeric(productId) && Convert.ToInt32(productId) > 0)
+            {
+                var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
+                var newid = prodData.Copy();
+                return newid.ToString("");
+            }
+            return "";
         }
 
 

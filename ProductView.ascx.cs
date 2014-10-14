@@ -550,7 +550,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetEntryUrl(PortalId, _eid, "", productData.SEOName, TabId.ToString("")));
 
                 // overwrite SEO data
-                if (productData.SEOName != "") BasePage.Title = productData.SEOTitle;
+                if (productData.SEOName != "")
+                    BasePage.Title = productData.SEOTitle;
+                else
+                    BasePage.Title = productData.ProductName;
+
                 if (productData.SEODescription != "") BasePage.Description = productData.SEODescription;
                 if (productData.SEOTagwords != "") BasePage.KeyWords = productData.SEOTagwords;
 

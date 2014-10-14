@@ -786,4 +786,16 @@
   <data name="Type.Text" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="cmdDeleteButton.confirm" xml:space="preserve">
+    <value>Delete record ?</value>
+  </data>
+  <data name="cmdSaveAsButton.confirm" xml:space="preserve">
+    <value>Save as a new record ?</value>
+  </data>
+  <data name="cmdSaveAsButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Save As" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save As</value>
+  </data>
+  <data name="CopyToIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Copy" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>

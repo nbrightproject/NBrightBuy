@@ -55,6 +55,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public String ProductName
+        {
+            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"); }
+        }
+
         public String SEOTitle
         {
             get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle"); }
@@ -907,6 +912,63 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return errorcount;
         }
+
+        public int Copy()
+        {
+
+            var objCtrl = new NBrightBuyController();
+
+            //Copy Base record 
+            var dr = (NBrightInfo)DataRecord.Clone();
+            dr.ItemID = -1;
+            //dr.SetXmlProperty("genxml/textbox/txtproductref", dr.GetXmlProperty("genxml/textbox/txtproductref") + " [Copy]");
+            dr.SetXmlProperty("genxml/importref", Utils.GetUniqueKey());
+            var newid = objCtrl.Update(dr);
+            
+            // copy all language records
+            var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            foreach (var dlr in l)
+            {
+                dlr.ParentItemId = newid;
+                dlr.ItemID = -1;
+                objCtrl.Update(dlr);
+            }
+
+            // copy CATXREF records
+            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            foreach (var dr1 in l)
+            {
+                dr1.ParentItemId = newid;
+                dr1.ItemID = -1;
+                dr1.GUIDKey = dr1.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
+                objCtrl.Update(dr1);
+            }
+
+            // copy CATCASCADE records
+            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            foreach (var dr2 in l)
+            {
+                dr2.ParentItemId = newid;
+                dr2.ItemID = -1;
+                dr2.GUIDKey = dr2.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
+                objCtrl.Update(dr2);
+            }
+
+            // copy PRDXREF records
+            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            foreach (var dr3 in l)
+            {
+                dr3.ParentItemId = newid;
+                dr3.ItemID = -1;
+                dr3.GUIDKey = dr3.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
+                objCtrl.Update(dr);
+            }            
+
+
+            return newid;
+        }
+
+
 
         public void OutputDebugFile(String fileName)
         {
