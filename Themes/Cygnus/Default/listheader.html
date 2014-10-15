@@ -1,5 +1,10 @@
 <div class="categorybreadcrumbs">[<tag type="catbreadcrumb" links="True" separator="" aslist="true" targetmodulekey="{Settings:modulekey}" />]</div>
 
+<!-- Use special filter privder -->
+[<tag id="providerfilterkey" type="meta" value="nbrightguerbetfilter" />]
+
+ 
+
 [<tag type="if" function="productcount" modulekey="{Settings:modulekey}" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
 <!-- Product List header  -->
       
@@ -19,6 +24,7 @@ Wishlist: [<tag type="itemlistcount" listname="wishlist" />]
 [<tag id="orderby3" type="meta" value="NB3.FromPrice" />]
 [<tag id="orderby4" type="meta" value="NB3.FromPrice DESC" />]
 [<tag id="orderby5" type="meta" value="NB3.Qty" />]
+
 
 
 <!-- Show category details -->

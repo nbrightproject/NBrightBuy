@@ -174,6 +174,7 @@
     <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
     <Compile Include="Components\GroupData.cs" />
+    <Compile Include="Components\Interfaces\FilterInterface.cs" />
     <Compile Include="Components\Interfaces\PaymentsInterface.cs" />
     <Compile Include="Components\ProfileData.cs" />
     <Compile Include="Components\PluginData.cs" />
@@ -529,16 +530,13 @@
     <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
     <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
     <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
-    <Content Include="Themes\Cygnus\Default\cartdetails.html" />
     <Content Include="Themes\Cygnus\Default\cartextra.html" />
     <Content Include="Themes\Cygnus\Default\cartlayout.html" />
     <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
     <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
     <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
-    <Content Include="Themes\Cygnus\Default\cartpromo.html" />
     <Content Include="Themes\Cygnus\Default\cartshipment.html" />
     <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
-    <Content Include="Themes\Cygnus\Default\carttax.html" />
     <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
     <Content Include="Themes\Cygnus\Default\categorybody.html" />
     <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />

@@ -43,7 +43,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/groupname");
                 return "";
             }
-            set { if (Exists) DataLangRecord.SetXmlProperty("genxml/textbox/groupname", value); }
+            set {if (Exists) DataLangRecord.SetXmlProperty("genxml/textbox/groupname", value);}
         }
 
         public String Ref
@@ -53,7 +53,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (Exists) return Info.GetXmlProperty("genxml/textbox/groupref");
                 return "";
             }
-            set { if (Exists) DataRecord.SetXmlProperty("genxml/textbox/groupref", value); }
+            set 
+            {
+                if (Exists)
+                {
+                    DataRecord.GUIDKey = value;
+                    DataRecord.SetXmlProperty("genxml/textbox/groupref", value);
+                } 
+            }
         }
 
 
@@ -110,6 +117,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            // add required field values to make getting group easier.
+            if (DataRecord.GUIDKey != Ref)
+            {
+                DataRecord.GUIDKey = Ref;
+                objCtrl.Update(DataRecord);
+            }
 
             return errorcount;
         }

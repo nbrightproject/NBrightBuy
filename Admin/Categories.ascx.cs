@@ -191,6 +191,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         categoryData.GroupType = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
                         if (categoryData.GroupType == "") categoryData.GroupType = "cat";
+                        var grpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                        var grp = grpCtrl.GetGrpCategoryByRef(categoryData.GroupType);
+                        if (grp != null) categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grp.categoryid.ToString(""));
                         categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False"); // don't hide property groups by default
                     }
                     categoryData.Save();
@@ -253,6 +256,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", parentitemid);
                             catData.DataRecord.ParentItemId = Convert.ToInt32(parentitemid);
                         }
+
+                        if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                        {
+                            var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                            var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
+                            if (grp != null)
+                            {
+                                catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grptype);
+                                catData.DataRecord.ParentItemId = grp.ItemID;
+                            }   
+                        }
+
                         ModCtrl.Update(catData.DataRecord);
                         catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                         ModCtrl.Update(catData.DataLangRecord);
@@ -287,7 +302,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (settings.ContainsKey("itemid"))
             {
                 var catData = new CategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
+
                 catData.Update(objInfo);
+
+                if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                {
+                    var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                    var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
+                    if (grp != null)
+                    {
+                        catData.DataRecord.GUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        catData.DataRecord.ParentItemId = grp.ItemID;
+                    }
+                }
                 catData.Save();
                 NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.ok);
             }
@@ -388,11 +415,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             if (level > displaylevels) return rtnList; // stop infinate loop
 
-            var strFilter = " and NB1.ParentItemId = " + parentid + " ";
+            var strFilter = "";
             if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
-                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";  
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
             else
+            {
+                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
                 strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+            }
 
             if (parentid > 0 ) parentlist += parentid.ToString("") + ";";
 
@@ -404,7 +434,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 catinfo.SetXmlProperty("genxml/hidden/levelprefix",str);
                 rtnList.Add(catinfo);
                 catinfo.SetXmlProperty("genxml/parentlist",parentlist);
-                rtnList = GetTreeCatList(rtnList, level + 1, catinfo.ItemID, groupref, parentlist, displaylevels);
+                if (groupref == "cat") rtnList = GetTreeCatList(rtnList, level + 1, catinfo.ItemID, groupref, parentlist, displaylevels); // only category have multipel levels.
             }
 
             return rtnList;

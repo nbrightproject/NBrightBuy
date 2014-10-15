@@ -24,6 +24,7 @@ using NBrightDNN;
 
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -255,27 +256,27 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #region "Get filter setup"
 
-                    var strFilter = "";
-                    // filter mode and will persist past category selection.
-                    if ((_catid == "" && _catname == "")) 
-                    {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        var strFilter = "";
+                        // filter mode and will persist past category selection.
+                        if ((_catid == "" && _catname == ""))
+                        {
+                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
 
-                        // if navdata is not deleted then get filter from navdata, created by productsearch module.
-                        strFilter = _navigationdata.Criteria;
-                        _strOrder = _navigationdata.OrderBy;
-                    }
-                    else
-                    {
-                        _navigationdata.ResetSearch(); 
+                            // if navdata is not deleted then get filter from navdata, created by productsearch module.
+                            strFilter = _navigationdata.Criteria;
+                            _strOrder = _navigationdata.OrderBy;
+                        }
+                        else
+                        {
+                            _navigationdata.ResetSearch();
 
-                        // We have a category selected (in url), so overwrite categoryid navigationdata.
-                        // This allows the return to the same category after a returning from a entry view.
-                        _navigationdata.CategoryId = _catid;
+                            // We have a category selected (in url), so overwrite categoryid navigationdata.
+                            // This allows the return to the same category after a returning from a entry view.
+                            _navigationdata.CategoryId = _catid;
 
-                        // check the display header to see if we have a sqlfilter defined.
-                        strFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
-                    }
+                            // check the display header to see if we have a sqlfilter defined.
+                            strFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                        }
 
                     #endregion
 
@@ -318,51 +319,57 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     if (Utils.IsNumeric(_catid))
-                    {
-                        var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                        var dbOwner = DataProvider.Instance().DatabaseOwner;
-                        if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
                         {
-                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
-                        }
-                        else
-                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
-
-                        if (Utils.IsNumeric(catseo))
-                        {
-                            var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
-                            if (objSEOCat != null)
+                            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                            var dbOwner = DataProvider.Instance().DatabaseOwner;
+                            if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
                             {
-                                //Page Title
-                                var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                                if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                            }
+                            else
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
 
-                                var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
-                                if (newBaseTitle != "") BasePage.Title = newBaseTitle;
-                                //Page KeyWords
-                                var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
-                                if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
-                                //Page Description
-                                var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
-                                if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
-                                if (newBaseDescription != "") BasePage.Description = newBaseDescription;
-
-                                if (PortalSettings.HomeTabId == TabId)
-                                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
-                                else
+                            if (Utils.IsNumeric(catseo))
+                            {
+                                var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                                if (objSEOCat != null)
                                 {
-                                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                    //Page Title
+                                    var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                    if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                                    var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                                    if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                                    //Page KeyWords
+                                    var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                                    if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                                    //Page Description
+                                    var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                                    if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                                    if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                                    if (PortalSettings.HomeTabId == TabId)
+                                        PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                                    else
+                                    {
+                                        PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
-                    }
+                        else
+                        {
+                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        }
 
                     #endregion
-
+                        
+                    #region "Apply provider product filter"
+                    // Special filtering can be done, by using the ProductFilter interface.
+                    var productfilterkey = "";
+                    if (_templateHeader != null) productfilterkey = _templateHeader.GetHiddenFieldValue("providerfilterkey");
+                    if (productfilterkey != "") strFilter = FilterInterface.Instance(productfilterkey).GetFilter(strFilter,_navigationdata, ModSettings, Context);
+                    #endregion
 
                     #region "itemlists (wishlist)"
 

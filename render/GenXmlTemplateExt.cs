@@ -607,6 +607,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";                                    
                                 }
                                 break;
+                            case "profile":
+                                var userInfo = UserController.GetCurrentUserInfo();
+                                if (userInfo.UserID >= 0) dataValue = userInfo.Profile.GetPropertyValue(settingkey);
+                                break;
                             default:
                                 dataValue = "";
                                 break;

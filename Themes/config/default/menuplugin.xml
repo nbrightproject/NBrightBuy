@@ -79,7 +79,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Manager,Editor]]>
+					<![CDATA[]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -160,7 +160,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Manager,Editor]]>
+					<![CDATA[]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -200,7 +200,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Editor,Manager]]>
+					<![CDATA[]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -240,7 +240,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Editor,Manager]]>
+					<![CDATA[]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -280,7 +280,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[]]>
+					<![CDATA[Managers,Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -320,7 +320,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[]]>
+					<![CDATA[Managers,Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -361,7 +361,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Administrator]]>
+					<![CDATA[Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -454,7 +454,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[]]>
+					<![CDATA[Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -495,7 +495,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Manager]]>
+					<![CDATA[Managers,Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -641,7 +641,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[Editor,Manager]]>
+					<![CDATA[Editor,Managers,Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -681,7 +681,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[]]>
+					<![CDATA[Managers,Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>
@@ -735,7 +735,7 @@
 					<![CDATA[]]>
 				</help>
 				<roles>
-					<![CDATA[]]>
+					<![CDATA[Administrators]]>
 				</roles>
 				<description>
 					<![CDATA[]]>

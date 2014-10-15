@@ -65,7 +65,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var activeCat = _catGrpCtrl.GetCategory(_currentCatId);
             if (activeCat == null) activeCat = new GroupCategoryData();
             var depth = 0;
-            var levelList = _catGrpCtrl.GetGrpCategories(parentid, groupref);
+            var levelList = _catGrpCtrl.GetGrpCategories(parentid, "cat"); // force this to always categories
             foreach (GroupCategoryData grpcat in levelList)
             {
                 if (grpcat.isvisible)

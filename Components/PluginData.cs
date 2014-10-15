@@ -175,6 +175,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetProviders("02", activeOnly);
         }
 
+        public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("08", activeOnly);
+        }
+
         public NBrightInfo GetPaymentProviderDefault()
         {
             var l = GetPaymentProviders();

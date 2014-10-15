@@ -3,10 +3,10 @@
 <td>[<tag id="groupname" type="textbox" cssclass="form-control" maxlength="150" />]</td>
 
 <td>
-[<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{OFF}" />]
-[<tag id="groupref" type="textbox" cssclass="form-control" maxlength="150" />]
+[<tag type="if" xpath="genxml/textbox/groupref" testvalue="" display="{ON}" />]
+[<tag id="groupref" type="textbox" cssclass="form-control" maxlength="50" />]
 [<tag type="endif" />]
-[<tag type="if" xpath="genxml/textbox/groupref" testvalue="cat" display="{ON}" />]
+[<tag type="if" xpath="genxml/textbox/groupref" testvalue="" display="{OFF}" />]
 [<tag type="valueof" xpath="genxml/textbox/groupref" />]
 [<tag type="endif" />]
 </td>

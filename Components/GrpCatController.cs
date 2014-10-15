@@ -57,15 +57,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l.Any() ? l[0] : null;
         }
 
-        public List<GroupCategoryData> GetGrpCategories(int parentcategoryid,string groupref = "")
+        public List<GroupCategoryData> GetGrpCategories(int parentcategoryid, string groupref = "")
         {
-                var lenum = from i in GrpCategoryList where i.parentcatid == parentcategoryid select i;
-                if (groupref != "")
-                {
-                    var lenum2 = from i2 in lenum where i2.grouptyperef == groupref select i2;
-                    return lenum2.ToList();
-                }
-                return lenum.ToList();                
+            IEnumerable<GroupCategoryData> lenum;
+            if (groupref == "" || groupref == "cat")
+                lenum = from i in GrpCategoryList where i.parentcatid == parentcategoryid select i;
+            else
+                lenum = from i in GrpCategoryList select i; // if we're getting group categories, the parentitemid is set to the group itemid + we only have the 1 level.
+
+            if (groupref != "")
+            {
+                var lenum2 = from i2 in lenum where i2.grouptyperef == groupref select i2;
+                return lenum2.ToList();
+            }
+            return lenum.ToList();
         }
 
         public List<GroupCategoryData> GetCategories(int parentcategoryid)
@@ -239,7 +244,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 50, breadcrumbseparator,false);
                 nInfo.depth = level;
                 rtnList.Add(nInfo);
-                GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
+                if (groupref == "" || groupref == "cat") GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
             }
 
             return rtnList;

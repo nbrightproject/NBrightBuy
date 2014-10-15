@@ -222,6 +222,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var n = new GroupData(-1, StoreSettings.Current.EditLanguage);
             n.Ref = groupref;
             n.Name = name;
+            n.DataRecord.GUIDKey = groupref;
             n.Save();
         }
 

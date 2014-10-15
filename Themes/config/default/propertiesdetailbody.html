@@ -58,7 +58,7 @@
             [<tag id="searchcategory" type="hidden" value=""/>]     
         </div>
 
-        [<tag id="fields" type="postback" value="genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+        [<tag id="fields" type="postback" value="genxml/textbox/propertyref,genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
         <div class="hidden">[<tag id="ddlgrouptype" type="groupdropdown" groupsonly="true" />]</div><!-- Required - Sets grouptype to only properties and hides the field -->
@@ -81,11 +81,15 @@
                         <div class="form-horizontal dnnForm">
                             <div class="col-sm-12">
                                 <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Ref" />]</label>
+                                        [<tag id="propertyref" cssclass="form-control" type="textbox" maxlength="50" />]
+                                    </div>
                                     <div class="col-sm-4">
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>
                                         [<tag id="txtcategoryname" cssclass="form-control" type="textbox" maxlength="250" />]
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Type" />]</label>
                                         [<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" allowblank="true" showhidden="true" groupsonly="true" />]
                                     </div>
