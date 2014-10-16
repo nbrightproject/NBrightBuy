@@ -53,8 +53,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             PurchaseTypeCode = "CART";
             EditMode = "R";
+
+            // reset order fields
+            ShippedDate = "";
+            OrderStatus = "010";
+            TrackingCode = "";
+            InvoiceFileExt = "";
+            InvoiceFileName = "";
+            InvoiceFilePath = "";
+
             var cartId = base.SavePurchaseData(true);
             var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
+
             cartData.Save();
             if (debugMode) OutputDebugFile("debug_copytocart.xml");
         }

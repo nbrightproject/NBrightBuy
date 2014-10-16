@@ -368,7 +368,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     // Special filtering can be done, by using the ProductFilter interface.
                     var productfilterkey = "";
                     if (_templateHeader != null) productfilterkey = _templateHeader.GetHiddenFieldValue("providerfilterkey");
-                    if (productfilterkey != "") strFilter = FilterInterface.Instance(productfilterkey).GetFilter(strFilter,_navigationdata, ModSettings, Context);
+                    if (productfilterkey != "")
+                    {
+                        var provfilter = FilterInterface.Instance(productfilterkey);
+                        if (provfilter != null) strFilter = provfilter.GetFilter(strFilter, _navigationdata, ModSettings, Context);
+                    }
                     #endregion
 
                     #region "itemlists (wishlist)"
