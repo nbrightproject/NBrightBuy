@@ -272,15 +272,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
 
             //add tax
-            Double taxcost = 0;
-            Double taxdealercost = 0;
-            PurchaseInfo.SetXmlPropertyDouble("genxml/taxcost", taxcost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/taxdealercost", taxdealercost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtax", AppliedCost(PortalId, UserId, taxcost, taxdealercost));
+            Double appliedtax = 0;
+            var taxproviderkey = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/hidden/taxproviderkey");
+            var taxprov = TaxInterface.Instance(taxproviderkey);
+            if (taxprov != null)
+            {
+                PurchaseInfo = taxprov.Calculate(PurchaseInfo);
+                appliedtax = PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtax");
+            }
 
             //cart full total
-            var dealertotal = (subtotaldealercost + shippingdealercost + taxdealercost);
-            var total = (subtotalcost + shippingcost + taxcost);
+            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax);
+            var total = (subtotalcost + shippingcost + appliedtax);
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
@@ -376,6 +379,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totaldiscount), totaldealercost));
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - discount), (dealercost - dealerdiscount)));
+
+                // calc tax for item
+                var taxproviderkey = PurchaseInfo.GetXmlProperty("genxml/hidden/taxproviderkey");
+                var taxprov = TaxInterface.Instance(taxproviderkey);
+                if (taxprov != null)
+                {
+                    var nbi = (NBrightInfo)cartItemInfo.Clone();
+                    cartItemInfo.AddSingleNode("taxcost", taxprov.CalculateItemTax(nbi).ToString(CultureInfo.GetCultureInfo("en-US")), "genxml");
+                }
+
             }
 
             return cartItemInfo;

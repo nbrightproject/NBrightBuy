@@ -175,10 +175,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetProviders("02", activeOnly);
         }
 
+        public Dictionary<String, NBrightInfo> GetTaxProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("03", activeOnly);
+        }
+
+        public Dictionary<String, NBrightInfo> GetPromoProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("04", activeOnly);
+        }
+        public Dictionary<String, NBrightInfo> GetSchedulerProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("05", activeOnly);
+        }
+        public Dictionary<String, NBrightInfo> GetEventsProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("06", activeOnly);
+        }
+
+        public Dictionary<String, NBrightInfo> GetPaymentProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("07", activeOnly);
+        }
+
         public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
         {
             return GetProviders("08", activeOnly);
         }
+
 
         public NBrightInfo GetPaymentProviderDefault()
         {
@@ -187,10 +211,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return null;
         }
 
-        public Dictionary<String, NBrightInfo> GetPaymentProviders(Boolean activeOnly = true)
-        {
-            return GetProviders("07", activeOnly);
-        }
 
         private Dictionary<String, NBrightInfo> GetProviders(String providerType, Boolean activeOnly = true)
         {

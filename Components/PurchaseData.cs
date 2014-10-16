@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -12,6 +13,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 
 namespace Nevoweb.DNN.NBrightBuy.Components
@@ -251,6 +253,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("modelextra", modelInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtextra"), "genxml");
                 objInfo.AddSingleNode("unitcost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
                 objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
+                objInfo.AddSingleNode("taxratecode", modelInfo.GetXmlProperty("genxml/dropdownlist/taxrate"), "genxml");
+
 
                 //move all product and model data into cart item, so we can display bespoke fields.
                 objInfo.AddSingleNode("productxml", productData.Info.XMLData, "genxml");

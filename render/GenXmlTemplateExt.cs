@@ -263,6 +263,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "shippingproviders":
                     CreateShippingProviderRadio(container, xmlNod);
                     return true;
+                case "taxdropdown":
+                    CreateTaxDropDownList(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -1196,6 +1199,36 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //do nothing
             }
 
+        }
+
+        private void CreateTaxDropDownList(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+                var ddl = new DropDownList();
+                ddl = (DropDownList)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+                var provkey = "";
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["providerkey"] != null)) provkey = xmlNod.Attributes["providerkey"].InnerText;
+
+                var tList = Components.Interfaces.TaxInterface.Instance(provkey).GetName();
+                foreach (var tItem in tList)
+                {
+                    var li = new ListItem();
+                    li.Text = tItem.Value;
+                    li.Value = tItem.Key;
+
+                    ddl.Items.Add(li);
+                }
+
+                ddl.DataBinding += DdListDataBinding;
+                container.Controls.Add(ddl);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
         }
 
         private void CreateCatDropDownList(Control container, XmlNode xmlNod)

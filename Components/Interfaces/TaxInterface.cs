@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+using DotNetNuke.Entities.Portals;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -19,40 +21,54 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 		#region "Shared/Static Methods"
 
-		// singleton reference to the instantiated object 
-
-        private static TaxInterface objProvider = null;
         // constructor
         static TaxInterface()
 		{
 			CreateProvider();
 		}
 
-		// dynamically create provider
-		private static void CreateProvider()
-		{
-			ObjectHandle handle = null;
-			string[] Prov = null;
-			string ProviderName = null;
+        //private static ShippingInterface objProvider = null;
+        private static Dictionary<String, TaxInterface> _providerList; 
 
-            ProviderName = StoreSettings.Current.Get("tax.provider");
-            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.TaxProvider,Nevoweb.DNN.NBrightBuy.Providers.TaxProvider"; 
-            if (!string.IsNullOrEmpty(ProviderName))
-			{
-			    Prov = ProviderName.Split(',');
-				handle = Activator.CreateInstance(Prov[0], Prov[1]);
-                objProvider = (TaxInterface)handle.Unwrap();
-			}
+        // dynamically create provider
+        private static void CreateProvider()
+        {
+
+            _providerList = new Dictionary<string, TaxInterface>();
+
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var l = pluginData.GetTaxProviders();
+
+            foreach (var p in l)
+            {
+                var prov = p.Value;
+                ObjectHandle handle = null;
+                handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"),
+                prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                var objProvider = (TaxInterface)handle.Unwrap();
+                var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
+                if (!_providerList.ContainsKey(ctrlkey))
+                {
+                    _providerList.Add(ctrlkey, objProvider);
+                }
+            }
+
         }
 
-		// return the provider
-        public static new TaxInterface Instance()
-		{
-            return objProvider;
-		}
+        // return the provider
+        public static new TaxInterface Instance(String ctrlkey)
+        {
+            if (_providerList.ContainsKey(ctrlkey)) return _providerList[ctrlkey];
+            if (_providerList.Count > 0) return _providerList.Values.First();
+            return null;
+        }
 
 		#endregion
 
+        public abstract NBrightInfo Calculate(NBrightInfo cartInfo);
+	    public abstract Double CalculateItemTax(NBrightInfo cartItemInfo);
+        public abstract Dictionary<String, Double> GetRates();
+        public abstract Dictionary<String, String> GetName();
 
 
 	}

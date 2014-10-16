@@ -2,10 +2,152 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using NBrightCore.common;
+using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components;
+using TaxProvider;
 
 namespace Nevoweb.DNN.NBrightBuy.Providers
 {
     public class TaxProvider : Components.Interfaces.TaxInterface 
     {
+        public override NBrightInfo Calculate(NBrightInfo cartInfo)
+        {
+            var info = ProviderUtils.GetProviderSettings("tax");
+            var taxtype = info.GetXmlProperty("genxml/radiobuttonlist/taxtype");
+
+            if (taxtype == "3") // no tax
+            {
+                cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                return cartInfo;
+            }
+
+
+            var rateDic = GetRates();
+            if (!rateDic.Any()) return cartInfo;
+
+            // loop through each item and calc the tax for each.
+            var nodList = cartInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (nodList != null)
+            {
+                Double taxtotal = 0;
+
+                foreach (XmlNode nod in nodList)
+                {
+                    var nbi = new NBrightInfo();
+                    nbi.XMLData = nod.OuterXml;
+                    taxtotal += CalculateItemTax(nbi);
+                }
+
+                cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal);
+                if (taxtype == "1") cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0); // tax already in total, so don't apply any more tax.
+                if (taxtype == "2") cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal);
+
+
+                // Check for EU tax number.
+                var enabletaxnumber = info.GetXmlPropertyBool("genxml/checkbox/enabletaxnumber");
+                if (enabletaxnumber)
+                {
+                    var taxnumer = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber");
+                    var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
+                    if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
+                    if (taxnumer.ToUpper().StartsWith(storetaxnumber))
+                    {
+                        // matching merchant cuntry, so remove tax 
+                        if (taxtype == "1")
+                        {
+                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
+                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
+                        }
+                        if (taxtype == "2")
+                        {
+                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                        }
+                    }
+                }
+
+            }
+
+
+            return cartInfo;
+        }
+
+        public override Double CalculateItemTax(NBrightInfo cartItemInfo)
+        {
+            var info = ProviderUtils.GetProviderSettings("tax");
+            var taxtype = info.GetXmlProperty("genxml/radiobuttonlist/taxtype");
+            
+            if (taxtype == "3") return 0;
+
+            var rateDic = GetRates();
+            if (!rateDic.Any()) return 0;
+
+            // loop through each item and calc the tax for each.
+            Double taxtotal = 0;
+
+            var totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/appliedtotalcost");
+            var taxratecode = cartItemInfo.GetXmlProperty("genxml/taxratecode");
+            if (taxratecode == "") taxratecode = "0";
+            if (!rateDic.ContainsKey(taxratecode)) taxratecode = "0";
+            var taxrate = rateDic[taxratecode];
+
+            if (taxtype == "1") // included in unit price
+            {
+                taxtotal += totalcost - ((totalcost/(100 + taxrate))*100);
+            }
+            if (taxtype == "2") // NOT included in unit price
+            {
+                taxtotal += (totalcost/100)*taxrate;
+            }
+
+            return Math.Round(taxtotal, 2);
+        }
+
+
+        public override Dictionary<string, double> GetRates()
+        {
+            var info = ProviderUtils.GetProviderSettings("tax");
+            var rtnDic = new Dictionary<string, double>();
+
+            var rate = info.GetXmlProperty("genxml/textbox/taxdefault").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("0", Convert.ToDouble(rate));
+
+            rate = info.GetXmlProperty("genxml/textbox/rate1").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("1", Convert.ToDouble(rate));
+            rate = info.GetXmlProperty("genxml/textbox/rate2").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("2", Convert.ToDouble(rate));
+            rate = info.GetXmlProperty("genxml/textbox/rate3").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("3", Convert.ToDouble(rate));
+            rate = info.GetXmlProperty("genxml/textbox/rate4").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("4", Convert.ToDouble(rate));
+            rate = info.GetXmlProperty("genxml/textbox/rate5").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("5", Convert.ToDouble(rate));
+
+            return rtnDic;
+        }
+
+        public override Dictionary<string, string> GetName()
+        {
+            var info = ProviderUtils.GetProviderSettings("tax");
+            var rtnDic = new Dictionary<string, string>();
+
+            var rate = info.GetXmlProperty("genxml/textbox/taxdefault").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("0", rate + "%");
+            rate = info.GetXmlProperty("genxml/textbox/rate1").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("1", info.GetXmlProperty("genxml/textbox/name1"));
+            rate = info.GetXmlProperty("genxml/textbox/rate2").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("2", info.GetXmlProperty("genxml/textbox/name2"));
+            rate = info.GetXmlProperty("genxml/textbox/rate3").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("3", info.GetXmlProperty("genxml/textbox/name3"));
+            rate = info.GetXmlProperty("genxml/textbox/rate4").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("4", info.GetXmlProperty("genxml/textbox/name4"));
+            rate = info.GetXmlProperty("genxml/textbox/rate5").Replace("%", "").Trim();
+            if (Utils.IsNumeric(rate)) rtnDic.Add("5", info.GetXmlProperty("genxml/textbox/name5"));
+
+            return rtnDic;
+        }
     }
 }
