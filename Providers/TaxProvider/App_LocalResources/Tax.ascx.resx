@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="enabletaxcountry.Text" xml:space="preserve">
+    <value>Enable use of Country for Tax exempt.</value>
+  </data>
   <data name="enabletaxnumber.Text" xml:space="preserve">
-    <value>Enable use of Compnay Tax Number to remove Tax</value>
+    <value>Enable use of (EU) Tax Number for Tax Exempt</value>
   </data>
   <data name="taxdefault.Text" xml:space="preserve">
     <value>Default Tax (%)</value>
+  </data>
+  <data name="taxexemptregions.Text" xml:space="preserve">
+    <value>Taxed Region codes (CSV list)</value>
   </data>
   <data name="taxrate.Text" xml:space="preserve">
     <value>Tax Rate (%)</value>
   </data>
   <data name="taxtype.data" xml:space="preserve">
     <value>Tax Included in Unit Price;Tax NOT Included in Unit Price;No Tax</value>
+  </data>
+  <data name="valideutaxcountrycode.Text" xml:space="preserve">
+    <value>Valid EU country codes (CSV List)</value>
   </data>
 </root>

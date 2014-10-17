@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DotNetNuke.Entities.Content.Common;
 using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -46,28 +47,89 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (taxtype == "2") cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal);
 
 
+                var taxcountry = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
+                var storecountry = StoreSettings.Current.Get("storecountry");
+                var valideutaxcountrycode = info.GetXmlProperty("genxml/textbox/valideutaxcountrycode");
+                var isvalidEU = false;
+                valideutaxcountrycode = "," + valideutaxcountrycode.ToUpper().Replace(" ", "") + ",";
+                if ((valideutaxcountrycode.Contains("," + taxcountry.ToUpper().Replace(" ", "") + ","))) isvalidEU = true;
+
                 // Check for EU tax number.
                 var enabletaxnumber = info.GetXmlPropertyBool("genxml/checkbox/enabletaxnumber");
                 if (enabletaxnumber)
                 {
-                    var taxnumer = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber");
-                    var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
-                    if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
-                    if (taxnumer.ToUpper().StartsWith(storetaxnumber))
+                    var taxnumber = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber");
+                    if (taxnumber != "")
                     {
-                        // matching merchant cuntry, so remove tax 
-                        if (taxtype == "1")
+                        var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
+                        if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
+                        if (taxnumber.Length >= 2) taxnumber = taxnumber.Substring(0, 2).ToUpper();
+                        if (taxnumber != storetaxnumber)
                         {
-                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
-                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
-                        }
-                        if (taxtype == "2")
+                            // not matching merchant country, so remove tax 
+                            if (taxtype == "1")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
+                            }
+                            if (taxtype == "2")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                            }
+                        }                        
+                    }
+                }
+
+                // Check for country.
+                var enabletaxcountry = info.GetXmlPropertyBool("genxml/checkbox/enabletaxcountry");
+                if (enabletaxcountry)
+                {
+                    if (taxcountry != "")
+                    {
+                        if (taxcountry != storecountry && !isvalidEU)
                         {
-                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
-                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                            // not matching merchant country, so remove tax 
+                            if (taxtype == "1")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
+                            }
+                            if (taxtype == "2")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                            }
                         }
                     }
                 }
+
+                // check for region exempt (in same country)
+                var taxexemptregions = info.GetXmlProperty("genxml/textbox/taxexemptregions");
+                if (taxexemptregions != "" && taxcountry == storecountry)
+                {
+                    taxexemptregions = "," + taxexemptregions.ToUpper().Replace(" ","") + ",";
+                    var taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
+                    if (taxregioncode == "") taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/textbox/txtregion");
+                    if (taxregioncode != "")
+                    {
+                        if (!taxexemptregions.Contains("," + taxregioncode.ToUpper().Replace(" ", "") + ","))
+                        {
+                            // not matching merchant region, so remove tax 
+                            if (taxtype == "1")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
+                            }
+                            if (taxtype == "2")
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                            }
+                        }
+                    }
+                }
+                
 
             }
 

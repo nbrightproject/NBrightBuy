@@ -124,13 +124,16 @@
     <value>Template is displayed above the payment method selection, as a summary before select payment method.  If no payment providers exist this template is not used.</value>
   </data>
   <data name="lbldisplaydetailtemplate.Text" xml:space="preserve">
-    <value>Summary template : </value>
+    <value>Summary Header Template : </value>
   </data>
   <data name="lblpaymentfailtemplate.Help" xml:space="preserve">
     <value>Template displayed when the transaction fails.</value>
   </data>
   <data name="lblpaymentfailtemplate.Text" xml:space="preserve">
     <value>Payment Fail template :</value>
+  </data>
+  <data name="lblpaymentfooter.Text" xml:space="preserve">
+    <value>Summary Footer Template : </value>
   </data>
   <data name="lblpaymentoktemplate.Help" xml:space="preserve">
     <value>Template displayed when the payemnt has been successful. if no payment providers exist then the order is automatiocally processed and this template is displayed directly.</value>

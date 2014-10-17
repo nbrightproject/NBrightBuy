@@ -31,6 +31,15 @@ namespace Nevoweb.DNN.NBrightBuy {
         protected global::System.Web.UI.WebControls.Repeater rpPaymentGateways;
         
         /// <summary>
+        /// rpDetailFooter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDetailFooter;
+        
+        /// <summary>
         /// phData control.
         /// </summary>
         /// <remarks>

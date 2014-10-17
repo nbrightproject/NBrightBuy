@@ -587,6 +587,8 @@
     <Content Include="Themes\Cygnus\Default\ordershippedemail.html" />
     <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
     <Content Include="Themes\Cygnus\Default\paymentFAIL.html" />
+    <Content Include="Themes\Cygnus\Default\paymentfooter.html" />
+    <Content Include="Themes\Cygnus\Default\paymentheader.html" />
     <Content Include="Themes\Cygnus\Default\paymentOK.html" />
     <Content Include="Themes\Cygnus\Default\printorder.html" />
     <Content Include="Themes\Cygnus\Default\printreceipt.html" />

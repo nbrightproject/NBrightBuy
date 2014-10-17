@@ -118,7 +118,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Country</label>
 						<div class="col-sm-5">
-							[<tag id="storecountry" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+							[<tag id="storecountry" cssclass="form-control" type="countrydropdown" />]
 						</div>
 					</div>
 					<div class="form-group">
@@ -171,7 +171,7 @@
 					        [<tag id="emaillogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] 
                 			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" />] 
                             [<tag type="if" xpath="genxml/hidden/hidemaillogo" textvalue="" display="{OFF}" />] 
-                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="Settings.cmdRemoveButton" commandname="removelogo" />] 
+                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.cmdRemoveButton" commandname="removelogo" />] 
                                  [<tag type='imageof' xpath='genxml/hidden/emaillogourl' thumb="100" />]
 					        [<tag type="endif" />]
 					    </div>

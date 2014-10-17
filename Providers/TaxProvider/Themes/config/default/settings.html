@@ -28,6 +28,7 @@
             <div class="box-content">
                 <div class="form-horizontal dnnForm">
                     <div class="form-group">
+                        <label class="col-sm-3 control-label"></label>
                         <div class="col-sm-6">
                             [<tag id="taxtype" resourcekey="Tax.taxtype"  type="radiobuttonlist" datavalue="1;2;3" selectedvalue="1"/>]
                         </div>
@@ -40,9 +41,29 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Tax.valideutaxcountrycode" />]</label>
+                        <div class="col-sm-6">
+                            [<tag id="valideutaxcountrycode" cssclass="form-control" type="textbox" Text="AT,BE,BG,HR,CY,CZ,DK,EE,FI,FR,DE,EL,HU,IE,IT,LV,LT,LU,MT,NL,PL,PT,RO,SK,SI,ES,SE" />]
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Tax.taxdefault" />]</label>
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Tax.enabletaxcountry" />]</label>
+                        <div class="col-sm-1">
+                            [<tag id="enabletaxcountry"  type="checkbox" Text="" />]
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Tax.taxexemptregions" />]</label>
+                        <div class="col-sm-4">
+                            [<tag id="taxexemptregions" cssclass="form-control" type="textbox" Text="" />]
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Tax.taxdefault" />]</label>
                         <div class="col-sm-1">
                             [<tag id="taxdefault" cssclass="form-control" type="textbox" Text="" />]
                         </div>

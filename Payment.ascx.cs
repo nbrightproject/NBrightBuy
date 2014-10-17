@@ -68,7 +68,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 var templOk = ModSettings.Get("paymentoktemplate");
                 var templFail = ModSettings.Get("paymentfailtemplate");
-                var templPayment = "";               
+                var templHeader = "";
+                var templFooter = "";
 
                 if (_provList.Count == 0)
                 {
@@ -87,7 +88,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "Payment Details"
 
                     // display the payment method by default
-                    templPayment = ModSettings.Get("paymentordersummary");
+                    templHeader = ModSettings.Get("paymentordersummary");
+                    templFooter = ModSettings.Get("paymentfooter");
                     var templPaymentText = "";
                     var msg = "";
                     var orderid = Utils.RequestQueryStringParam(Context, "orderid");
@@ -100,12 +102,13 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (msg == "") // no message so successful
                         {
                             _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
-                            templPayment = templOk;
+                            templHeader = templOk;
                         }
                         else
                         {
-                            templPayment = templFail;
+                            templHeader = templFail;
                         }
+                        templFooter = ""; // return from bank, hide footer
                     }
                     else
                     {
@@ -113,10 +116,15 @@ namespace Nevoweb.DNN.NBrightBuy
                         rpPaymentGateways.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(GetPaymentProviderTemplates(), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     }
 
-                    templPaymentText = ModCtrl.GetTemplateData(ModSettings, templPayment, Utils.GetCurrentCulture(), DebugMode);
+                    templPaymentText = ModCtrl.GetTemplateData(ModSettings, templHeader, Utils.GetCurrentCulture(), DebugMode);
                     rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText + msg, ModSettings.Settings(), PortalSettings.HomeDirectory);
                     _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
 
+                    if (templFooter != "")
+                    {
+                        var templPaymentFooterText = ModCtrl.GetTemplateData(ModSettings, templFooter, Utils.GetCurrentCulture(), DebugMode);
+                        rpDetailFooter.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentFooterText, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
 
                     #endregion
                 }
@@ -189,6 +197,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // display return page
                 DoDetail(rpDetailDisplay,_cartInfo.PurchaseInfo);
                 DoDetail(rpPaymentGateways, _cartInfo.PurchaseInfo);
+                DoDetail(rpDetailFooter, _cartInfo.PurchaseInfo);
 
 
                 #endregion
