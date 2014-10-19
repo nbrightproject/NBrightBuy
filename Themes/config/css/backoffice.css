@@ -42,6 +42,7 @@ select option{padding-bottom:3px}
 .onedigit{width:40px !important}
 .twodigit{width:48px !important}
 .threedigit{width:60px !important}
+.select2-container .select2-choice{height: 34px;line-height: 34px;}
 
 /* Buttons */
 .btn {cursor: pointer;outline: none;display: inline-block;vertical-align: top;position: relative;}

@@ -18,11 +18,6 @@
 	[<tag type="endif" />]
     
         <div class="formrow">
-            <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
-            [<tag id="Country" type="countrydropdown" />]
-        </div>
-    
-        <div class="formrow">
             <div class="leftside">
                 <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
                 [<tag id='FirstName' type='textbox' />]
@@ -33,10 +28,21 @@
             </div>
         </div>
     
-        <!--<div class="formrow">
+    <div class="formrow">
+        <div class="leftside">
+        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
+        [<tag id='Telephone' type='textbox' />]
+        </div>
+        <div class="rightside">
+        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+        [<tag id='Email' type='textbox' />]
+        </div>
+    </div>
+    
+    <div class="formrow">
                 <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
                 [<tag id='Company' type='textbox' />]
-            </div>-->
+    </div>
 
         <div class="formrow">
             <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
@@ -54,26 +60,25 @@
                 [<tag id='City' type='textbox' />]
             </div>
             <div class="rightside">
-                <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
-                [<tag id='Region' type='regioncontrol' blank='' />]
+        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
+        [<tag id='PostalCode' type='textbox' required=""/>]
             </div>
         </div>
 
         <div class="formrow">
             <div class="leftside">
-                <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
-                [<tag id='PostalCode' type='textbox' required=""/>]
+        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
+        [<tag id="Country" type="countrydropdown" />]
             </div>
             <div class="rightside">
-                <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
-                [<tag id='Telephone' type='textbox' />]
+        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
+        [<tag id='Region' type='regioncontrol' blank="" />]
             </div>
         </div>
     
-        <div class="formrow">
         </div>
     
     </div>
    
-</div>
+
 

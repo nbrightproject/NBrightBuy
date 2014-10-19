@@ -2,56 +2,80 @@
 [<tag id="pickuppointref" type="postback" aria-valuemax="" />]
 [<tag id="pickuppointaddr" type="postback" aria-valuemax="" />]
 
-<!-- This template contains functionality that needs to be here in order to save properly. They are moved into position using JQuery -->
+<!-- This template contains shipping and summary functionality that needs to be here in order to save properly -->
 
 <!-- Shipping options radio buttons -->
-<div id="shippingoptions" style="display:none;">
+<div id="shippingoptions">
+    <div class="formrow dnnForm">
     <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
-    [<tag id="rblshippingoptions" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="1" RepeatColumns="1" SelectedValue="1" />]        
+	    [<tag id="rblshippingoptions" cssclass="radiobuttonlist" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="Vertical" RepeatColumns="1" RepeatLayout="Flow" SelectedValue="1" />]        
+	</div>
 </div>
 
 
 <!-- Shipping methods  -->
 <div id="shippingmethods">
-    [<tag type="if" function="hasshippingproviders" display="{ON}"/>]
+    <div class="formrow dnnForm">
         <h3>Shipping Methods</h3>
-        [<tag type="shippingproviders" />]
-    [<tag type="endif" />]
-	    <div id="providertemplates"></div>
+	    <div id="providerselection">
+	        [<tag cssclass="radiobuttonlist" type="shippingproviders" RepeatDirection="Horizontal" RepeatColumns="0" RepeatLayout="Flow" />]
+		</div>
+		    <div id="providertemplates"></div>
+	</div>
 </div>
 
 
 
 <!-- Order summary box from here down  -->
 
-<!-- Order summary text inputs  -->
+
 <div class="checkoutextra" style="display:none;">
     <div class="formrow">
         <h3>[<tag type='valueof' resourcekey='General.lblordersummary' />]</h3>
     </div>
+
+<!-- Order summary text inputs  -->
+    <div class="summaryleft">
+   
     <div class="formrow">
         <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
         [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
     </div>
 
     <div class="formrow">
+	        <div class="leftside">
         <h6>[<tag type='valueof' resourcekey='General.PromotionalCode' />]</h6>
         [<tag id='promocode' type='textbox' />]
     </div>
-    <div class="formrow">
+	        <div class="rightside">
         <h6>[<tag type='valueof' resourcekey='General.TaxNumber' />]</h6>
         [<tag id='taxnumber' type='textbox' />]
+    </div>
+	    </div>
+
+	    <div class="formrow dnnForm">
+	        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+	        [<tag type='cartemailaddress' required="" datatype="email"/>] 
+	        </div>
+	        <div class="rightside newscheckbox">
+	        [<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews"  />]
+	        </div>
+	    </div>
+
     </div>
 
 
 <div class="checkoutdetails">
-    <div class="formrow">
-        <h4>[<tag type='valueof' resourcekey='General.lblTotals' />]</h4>
-        Subtotal : [<tag type="valueof" xpath="genxml/appliedsubtotal" />]<br/>
-        Discount : [<tag type="valueof" xpath="genxml/applieddiscount" />]<br/>
-        Shipping : [<tag type="valueof" xpath="genxml/appliedshipping" />]<br/>
-        Tax : [<tag type="valueof" xpath="genxml/taxcost" />]<br/>
-        Total : [<tag type="valueof" xpath="genxml/appliedtotal" />]
+
+    <div class="formrow totals">
+		<ul>
+			<li><span>Subtotal</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedsubtotal" />]</li>
+			<li><span>Discount</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/applieddiscount" />]</li>
+			<li><span>Shipping</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedshipping" />]</li>
+			<li><span>Tax</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedtax" />]</li>
+			<li class="total"><span>Total</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedtotal" />]</li>
+		</ul>
     </div>
 
     [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
@@ -68,22 +92,11 @@
 
 
 <!-- Terms and newsletter subscribe fields -->
-<div class="formrow">
-<table cellpadding="6" style="width:100%">
-	<tr>
-		<td>[<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]</td>
-	</tr>
-	<tr>
-		<td>[<tag id="chknews" type="checkbox" resourcekey="CartView.chknews"  />]</td>
-	</tr>
-</table>
-    <div class="formrow">
-        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
-        [<tag type='cartemailaddress' required="" datatype="email"/>]
-    </div>
+    <div class="formrow dnnForm">
+        [<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]
 </div>
 
-<div class="formrow">
+<div class="formrow submission">
 		[<tag id="cmdConfirm" type="button" cssclass="secondarybutton" resourcekey="General.Refresh" commandname="confirm" />][<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
 </div>
 </div>

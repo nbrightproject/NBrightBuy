@@ -151,6 +151,11 @@
 		[<tag type="if" function="haspurchasedocuments" display="{ON}" />]<!-- Downloadable product message -->	
 		<ul class="fa-ul downloadableproduct"><li><i class='fa-li fa fa-exclamation-circle'></i>[<tag type="valueof" resourcekey="ProductView.downloadableproduct" />]</li></ul>
 		[<tag type="endif"  />]
+
+		[<tag type="if" function="settings" key="sharingwidget" testvalue="" display="{OFF}" />]<!-- Sharing widget -->
+		<li class="sharingwidget">[Settings:sharingwidget]</li>
+		[<tag type="endif"  />]
+
 	</ul>
 </div>
 

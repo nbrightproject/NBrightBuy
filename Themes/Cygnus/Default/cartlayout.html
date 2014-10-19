@@ -22,13 +22,19 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
 
 
+
+<!-- This loader needs to be made to work here -->
+<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+
+
 <div id="cartdetails" class="NBB dnnform">
+<div id="cartlist"></div>
 <div id="cartbilladdress"></div>
 <div id="cartshippingoptions"></div>
-<div id="cartshipaddress"></div>
+[<tag type="if" function="hasshippingproviders" display="{ON}"/>]
 <div id="cartshippingmethods"></div>
+[<tag type="endif" />]
 <div id="cartextra"></div>
-<div id="cartlist"></div>
 </div>
 
 
@@ -39,8 +45,8 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $('#cartbilladdress').append($('.checkoutbillform'));
         $('#cartshippingoptions').append($('#shippingoptions'));
         $('#cartshippingmethods').append($('#shippingmethods'));
-        $('#cartshipaddress').append($('.checkoutshipform'));
-        $('#cartshipaddress').append($('.checkoutship'));
+        $('#cartshippingoptions').append($('.checkoutshipform'));
+        $('#cartshippingoptions').append($('.checkoutship'));
         $('#cartextra').append($('.checkoutextra'));
         $('#cartlist').append($('#checkoutitemlist'));
 
@@ -52,15 +58,11 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
         $("a[[id*='cmdSaveShipAddress']]").hide();
         $("#selectshipaddress").hide();
 
-        // moving provider tmeplates to under the billing address....THIS WILL PROBABLY NEED MOVING!!!
-        $('#cartshippingmethods').append($('#providertemplates'));
-
-
         //hide/show shipping option
         if ($("input[[id*='rblshippingoptions']]:checked").val() == "2") $('#shippinginput').show();
         if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") {
             $('.checkoutship').show();
-            $('#shippingmethods').hide();
+            $('#cartshippingmethods').hide();
             $('#providertemplates').hide();
         }
 
@@ -70,7 +72,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             $("a[[id*='cmdSaveShipAddress']]").hide();
             $("#selectshipaddress").hide();
             $("#shippinginput").find('input').attr('disabled', 'disabled');
-            $('#shippingmethods').show();
+            $('#cartshippingmethods').show();
             if ($(this).val() == "2") {
                 $('#shippinginput').show();
                 $("a[[id*='cmdSaveShipAddress']]").show();
@@ -79,7 +81,7 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             }
             if ($(this).val() == "3") {
                 $('.checkoutship').show();
-                $('#shippingmethods').hide();
+                $('#cartshippingmethods').hide();
                 $('#providertemplates').hide();
             }
             if ($(this).val() != "3") $("input[[id*='_cmdConfirm_']]").trigger("click");

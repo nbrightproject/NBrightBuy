@@ -199,9 +199,9 @@
     <value>Remove All Items?</value>
   </data>
   <data name="chknews.Text" xml:space="preserve">
-    <value>&amp;nbsp;Receive products news and updates</value>
+    <value>Newsletter</value>
   </data>
   <data name="chkterms.Text" xml:space="preserve">
-    <value>&amp;nbsp;I have read and accept the terms</value>
+    <value>I have read and accept the terms</value>
   </data>
 </root>
