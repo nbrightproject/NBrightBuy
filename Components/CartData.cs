@@ -386,7 +386,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (taxprov != null)
                 {
                     var nbi = (NBrightInfo)cartItemInfo.Clone();
-                    cartItemInfo.AddSingleNode("taxcost", taxprov.CalculateItemTax(nbi).ToString(CultureInfo.GetCultureInfo("en-US")), "genxml");
+                    cartItemInfo.SetXmlPropertyDouble("genxml/taxcost", taxprov.CalculateItemTax(nbi));
                 }
 
             }

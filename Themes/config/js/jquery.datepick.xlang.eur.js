@@ -1,4 +1,4 @@
-	$.datepick.regional['ca'] = {
+	$.datepicker.regional['ca'] = {
 		monthNames: ['Gener','Febrer','Mar&ccedil;','Abril','Maig','Juny',
 		'Juliol','Agost','Setembre','Octubre','Novembre','Desembre'],
 		monthNamesShort: ['Gen','Feb','Mar','Abr','Mai','Jun',
@@ -7,7 +7,7 @@
 		dayNamesShort: ['Dug','Dln','Dmt','Dmc','Djs','Dvn','Dsb'],
 		dayNamesMin: ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'],
 		dateFormat: 'dd/mm/yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '&#x3c;Ant', prevStatus: '',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
 		nextText: 'Seg&#x3e;', nextStatus: '',
@@ -22,7 +22,7 @@
 		isRTL: false
 	};
 
-	$.datepick.regional['da'] = {
+	$.datepicker.regional['da'] = {
         monthNames: ['Januar','Februar','Marts','April','Maj','Juni',
         'Juli','August','September','Oktober','November','December'],
         monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
@@ -31,7 +31,7 @@
 		dayNamesShort: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
 		dayNamesMin: ['Sø','Ma','Ti','On','To','Fr','Lø'],
         dateFormat: 'dd-mm-yyyy', firstDay: 0,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
         prevText: '&#x3c;Forrige', prevStatus: 'Vis forrige måned',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
 		nextText: 'Næste&#x3e;', nextStatus: 'Vis næste måned',
@@ -47,7 +47,7 @@
 	};
 
 
-	$.datepick.regional['de'] = {
+	$.datepicker.regional['de'] = {
 		monthNames: ['Januar','Februar','März','April','Mai','Juni',
 		'Juli','August','September','Oktober','November','Dezember'],
 		monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun',
@@ -56,7 +56,7 @@
 		dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
 		dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
 		dateFormat: 'dd.mm.yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '&#x3c;zurück', prevStatus: 'letzten Monat zeigen',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
 		nextText: 'Vor&#x3e;', nextStatus: 'nächsten Monat zeigen',
@@ -71,7 +71,7 @@
 		isRTL: false
 	};
 
-	$.datepick.regional['en-GB'] = {
+	$.datepicker.regional['en-GB'] = {
 		monthNames: ['January','February','March','April','May','June',
 		'July','August','September','October','November','December'],
 		monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -80,7 +80,7 @@
 		dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 		dayNamesMin: ['Su','Mo','Tu','We','Th','Fr','Sa'],
 		dateFormat: 'dd/mm/yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: 'Prev', prevStatus: 'Show the previous month',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: 'Show the previous year',
 		nextText: 'Next', nextStatus: 'Show the next month',
@@ -95,7 +95,7 @@
 		isRTL: false
 	};
 
-	$.datepick.regional['es'] = {
+	$.datepicker.regional['es'] = {
 		monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
 		'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
@@ -104,7 +104,7 @@
 		dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
 		dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
 		dateFormat: 'dd/mm/yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '&#x3c;Ant', prevStatus: '',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
 		nextText: 'Sig&#x3e;', nextStatus: '',
@@ -119,7 +119,7 @@
 		isRTL: false
 	};
 
-	$.datepick.regional['fr'] = {
+	$.datepicker.regional['fr'] = {
 		monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin',
 		'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
 		monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun',
@@ -128,7 +128,7 @@
 		dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
 		dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
 		dateFormat: 'dd/mm/yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '&#x3c;Préc', prevStatus: 'Voir le mois précédent',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: 'Voir l\'année précédent',
 		nextText: 'Suiv&#x3e;', nextStatus: 'Voir le mois suivant',
@@ -144,7 +144,7 @@
 	};
 
 
-	$.datepick.regional['it'] = {
+	$.datepicker.regional['it'] = {
 		monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
 		'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
 		monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
@@ -153,7 +153,7 @@
 		dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
 		dayNamesMin: ['Do','Lu','Ma','Me','Gi','Ve','Sa'],
 		dateFormat: 'dd/mm/yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '&#x3c;Prec', prevStatus: 'Mese precedente',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: 'Mostra l\'anno precedente',
 		nextText: 'Succ&#x3e;', nextStatus: 'Mese successivo',
@@ -168,7 +168,7 @@
 		isRTL: false
 	};
 
-	$.datepick.regional['nl'] = {
+	$.datepicker.regional['nl'] = {
 		monthNames: ['januari', 'februari', 'maart', 'april', 'mei', 'juni',
 		'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
 		monthNamesShort: ['jan', 'feb', 'maa', 'apr', 'mei', 'jun',
@@ -177,7 +177,7 @@
 		dayNamesShort: ['zon', 'maa', 'din', 'woe', 'don', 'vri', 'zat'],
 		dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
 		dateFormat: 'dd-mm-yyyy', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
 		prevText: '←', prevStatus: 'Bekijk de vorige maand',
 		prevJumpText: '«', nextJumpStatus: 'Bekijk het vorige jaar',
 		nextText: '→', nextStatus: 'Bekijk de volgende maand',
@@ -192,7 +192,7 @@
 		isRTL: false
 	};
 
-    $.datepick.regional['sv'] = {
+    $.datepicker.regional['sv'] = {
         monthNames: ['Januari','Februari','Mars','April','Maj','Juni',
         'Juli','Augusti','September','Oktober','November','December'],
         monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
@@ -201,7 +201,7 @@
 		dayNamesShort: ['Sön','Mån','Tis','Ons','Tor','Fre','Lör'],
 		dayNamesMin: ['Sö','Må','Ti','On','To','Fr','Lö'],
         dateFormat: 'yyyy-mm-dd', firstDay: 1,
-		renderer: $.datepick.defaultRenderer,
+		renderer: $.datepicker.defaultRenderer,
         prevText: '&laquo;Förra',  prevStatus: '',
 		prevJumpText: '&#x3c;&#x3c;', prevJumpStatus: '',
 		nextText: 'Nästa&raquo;', nextStatus: '',
