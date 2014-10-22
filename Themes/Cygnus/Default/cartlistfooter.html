@@ -6,8 +6,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	// Create UI spinner for quantity fields
-	$(".quantity").spinner();
+	// Create UI spinner for quantity fields http://api.jqueryui.com/spinner/
+	$(".quantity").spinner({ min: 0, numberFormat: "n", step: 1 });
 });
 </script>
 

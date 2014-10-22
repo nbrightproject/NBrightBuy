@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Resources;
 using System.Runtime.Remoting.Contexts;
 using System.Security.Cryptography;
 using System.Text;
@@ -619,6 +622,101 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnDic;
         }
 
+        public static void UpdateResxFields(Dictionary<String,String> resxFields,List<String> resxFolders,String lang)
+        {
+            var fileList = new Dictionary<String,String>();  // use NBrightInfo to edit res file to make it easier.
+
+            if (lang != "") lang = "." + lang;
+
+                foreach (var d in resxFields)
+                {
+                    var resxKeyArray = d.Key.Split('.');
+                    if (resxKeyArray.Length == 2)
+                    {
+                        var fileName = resxKeyArray[0];
+                        var resxKey = resxKeyArray[1];
+                        if (!fileList.ContainsKey(fileName)) fileList.Add(fileName, "");
+                    }
+                }
+
+            foreach (var r in resxFolders)
+            {
+                foreach (var f in fileList)
+                {
+                    var fpath = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx.resx");
+                    var fpathlang = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".resx");
+                    if (File.Exists(fpath))
+                    {
+                        foreach (var d in resxFields)
+                        {
+                            var resxKeyArray = d.Key.Split('.');
+                            if (resxKeyArray.Length == 2)
+                            {
+                                var fileName = resxKeyArray[0];
+                                var resxKey = resxKeyArray[1];
+                                if (fileName == f.Key) UpdateResourceFile(resxKey + ".Text", d.Value, fpathlang);
+                            }
+                        }                        
+                    }
+                }
+
+
+            }
+
+        }
+
+
+        public static void UpdateResourceFile(String key, String value, String path)
+        {
+            Hashtable resourceEntries = new Hashtable();
+
+            //Get existing resources
+            if (File.Exists(path))
+            {
+                ResXResourceReader reader = new ResXResourceReader(path);
+                if (reader != null)
+                {
+                    IDictionaryEnumerator id = reader.GetEnumerator();
+                    foreach (DictionaryEntry d in reader)
+                    {
+                        if (d.Value == null)
+                            resourceEntries.Add(d.Key.ToString(), "");
+                        else
+                            resourceEntries.Add(d.Key.ToString(), d.Value.ToString());
+                    }
+                    reader.Close();
+                }
+            }
+            //Modify resources here...
+            var updDone = false;
+                if (resourceEntries.ContainsKey(key))
+                {
+                    if ((string) resourceEntries[key] != value)
+                    {
+                        resourceEntries[key] = value;
+                        updDone = true;
+                    }
+                }
+                else
+                {
+                    resourceEntries.Add(key,value);
+                    updDone = true;
+                }
+
+            //Write the combined resource file
+            if (updDone)
+            {
+                ResXResourceWriter resourceWriter = new ResXResourceWriter(path);
+
+                foreach (String key2 in resourceEntries.Keys)
+                {
+                    resourceWriter.AddResource(key2, resourceEntries[key2]);
+                }
+                resourceWriter.Generate();
+                resourceWriter.Close();                
+            }
+
+        }
     }
 }
 

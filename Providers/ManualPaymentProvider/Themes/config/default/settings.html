@@ -1,4 +1,5 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider/App_LocalResources/" />]
+[<tag id="ImageResize" const="true" type="hidden" value="200" />]<!-- This resize token affects all images uploaded on this page -->
 
 <br/>
 
@@ -16,24 +17,51 @@
 	</div>
 </div>
 
-
 <div class="row">
     <div class="col-xs-12 col-sm-12">
         <div class="box">
             <div class="box-header">
                 <div class="box-name">
-                    <i class="fa fa-search"></i><span>Manual Payment</span>
+                    <i class="fa fa-search"></i><span>Manual Payment Method</span>
                 </div>
             </div>
             <div class="box-content">
                 <div class="form-horizontal dnnForm">
+                    
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Title</label>
+						<div class="col-sm-5">
+							[<tag id="manualpaymenttitle" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+						</div>
+					</div>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="ManualPayment.checkouttemplate" />]</label>
-                        <div class="col-sm-2">
-                            [<tag id="checkouttemplate" cssclass="form-control" type="textbox" Text="methodselection.html" />]
-                        </div>
-                    </div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Message</label>
+						<div class="col-sm-5">
+							[<tag id="manualpaymentmessage" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" resourcekeysave="ManualPayment.message" lang="{Settings:editlanguage}" />]
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Image</label>
+					    <div class="col-sm-5">
+					        [<tag id="manualpaymentlogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] 
+                			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" />] 
+                            [<tag type="if" xpath="genxml/hidden/manualpaymentlogo" textvalue="" display="{OFF}" />] 
+                    			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.cmdRemoveButton" commandname="removelogo" />]
+							<div class=""><br>
+                            	[<tag type='imageof' xpath='genxml/hidden/manualpaymentlogourl' thumb="200" width="100%" />]<!-- This code won't have correct id or paths etc -->
+							</div>
+					        [<tag type="endif" />]
+					    </div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="ManualPayment.checkouttemplate" />]</label>
+						<div class="col-sm-5">
+							[<tag id="checkouttemplate" cssclass="form-control" type="textbox" Text="methodselection.html" />]
+						</div>
+					</div>
 
                 </div>
             </div>

@@ -59,25 +59,22 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (enabletaxnumber)
                 {
                     var taxnumber = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber");
-                    if (taxnumber != "")
+                    var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
+                    if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
+                    if (taxnumber.Length >= 2) taxnumber = taxnumber.Substring(0, 2).ToUpper();
+                    if (taxnumber != storetaxnumber || taxnumber == "")
                     {
-                        var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
-                        if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
-                        if (taxnumber.Length >= 2) taxnumber = taxnumber.Substring(0, 2).ToUpper();
-                        if (taxnumber != storetaxnumber)
+                        // not matching merchant country, so remove tax 
+                        if (taxtype == "1")
                         {
-                            // not matching merchant country, so remove tax 
-                            if (taxtype == "1")
-                            {
-                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal * -1);
-                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal * -1);
-                            }
-                            if (taxtype == "2")
-                            {
-                                cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
-                                cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
-                            }
-                        }                        
+                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", taxtotal*-1);
+                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", taxtotal*-1);
+                        }
+                        if (taxtype == "2")
+                        {
+                            cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
+                            cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);
+                        }
                     }
                 }
 

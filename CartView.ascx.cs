@@ -84,14 +84,18 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
+                // check for empty cart 
+                var carttype = ModSettings.Get("ddlcarttype");
+                if (!_cartInfo.GetCartItemList().Any() && carttype == "2")
+                {
+                    _templH = "cartempty.html";
+                }
+
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate) rpDataH.ItemTemplate;
 
-                // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
 
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
@@ -104,8 +108,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 // Get CartLayout
                 var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
                 checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                _templateHeader = (GenXmlTemplate)checkoutlayout.ItemTemplate;
 
-                var carttype = ModSettings.Get("ddlcarttype");
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
+
+
                 if (carttype == "2")
                 {
                     _cartInfo.AddCookieToCart();
@@ -139,7 +147,20 @@ namespace Nevoweb.DNN.NBrightBuy
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
-                    PageLoad();
+                    // check for empty cart 
+                    if (!_cartInfo.GetCartItemList().Any() && ModSettings.Get("ddlcarttype") == "2")
+                    {
+                        var cartL = new List<NBrightInfo>();
+                        cartL.Add(_cartInfo.GetInfo());
+
+                        // display header for empty cart
+                        rpDataH.DataSource = cartL;
+                        rpDataH.DataBind();
+                    }
+                    else
+                    {
+                        PageLoad();                        
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load

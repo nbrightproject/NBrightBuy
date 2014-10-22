@@ -111,6 +111,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             {
                 case "save":
                     Update();
+                    param[0] = "ctrl=manualpayment";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "cancel":
@@ -127,9 +128,13 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         private void Update()
         {
             var modCtrl = new NBrightBuyController();
-            var strXml = GenXmlFunctions.GetGenXml(rpDataH);
+            var strXml = GenXmlFunctions.GetGenXml(rpDataH,"",StoreSettings.Current.FolderImagesMapPath);
             _info.XMLData = strXml;
             modCtrl.Update(_info);
+
+            var resxDic = GenXmlFunctions.GetGenXmlResx(rpDataH);
+            var genTempl = (GenXmlTemplate)rpDataH.ItemTemplate;
+            NBrightBuyUtils.UpdateResxFields(resxDic, genTempl.GetResxFolders(), StoreSettings.Current.EditLanguage); 
 
             //remove current setting from cache for reload
             Utils.RemoveCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));

@@ -208,6 +208,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String GetCompareAddress(NBrightInfo nInfo)
         {
             var newAddr = "";
+            if (nInfo.XMLDoc == null) return "";
             var nodlist = nInfo.XMLDoc.SelectNodes("genxml/textbox/*");
             if (nodlist != null)
                 foreach (XmlNode n in nodlist)

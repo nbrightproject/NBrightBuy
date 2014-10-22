@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Pay by Cheque</value>
+    <value>Checkout Now</value>
   </data>
 </root>

@@ -1,3 +1,21 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider/Themes/config/resx" />]
+
+<div class="formrow">
+
+[<tag type="if" function="settings" key="manualpaymenttitle" testvalue="" display="{OFF}" />]
+<h4>[Settings:manualpaymenttitle]</h4>
+[<tag type="endif"  />]
+
+[<tag type="if" function="settings" key="manualpaymentlogo" testvalue="" display="{OFF}" />]
+<!-- This image tag needs to work properly and needs a test for presence -->
+<img alt="[Settings:manualpaymentlogo]" border="0" src="{Settings:manualpaymentlogourl}">
+[<tag type="endif"  />]
+
+[<tag type="if" function="settings" key="manualpaymentmessage" testvalue="" display="{OFF}" />]
+<p>[Settings:manualpaymentmessage]</p>
+[<tag type="endif"  />]
+
 <!-- commandname must be "pay" and the commandargument must be the provider control key -->
-[<tag id='cmdManualPay' type='button' resourcekey="Method.manualpayment" commandname='pay' commandargument='manualpayment' />]
+[<tag id='cmdManualPay' type='button' cssclass="primarybutton" resourcekey="Method.manualpayment" commandname='pay' commandargument='manualpayment' />]
+
+</div>

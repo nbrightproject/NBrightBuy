@@ -316,14 +316,14 @@ a.entryurl{color:#333;display: block;}
 .checkoutdetails .submission{margin-top:15px;}
 .productdetail .purchasing{}
 #cartdetails{overflow:hidden;padding:1%;}/* padding for panel shadows */
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist{overflow:hidden;box-sizing:border-box;}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment{overflow:hidden;box-sizing:border-box;}
 #cartbilladdress{float:left;width:47%;margin-bottom:30px;min-width:240px;}
 #cartshippingoptions{float:right;width:47%;margin-bottom:30px;min-width:240px;}
 #cartshippingmethods{clear:both;width:100%;margin-bottom:30px;}
 #cartextra{clear:both;width:100%;margin-bottom:30px;}
 #cartlist{clear:both;width:100%;margin-bottom:30px;overflow:visible}
 #cartlist .secondarybutton{margin-right:0}
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}/* Checkout panels */
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}/* Checkout panels */
 #cartdetails .radiobuttonlist .dnnRadiobutton{margin:0 0 9px}
 #cartdetails .radiobuttonlist .dnnBoxLabel{margin-right:15px}
 
@@ -354,6 +354,9 @@ a.entryurl{color:#333;display: block;}
 #cartlist .fa-times-circle{color:#666}
 #cartlist .fa-times-circle:hover {color: #C80000;}
 
+/* Payment providers */
+#payment{width:66%;margin:0 auto}
+
 /* Chronopost Shipping provider */
 #chronoposttemplate .radiobuttonlist{margin:10px 0 15px;display:block;}
 #chronopostrelaistemplate #relais{float:left;margin:0 5% 0 0;min-width:240px;width:45%;list-style:none outside none;}
@@ -367,7 +370,7 @@ a.entryurl{color:#333;display: block;}
 @media only screen 
 and (min-width : 481px) 
 and (max-width : 768px) {
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra{min-width:240px;width:100%;padding: 30px 60px;float:none}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment{min-width:240px;width:100%;padding: 30px 60px;float:none}
 .checkoutextra .summaryleft,.checkoutextra .checkoutdetails{width:100%;}
 #checkoutitemlist .detailscolumn .details{clear:left}
 #checkoutitemlist .detailscolumn .noimage{height:160px;margin-right:0;width:160px;}
@@ -381,7 +384,7 @@ and (max-width : 768px) {
 @media only screen 
 and (min-width : 0px) 
 and (max-width : 480px) {
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist{width:100%;padding:15px;margin-bottom:15px;float:none}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment{width:100%;padding:15px;margin-bottom:15px;float:none}
 #cartlist{padding:0}
 .checkoutextra .summaryleft,.checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
 #checkoutitemlist .detailscolumn .details{clear:left}

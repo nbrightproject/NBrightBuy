@@ -548,6 +548,7 @@
     <Content Include="Themes\Cygnus\Default\cattreebody.html" />
     <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
     <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartempty.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
