@@ -1,0 +1,21 @@
+﻿<script type="text/javascript">
+// Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[[0]].appendChild(msViewportStyle); // Fixed for the store
+    }
+</script>
+
+<!-- Vector Font Icons http://fontawesome.io - These font-icons are used in the productview.resx resource file -->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!-- Cygnus jQuery Theme-->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+
+<!-- Cygnus Theme -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">

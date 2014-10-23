@@ -112,28 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="addressbookupdated_ok.Text" xml:space="preserve">
-    <value>Mise à jour adresse réussie</value>
-  </data>
-  <data name="notifytemplate_error.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotify nbsnotifyerror bg-danger"&gt;{message}&lt;/div&gt;</value>
-  </data>
-  <data name="notifytemplate_fail.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotify nbsnotifyfail bg-danger"&gt;{message}&lt;/div&gt;</value>
-  </data>
-  <data name="notifytemplate_ok.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotify bg-success"&gt;{message}&lt;/div&gt;</value>
-  </data>
-  <data name="notifytemplate_warning.Text" xml:space="preserve">
-    <value>&lt;div class="nbsnotify nbsnotifywarning bg-warning"&gt;{message}&lt;/div&gt;</value>
-  </data>
   <data name="profileupdatedclientrole_ok.Text" xml:space="preserve">
     <value>Vos détails ont été sauvegardés, vous recevrez un e-mail lorsque votre compte aura été validé et que vous pourrez accéder à la boutique.</value>
+  </data>
+  <data name="orderactionemailamended_ok.Text" xml:space="preserve">
+    <value>L'e-mail de commande modifiée à été envoyé</value>
+  </data>
+  <data name="orderreceipt_emailsubject.Text" xml:space="preserve">
+    <value>Reçu de commande</value>
   </data>
   <data name="profileupdated_emailsubject.Text" xml:space="preserve">
     <value>Mise à jour profil</value>
@@ -141,79 +132,103 @@
   <data name="profileupdated_ok.Text" xml:space="preserve">
     <value>Votre profil a été mis à jour.</value>
   </data>
-  <data name="general_error.Text" xml:space="preserve">
-    <value>Erreur inconnue</value>
-  </data>
-  <data name="general_fail.Text" xml:space="preserve">
-    <value>L'opération a échoué</value>
-  </data>
-  <data name="general_ok.Text" xml:space="preserve">
-    <value>L'opération a réussi</value>
-  </data>
-  <data name="general_warning.Text" xml:space="preserve">
-    <value>Attention problème opération</value>
-  </data>
-  <data name="orderactionemailamended_ok.Text" xml:space="preserve">
-    <value>L'e-mail de commande modifiée à été envoyé</value>
-  </data>
-  <data name="orderactionemailreceipt_ok.Text" xml:space="preserve">
-    <value>L'e-mail de reçu de commande a été envoyé</value>
-  </data>
-  <data name="orderactionemailshipped_ok.Text" xml:space="preserve">
-    <value>L'e-mail de commande en livraison a été envoyé</value>
-  </data>
-  <data name="orderactionemailvalidated_ok.Text" xml:space="preserve">
-    <value>L'e-mail de commande validée a été envoyé</value>
-  </data>
-  <data name="orderactionprintorder_ok.Text" xml:space="preserve">
-    <value>Commande imprimée</value>
-  </data>
-  <data name="orderactionprintreceipt_ok.Text" xml:space="preserve">
-    <value>Reçu imprimé</value>
-  </data>
-  <data name="orderactionsave_ok.Text" xml:space="preserve">
-    <value>Mise à jour commande réussie</value>
-  </data>
-  <data name="orderamended_emailsubject.Text" xml:space="preserve">
-    <value>Commande modifiée</value>
-  </data>
-  <data name="orderreceipt_emailsubject.Text" xml:space="preserve">
-    <value>Reçu de commande</value>
-  </data>
-  <data name="ordershipped_emailsubject.Text" xml:space="preserve">
-    <value>Commande livrée</value>
-  </data>
-  <data name="ordervalidated_emailsubject.Text" xml:space="preserve">
-    <value>Commande validée</value>
-  </data>
-  <data name="categoryactionsave_ok.Text" xml:space="preserve">
-    <value>Mise à jour catégories réussie</value>
-  </data>
-  <data name="groupactionsave_ok.Text" xml:space="preserve">
-    <value>Mise à jour groupe réussie</value>
-  </data>
-  <data name="profileupdatedexists_fail.Text" xml:space="preserve">
-    <value>L'utilisateur est déjà inscrit. Pour vous inscrire, utilisez un nom d'utilisateur ou e-mail différent.</value>
-  </data>
-  <data name="profileupdated_fail.Text" xml:space="preserve">
-    <value>Inscription utilisateur impossible, merci de vérifier vos informations de profil.</value>
-  </data>
-  <data name="profileregistered_emailsubject.Text" xml:space="preserve">
-    <value>Nouveau profil enregistré</value>
-  </data>
-  <data name="profileupdatedcaptcha_fail.Text" xml:space="preserve">
-    <value>Code de sécurité invalide.</value>
-  </data>
-  <data name="stockadjusted.Text" xml:space="preserve">
-    <value>Qté ajustée pour correspondre avec le stock disponible</value>
+  <data name="notifytemplate_ok.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotify bg-success"&gt;{message}&lt;/div&gt;</value>
   </data>
   <data name="outofstock.Text" xml:space="preserve">
     <value>Pas de stock</value>
   </data>
-  <data name="terms.Text" xml:space="preserve">
-    <value>Les Termes et Conditions doivent être acceptées.</value>
+  <data name="profileregistered_emailsubject.Text" xml:space="preserve">
+    <value>Nouveau profil enregistré</value>
+  </data>
+  <data name="orderactionprintreceipt_ok.Text" xml:space="preserve">
+    <value>Reçu imprimé</value>
+  </data>
+  <data name="general_fail.Text" xml:space="preserve">
+    <value>L'opération a échoué</value>
+  </data>
+  <data name="profileupdatedcaptcha_fail.Text" xml:space="preserve">
+    <value>Code de sécurité invalide.</value>
+  </data>
+  <data name="bankinginstructions.Text" xml:space="preserve">
+    <value>ffffffffffff</value>
+  </data>
+  <data name="general_error.Text" xml:space="preserve">
+    <value>Erreur inconnue</value>
+  </data>
+  <data name="profileupdatedexists_fail.Text" xml:space="preserve">
+    <value>L'utilisateur est déjà inscrit. Pour vous inscrire, utilisez un nom d'utilisateur ou e-mail différent.</value>
+  </data>
+  <data name="ordervalidated_emailsubject.Text" xml:space="preserve">
+    <value>Commande validée</value>
+  </data>
+  <data name="checkoutfailmessage.Text" xml:space="preserve">
+    <value>ffffffffffff</value>
+  </data>
+  <data name="stockadjusted.Text" xml:space="preserve">
+    <value>Qté ajustée pour correspondre avec le stock disponible</value>
+  </data>
+  <data name="groupactionsave_ok.Text" xml:space="preserve">
+    <value>Mise à jour groupe réussie</value>
+  </data>
+  <data name="addressbookupdated_ok.Text" xml:space="preserve">
+    <value>Mise à jour adresse réussie</value>
+  </data>
+  <data name="emailmessage.Text" xml:space="preserve">
+    <value>ffffffrrrrrrrrrrrrrrrr</value>
+  </data>
+  <data name="notifytemplate_error.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotify nbsnotifyerror bg-danger"&gt;{message}&lt;/div&gt;</value>
+  </data>
+  <data name="pickupmessage.Text" xml:space="preserve">
+    <value>fffffffffffff</value>
+  </data>
+  <data name="general_ok.Text" xml:space="preserve">
+    <value>L'opération a réussi</value>
+  </data>
+  <data name="orderactionemailshipped_ok.Text" xml:space="preserve">
+    <value>L'e-mail de commande en livraison a été envoyé</value>
+  </data>
+  <data name="general_warning.Text" xml:space="preserve">
+    <value>Attention problème opération</value>
+  </data>
+  <data name="checkoutsuccessmessage.Text" xml:space="preserve">
+    <value>ffffffffffffff</value>
+  </data>
+  <data name="orderactionsave_ok.Text" xml:space="preserve">
+    <value>Mise à jour commande réussie</value>
+  </data>
+  <data name="notifytemplate_warning.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotify nbsnotifywarning bg-warning"&gt;{message}&lt;/div&gt;</value>
+  </data>
+  <data name="ordershipped_emailsubject.Text" xml:space="preserve">
+    <value>Commande livrée</value>
+  </data>
+  <data name="categoryactionsave_ok.Text" xml:space="preserve">
+    <value>Mise à jour catégories réussie</value>
+  </data>
+  <data name="notifytemplate_fail.Text" xml:space="preserve">
+    <value>&lt;div class="nbsnotify nbsnotifyfail bg-danger"&gt;{message}&lt;/div&gt;</value>
+  </data>
+  <data name="orderactionemailreceipt_ok.Text" xml:space="preserve">
+    <value>L'e-mail de reçu de commande a été envoyé</value>
   </data>
   <data name="ordercreatedemailsubject.Text" xml:space="preserve">
     <value>Commande confirmée</value>
+  </data>
+  <data name="orderactionemailvalidated_ok.Text" xml:space="preserve">
+    <value>L'e-mail de commande validée a été envoyé</value>
+  </data>
+  <data name="terms.Text" xml:space="preserve">
+    <value>Les Termes et Conditions doivent être acceptées.</value>
+  </data>
+  <data name="orderamended_emailsubject.Text" xml:space="preserve">
+    <value>Commande modifiée</value>
+  </data>
+  <data name="orderactionprintorder_ok.Text" xml:space="preserve">
+    <value>Commande imprimée</value>
+  </data>
+  <data name="profileupdated_fail.Text" xml:space="preserve">
+    <value>Inscription utilisateur impossible, merci de vérifier vos informations de profil.</value>
   </data>
 </root>

@@ -622,23 +622,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnDic;
         }
 
-        public static void UpdateResxFields(Dictionary<String,String> resxFields,List<String> resxFolders,String lang)
+        public static Boolean UpdateResxFields(Dictionary<String, String> resxFields, List<String> resxFolders, String lang)
         {
-            var fileList = new Dictionary<String,String>();  // use NBrightInfo to edit res file to make it easier.
+            var fileList = new Dictionary<String, String>(); // use NBrightInfo to edit res file to make it easier.
 
             if (lang != "") lang = "." + lang;
 
-                foreach (var d in resxFields)
+            foreach (var d in resxFields)
+            {
+                var resxKeyArray = d.Key.Split('.');
+                if (resxKeyArray.Length == 2)
                 {
-                    var resxKeyArray = d.Key.Split('.');
-                    if (resxKeyArray.Length == 2)
-                    {
-                        var fileName = resxKeyArray[0];
-                        var resxKey = resxKeyArray[1];
-                        if (!fileList.ContainsKey(fileName)) fileList.Add(fileName, "");
-                    }
+                    var fileName = resxKeyArray[0];
+                    var resxKey = resxKeyArray[1];
+                    if (!fileList.ContainsKey(fileName)) fileList.Add(fileName, "");
                 }
+            }
 
+            var updDone = false;
             foreach (var r in resxFolders)
             {
                 foreach (var f in fileList)
@@ -654,19 +655,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             {
                                 var fileName = resxKeyArray[0];
                                 var resxKey = resxKeyArray[1];
-                                if (fileName == f.Key) UpdateResourceFile(resxKey + ".Text", d.Value, fpathlang);
+                                if (fileName == f.Key)
+                                {
+                                    if (UpdateResourceFile(resxKey + ".Text", d.Value, fpathlang)) updDone = true;
+                                }
                             }
-                        }                        
+                        }
                     }
                 }
-
-
             }
 
+            return updDone;
         }
 
 
-        public static void UpdateResourceFile(String key, String value, String path)
+        public static Boolean UpdateResourceFile(String key, String value, String path)
         {
             Hashtable resourceEntries = new Hashtable();
 
@@ -715,7 +718,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 resourceWriter.Generate();
                 resourceWriter.Close();                
             }
-
+            return updDone;
         }
     }
 }

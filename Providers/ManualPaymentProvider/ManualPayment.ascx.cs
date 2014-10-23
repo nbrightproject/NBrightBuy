@@ -135,6 +135,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var resxDic = GenXmlFunctions.GetGenXmlResx(rpDataH);
             var genTempl = (GenXmlTemplate)rpDataH.ItemTemplate;
             NBrightBuyUtils.UpdateResxFields(resxDic, genTempl.GetResxFolders(), StoreSettings.Current.EditLanguage); 
+            // NOTE: For some reason this action restarts the application, not sure why, but it's a side effect that helps display the new resx change. So I'm leaving it for now!
+            //  This restart doesn;t happen with the update of the settings page???
 
             //remove current setting from cache for reload
             Utils.RemoveCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));

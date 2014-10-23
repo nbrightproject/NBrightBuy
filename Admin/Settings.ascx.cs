@@ -20,8 +20,10 @@ using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
+using NBrightCore.providers;
 using NBrightCore.render;
 using NBrightDNN;
 
@@ -132,7 +134,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "save":
                     Update();
-                    param[0] = "";
+                    param[0] = "ctrl=settings";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "removelogo":
@@ -186,9 +188,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (StoreSettings.Current.DebugMode) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
 
-            //remove current setting from cache for reload
-            HttpContext.Current.Items.Remove("NBBStoreSettings");
-            Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
 
             // create upload folders
             var folder = StoreSettings.Current.FolderImagesMapPath;
@@ -214,6 +213,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (!g.Any()) CreateGroup("spec", "Specifications");
             g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
             if (!g.Any()) CreateGroup("temp", "Temp");
+
+
+            //update resx fields
+            var resxDic = GenXmlFunctions.GetGenXmlResx(rpData);
+            var genTempl = (GenXmlTemplate)rpData.ItemTemplate;
+            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, genTempl.GetResxFolders(), StoreSettings.Current.EditLanguage);
+
+            //remove current setting from cache for reload
+            HttpContext.Current.Items.Remove("NBBStoreSettings");
+            Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+
+            if (resxUpdate) DataCache.ClearCache();
 
         }
 
