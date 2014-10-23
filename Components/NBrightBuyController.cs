@@ -349,9 +349,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var themeFolder = "";
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
+                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, settings);
 
-                templ = Utils.ReplaceSettingTokens(templ, settings);
                 templ = Utils.ReplaceUrlTokens(templ);
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
