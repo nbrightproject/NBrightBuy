@@ -4041,8 +4041,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     var pluginData = new PluginData(PortalSettings.Current.PortalId);
                     var provList = pluginData.GetShippingProviders();
-                    if (provList.Count > 1) // Only add the option if we have more that 1 shipping provider.
-                    {
                         foreach (var d in provList)
                         {
                             var p = d.Value;
@@ -4053,11 +4051,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             rbl.Items.Add(li);
                         }
                         if (rbl.SelectedValue == "" && rbl.Items.Count > 0) rbl.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        rbl.Visible = false;
-                    }
 
                 }
 

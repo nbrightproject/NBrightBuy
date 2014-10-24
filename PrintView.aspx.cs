@@ -139,8 +139,11 @@ namespace Nevoweb.DNN.NBrightBuy
                             var shipprov = ShippingInterface.Instance(shippingprovider);
                             if (shipprov != null)
                             {
-                                var printurl = shipprov.GetDeliveryLabelUrl(orderData.PurchaseInfo);
-                                if (printurl != "") Response.Redirect(printurl);
+                                if (_template == "printdeliverylabel.htm")
+                                {
+                                    var printurl = shipprov.GetDeliveryLabelUrl(orderData.PurchaseInfo);
+                                    if (printurl != "") Response.Redirect(printurl);                                    
+                                }
                             }
                         }
 
