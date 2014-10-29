@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="message.Text" xml:space="preserve">
-    <value>Test Resx Message!!! Arse that takes a long time!!!</value>
+    <value>Test Resx Message</value>
   </data>
   <data name="checkouttemplate.Text" xml:space="preserve">
     <value>Template</value>

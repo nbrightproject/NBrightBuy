@@ -541,18 +541,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String FormatToStoreCurrency(double value)
         {
-            var currencycode = StoreSettings.Current.Get("currencyculturecode");
-            if (currencycode.StartsWith("\"")) return value.ToString(currencycode.Replace("\"", ""));
-            if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
-            if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
-            try
-            {
-                return value.ToString("c", new CultureInfo(currencycode, false));
-            }
-            catch (Exception)
-            {
-                return value.ToString("c", new CultureInfo(PortalSettings.Current.CultureCode, false));
-            }
+
+            return value.ToString("c", new CultureInfo(Utils.GetCurrentCulture(), false));
+            // NOTE: ATM we only want to return the price as the dispay format.
+
+            //var currencycode = StoreSettings.Current.Get("currencyculturecode");
+            //if (currencycode.StartsWith("\"")) return value.ToString(currencycode.Replace("\"", ""));
+            //if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
+            //if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
+            //try
+            //{
+            //    return value.ToString("c", new CultureInfo(currencycode, false));
+            //}
+            //catch (Exception)
+            //{
+            //    return value.ToString("c", new CultureInfo(PortalSettings.Current.CultureCode, false));
+            //}
         }
 
         public static String GetCurrencyIsoCode()
@@ -622,7 +626,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnDic;
         }
 
-        public static Boolean UpdateResxFields(Dictionary<String, String> resxFields, List<String> resxFolders, String lang)
+        public static Boolean UpdateResxFields(Dictionary<String, String> resxFields, List<String> resxFolders, String lang, Boolean createFile)
         {
             var fileList = new Dictionary<String, String>(); // use NBrightInfo to edit res file to make it easier.
 
@@ -646,6 +650,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var fpath = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx.resx");
                     var fpathlang = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".resx");
+                    if (createFile && !File.Exists(fpath))
+                    {
+                        CreateResourceFile(fpath);
+                        CreateResourceFile(fpathlang);
+                    }
                     if (File.Exists(fpath))
                     {
                         foreach (var d in resxFields)
@@ -668,6 +677,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return updDone;
         }
 
+        public static void CreateResourceFile(String path)
+        {
+            var pathString = Path.GetDirectoryName(path);
+            if (!Directory.Exists(pathString)) System.IO.Directory.CreateDirectory(pathString);
+
+            ResXResourceWriter resourceWriter = new ResXResourceWriter(path);
+            resourceWriter.Generate();
+            resourceWriter.Close();
+        }
 
         public static Boolean UpdateResourceFile(String key, String value, String path)
         {

@@ -199,26 +199,40 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             //Create default category grouptype
             var l = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
-            var g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "cat" select i; 
+            var g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "cat" select i;
             if (!g.Any()) CreateGroup("cat", "Categories");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "promo" select i;
-            if (!g.Any()) CreateGroup("promo", "Promotions");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "man" select i;
-            if (!g.Any()) CreateGroup("man", "Manufacturer");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "supp" select i;
-            if (!g.Any()) CreateGroup("supp", "Supplier");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "fea" select i;
-            if (!g.Any()) CreateGroup("fea","Features");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "spec" select i;
-            if (!g.Any()) CreateGroup("spec", "Specifications");
-            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
-            if (!g.Any()) CreateGroup("temp", "Temp");
-
+            if (l.Count == 0)
+            {
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "promo" select i;
+                if (!g.Any()) CreateGroup("promo", "Promotions");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "man" select i;
+                if (!g.Any()) CreateGroup("man", "Manufacturer");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "supp" select i;
+                if (!g.Any()) CreateGroup("supp", "Supplier");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "fea" select i;
+                if (!g.Any()) CreateGroup("fea", "Features");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "spec" select i;
+                if (!g.Any()) CreateGroup("spec", "Specifications");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
+                if (!g.Any()) CreateGroup("temp", "Temp");
+            }
 
             //update resx fields
             var resxDic = GenXmlFunctions.GetGenXmlResx(rpData);
             var genTempl = (GenXmlTemplate)rpData.ItemTemplate;
-            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, genTempl.GetResxFolders(), StoreSettings.Current.EditLanguage);
+            var resxfolders = genTempl.GetResxFolders();
+            // we're only going to create resx files for this portal, so remove all other paths formt he folders list.
+            var resxfolder = new List<String>();
+            foreach (var p in resxfolders)
+            {
+                if (p.StartsWith(PortalSettings.HomeDirectory))
+                {
+                    resxfolder.Add(p);
+                    break;
+                }
+            }
+
+            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolder, StoreSettings.Current.EditLanguage,true);
 
             //remove current setting from cache for reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");

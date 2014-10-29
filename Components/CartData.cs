@@ -262,14 +262,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double shippingcost = 0;
             Double shippingdealercost = 0;
             var shippingkey = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
-            var shipprov = ShippingInterface.Instance(shippingkey);
-            if (shipprov != null)
+            if (shippingkey != "")
             {
-                PurchaseInfo = shipprov.CalculateShipping(PurchaseInfo);
-                shippingcost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingcost");
-                shippingdealercost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingdealercost");
+                var shipprov = ShippingInterface.Instance(shippingkey);
+                if (shipprov != null)
+                {
+                    PurchaseInfo = shipprov.CalculateShipping(PurchaseInfo);
+                    shippingcost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingcost");
+                    shippingdealercost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingdealercost");
+                }
+                PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
             }
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
 
             //add tax
             Double appliedtax = 0;

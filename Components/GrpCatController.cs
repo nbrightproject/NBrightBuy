@@ -118,9 +118,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, int tabid)
         {
+            // if diabled return a javascript void
+            if (groupCategoryInfo.disabled) return "javascript:void(0)";
 
             //set a default url
             var url = "?catid=" + groupCategoryInfo.categoryid.ToString("");
+
             // get friendly url if possible
                 if (groupCategoryInfo.categoryname != "")
                 {
@@ -466,6 +469,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.categoryref = i.GetXmlProperty("genxml/textbox/txtcategoryref");
                 grpcat.archived = i.GetXmlPropertyBool("genxml/checkbox/chkarchived");
                 grpcat.ishidden = i.GetXmlPropertyBool("genxml/checkbox/chkishidden");
+                grpcat.disabled = i.GetXmlPropertyBool("genxml/checkbox/chkdisable");
                 grpcat.grouptyperef = i.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                 grpcat.parentcatid = i.ParentItemId;
                 grpcat.entrycount = GetEntryCount(lx, grpcat.categoryid);
