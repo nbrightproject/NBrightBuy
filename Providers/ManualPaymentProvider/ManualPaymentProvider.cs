@@ -20,8 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public override string GetTemplate(NBrightInfo cartInfo)
         {
             var info = ProviderUtils.GetProviderSettings("manualpayment");
-            var templ = ProviderUtils.GetTemplateData(info.GetXmlProperty("genxml/textbox/checkouttemplate"));
-
+            var templ = ProviderUtils.GetTemplateData(info.GetXmlProperty("genxml/textbox/checkouttemplate"),info);
             return templ;
         }
 

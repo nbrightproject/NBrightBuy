@@ -14,12 +14,24 @@ namespace ManualPaymentProvider
     {
 
 
-        public static String GetTemplateData(String templatename)
+        public static String GetTemplateData(String templatename, NBrightInfo info)
         {
             var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider");
             var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", "");
             var templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
-            templ = Utils.ReplaceSettingTokens(templ, StoreSettings.Current.Settings());
+            var dic = new Dictionary<String, String>();
+            foreach (var d in StoreSettings.Current.Settings())
+            {
+                dic.Add(d.Key,d.Value);
+            }
+            foreach (var d in info.ToDictionary())
+            {
+                if (dic.ContainsKey(d.Key))
+                    dic[d.Key] = d.Value;
+                else
+                    dic.Add(d.Key, d.Value);
+            }
+            templ = Utils.ReplaceSettingTokens(templ, dic);
             templ = Utils.ReplaceUrlTokens(templ);
             return templ;
         }

@@ -8,11 +8,11 @@
 
 [<tag type="if" function="settings" key="manualpaymentlogo" testvalue="" display="{OFF}" />]
 <!-- This image tag needs to work properly and needs a test for presence -->
-<img alt="[Settings:manualpaymentlogo]" border="0" src="{Settings:manualpaymentlogourl}">
+<img alt="[Settings:manualpaymenttitle]" border="0" src="[Settings:FolderImages]/[Settings:hidmanualpaymentlogo]">
 [<tag type="endif"  />]
 
 [<tag type="if" function="settings" key="manualpaymentmessage" testvalue="" display="{OFF}" />]
-<p>[Settings:manualpaymentmessage]</p>
+    <p>[<tag type="valueof" resourcekey="ManualPayment.message" />]</p>
 [<tag type="endif"  />]
 
 <!-- commandname must be "pay" and the commandargument must be the provider control key -->

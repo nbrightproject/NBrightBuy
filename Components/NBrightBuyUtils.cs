@@ -541,21 +541,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String FormatToStoreCurrency(double value)
         {
 
-            return value.ToString("c", new CultureInfo(Utils.GetCurrentCulture(), false));
-            // NOTE: ATM we only want to return the price as the dispay format.
 
-            //var currencycode = StoreSettings.Current.Get("currencyculturecode");
-            //if (currencycode.StartsWith("\"")) return value.ToString(currencycode.Replace("\"", ""));
-            //if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
-            //if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
-            //try
-            //{
-            //    return value.ToString("c", new CultureInfo(currencycode, false));
-            //}
-            //catch (Exception)
-            //{
-            //    return value.ToString("c", new CultureInfo(PortalSettings.Current.CultureCode, false));
-            //}
+            var currencycode = StoreSettings.Current.Get("currencyculturecode");
+            if (currencycode.StartsWith("\"")) return value.ToString(currencycode.Replace("\"", ""));
+            if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
+            if (currencycode == "") currencycode = PortalSettings.Current.CultureCode;
+            try
+            {
+                var currFormat = value.ToString("c", new CultureInfo(currencycode, false));
+                if (currFormat.Length > 0 && Utils.IsNumeric(currFormat.Substring(0, 1))) return value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false)) + " " +  StoreSettings.Current.Get("currencysymbol");
+                return StoreSettings.Current.Get("currencysymbol") + " " + value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false));
+                // NOTE: ATM we only have 1 currency.
+            }
+            catch (Exception)
+            {
+                return value.ToString("0.00", new CultureInfo(PortalSettings.Current.CultureCode, false));
+            }
         }
 
         public static String GetCurrencyIsoCode()

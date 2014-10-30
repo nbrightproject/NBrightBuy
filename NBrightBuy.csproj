@@ -636,13 +636,6 @@
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\CategoryMenuSettings.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\CartView.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\CartViewSettings.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearch.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\ProductSearchSettings.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\ProductView.ascx.resx" />
-    <EmbeddedResource Include="Themes\Cygnus\resx\ProductViewSettings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NBrightThumb.ashx" />

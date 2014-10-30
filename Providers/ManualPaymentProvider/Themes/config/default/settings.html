@@ -47,10 +47,10 @@
 					    <div class="col-sm-5">
 					        [<tag id="manualpaymentlogo" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] 
                 			[<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" />] 
-                            [<tag type="if" xpath="genxml/hidden/manualpaymentlogo" textvalue="" display="{OFF}" />] 
+                            [<tag type="if"  function="static" staticvalue="{Settings:hidmanualpaymentlogo}" textvalue="" display="{OFF}" />] 
                     			[<tag id="cmdRemovelogo" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.cmdRemoveButton" commandname="removelogo" />]
 							<div class=""><br>
-                            	[<tag type='imageof' xpath='genxml/hidden/manualpaymentlogourl' thumb="200" width="100%" />]<!-- This code won't have correct id or paths etc -->
+                            	<img alt="[Settings:manualpaymenttitle]" border="0" src="[Settings:FolderImages]/[Settings:hidmanualpaymentlogo]">
 							</div>
 					        [<tag type="endif" />]
 					    </div>

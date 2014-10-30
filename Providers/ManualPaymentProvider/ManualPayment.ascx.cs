@@ -55,7 +55,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             {
                 _ctrlkey = "manualpayment";
                 _info = ProviderUtils.GetProviderSettings(_ctrlkey);
-                var rpDataHTempl = ProviderUtils.GetTemplateData("settings.html");
+                var rpDataHTempl = ProviderUtils.GetTemplateData("settings.html",_info);
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
             }
             catch (Exception exc)
@@ -114,6 +114,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     param[0] = "ctrl=manualpayment";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "removelogo":
+                    RemoveLogo();
+                    param[0] = "ctrl=manualpayment";
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "cancel":
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -144,6 +149,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             Utils.RemoveCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));
 
         }
+
+        private void RemoveLogo()
+        {
+            var modCtrl = new NBrightBuyController();
+            var strXml = GenXmlFunctions.GetGenXml(rpDataH, "", StoreSettings.Current.FolderImagesMapPath);
+            _info.XMLData = strXml;
+            _info.SetXmlProperty("genxml/hidden/hidmanualpaymentlogo","");
+            modCtrl.Update(_info);
+
+            //remove current setting from cache for reload
+            Utils.RemoveCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));
+
+        }
+
 
 
 

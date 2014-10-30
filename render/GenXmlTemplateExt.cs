@@ -379,6 +379,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         }
                     }
 
+                    // do test on static
+                    if (xmlNod.Attributes["staticvalue"] != null) dataValue = xmlNod.Attributes["staticvalue"].InnerText;
+
                     // do special tests for named fucntions
                     if (xmlNod.Attributes["function"] != null)
                     {
@@ -623,6 +626,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             case "profile":
                                 var userInfo = UserController.GetCurrentUserInfo();
                                 if (userInfo.UserID >= 0) dataValue = userInfo.Profile.GetPropertyValue(settingkey);
+                                break;
+                            case "static":
                                 break;
                             default:
                                 dataValue = "";
