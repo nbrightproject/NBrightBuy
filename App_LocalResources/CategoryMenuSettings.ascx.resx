@@ -117,97 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Category Menu Settings</value>
+  <data name="lbltreebehaviour.Text" xml:space="preserve">
+    <value>Auto-collapse Tree Menu : </value>
   </data>
-  <data name="lbladvancedsettings.Text" xml:space="preserve">
-    <value>Advanced</value>
+  <data name="lblplaceholderimage.Text" xml:space="preserve">
+    <value>Enable Placeholder Image : </value>
   </data>
-  <data name="lblalwaysshow.Help" xml:space="preserve">
-    <value>Always show menu on end of branch and for product view when no category records exist. (Root category list will be shown)</value>
+  <data name="lblnoimageicon.Text" xml:space="preserve">
+    <value>Placeholder Image Icon (fontawesome.io) : </value>
   </data>
-  <data name="lblalwaysshow.Text" xml:space="preserve">
-    <value>Always Show : </value>
+  <data name="lblitemwidth.Text" xml:space="preserve">
+    <value>Category Item Width in px : </value>
   </data>
-  <data name="lblbasicsettings.Text" xml:space="preserve">
-    <value>General</value>
+  <data name="lblitemheight.Text" xml:space="preserve">
+    <value>Category Item Height (incl unit or auto) : </value>
   </data>
-  <data name="lbldefaultcatid.Help" xml:space="preserve">
-    <value>Root display category the menu will start displaying from, leaft blank to start from root.</value>
+  <data name="lblitemimagecontainerheight.Text" xml:space="preserve">
+    <value>Category Item Image Container Height (incl unit or auto) : </value>
   </data>
-  <data name="lbldefaultcatid.Text" xml:space="preserve">
-    <value>Root Display Category : </value>
+  <data name="lblitemgutter.Text" xml:space="preserve">
+    <value>Category Item Gutter in px: </value>
   </data>
-  <data name="lbldepth.Help" xml:space="preserve">
-    <value>Depth the menu will display.</value>
+  <data name="lblitembottommargin.Text" xml:space="preserve">
+    <value>Category Item Bottom Margin in px : </value>
   </data>
-  <data name="lbldepth.Text" xml:space="preserve">
-    <value>Depth : </value>
+  <data name="lblthumbnailwidth.Text" xml:space="preserve">
+    <value>Category Image Width in px or 0 for auto : </value>
   </data>
-  <data name="lbldetailtab.Help" xml:space="preserve">
-    <value>The page the user will be redirected to when the category is clicked.  If blank the current page is used. </value>
-  </data>
-  <data name="lbldetailtab.Text" xml:space="preserve">
-    <value>Product List Page : </value>
-  </data>
-  <data name="lbllistbody.Help" xml:space="preserve">
-    <value>Template to be used as category body, this is repeated for each category.</value>
-  </data>
-  <data name="lbllistbody.Text" xml:space="preserve">
-    <value>Category Body : </value>
-  </data>
-  <data name="lbllistbodyfoot.Help" xml:space="preserve">
-    <value>Template to be used as category end, this is repeated for each category.</value>
-  </data>
-  <data name="lbllistbodyfoot.Text" xml:space="preserve">
-    <value>Category End : </value>
-  </data>
-  <data name="lbllistfooter.Help" xml:space="preserve">
-    <value>Template to be used as category menu footer.</value>
-  </data>
-  <data name="lbllistfooter.Text" xml:space="preserve">
-    <value>Menu Footer : </value>
-  </data>
-  <data name="lbllistheader.Help" xml:space="preserve">
-    <value>Template to be used as category menu header.</value>
-  </data>
-  <data name="lbllistheader.Text" xml:space="preserve">
-    <value>Menu Header : </value>
-  </data>
-  <data name="lblmenutype.Help" xml:space="preserve">
-    <value>Menu Display Type</value>
-  </data>
-  <data name="lblmenutype.Text" xml:space="preserve">
-    <value>Menu Type : </value>
-  </data>
-  <data name="lbltargetmodulekey.Help" xml:space="preserve">
-    <value>Module Key of the module that will display the results.</value>
-  </data>
-  <data name="lbltargetmodulekey.Text" xml:space="preserve">
-    <value>Target Module Key : </value>
-  </data>
-  <data name="lbltheme.Help" xml:space="preserve">
-    <value>Name of the theme to use for this productlist.</value>
-  </data>
-  <data name="lbltheme.Text" xml:space="preserve">
-    <value>Theme : </value>
-  </data>
-  <data name="lblthemesettings.Text" xml:space="preserve">
-    <value>Theme Settings</value>
-  </data>
-  <data name="lbltreeidentclass.Help" xml:space="preserve">
-    <value>Identifying CSS class name to be placed onto the root "ul" of the tree structure.  This will be used to identify the Tree to the Javascipt.</value>
-  </data>
-  <data name="lbltreeidentclass.Text" xml:space="preserve">
-    <value>Identifying Css Class : </value>
-  </data>
-  <data name="lbltreerootclass.Help" xml:space="preserve">
-    <value>Optional CSS class name to be placed onto the root "ul" of the tree structure. For styling the tree.</value>
-  </data>
-  <data name="lbltreerootclass.Text" xml:space="preserve">
-    <value>Style Css Class : </value>
-  </data>
-  <data name="themehidden.Text" xml:space="preserve">
-    <value>Old Theme Settings have been disabled, update to activate new theme. </value>
+  <data name="lblthumbnailheight.Text" xml:space="preserve">
+    <value>Category Image Height in px or 0 for auto : </value>
   </data>
 </root>

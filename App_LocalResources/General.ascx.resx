@@ -798,4 +798,37 @@
   <data name="CopyToIcon.Text" xml:space="preserve">
     <value>&lt;i title="Copy" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="ChooseAddress.Text" xml:space="preserve">
+    <value>Insert a Saved Address</value>
+  </data>
+  <data name="AddressBook.Text" xml:space="preserve">
+    <value>Address Book</value>
+  </data>
+  <data name="AddressEditor.Text" xml:space="preserve">
+    <value>Address Editor</value>
+  </data>
+  <data name="PrimaryAddress.Text" xml:space="preserve">
+    <value>Primary Address</value>
+  </data>
+  <data name="PrimaryAddressMessage.Text" xml:space="preserve">
+    <value>Please ensure your primary customer address is always current and accurate.</value>
+  </data>
+  <data name="OptionalAddress.Text" xml:space="preserve">
+    <value>Optional Address</value>
+  </data>
+  <data name="AccountUpdate.Text" xml:space="preserve">
+    <value>User Account Update</value>
+  </data>
+  <data name="AccountUpdateMessage.Text" xml:space="preserve">
+    <value>The following website user account profile has been updated. Please adjust your records if necessary.</value>
+  </data>
+  <data name="Number.Text" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="ShipTo.Text" xml:space="preserve">
+    <value>Ship to</value>
+  </data>
+  <data name="BillTo.Text" xml:space="preserve">
+    <value>Bill to</value>
+  </data>
 </root>

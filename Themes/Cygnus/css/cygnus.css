@@ -292,11 +292,17 @@ a.entryurl{color:#333;display: block;}
 /* Fixes */
 .MiniCartWrapper{padding:0 !important}
 
+
+/* Checkout and Order manager panel style */
+.panel{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}
+#cartdetails{overflow:hidden;padding:1%;}/* some padding for panel shadows */
+
 /* Checkout */
 #cartdetails H3 {line-height: 34px;margin: 0 0 12px;padding:0;}
 #cartdetails H6 {font-size: 12px;font-weight: normal;margin: 0 0 5px;}
 #cartdetails .formrow{clear:both;}
 #cartlist .formrow{clear:both;text-align:right;}
+#cartdetails .chooseaddress{background:#fefff4;box-shadow: none;padding: 3px;}
 #cartdetails .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin: 0 0 15px;}
 #cartdetails .leftside{float:left;width: 48%;}
 #cartdetails .rightside{float:right;width: 48%;}
@@ -315,17 +321,18 @@ a.entryurl{color:#333;display: block;}
 .checkoutdetails .totals ul li.total{border-top:2px solid #bbbbbb;font-size:20px}
 .checkoutdetails .submission{margin-top:15px;}
 .productdetail .purchasing{}
-#cartdetails{overflow:hidden;padding:1%;}/* padding for panel shadows */
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment{overflow:hidden;box-sizing:border-box;}
+#cartempty{text-align:center}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{overflow:hidden;box-sizing:border-box;}
 #cartbilladdress{float:left;width:47%;margin-bottom:30px;min-width:240px;}
 #cartshippingoptions{float:right;width:47%;margin-bottom:30px;min-width:240px;}
 #cartshippingmethods{clear:both;width:100%;margin-bottom:30px;}
 #cartextra{clear:both;width:100%;margin-bottom:30px;}
 #cartlist{clear:both;width:100%;margin-bottom:30px;overflow:visible}
 #cartlist .secondarybutton{margin-right:0}
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}/* Checkout panels */
 #cartdetails .radiobuttonlist .dnnRadiobutton{margin:0 0 9px}
 #cartdetails .radiobuttonlist .dnnBoxLabel{margin-right:15px}
+
+
 
 /* cartlist Table - www.csstablegenerator.com */
 #cartlist{margin-bottom:24px;}
@@ -357,6 +364,23 @@ a.entryurl{color:#333;display: block;}
 /* Payment providers */
 #payment{width:66%;margin:0 auto}
 
+/* Address Book */
+#checkoutselectaddress{list-style:none;padding:0;margin:0;}
+#checkoutselectaddress li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative}
+#checkoutselectaddress hr{margin:6px 0 4px;border-color:#dddddd;border-style:dashed;}
+#checkoutselectaddress .addresstype{top: 10px;color: #bbbbbb;position: absolute;right: 10px;}
+#checkoutselectaddress .addressbuttons{display: inline-block;vertical-align: -5px;}
+#checkoutselectaddress a{color:#dddddd}
+#checkoutselectaddress a.editaddress:hover{color:#47BE27}
+#checkoutselectaddress a.deleteaddress:hover{color:#D33030}
+#addressinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin: 0 0 15px;}
+#addressinput{float:left;width:47%;margin-bottom:30px;min-width:240px;}
+#addressinput .leftside{float:left;width:48%;}
+#addressinput .rightside{float:right;width:48%;}
+#addressinput H3{line-height:34px;margin:0 0 12px;padding:0;}
+#addressinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
+    
+
 /* Chronopost Shipping provider */
 #chronoposttemplate .radiobuttonlist{margin:10px 0 15px;display:block;}
 #chronopostrelaistemplate #relais{float:left;margin:0 5% 0 0;min-width:240px;width:45%;list-style:none outside none;}
@@ -366,11 +390,92 @@ a.entryurl{color:#333;display: block;}
 #chronopostrelaistemplate #map-canvas{position:relative;width:49%;height:400px;margin-right:0;float:left;min-width:240px;border-radius:7px;border:1px solid #bbbbbb;}
 
 
+/* Order Manager */
+.ordersearch{margin-bottom:30px;overflow:hidden;}
+.ordersearch div{float:left;margin:0 15px 0 0;}
+.ordersearch .primarybutton,.ordersearch .secondarybutton{margin:0;padding:0 15px;width:auto;}
+#orderadmin{clear:both}
+.ordersearch input{margin-bottom:0}
+.orders .fa{color:#cccccc}
+.orders .fa-edit:hover{color:#47BE27;}
+.orders .fa-repeat:hover{color:#1AA8E3;}
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+.orders select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0}
+.orders select.aspNetDisabled.form-control option{padding-bottom:0;}
+.orders select.aspNetDisabled.form-control::-ms-expand{display:none;}
+.orders .dropdown-menu > li > a{display:inline-block;width: 100%;}
+/* cartlist Table - csstablegenerator.com */
+.orders {border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
+.orders th{vertical-align:top;border:none;border-bottom:2px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:bold;color:inherit;}
+.orders tr:last-child td:last-child{}
+.orders tr:first-child td:first-child{}
+.orders tr:first-child td:last-child{}
+.orders tr:last-child td:first-child{}
+.orders tr:hover td{background-color:#fff;}
+.orders tr:nth-child(odd){}
+.orders tr:nth-child(even){background-color:#F5F5F5;}
+.orders td{vertical-align:top;border:none;border-bottom:1px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:normal;color:inherit;}
+.orders tr:last-child td{}
+.orders tr td:last-child{}
+.orders tr:last-child td:last-child{}
+.orders tr:first-child td{}
+.orders tr:first-child:hover td{}
+.orders tr:first-child td:first-child{}
+.orders tr:first-child td:last-child{}
+
+#orderadmin .panel{padding:40px 60px;}
+#orderadmin .leftside{float:left;width:57%;margin-right:6%}
+#orderadmin .rightside{float:left;width:37%;}
+#orderadmin .billaddress{float:left;width:47%;margin-right:6%;line-height:160%;margin-bottom:15px;}
+#orderadmin .shipaddress{float:left;width:47%;line-height:160%;margin-bottom:15px;min-width:145px;}
+#orderadmin .storeaddress{float:left;width:100%;line-height:160%}
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+#orderadmin select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0}
+#orderadmin select.aspNetDisabled.form-control option{padding-bottom:0;}
+#orderadmin select.aspNetDisabled.form-control::-ms-expand{display:none;}
+#orderadmin .dropdown-menu > li > a{display:inline-block;width: 100%;}
+
+
+/* orderdetails Table - csstablegenerator.com */
+.orderdetailitems{border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
+.orderdetailitems th{vertical-align:top;border:none;border-bottom:2px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:bold;color:inherit;}
+.orderdetailitems tr:last-child td:last-child{}
+.orderdetailitems tr:first-child td:first-child{}
+.orderdetailitems tr:first-child td:last-child{}
+.orderdetailitems tr:last-child td:first-child{}
+.orderdetailitems tr:hover td{background-color:#F5F5F5;}
+.orderdetailitems tr:nth-child(odd){}
+.orderdetailitems tr:nth-child(even){}
+.orderdetailitems td{vertical-align:top;border:none;border-bottom:1px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:normal;color:inherit;}
+.orderdetailitems tr:last-child td{}
+.orderdetailitems tr td:last-child{}
+.orderdetailitems tr:last-child td:last-child{}
+.orderdetailitems tr:first-child td{}
+.orderdetailitems tr:first-child:hover td{}
+.orderdetailitems tr:first-child td:first-child{}
+.orderdetailitems tr:first-child td:last-child{}
+
+
+
+
+/* misc */
+.nowrap{white-space:nowrap}
+.text-right{text-align:right !important}
+/* Gallagher clearfix */
+.clearfix:before,.clearfix:after{content:" ";display: table;}
+.clearfix:after{clear:both;}
+.clearfix{*zoom:1;}
+.noborders,.noborders th,.noborders td{border:none !important}
+
+
+
 /* Any screen at less than 768px ----------- */
 @media only screen 
 and (min-width : 481px) 
 and (max-width : 768px) {
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment{min-width:240px;width:100%;padding: 30px 60px;float:none}
+h3{color: #ff0000;}
+.panel{padding:30px 60px;}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment, #addressinput{min-width:240px;width:100%;float:none}
 .checkoutextra .summaryleft,.checkoutextra .checkoutdetails{width:100%;}
 #checkoutitemlist .detailscolumn .details{clear:left}
 #checkoutitemlist .detailscolumn .noimage{height:160px;margin-right:0;width:160px;}
@@ -378,13 +483,18 @@ and (max-width : 768px) {
 #checkoutitemlist .detailscolumn .image {height:160px;width:160px;}
 #chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
 #chronopostrelaistemplate #map-canvas{width:100%;height:400px;float:none}
+#checkoutselectaddress li{width:48%;margin:0 2% 24px 0;min-width: 240px;}
+#orderadmin .orders .removecolumn{display:none}
+
 }
 
 /* Any screen at less than 480px ----------- */
 @media only screen 
 and (min-width : 0px) 
 and (max-width : 480px) {
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment{width:100%;padding:15px;margin-bottom:15px;float:none}
+h3{color: #00ff00;}
+.panel{padding:15px;margin-bottom:15px;}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{width:100%;float:none}
 #cartlist{padding:0}
 .checkoutextra .summaryleft,.checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
 #checkoutitemlist .detailscolumn .details{clear:left}
@@ -393,6 +503,11 @@ and (max-width : 480px) {
 .pricecolumn,.removecolumn{display:none}
 #chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
 #chronopostrelaistemplate #map-canvas{width:100%;height:320px;float:none}
+#checkoutselectaddress li{width:100%;margin:0 0 15px 0;min-width: 240px;}
+#orderadmin .leftside{margin: 0 0 15px;width: 100%;}
+#orderadmin .rightside{margin:0;width: 100%;}
+#orderadmin .rightside .text-right{text-align:left !important}
+#orderadmin .panel{padding:15px;}
 }
 
 /* Smartphones (portrait and landscape) ----------- 

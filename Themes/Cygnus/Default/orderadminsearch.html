@@ -1,3 +1,5 @@
+<div class="NBB">
+
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.datepick.xlang.eur.js"></script>  
 <script>
 
@@ -9,14 +11,18 @@
         $('input[[name$="dateSearchTo"]]').datepicker();
     }); 
 
-</script>	
-<div>
-    [<tag type="valueof" resourcekey="General.Search" />] : [<tag id="txtSearch" type="textbox" width="150" />]
-    [<tag type="valueof" resourcekey="General.From" />] : [<tag id="dateSearchFrom" type="textbox" width="90" />]
-    [<tag type="valueof" resourcekey="General.To" />] : [<tag id="dateSearchTo" type="textbox" width="90" />]
-    [<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearch" cssclass="" commandname="search"/>]
-    [<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdReset" cssclass="" commandname="resetsearch"/>]
+</script>
+
+
+<div class="ordersearch">
+    <div>[<tag type="valueof" resourcekey="General.Search" />]<br>[<tag id="txtSearch" type="textbox" width="150" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.From" />]<br>[<tag id="dateSearchFrom" type="textbox" width="90" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.To" />]<br>[<tag id="dateSearchTo" type="textbox" width="90" />]</div>
+    <div><span>&nbsp;</span><br>[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchButton" cssclass="primarybutton" commandname="search"/>]</div>
+    <div><span>&nbsp;</span><br>[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetButton" cssclass="secondarybutton" commandname="resetsearch"/>]</div>
 </div>
+
+
 [<tag id="search0" type="meta" action="open" />]
 [<tag id="search1" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/firstname" />]
 [<tag id="search2" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/lastname" sqloperator="or" />]

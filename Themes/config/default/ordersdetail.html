@@ -1,5 +1,5 @@
 				<div class="col-xs-3 billaddress">
-					<b>Bill to:</b>
+					<b>[<tag type="valueof" resourcekey="General.BillTo" />]:</b>
 					<address>
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
@@ -16,7 +16,7 @@
 					</address>
 				</div>
 				<div class="col-xs-3 shipaddress">
-					<b>Ship to:</b>
+					<b>[<tag type="valueof" resourcekey="General.ShipTo" />]:</b>
        			[<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
 					<address>
 			        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
@@ -55,16 +55,28 @@
 				<div class="col-xs-6 text-right storeaddress">
 					<address>
 						<div><strong>[Settings:storecompany]</strong></div>
+						[<tag type="if" function="settings" key="storeattention" testvalue="" display="{OFF}" />]
 						<div>Att: [Settings:storeattention]</div>
+						[<tag type="endtestof" />]
 						<div>[Settings:storeaddressline1]</div>
 						<div>[Settings:storeaddressline2]</div>
 						<div>[Settings:storecity], [Settings:storeregion] [Settings:storepostcode]</div>
 						<div>[Settings:storecountry]</div>
+						[<tag type="if" function="settings" key="storetaxnumber" testvalue="" display="{OFF}" />]
 						<div>Tax no:[Settings:storetaxnumber]</div>
+						[<tag type="endtestof" />]
+						[<tag type="if" function="settings" key="salesemail" testvalue="" display="{OFF}" />]
 						<div>Sales: [Settings:salesemail]</div>
+						[<tag type="endtestof" />]
+						[<tag type="if" function="settings" key="supportemail" testvalue="" display="{OFF}" />]
 						<div>Support: [Settings:supportemail]</div>
+						[<tag type="endtestof" />]
+						[<tag type="if" function="settings" key="websiteurl" testvalue="" display="{OFF}" />]
 						<div>Web:[<tag type="websiteurl" />]</div>
+						[<tag type="endtestof" />]
+						[<tag type="if" function="settings" key="storephone" testvalue="" display="{OFF}" />]
 						<div>Ph: [Settings:storephone]</div>
+						[<tag type="endtestof" />]
 					</address>
 				    <h3 class="invoice-header">Order # [<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
 					<p>Date: [<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</p>

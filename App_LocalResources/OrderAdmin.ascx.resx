@@ -213,4 +213,7 @@
   <data name="PaymentMethod.Text" xml:space="preserve">
     <value>Payment Method: </value>
   </data>
+  <data name="cmdReturnButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
+  </data>
 </root>

@@ -1,16 +1,14 @@
+[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
+
 <div class="categorybreadcrumbs">[<tag type="catbreadcrumb" links="True" separator="" aslist="true" targetmodulekey="{Settings:modulekey}" />]</div>
 
 <!-- Use special filter privder -->
 [<tag id="providerfilterkey" type="meta" value="nbrightguerbetfilter" />]
 
- 
-
 [<tag type="if" function="productcount" modulekey="{Settings:modulekey}" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
 <!-- Product List header  -->
       
 Wishlist: [<tag type="itemlistcount" listname="wishlist" />]
-
-[<tag id="includeinheader" type="meta" value="listpageheader.html" />]<!-- This template injects into page head section with static data only -->
 
 <div class="NBB">
 
