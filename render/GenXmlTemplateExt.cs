@@ -484,6 +484,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "hasproperty":
+                                dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
+                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                                if (prodData.HasProperty(testValue))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             case "isdocpurchasable":
                                 dataValue = "FALSE";
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");

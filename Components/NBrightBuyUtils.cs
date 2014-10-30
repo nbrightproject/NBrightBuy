@@ -371,7 +371,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 itemTempl.AddResxFolder("/DesktopModules/NBright/NBrightBuy/Themes/" + settingsDic["themefolder"] +
                                         "/resx/");
-                itemTempl.AddResxFolder(portalHomeDirectory + "Themes/" + settingsDic["themefolder"] + "/resx/");
             }
             return itemTempl;
         }
@@ -649,14 +648,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (var f in fileList)
                 {
                     var fpath = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx.resx");
-                    var fpathlang = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".resx");
-                    if (createFile && !File.Exists(fpath))
-                    {
-                        CreateResourceFile(fpath);
-                        CreateResourceFile(fpathlang);
-                    }
+                    //var fpathlang = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".resx");
+                    var fpathlangportal = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".Portal-" + PortalSettings.Current.PortalId.ToString("") + ".resx");
                     if (File.Exists(fpath))
                     {
+                        if (!File.Exists(fpathlangportal)) CreateResourceFile(fpathlangportal);
                         foreach (var d in resxFields)
                         {
                             var resxKeyArray = d.Key.Split('.');
@@ -666,7 +662,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 var resxKey = resxKeyArray[1];
                                 if (fileName == f.Key)
                                 {
-                                    if (UpdateResourceFile(resxKey + ".Text", d.Value, fpathlang)) updDone = true;
+                                    if (UpdateResourceFile(resxKey + ".Text", d.Value, fpathlangportal)) updDone = true;
                                 }
                             }
                         }

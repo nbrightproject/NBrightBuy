@@ -81,9 +81,6 @@
     <EmbeddedResource Include="App_LocalResources\ManualPayment.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Themes\config\resx\Method.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

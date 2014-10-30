@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
@@ -208,6 +209,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objGrpCtrl = new GrpCatController(_lang);
             return objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
+        }
+
+        public Boolean HasProperty(String propertyref)
+        {
+            var objGrpCtrl = new GrpCatController(_lang);
+            var l = objGrpCtrl.GetProductCategories(Info.ItemID, "!cat");
+            var rtnl = l.Where(i => i.categoryref == propertyref);
+            return rtnl.Any();
         }
 
         public List<NBrightInfo> GetRelatedProducts()

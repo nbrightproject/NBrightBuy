@@ -123,4 +123,7 @@
   <data name="checkouttemplate.Text" xml:space="preserve">
     <value>Template</value>
   </data>
+  <data name="manualpayment.Text" xml:space="preserve">
+    <value>Checkout Now</value>
+  </data>
 </root>

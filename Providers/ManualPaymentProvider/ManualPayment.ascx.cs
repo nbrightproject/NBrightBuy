@@ -135,18 +135,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var resxDic = GenXmlFunctions.GetGenXmlResx(rpDataH);
             var genTempl = (GenXmlTemplate)rpDataH.ItemTemplate;
             var resxfolders = genTempl.GetResxFolders();
-            // we're only going to create resx files for this portal, so remove all other paths formt he folders list.
-            var resxfolder = new List<String>();
-            foreach (var p in resxfolders)
-            {
-                if (p.StartsWith(PortalSettings.HomeDirectory))
-                {
-                    resxfolder.Add(p);
-                    break;
-                }
-            }
-
-            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolder, StoreSettings.Current.EditLanguage, true);
+            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolders, StoreSettings.Current.EditLanguage, true);
 
             // NOTE: For some reason this action restarts the application, not sure why, but it's a side effect that helps display the new resx change. So I'm leaving it for now!
             //  This restart doesn;t happen with the update of the settings page???
