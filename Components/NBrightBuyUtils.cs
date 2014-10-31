@@ -740,11 +740,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String AdminUrl(int tabId, string[] param )
         {
             var newparam = new string[(param.Length + 1)];
+            var foundCtrl = false;
             for (int i = 0; i < param.Length; i++)
             {
+                if (param[i] != null && param[i].StartsWith("ctrl=")) foundCtrl = true;
                 newparam[i] = param[i];
             }
-            newparam[param.Length] = "ctrl=" + HttpContext.Current.Session["nbrightbackofficectrl"];
+            if (!foundCtrl) newparam[param.Length] = "ctrl=" + HttpContext.Current.Session["nbrightbackofficectrl"];
             return Globals.NavigateURL(tabId, "", newparam);
         }
     }

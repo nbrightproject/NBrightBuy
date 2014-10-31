@@ -123,4 +123,58 @@
   <data name="lblcollectiontimes.Text" xml:space="preserve">
     <value>Collection times : </value>
   </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Cart View Settings</value>
+  </data>
+  <data name="lbladvancedsettings.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="lblbasicsettings.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="lbllistbody.Help" xml:space="preserve">
+    <value>Template to be used as cart body, this is repeated for each cart item.</value>
+  </data>
+  <data name="lbllistbody.Text" xml:space="preserve">
+    <value>Cart Body : </value>
+  </data>
+  <data name="lbllistfooter.Help" xml:space="preserve">
+    <value>Template to be used as cart footer.</value>
+  </data>
+  <data name="lbllistfooter.Text" xml:space="preserve">
+    <value>Cart Footer : </value>
+  </data>
+  <data name="lbllistheader.Help" xml:space="preserve">
+    <value>Template to be used as cart header.</value>
+  </data>
+  <data name="lbllistheader.Text" xml:space="preserve">
+    <value>Cart Header : </value>
+  </data>
+  <data name="lbltheme.Help" xml:space="preserve">
+    <value>Name of the theme to use for this cart list.</value>
+  </data>
+  <data name="lbltheme.Text" xml:space="preserve">
+    <value>Theme : </value>
+  </data>
+  <data name="lblthemesettings.Text" xml:space="preserve">
+    <value>Theme Settings</value>
+  </data>
+  <data name="ddlcarttype.data" xml:space="preserve">
+    <value>CartOnly;Checkout</value>
+  </data>
+  <data name="ddlcarttype.datavalue" xml:space="preserve">
+    <value>1;2</value>
+  </data>
+  <data name="lblcarttype.Help" xml:space="preserve">
+    <value>Type of display mode, "Cart Only" for a list of cart items, like a mini-cart or "Checkout" for the full cart checkout process.</value>
+  </data>
+  <data name="lblcarttype.Text" xml:space="preserve">
+    <value>Cart Type : </value>
+  </data>
+  <data name="lblPaymentTab.Help" xml:space="preserve">
+    <value>Page whcih the NBS_Payment module is placed.  The cart will be redirected to this page and processing of the order will be taken over by the NBS_Payment module.</value>
+  </data>
+  <data name="lblPaymentTab.Text" xml:space="preserve">
+    <value>Payment Page : </value>
+  </data>
 </root>

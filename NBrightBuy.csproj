@@ -427,7 +427,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductViewSettings.ascx" />
+    <Content Include="ProductViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProductView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

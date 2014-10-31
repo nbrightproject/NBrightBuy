@@ -117,6 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+    <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Product View Settings</value>
+  </data>
+  <data name="lbladvancedsettings.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="lblbasicsettings.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="lblcascaderesults.Help" xml:space="preserve">
+    <value>If a parent category is selected, all products in children categories will also be displayed.</value>
+  </data>
+  <data name="lblcascaderesults.Text" xml:space="preserve">
+    <value>Cascade Results : </value>
+  </data>
+  <data name="lbldefaultcatid.Help" xml:space="preserve">
+    <value>Default Category to be displayed by the list, if no other category selected.  Deselect this if using the "sqlfilter" token in the header template.</value>
+  </data>
+  <data name="lbldefaultcatid.Text" xml:space="preserve">
+    <value>Default Category : </value>
+  </data>
+  <data name="lbldefaultlistmodule.Help" xml:space="preserve">
+    <value>Set this module to be the default return module for the product list.  This tell the DDRMenu which page to redirect to when multiple pages are used with the DDRMenu.  If no default is set the DDRMenu will return to the current page.</value>
+  </data>
+  <data name="lbldefaultlistmodule.Text" xml:space="preserve">
+    <value>Default List Module : </value>
+  </data>
+  <data name="lbldetailbody.Help" xml:space="preserve">
+    <value>Template to be used as product detail body.</value>
+  </data>
+  <data name="lbldetailbody.Text" xml:space="preserve">
+    <value>Detail Body : </value>
+  </data>
+  <data name="lbldetailfooter.Help" xml:space="preserve">
+    <value>Template to be used as product detail footer.</value>
+  </data>
+  <data name="lbldetailfooter.Text" xml:space="preserve">
+    <value>Detail Footer : </value>
+  </data>
+  <data name="lbldetailheader.Help" xml:space="preserve">
+    <value>Template to be used as product detail header.</value>
+  </data>
+  <data name="lbldetailheader.Text" xml:space="preserve">
+    <value>Detail Header : </value>
+  </data>
+  <data name="lbldetailmoduleref.Help" xml:space="preserve">
+    <value>Module Key of the detail module to display the Product.  If blank then all Product View modules on the page may display the entry detail.  This is activated by using the settings token on the modkey attribute of the "nbs:entrylink" token in the list template.</value>
+  </data>
+  <data name="lbldetailmoduleref.Text" xml:space="preserve">
+    <value>Detail Module Key : </value>
+  </data>
+  <data name="lbldetailtab.Help" xml:space="preserve">
+    <value>The page the user will be redirected to when the "View Product" button is clicked.  If blank the current page is used.  This is activated by using the settings token on the tabid attribute of the "nbs:entrylink" token in the list template.</value>
+  </data>
+  <data name="lbldetailtab.Text" xml:space="preserve">
+    <value>Product Detail Page : </value>
+  </data>
+  <data name="lbllistbody.Help" xml:space="preserve">
+    <value>Template to be used as product list body, this is repeated for each product.</value>
+  </data>
+  <data name="lbllistbody.Text" xml:space="preserve">
+    <value>List Body : </value>
+  </data>
+  <data name="lbllistfooter.Help" xml:space="preserve">
+    <value>Template to be used as product list footer.</value>
+  </data>
+  <data name="lbllistfooter.Text" xml:space="preserve">
+    <value>List Footer : </value>
+  </data>
+  <data name="lbllistheader.Help" xml:space="preserve">
+    <value>Template to be used as product list header.</value>
+  </data>
+  <data name="lbllistheader.Text" xml:space="preserve">
+    <value>List Header : </value>
+  </data>
+  <data name="lbllistonly.Help" xml:space="preserve">
+    <value>Only display list view for this module, no detail view will be displayed on this module.</value>
+  </data>
+  <data name="lbllistonly.Text" xml:space="preserve">
+    <value>List Only : </value>
+  </data>
+  <data name="lblmoduleref.Help" xml:space="preserve">
+    <value>Unique Module Key.  This is used to identify this module to other NBS modules.</value>
+  </data>
+  <data name="lblmoduleref.Text" xml:space="preserve">
+    <value>Module  Key : </value>
+  </data>
+  <data name="lblpagesize.Help" xml:space="preserve">
+    <value>Number of products to be displayed on each page.</value>
+  </data>
+  <data name="lblpagesize.Text" xml:space="preserve">
+    <value>Page Size : </value>
+  </data>
+  <data name="lblreturnlimit.Help" xml:space="preserve">
+    <value>Maximum number of products that will be displayed by the module.  (zero is no limit set)</value>
+  </data>
+  <data name="lblreturnlimit.Text" xml:space="preserve">
+    <value>Product Return Limt</value>
+  </data>
+  <data name="lblreturntab.Help" xml:space="preserve">
+    <value>The page the user is returned to when the "Return to List" button is clicked.  If blank the current page is used.  This is activated by using the settings token on the tabid attribute of the "nbs:returnlink" token in the detail template.</value>
+  </data>
+  <data name="lblreturntab.Text" xml:space="preserve">
+    <value>List Page : </value>
+  </data>
+  <data name="lblstaticlist.Help" xml:space="preserve">
+    <value>Static Lists will always use the default categories, regardless of any category selected.  These are used to display featured products or products on promotion.</value>
+  </data>
+  <data name="lblstaticlist.Text" xml:space="preserve">
+    <value>Static List : </value>
+  </data>
+  <data name="lbltheme.Help" xml:space="preserve">
+    <value>Name of the theme to use for this productlist.</value>
+  </data>
+  <data name="lbltheme.Text" xml:space="preserve">
+    <value>Theme : </value>
+  </data>
+  <data name="lblthemesettings.Text" xml:space="preserve">
+    <value>Theme Settings</value>
+  </data>
+  <data name="themehidden.Text" xml:space="preserve">
+    <value>Old Theme Settings have been disabled, update to activate new theme. </value>
+  </data>
+  
   <data name="lbllightboxspeed.Text" xml:space="preserve">
     <value>LightBox Speed in ms : </value>
   </data>
