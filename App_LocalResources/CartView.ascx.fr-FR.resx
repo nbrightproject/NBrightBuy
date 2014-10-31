@@ -118,99 +118,93 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
 	<data name="AddBill.Text" xml:space="preserve">
-    <value>Add Billing Address</value>
-  </data>
+		<value>Ajouter une adresse de facturation</value>
+	</data>
 	<data name="addnewaddress.Text" xml:space="preserve">
-    <value>Add New Address</value>
-  </data>
+		<value>Ajouter une nouvelle adresse</value>
+	</data>
 	<data name="AddShip.Text" xml:space="preserve">
-    <value>Add Shipping Address</value>
-  </data>
+		<value>Ajouter une adresse de livraison</value>
+	</data>
 	<data name="Back.Text" xml:space="preserve">
-    <value>Back</value>
-  </data>
+		<value>Retour</value>
+	</data>
 	<data name="BillingAddress.Text" xml:space="preserve">
-    <value>Billing Address</value>
-  </data>
+		<value>Adresse de facturation</value>
+	</data>
 	<data name="confirm.Text" xml:space="preserve">
-    <value>Confirm</value>
-  </data>
+		<value>Confirmer</value>
+	</data>
 	<data name="Next.Text" xml:space="preserve">
-    <value>Next</value>
-  </data>
+		<value>Suivant</value>
+	</data>
 	<data name="Order.Text" xml:space="preserve">
-    <value>Submit Order</value>
-  </data>
+		<value>Commander</value>
+	</data>
 	<data name="SelectBill.Text" xml:space="preserve">
-    <value>Select Billing Address</value>
-  </data>
+		<value>Sélectionnez l'adresse de facturation</value>
+	</data>
 	<data name="SelectShip.Text" xml:space="preserve">
-    <value>Select Shipping Address</value>
-  </data>
-	<data name="ShippingAddress.Text" xml:space="preserve">
-    <value>Shipping Address</value>
-  </data>
-	<data name="ForCollection.Text" xml:space="preserve">
-    <value>For Collection</value>
-  </data>
-	<data name="UseBillingAddress.Text" xml:space="preserve">
-    <value>Use Billing Address</value>
-  </data>
-	<data name="collectiontimes.Text" xml:space="preserve">
-    <value>Collection Times</value>
-  </data>
-	<data name="selectaddress.Text" xml:space="preserve">
-    <value>Address Book</value>
-  </data>
-	<data name="shippingoption1.data" xml:space="preserve">
-    <value>Ship to the billing address;Ship to another address;I will collect from store</value>
-  </data>
-	<data name="shippingoption1.datavalue" xml:space="preserve">
-    <value>1;2;3</value>
-  </data>
-	<data name="shippingoption2.data" xml:space="preserve">
-    <value>Use Billing Address;Enter Shipping Address</value>
-  </data>
-	<data name="shippingoption2.datavalue" xml:space="preserve">
-    <value>1;2</value>
-  </data>
-	<data name="SaveAddress.Text" xml:space="preserve">
-    <value>Save Address</value>
-  </data>
-	<data name="SaveAddress.Title" xml:space="preserve">
-    <value>Save Address to Address Book</value>
-  </data>
-	<data name="cmdAddItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-plus-square'&gt;&lt;/i&gt;</value>
-  </data>
-	<data name="cmdRemoveItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-minus-square'&gt;&lt;/i&gt;</value>
-  </data>
-	<data name="cmdDeleteItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-times-circle fa-2x'&gt;&lt;/i&gt;</value>
-  </data>
-	<data name="UpdateCart.Text" xml:space="preserve">
-    <value>Update</value>
-  </data>
-	<data name="cmdClearCart.Text" xml:space="preserve">
-    <value>Remove All</value>
-  </data>
-	<data name="cmdClearCart.confirm" xml:space="preserve">
-    <value>Remove All Items?</value>
-  </data>
-	<data name="chknews.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
-	<data name="chkterms.Text" xml:space="preserve">
-    <value>I have read and accept the terms</value>
-  </data>
+		<value>Sélectionnez l'adresse de livraison</value>
+	</data>
 	<data name="txtItems.Text" xml:space="preserve">
 		<value>Article(s)</value>
 	</data>
+	<data name="ShippingAddress.Text" xml:space="preserve">
+		<value>Adresse de livraison</value>
+	</data>
+	<data name="ForCollection.Text" xml:space="preserve">
+		<value>Collecte</value>
+	</data>
+	<data name="UseBillingAddress.Text" xml:space="preserve">
+		<value>Utilisez l'adresse de facturation</value>
+	</data>
+	<data name="collectiontimes.Text" xml:space="preserve">
+		<value>Heures de collecte</value>
+	</data>
+	<data name="selectaddress.Text" xml:space="preserve">
+		<value>Carnet d'adresses</value>
+	</data>
+	<data name="shippingoption1.data" xml:space="preserve">
+		<value>Expédier à l'adresse de facturation ;Expédier à une autre adresse</value>
+	</data>
+	<data name="shippingoption2.data" xml:space="preserve">
+		<value>article(s)</value>
+	</data>
+	<data name="SaveAddress.Text" xml:space="preserve">
+		<value>Enregistrez l'adresse</value>
+	</data>
+	<data name="SaveAddress.Title" xml:space="preserve">
+		<value>Sauvegarder l'adresse dans le carnet d'adresses</value>
+	</data>
+	<data name="cmdAddItem.Text" xml:space="preserve">
+		<value>Ajouter</value>
+	</data>
+	<data name="cmdRemoveItem.Text" xml:space="preserve">
+		<value>Supprimer</value>
+	</data>
+	<data name="cmdDeleteItem.Text" xml:space="preserve">
+		<value>Supprimer</value>
+	</data>
+	<data name="UpdateCart.Text" xml:space="preserve">
+		<value>Recalculer</value>
+	</data>
+	<data name="cmdClearCart.Text" xml:space="preserve">
+		<value>Vider le panier</value>
+	</data>
+	<data name="cmdClearCart.confirm" xml:space="preserve">
+		<value>Supprimer tous les articles ?</value>
+	</data>
+	<data name="chknews.Text" xml:space="preserve">
+		<value>Newsletter</value>
+	</data>
+	<data name="chkterms.Text" xml:space="preserve">
+		<value>J'ai lu et j'accepte les termes et conditions.</value>
+	</data>
 	<data name="cartempty.Text" xml:space="preserve">
-		<value>The cart is empty.</value>
+		<value>Le panier est vide.</value>
 	</data>
 	<data name="returntostore.Text" xml:space="preserve">
-		<value>Back to the store</value>
+		<value>Retour à la boutique</value>
 	</data>
 </root>

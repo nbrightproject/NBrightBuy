@@ -200,21 +200,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "entrydetail":
                     param[0] = "uid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
                     navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch,"","");
                     navigationData.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "resetsearch":
                     // clear cookie info
                     navigationData.Delete();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "unlockuser":
                     if (Utils.IsNumeric(cArg))
@@ -223,7 +223,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         clientData.UnlockUser();
                     }
                     param[0] = "uid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "validateuser":
                     if (Utils.IsNumeric(cArg))
@@ -234,7 +234,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();                            
                     }
                     param[0] = "uid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "resetpass":
                     if (Utils.IsNumeric(cArg))
@@ -243,7 +243,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         clientData.ResetPassword();
                     }
                     param[0] = "uid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "viewaddressbook":
                     param[0] = "";
@@ -275,7 +275,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         tabId = StoreSettings.Current.GetInt("productlisttab");
                         if (tabId==0) tabId = TabId;
                     }
-                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
                     break;
                 case "updateemail":
                     if (Utils.IsNumeric(cArg))
@@ -285,7 +285,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         clientData.UpdateEmail(email);
                     }
                     param[0] = "uid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

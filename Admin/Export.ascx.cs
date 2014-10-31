@@ -111,21 +111,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "export":
                     param[0] = "";
                     DoExport();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "exportimages":
                     param[0] = "";
                     DoExportImages();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "exportdocs":
                     param[0] = "";
                     DoExportDocs();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "cancel":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

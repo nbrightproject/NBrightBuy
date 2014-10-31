@@ -154,19 +154,19 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 case "saveaddress":
                     _addressData.AddAddress(rpAddr);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "deleteaddress":
                     _addressData.RemoveAddress(e.Item.ItemIndex);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "editaddress":
                     param[1] = "addressid=" + e.Item.ItemIndex.ToString("");
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "newaddress":
                     param[1] = "addressid=-1";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "viewclient":
                     param[1] = "ctrl=clients";

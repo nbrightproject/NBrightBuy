@@ -121,11 +121,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     DoImportImages(nbi);
                     DoImportDocs(nbi);
                     Validate();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "cancel":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

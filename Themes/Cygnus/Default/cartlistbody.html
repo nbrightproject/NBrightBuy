@@ -17,16 +17,16 @@
 		</div>
 		<div class="cartlistoptions">
 		[<tag type="if" xpath="genxml/options/option[[1]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[1]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [Settings:currencysymbol][<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />][<tag type="endif" />]</div></div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[1]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[1]]/optvalcost" />][<tag type="endif" />]</div></div>
 		[<tag type="endif" />]
 		[<tag type="if" xpath="genxml/options/option[[2]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div>[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[2]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [Settings:currencysymbol][<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />][<tag type="endif" />]</div></div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[2]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[2]]/optvalcost" />][<tag type="endif" />]</div></div>
 		[<tag type="endif" />]
 		[<tag type="if" xpath="genxml/options/option[[3]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div>[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[3]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [Settings:currencysymbol][<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />][<tag type="endif" />]</div></div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[3]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[3]]/optvalcost" />][<tag type="endif" />]</div></div>
 		[<tag type="endif" />]
 		[<tag type="if" xpath="genxml/options/option[[4]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div>[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[4]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [Settings:currencysymbol][<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />][<tag type="endif" />]</div></div>
+		<div>[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[4]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[4]]/optvalcost" />][<tag type="endif" />]</div></div>
 		[<tag type="endif" />]
 		</div>
 		
@@ -47,8 +47,8 @@
 		[<tag type="endif"  />]
 		</td>
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
-		<td class="pricecolumn">[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedcost" />]</td>
-		<td class="totalcolumn">[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedtotalcost" />]</td>
+		<td class="pricecolumn">[<tag type="currencyof" xpath="genxml/appliedcost" />]</td>
+		<td class="totalcolumn">[<tag type="currencyof" xpath="genxml/appliedtotalcost" />]</td>
 		[<tag type="endif"  />]
 		<td class="removecolumn">[<tag id="cmdDeleteItem" type="linkbutton" cssclass="deleteitem" resourcekey="CartView.cmdDeleteItem" commandname="deletecartitem" />]</td>
 	</tr>

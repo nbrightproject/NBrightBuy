@@ -158,11 +158,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "entrydetail":
                     SaveAll();
                     param[1] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
                     param[1] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
                     var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
@@ -175,12 +175,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                     }   
                     navigationData.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "resetsearch":
                     // clear cookie info
                     navigationData.Delete();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":
                     var strXml2 = GenXmlFunctions.GetGenXml(rpSearch, "", "");
@@ -197,20 +197,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False"); // don't hide property groups by default
                     }
                     categoryData.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "delete":
                     if (Utils.IsNumeric(cArg))
                     {
                         ModCtrl.Delete(Convert.ToInt32(cArg));
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "saveall":
                     SaveAll();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
                     NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "move":
                     SaveAll();
@@ -218,12 +218,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         MoveRecord(Convert.ToInt32(cArg));
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
                     UpodateRecord();
                     param[1] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
 
             }

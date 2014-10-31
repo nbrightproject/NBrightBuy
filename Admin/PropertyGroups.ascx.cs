@@ -97,27 +97,27 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "addnew":
                     var groupData = new GroupData(-1, EditLanguage);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "delete":
                     if (Utils.IsNumeric(cArg))
                     {
                         ModCtrl.Delete(Convert.ToInt32(cArg));
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "saveall":
                     SaveAll();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
                     NBrightBuyUtils.RemoveModCache(-1); //clear any cache
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "move":
                     if (Utils.IsNumeric(cArg))
                     {
                         MoveRecord(Convert.ToInt32(cArg));
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

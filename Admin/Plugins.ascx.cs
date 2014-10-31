@@ -164,7 +164,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "entrydetail":
                     StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "entryup":
                     if (Utils.IsNumeric(cArg))
@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             pluginData.Save();                            
                         }
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "entrydown":
                     if (Utils.IsNumeric(cArg))
@@ -194,7 +194,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             pluginData.Save();                            
                         }
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
                     if (Utils.IsNumeric(cArg))
@@ -202,14 +202,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         pluginData.UpdatePlugin(rpData,Convert.ToInt32(cArg));
                         pluginData.Save();
                     }
-                    HttpContext.Current.Session[strCacheKey] = "";                                          
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    HttpContext.Current.Session[strCacheKey] = "";
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "add":
                     pluginData.AddNewPlugin();
                     pluginData.Save();
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "delete":
                     if (Utils.IsNumeric(cArg))
@@ -218,21 +218,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         pluginData.Save();
                     }
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "resetportal":
                     pluginData.RemovePortalLevel();
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reload":
                     StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

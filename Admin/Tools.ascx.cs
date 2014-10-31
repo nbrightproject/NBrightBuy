@@ -112,17 +112,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "cleardownstore":
                     param[0] = "";
                     DoClearDown();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "validatestore":
                     param[0] = "";
                     ValidateStore();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "validatecompleted", NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "cancel":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 

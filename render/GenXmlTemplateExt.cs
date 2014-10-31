@@ -266,6 +266,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "taxdropdown":
                     CreateTaxDropDownList(container, xmlNod);
                     return true;
+                case "currencyof":
+                    CreateCurrencyOf(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -3748,8 +3751,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
         #endregion
-
-
+        
         #region "Addressdropdown"
 
         private void CreateAddressDropDownList(Control container, XmlNode xmlNod)
@@ -4078,6 +4080,37 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
+
+        #endregion
+
+        #region "CreateCurrencyOf"
+
+        private void CreateCurrencyOf(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["xpath"] != null))
+            {
+                lc.Text = xmlNod.Attributes["xpath"].Value;
+            }
+            lc.DataBinding += CurrencyOfDataBind;
+            container.Controls.Add(lc);
+        }
+
+        private void CurrencyOfDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            var nbi = (NBrightInfo) container.DataItem;
+            try
+            {
+                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Text = NBrightBuyUtils.FormatToStoreCurrency(nbi.GetXmlPropertyDouble(lc.Text));
+            }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+        }
 
         #endregion
 

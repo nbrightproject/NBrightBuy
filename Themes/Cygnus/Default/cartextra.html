@@ -70,11 +70,11 @@
 
     <div class="formrow totals">
 		<ul>
-			<li><span>Subtotal</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedsubtotal" />]</li>
-			<li><span>Discount</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/applieddiscount" />]</li>
-			<li><span>Shipping</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedshipping" />]</li>
-			<li><span>Tax</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/taxcost" />]</li>
-			<li class="total"><span>Total</span>[Settings:currencysymbol][<tag type="valueof" xpath="genxml/appliedtotal" />]</li>
+			<li><span>Subtotal</span>[<tag type="currencyof" xpath="genxml/appliedsubtotal" />]</li>
+			<li><span>Discount</span>[<tag type="currencyof" xpath="genxml/applieddiscount" />]</li>
+			<li><span>Shipping</span>[<tag type="currencyof" xpath="genxml/appliedshipping" />]</li>
+			<li><span>Tax</span>[<tag type="currencyof" xpath="genxml/taxcost" />]</li>
+			<li class="total"><span>Total</span>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</li>
 		</ul>
     </div>
 

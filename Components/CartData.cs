@@ -86,7 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// This function take a cookie created on the client and adds all items to the cart
         /// NOTE: The cookie value is expected in a standard format, whcih is defined by the use of "nbbqtycookie.js"
-        /// Tdhis function will only work, if the product/model being added does not have any options.
+        /// This function will only work, if the product/model being added does not have any options.
         /// </summary>
         public void AddCookieToCart()
         {

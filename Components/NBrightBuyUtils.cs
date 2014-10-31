@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -549,8 +550,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             try
             {
                 var currFormat = value.ToString("c", new CultureInfo(currencycode, false));
-                if (currFormat.Length > 0 && Utils.IsNumeric(currFormat.Substring(0, 1))) return value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false)) + " " +  StoreSettings.Current.Get("currencysymbol");
-                return StoreSettings.Current.Get("currencysymbol") + " " + value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false));
+                if (currFormat.Length > 0 && Utils.IsNumeric(currFormat.Substring(0, 1))) return value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false)) + StoreSettings.Current.Get("currencysymbol");
+                return StoreSettings.Current.Get("currencysymbol") + value.ToString("0.00", new CultureInfo(Utils.GetCurrentCulture(), false));
                 // NOTE: ATM we only have 1 currency.
             }
             catch (Exception)
@@ -734,6 +735,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 resourceWriter.Close();                
             }
             return updDone;
+        }
+
+        public static String AdminUrl(int tabId, string[] param )
+        {
+            var newparam = new string[(param.Length + 1)];
+            for (int i = 0; i < param.Length; i++)
+            {
+                newparam[i] = param[i];
+            }
+            newparam[param.Length] = "ctrl=" + HttpContext.Current.Session["nbrightbackofficectrl"];
+            return Globals.NavigateURL(tabId, "", newparam);
         }
     }
 }

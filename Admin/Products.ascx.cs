@@ -82,12 +82,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "delete":
                     Delete(cArg);
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
                     Update(_eid);
                     param[0] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "copy":
                     if (_eid > 0 && Utils.IsNumeric(cArg))
@@ -96,22 +96,22 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         Update(Convert.ToInt32(newid));
                         param[0] = "eid=" + newid;
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "saveexit":
                     Update(_eid);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "edit":
                     param[0] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":
                     param[0] = "eid=" + AddNew();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
 
             }

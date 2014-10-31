@@ -237,7 +237,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "entrydetail":
                     param[0] = "eid=" + cArg;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reorder":
                     param[0] = "";
@@ -248,7 +248,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         tabId = StoreSettings.Current.GetInt("carttab");
                         if (tabId == 0) tabId = TabId;
                     }
-                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
                     break;
                 case "editorder":
                     param[0] = "";
@@ -259,11 +259,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         tabId = StoreSettings.Current.GetInt("carttab");
                         if (tabId == 0) tabId = TabId;
                     }
-                    Response.Redirect(Globals.NavigateURL(tabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
                     break;
                 case "return":
                     param[0] = "";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
                     var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
@@ -278,12 +278,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         xmlDoc.LoadXml(strXml);
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                     }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "resetsearch":
                     // clear cookie info
                     navigationData.Delete();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "orderby":
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
@@ -297,49 +297,49 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + _entryid;
                     var result = Update();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, result);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "printorder":
                         param[0] = "eid=" + _entryid;
                         param[1] = "print=printorder";
                         param[2] = "template=printorder.html";
-                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);                        
+                        Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);                        
                     break;
                 case "printreceipt":
                         param[0] = "eid=" + _entryid;
                         param[1] = "print=printorder";
                         param[2] = "template=printreceipt.html";
-                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                        Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "printdeliverylabel":
                     param[0] = "eid=" + _entryid;
                     param[1] = "print=printorder";
                     param[2] = "template=printdeliverylabel.html";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailamended":
                     param[0] = "eid=" + _entryid;
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderamendedemail.html", "orderamended_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailreceipt":
                     param[0] = "eid=" + _entryid;
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderreceiptemail.html", "orderreceipt_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailshipped":
                     param[0] = "eid=" + _entryid;
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordershippedemail.html", "ordershipped_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailvalidated":
                     param[0] = "eid=" + _entryid;
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordervalidatedemail.html", "ordervalidated_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "downloadinvoice":
                     DownloadInvoice(Convert.ToInt32(cArg));
@@ -347,7 +347,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "deleteinvoice":
                     DeleteInvoice(Convert.ToInt32(cArg));
                     param[0] = "eid=" + _entryid;
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
             }
 
