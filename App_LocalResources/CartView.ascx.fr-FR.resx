@@ -178,13 +178,13 @@
 		<value>Sauvegarder l'adresse dans le carnet d'adresses</value>
 	</data>
 	<data name="cmdAddItem.Text" xml:space="preserve">
-		<value>Ajouter</value>
+    <value>&lt;i class='fa fa-plus-square'&gt;&lt;/i&gt;</value>
 	</data>
 	<data name="cmdRemoveItem.Text" xml:space="preserve">
-		<value>Supprimer</value>
+    <value>&lt;i class='fa fa-minus-square'&gt;&lt;/i&gt;</value>
 	</data>
 	<data name="cmdDeleteItem.Text" xml:space="preserve">
-		<value>Supprimer</value>
+    <value>&lt;i class='fa fa-times-circle fa-2x'&gt;&lt;/i&gt;</value>
 	</data>
 	<data name="UpdateCart.Text" xml:space="preserve">
 		<value>Recalculer</value>

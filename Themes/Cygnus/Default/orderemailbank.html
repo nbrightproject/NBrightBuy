@@ -4,10 +4,10 @@
 	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
 		<tr>
 			<td style="line-height:100%">
-			<h4>Cheque and Bank Payment</h4>
-			<div>[Settings:bankinginstructions]</div>
-			<div><b>Bank: </b>[Settings:bankname], <b>Account name: </b>[Settings:bankaccountname]</div>
-			<div><b>Account number: </b>[Settings:bankaccountnumber], <b>Insert reference: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
+			<h4>[<tag type="valueof" resourcekey="Notification.ManualPayment" />]</h4>
+			<div>[<tag type="valueof" resourcekey="Notification.bankinginstructions" />]</div>
+			<div><b>[<tag type="valueof" resourcekey="Notification.Bank" />]: </b>[Settings:bankname], <b>[<tag type="valueof" resourcekey="Notification.AccountName" />]: </b>[Settings:bankaccountname]</div>
+			<div><b>[<tag type="valueof" resourcekey="Notification.AccountNumber" />]: </b>[Settings:bankaccountnumber], <b>[<tag type="valueof" resourcekey="Notification.InsertReference" />]: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
 			</td>
 		</tr>
 	</table>

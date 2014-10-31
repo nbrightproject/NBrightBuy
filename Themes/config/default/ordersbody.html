@@ -10,7 +10,7 @@
     [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]
     </div>
     </td>
-    <td>$[<tag type='valueof' xpath='genxml/total' />]</td>
+    <td>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</td>
     <td>[<tag type='valueof' xpath='genxml/ordernumber' />]</td>
     <td>[<tag type='valueof' xpath='genxml/createddate' datatype='date' format='dd MMM yyyy H:mm' />]</td>
     <td>[<tag id="orderstatus" cssclass="form-control" enabled="false" type="orderstatus" />]</td>

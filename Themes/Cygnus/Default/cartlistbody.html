@@ -31,7 +31,7 @@
 		</div>
 		
 		[<tag type="if" xpath="genxml/modelref" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div class="cartlistref">Code: [<tag type="concatenate" xpath2="genxml/txtproductref " xpath1="genxml/modelref" />]</div>
+		<div class="cartlistref">[<tag type='valueof' resourcekey='General.Code' />]: [<tag type="concatenate" xpath2="genxml/txtproductref " xpath1="genxml/modelref" />]</div>
 		[<tag type="endif" />]
 		</div>
 		

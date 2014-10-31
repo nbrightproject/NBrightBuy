@@ -56,29 +56,28 @@
 					<address>
 						<div><strong>[Settings:storecompany]</strong></div>
 						[<tag type="if" function="settings" key="storeattention" testvalue="" display="{OFF}" />]
-						<div>Att: [Settings:storeattention]</div>
+						<div>[<tag type='valueof' resourcekey='General.Att' />]: [Settings:storeattention]</div>
 						[<tag type="endtestof" />]
 						<div>[Settings:storeaddressline1]</div>
 						<div>[Settings:storeaddressline2]</div>
 						<div>[Settings:storecity], [Settings:storeregion] [Settings:storepostcode]</div>
 						<div>[Settings:storecountry]</div>
 						[<tag type="if" function="settings" key="storetaxnumber" testvalue="" display="{OFF}" />]
-						<div>Tax no:[Settings:storetaxnumber]</div>
+						<div>[<tag type='valueof' resourcekey='General.Taxno' />]:[Settings:storetaxnumber]</div>
 						[<tag type="endtestof" />]
 						[<tag type="if" function="settings" key="salesemail" testvalue="" display="{OFF}" />]
-						<div>Sales: [Settings:salesemail]</div>
+						<div>[<tag type='valueof' resourcekey='General.Sales' />]: [Settings:salesemail]</div>
 						[<tag type="endtestof" />]
 						[<tag type="if" function="settings" key="supportemail" testvalue="" display="{OFF}" />]
-						<div>Support: [Settings:supportemail]</div>
+						<div>[<tag type='valueof' resourcekey='General.Support' />]: [Settings:supportemail]</div>
 						[<tag type="endtestof" />]
 						[<tag type="if" function="settings" key="websiteurl" testvalue="" display="{OFF}" />]
-						<div>Web:[<tag type="websiteurl" />]</div>
+						<div>[<tag type='valueof' resourcekey='General.Web' />]:[<tag type="websiteurl" />]</div>
 						[<tag type="endtestof" />]
 						[<tag type="if" function="settings" key="storephone" testvalue="" display="{OFF}" />]
-						<div>Ph: [Settings:storephone]</div>
+						<div>[<tag type='valueof' resourcekey='General.Text' />]: [Settings:storephone]</div>
 						[<tag type="endtestof" />]
 					</address>
-				    <h3 class="invoice-header">Order # [<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
-					<p>Date: [<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</p>
-					<div class="txt-danger"></div>
+				    <h3 class="invoice-header">[<tag type='valueof' resourcekey='General.OrderNumber' />]# [<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
+					<p>[<tag type='valueof' resourcekey='General.OrderDate' />]: [<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</p>
 				</div>

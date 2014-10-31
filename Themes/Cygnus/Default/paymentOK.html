@@ -1,8 +1,20 @@
-﻿<div class="NBB">
+﻿[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
+
+<div class="NBB paymentcomplete">
 
 <div class="formrow">
-<h3>Payment Complete</h3>
-<p>[<tag type="breakof" xpath="genxml/textbox/checkoutsuccessmessage" />]</p><!-- This needs to be made to work - is pulling setting from back office settings -->
+<h3>[<tag type="valueof" resourcekey="CartView.PaymentComplete" />]</h3>
+<p>[<tag type="valueof" resourcekey="Notification.checkoutsuccessmessage" />]</p>
 </div>
+
+<div class="formrow">
+[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]: [<tag type="valueof" xpath="genxml/ordernumber" />]
+</div>
+
+[<tag type="if" function="isuser" />]
+<div class="formrow">
+<a class="primarybutton" href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="CartView.ManageOrders" />]</a>
+</div>
+[<tag type="endif" />]
 
 </div>

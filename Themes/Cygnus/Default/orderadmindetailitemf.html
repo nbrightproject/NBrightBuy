@@ -2,31 +2,31 @@
 			<td></td>
 			<td></td>
 			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Subtotal" />]</td>
-			<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/subtotalcost' />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/subtotalcost' />]</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Discount" />]</td>
-			<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/totaldiscount' />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/totaldiscount' />]</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Shipping" />]</td>
-			<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/shippingcost' />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/shippingcost' />]</td>
 		</tr>
 		<tr>
 			<td><small>[<tag type="valueof" resourcekey="OrderAdmin.VATincluded" />]</small></td>
 			<td></td>
 			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Tax" />]</td>
-			<td>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/taxcost' />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/taxcost' />]</td>
 		</tr>
 		<tr class="active">
 			<td><small>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]</small></td>
 			<td></td>
 			<td colspan="2" class="text-right removecolumn"><b>[<tag type="valueof" resourcekey="General.Total" />]</b></td>
-			<td><b>[Settings:currencysymbol][<tag type='valueof' xpath='genxml/total' />]</b></td>
+			<td><b>[<tag type='currencyof' xpath='genxml/total' />]</b></td>
 		</tr>
 		<tr class="noborders">
 			<td colspan="5">[<tag type="valueof" resourcekey="General.status" />]: [<tag id="orderstatus" cssclass="form-control" enabled="false" type="orderstatus" />]</td>

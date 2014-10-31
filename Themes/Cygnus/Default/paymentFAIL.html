@@ -1,8 +1,16 @@
-﻿<div class="NBB">
+﻿[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
+
+<div class="NBB paymentfailed">
 
 <div class="formrow">
-<h3>Payment Incomplete</h3>
-<p>[<tag type="breakof" xpath="genxml/textbox/checkoutfailmessage" />]</p><!-- This needs to be made to work - is pulling setting from back office settings -->
+<h3>[<tag type="valueof" resourcekey="CartView.PaymentFailed" />]</h3>
+<p>[<tag type="valueof" xpath="genxml/textbox/checkoutfailmessage" />]</p>
 </div>
+
+[<tag type="if" function="isuser" />]
+<div class="formrow">
+<a class="primarybutton" href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="CartView.ManageOrders" />]</a>
+</div>
+[<tag type="endif" />]
 
 </div>
