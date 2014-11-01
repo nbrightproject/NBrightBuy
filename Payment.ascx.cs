@@ -194,10 +194,20 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 #region "Payment Details"
 
-                // display return page
-                DoDetail(rpDetailDisplay,_cartInfo.PurchaseInfo);
-                DoDetail(rpPaymentGateways, _cartInfo.PurchaseInfo);
-                DoDetail(rpDetailFooter, _cartInfo.PurchaseInfo);
+                                    var orderid = Utils.RequestQueryStringParam(Context, "orderid");
+                if (Utils.IsNumeric(orderid))
+                {
+                    // orderid exists, so must be return from bank; Process it!!
+                    _orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
+                    DoDetail(rpDetailDisplay, _orderData.PurchaseInfo);
+                }
+                else
+                {
+                    // display return page
+                    DoDetail(rpDetailDisplay, _cartInfo.PurchaseInfo);
+                    DoDetail(rpPaymentGateways, _cartInfo.PurchaseInfo);
+                    DoDetail(rpDetailFooter, _cartInfo.PurchaseInfo);                    
+                }
 
 
                 #endregion

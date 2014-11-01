@@ -160,19 +160,19 @@
     <value>Theme Settings</value>
   </data>
   <data name="ddlcarttype.data" xml:space="preserve">
-    <value>CartOnly;Checkout</value>
+    <value>Minicart;Fullcart;Checkout</value>
   </data>
   <data name="ddlcarttype.datavalue" xml:space="preserve">
-    <value>1;2</value>
+    <value>1;3;2</value>
   </data>
   <data name="lblcarttype.Help" xml:space="preserve">
-    <value>Type of display mode, "Cart Only" for a list of cart items, like a mini-cart or "Checkout" for the full cart checkout process.</value>
+    <value>Choose display mode from minimal minicart, full minicart and the complete checkout cart.</value>
   </data>
   <data name="lblcarttype.Text" xml:space="preserve">
     <value>Cart Type : </value>
   </data>
   <data name="lblPaymentTab.Help" xml:space="preserve">
-    <value>Page whcih the NBS_Payment module is placed.  The cart will be redirected to this page and processing of the order will be taken over by the NBS_Payment module.</value>
+    <value>Page which the NBS_Payment module is placed. The cart will be redirected to this page and processing of the order will be taken over by the NBS_Payment module.</value>
   </data>
   <data name="lblPaymentTab.Text" xml:space="preserve">
     <value>Payment Page : </value>

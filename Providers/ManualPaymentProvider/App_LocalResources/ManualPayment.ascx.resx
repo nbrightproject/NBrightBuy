@@ -124,7 +124,7 @@
     <value>Message</value>
   </data>
   <data name="DefaultMessage.Text" xml:space="preserve">
-    <value>Details for making a payment will be included in the emailed confirmation of your order.</value>
+    <value>Details for making a manual payment will be included in the emailed confirmation of your order.</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
@@ -137,5 +137,8 @@
   </data>
   <data name="Continue.Text" xml:space="preserve">
     <value>Continue</value>
+  </data>
+  <data name="ManualPayment.Text" xml:space="preserve">
+    <value>Manual Payment</value>
   </data>
 </root>

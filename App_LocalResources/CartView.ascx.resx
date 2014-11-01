@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -118,99 +118,117 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
 	<data name="AddBill.Text" xml:space="preserve">
-    <value>Add Billing Address</value>
-  </data>
+		<value>Add Billing Address</value>
+	</data>
 	<data name="addnewaddress.Text" xml:space="preserve">
-    <value>Add New Address</value>
-  </data>
+		<value>Add New Address</value>
+	</data>
 	<data name="AddShip.Text" xml:space="preserve">
-    <value>Add Shipping Address</value>
-  </data>
+		<value>Add Shipping Address</value>
+	</data>
 	<data name="Back.Text" xml:space="preserve">
-    <value>Back</value>
-  </data>
+		<value>Back</value>
+	</data>
 	<data name="BillingAddress.Text" xml:space="preserve">
-    <value>Billing Address</value>
-  </data>
+		<value>Billing Address</value>
+	</data>
 	<data name="confirm.Text" xml:space="preserve">
-    <value>Confirm</value>
-  </data>
+		<value>Confirm</value>
+	</data>
 	<data name="Next.Text" xml:space="preserve">
-    <value>Next</value>
-  </data>
+		<value>Next</value>
+	</data>
 	<data name="Order.Text" xml:space="preserve">
-    <value>Submit Order</value>
-  </data>
+		<value>Submit Order</value>
+	</data>
 	<data name="SelectBill.Text" xml:space="preserve">
-    <value>Select Billing Address</value>
-  </data>
+		<value>Select Billing Address</value>
+	</data>
 	<data name="SelectShip.Text" xml:space="preserve">
-    <value>Select Shipping Address</value>
-  </data>
+		<value>Select Shipping Address</value>
+	</data>
 	<data name="ShippingAddress.Text" xml:space="preserve">
-    <value>Shipping Address</value>
-  </data>
+		<value>Shipping Address</value>
+	</data>
 	<data name="ForCollection.Text" xml:space="preserve">
-    <value>For Collection</value>
-  </data>
+		<value>For Collection</value>
+	</data>
 	<data name="UseBillingAddress.Text" xml:space="preserve">
-    <value>Use Billing Address</value>
-  </data>
+		<value>Use Billing Address</value>
+	</data>
 	<data name="collectiontimes.Text" xml:space="preserve">
-    <value>Collection Times</value>
-  </data>
+		<value>Collection Times</value>
+	</data>
 	<data name="selectaddress.Text" xml:space="preserve">
-    <value>Address Book</value>
-  </data>
+		<value>Address Book</value>
+	</data>
 	<data name="shippingoption1.data" xml:space="preserve">
-    <value>Ship to the billing address;Ship to another address;I will collect from store</value>
-  </data>
+		<value>Ship to the billing address;Ship to another address;I will collect from store</value>
+	</data>
 	<data name="shippingoption1.datavalue" xml:space="preserve">
-    <value>1;2;3</value>
-  </data>
+		<value>1;2;3</value>
+	</data>
 	<data name="shippingoption2.data" xml:space="preserve">
-    <value>Use Billing Address;Enter Shipping Address</value>
-  </data>
+		<value>Use Billing Address;Enter Shipping Address</value>
+	</data>
 	<data name="shippingoption2.datavalue" xml:space="preserve">
-    <value>1;2</value>
-  </data>
+		<value>1;2</value>
+	</data>
 	<data name="SaveAddress.Text" xml:space="preserve">
-    <value>Save Address</value>
-  </data>
+		<value>Save Address</value>
+	</data>
 	<data name="SaveAddress.Title" xml:space="preserve">
-    <value>Save Address to Address Book</value>
-  </data>
+		<value>Save Address to Address Book</value>
+	</data>
 	<data name="cmdAddItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-plus-square'&gt;&lt;/i&gt;</value>
-  </data>
+		<value>&lt;i class='fa fa-plus-square'&gt;&lt;/i&gt;</value>
+	</data>
 	<data name="cmdRemoveItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-minus-square'&gt;&lt;/i&gt;</value>
-  </data>
+		<value>&lt;i class='fa fa-minus-square'&gt;&lt;/i&gt;</value>
+	</data>
 	<data name="cmdDeleteItem.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-times-circle fa-2x'&gt;&lt;/i&gt;</value>
-  </data>
+		<value>&lt;i class='fa fa-times-circle fa-2x'&gt;&lt;/i&gt;</value>
+	</data>
 	<data name="UpdateCart.Text" xml:space="preserve">
-    <value>Update</value>
-  </data>
+		<value>Update</value>
+	</data>
 	<data name="cmdClearCart.Text" xml:space="preserve">
-    <value>Remove All</value>
-  </data>
+		<value>Cancel</value>
+	</data>
 	<data name="cmdClearCart.confirm" xml:space="preserve">
-    <value>Remove All Items?</value>
-  </data>
+		<value>Remove all items and cancel order?</value>
+	</data>
 	<data name="chknews.Text" xml:space="preserve">
-    <value>Newsletter</value>
-  </data>
+		<value>Receive our newsletter</value>
+	</data>
 	<data name="chkterms.Text" xml:space="preserve">
-    <value>I have read and accept the terms</value>
-  </data>
+		<value>I have read and accept the terms</value>
+	</data>
 	<data name="txtItems.Text" xml:space="preserve">
-		<value>Article(s)</value>
+		<value>Item/s</value>
 	</data>
 	<data name="cartempty.Text" xml:space="preserve">
-		<value>The cart is empty.</value>
+		<value>No products in cart</value>
 	</data>
 	<data name="returntostore.Text" xml:space="preserve">
-		<value>Back to the store</value>
+		<value>Return to Store</value>
 	</data>
+	<data name="Totaltopay.Text" xml:space="preserve">
+		<value>Total to pay</value>
+	</data>
+	<data name="PaymentComplete.Text" xml:space="preserve">
+		<value>Payment Complete</value>
+	</data>
+	<data name="PaymentFailed.Text" xml:space="preserve">
+		<value>Payment Failed</value>
+	</data>
+	<data name="ManageOrders.Text" xml:space="preserve">
+		<value>Manage Orders</value>
+	</data>
+	<data name="ViewOrder.Text" xml:space="preserve">
+		<value>View Order</value>
+	</data>
+  <data name="ProcessingDiv.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>

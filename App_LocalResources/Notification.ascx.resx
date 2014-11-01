@@ -240,4 +240,49 @@
   <data name="AddressUpdate.Text" xml:space="preserve">
     <value>Address Update</value>
   </data>
+  <data name="bankinginstructions.Text" xml:space="preserve">
+    <value>Please make your online banking payment as soon as possible to the account above. Insert the order number in the reference field and include your name as well if it is different from the acccount name.</value>
+  </data>
+  <data name="emailmessage.Text" xml:space="preserve">
+    <value>Thank you for your order. We're here to help! Call us during office hours Monday to Friday, or visit us in-store if you have any questions about your order.</value>
+  </data>
+  <data name="pickupmessage.Text" xml:space="preserve">
+    <value>You are welcome to pick you order up from us in store during opening hours. Please continue through the checkout and complete your order first.</value>
+  </data>
+  <data name="checkoutsuccessmessage.Text" xml:space="preserve">
+    <value>Thank you for your order. You will receive an emailed confirmation containing all order details. Please check your junk email folders if you don't receive it within 30 minutes. Take note of the number below if you wish to contact us about this order.</value>
+  </data>
+  <data name="checkoutfailmessage.Text" xml:space="preserve">
+    <value>The order was cancelled or the payment failed. Contact your bank if you need assistance with your credit card, or contact us if you believe there is a problem with the checkout.</value>
+  </data>
+  <data name="Contactus.Text" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="ManualPayment.Text" xml:space="preserve">
+    <value>Chque and Bank Payment</value>
+  </data>
+  <data name="Bank.Text" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="AccountName.Text" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="AccountNumber.Text" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="InsertReference.Text" xml:space="preserve">
+    <value>Insert Reference</value>
+  </data>
+  <data name="BillingAddress.Text" xml:space="preserve">
+    <value>Billing Address</value>
+  </data>
+  <data name="ShippingAddress.Text" xml:space="preserve">
+    <value>Shipping Address</value>
+  </data>
+  <data name="ShippingMethod.Text" xml:space="preserve">
+    <value>Shipping Method</value>
+  </data>
+  <data name="TrackingNumber.Text" xml:space="preserve">
+    <value>Tracking Number</value>
+  </data>
 </root>

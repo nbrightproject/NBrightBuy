@@ -831,4 +831,37 @@
   <data name="BillTo.Text" xml:space="preserve">
     <value>Bill to</value>
   </data>
+  <data name="Quantity.Text" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="DebugMessage.Text" xml:space="preserve">
+    <value>Debug mode is on - Caching is off</value>
+  </data>
+  <data name="DebugMode.Text" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="Taxno.Text" xml:space="preserve">
+    <value>Tax no</value>
+  </data>
+  <data name="Sales.Text" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="Support.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Web.Text" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="Ph.Text" xml:space="preserve">
+    <value>Ph</value>
+  </data>
+  <data name="Att.Text" xml:space="preserve">
+    <value>Att</value>
+  </data>
+  <data name="emptyminicart.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="emptyfullcart.Text" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

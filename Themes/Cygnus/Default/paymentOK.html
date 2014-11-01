@@ -1,6 +1,6 @@
 ﻿[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
 
-<div class="NBB paymentcomplete">
+<div class="nbs paymentcomplete">
 
 <div class="formrow">
 <h3>[<tag type="valueof" resourcekey="CartView.PaymentComplete" />]</h3>
@@ -8,12 +8,18 @@
 </div>
 
 <div class="formrow">
-[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]: [<tag type="valueof" xpath="genxml/ordernumber" />]
+<b>[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]:</b> [<tag type="valueof" xpath="genxml/ordernumber" />]
 </div>
 
-[<tag type="if" function="isuser" />]
+[<tag type="if" function="isuser" display="{ON}"/>]
 <div class="formrow">
-<a class="primarybutton" href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="CartView.ManageOrders" />]</a>
+<a class="primarybutton" href="/tabid/[Settings:ordermanagertab]/eid/[<tag type='valueof' databind='itemid' />]">[<tag type="valueof" resourcekey="CartView.ViewOrder" />]</a>
+</div>
+[<tag type="endif" />]
+
+[<tag type="if" function="isuser" display="{OFF}" />]
+<div class="formrow">
+<a class="primarybutton" href="/tabid/[Settings:productlisttab]">[<tag type="valueof" resourcekey="CartView.returntostore" />]</a>
 </div>
 [<tag type="endif" />]
 

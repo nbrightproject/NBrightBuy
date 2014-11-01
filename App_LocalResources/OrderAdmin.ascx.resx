@@ -216,4 +216,13 @@
   <data name="cmdReturnButton.Text" xml:space="preserve">
     <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
   </data>
+  <data name="EmailOrder.Text" xml:space="preserve">
+    <value>Email Order</value>
+  </data>
+  <data name="PrintOrder.Text" xml:space="preserve">
+    <value>Print Order</value>
+  </data>
+  <data name="ToggleDropdown.Text" xml:space="preserve">
+    <value>Toggle Dropdown</value>
+  </data>
 </root>

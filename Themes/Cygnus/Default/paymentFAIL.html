@@ -1,15 +1,21 @@
 ﻿[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
 
-<div class="NBB paymentfailed">
+<div class="nbs paymentfailed">
 
 <div class="formrow">
 <h3>[<tag type="valueof" resourcekey="CartView.PaymentFailed" />]</h3>
 <p>[<tag type="valueof" xpath="genxml/textbox/checkoutfailmessage" />]</p>
 </div>
 
-[<tag type="if" function="isuser" />]
+[<tag type="if" function="isuser" display="{ON}"/>]
 <div class="formrow">
 <a class="primarybutton" href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="CartView.ManageOrders" />]</a>
+</div>
+[<tag type="endif" />]
+
+[<tag type="if" function="isuser" display="{OFF}" />]
+<div class="formrow">
+<a class="primarybutton" href="/tabid/[Settings:productlisttab]">[<tag type="valueof" resourcekey="CartView.returntostore" />]</a>
 </div>
 [<tag type="endif" />]
 

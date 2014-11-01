@@ -210,4 +210,7 @@
   <data name="paymenttab.Text" xml:space="preserve">
     <value>Payment</value>
   </data>
+  <data name="ordermanagertab.Text" xml:space="preserve">
+    <value>Order Manager</value>
+  </data>
 </root>

@@ -7,10 +7,10 @@
 						[<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrderButton" cssclass="btn btn-default" commandname="reorder" commandargument="ItemID" />]
 						[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClientButton" cssclass="btn btn-default" commandname="viewclient" />]
 					<div class="btn-group dropup">
-					  <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> Email Order</button>
+					  <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> [<tag type="valueof" resourcekey="OrderAdmin.EmailOrder" />]</button>
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
+					    <span class="sr-only">[<tag type="valueof" resourcekey="OrderAdmin.ToggleDropdown" />]</span>
 					  </button>
 					  <ul class="dropdown-menu" role="menu">
 						<li>[<tag id="cmdEmailAmended" type="linkbutton" resourcekey="OrderAdmin.cmdEmailAmended" commandname="emailamended" />]</li>
@@ -20,10 +20,10 @@
 					  </ul>
 					</div>&nbsp;&nbsp;
 					<div class="btn-group dropup">
-					  <button type="button" class="btn btn-default"><i class="fa fa-print fa-fw fa-lg"></i> Print Order</button>
+					  <button type="button" class="btn btn-default"><i class="fa fa-print fa-fw fa-lg"></i> [<tag type="valueof" resourcekey="OrderAdmin.ToggleDropdown" />]</button>
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
+					    <span class="sr-only">[<tag type="valueof" resourcekey="OrderAdmin.ToggleDropdown" />]</span>
 					  </button>
 					  <ul class="dropdown-menu" role="menu">
 						<li>[<tag id="cmdPrintOrder" type="linkbutton" resourcekey="OrderAdmin.cmdPrintOrder" commandname="printorder" />]</li>
