@@ -36,6 +36,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 AddToSettingDic(SettingsInfo, "genxml/checkbox/*");
                 AddToSettingDic(SettingsInfo, "genxml/dropdownlist/*");
                 AddToSettingDic(SettingsInfo, "genxml/radiobuttonlist/*");
+                AddToSettingDicSelectedTextAttr(SettingsInfo, "genxml/dropdownlist/*");
+                AddToSettingDicSelectedTextAttr(SettingsInfo, "genxml/radiobuttonlist/*");
             }
 
             //add DNN Portalsettings
@@ -188,6 +190,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         else
                         {
                             _settingDic.Add(nod.Name, nod.InnerText);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddToSettingDicSelectedTextAttr(NBrightInfo settings, string xpath)
+        {
+            if (settings.XMLDoc != null)
+            {
+                var nods = settings.XMLDoc.SelectNodes(xpath);
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (_settingDic.ContainsKey(nod.Name + "text"))
+                        {
+                            if (nod.Attributes != null) _settingDic[nod.Name + "text"] = nod.Attributes["selectedtext"].InnerText;
+                        }
+                        else
+                        {
+                            if (nod.Attributes != null) _settingDic.Add(nod.Name + "text", nod.Attributes["selectedtext"].InnerText);
                         }
                     }
                 }
