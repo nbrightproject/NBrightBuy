@@ -72,5 +72,35 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             return "";
         }
+
+        public override bool IsValid(NBrightInfo cartInfo)
+        {
+            // check if this provider is valid for the counrty in the checkout
+            var shipoption = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
+            var countrycode = "";
+            switch (shipoption)
+            {
+                case "1":
+                    countrycode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
+                    break;
+                case "2":
+                    countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country");
+                    break;
+            }
+
+            var isValid = true;
+            var shipData = new ShippingData(Shippingkey);
+            var validlist = "," + shipData.Info.GetXmlProperty("genxml/textbox/validcountrycodes") + ",";
+            var notvalidlist = "," + shipData.Info.GetXmlProperty("genxml/textbox/notvalidcountrycodes") + ",";
+            if (validlist.Trim(',') != "")
+            {
+                isValid = false;
+                if (validlist.Contains("," + countrycode + ",")) isValid = true;
+            }
+            if (notvalidlist.Trim(',') != "" && notvalidlist.Contains("," + countrycode + ",")) isValid = false;
+
+            return isValid;
+
+        }
     }
 }

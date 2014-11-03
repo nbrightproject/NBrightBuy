@@ -82,6 +82,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String GetDeliveryLabelUrl(NBrightInfo cartInfo);
 
+        public abstract Boolean IsValid(NBrightInfo cartInfo);
+
     }
 
 }

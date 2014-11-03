@@ -22,6 +22,7 @@ using DotNetNuke.Entities.Users;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using Image = System.Web.UI.WebControls.Image;
 
 namespace Nevoweb.DNN.NBrightBuy.render
@@ -4056,16 +4057,25 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     nbInfo.XMLData = strXML;
                     var selectval = nbInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider");
 
+                    // get country code, to CheckBox if provider is valid.
+                    var cartData = new CartData(PortalSettings.Current.PortalId);
+
                     var pluginData = new PluginData(PortalSettings.Current.PortalId);
                     var provList = pluginData.GetShippingProviders();
                         foreach (var d in provList)
                         {
+                            var isValid = true;
+                            var shipprov = ShippingInterface.Instance(d.Key);
+                            if (shipprov != null) isValid = shipprov.IsValid(cartData.PurchaseInfo);
                             var p = d.Value;
-                            var li = new ListItem();
-                            li.Text = p.GetXmlProperty("genxml/textbox/name");
-                            li.Value = p.GetXmlProperty("genxml/textbox/ctrl");
-                            if (li.Value == selectval) li.Selected = true;
-                            rbl.Items.Add(li);
+                            if (isValid)
+                            {
+                                var li = new ListItem();
+                                li.Text = p.GetXmlProperty("genxml/textbox/name");
+                                li.Value = p.GetXmlProperty("genxml/textbox/ctrl");
+                                if (li.Value == selectval) li.Selected = true;
+                                rbl.Items.Add(li);
+                            }
                         }
                         if (rbl.SelectedValue == "" && rbl.Items.Count > 0) rbl.SelectedIndex = 0;
 
