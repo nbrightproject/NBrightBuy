@@ -33,7 +33,7 @@
         $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
         $(this).children().find('.sortelementUp').click(function () {moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
-        $('input[id*="availabledate"]').datepicker();
+		if (!Modernizr.inputtypes.date) $('input[id*="availabledate"]').datepicker();
     });
 
     $('#productoptions').change(function () {
