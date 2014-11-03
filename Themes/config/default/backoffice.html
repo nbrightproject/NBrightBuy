@@ -84,10 +84,6 @@ function DemoSelect2(){
 	$('.s2_with_tag').select2({allowClear: true,placeholder: "Please Select"});
 	$('.s2_country').select2();
 }
-// Run timepicker
-function DemoTimePicker(){
-	$('#input_time').timepicker({setDate: new Date()});
-}
 $(document).ready(function() {
 	// Run beauty tables plugin on every table with class .beauty-table
 	$('.beauty-table').each(function(){
@@ -96,19 +92,9 @@ $(document).ready(function() {
 		// Nice CSS-hover row and col for current cell
 		$(this).beautyHover();
 	});
-	// Add slider for change test input length
-	FormLayoutExampleInputLength($( ".slider-style" ));
-	// Initialize datepicker
-	$('#input_date').datepicker({setDate: new Date()});
-	// Load Timepicker plugin
-	LoadTimePickerScript(DemoTimePicker);
 	// Add tooltip to form-controls
 	$('.form-control').tooltip();
 	LoadSelect2Script(DemoSelect2);
-	// Load example of form validation
-	LoadBootstrapValidatorScript(DemoFormValidator);
-	// Load TimePicker plugin and callback all time and date pickers
-	LoadTimePickerScript(AllTimePickers);
 	// Create jQuery-UI tabs
 	$("#tabs").tabs();
 	// Sortable for elements
@@ -137,7 +123,6 @@ $(document).ready(function() {
     //NBS - BO status
 	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
 	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
-
 
 });
 </script>

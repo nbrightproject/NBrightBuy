@@ -1,23 +1,11 @@
 <div class="nbs">
 
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.datepick.xlang.eur.js"></script>  
-<script>
-
-    $(function () {
-        $.datepicker.setDefaults($.datepicker.regional[['']]);
-        if ('[<tag type="culturecode" />]' == 'en-GB') $.datepicker.setDefaults($.datepicker.regional[['en-GB']]);
-        if ('[<tag type="culturecode" />]' == 'fr-FR') $.datepicker.setDefaults($.datepicker.regional[['fr']]);
-        $('input[[name$="dateSearchFrom"]]').datepicker();
-        $('input[[name$="dateSearchTo"]]').datepicker();
-    }); 
-
-</script>
-
+[Template:datepicker.html]
 
 <div class="ordersearch">
     <div>[<tag type="valueof" resourcekey="General.Search" />]<br>[<tag id="txtSearch" type="textbox" width="150" />]</div>
-    <div>[<tag type="valueof" resourcekey="General.From" />]<br>[<tag id="dateSearchFrom" type="textbox" width="90" />]</div>
-    <div>[<tag type="valueof" resourcekey="General.To" />]<br>[<tag id="dateSearchTo" type="textbox" width="90" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.From" />]<br>[<tag id="dateSearchFrom" type="textbox" width="90" datatype="date" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.To" />]<br>[<tag id="dateSearchTo" type="textbox" width="90" datatype="date" />]</div>
     <div><span>&nbsp;</span><br>[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchButton" cssclass="primarybutton" commandname="search"/>]</div>
     <div><span>&nbsp;</span><br>[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetButton" cssclass="secondarybutton" commandname="resetsearch"/>]</div>
 </div>

@@ -444,7 +444,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // build StoreSettings and place in httpcontext
                 if (HttpContext.Current.Items["NBBStoreSettings"] == null)
                 {
-                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStoreSettings());
+                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStaticStoreSettings(PortalSettings.Current.PortalId));
                 }
                 objPortalSettings = (StoreSettings)HttpContext.Current.Items["NBBStoreSettings"];
             }
@@ -455,13 +455,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Cache the current store settings
         /// </summary>
         /// <returns></returns>
-        private static StoreSettings GetStoreSettings()
+        private static StoreSettings GetStaticStoreSettings(int portalId)
         {
-            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + portalId.ToString(""));
             if (objSs == null)
             {
-                objSs = new StoreSettings();
-                Utils.SetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""), objSs);
+                objSs = new StoreSettings(portalId);
+                Utils.SetCache("NBBStoreSettings" + portalId.ToString(""), objSs);
+            }
+            return objSs;
+        }
+        public StoreSettings GetStoreSettings(int portalId)
+        {
+            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + portalId.ToString(""));
+            if (objSs == null)
+            {
+                objSs = new StoreSettings(portalId);
+                Utils.SetCache("NBBStoreSettings" + portalId.ToString(""), objSs);
             }
             return objSs;
         }

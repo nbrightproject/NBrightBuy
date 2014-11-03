@@ -1,16 +1,5 @@
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.datepick.xlang.eur.js"></script>  
-<script>
 
-    $(function () {
-        $.datepicker.setDefaults($.datepicker.regional[['']]);
-        if ('[<tag type="culturecode" />]' == 'en-GB') $.datepicker.setDefaults($.datepicker.regional[['en-GB']]);
-        if ('[<tag type="culturecode" />]' == 'fr-FR') $.datepicker.setDefaults($.datepicker.regional[['fr']]);
-        $('input[[name$="dateSearchFrom"]]').datepicker();
-        $('input[[name$="dateSearchTo"]]').datepicker();
-        $('input[[name$="shippingdate"]]').datepicker();
-    });
-
-</script>
+[Template:datepicker.html]
 
 <br />
 
@@ -52,11 +41,11 @@
 						</div>
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.From" />]</label>
 						<div class="col-sm-2">
-							[<tag id="dateSearchFrom" cssclass="form-control" type="textbox" />]
+							[<tag id="dateSearchFrom" cssclass="form-control" type="textbox" datatype="date" />]
 						</div>
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.To" />]</label>
 						<div class="col-sm-2">
-							[<tag id="dateSearchTo" cssclass="form-control" type="textbox" />]
+							[<tag id="dateSearchTo" cssclass="form-control" type="textbox" datatype="date" />]
 						</div>
 						<div class="col-sm-3">
 						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchIcon" cssclass="btn btn-primary" commandname="search"/>]

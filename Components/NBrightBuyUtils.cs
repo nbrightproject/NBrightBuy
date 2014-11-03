@@ -453,12 +453,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "")
         {
-            var ordData = new OrderData(PortalSettings.Current.PortalId, orderId);
+            var ordData = new OrderData(orderId);
             var lang = ordData.Lang;
             if (ordData.GetInfo().UserId > 0)
             {
                 // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
-                var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.GetInfo().UserId);
+                var objUser = UserController.GetUserById(ordData.PortalId, ordData.GetInfo().UserId);
                 if (objUser != null && ordData.EmailAddress != objUser.Email)
                 {
                     ordData.EmailAddress = objUser.Email;
@@ -488,14 +488,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (emailsubject == null) emailsubject = emailsubjectresxkey;
                 }
 
+                // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
                 var modCtrl = new NBrightBuyController();
-                var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+                var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
 
-                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, StoreSettings.Current.Settings());
+                var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
+
+                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, storeSettings.Settings());
                 if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
-                if (fromEmail == "") fromEmail = StoreSettings.Current.AdminEmail;
+                if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
                 var emailarray = emaillist.Split(',');
-                emailsubject = PortalSettings.Current.PortalName + " : " + emailsubject;
+                emailsubject = storeSettings.Get("PortalName") + " : " + emailsubject;
                 foreach (var email in emailarray)
                 {
                     if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))

@@ -20,7 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public const String DealerRole = "Dealer";
 
         #region Constructors
-        public StoreSettings()
+        public StoreSettings(int portalId)
         {
             DebugMode = false;
 
@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //Get NBrightBuy Portal Settings.
             var modCtrl = new NBrightBuyController();
-            SettingsInfo = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SETTINGS", "NBrightBuySettings");
+            SettingsInfo = modCtrl.GetByGuidKey(portalId, -1, "SETTINGS", "NBrightBuySettings");
             if (SettingsInfo != null)
             {
                 AddToSettingDic(SettingsInfo, "genxml/hidden/*");
@@ -41,11 +41,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //add DNN Portalsettings
-            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
-            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
-            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
-            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
-            if (!_settingDic.ContainsKey("defaultportalalias")) _settingDic.Add("defaultportalalias", PortalSettings.Current.DefaultPortalAlias);
+            var pCtrl = new PortalController();
+            var portalInfo = pCtrl.GetPortal(portalId);
+            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalInfo.PortalID.ToString(""));
+            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", portalInfo.PortalName);
+            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", portalInfo.HomeDirectory);
+            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", portalInfo.HomeDirectoryMapPath);
             if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
@@ -87,9 +88,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_settingDic != null)
             {
                 if (_settingDic.ContainsKey("editlanguage"))
-                    _settingDic["editlanguage"] = StoreSettings.Current.EditLanguage;
+                    _settingDic["editlanguage"] = EditLanguage;
                 else
-                    _settingDic.Add("editlanguage", StoreSettings.Current.EditLanguage);
+                    _settingDic.Add("editlanguage", EditLanguage);
             }
             return _settingDic;
         }
@@ -99,7 +100,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get
             {
                 var editlang = "";
-                if (HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
+                // need to test if HttpContext.Current.Session is null, because webservice calling storesettings will raise exception. 
+                if (HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
                 if (editlang == "") return Utils.GetCurrentCulture();
                 return editlang;
             }
