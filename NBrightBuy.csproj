@@ -460,6 +460,8 @@
     <Content Include="Themes\config\default\clientsfooter.html" />
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\clientdiscountcodes.html" />
+    <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\productfields.html" />
     <Content Include="Themes\config\default\productlistbody-as-thumbs.html" />

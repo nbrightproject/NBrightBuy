@@ -859,9 +859,12 @@
     <value>Att</value>
   </data>
   <data name="emptyminicart.Text" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="emptyfullcart.Text" xml:space="preserve">
-    <value></value>
+    <value />
+  </data>
+  <data name="Amount.Text" xml:space="preserve">
+    <value>Amount</value>
   </data>
 </root>

@@ -186,4 +186,10 @@
   <data name="cmdViewClientButton.Text" xml:space="preserve">
     <value>&lt;i  title="View Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; View Client</value>
   </data>
+  <data name="usageleft.Text" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="validuntil.Text" xml:space="preserve">
+    <value>Valid Until</value>
+  </data>
 </root>

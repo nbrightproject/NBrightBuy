@@ -277,12 +277,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
                     break;
-                case "updateemail":
+                case "save":
                     if (Utils.IsNumeric(cArg))
                     {
-                        var email = GenXmlFunctions.GetField(rpData,"email");
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.UpdateEmail(email);
+                        clientData.Update(rpData);
+                        clientData.Save();
                     }
                     param[0] = "uid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);

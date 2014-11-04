@@ -1,0 +1,33 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<li class="dicountcode form-group"> <!-- class="modelitem" is needed for JS postback update -->
+    
+    [<tag id="fields" type="hidden" value="genxml/textbox/coderef,genxml/textbox/description,genxml/textbox/amount,genxml/textbox/validuntil,genxml/textbox/usageleft," />] <!-- update fields -->
+
+	<div class="col-sm-12 form-horizontal">
+	    <div class="row">
+  			        <div class="col-sm-2">
+			            <label class="control-label">[<tag type="valueof" resourcekey="General.Code" />]</label>
+			            [<tag id="coderef" cssclass="form-control" type="textbox" Text="" />]
+			        </div>
+			        <div class="col-sm-2">
+			            <label class="control-label">[<tag type="valueof" resourcekey="General.Description" />]</label>
+			            [<tag id="description" cssclass="form-control" type="textbox" Text="" />]
+			        </div>
+			        <div class="col-sm-1">
+			            <label class="control-label">[<tag type="valueof" resourcekey="General.Amount" />]</label>
+			            [<tag id="amount" cssclass="form-control" type="textbox" Text="" />]
+			        </div>
+			        <div class="col-sm-2">
+			            <label class="control-label">[<tag type="valueof" resourcekey="Clients.validuntil" />]</label>
+			            [<tag id="validuntil" cssclass="form-control" type="textbox" Text="" datatype="date" />]
+			        </div>
+			        <div class="col-sm-1">
+			            <label class="control-label">[<tag type="valueof" resourcekey="Clients.usageleft" />]</label>
+			            [<tag id="usageleft" cssclass="form-control" type="textbox" Text="" />]
+			        </div>
+	        <div class="col-sm-2"><label class="control-label">&nbsp;</label><br><a class="removediscountcode btn btn-danger input-sm">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
+
+	    </div>
+	</div>
+</li>

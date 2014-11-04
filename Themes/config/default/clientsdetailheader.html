@@ -1,14 +1,12 @@
+[Template:/DesktopModules/NBright/NBrightBuy/Themes/config/default/datepicker.html]
 
-<br />
-
-[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
 	<div class="col-xs-9 col-sm-9">
 		<a href="#" class="show-sidebar">
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-			[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="btn btn-primary" commandname="updateemail" commandargument="ItemID" />]
+			[<tag id="cmdSave" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="btn btn-primary" commandname="save" commandargument="ItemID" />]
 			[<tag id="cmdReturn" type="linkbutton" resourcekey="General.cmdReturnButton" cssclass="btn btn-default" commandname="return" />]
 	    </div>
 	</div>
@@ -16,4 +14,3 @@
 		<!-- No language in this page -->
 	</div>
 </div>
-[<tag type="endif" />]

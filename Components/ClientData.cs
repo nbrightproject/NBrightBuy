@@ -22,8 +22,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class ClientData
     {
         private NBrightInfo _clientInfo;
+        public NBrightInfo DataRecord;
         public int PortalId;
         private UserInfo _userInfo;
+
+        public List<NBrightInfo> DiscountCodes;
 
         public ClientData(int portalId, int userid)
         {
@@ -71,7 +74,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void UpdateEmail(String email)
         {
-            if (_userInfo != null && Utils.IsEmail(email))
+            // update email
+            if (_userInfo != null && Utils.IsEmail(email) && (_userInfo.Email != email))
+            {
+                _userInfo.Email = email;
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
+            }
+        }
+
+        public void Update(Repeater rpData)
+        {
+            // update email
+            var email = GenXmlFunctions.GetField(rpData, "email");
+            if (_userInfo != null && Utils.IsEmail(email) && (_userInfo.Email != email))
             {
                 _userInfo.Email = email;
                 UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
@@ -96,6 +111,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _clientInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
         }
+
+        public void UpdateDiscountCodes(String xmlAjaxData)
+        {
+            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+
+            // build xml for data records
+            var strXml = "<genxml><discountcodes>";
+            foreach (var modelInfo in modelList)
+            {
+                var objInfo = new NBrightInfo(true);
+
+                var fields = modelInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                foreach (var f in fields.Where(f => f != ""))
+                {
+                    objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
+                }
+                strXml += objInfo.XMLData;
+            }
+            strXml += "</discountcodes></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/models", "genxml");
+        }
+
+        public void Save()
+        {
+            var objCtrl = new NBrightBuyController();
+            objCtrl.Update(DataRecord);
+        }
+
+        public void AddNewDiscountCode()
+        {
+            var strXml = "<genxml><discountcodes><genxml><textbox><coderef>" + Utils.GetUniqueKey() + "</coderef></textbox></genxml></discountcodes></genxml>";
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/discountcodes") == null)
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/discountcodes", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(strXml, "genxml/discountcodes/genxml", "genxml/discountcodes");
+            }
+        }
+
 
     #endregion
 
@@ -135,6 +193,45 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+
+            var objCtrl = new NBrightBuyController();
+            DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));
+            if (DataRecord == null)
+            {
+                DataRecord = new NBrightInfo(true);
+                DataRecord.ItemID = -1;
+                DataRecord.UserId = _userInfo.UserID;
+                DataRecord.PortalId = PortalId;
+                DataRecord.ModuleId = -1;                
+                DataRecord.TypeCode = "CLIENT";
+            }
+            DiscountCodes = GetEntityList("discountcodes");
+
+
+        }
+
+        private List<NBrightInfo> GetEntityList(String entityName)
+        {
+            var l = new List<NBrightInfo>();
+            if (DataRecord != null)
+            {
+                var xmlNodList = DataRecord.XMLDoc.SelectNodes("genxml/" + entityName + "/*");
+                if (xmlNodList != null && xmlNodList.Count > 0)
+                {
+                    var lp = 1;
+                    foreach (XmlNode xNod in xmlNodList)
+                    {
+                        var obj = new NBrightInfo();
+                        obj.XMLData = xNod.OuterXml;
+                        obj.ItemID = lp;
+                        obj.Lang = DataRecord.Lang;
+                        obj.ParentItemId = DataRecord.ItemID;
+                        l.Add(obj);
+                        lp += 1;
+                    }
+                }
+            }
+            return l;
         }
 
 

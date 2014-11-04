@@ -237,6 +237,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             //remove current setting from cache for reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");
             Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
 
             if (resxUpdate) DataCache.ClearCache();
 

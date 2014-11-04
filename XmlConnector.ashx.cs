@@ -203,6 +203,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "removerelatedproduct":
                     if (CheckRights()) strOut = RemoveRelatedProduct(context);
                     break;
+                case "clientdiscountcodes":
+                    if (CheckRights()) strOut = GetClientDiscountCodes(context);
+                    break;
+                case "addclientdiscountcode":
+                    if (CheckRights()) strOut = AddClientDiscountCodes(context);
+                    break;
             }
 
             #endregion
@@ -1111,6 +1117,101 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
+
+        #region "clients"
+
+        private String GetClientDiscountCodes(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var strOut = "";
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
+                var userid = settings["userid"];
+                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
+                var portalid = settings["portalid"];
+                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
+                {
+                    // get template
+                    var themeFolder = StoreSettings.Current.ThemeFolder;
+                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                    var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", _lang);
+
+                    //get data
+                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
+                    strOut = GenXmlFunctions.RenderRepeater(clientData.DiscountCodes, bodyTempl);                    
+                }
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String AddClientDiscountCodes(HttpContext context)
+        {
+
+            try
+            {
+                var strOut = "Missing data ('userid', 'portalid' hidden fields needed on input form)";
+
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
+                var userid = settings["userid"];
+                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
+                var portalid = settings["portalid"];
+                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
+                {
+                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
+
+                    var qty = settings["addqty"];
+                    if (!Utils.IsNumeric(qty)) qty = "1";
+
+                       var lp = 1;
+                       var modelcount = clientData.DiscountCodes.Count;
+                        while (lp <= Convert.ToInt32(qty))
+                        {
+                            clientData.AddNewDiscountCode();
+                            lp += 1;
+                            if (lp > 10) break; // we don;t want to create a stupid amount, it will slow the system!!!
+                        }
+                        clientData.Save();
+                        var modelcount2 = clientData.DiscountCodes.Count;
+                        var rtnList = new List<NBrightInfo>();
+                        for (var i = modelcount; i < modelcount2; i++)
+                        {
+                            rtnList.Add(clientData.DiscountCodes[i]);
+                        }
+
+
+                        // get template
+                        var themeFolder = StoreSettings.Current.ThemeFolder;
+                        if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                        var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                        var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", _lang);
+
+                        //get data
+                        strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
+                }
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+
+        #endregion
 
         #region "functions"
 

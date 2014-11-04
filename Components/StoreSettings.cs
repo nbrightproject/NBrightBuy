@@ -52,7 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             ThemeFolder = Get("themefolder");
 
-            if (_settingDic.ContainsKey("debug.mode")) DebugMode = Convert.ToBoolean(_settingDic.ContainsKey("debug.mode"));  // set debug mmode
+            if (_settingDic.ContainsKey("debug.mode") && _settingDic["debug.mode"] == "True") DebugMode = true;  // set debug mmode
             StorageTypeClient = DataStorageType.Cookie;
             if (Get("storagetypeclient") == "SessionMemory") StorageTypeClient = DataStorageType.SessionMemory;
             
