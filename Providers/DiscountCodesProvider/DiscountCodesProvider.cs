@@ -15,9 +15,17 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public override NBrightInfo CalculateItemDiscount(int portalId, int userId, NBrightInfo cartItemInfo,String discountcode)
         {
             var clientData = new ClientData(portalId,userId);
+            if (clientData.DiscountCodes.Count == 0) return cartItemInfo;
 
-            cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", "99");
+            foreach (var d in clientData.DiscountCodes)
+            {
+                if (d.GetXmlProperty("") == discountcode)
+                {
 
+                    cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", "99");
+                }                
+            }
+            
             return cartItemInfo;
         }
     }
