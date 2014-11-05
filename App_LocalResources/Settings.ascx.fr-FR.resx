@@ -652,13 +652,10 @@
 		<value>Interface utilisateur uniquement;Expéditions;Taxes;Promotions;Planificateur;Évènements;Paiements;Autre</value>
 	</data>
 	<data name="providertype.datavalue" xml:space="preserve">
-		<value>01 02 03, 04, 05, 06 ; 07 ; 08</value>
+		<value>01;02;03;04;05;06;07;08</value>
 	</data>
 	<data name="templatepath.Text" xml:space="preserve">
 		<value>Chemin d'accès relatif au fichier gabarits</value>
-	</data>
-	<data name="lblinstock.Help" xml:space="preserve">
-		<value>Si coché, l'utilisateur est autorisé à sélectionner, afficher uniquement les produits en stock.</value>
 	</data>
 	<data name="lblinstock.Text" xml:space="preserve">
 		<value>Sélection en stock</value>
@@ -668,9 +665,6 @@
 	</data>
 	<data name="lblRedirectTab.Text" xml:space="preserve">
 		<value>Page de redirection : </value>
-	</data>
-	<data name="lblsearchtemplate.Help" xml:space="preserve">
-		<value>Nom du gabarit d'affichage de la recherche à utiliser par ce module.</value>
 	</data>
 	<data name="lblsearchtemplate.Text" xml:space="preserve">
 		<value>Gabarit de recherche :</value>
@@ -838,21 +832,354 @@
 		<value>Gabarit d'email client enregistré : </value>
 	</data>
 	<data name="bankinginstructions.Text" xml:space="preserve">
-		<value>Instructions bancaires</value>
+		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Merci d'insérer le numéro de commande dans le champ référence et d'inclure votre nom si celui-ci est différent de votre nom de compte.</value>
 	</data>
 	<data name="checkoutfailmessage.Text" xml:space="preserve">
-		<value>Message passage en caisse échouée</value>
+		<value>La commande a été annulé ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance avec votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
 	</data>
 	<data name="emailmessage.Text" xml:space="preserve">
-		<value>Message email</value>
+		<value>Merci pour votre commande. Nous sommes là pour toute assistance ! N'hésitez pas à nous contacter aux heures indiquées pour toutes questions concernant votre commande. </value>
 	</data>
 	<data name="pickupmessage.Text" xml:space="preserve">
-		<value>Prendre le message</value>
+		<value>Vous pouvez retirer votre commande en magasin suivant les horaires d'ouverture. Merci de procéder au passage en caisse et compléter votre commande.</value>
 	</data>
 	<data name="checkoutsuccessmessage.Text" xml:space="preserve">
-		<value>Message passage en caisse réussie</value>
+		<value>Merci pour votre commande. Vous recevrez en suivant un email de confirmation contenant tous les détails de la commande. Merci de vérifier votre dossier de courrier indésirable si vous ne le recevez pas d'ici 30 minutes. Prenez note du numéro de commande ci-dessous si vous souhaitez nous contacter à son sujet.</value>
 	</data>
-	<data name="cmdEditOrder.Text" xml:space="preserve">
-		<value>Modifier une commande</value>
+	<data name="lblgroupselect2.Text" xml:space="preserve">
+		<value>Activer ET recherche groupe 3 :</value>
+	</data>
+	<data name="lblholidaymode.Text" xml:space="preserve">
+		<value>Mode vacances</value>
+	</data>
+	<data name="ordermanagertab.Text" xml:space="preserve">
+		<value>Gestionnaire de commandes</value>
+	</data>
+	<data name="Contactus.Text" xml:space="preserve">
+		<value>Contactez-nous</value>
+	</data>
+	<data name="ManualPayment.Text" xml:space="preserve">
+		<value>Chèque et virement bancaire</value>
+	</data>
+	<data name="Bank.Text" xml:space="preserve">
+		<value>Banque</value>
+	</data>
+	<data name="AccountName.Text" xml:space="preserve">
+		<value>Nom de compte</value>
+	</data>
+	<data name="AccountNumber.Text" xml:space="preserve">
+		<value>Numéro de compte</value>
+	</data>
+	<data name="InsertReference.Text" xml:space="preserve">
+		<value>Insérer une référence</value>
+	</data>
+	<data name="BillingAddress.Text" xml:space="preserve">
+		<value>Adresse de facturation</value>
+	</data>
+	<data name="ShippingAddress.Text" xml:space="preserve">
+		<value>Adresse d'expédition</value>
+	</data>
+	<data name="ShippingMethod.Text" xml:space="preserve">
+		<value>Mode de livraison</value>
+	</data>
+	<data name="TrackingNumber.Text" xml:space="preserve">
+		<value>Numéro de suivi</value>
+	</data>
+	<data name="cmdReturnButton.Text" xml:space="preserve">
+		<value>&lt;i title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; retour</value>
+	</data>
+	<data name="EmailOrder.Text" xml:space="preserve">
+		<value>Envoyer commande par email</value>
+	</data>
+	<data name="PrintOrder.Text" xml:space="preserve">
+		<value>Ordre d'impression</value>
+	</data>
+	<data name="ToggleDropdown.Text" xml:space="preserve">
+		<value>Liste déroulante activer/désactiver</value>
+	</data>
+	<data name="lblcatsearchtype.Help" xml:space="preserve">
+		<value>Type de recherche à faire sur plusieurs catΘgories sΘlectionnΘes</value>
+	</data>
+	<data name="lblcatsearchtype.Text" xml:space="preserve">
+		<value>Type de recherche de catégorie</value>
+	</data>
+	<data name="lblcatselect.Help" xml:space="preserve">
+		<value>Activer la recherche par catégorie</value>
+	</data>
+	<data name="lblcatselect.Text" xml:space="preserve">
+		<value>Catégorie groupe de recherche</value>
+	</data>
+	<data name="lblpricerange.Help" xml:space="preserve">
+		<value>Activer la sélection par fourchettes de prix</value>
+	</data>
+	<data name="lblpricerange.Text" xml:space="preserve">
+		<value>Fourchette de prix</value>
+	</data>
+	<data name="lblorderselector.Text" xml:space="preserve">
+		<value>Sélecteur d'ordre de tri</value>
+	</data>
+	<data name="lbltextsearch.Help" xml:space="preserve">
+		<value>Activer le sélecteur de commande de tri</value>
+	</data>
+	<data name="lbltextsearch.Text" xml:space="preserve">
+		<value>Recherche de texte</value>
+	</data>
+	<data name="lbltxtmanufacturer.Help" xml:space="preserve">
+		<value>Activer la recherche de texte fabricant</value>
+	</data>
+	<data name="lbltxtmanufacturer.Text" xml:space="preserve">
+		<value> Recherche de texte fabricant</value>
+	</data>
+	<data name="lbltxtseoname.Help" xml:space="preserve">
+		<value>Activer la recherche de texte de nom SEO</value>
+	</data>
+	<data name="lbltxtseoname.Text" xml:space="preserve">
+		<value>Nom SEO la recherche de texte</value>
+	</data>
+	<data name="lbltxtseopagetitle.Help" xml:space="preserve">
+		<value>Activer la recherche de texte du titre SEO de la page SEO</value>
+	</data>
+	<data name="lbltxtseopagetitle.Text" xml:space="preserve">
+		<value>Recherche de texte sur le titre SEO de la page</value>
+	</data>
+	<data name="lbltxtsummary.Help" xml:space="preserve">
+		<value>Activer la recherche du texte résumé</value>
+	</data>
+	<data name="lbltxtsummary.Text" xml:space="preserve">
+		<value>Recherche du texte résumé</value>
+	</data>
+	<data name="lbltxttagwords.Help" xml:space="preserve">
+		<value>Activer la recherche de texte mots tag</value>
+	</data>
+	<data name="lbltxttagwords.Text" xml:space="preserve">
+		<value>Recherche de texte mots tag</value>
+	</data>
+	<data name="lblcatreflist.Help" xml:space="preserve">
+		<value>Une liste CSV des Refs/groupe de catégories à afficher sur le formulaire de recherche. par exemple (Cat1, Cat2, Cat3) cela ne sera applicable aux catégories retournés de sélection Ref Parent, si aucune liste de Ref n'est spécifié tous retournés catégories seront affichera.</value>
+	</data>
+	<data name="lblcatreflist.Text" xml:space="preserve">
+		<value>Liste des catégories Ref : </value>
+	</data>
+	<data name="lblcatreflist1.Help" xml:space="preserve">
+		<value>Une liste CSV des Refs/groupe de catégories à afficher sur le formulaire de recherche. par exemple (Cat1, Cat2, Cat3) cela ne sera applicable aux catégories retournés de sélection Ref Parent, si aucune liste de Ref n'est spécifié tous retournés catégories seront affichera.</value>
+	</data>
+	<data name="lblcatreflist1.Text" xml:space="preserve">
+		<value>Liste de groupe/catégorie de Ref : </value>
+	</data>
+	<data name="lblcatreflist2.Help" xml:space="preserve">
+		<value>Une liste CSV des Refs/groupe de catégories à afficher sur le formulaire de recherche. par exemple (Cat1, Cat2, Cat3) cela ne sera applicable aux catégories retournés de sélection Ref Parent, si aucune liste de Ref n'est spécifié tous retournés catégories seront affichera.</value>
+	</data>
+	<data name="lblcatreflist2.Text" xml:space="preserve">
+		<value>Liste de groupe/catégorie de Ref : </value>
+	</data>
+	<data name="lblcatrepeatcolumns.Help" xml:space="preserve">
+		<value>Nombre de colonnes à afficher.</value>
+	</data>
+	<data name="lblcatrepeatcolumns.Text" xml:space="preserve">
+		<value>Colonnes : </value>
+	</data>
+	<data name="lblcatrepeatcolumns1.Help" xml:space="preserve">
+		<value>Nombre de colonnes à afficher.</value>
+	</data>
+	<data name="lblcatrepeatcolumns1.Text" xml:space="preserve">
+		<value>Colonnes : </value>
+	</data>
+	<data name="lblcatrepeatcolumns2.Help" xml:space="preserve">
+		<value>Nombre de colonnes à afficher.</value>
+	</data>
+	<data name="lblcatrepeatcolumns2.Text" xml:space="preserve">
+		<value>Colonnes : </value>
+	</data>
+	<data name="lbldisplaylevels.Help" xml:space="preserve">
+		<value>Nombre de niveaux de sup de catégories à afficher.</value>
+	</data>
+	<data name="lbldisplaylevels.Text" xml:space="preserve">
+		<value>Afficher des niveaux :</value>
+	</data>
+	<data name="lbldisplaylevels1.Help" xml:space="preserve">
+		<value>Nombre de niveaux de sup de catégories à afficher.</value>
+	</data>
+	<data name="lbldisplaylevels1.Text" xml:space="preserve">
+		<value>Afficher des niveaux :</value>
+	</data>
+	<data name="lbldisplaylevels2.Help" xml:space="preserve">
+		<value>Nombre de niveaux de sup de catégories à afficher.</value>
+	</data>
+	<data name="lbldisplaylevels2.Text" xml:space="preserve">
+		<value>Afficher des niveaux :</value>
+	</data>
+	<data name="lblgroupselect1.Help" xml:space="preserve">
+		<value>Active une clause et sur une deuxième catégorie de groupe « Groupe 2 ».</value>
+	</data>
+	<data name="lblgroupselect1.Text" xml:space="preserve">
+		<value>Activer et recherche groupe 2 : </value>
+	</data>
+	<data name="lblgroupselect2.Help" xml:space="preserve">
+		<value>Active une clause et sur une troisième catégorie de groupe « Groupe 3 ».</value>
+	</data>
+	<data name="lblparentcatref.Help" xml:space="preserve">
+		<value>Toutes les catégories sous cette catégorie parent seront retournées. Si non spécifié toutes les catégories seront retournées.</value>
+	</data>
+	<data name="lblparentcatref.Text" xml:space="preserve">
+		<value>Catégorie/groupe Parent Ref : </value>
+	</data>
+	<data name="lblparentcatref1.Help" xml:space="preserve">
+		<value>Toutes les catégories sous cette catégorie parent seront retournées. Si non spécifié toutes les catégories seront retournées.</value>
+	</data>
+	<data name="lblparentcatref1.Text" xml:space="preserve">
+		<value>Catégorie/groupe Parent Ref : </value>
+	</data>
+	<data name="lblparentcatref2.Help" xml:space="preserve">
+		<value>Toutes les catégories sous cette catégorie parent seront retournées. Si non spécifié toutes les catégories seront retournées.</value>
+	</data>
+	<data name="lblparentcatref2.Text" xml:space="preserve">
+		<value>Catégorie/groupe Parent Ref : </value>
+	</data>
+	<data name="lblfiltermode.Help" xml:space="preserve">
+		<value>Mode pour le module de recherche.  Recherche = recherche options sera statiques ; Filtre = Search options seront dynamiques basée sur la sélection du menu catégorie, la sélection de la catégorie persistera aussi pour des recherches.</value>
+	</data>
+	<data name="lblfiltermode.Text" xml:space="preserve">
+		<value>Mode de recherche : </value>
+	</data>
+	<data name="rblfiltermode.data" xml:space="preserve">
+		<value>Rechercher ;Filtre</value>
+	</data>
+	<data name="lblprimarybuttonclass.Text" xml:space="preserve">
+		<value>Classe de bouton principal de CSS : </value>
+	</data>
+	<data name="lblsecondarybuttonclass.Text" xml:space="preserve">
+		<value>Classe de bouton secondaire de CSS : </value>
+	</data>
+	<data name="lbllightboxspeed.Text" xml:space="preserve">
+		<value>Vitesse de LightBox dans ms : </value>
+	</data>
+	<data name="lbllightboxspeed.Help" xml:space="preserve">
+		<value>Vitesse d'animation pour la lightbox</value>
+	</data>
+	<data name="lblitemwidth.Text" xml:space="preserve">
+		<value>Liste point Largeur en px : </value>
+	</data>
+	<data name="lblitemheight.Text" xml:space="preserve">
+		<value>Hauteur de l'élément liste (incl unité ou auto) : </value>
+	</data>
+	<data name="lblitemimagecontainerheight.Text" xml:space="preserve">
+		<value>Liste élément conteneur hauteur de l'Image (y compris unité ou auto) : </value>
+	</data>
+	<data name="lblitemgutter.Text" xml:space="preserve">
+		<value>Liste question gouttière en px : </value>
+	</data>
+	<data name="lblitembottommargin.Text" xml:space="preserve">
+		<value>Liste point la marge inférieure en px : </value>
+	</data>
+	<data name="lblthumbnailwidth.Text" xml:space="preserve">
+		<value>Liste Image largeur en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblthumbnailheight.Text" xml:space="preserve">
+		<value>Hauteur de l'Image liste en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblimagewidth.Text" xml:space="preserve">
+		<value>Détails largeur en px ou 0 pour auto de l'Image : </value>
+	</data>
+	<data name="lblimageheight.Text" xml:space="preserve">
+		<value>Hauteur de l'Image détails en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblgallerywidth.Text" xml:space="preserve">
+		<value>Galerie Image largeur en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblgalleryheight.Text" xml:space="preserve">
+		<value>Hauteur de l'Image Galerie en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblrelateditemwidth.Text" xml:space="preserve">
+		<value>Largeur de point connexe en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblrelateditemheight.Text" xml:space="preserve">
+		<value>Hauteur de l'élément connexe (y compris unité ou auto) : </value>
+	</data>
+	<data name="lblrelateditemimagecontainerheight.Text" xml:space="preserve">
+		<value>Connexes élément conteneur hauteur de l'Image (incl unité ou auto) : </value>
+	</data>
+	<data name="lblrelateditemgutter.Text" xml:space="preserve">
+		<value>Article connexe gouttière en px : </value>
+	</data>
+	<data name="lblrelateditembottommargin.Text" xml:space="preserve">
+		<value>Marge du bas point connexe en px : </value>
+	</data>
+	<data name="lblrelatedimagewidth.Text" xml:space="preserve">
+		<value>Largeur de l'Image connexes en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblrelatedimageheight.Text" xml:space="preserve">
+		<value>Hauteur de l'Image connexes en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblcategorydetails.Text" xml:space="preserve">
+		<value>Voir la catégorie Détails : </value>
+	</data>
+	<data name="lblmodelstable.Text" xml:space="preserve">
+		<value>Afficher la Table de modèles : </value>
+	</data>
+	<data name="lblproductcode.Text" xml:space="preserve">
+		<value>Voir la Code/Réf : </value>
+	</data>
+	<data name="lblshowstock.Text" xml:space="preserve">
+		<value>Voir la crosse : </value>
+	</data>
+	<data name="lblcurrencyconverter.Text" xml:space="preserve">
+		<value>Activer le convertisseur de devises : </value>
+	</data>
+	<data name="lbltabbedcontent.Text" xml:space="preserve">
+		<value>Activer les onglets : </value>
+	</data>
+	<data name="lblwishlist.Text" xml:space="preserve">
+		<value>Activer la liste de souhaits : </value>
+	</data>
+	<data name="lblplaceholderimage.Text" xml:space="preserve">
+		<value>Activez l'Image d'espace réservé : </value>
+	</data>
+	<data name="lblnoimageicon.Text" xml:space="preserve">
+		<value>Espace réservé Image icône (fontawesome.io) : </value>
+	</data>
+	<data name="lblallowzeroprice.Text" xml:space="preserve">
+		<value>Permettre l'achat de zéro-prix : </value>
+	</data>
+	<data name="lblcataloguemode.Text" xml:space="preserve">
+		<value>Catalogue Mode : </value>
+	</data>
+	<data name="lbllistimages.Text" xml:space="preserve">
+		<value>Images de la liste : </value>
+	</data>
+	<data name="lbldetailimages.Text" xml:space="preserve">
+		<value>Images de détail : </value>
+	</data>
+	<data name="lblrelatedimages.Text" xml:space="preserve">
+		<value>Images de produits connexes : </value>
+	</data>
+	<data name="lbldisplayfeatures.Text" xml:space="preserve">
+		<value>Fonctionnalités d'affichage : </value>
+	</data>
+	<data name="lblsocialseodata.Text" xml:space="preserve">
+		<value>Social et SEO : </value>
+	</data>
+	<data name="lblogobjecttype.Text" xml:space="preserve">
+		<value>Type d'objet graphique ouvert : </value>
+	</data>
+	<data name="lblogobjecttype.Help" xml:space="preserve">
+		<value>Ouvrir le Type de graphe Explorateur - normalement « site Web ». Référence https://developers.facebook.com/docs/reference/opengraph/ </value>
+	</data>
+	<data name="lblfacebookid.Text" xml:space="preserve">
+		<value>Numéro de l'ID Facebook : </value>
+	</data>
+	<data name="lblfacebookid.Help" xml:space="preserve">
+		<value>Numéro d'identification de Facebook Page Insights. Peut être un ID de fb:admins unique ou une liste séparée par des virgules des identificateurs. Référence https://developers.facebook.com/docs/insights/</value>
+	</data>
+	<data name="lbltwittersite.Text" xml:space="preserve">
+		<value>Site Web de Twitter @username : </value>
+	</data>
+	<data name="lbltwittersite.Help" xml:space="preserve">
+		<value>Le nom d'utilisateur Twitter du site, y compris le symbole @. Peut être le même que l'utilisateur de Twitter. Référence https://dev.twitter.com/docs/cards/markup-reference</value>
+	</data>
+	<data name="lbltwitteruser.Text" xml:space="preserve">
+		<value>Utilisateur de Twitter @username : </value>
+	</data>
+	<data name="lbltwitteruser.Help" xml:space="preserve">
+		<value>Le nom d'utilisateur Twitter, y compris le symbole de l'affiche contenu @. Peut être le même que l'utilisateur du site Twitter. Référence https://dev.twitter.com/docs/cards/markup-reference</value>
 	</data>
 </root>

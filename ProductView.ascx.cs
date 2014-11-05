@@ -35,7 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class ProductView : NBrightBuyBase
+    public partial class ProductView : NBrightBuyFrontOfficeBase
     {
 
         private String _eid = "";

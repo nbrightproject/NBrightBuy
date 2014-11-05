@@ -352,6 +352,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, settings);
 
                 templ = Utils.ReplaceUrlTokens(templ);
+                if (debugMode) templ = Environment.NewLine + "<!-- ******* NBRIGHTBUY START TEMPLATE: " + themeFolder + ": " + templatename + " ******* -->" + Environment.NewLine + templ + Environment.NewLine + "<!-- ******* NBRIGHTBUY END TEMPLATE: " + themeFolder + ": " + templatename + " ******* -->" + Environment.NewLine;
+
+                if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
+            }
+            return templ;
+        }
+
+        public string GetTemplate(string templatename, string lang, bool debugMode = false)
+        {
+            string templ = null;
+            var strCacheKey = templatename + "*" + lang + "*" + PortalSettings.Current.PortalId.ToString("");
+
+            if (debugMode == false) templ = (String)Utils.GetCache(strCacheKey);
+
+            if (templ == null)
+            {
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
+                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
+
+                templ = Utils.ReplaceUrlTokens(templ);
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
             }

@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class AddressAdmin : NBrightBuyBase
+    public partial class AddressAdmin : NBrightBuyFrontOfficeBase
     {
 
         private String _catid = "";

@@ -136,7 +136,7 @@
     <value>Effacer données</value>
   </data>
 	<data name="cmdDelete.confirm" xml:space="preserve">
-    <value>Supprimer item?</value>
+    <value>Supprimer article?</value>
   </data>
 	<data name="cmdDelete.Text" xml:space="preserve">
     <value>Supprimer</value>
@@ -148,7 +148,7 @@
     <value>Supprimer</value>
   </data>
 	<data name="cmdDeleteLang.confirm" xml:space="preserve">
-    <value>Supprimer l'item d'entrée langue ?</value>
+    <value>Supprimer l'article d'entrée langue ?</value>
   </data>
 	<data name="cmdDeleteLang.Text" xml:space="preserve">
     <value>Supprimer langue</value>
@@ -349,7 +349,7 @@
     <value>Mettre à jour</value>
   </data>
 	<data name="lblCompany.Text" xml:space="preserve">
-    <value>Compagnie</value>
+    <value>Société</value>
   </data>
 	<data name="lblFirstName.Text" xml:space="preserve">
     <value>Prénom</value>
@@ -367,7 +367,7 @@
     <value>Ville</value>
   </data>
 	<data name="lblCity.Text" xml:space="preserve">
-    <value>Cité</value>
+    <value>Ville</value>
   </data>
 	<data name="lblPostCode.Text" xml:space="preserve">
     <value>Code Postal</value>
@@ -517,7 +517,7 @@
     <value>Mot de Passe</value>
   </data>
 	<data name="RemovefromStore.confirm" xml:space="preserve">
-    <value>Effacer les données sélectionnées de la boutique. Etes-vous sûr?</value>
+    <value>Effacer TOUTES les données sélectionnées de la boutique. Etes-vous sûr?</value>
   </data>
 	<data name="RemovefromStore.Text" xml:space="preserve">
     <value>Supprimer de la boutique</value>
@@ -592,7 +592,7 @@
     <value>Enregistrer les modifications</value>
   </data>
 	<data name="cmdDeleteIcon.confirm" xml:space="preserve">
-    <value>Supprimer item?</value>
+    <value>Supprimer article?</value>
   </data>
 	<data name="Depth.Text" xml:space="preserve">
     <value>Profondeur</value>
@@ -652,7 +652,7 @@
     <value>Options</value>
   </data>
 	<data name="Property.Text" xml:space="preserve">
-    <value>Propriétés</value>
+    <value>Propriété</value>
   </data>
 	<data name="Purchase.Text" xml:space="preserve">
     <value>Achat</value>
@@ -797,5 +797,65 @@
 	</data>
 	<data name="CopyToIcon.Text" xml:space="preserve">
 		<value>&lt;i title="Copier" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="ChooseAddress.Text" xml:space="preserve">
+		<value>Insérer une adresse enregistrée</value>
+	</data>
+	<data name="AddressBook.Text" xml:space="preserve">
+		<value>Carnet d'adresses</value>
+	</data>
+	<data name="AddressEditor.Text" xml:space="preserve">
+		<value>Adresse éditeur</value>
+	</data>
+	<data name="PrimaryAddress.Text" xml:space="preserve">
+		<value>Adresse principale</value>
+	</data>
+	<data name="PrimaryAddressMessage.Text" xml:space="preserve">
+		<value>Veuillez vous assurer que votre adresse principale est toujours correcte et à jour.</value>
+	</data>
+	<data name="OptionalAddress.Text" xml:space="preserve">
+		<value>Adresse facultative</value>
+	</data>
+	<data name="AccountUpdate.Text" xml:space="preserve">
+		<value>Mise à jour du compte utilisateur</value>
+	</data>
+	<data name="AccountUpdateMessage.Text" xml:space="preserve">
+		<value>Le profil du compte utilisateur suivant a été mis à jour. Merci de modifier votre registre si nécessaire.</value>
+	</data>
+	<data name="Number.Text" xml:space="preserve">
+		<value>Nombre</value>
+	</data>
+	<data name="ShipTo.Text" xml:space="preserve">
+		<value>Expédier à</value>
+	</data>
+	<data name="BillTo.Text" xml:space="preserve">
+		<value>Facturer à</value>
+	</data>
+	<data name="Quantity.Text" xml:space="preserve">
+		<value>Quantité</value>
+	</data>
+	<data name="DebugMessage.Text" xml:space="preserve">
+		<value>Le mode débogage est actif - La mise en cache est désactivé</value>
+	</data>
+	<data name="DebugMode.Text" xml:space="preserve">
+		<value>Mode débogage</value>
+	</data>
+	<data name="Taxno.Text" xml:space="preserve">
+		<value>Pas de taxe</value>
+	</data>
+	<data name="Sales.Text" xml:space="preserve">
+		<value>Ventes</value>
+	</data>
+	<data name="Support.Text" xml:space="preserve">
+		<value>Prise en charge</value>
+	</data>
+	<data name="Web.Text" xml:space="preserve">
+		<value>Web</value>
+	</data>
+	<data name="Ph.Text" xml:space="preserve">
+		<value>Ph</value>
+	</data>
+	<data name="Att.Text" xml:space="preserve">
+		<value>Att</value>
 	</data>
 </root>

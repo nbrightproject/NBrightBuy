@@ -41,7 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class ProfileForm : NBrightBuyBase
+    public partial class ProfileForm : NBrightBuyFrontOfficeBase
     {
 
         private String _templinp = "";

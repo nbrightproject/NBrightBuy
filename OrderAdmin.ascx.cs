@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class OrderAdmin : NBrightBuyBase
+    public partial class OrderAdmin : NBrightBuyFrontOfficeBase
     {
 
         private GenXmlTemplate _templSearch; 

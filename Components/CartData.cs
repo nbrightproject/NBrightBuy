@@ -372,13 +372,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
 
-                //add promo
+                //add update genxml/discountcodeamt
+                var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/textbox/promocode");
+                cartItemInfo = DiscountCodeInterface.UpdateBestDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
+                var discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
+
                 var discount = 0;
                 var dealerdiscount = 0;
                 var totaldiscount = discount*qty;
                 var totaldealerdiscount = dealerdiscount*qty;
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
+                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount + discountcodeamt);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
+
+
 
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totaldiscount), totaldealercost));
                 cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - discount), (dealercost - dealerdiscount)));

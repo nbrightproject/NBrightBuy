@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class ProductSearch : NBrightBuyBase
+    public partial class ProductSearch : NBrightBuyFrontOfficeBase
     {
 
         private GenXmlTemplate _templD;

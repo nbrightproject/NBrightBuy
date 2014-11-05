@@ -36,7 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Payment : NBrightBuyBase
+    public partial class Payment : NBrightBuyFrontOfficeBase
     {
 
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.

@@ -344,11 +344,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var templ = GenXmlFunctions.GetGenXmlValue(mt, "tag/@value");
                     if (templ != "")
                     {
+
                         var includetext = modCtrl.GetTemplateData(moduleId, templ, Utils.GetCurrentCulture(), settings, debugMode);
                         if (objInfo == null) objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
                         includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
-                        if (includetext != "") PageIncludes.IncludeTextInHeader(page, includetext);
+                        if (includetext != "")
+                        {
+                            if (page.Header.Attributes["nbrightbuyinject"] == null) page.Header.Attributes.Add("nbrightbuyinject", "");
+                            if (templ != "" && !page.Header.Attributes["nbrightbuyinject"].Contains(templ + ","))
+                            {
+                                PageIncludes.IncludeTextInHeader(page, includetext);
+                                page.Header.Attributes.Add("nbrightbuyinject", page.Header.Attributes["nbrightbuyinject"] + templ + ",");
+                            }
+                        }
                     }
+                }
+            }
+            return "";
+        }
+
+        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, bool debugMode = false)
+        {
+            if (page.Header.Attributes["nbrightbuyinject"] == null) page.Header.Attributes.Add("nbrightbuyinject", "");
+            if (templatename != "" && !page.Header.Attributes["nbrightbuyinject"].Contains(templatename + ","))
+            {
+                var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(), debugMode);
+                var objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
+                includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
+                if (includetext != "")
+                {
+                    PageIncludes.IncludeTextInHeader(page, includetext);
+                    page.Header.Attributes.Add("nbrightbuyinject", page.Header.Attributes["nbrightbuyinject"] + templatename + ",");
                 }
             }
             return "";

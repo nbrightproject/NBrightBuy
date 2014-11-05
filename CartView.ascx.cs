@@ -38,7 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class CartView : NBrightBuyBase
+    public partial class CartView : NBrightBuyFrontOfficeBase
     {
 
         private String _catid = "";

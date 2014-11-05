@@ -117,112 +117,37 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="cmdEmailAmended.confirm" xml:space="preserve">
-    <value>Envoyer email de commande modifiée au client ?</value>
-  </data>
-	<data name="cmdEmailAmended.Text" xml:space="preserve">
-    <value>Commande modifiée</value>
-  </data>
-	<data name="cmdEmailReceipt.confirm" xml:space="preserve">
-    <value>Envoyer email de reçu to client ?</value>
-  </data>
-	<data name="cmdEmailReceipt.Text" xml:space="preserve">
-    <value>Reçu de commande</value>
-  </data>
-	<data name="cmdEmailShipped.confirm" xml:space="preserve">
-    <value>Envoyer email d'expédition au client ?</value>
-  </data>
-	<data name="cmdEmailShipped.Text" xml:space="preserve">
-    <value>Commande expédiée</value>
-  </data>
-	<data name="cmdEmailValidated.confirm" xml:space="preserve">
-    <value>Envoyer email de confirmation de commande au client ?</value>
-  </data>
-	<data name="cmdEmailValidated.Text" xml:space="preserve">
-    <value>Commande confirmée</value>
-  </data>
-	<data name="cmdPrintOrder.Text" xml:space="preserve">
-    <value>Commande</value>
-  </data>
-	<data name="cmdPrintReceipt.Text" xml:space="preserve">
-    <value>Reçu</value>
-  </data>
-	<data name="cmdReOrder.Text" xml:space="preserve">
-    <value>Repasser commande</value>
-  </data>
-	<data name="cmdReturn.Text" xml:space="preserve">
-    <value>Retour</value>
-  </data>
-	<data name="cmdView.Text" xml:space="preserve">
-    <value>Voir</value>
-  </data>
-	<data name="cmdPrintDeliveryLabel.Text" xml:space="preserve">
-    <value>Etiquette expédition</value>
-  </data>
-	<data name="cmdDeleteInvoice.confirm" xml:space="preserve">
-    <value>Supprimer reçu ?</value>
-  </data>
-	<data name="cmdDeleteInvoice.Text" xml:space="preserve">
-    <value>Supprimer reçu</value>
-  </data>
-	<data name="ProcessOrder.Text" xml:space="preserve">
-    <value>Suivi de la commande</value>
-  </data>
-	<data name="VATincluded.Text" xml:space="preserve">
-    <value>* TVA incluse</value>
-  </data>
-	<data name="cmdEditOrderIcon.Text" xml:space="preserve">
-		<value>&lt;i title="Voir et éditer" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	<data name="CheckAll.Text" xml:space="preserve">
+		<value>Cochez tout</value>
 	</data>
-	<data name="cmdEditOrderButton.Text" xml:space="preserve">
-		<value>&lt;i title="Voir et éditer" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Modifier</value>
+	<data name="ddlOrderBy.data" xml:space="preserve">
+		<value>Prix;Prix décroissant;Nom du produit;Fabricant;Code de Référence;Stock</value>
 	</data>
-	<data name="cmdReOrderIcon.Text" xml:space="preserve">
-		<value>&lt;i title="Repasser commande" class="fa fa-repeat fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	<data name="NoCategorySelected.Text" xml:space="preserve">
+		<value>Aucune catégorie sélectionnée</value>
 	</data>
-	<data name="cmdReOrderButton.Text" xml:space="preserve">
-		<value>&lt;i title="Repasser commande" class="fa fa-repeat fa-fw fa-lg"&gt;&lt;/i&gt; Repasser commande</value>
+	<data name="OnlyInStock.Text" xml:space="preserve">
+		<value>Uniquement les articles en stock</value>
 	</data>
-	<data name="cmdViewIcon.Text" xml:space="preserve">
-		<value>&lt;i title="Voir et éditer" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	<data name="SearchText.Text" xml:space="preserve">
+		<value>Rechercher le texte</value>
 	</data>
-	<data name="cmdViewButton.Text" xml:space="preserve">
-		<value>&lt;i title="Voir et éditer" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Voir</value>
+	<data name="PriceRange.Text" xml:space="preserve">
+		<value>Fourchette de prix</value>
 	</data>
-	<data name="qty.Text" xml:space="preserve">
-		<value>Qté</value>
+	<data name="PriceRangeSeperator.Text" xml:space="preserve">
+		<value>à</value>
 	</data>
-	<data name="total.Text" xml:space="preserve">
-		<value>Total</value>
+	<data name="RefineSearch.Text" xml:space="preserve">
+		<value>Affinez votre recherche</value>
 	</data>
-	<data name="myorders.Text" xml:space="preserve">
-		<value>Mes commandes</value>
+	<data name="Search.Text" xml:space="preserve">
+		<value>Rechercher</value>
 	</data>
-	<data name="orderdate.Text" xml:space="preserve">
-		<value>Date de la commande</value>
+	<data name="Reset.Text" xml:space="preserve">
+		<value>Réinitialiser</value>
 	</data>
-	<data name="ordernumber.Text" xml:space="preserve">
-		<value>Numéro de commande</value>
-	</data>
-	<data name="orderreceipt.Text" xml:space="preserve">
-		<value>Reçu de commande</value>
-	</data>
-	<data name="none.Text" xml:space="preserve">
-		<value>Aucun</value>
-	</data>
-	<data name="PaymentMethod.Text" xml:space="preserve">
-		<value>Mode de paiement : </value>
-	</data>
-	<data name="cmdReturnButton.Text" xml:space="preserve">
-		<value>&lt;i  title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
-	</data>
-	<data name="EmailOrder.Text" xml:space="preserve">
-		<value>Envoi emails</value>
-	</data>
-	<data name="PrintOrder.Text" xml:space="preserve">
-		<value>Imprimer commande</value>
-	</data>
-	<data name="ToggleDropdown.Text" xml:space="preserve">
-		<value>Impression</value>
+	<data name="Processing.Text" xml:space="preserve">
+		<value>&lt;i class='fa fa-refresh fa-spin fa-2x'&gt;&lt;/i&gt;</value>
 	</data>
 </root>

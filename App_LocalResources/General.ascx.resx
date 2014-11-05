@@ -867,4 +867,16 @@
   <data name="Amount.Text" xml:space="preserve">
     <value>Amount</value>
   </data>
+  <data name="Voucher.Text" xml:space="preserve">
+    <value>Voucher</value>
+  </data>
+  <data name="Percentage.Text" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Authorised.Text" xml:space="preserve">
+    <value>Authorised</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>

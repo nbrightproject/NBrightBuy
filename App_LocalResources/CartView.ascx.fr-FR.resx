@@ -166,10 +166,10 @@
 		<value>Carnet d'adresses</value>
 	</data>
 	<data name="shippingoption1.data" xml:space="preserve">
-		<value>Expédier à l'adresse de facturation ;Expédier à une autre adresse</value>
+		<value>Expédier à l'adresse de facturation;Expédier à une autre adresse;Je retirerais ma commande</value>
 	</data>
 	<data name="shippingoption2.data" xml:space="preserve">
-		<value>article(s)</value>
+		<value>Utiliser adresse de facturation;Saisir une adresse de livraison</value>
 	</data>
 	<data name="SaveAddress.Text" xml:space="preserve">
 		<value>Enregistrez l'adresse</value>
@@ -199,12 +199,36 @@
 		<value>Newsletter</value>
 	</data>
 	<data name="chkterms.Text" xml:space="preserve">
-		<value>J'ai lu et j'accepte les termes et conditions.</value>
+		<value>J'ai lu et j'accepte les Termes et Conditions.</value>
 	</data>
 	<data name="cartempty.Text" xml:space="preserve">
-		<value>Le panier est vide.</value>
+		<value>Le panier est vide</value>
 	</data>
 	<data name="returntostore.Text" xml:space="preserve">
 		<value>Retour à la boutique</value>
+	</data>
+	<data name="shippingoption1.datavalue" xml:space="preserve">
+		<value>1;2;3</value>
+	</data>
+	<data name="shippingoption2.datavalue" xml:space="preserve">
+		<value>1;2</value>
+	</data>
+	<data name="Totaltopay.Text" xml:space="preserve">
+		<value>Total à régler</value>
+	</data>
+	<data name="PaymentComplete.Text" xml:space="preserve">
+		<value>Paiement terminé</value>
+	</data>
+	<data name="PaymentFailed.Text" xml:space="preserve">
+		<value>Paiement échoué</value>
+	</data>
+	<data name="ManageOrders.Text" xml:space="preserve">
+		<value>Gérer les commandes</value>
+	</data>
+	<data name="ViewOrder.Text" xml:space="preserve">
+		<value>Voir la commande</value>
+	</data>
+	<data name="ProcessingDiv.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
 	</data>
 </root>

@@ -281,8 +281,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (Utils.IsNumeric(cArg))
                     {
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.Update(rpData);
-                        clientData.Save();
+                        if (clientData.Exists)
+                        {
+                            clientData.Update(rpData);
+                            clientData.Save();                            
+                        }
                     }
                     param[0] = "uid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);

@@ -283,10 +283,10 @@
     <value>Namespace and Class</value>
   </data>
   <data name="providertype.data" xml:space="preserve">
-    <value>UI Only;Shipping;Tax;Promotions;Scheduler;Events;Payments;Other</value>
+    <value>UI Only;Shipping;Tax;Promotions;Scheduler;Events;Payments;DiscountCode;Other</value>
   </data>
   <data name="providertype.datavalue" xml:space="preserve">
-    <value>01;02;03;04;05;06;07;08</value>
+    <value>01;02;03;04;05;06;07;08;99</value>
   </data>
   <data name="templatepath.Text" xml:space="preserve">
     <value>Template File Relative Path</value>

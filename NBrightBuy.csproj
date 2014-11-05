@@ -158,6 +158,9 @@
     <Compile Include="Admin\Orders.ascx.designer.cs">
       <DependentUpon>Orders.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\NBrightBuyFrontOfficeBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Base\NBrightBuyAdminBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -174,6 +177,7 @@
     <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
     <Compile Include="Components\GroupData.cs" />
+    <Compile Include="Components\Interfaces\DiscountCodeInterface.cs" />
     <Compile Include="Components\Interfaces\FilterInterface.cs" />
     <Compile Include="Components\Interfaces\PaymentsInterface.cs" />
     <Compile Include="Components\ProfileData.cs" />
@@ -461,6 +465,7 @@
     <Content Include="Themes\config\default\clientsheader.html" />
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
+    <Content Include="Themes\config\default\testinject.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\productfields.html" />

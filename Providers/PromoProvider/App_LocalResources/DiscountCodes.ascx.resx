@@ -112,93 +112,21 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cmdCreateOrder.Text" xml:space="preserve">
-    <value>Create Order</value>
+  <data name="amount.Text" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="cmdResetPass.confirm" xml:space="preserve">
-    <value>Reset User Password and send email with new password?</value>
+  <data name="code.Text" xml:space="preserve">
+    <value>Code</value>
   </data>
-  <data name="cmdResetPass.Text" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
-  <data name="cmdSearch.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="cmdUnlockUser.confirm" xml:space="preserve">
-    <value>Unlock User?</value>
-  </data>
-  <data name="cmdUnlockUser.Text" xml:space="preserve">
-    <value>Unlock User</value>
-  </data>
-  <data name="cmdValidateUser.Text" xml:space="preserve">
-    <value>Validate User</value>
-  </data>
-  <data name="cmdViewOrders.Text" xml:space="preserve">
-    <value>View Orders</value>
-  </data>
-  <data name="lblauthorised.Text" xml:space="preserve">
-    <value>Authorised</value>
-  </data>
-  <data name="lblDisplayName.Text" xml:space="preserve">
-    <value>Display Name</value>
-  </data>
-  <data name="lblEmail.Text" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="lblFirstName.Text" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="lblisdeleted.Text" xml:space="preserve">
-    <value>Is Deleted</value>
-  </data>
-  <data name="lblLastName.Text" xml:space="preserve">
-    <value>Last Name</value>
-  </data>
-  <data name="lblupdatepassword.Text" xml:space="preserve">
-    <value>Update Password</value>
-  </data>
-  <data name="lblUserID.Text" xml:space="preserve">
-    <value>UserID</value>
-  </data>
-  <data name="lblUserName.Text" xml:space="preserve">
-    <value>User Name</value>
-  </data>
-  <data name="UserID.Header" xml:space="preserve">
-    <value>UserID</value>
-  </data>
-  <data name="cmdValidateUser.confirm" xml:space="preserve">
-    <value>Authorise User and grant client role access?</value>
-  </data>
-  <data name="cmdViewAddressBook.Text" xml:space="preserve">
-    <value>Address Book</value>
-  </data>
-  <data name="cmdViewClient.Text" xml:space="preserve">
-    <value>View Client</value>
-  </data>
-  <data name="cmdViewClientIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="View Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdViewClientButton.Text" xml:space="preserve">
-    <value>&lt;i  title="View Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; View Client</value>
-  </data>
-  <data name="usageleft.Text" xml:space="preserve">
-    <value>Usage</value>
+  <data name="description.Text" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="validuntil.Text" xml:space="preserve">
     <value>Valid Until</value>
-  </data>
-  <data name="notsale.Text" xml:space="preserve">
-    <value>Not valid for products on sale </value>
-  </data>
-  <data name="validcategory.Text" xml:space="preserve">
-    <value>Valid Category</value>
-  </data>
-  <data name="FindaClient.Text" xml:space="preserve">
-    <value>Find a Client</value>
   </data>
 </root>

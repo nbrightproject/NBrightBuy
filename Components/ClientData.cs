@@ -26,10 +26,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int PortalId;
         private UserInfo _userInfo;
 
+        public Boolean Exists;
+
         public List<NBrightInfo> DiscountCodes;
 
         public ClientData(int portalId, int userid)
         {
+            Exists = false;
             PortalId = portalId;
             PopulateClientData(userid);
         }
@@ -91,6 +94,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _userInfo.Email = email;
                 UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
             }
+
+            // update Discount codes
+            var strXml = GenXmlFunctions.GetField(rpData, "xmlupdatediscountcodedata");
+            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            UpdateDiscountCodes(strXml);
+
         }
 
         public void UnlockUser()
@@ -114,25 +123,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void UpdateDiscountCodes(String xmlAjaxData)
         {
-            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            var discountcodesList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
 
             // build xml for data records
             var strXml = "<genxml><discountcodes>";
-            foreach (var modelInfo in modelList)
+            foreach (var discountcodesInfo in discountcodesList)
             {
                 var objInfo = new NBrightInfo(true);
 
-                var fields = modelInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                var fields = discountcodesInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
-                    objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
+                    objInfo.SetXmlProperty(f, discountcodesInfo.GetXmlProperty(f));
                 }
                 strXml += objInfo.XMLData;
             }
             strXml += "</discountcodes></genxml>";
 
             // replace models xml 
-            DataRecord.ReplaceXmlNode(strXml, "genxml/models", "genxml");
+            DataRecord.ReplaceXmlNode(strXml, "genxml/discountcodes", "genxml");
+            DiscountCodes = GetEntityList("discountcodes");
         }
 
         public void Save()
@@ -152,6 +162,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 DataRecord.AddXmlNode(strXml, "genxml/discountcodes/genxml", "genxml/discountcodes");
             }
+            DiscountCodes = GetEntityList("discountcodes");
         }
 
 
@@ -163,51 +174,55 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _clientInfo = new NBrightInfo(true);
             _clientInfo.ItemID = userId;
+            _clientInfo.UserId = userId;
             _clientInfo.PortalId = PortalId;
 
             _userInfo = UserController.GetUserById(PortalId, userId);
-
-            _clientInfo.ModifiedDate = _userInfo.Membership.CreatedDate;
-
-            foreach (var propertyInfo in _userInfo.GetType().GetProperties())
+            if (_userInfo != null)
             {
-                if (propertyInfo.CanRead)
+                Exists = true;
+
+                _clientInfo.ModifiedDate = _userInfo.Membership.CreatedDate;
+
+                foreach (var propertyInfo in _userInfo.GetType().GetProperties())
                 {
-                    var pv = propertyInfo.GetValue(_userInfo, null);
-                    _clientInfo.SetXmlProperty("genxml/textbox/" + propertyInfo.Name.ToLower(), pv.ToString());
+                    if (propertyInfo.CanRead)
+                    {
+                        var pv = propertyInfo.GetValue(_userInfo, null);
+                        _clientInfo.SetXmlProperty("genxml/textbox/" + propertyInfo.Name.ToLower(), pv.ToString());
+                    }
                 }
-            }
 
-            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in _userInfo.Profile.ProfileProperties)
-            {
-                _clientInfo.SetXmlProperty("genxml/textbox/" + p.PropertyName.ToLower(), p.PropertyValue);
-            }
-
-            _clientInfo.AddSingleNode("membership","","genxml");
-            foreach (var propertyInfo in _userInfo.Membership.GetType().GetProperties())
-            {
-                if (propertyInfo.CanRead)
+                foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in _userInfo.Profile.ProfileProperties)
                 {
-                    var pv = propertyInfo.GetValue(_userInfo.Membership, null);
-                    if (pv != null) _clientInfo.SetXmlProperty("genxml/membership/" + propertyInfo.Name.ToLower(), pv.ToString());
+                    _clientInfo.SetXmlProperty("genxml/textbox/" + p.PropertyName.ToLower(), p.PropertyValue);
                 }
+
+                _clientInfo.AddSingleNode("membership", "", "genxml");
+                foreach (var propertyInfo in _userInfo.Membership.GetType().GetProperties())
+                {
+                    if (propertyInfo.CanRead)
+                    {
+                        var pv = propertyInfo.GetValue(_userInfo.Membership, null);
+                        if (pv != null) _clientInfo.SetXmlProperty("genxml/membership/" + propertyInfo.Name.ToLower(), pv.ToString());
+                    }
+                }
+
+
+                var objCtrl = new NBrightBuyController();
+                DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));
+                if (DataRecord == null)
+                {
+                    DataRecord = new NBrightInfo(true);
+                    DataRecord.ItemID = -1;
+                    DataRecord.UserId = _userInfo.UserID;
+                    DataRecord.PortalId = PortalId;
+                    DataRecord.ModuleId = -1;
+                    DataRecord.TypeCode = "CLIENT";
+                }
+                DiscountCodes = GetEntityList("discountcodes");
+
             }
-
-
-            var objCtrl = new NBrightBuyController();
-            DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));
-            if (DataRecord == null)
-            {
-                DataRecord = new NBrightInfo(true);
-                DataRecord.ItemID = -1;
-                DataRecord.UserId = _userInfo.UserID;
-                DataRecord.PortalId = PortalId;
-                DataRecord.ModuleId = -1;                
-                DataRecord.TypeCode = "CLIENT";
-            }
-            DiscountCodes = GetEntityList("discountcodes");
-
-
         }
 
         private List<NBrightInfo> GetEntityList(String entityName)

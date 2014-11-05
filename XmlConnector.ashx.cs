@@ -1138,7 +1138,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                     var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", _lang);
-
+                    bodyTempl = Utils.ReplaceSettingTokens(bodyTempl, StoreSettings.Current.Settings());
                     //get data
                     var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
                     strOut = GenXmlFunctions.RenderRepeater(clientData.DiscountCodes, bodyTempl);                    
@@ -1190,7 +1190,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         {
                             rtnList.Add(clientData.DiscountCodes[i]);
                         }
-
 
                         // get template
                         var themeFolder = StoreSettings.Current.ThemeFolder;
