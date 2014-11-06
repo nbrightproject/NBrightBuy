@@ -352,7 +352,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, settings);
 
                 templ = Utils.ReplaceUrlTokens(templ);
-                if (debugMode) templ = Environment.NewLine + "<!-- ******* NBRIGHTBUY START TEMPLATE: " + themeFolder + ": " + templatename + " ******* -->" + Environment.NewLine + templ + Environment.NewLine + "<!-- ******* NBRIGHTBUY END TEMPLATE: " + themeFolder + ": " + templatename + " ******* -->" + Environment.NewLine;
+                // WARNING!! do not inject text here, it will cause a loop on the GetMenuTemplates function.
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
             }
