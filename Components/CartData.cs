@@ -373,9 +373,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
 
                 //add update genxml/discountcodeamt
-                var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/textbox/promocode");
-                cartItemInfo = DiscountCodeInterface.UpdateBestDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
+                var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
+                cartItemInfo = DiscountCodeInterface.UpdateItemPercentDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
                 var discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
+                if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed","False");
 
                 var discount = 0;
                 var dealerdiscount = 0;

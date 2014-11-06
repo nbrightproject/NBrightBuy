@@ -62,32 +62,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 
 		// return the provider
-        public static new DiscountCodeInterface Instance(String ctrlkey)
+        public static new DiscountCodeInterface Instance(String ctrlkey = "")
 		{
             if (ProviderList.ContainsKey(ctrlkey)) return ProviderList[ctrlkey];
             if (ProviderList.Count > 0) return ProviderList.Values.First();
             return null;
 		}
 
-        public static NBrightInfo UpdateBestDiscountCode(int portalid, int userId, NBrightInfo cartItemInfo, String discountcode)
+        public static NBrightInfo UpdateItemPercentDiscountCode(int portalId, int userId, NBrightInfo cartItemInfo, String discountcode)
         {
             cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", "0");
             foreach (var prov in ProviderList)
             {
-                var newItemInfo = prov.Value.CalculateItemDiscount(portalid, userId, cartItemInfo, discountcode);
+                var newItemInfo = prov.Value.CalculateItemPercentDiscount(portalId, userId, cartItemInfo, discountcode);
                 if (cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt") < newItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt"))
                 {
                     cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", newItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt")); 
                 }
             }
-
             return cartItemInfo;
         }
 		#endregion
 
         public abstract String ProviderKey { get; set; }
 
-        public abstract NBrightInfo CalculateItemDiscount(int portalid, int userId, NBrightInfo cartItemInfo, String discountcode);
+        public abstract NBrightInfo CalculateItemPercentDiscount(int portalId, int userId, NBrightInfo cartItemInfo, String discountcode);
+
+        public abstract NBrightInfo UpdatePercentUsage(int portalId, int userId, NBrightInfo purchaseInfo);
+
+        public abstract NBrightInfo CalculateVoucherAmount(int portalId, int userId, NBrightInfo cartInfo, String discountcode);
+
+        public abstract NBrightInfo UpdateVoucherAmount(int portalId, int userId, NBrightInfo purchaseInfo);
 
 
     }

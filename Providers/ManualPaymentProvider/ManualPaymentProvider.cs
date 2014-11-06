@@ -47,14 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     var rtnstatus = Utils.RequestQueryStringParam(context, "status");
                     if (rtnstatus == "1") // status 1 = successful (0 = fail)
                     {
-                        orderData.ApplyModelTransQty();
-                        orderData.OrderStatus = "060";
-                        orderData.SavePurchaseData();
-
-                        // Send emails
-                        NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", orderData.PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                        NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", orderData.PurchaseInfo);
-
+                        orderData.PaymentOk("060");
                     }
                 }
 

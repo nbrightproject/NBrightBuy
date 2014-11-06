@@ -124,7 +124,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void UpdateDiscountCodes(String xmlAjaxData)
         {
             var discountcodesList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
-
             // build xml for data records
             var strXml = "<genxml><discountcodes>";
             foreach (var discountcodesInfo in discountcodesList)
@@ -137,6 +136,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     objInfo.SetXmlProperty(f, discountcodesInfo.GetXmlProperty(f));
                 }
                 strXml += objInfo.XMLData;
+            }
+            strXml += "</discountcodes></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/discountcodes", "genxml");
+            DiscountCodes = GetEntityList("discountcodes");
+        }
+
+        public void UpdateDiscountCodeList(List<NBrightInfo> discountcodesList)
+        {
+            // build xml for data records
+            var strXml = "<genxml><discountcodes>";
+            foreach (var discountcodesInfo in discountcodesList)
+            {
+                strXml += discountcodesInfo.XMLData;
             }
             strXml += "</discountcodes></genxml>";
 

@@ -13,6 +13,7 @@ using DotNetNuke.Services.FileSystem;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 
 namespace Nevoweb.DNN.NBrightBuy.Components
@@ -221,6 +222,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
+            PurchaseInfo = DiscountCodeInterface.Instance().UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
+            PurchaseInfo = DiscountCodeInterface.Instance().UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);
+
             ApplyModelTransQty();
             OrderStatus = orderStatus;
             SavePurchaseData();

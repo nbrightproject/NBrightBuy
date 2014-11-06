@@ -350,11 +350,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
                         if (includetext != "")
                         {
-                            if (page.Header.Attributes["nbrightbuyinject"] == null) page.Header.Attributes.Add("nbrightbuyinject", "");
-                            if (templ != "" && !page.Header.Attributes["nbrightbuyinject"].Contains(templ + ","))
+                            if (!page.Items.Contains("nbrightbuyinject")) page.Items.Add("nbrightbuyinject", "");
+                            if (templ != "" && !page.Items["nbrightbuyinject"].ToString().Contains(templ + ","))
                             {
                                 PageIncludes.IncludeTextInHeader(page, includetext);
-                                page.Header.Attributes.Add("nbrightbuyinject", page.Header.Attributes["nbrightbuyinject"] + templ + ",");
+                                page.Items["nbrightbuyinject"] = page.Items["nbrightbuyinject"] + templ + ",";
                             }
                         }
                     }
@@ -365,8 +365,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, bool debugMode = false)
         {
-            if (page.Header.Attributes["nbrightbuyinject"] == null) page.Header.Attributes.Add("nbrightbuyinject", "");
-            if (templatename != "" && !page.Header.Attributes["nbrightbuyinject"].Contains(templatename + ","))
+
+            if (!page.Items.Contains("nbrightbuyinject")) page.Items.Add("nbrightbuyinject", "");
+            if (templatename != "" && !page.Items["nbrightbuyinject"].ToString().Contains(templatename + ","))
             {
                 var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(), debugMode);
                 var objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
@@ -374,7 +375,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (includetext != "")
                 {
                     PageIncludes.IncludeTextInHeader(page, includetext);
-                    page.Header.Attributes.Add("nbrightbuyinject", page.Header.Attributes["nbrightbuyinject"] + templatename + ",");
+                    page.Items["nbrightbuyinject"] = page.Items["nbrightbuyinject"] + templatename + ",";
                 }
             }
             return "";
