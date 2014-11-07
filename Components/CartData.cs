@@ -419,8 +419,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
 
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totalsalediscount), totaldealercost));
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - salediscount), (dealercost - dealerdiscount)));
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, totalcost, totaldealercost));
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, sellcost, dealercost));
 
                 // calc tax for item
                 var taxproviderkey = PurchaseInfo.GetXmlProperty("genxml/hidden/taxproviderkey");
