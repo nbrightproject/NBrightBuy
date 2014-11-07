@@ -327,7 +327,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             var optList = new List<NBrightInfo>();
 
-            // get list of active options for product models (Those with active stock)
+            // get list of active options for product models
             var xmlOptList = objInfo.XMLDoc.SelectNodes("genxml/prdopt/id");
             if (xmlOptList != null)
             {
@@ -336,13 +336,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (Utils.IsNumeric(xNod.InnerText))
                     {
                         var objOpt = objCtrl.Get(Convert.ToInt32(xNod.InnerText));
-                        if (objOpt != null)
-                        {
-                            if (objOpt.GetXmlProperty("genxml/checkbox/chkstockcontrol").ToLower() == "true")
-                            {
-                                optList.Add(objOpt);
-                            }
-                        }
+                        if (objOpt != null) optList.Add(objOpt);
                     }
                 }                
             }

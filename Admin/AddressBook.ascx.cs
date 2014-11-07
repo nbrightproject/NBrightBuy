@@ -172,6 +172,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     param[1] = "ctrl=clients";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "cancel":
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
             }
 
         }

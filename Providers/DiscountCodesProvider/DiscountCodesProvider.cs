@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 var validutil = d.GetXmlProperty("genxml/textbox/validuntil");
                 var validutildate = DateTime.Today;
                 if (Utils.IsDate(validutil)) validutildate = Convert.ToDateTime(validutil, CultureInfo.InvariantCulture);
-                if (d.GetXmlProperty("genxml/textbox/coderef") == discountcode && validutildate >= DateTime.Today)
+                if (d.GetXmlProperty("genxml/textbox/coderef").ToLower() == discountcode.ToLower() && validutildate >= DateTime.Today)
                 {
                     var usageleft = d.GetXmlPropertyDouble("genxml/textbox/usageleft");
                     var percentage = d.GetXmlPropertyDouble("genxml/textbox/percentage");
@@ -62,7 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 var list = clientData.DiscountCodes;
                 foreach (var d in list)
                 {
-                    if (d.GetXmlProperty("genxml/textbox/coderef") == discountcode)
+                    if (d.GetXmlProperty("genxml/textbox/coderef").ToLower() == discountcode.ToLower())
                     {
                         var usageleft = d.GetXmlPropertyDouble("genxml/textbox/usageleft");
                         var used = d.GetXmlPropertyDouble("genxml/textbox/used");

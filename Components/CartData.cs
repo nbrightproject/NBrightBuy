@@ -394,7 +394,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
 
-                Double discount = 0;
+                Double salediscount = 0;
                 Double dealerdiscount = 0;
                 Double discountcodeamt = 0;
  
@@ -408,18 +408,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 else
                 {
-                    discount = (unitcost - saleprice);
+                    salediscount = (unitcost - saleprice);
                 }
 
-                var totaldiscount = discount*qty;
+                var totalsalediscount = salediscount * qty;
                 var totaldealerdiscount = dealerdiscount*qty;
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount + discountcodeamt);
+                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", discountcodeamt);
+                cartItemInfo.SetXmlPropertyDouble("genxml/salediscount", totalsalediscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
 
 
 
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totaldiscount), totaldealercost));
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - discount), (dealercost - dealerdiscount)));
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, (totalcost - totalsalediscount), totaldealercost));
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, (unitcost - salediscount), (dealercost - dealerdiscount)));
 
                 // calc tax for item
                 var taxproviderkey = PurchaseInfo.GetXmlProperty("genxml/hidden/taxproviderkey");

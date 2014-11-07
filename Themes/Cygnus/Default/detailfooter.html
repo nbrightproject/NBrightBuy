@@ -1,8 +1,5 @@
 </div>
 
-<!-- Cygnus jQuery UI -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery-ui-1.10.4.custom.min.js"></script>
-
 <!-- Responsive Tabs https://github.com/jellekralt/Responsive-Tabs -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.responsiveTabs.min.js"></script>
 <script type="text/javascript">
@@ -24,7 +21,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-//Integrate custom lightBox 
+//Integrate custom lightBox for NBS
 $(function() {
     var activityIndicatorOn = function() {
         $('<div id="imagelightbox-loading"><div></div></div>').appendTo('body');
@@ -98,24 +95,13 @@ $(function() {
 		    onLoadStart: function() { captionOff(); activityIndicatorOff(); },
 		    onLoadEnd: function() { captionOn(); activityIndicatorOff(); }
 		});
-
-
 });
-	
-	
 });
-
 
 </script>
 
-<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagesloaded.pkgd.min.js"></script>
-
 <!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/masonry.pkgd.min.js"></script>
-
 <script type="text/javascript">
-
 $( document ).ready(function() {
 
 var $container = $('#relatedwrapper').masonry({
@@ -132,5 +118,4 @@ $container.imagesLoaded( function() {
 });
 
 });
-
 </script>

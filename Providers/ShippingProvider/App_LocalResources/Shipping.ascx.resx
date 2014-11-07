@@ -123,10 +123,4 @@
   <data name="FreeShipping.Text" xml:space="preserve">
     <value>Free Shipping</value>
   </data>
-  <data name="notvalidcountrycodes.Text" xml:space="preserve">
-    <value>INVALID Country Codes  (CSV)</value>
-  </data>
-  <data name="validcountrycodes.Text" xml:space="preserve">
-    <value>VALID Country Codes (CSV)</value>
-  </data>
 </root>

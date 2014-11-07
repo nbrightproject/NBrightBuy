@@ -333,15 +333,27 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.backofficeexittab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="exittab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.ordermanagertab" />]</label>
 						<div class="col-sm-5">
 							[<tag id="ordermanagertab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.backofficeexittab" />]</label>
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.profiletab" />]</label>
 						<div class="col-sm-5">
-							[<tag id="exittab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+							[<tag id="profiletab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.addressestab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="addressestab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
 						</div>
 					</div>
 				    <div class="form-group">
@@ -409,11 +421,35 @@
 				        </div>
 				    </div>
     			    <div class="form-group">                
-                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.orderprefix" />]</label><!-- Need to move this -->
+                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.orderprefix" />]</label>
                     	<div class="col-sm-2">
                     	    [<tag id="orderprefix" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
                     	</div>
 				    </div>                    
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.fontawesome' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="fontawesome" type="checkbox" checked="True" />]
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.jqueryuicss' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="jqueryuicss" type="checkbox" checked="True" />]
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.jqueryuijs' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="jqueryuijs" type="checkbox" checked="False" />]
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

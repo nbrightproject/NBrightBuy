@@ -1,2 +1,23 @@
-<div style="clear: both;"></div>
+			</ul>
 </div>
+	</div>
+</div>
+
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
+<div class="row pageactions"><!-- Page actions - also at top -->
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-content">
+				<div class="col-sm-6">
+		    	[<tag id="cmdNewAddress" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdAddButton" commandname="newaddress" />]
+		    	[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClientButton" cssclass="btn btn-default" commandname="viewclient" />]
+				</div>
+				<div class="col-sm-6 text-right">
+					<!-- No language on this page -->
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+[<tag type="endif" />]

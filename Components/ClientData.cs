@@ -167,7 +167,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewDiscountCode()
         {
-            var strXml = "<genxml><discountcodes><genxml><textbox><coderef>" + Utils.GetUniqueKey() + "</coderef></textbox></genxml></discountcodes></genxml>";
+            var strXml = "<genxml><discountcodes><genxml><textbox><coderef>" + Utils.GetUniqueKey().ToUpper() + "</coderef></textbox></genxml></discountcodes></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/discountcodes") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/discountcodes", "genxml");

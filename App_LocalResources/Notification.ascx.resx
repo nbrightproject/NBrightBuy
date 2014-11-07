@@ -247,7 +247,7 @@
     <value>Thank you for your order. We're here to help! Call us during office hours Monday to Friday, or visit us in-store if you have any questions about your order.</value>
   </data>
   <data name="pickupmessage.Text" xml:space="preserve">
-    <value>You are welcome to pick you order up from us in store during opening hours. Please continue through the checkout and complete your order first.</value>
+    <value>You are welcome to pick your order up from us in store during opening hours. Please ring us if you want to ensure it is ready for pickup.</value>
   </data>
   <data name="checkoutsuccessmessage.Text" xml:space="preserve">
     <value>Thank you for your order. You will receive an emailed confirmation containing all order details. Please check your junk email folders if you don't receive it within 30 minutes. Take note of the number below if you wish to contact us about this order.</value>
@@ -282,7 +282,16 @@
   <data name="ShippingMethod.Text" xml:space="preserve">
     <value>Shipping Method</value>
   </data>
+  <data name="ShippingOption.Text" xml:space="preserve">
+    <value>Shipping Option</value>
+  </data>
   <data name="TrackingNumber.Text" xml:space="preserve">
     <value>Tracking Number</value>
+  </data>
+  <data name="ShippingDate.Text" xml:space="preserve">
+    <value>Shipping Date</value>
+  </data>
+  <data name="Collection.Text" xml:space="preserve">
+    <value>Collection Details</value>
   </data>
 </root>

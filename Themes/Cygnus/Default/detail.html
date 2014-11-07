@@ -1,5 +1,4 @@
-<!-- detail.html - This is the product details view template. It has 3 divs (images, purchasing, details) contained within 1 div (productdetail)  -->
-<!-- Testing for the presence of a given element allows the element's surrounding HTML to be removed when the element is not present  -->
+<!-- detail.html - The product details view template. It has 3 divs (images, purchasing, details) contained within 1 div (productdetail)  -->
 
 [<tag id="includeinheader" type="meta" value="detailpageheader.html" />]<!-- Injects a template with dynamic data into page head section -->
 
@@ -333,8 +332,6 @@
 
 </div>
 
-[<tag type='if' function='debugmode' display='{ON}' displayelse='{OFF}' />]
+[<tag type="if" function="debugmode" display="{ON}" />]
 <div class="debug">[<tag type='valueof' resourcekey='General.DebugMessage' />]</div>
-[<tag type="endtestof"  />]
-
-
+[<tag type="endif" />]

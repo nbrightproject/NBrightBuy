@@ -1,5 +1,3 @@
-[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
-
 <!-- This loader needs to be made to work here -->
 <div id="loader" class="processing" style="display:none">[<tag type="htmlof" resourcekey="Cartview.ProcessingDiv" />]</div>
 
@@ -78,6 +76,7 @@
                 for (var i = 0; i < arrayLength; i++) {
                     $(selectordiv).find("[[id*='" + valuearray[[i]] + "']]").val(datarray[[i]]);
                 }
+                $("input[[id*='_cmdConfirm_']]").trigger("click");
             }
         }
 
@@ -105,8 +104,16 @@
 
         // update the order email with the billing email, if it's not already there
         $('.checkoutbillform input[[id*="_Email_"]]').change(function(e) {
-            if ($('input[[id*="_cartemailaddress_"').val() == '') $('input[[id*="_cartemailaddress_"').val($(this).val());
+            if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($(this).val());
         });
 
+        $("#Form").submit(function (e) {
+            $(".processing").show();
+        });
+
+        $("input[[id*='_cmdConfirm_']]").mousedown(function (e) {
+            if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
+        });
+        
     });
 </script>

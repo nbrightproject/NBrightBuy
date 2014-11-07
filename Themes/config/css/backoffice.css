@@ -18,7 +18,7 @@ a, a:visited {color:#428BCA}
 #sidebar-left{position:fixed}#content{float:right}/* Fix menu in place */
 .no-box-header{display:none}/* Hide panel head section */
 .orderdetailitems th{text-transform:uppercase}
-.orderdetail .billaddress b,.orderdetail .shipaddress b{font-size:18px;text-transform:uppercase}
+.orderdetail .billaddress h4,.orderdetail .shipaddress h4{font-size:18px;font-weight:bold;text-transform:uppercase}
 .orderdetail .storeaddress{}
 .centered{text-align:center}
 #logo a{background: none;}/* Hide devoops logo*/
@@ -43,6 +43,7 @@ select option{padding-bottom:3px}
 .twodigit{width:48px !important}
 .threedigit{width:60px !important}
 .select2-container .select2-choice{height: 34px;line-height: 34px;}
+.noborders, .noborders th, .noborders td{border:none !important;}
 
 /* Buttons */
 .btn {cursor: pointer;outline: none;display: inline-block;vertical-align: top;position: relative;}
@@ -222,10 +223,15 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .countryselection .dnnBoxLabel{font-weight:normal}
 
 /* Orders */
-/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
 .orderslist select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;height:inherit;line-height:inherit;opacity:1;padding:0;}
 .orderslist select.aspNetDisabled.form-control option{padding-bottom:0;}
 .orderslist select.aspNetDisabled.form-control::-ms-expand{display:none;}
+.orderdetail .dropdown-menu > li > a{display:inline-block;width: 100%;}
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
+.orderdetail select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;height:inherit;line-height:inherit;opacity:1;padding:0;}
+.orderdetail select.aspNetDisabled.form-control option{padding-bottom:0;}
+.orderdetail select.aspNetDisabled.form-control::-ms-expand{display:none;}
 .orderdetail .dropdown-menu > li > a{display:inline-block;width: 100%;}
 
 /* Plugins Manager */

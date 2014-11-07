@@ -45,7 +45,7 @@ a:active, a:hover{color:#6D94B9}
 		<tr>
 			<td width="67%" align="left" valign="top" style="line-height:150%">
 				<h2>[<tag type="valueof" resourcekey="Notification.{$emailtype}" />]</h2>
-				[Settings:emailmessage]
+				[<tag type="valueof" resourcekey="Notification.emailmessage" />]
 				</td>
 			<td width="33%" align="left" valign="top" style="line-height:150%">
 				<p><b>[<tag type='valueof' resourcekey='Notification.Contactus' />]</b></p>
@@ -59,29 +59,34 @@ a:active, a:hover{color:#6D94B9}
 	
 <div style="height:8px">&nbsp;</div><!-- spacer -->
 
+<div style="height:8px">&nbsp;</div><!-- spacer -->
+
 <!-- Order Info -->
 	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
 		<tr>
 			<td width="50%" align="left" valign="top" style="line-height:150%">
 			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
 			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.orderdate" />]: </b>[<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</div>
+			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]: </b>[<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="Manual" displayelse="Credit Card" />][<tag type="endtestof"  />]</div>
 			</td>
 			<td width="50%" align="left" valign="top" style="line-height:150%">
-			<div><b>[<tag type="valueof" resourcekey="Notification.ShippingMethod" />]: </b></div>
+			<div><b>[<tag type="valueof" resourcekey="Notification.ShippingMethod" />]: </b>[<tag type="valueof" xpath="genxml/extrainfo/genxml/radiobuttonlist/shippingprovider/@selectedtext" />]</div>
+			[<tag type="if" xpath="genxml/textbox/shippingdate" testvalue="" display="{OFF}" />]
+			<div><b>[<tag type="valueof" xpath="genxml/textbox/shippingdate" datatype='date' format='dd MMM yyyy' />]: </b>[<tag type="valueof" xpath="genxml/textbox/shippingdate" />]</div>
+			[<tag type="endif" />]			
+			[<tag type="if" xpath="genxml/textbox/trackingcode" testvalue="" display="{OFF}" />]
 			<div><b>[<tag type="valueof" resourcekey="Notification.TrackingNumber" />]: </b>[<tag type="valueof" xpath="genxml/textbox/trackingcode" />]</div>
+			[<tag type="endif" />]
 			</td>
 		</tr>
+			[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
 		<tr>
 			<td align="left" valign="top" colspan="2" style="line-height:150%">
-			<div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</b></div>
-				[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{ON}" />]
-				[<tag type='valueof' resourcekey='OrderAdmin.none' />]
-				[<tag type="endif" />]
-				[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
-				[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]
-				[<tag type="endif" />]
+			<div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]:</b></div>
+			<div>[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]</div>
 			</td>
 		</tr>
+			[<tag type="endif" />]
 	</table>
 		
 <!-- Items -->
@@ -121,7 +126,7 @@ a:active, a:hover{color:#6D94B9}
 						<td align="right">[<tag type='currencyof' xpath='genxml/taxcost' />]</td>
 					</tr>
 					<tr class="active">
-						<td align="left"><small>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]</small></td>
+						<td align="left"></td>
 						<td></td>
 						<td align="right">[<tag type="valueof" resourcekey="General.Total" />]</td>
 						<td align="right">[<tag type='currencyof' xpath='genxml/total' />]</td>
@@ -130,7 +135,7 @@ a:active, a:hover{color:#6D94B9}
 			</td>
 		</tr>
 	</table>
-		
+			
 <div style="height:8px">&nbsp;</div><!-- spacer -->
 
 <!-- Bank payment -->
@@ -147,57 +152,75 @@ a:active, a:hover{color:#6D94B9}
 		
 <div style="height:8px">&nbsp;</div><!-- spacer -->
 
+<div style="height:8px">&nbsp;</div><!-- spacer -->
+
 <!-- Addresses -->
 	<table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
 		<tr>
 			<td width="50%" align="left" valign="top" style="line-height:100%">
 			<h4>[<tag type="valueof" resourcekey="Notification.BillingAddress" />]</h4>
 			
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country/@selectedtext' />]</div>
+			<div><b>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</b></div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
 			<div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
-			<div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
 			</td>
 			<td width="50%" align="left" valign="top" style="line-height:100%">
 			
+	    [<tag type="if" xpath="genxml/pickuppointaddr" testvalue="" display="{ON}" />]<!-- Hide shipping address if shipping provider generates a pickup location -->
+
+      		[<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
 			<h4>[<tag type="valueof" resourcekey="Notification.ShippingAddress" />]</h4>
-			
-       		[<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/company' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/unit' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/street' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/city' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/region' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/postalcode' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/dropdownlist/country/@selectedtext' />]</div>
+			<div><b>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/lastname' />]</b></div>
+	        <div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/telephone' />]</div>
 			<div><a href="mailto:[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/email' />]</a></div>
-			<div>[<tag type='valueof' xpath='genxml/shipaddress/genxml/textbox/telephone' />]</div>
 			[<tag type="endif" />]
                 
             [<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="1" display="{ON}" />]
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country' />]</div>
-		        <div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
-		        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
+			<h4>[<tag type="valueof" resourcekey="Notification.ShippingAddress" />]</h4>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/company' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/unit' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/street' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/city' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/region' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country/@selectedtext' />]</div>
+			<div><b>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</b></div>
+	        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
+			<div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
             [<tag type="endif" />]
+            
+        [<tag type="endif" />]
+
+		[<tag type="if" xpath="genxml/pickuppointaddr" testvalue="" display="{OFF}" />]<!-- Show pickup location if present -->
+			<h4>[<tag type="valueof" resourcekey="General.PickupAddress" />]</h4>
+			<div>[<tag type="valueof" xpath="genxml/pickuppointaddr" />]</div>
+			<div><b>[<tag type="valueof" resourcekey="General.PickupReference" />]</b></div>
+			<div>[<tag type="valueof" xpath="genxml/pickuppointref" />]</div>
+		[<tag type="endif" />]
+
+	    [<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="3" display="{ON}" />]<!-- Show store collection message if selected -->
+			<h4>[<tag type="valueof" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions/@selectedtext" />]</h4>
+		    <div>[<tag type="valueof" resourcekey="Notification.pickupmessage" />]</div>
+	    [<tag type="endif" />]
 
 			</td>
 		</tr>
 	</table>
-		
+			
 <!-- Footer -->
 	<table width="100%" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#363636">
 		<tr>

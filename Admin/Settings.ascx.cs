@@ -177,8 +177,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (settings.GetXmlProperty("genxml/hidden/hidemaillogo") != "")
             {
-                settings.SetXmlProperty("genxml/hidden/emaillogourl", StoreSettings.Current.FolderImages + "/" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));
-                settings.SetXmlProperty("genxml/hidden/emaillogopath", StoreSettings.Current.FolderImagesMapPath + "/" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));                
+                settings.SetXmlProperty("genxml/hidden/emaillogourl", "/" + StoreSettings.Current.FolderImages + "/" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));
+                settings.SetXmlProperty("genxml/hidden/emaillogopath", StoreSettings.Current.FolderImagesMapPath + "\\" + settings.GetXmlProperty("genxml/hidden/hidemaillogo"));                
             }
 
 

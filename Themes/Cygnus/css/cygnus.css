@@ -238,20 +238,22 @@ a.entryurl{color:#333;display:block;}
 .advancedsearch .processing .fa{color:#68ABE1;vertical-align:middle;}
 
 /* Default buttons */
-.nbs .primarybutton{background:#1AA8E3;color:#FFFFFF;display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;}
-.nbs .primarybutton:hover{background:#23BAF5;text-decoration:none;}
-.nbs .secondarybutton{background:#C2C2C2;color:#FFFFFF;display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;}
-.nbs .secondarybutton:hover{background:#777777;text-decoration:none;}
-.nbs .highlightbutton{}
-.nbs .highlightbutton:hover{}
+.nbs .primarybutton{background:#1AA8E3;color:#FFFFFF;}
+.nbs .primarybutton:hover{background:#23BAF5;color:#FFFFFF;}
+.nbs .secondarybutton{background:#C2C2C2;color:#FFFFFF;}
+.nbs .secondarybutton:hover{background:#777777;color:#FFFFFF;}
+.nbs .warningbutton{background:#c62222;color:#FFFFFF;}
+.nbs .warningbutton:hover{background:#DD2222;color:#FFFFFF;}
+.nbs .primarybutton,.nbs .secondarybutton,.nbs .warningbutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
+.nbs .primarybutton:hover,.nbs .secondarybutton:hover,.nbs .warningbutton:hover{text-decoration:none;}
 
 /* Checkout and Order manager panel style */
 .panel{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}
 #cartdetails{overflow:hidden;padding:1%;}/* some padding for panel shadows */
 
-/* Loading image */
-#loader{opacity:0}
-#loader{background: none repeat scroll 0 0 #848D92;color: #000000;height: 100%;left: 0;opacity: 0.3;transition:all 0.4s ease-in-out 0s;position: fixed;text-align: center;top: 0;width: 100%;z-index: 9999;}/* Loading graphic */
+/* Loading image - Includes opacity for IE5-8 */
+#loader{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);}
+#loader{background:#848D92;color: #000000;height: 100%;left: 0;opacity: 0.3;transition:all 0.4s ease-in-out 0s;position: fixed;text-align: center;top: 0;width: 100%;z-index: 9999;}
 #loader .fa{margin-top:300px;color: #ffffff;}
 
 /* Checkout */
@@ -318,16 +320,14 @@ a.entryurl{color:#333;display:block;}
 #cartlist .fa-times-circle:hover{color:#C80000;}
 
 /* Payment */
-#payment{width:66%;margin:0 auto;padding:1%;}
-
-/* padding to allow for box shadow on panel */
+#payment{width:66%;margin:0 auto;padding:1%;}/* padding to allow for box shadow on panel */
 #payment .paymentlogo{float:right;margin:0 0 15px 15px;}
-#payment h1{font-size:38px;margin:24px;opacity:0.5;}
+#payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
 .paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}
 
 /* Address Book */
 #checkoutselectaddress{list-style:none;padding:0;margin:0;}
-#checkoutselectaddress li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative;}
+#checkoutselectaddress li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px #C9C9C9;box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative;}
 #checkoutselectaddress hr{margin:6px 0 4px;border-color:#dddddd;border-style:dashed;}
 #checkoutselectaddress .addresstype{top:10px;color:#bbbbbb;position:absolute;right:10px;}
 #checkoutselectaddress .addressbuttons{display:inline-block;vertical-align:-5px;}
@@ -354,15 +354,20 @@ a.entryurl{color:#333;display:block;}
 .ordersearch div{float:left;margin:0 15px 0 0;}
 .ordersearch .primarybutton, .ordersearch .secondarybutton{margin:0;padding:0 15px;width:auto;}
 #orderadmin{clear:both;}
+#orderadmin .address{margin-bottom:5px;}
+#orderadmin .person{border-bottom:1px solid rgba(153, 153, 153, 0.34);}
 .ordersearch input{margin-bottom:0;}
 .orders .fa{color:#cccccc;}
 .orders .fa-edit:hover{color:#47BE27;}
 .orders .fa-repeat:hover{color:#1AA8E3;}
-/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
 .orders select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0;}
 .orders select.aspNetDisabled.form-control option{padding-bottom:0;}
 .orders select.aspNetDisabled.form-control::-ms-expand{display:none;}
 .orders .dropdown-menu > li > a{display:inline-block;width:100%;}
+/* The default DNN input styling is not applied to date inputs - fixed here but only for default skin */
+.ordersearch input[type=date]{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #bfbfbf;border-radius:0;box-shadow:0 1px 0 0 rgba(255, 255, 255, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.1) inset;color:#666666;font-size:13px;margin-bottom:20px;padding:9px;}
+
 
 /* cartlist Table - csstablegenerator.com */
 .orders{border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
@@ -388,7 +393,7 @@ a.entryurl{color:#333;display:block;}
 #orderadmin .billaddress{float:left;width:47%;margin-right:6%;line-height:160%;margin-bottom:15px;}
 #orderadmin .shipaddress{float:left;width:47%;line-height:160%;margin-bottom:15px;min-width:145px;}
 #orderadmin .storeaddress{float:left;width:100%;line-height:160%;}
-/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE. */
+/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
 #orderadmin select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0;}
 #orderadmin select.aspNetDisabled.form-control option{padding-bottom:0;}
 #orderadmin select.aspNetDisabled.form-control::-ms-expand{display:none;}
@@ -412,6 +417,7 @@ a.entryurl{color:#333;display:block;}
 .orderdetailitems tr:first-child:hover td{}
 .orderdetailitems tr:first-child td:first-child{}
 .orderdetailitems tr:first-child td:last-child{}
+.orderdetailitems .active td{background-color:#f5f5f5;}
 
 /* Misc */
 .nowrap{white-space:nowrap;}
@@ -496,6 +502,4 @@ and (max-device-width : 1024px) {
 .productdetail .gallery li {height: auto;width: 20%;}
 }
  */
-
-
 

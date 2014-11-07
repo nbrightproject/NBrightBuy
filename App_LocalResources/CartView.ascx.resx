@@ -163,7 +163,7 @@
 		<value>Address Book</value>
 	</data>
 	<data name="shippingoption1.data" xml:space="preserve">
-		<value>Ship to the billing address;Ship to another address;I will collect from store</value>
+		<value>Ship to the billing address;Ship to a separate address;Collect from store</value>
 	</data>
 	<data name="shippingoption1.datavalue" xml:space="preserve">
 		<value>1;2;3</value>

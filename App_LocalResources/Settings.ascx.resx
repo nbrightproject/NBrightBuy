@@ -211,6 +211,21 @@
     <value>Payment</value>
   </data>
   <data name="ordermanagertab.Text" xml:space="preserve">
-    <value>Order Manager</value>
+    <value>My Orders</value>
+  </data>
+  <data name="fontawesome.Text" xml:space="preserve">
+    <value>Include FontAwesome</value>
+  </data>
+  <data name="jqueryuicss.Text" xml:space="preserve">
+    <value>Include jQuery UI CSS</value>
+  </data>
+  <data name="jqueryuijs.Text" xml:space="preserve">
+    <value>Include jQuery UI JS</value>
+  </data>
+  <data name="profiletab.Text" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="addressestab.Text" xml:space="preserve">
+    <value>My Addresses</value>
   </data>
 </root>
