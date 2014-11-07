@@ -4207,16 +4207,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetSalePrice(NBrightInfo dataItemObj)
         {
-            Double saleprice = -1;
-            var l = BuildModelList(dataItemObj, true);
+            var price = "-1";
+            var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlPropertyDouble("genxml/hidden/saleprice");
-                if ((s < saleprice) || (saleprice == -1)) saleprice = s;
+                var s = m.GetXmlProperty("genxml/textbox/txtsaleprice");
+                if (Utils.IsNumeric(s))
+                {
+                    // NBrightBuy numeric always stored in en-US format.
+                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
+                }
             }
-            return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            return price;
         }
-
 
         private String GetDealerPrice(NBrightInfo dataItemObj)
         {

@@ -254,6 +254,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("unitcost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
                 objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
                 objInfo.AddSingleNode("taxratecode", modelInfo.GetXmlProperty("genxml/dropdownlist/taxrate"), "genxml");
+                objInfo.AddSingleNode("saleprice", modelInfo.GetXmlProperty("genxml/textbox/txtsaleprice"), "genxml");
+
+                // flag if dealer
+                var userInfo = UserController.GetCurrentUserInfo();
+                if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
+                    objInfo.SetXmlProperty("genxml/isdealer", "True");
+                else
+                    objInfo.SetXmlProperty("genxml/isdealer", "False");
 
 
                 //move all product and model data into cart item, so we can display bespoke fields.

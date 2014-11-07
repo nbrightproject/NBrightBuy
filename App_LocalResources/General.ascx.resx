@@ -879,4 +879,7 @@
   <data name="Username.Text" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="SalePrice.Text" xml:space="preserve">
+    <value>Sale Price</value>
+  </data>
 </root>

@@ -303,15 +303,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
         {
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
-            var unitcost = cartItemInfo.GetXmlPropertyDouble("genxml/unitcost");
-            var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
-            var dealercost = cartItemInfo.GetXmlPropertyDouble("genxml/dealercost");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
+            var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
 
-            //stock control
             var prd = new ProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists) return null; //Invalid product remove from cart
             var prdModel = prd.GetModel(modelid);
+            // check if dealer (for tax calc)
+            var userInfo = UserController.GetUserById(portalId, userId);
+            if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
+                cartItemInfo.SetXmlProperty("genxml/isdealer", "True");
+            else
+                cartItemInfo.SetXmlProperty("genxml/isdealer", "False");
+
+            // check for price change
+            var unitcost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+            var dealercost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+            var saleprice = prdModel.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+            if (unitcost != cartItemInfo.GetXmlPropertyDouble("genxml/unitcost") || dealercost != cartItemInfo.GetXmlPropertyDouble("genxml/dealercost") || saleprice != cartItemInfo.GetXmlPropertyDouble("genxml/saleprice"))
+            {
+                cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
+                cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
+                cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
+                cartItemInfo.RemoveXmlNode("genxml/productxml");
+                cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
+            }
+
+            // calc sale price
+            var sellcost = unitcost;
+            if (saleprice > 0 && saleprice < sellcost) sellcost = saleprice;
+
+            //stock control
             if (prdModel != null)
             {
                 var stockon = prdModel.GetXmlPropertyBool("genxml/checkbox/chkstockon");
@@ -341,7 +363,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
-                var totalcost = qty*unitcost;
+                var totalcost = qty * sellcost;
                 var totaldealercost = qty*dealercost;
                 var totalweight = weight * qty;
 
@@ -372,14 +394,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
 
+                Double discount = 0;
+                Double dealerdiscount = 0;
+                Double discountcodeamt = 0;
+ 
                 //add update genxml/discountcodeamt
-                var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
-                cartItemInfo = DiscountCodeInterface.UpdateItemPercentDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
-                var discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
-                if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed","False");
+                if (saleprice == 0) // discount codes are only valid for items not on sale
+                {
+                    var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
+                    cartItemInfo = DiscountCodeInterface.UpdateItemPercentDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
+                    discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
+                    if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed", "False");                    
+                }
+                else
+                {
+                    discount = (unitcost - saleprice);
+                }
 
-                var discount = 0;
-                var dealerdiscount = 0;
                 var totaldiscount = discount*qty;
                 var totaldealerdiscount = dealerdiscount*qty;
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount + discountcodeamt);

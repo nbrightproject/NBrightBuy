@@ -117,6 +117,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 lp += 1;
                 rtnL.Add(templ);
                 templ = _ctrlObj.GetTemplateData(_modSettings, basetempl.Replace(".html", lp.ToString("") + ".html"), Utils.GetCurrentCulture(), _debugMode);
+                if (lp > 99)
+                {
+                    templ += "POSSIBLE INFINATE LOOP: CatMenuBuilder.cs, GenMenuTemplate";
+                    rtnL.Add(templ);
+                    break;
+                }
             }
 
             return rtnL;

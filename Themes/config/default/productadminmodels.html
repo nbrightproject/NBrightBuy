@@ -5,16 +5,17 @@
     <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="modelid" type="hidden" value="" />] <!-- required modelid to link to checkout selected-->
-    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay" />] <!-- update fields -->
+    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtsaleprice,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay" />] <!-- update fields -->
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtmodelname,genxml/textbox/txtextra" />] <!-- update localized fields -->
 
 	<div class="col-sm-12 form-horizontal">
 	    <div class="row">
 	        <div class="col-sm-4"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag id="txtmodelname" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Code" />]</label>[<tag id="txtmodelref" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
-	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Price" />]</label>[<tag id="txtunitcost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00"/>]</div>
-	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
-	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Cost" />]</label>[<tag id="txtpurchasecost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Price" />]</label>[<tag id="txtunitcost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00"/>]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Cost" />]</label>[<tag id="txtpurchasecost" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.SalePrice" />]</label>[<tag id="txtsaleprice" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
 		</div>
 		<div class="row">
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag id="txtextra" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]</div>

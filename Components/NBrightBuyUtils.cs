@@ -371,7 +371,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(), debugMode);
                 var objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
-                includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext);
+                includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext,"","XMLData","",StoreSettings.Current.Settings());
                 if (includetext != "")
                 {
                     PageIncludes.IncludeTextInHeader(page, includetext);
