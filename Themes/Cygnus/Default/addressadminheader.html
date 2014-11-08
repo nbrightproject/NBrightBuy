@@ -1,9 +1,21 @@
-<div class="nbs">
+<div class="nbs myaddresses">
 
 <div id="addressbook">
 
-<div class="formrow addressbookheader">
-<h3>[<tag type="valueof" resourcekey="General.AddressBook" />]</h3>
+<div class="clientmenu">
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />]</a>
+[<tag type="endif"  />]
+<h1>[<tag type="valueof" resourcekey="Settings.addressestab" />]</h1>
+</div>
+
+<div class="formrow addbutton">
 [<tag id="cmdNewAddress" type="linkbutton" cssclass="primarybutton" resourcekey="General.cmdAdd" commandname="newaddress" />] 
 </div>
 

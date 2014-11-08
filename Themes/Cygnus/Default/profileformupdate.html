@@ -1,10 +1,31 @@
-﻿<!-- This function not ready yet -->
+﻿<div class="nbs myprofile">
+
+<div class="clientmenu">
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />]</a>
+[<tag type="endif"  />]
+<h1>[<tag type="valueof" resourcekey="Settings.profiletab" />]</h1>
+</div>
+
+<div class="formrow">
+
+
+</div>
+
+
+<!-- This function not ready yet -->
 
 <div class="reqlegend">* [<tag type='valueof' resourcekey='General.txtRequiredFields' />]</div>
 
 <div id="profileinputform" >
-    <h2>Profile</h2>
-    <div id="profileinput">
+
+    <div id="profileinput" class="panel">
 
     <div class="formrow">
         <div class="leftside">
@@ -65,6 +86,9 @@
 	    </div>
     </div>
     
+
+</div>
+
 <div style="clear:both"></div>
 
     </div>
@@ -80,25 +104,9 @@
 [<tag id="cmdUpdateProfile" type="linkbutton" resourcekey="General.Update" commandname="saveprofile" />] - 
 
 
-<!-- SCript contains unrelated stuff -->
 
 <script>
     $(document).ready(function () {
-
-        //hide/show shipping option
-        if ($("input[[id*='rblshippingoptions']]:checked").val() == "2") {
-            $('#shippinginput').show();
-        }
-        if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") $('.checkoutship').show();
-
-        $("input[[id*='rblshippingoptions']]").change(function () {
-            $('.checkoutship').hide();
-            $('#shippinginput').hide();
-            if ($(this).val() == "2") {
-                $('#shippinginput').show();
-            }
-            if ($(this).val() == "3") $('.checkoutship').show();
-        });
 
         $('.jqsubmitbutton').click(function (e) {
             if (!$("input[[id*='chkTerms']]").is(":checked")) {

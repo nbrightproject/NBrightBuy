@@ -250,21 +250,13 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .customerdiscount .discountcode{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
 
 /* Address Book */
-#addresscards{list-style:none;padding:0;margin:0;}
-#addresscards li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px #C9C9C9;box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative;}
-#addresscards hr{margin:6px 0 4px;border-color:#dddddd;border-style:dashed;}
-#addresscards .addresstype{top:10px;color:#bbbbbb;position:absolute;right:10px;}
+#addresscards hr{margin:6px 0 4px;border-color:#bbbbbb;border-style:dashed;}
+#addresscards .addresstype{top:10px;color:#aaaaaa;position:absolute;right:10px;}
 #addresscards .addressbuttons{display:inline-block;vertical-align:-5px;}
 #addresscards a{color:#dddddd;}
 #addresscards a.editaddress:hover{color:#47BE27;}
 #addresscards a.deleteaddress:hover{color:#D33030;}
 #addresscards .well {height: 250px;padding: 40px 15px 15px;position: relative;}
-#addressinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
-#addressinput{float:left;width:47%;margin-bottom:30px;min-width:240px;}
-#addressinput .leftside{float:left;width:48%;}
-#addressinput .rightside{float:right;width:48%;}
-#addressinput H3{line-height:34px;margin:0 0 12px;padding:0;}
-#addressinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
 
 
 

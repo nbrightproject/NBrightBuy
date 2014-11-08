@@ -888,4 +888,13 @@
   <data name="SalePrice.Text" xml:space="preserve">
     <value>Sale</value>
   </data>
+  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Orders" class="fa fa-credit-card fa-fw fa-3x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Address Book" class="fa fa-home fa-fw fa-3x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAccount.Text" xml:space="preserve">
+    <value>&lt;i title="My Account Profile" class="fa fa-user fa-fw fa-3x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>

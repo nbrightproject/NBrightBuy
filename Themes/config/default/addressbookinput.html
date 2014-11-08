@@ -1,92 +1,96 @@
-yyyyyyyyyyyyyyyyy
 
 <div id="addressinputform" style="display:none;" >
 
-    <div id="addressinput" class="panel">
+    <div id="addressinput">
 
+		<div class="form-horizontal dnnForm">
 [<tag type="if" xpath="genxml/hidden/default" testvalue="True" display="{ON}" />]
-	<h3>[<tag type='valueof' resourcekey='General.PrimaryAddress' />]</h3>
+				<p class="page-header">[<tag type='valueof' resourcekey='General.PrimaryAddress' />]</p>
 [<tag type="endif" />]
 
 [<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]
-	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
+				<p class="page-header">[<tag type='valueof' resourcekey='General.OptionalAddress' />]</p>
 [<tag type="endif" />]
 [<tag type="if" xpath="genxml/hidden/default" testvalue="" display="{ON}" />]
-	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
+				<p class="page-header">[<tag type='valueof' resourcekey='General.OptionalAddress' />]</p>
 [<tag type="endif" />]
-
-    
-    <div class="formrow">
-        <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
-	        [<tag id='FirstName' type='textbox' />]
-        </div>
-        <div class="rightside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblLastName' />]</h6>
-	        [<tag id='LastName' type='textbox' />]
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblFirstName' />]</label>
+				<div class="col-sm-5">
+					[<tag id="FirstName" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblLastName' />]</label>
+				<div class="col-sm-5">
+					[<tag id="LastName" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblPhone' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Telephone" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.Email' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Email" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblCompany' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Company" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblAddress1' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Unit" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblAddress2' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Street" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 	    </div>
     </div>
-    
-    <div class="formrow">
-	    <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
-	        [<tag id='Telephone' type='textbox' />]
-	    </div>
-	    <div class="rightside">
-	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
-	        [<tag id='Email' type='textbox' />]
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblCity' />]</label>
+				<div class="col-sm-5">
+					[<tag id="City" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 	    </div>
     </div>
-    
-    <div class="formrow">
-	    <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
-	    [<tag id='Company' type='textbox' />]
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblPostCode' />]</label>
+				<div class="col-sm-5">
+					[<tag id="PostalCode" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
     </div>
-
-    <div class="formrow">
-	    <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
-	    [<tag id='Unit' type='textbox' />]
     </div>
-    
-    <div class="formrow">
-	    <h6>[<tag type='valueof' resourcekey='General.lblAddress2' />]</h6>
-	    [<tag id='Street' type='textbox' />]
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblCountry' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Country" cssclass="form-control" type="countrydropdown" />]
     </div>
-    
-    <div class="formrow">
-        <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblCity' />]</h6>
-	        [<tag id='City' type='textbox' />]
 	    </div>
-	    <div class="rightside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
-	        [<tag id='PostalCode' type='textbox' required=""/>]
-	    </div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='General.lblRegion' />]</label>
+				<div class="col-sm-5">
+					[<tag id="Region" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
     </div>
-
-    <div class="formrow">
-        <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
-	        [<tag id="Country" type="countrydropdown" />]
 	    </div>
-	    <div class="rightside">
-	        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
-	        [<tag id='Region' type='textbox' />]
-	    </div>
+			<div class="form-group">
+				<div class="col-sm-5 col-md-offset-3">
+			        [<tag id="cmdUpdateAddress" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="saveaddress" />]
+			        [<tag id="canceleditaddress" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdCancelButton" commandname="cancel" />]
     </div>
-    
-<div style="clear:both"></div>
-
-    <div class="formrow">
-        [<tag id="cmdUpdateAddress" type="linkbutton" cssclass="primarybutton" resourcekey="General.Update" commandname="saveaddress" />]
-        [<tag id="canceleditaddress" type="linkbutton" cssclass="secondarybutton" resourcekey="General.cmdCancel" commandname="cancel" />]
     </div>
-    
     [<tag id="default" type="hidden" value="" />] <!-- Default flag for DNN profile link: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
     [<tag id="index" type="hidden" value="" />] <!-- index of address in list for update: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
     </div>
 </div>
-
+	<br>
 <div class="clearfix"></div>
 	</div>
 </div>

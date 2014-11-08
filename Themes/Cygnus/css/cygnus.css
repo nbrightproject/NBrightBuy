@@ -325,8 +325,17 @@ a.entryurl{color:#333;display:block;}
 #payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
 .paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}
 
+/* Client Menu */
+.clientmenu{margin-bottom:30px;overflow:hidden;}
+.clientmenu .fa{margin:0 0 0 4px}
+.clientmenu a{float:right;}
+.clientmenu a:hover{}
+.myorders{}
+.myaddresses{}
+.myprofile{}
+
 /* Address Book */
-#checkoutselectaddress{list-style:none;padding:0;margin:0;}
+#checkoutselectaddress{list-style:none;padding:0;margin:30px 0 0;}
 #checkoutselectaddress li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px #C9C9C9;box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative;}
 #checkoutselectaddress hr{margin:6px 0 4px;border-color:#dddddd;border-style:dashed;}
 #checkoutselectaddress .addresstype{top:10px;color:#bbbbbb;position:absolute;right:10px;}
@@ -367,6 +376,14 @@ a.entryurl{color:#333;display:block;}
 .orders .dropdown-menu > li > a{display:inline-block;width:100%;}
 /* The default DNN input styling is not applied to date inputs - fixed here but only for default skin */
 .ordersearch input[type=date]{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #bfbfbf;border-radius:0;box-shadow:0 1px 0 0 rgba(255, 255, 255, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.1) inset;color:#666666;font-size:13px;margin-bottom:20px;padding:9px;}
+
+/* Profile Manager */
+#profileinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
+#profileinput{float:left;width:47%;margin-bottom:30px;min-width:240px;}
+#profileinput .leftside{float:left;width:48%;}
+#profileinput .rightside{float:right;width:48%;}
+#profileinput H3{line-height:34px;margin:0 0 12px;padding:0;}
+#profileinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
 
 
 /* cartlist Table - csstablegenerator.com */

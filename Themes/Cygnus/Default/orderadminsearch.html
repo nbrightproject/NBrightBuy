@@ -1,5 +1,19 @@
-<div class="nbs">
+<div class="nbs myorders">
 
+<div class="clientmenu">
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />]</a>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+<a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />]</a>
+[<tag type="endif"  />]
+<h1>[<tag type="valueof" resourcekey="Settings.ordermanagertab" />]</h1>
+</div>
+
+<div class="formrow">
 [Template:datepicker.html]
 
 <div class="ordersearch">
@@ -9,7 +23,7 @@
     <div><span>&nbsp;</span><br>[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchButton" cssclass="primarybutton" commandname="search"/>]</div>
     <div><span>&nbsp;</span><br>[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetButton" cssclass="secondarybutton" commandname="resetsearch"/>]</div>
 </div>
-
+</div>
 
 [<tag id="search0" type="meta" action="open" />]
 [<tag id="search1" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/firstname" />]
