@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public CartData(int portalId, string nameAppendix = "",String cartid = "")
         {
-            _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" +  UserController.GetCurrentUserInfo().UserID.ToString("") + "*" + nameAppendix;
+            _cookieName = "NBrightBuyCart" + "*" + portalId.ToString("") + "*" + nameAppendix;
             Exists = false;
             PortalId = portalId;
             _cartId = GetCartId(cartid);
@@ -60,7 +60,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Today.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
                 base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
 
-                base.SavePurchaseData();
+                Save();
                 var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
                 
                 // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
@@ -294,7 +294,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
                 // user not editor, so stop edit mode.
-                if (!UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
+                if (!UserController.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
             }
 
             SavePurchaseData();

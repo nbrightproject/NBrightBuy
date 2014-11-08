@@ -45,12 +45,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (String.IsNullOrEmpty(ctrl))
                     {
-                        ctrl = "orders";
-                        if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";                        
+                        ctrl = StoreSettings.Current.Get("startupctrl");
+                        if (ctrl=="") ctrl = "orders";
+                        if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";
+                        HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
                     }
 
                     var ctlpath = GetControlPath(ctrl);
-                    if (ctlpath == "")  // orders ctrl may not exist in category system
+                    if (ctlpath == "")  // ctrl may not exist in system, so default to products
                     {
                         ctrl = "products";
                         ctlpath = GetControlPath(ctrl);                        

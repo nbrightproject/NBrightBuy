@@ -634,7 +634,7 @@
     <value>Extra</value>
   </data>
   <data name="Price.Text" xml:space="preserve">
-    <value>Price</value>
+    <value>Retail</value>
   </data>
   <data name="Max.Text" xml:space="preserve">
     <value>Max</value>
@@ -886,6 +886,6 @@
     <value>Pickup Address</value>
   </data>
   <data name="SalePrice.Text" xml:space="preserve">
-    <value>Sale Price</value>
+    <value>Sale</value>
   </data>
 </root>

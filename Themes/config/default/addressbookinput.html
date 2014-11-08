@@ -1,3 +1,4 @@
+yyyyyyyyyyyyyyyyy
 
 <div id="addressinputform" style="display:none;" >
 
@@ -10,7 +11,6 @@
 [<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]
 	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
 [<tag type="endif" />]
-
 [<tag type="if" xpath="genxml/hidden/default" testvalue="" display="{ON}" />]
 	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
 [<tag type="endif" />]
@@ -87,6 +87,31 @@
     </div>
 </div>
 
+<div class="clearfix"></div>
+	</div>
+</div>
+
+</div>
+
+[<tag type="if" function="settings" key="pageactions" testvalue="True" display="{ON}" />]
+<div class="row pageactions"><!-- Page actions - also at top -->
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-content">
+				<div class="col-sm-6">
+		    	[<tag id="cmdNewAddress" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdAddButton" commandname="newaddress" />]
+		    	[<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClientButton" cssclass="btn btn-default" commandname="viewclient" />]
+				</div>
+				<div class="col-sm-6 text-right">
+					<!-- No language on this page -->
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+[<tag type="endif" />]
+
 
 <script>
     $(document).ready(function () {
@@ -95,13 +120,13 @@
 
         $("#canceleditaddress").click(function () {
             $("#addressinputform").hide();
-            $("#checkoutselectaddress").show();
+            $("#addresscards").show();
         });
 
         //if we have a addressid in the url, the we are editing an address.
         if ('[Url:addressid]' != '') {
             $("#addressinputform").show();
-            $("#checkoutselectaddress").hide();
+            $("#addresscards").hide();
         }
 
     });

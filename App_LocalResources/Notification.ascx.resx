@@ -142,10 +142,10 @@
     <value>Your profile has been updated.</value>
   </data>
   <data name="profileupdated_ok.Text" xml:space="preserve">
-    <value>Your profie has been updated.</value>
+    <value>Your profile has been updated.</value>
   </data>
   <data name="general_error.Text" xml:space="preserve">
-    <value>Unknowm Error</value>
+    <value>Unknown Error</value>
   </data>
   <data name="general_fail.Text" xml:space="preserve">
     <value>Operation Failed</value>

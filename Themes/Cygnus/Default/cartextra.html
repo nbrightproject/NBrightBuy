@@ -58,10 +58,12 @@
 	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
 	        [<tag type='cartemailaddress' required="" datatype="email"/>] 
 	        </div>
-	        <div class="rightside newscheckbox">
-	        [<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews"  />]
-	        </div>
 	    </div>
+        
+        <div class="formrow">            
+            <!-- "updatecart" class is used by JQuery to trigger events, must be left on -->
+            [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
+        </div>
 
     </div>
 
@@ -92,12 +94,20 @@
 
 
 <!-- Terms and newsletter subscribe fields -->
-    <div class="formrow dnnForm">
-        [<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]
-</div>
+    <div class="formrow totals">
+        <ul>
+            <li>
+                [<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews"  />]
+                
+            </li>
+            <li>
+        [<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]                
+            </li>
+        </ul>
+    </div>
 
 <div class="formrow submission">
-		[<tag id="cmdConfirm" type="button" cssclass="secondarybutton" resourcekey="General.Refresh" commandname="confirm" />][<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
+		[<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
 </div>
 </div>
 

@@ -336,7 +336,18 @@ namespace Nevoweb.DNN.NBrightBuy
         private void SaveCart()
         {
             if (_cartInfo.EditMode == "E") // is order being edited, so return to order status after edit.
+            {
                 _cartInfo.ConvertToOrder();
+                // redirect to back office
+                var param = new string[2];
+                param[0] = "ctrl=orders";
+                param[1] = "eid=" + _cartInfo.PurchaseInfo.ItemID.ToString("");
+                var strbackofficeTabId = StoreSettings.Current.Get("backofficetabid");
+                var backofficeTabId = TabId;
+                if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
+                var href = Globals.NavigateURL(backofficeTabId, "", param);
+                Response.Redirect(href, true);
+            }
             else
                 _cartInfo.Save(DebugMode);
             if (UserId == -1)

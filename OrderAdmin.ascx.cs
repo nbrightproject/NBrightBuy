@@ -190,14 +190,15 @@ namespace Nevoweb.DNN.NBrightBuy
                         rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 200);
                         rpData.DataBind();
 
+                        // display header (Do header after the data return so the productcount works)
+                        base.DoDetail(rpDataH);
+
                     }
                 }
             }
 
             #endregion
 
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
 
             // display footer
             base.DoDetail(rpDataF);
@@ -295,6 +296,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpItem.DataSource = orderData.GetCartItemList();
                 rpItem.DataBind();
                 base.DoDetail(rpItemF, orderData.GetInfo());
+
+                // display header (Do header after the data return so the productcount works)
+                base.DoDetail(rpDataH, orderData.GetInfo());
 
             }
         }

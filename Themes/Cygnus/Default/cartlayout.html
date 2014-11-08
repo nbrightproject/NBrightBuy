@@ -56,7 +56,7 @@
                 $('#cartshippingmethods').hide();
                 $('#providertemplates').hide();
             }
-            if ($(this).val() != "3") $("input[[id*='_cmdConfirm_']]").trigger("click");
+            if ($(this).val() != "3") $(".updatecart").trigger("click");
         });
 
 
@@ -76,22 +76,22 @@
                 for (var i = 0; i < arrayLength; i++) {
                     $(selectordiv).find("[[id*='" + valuearray[[i]] + "']]").val(datarray[[i]]);
                 }
-                $("input[[id*='_cmdConfirm_']]").trigger("click");
+                $(".updatecart").trigger("click");
             }
         }
 
         // auto fire postback when the country dropdown is changed. 
         $("select[[id*='_Country_']]").change(function () {
-            $("input[[id*='_cmdConfirm_']]").trigger("click");
-    });
+            $(".updatecart").trigger("click");
+        });
         // auto fire postback when the region dropdown is changed. 
         $("select[[id*='_Region_']]").change(function () {
-            $("input[[id*='_cmdConfirm_']]").trigger("click");
+            $(".updatecart").trigger("click");
         });
 
         // auto fire postback when the shipping providerdropdown is changed. 
         $("input[[id*='_shippingprovider_']]").change(function (e) {
-            $("input[[id*='_cmdConfirm_']]").trigger("click");
+            $(".updatecart").trigger("click");
         });
 
         // disable validation on hidden controls
@@ -111,9 +111,11 @@
             $(".processing").show();
         });
 
-        $("input[[id*='_cmdConfirm_']]").mousedown(function (e) {
+        $(".updatecart").mousedown(function (e) {
             if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
         });
+
+    
         
     });
 </script>

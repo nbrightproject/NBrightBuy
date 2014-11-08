@@ -42,12 +42,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ConvertToCart(Boolean debugMode = false, String storageType = "Cookie", string nameAppendix = "")
         {
-            PurchaseTypeCode = "CART";
-            EditMode = "E";
-            var cartId = base.SavePurchaseData();
-            var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
-            cartData.Save();
-            if (debugMode) OutputDebugFile("debug_convertedorder.xml");
+            // only magers and editors allowed to edit orders
+            if (UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) ||
+                UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
+                UserController.GetCurrentUserInfo().IsInRole("Administrators")) 
+            {
+                PurchaseTypeCode = "CART";
+                EditMode = "E";
+                var cartId = base.SavePurchaseData();
+                var cartData = new CartData(PortalId, "", cartId.ToString("")); //create the client record (cookie)
+                cartData.Save();
+                if (debugMode) OutputDebugFile("debug_convertedorder.xml");
+            }
         }
 
         public void CopyToCart(Boolean debugMode = false, String storageType = "Cookie", string nameAppendix = "")
