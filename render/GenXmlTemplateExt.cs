@@ -2284,6 +2284,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void Createmodelsradio(Control container, XmlNode xmlNod)
         {
+            //NOTE: rbl.Attributes.Add("required", xmlNod.Attributes["required"].Value); will not work on radiobuttonlist, placed into <span> not the input field
             var rbl = new RadioButtonList();
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
@@ -2335,7 +2336,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") rbl.Items.Add(li);
                     }
-                    if (rbl.Items.Count > 0) rbl.SelectedIndex = 0;
                 }
 
             }
@@ -2448,9 +2448,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (displayPrices)
                 {
                     //[TODO: add promotional calc]
-                    //var price = obj.GetXmlPropertyDouble("genxml/hidden/saleprice");
+                    var saleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
                     var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    var bestprice = price;
+                    if (saleprice > 0 && saleprice < price) bestprice = saleprice;
+
                     var strprice = NBrightBuyUtils.FormatToStoreCurrency(price);
+                    var strbestprice = NBrightBuyUtils.FormatToStoreCurrency(bestprice);
+                    var strsaleprice = NBrightBuyUtils.FormatToStoreCurrency(saleprice);
 
                     var strdealerprice = "";
                     var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
@@ -2458,15 +2463,20 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
                         if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
+                        if (dealerprice < bestprice) bestprice = dealerprice;
                     }
 
                     outText = outText.Replace("{price}", "(" + strprice + ")");
                     outText = outText.Replace("{dealerprice}", strdealerprice);
+                    outText = outText.Replace("{bestprice}", strbestprice);
+                    outText = outText.Replace("{saleprice}", strsaleprice);
                 }
                 else
                 {
                     outText = outText.Replace("{price}", "");
                     outText = outText.Replace("{dealerprice}", "");
+                    outText = outText.Replace("{bestprice}", "");
+                    outText = outText.Replace("{saleprice}", "");
                 }
 
                 return outText;
@@ -4277,6 +4287,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
         {
+            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj));
+            if (saleprice >= 0) return true;  // if it's on sale we can assume it has multiple prices
             var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
             if (nodList != null)
             {
@@ -4304,6 +4316,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             holdDealerPrice = mDealerPrice.InnerText;
                         }                        
                     }
+
                 }
             }
             return false;

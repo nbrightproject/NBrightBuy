@@ -456,7 +456,6 @@
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
     <Content Include="Themes\config\default\categoryproductheader.html" />
-    <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\clientsbody.html" />
     <Content Include="Themes\config\default\clientsdetail.html" />
     <Content Include="Themes\config\default\clientsdetailfooter.html" />
@@ -568,6 +567,7 @@
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
     <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\frontofficepageheader.html" />
     <Content Include="Themes\Cygnus\Default\fullcartbody.html" />
     <Content Include="Themes\Cygnus\Default\fullcartfooter.html" />
     <Content Include="Themes\Cygnus\Default\fullcartheader.html" />
