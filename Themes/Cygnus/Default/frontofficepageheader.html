@@ -16,6 +16,9 @@
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 [<tag type="endif" />]
 
+<!-- jQuery Validation http://jqueryvalidation.org/ -->
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+
 <!-- Treeview menu https://github.com/tefra/navgoco -->
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.cookie.min.js"></script>
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.navgoco.min.js"></script>
@@ -43,3 +46,10 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
     }
 </script>
 
+<script type="text/javascript">
+// Add required attribute to certain inputs
+$(document).ready(function () {
+    $('.modelsradio input').attr('required', '');
+    $('.acceptterms input').attr('required', '');
+});
+</script>

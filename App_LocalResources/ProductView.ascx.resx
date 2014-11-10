@@ -169,10 +169,10 @@
     <value>Email for price</value>
   </data>
   <data name="normally.Text" xml:space="preserve">
-    <value>Normally</value>
+    <value>Normal Retail</value>
   </data>
   <data name="onsale.Text" xml:space="preserve">
-    <value>On sale</value>
+    <value>Sale</value>
   </data>
   <data name="onsaleflag.Text" xml:space="preserve">
     <value>On Sale!</value>
@@ -181,7 +181,7 @@
     <value>Retail</value>
   </data>
   <data name="dealer.Text" xml:space="preserve">
-    <value>Dealer price</value>
+    <value>Dealer</value>
   </data>
   <data name="holidaymsg.Text" xml:space="preserve">
     <value>Closed for holiday</value>
@@ -275,5 +275,8 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
   &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
+  </data>
+  <data name="choosemodel.Text" xml:space="preserve">
+    <value>Select Model</value>
   </data>
 </root>

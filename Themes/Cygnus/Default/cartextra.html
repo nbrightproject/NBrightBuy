@@ -12,7 +12,6 @@
 	</div>
 </div>
 
-
 <!-- Shipping methods  -->
 <div id="shippingmethods">
     <div class="formrow dnnForm">
@@ -20,65 +19,69 @@
 	    <div id="providerselection">
 	        [<tag cssclass="radiobuttonlist" type="shippingproviders" RepeatDirection="Horizontal" RepeatColumns="0" RepeatLayout="Flow" />]
 		</div>
-		    <div id="providertemplates"></div>
+	    <div id="providertemplates"></div>
 	</div>
 </div>
 
-
-
 <!-- Order summary box from here down  -->
-
-
 <div class="checkoutextra" style="display:none;">
+
     <div class="formrow">
         <h3>[<tag type='valueof' resourcekey='General.lblordersummary' />]</h3>
     </div>
 
 <!-- Order summary text inputs  -->
-    <div class="summaryleft">
+<div class="summaryleft">
    
     <div class="formrow">
         <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
         [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
     </div>
 
+	[<tag type="if" function="settings" key="checkoutpromocode" testvalue="True" display="{ON}" />]
     <div class="formrow">
-	        <div class="leftside">
         <h6>[<tag type='valueof' resourcekey='General.PromotionalCode' />]</h6>
         [<tag id='promocode' type='textbox' />]
     </div>
-	        <div class="rightside">
+	[<tag type="endtestof"  />]
+
+	[<tag type="if" function="settings" key="checkouttaxcode" testvalue="True" display="{ON}" />]
+    <div class="formrow">
         <h6>[<tag type='valueof' resourcekey='General.TaxNumber' />]</h6>
         [<tag id='taxnumber' type='textbox' />]
     </div>
-	    </div>
+	[<tag type="endtestof"  />]
 
-	    <div class="formrow dnnForm">
-	        <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+	[<tag type="if" function="settings" key="copyorderto" testvalue="True" display="{ON}" />]
+    <div class="formrow dnnForm">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.copyorderto' />]</h6>
 	        [<tag type='cartemailaddress' required="" datatype="email"/>] 
-	        </div>
-	    </div>
-        
-        <div class="formrow">            
-            <!-- "updatecart" class is used by JQuery to trigger events, must be left on -->
-            [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
         </div>
+    </div>
+	[<tag type="endtestof"  />]
 
+    <div class="formrow">            
+        <!-- "updatecart" class is used by JQuery to trigger events, must be left on -->
+        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
     </div>
 
+</div>
 
-<div class="checkoutdetails">
+<div class="summaryright">
 
-    <div class="formrow totals">
-		<ul>
-			<li><span>[<tag type='valueof' resourcekey='General.Subtotal' />]</span>[<tag type="currencyof" xpath="genxml/appliedsubtotal" />]</li>
-			<li><span>[<tag type='valueof' resourcekey='General.Discount' />]</span>[<tag type="currencyof" xpath="genxml/applieddiscount" />]</li>
-			<li><span>[<tag type='valueof' resourcekey='General.Shipping' />]</span>[<tag type="currencyof" xpath="genxml/appliedshipping" />]</li>
-			<li><span>[<tag type='valueof' resourcekey='General.Tax' />]</span>[<tag type="currencyof" xpath="genxml/taxcost" />]</li>
-			<li class="total"><span>[<tag type='valueof' resourcekey='General.Total' />]</span>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</li>
-		</ul>
-    </div>
+	<ul class="checkoutdetails">
+		<li class="large"><div>[<tag type='valueof' resourcekey='General.Subtotal' />]</div>[<tag type="currencyof" xpath="genxml/appliedsubtotal" />]</li>
+		<li class="large"><div>[<tag type='valueof' resourcekey='General.Discount' />]</div>[<tag type="currencyof" xpath="genxml/applieddiscount" />]</li>
+		<li class="large"><div>[<tag type='valueof' resourcekey='General.Shipping' />]</div>[<tag type="currencyof" xpath="genxml/appliedshipping" />]</li>
+		<li class="large"><div>[<tag type='valueof' resourcekey='General.Tax' />]</div>[<tag type="currencyof" xpath="genxml/taxcost" />]</li>
+		<li class="total larger"><div>[<tag type='valueof' resourcekey='General.Total' />]</div>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</li>
+		[<tag type="if" function="settings" key="subscribenewsletter" testvalue="True" display="{ON}" />]
+		<li class="dnnForm">[<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews" />]</li>
+		[<tag type="endtestof"  />]
+		<li class="dnnForm">[<tag id="chkterms" type="checkbox" cssclass="acceptterms" resourcekey="CartView.chkterms" />]</li>
+		<li class="submission">[<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]</li>
+	</ul>
 
     [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
     [<tag type='if' function='carteditmode' testvalue="C" display='{ON}' />]
@@ -91,28 +94,7 @@
         <div class="debug">Order being edited for client</div>
     [<tag type="endtestof"  />]
     [<tag type="endtestof"  />]
-
-
-<!-- Terms and newsletter subscribe fields -->
-    <div class="formrow totals">
-        <ul>
-            <li>
-                [<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews"  />]
-                
-            </li>
-            <li>
-        [<tag id="chkterms" type="checkbox" resourcekey="CartView.chkterms"  />]                
-            </li>
-        </ul>
-    </div>
-
-<div class="formrow submission">
-		[<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]
-</div>
+    
 </div>
 
-
 </div>
-
-
-

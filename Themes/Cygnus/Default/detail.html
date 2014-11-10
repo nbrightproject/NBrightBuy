@@ -2,11 +2,9 @@
 
 [<tag id="includeinheader" type="meta" value="detailpageheader.html" />]<!-- Injects a template with dynamic data into page head section -->
 
-
 [<tag type='if' function='isclientordermode' display='{ON}' displayelse='{OFF}' />]
 <div class="debug">Order being edited for client</div>
 [<tag type="endtestof"  />]
-
 
 <div class="productdetail" itemscope itemtype="http://schema.org/Product">
 
@@ -54,20 +52,20 @@
 
 <div class="purchasing">
 	<ul>
-		<li class="title">
+		<li class="title"><h1>
 		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtmanufacturer" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div itemprop="manufacturer" class="manufacturer">
-			[<tag type="manufacturer" />]</div>
+		<span itemprop="manufacturer" class="manufacturer">
+			[<tag type="manufacturer" />]</span>
 		[<tag type="endtestof"  />]
 		
 		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtproductname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<div itemprop="name" class="name">
-			[<tag type="productname" />]</div>
+		<span itemprop="name" class="name">
+			[<tag type="productname" />]</span>
 		[<tag type="endtestof"  />]
-		</li>
+		</h1></li>
 
 		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtsummary" testvalue="" display="{OFF}" displayelse="{ON}" />]
-		<li itemprop="description" class="summary">[<tag type="breakof" xpath="genxml/lang/genxml/textbox/txtsummary" />]</li>
+		<li itemprop="description" class="summary"><p>[<tag type="breakof" xpath="genxml/lang/genxml/textbox/txtsummary" />]</p></li>
 		[<tag type="endif"  />]
 		
 		
@@ -75,39 +73,33 @@
 	[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 		
 		[<tag type="if" function="price" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide all prices -->
-		[<tag type="if" function="isinrole" role="Dealer" display="{OFF}" displayelse="{ON}" />]<!-- Hide retail and sale section from dealer -->
-		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
-		<li class="price"><span class="retail">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.from" />] [<tag type="endif" />][<tag type="price" />]</span></li><!-- Retail Pricing -->
+		
+		<li class="price">
+		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />][<tag type="valueof" resourcekey="ProductView.dealer" />] [<tag type="endif"  />]<!-- Dealer Label -->
+		[<tag type="if" function="isonsale" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.onsale" />] [<tag type="endif"  />]<!-- Sale Label -->
+		[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.from" />] [<tag type="endif" />]<!-- From Label -->
+		<span class="bestprice">[<tag type="bestprice" />]</span><!-- Always show best price -->
+		</li>
+		
+		[<tag type="if" function="isonsale" display="{ON}" />]<!-- If on sale, also show normal retail price -->
+		<li class="retailprice">[<tag type="valueof" resourcekey="ProductView.normally" />] <span class="strikethrough">[<tag type="price" />]</span></li>
 		[<tag type="endif"  />]
 		
-		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Pricing -->
-		<li class="price"><span class="old">[<tag type="label" resourcekey="ProductView.normally" />] </span><span class="old strike">[<tag type="price" />]</span></li>
-		<li class="price"><span class="sale">[<tag type="label" resourcekey="ProductView.onsale" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.fromlower" />] [<tag type="endif" />][<tag type="saleprice" />]</span></li>
-		[<tag type="endif"  />]
-		
-		[<tag type="endif"  />]<!-- End hide retail and sale section from dealer -->
-		
-		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer Pricing -->
-		<li class="price"><span class="old">[<tag type="label" resourcekey="ProductView.retail" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.fromlower" />] [<tag type="endif" />][<tag type="price" />]</span></li>
-		<li class="price"><span class="dealer">[<tag type="label" resourcekey="ProductView.dealer" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="label" resourcekey="ProductView.fromlower" />] [<tag type="endif" />][<tag type="dealerprice" />]</span></li>
-		[<tag type="endif"  />]		
+		[<tag type="endif"  />]<!-- End if price is zero then hide all prices -->
 
 		[<tag type="if" function="price" testvalue="0.00" display="{ON}" />]<!-- If price is zero then display contact message -->
-		<li class="price"><span class="zero">
+		<li class="zeroprice">
 		<a href="mailto:[TAG:SETTING:merchant.email]?subject=[<tag type='label' resourcekey='ProductView.pricerequest' />] - [<tag type='productname' />]&amp;body=[<tag type='label' resourcekey='ProductView.emailmsg' />] [<tag type='websiteurl' />][<tag type='entryurl' />]: [<tag type='productname' />]">[<tag type="label" resourcekey="ProductView.emailprice" />]</a>
-		</span></li>
-		[<tag type="endif"  />]
-		
+		</li>
 		[<tag type="endif"  />]
 		
 	[<tag type="endif"  />]
-
 <!-- End Pricing for Retail, Sale and Dealer -->
 
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices, models and options in catalogue mode -->
 
 		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<li class="models">[<tag type="modelsradio" template="{name} {price} {dealerprice}" RepeatDirection="Vertical" RepeatColumns="1"/>]</li>
+		<li class="models"><h5>[<tag type="valueof" resourcekey="ProductView.choosemodel" />]</h5>[<tag type="modelsradio" template="{name} {bestprice}" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]</li>
 		[<tag type="endif"  />]
 		
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
@@ -133,7 +125,7 @@
 		[<tag type="if" function="settings" key="holidaymode" testvalue="True" display="{OFF}" />]<!-- Hide buy button and quantity in Holiday Mode -->
 		[<tag type="if" function="settings" key="allowzeroprice" testvalue="True" display="{ON}" />]<!-- Hide buy button and quantity if zero-price purchasing is not allowed -->		
 		<span [<tag type="if" function="isinstock" testvalue="0" display="" displayelse="style='display:none;'" />]>
-		[<tag type="addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />] 
+		[<tag type="addqty" text="1" width="21" />][<tag type="linkbutton" resourcekey="ProductView.addtobasketicon" cssclass="addtobasket" commandname="addtobasket" commandargument="ItemID" />][<tag type="label" resourcekey="ProductView.addtobasket" />] 
 		</span>
 		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
 		<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>

@@ -205,7 +205,7 @@
     <value>Currency Symbol</value>
   </data>
   <data name="paymenttab.Help" xml:space="preserve">
-    <value>Tab where the client will be redirected to select a method of payment. (NBS_Payment module)</value>
+    <value>Tab where the client will be redirected to select a method of payment.</value>
   </data>
   <data name="paymenttab.Text" xml:space="preserve">
     <value>Payment</value>
@@ -230,5 +230,17 @@
   </data>
   <data name="Enabled.Text" xml:space="preserve">
     <value>Enabled</value>
+  </data>
+  <data name="copyorderto.Text" xml:space="preserve">
+    <value>Copy Order to Email</value>
+  </data>
+  <data name="subscribenewsletter.Text" xml:space="preserve">
+    <value>Newsletter Checkbox</value>
+  </data>
+  <data name="checkoutpromocode.Text" xml:space="preserve">
+    <value>Promo Code Field</value>
+  </data>
+  <data name="checkouttaxcode.Text" xml:space="preserve">
+    <value>Tax Code Field</value>
   </data>
 </root>
