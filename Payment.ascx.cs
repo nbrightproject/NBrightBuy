@@ -102,6 +102,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (msg == "") // no message so successful
                         {
                             _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
+                            _orderData.PaymentOk("050");
                             templHeader = templOk;
                         }
                         else

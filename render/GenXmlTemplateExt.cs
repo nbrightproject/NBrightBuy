@@ -455,7 +455,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             case "isonsale":
                                 dataValue = "FALSE";
                                 var saleprice = GetSalePrice((NBrightInfo) container.DataItem);
-                                if ((Utils.IsNumeric(saleprice)) && (Convert.ToDouble(saleprice) > 0))
+                                if ((Utils.IsNumeric(saleprice)) && (Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US")) > 0))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -861,7 +861,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     Double v = 0;
                     if (Utils.IsNumeric(XmlConvert.DecodeName(nod.InnerText)))
                     {
-                        v  = Convert.ToDouble(XmlConvert.DecodeName(nod.InnerText));
+                        v = Convert.ToDouble(XmlConvert.DecodeName(nod.InnerText), CultureInfo.GetCultureInfo("en-US"));
                     }
                     l.Text = NBrightBuyUtils.FormatToStoreCurrency(v); 
                 }
@@ -4225,7 +4225,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(s))
                 {
                     // NBrightBuy numeric always stored in en-US format.
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
+                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
                 }
             }
             return price;
@@ -4240,7 +4240,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var s = m.GetXmlProperty("genxml/textbox/txtdealercost");
                 if (Utils.IsNumeric(s))
                 {
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(dealprice, CultureInfo.GetCultureInfo("en-US"))) | (dealprice == "-1")) dealprice = s;
+                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(dealprice, CultureInfo.GetCultureInfo("en-US"))) | (dealprice == "-1")) dealprice = s;
                 }
             }
             return dealprice;
@@ -4264,14 +4264,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetBestPrice(NBrightInfo dataItemObj)
         {
-            var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj));
+            var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
             if (fromprice < 0) fromprice = 0; // make sure we have a valid price
-            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj));
+            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
             if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
             {
-                var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj));
+                var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
                 if (fromprice < dealerprice)
                 {
@@ -4287,7 +4287,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
         {
-            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj));
+            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
             if (saleprice >= 0) return true;  // if it's on sale we can assume it has multiple prices
             var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
             if (nodList != null)

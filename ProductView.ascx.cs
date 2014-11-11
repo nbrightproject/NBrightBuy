@@ -436,19 +436,21 @@ namespace Nevoweb.DNN.NBrightBuy
                         CtrlPaging.TotalRecords = recordCount;
                         CtrlPaging.BindPageLinks();
                     }
+
+                    // display header (Do header after the data return so the productcount works)
+                    if (objCat == null)
+                        base.DoDetail(rpDataH);
+                    else
+                    {
+                        if (DebugMode) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
+                        DoDetail(rpDataH, objCat);
+                    }
+
                 }
             }
 
             #endregion
 
-            // display header (Do header after the data return so the productcount works)
-            if (objCat == null)
-                base.DoDetail(rpDataH);
-            else
-            {
-                if (DebugMode) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
-                DoDetail(rpDataH, objCat);
-            }
 
             // display footer
             base.DoDetail(rpDataF);
@@ -574,7 +576,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
                 //render the detail page
-                base.DoDetail(rpData, productData.Info);                
+                base.DoDetail(rpData, productData.Info);
+
+                DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
             }
 
         }

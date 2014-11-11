@@ -193,6 +193,8 @@ namespace Nevoweb.DNN.NBrightBuy
                         // display header (Do header after the data return so the productcount works)
                         base.DoDetail(rpDataH);
 
+                        // display search
+                        base.DoDetail(rpSearch);
                     }
                 }
             }
@@ -203,8 +205,6 @@ namespace Nevoweb.DNN.NBrightBuy
             // display footer
             base.DoDetail(rpDataF);
 
-            // display search
-            base.DoDetail(rpSearch);
         }
 
         #endregion

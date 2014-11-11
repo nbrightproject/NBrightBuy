@@ -139,13 +139,15 @@ namespace Nevoweb.DNN.NBrightBuy
                 #region "Get default category into list for displaying header and footer templates on product (breadcrumb)"
 
                 // if we have a product displaying, get the deault category for the category
-                var obj = new GroupCategoryData();
-                if (Utils.IsNumeric(_entryid))
-                {
-                    var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
-                    obj = _catGrpCtrl.GetCategory(catiddef);
-                }
-                var catl = new List<object> {obj};
+            var obj = new GroupCategoryData();
+            if (Utils.IsNumeric(_entryid))
+            {
+                var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
+                obj = _catGrpCtrl.GetCategory(catiddef);
+                if (catid == 0) catid = catiddef;
+            }
+            var catl = new List<object> {obj};
+
 
                 #endregion
 

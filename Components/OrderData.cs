@@ -228,18 +228,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
-            PurchaseInfo = DiscountCodeInterface.Instance().UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
-            PurchaseInfo = DiscountCodeInterface.Instance().UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);
-
-            ApplyModelTransQty();
-            OrderStatus = orderStatus;
-            SavePurchaseData();
-
-            // Send emails
-            if (sendEmails)
+            if (OrderStatus == "020") // only process this on waiting for bank.  On return to cart this could be triggered more than once, but IPN and return.
             {
-                NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo);                
+                var discountprov = DiscountCodeInterface.Instance();
+                if (discountprov != null)
+                {
+                    PurchaseInfo = discountprov.UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
+                    PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);                    
+                }
+
+                ApplyModelTransQty();
+                OrderStatus = orderStatus;
+                SavePurchaseData();
+
+                // Send emails
+                if (sendEmails)
+                {
+                    NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo);
+                }                
             }
 
         }
