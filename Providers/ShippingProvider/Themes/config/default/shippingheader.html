@@ -4,37 +4,14 @@
 <script>
 
     $(document).ready(function () {
-        $(".savebutton").hide();
 
         $("input[[id*='shipref']]").keyup(function () {
             var id = $(this).attr("id").replace('shipref', 'isdirty');
             $('#' + id).val(true);
-            $(".savebutton").show();
         });
-        $("input[[id*='shipfrom']]").keyup(function () {
-            var id = $(this).attr("id").replace('shipfrom', 'isdirty');
+        $("textarea[[id*='shiprange']]").keyup(function () {
+            var id = $(this).attr("id").replace('shiprange', 'isdirty');
             $('#' + id).val(true);
-            $(".savebutton").show();
-        });
-        $("input[[id*='shipto']]").change(function () {
-            var id = $(this).attr("id").replace('shipto', 'isdirty');
-            $('#' + id).val(true);
-            $(".savebutton").show();
-        });
-        $("input[[id*='shipamount']]").change(function () {
-            var id = $(this).attr("id").replace('shipamount', 'isdirty');
-            $('#' + id).val(true);
-            $(".savebutton").show();
-        });
-
-        $("input[[id*='freeshiplimit']]").keyup(function () {
-            $(".savebutton").show();
-        });
-        $("input[[id*='freeshipcountrycodes']]").keyup(function () {
-            $(".savebutton").show();
-        });
-        $("input[[id*='rblUnit']]").change(function () {
-            $(".savebutton").show();
         });
 
     });
@@ -80,11 +57,26 @@
     </div>
     </div>
 </div>
+<hr/>
+<div class="row form-group">
+    <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.validcountrycodes" />]</label>
+    <div class="col-sm-6">
+        [<tag id="validcountrycodes" cssclass="form-control" type="textbox" Text="" />]
+    </div>
+</div>
+
+<div class="row form-group">
+    <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.notvalidcountrycodes" />]</label>
+    <div class="col-sm-6">
+        [<tag id="notvalidcountrycodes" cssclass="form-control" type="textbox" Text="" />]
+    </div>
+</div>
+
 
 <div class="clearfix"></div>
-				<div class="col-xs-12 table-responsive">
+				<div class="col-xs-12 ">
 					<br/>
-					<table class="table table-hover orderdetailitems">
+					<table class="table">
 						<thead>
 							<tr>
 								<th class="text-center">Ref</th>

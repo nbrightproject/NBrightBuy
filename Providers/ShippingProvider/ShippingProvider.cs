@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components;
 
 namespace Nevoweb.DNN.NBrightBuy.Providers
 {
@@ -11,34 +12,27 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
     {
         public override NBrightInfo CalculateShipping(NBrightInfo cartInfo)
         {
+
             var shipData = new ShippingData(Shippingkey);
             var shipoption = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions");
-            Double total = 0;
+            Double rangeValue = 0;
             if (shipData.CalculationUnit == "1")
-            {
-                var totalweight = 0;
-
-                total = totalweight;
-            }
+                rangeValue = cartInfo.GetXmlPropertyDouble("genxml/totalweight"); 
             else
-            {
-                total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
-            }
+                rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
             var countrycode = "";
             var regioncode = "";
             var regionkey = "";
-            Double rangeValue = 0;
+            var total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
             switch (shipoption)
             {
                 case "1":
                     countrycode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
                     regionkey = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
-                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
                     break;
                 case "2":
                     countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country");
                     regionkey = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");                    
-                    rangeValue = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
                     break;
             }
 
