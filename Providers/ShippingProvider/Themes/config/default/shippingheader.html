@@ -53,7 +53,7 @@
 <div class="row freeshipping">
     <div class="form-group">
         <div class="col-sm-3">
-[<tag id="rblUnit" type="radiobuttonlist" datavalue="1;2" data="By Weight;By Price" repeatcolumns="2" />]
+[<tag id="rblUnit" type="radiobuttonlist" datavalue="1;2" resourcekey="Shipping.unit" repeatcolumns="2" />]
     </div>
     </div>
 </div>
@@ -79,8 +79,8 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th class="text-center">Ref</th>
-								<th class="text-center">Range &amp; Cost</th>
+								<th class="text-center">[<tag type="valueof" resourcekey="Shipping.Ref" />]</th>
+								<th class="text-center">[<tag type="valueof" resourcekey="Shipping.Range" />]</th>
                                 <th></th>
 							</tr>
 						</thead>

@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountryCodesCSV.Text" xml:space="preserve">
-    <value>Country Code List</value>
+    <value>Liste des codes pays</value>
   </data>
   <data name="FreeShipping.Text" xml:space="preserve">
-    <value>Free Shipping</value>
+    <value>Franco de port</value>
   </data>
   <data name="notvalidcountrycodes.Text" xml:space="preserve">
-    <value>INVALID Country Codes  (CSV)</value>
+    <value>Codes pays non acceptés (CSV)</value>
   </data>
   <data name="validcountrycodes.Text" xml:space="preserve">
-    <value>VALID Country Codes (CSV)</value>
+    <value>Codes pays acceptés (CSV)</value>
   </data>
   <data name="Ref.Text" xml:space="preserve">
-    <value>Ref</value>
+    <value>Réf.</value>
   </data>
   <data name="Range.Text" xml:space="preserve">
-    <value>Range &amp; Cost</value>
+    <value>Fourchettes &amp; Tarifs</value>
   </data>
   <data name="unit.data" xml:space="preserve">
-    <value>By Weight;By Price</value>
+    <value>Par poids;Par prix</value>
   </data>
 </root>
