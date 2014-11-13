@@ -193,7 +193,7 @@
     <value>&lt;div class="nbsnotify nbsnotifywarning bg-warning"&gt;{message}&lt;/div&gt;</value>
   </data>
 	<data name="ordershipped_emailsubject.Text" xml:space="preserve">
-    <value>Commande livrée</value>
+    <value>Commande expédiée</value>
   </data>
 	<data name="categoryactionsave_ok.Text" xml:space="preserve">
     <value>Mise à jour des catégories réussie</value>
@@ -229,7 +229,7 @@
 		<value>Validation achevée.</value>
 	</data>
 	<data name="OrderCreated.Text" xml:space="preserve">
-		<value>Commande créée</value>
+		<value>Commande confirmée</value>
 	</data>
 	<data name="ProfileRegistered.Text" xml:space="preserve">
 		<value>Profil enregistré</value>
@@ -253,13 +253,13 @@
 		<value>Numéro de compte</value>
 	</data>
 	<data name="bankinginstructions.Text" xml:space="preserve">
-		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Merci d'insérer le numéro de commande dans le champ référence et d'inclure votre nom si celui-ci est différent de votre nom de compte.</value>
+		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Veuillez insérer le numéro de commande dans le champ référence et inclure votre nom si celui-ci est différent de votre nom de compte.</value>
 	</data>
 	<data name="checkoutsuccessmessage.Text" xml:space="preserve">
 		<value>Merci pour votre commande. Vous recevrez en suivant un email de confirmation contenant tous les détails de la commande. Merci de vérifier votre dossier de courrier indésirable si vous ne le recevez pas d'ici 30 minutes. Prenez note du numéro de commande ci-dessous si vous souhaitez nous contacter à son sujet.</value>
 	</data>
 	<data name="checkoutfailmessage.Text" xml:space="preserve">
-		<value>La commande a été annulé ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance avec votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
+		<value>La commande a été annulée ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance avec votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
 	</data>
 	<data name="Contactus.Text" xml:space="preserve">
 		<value>Contactez-nous</value>
@@ -281,5 +281,659 @@
 	</data>
 	<data name="TrackingNumber.Text" xml:space="preserve">
 		<value>Numéro de suivi</value>
+	</data>
+	<data name="ShippingOption.Text" xml:space="preserve">
+		<value>Option de livraison</value>
+	</data>
+	<data name="ShippingDate.Text" xml:space="preserve">
+		<value>Date d'expédition</value>
+	</data>
+	<data name="Collection.Text" xml:space="preserve">
+		<value>Détails enlèvement</value>
+	</data>
+	<data name="cmdCreateOrder.Text" xml:space="preserve">
+		<value>Créer la commande</value>
+	</data>
+	<data name="cmdResetPass.confirm" xml:space="preserve">
+		<value>Réinitialiser mot de passe utilisateur et envoyer des e-mails avec nouveau mot de passe ?</value>
+	</data>
+	<data name="cmdResetPass.Text" xml:space="preserve">
+		<value>Réinitialiser mot de passe</value>
+	</data>
+	<data name="cmdSearch.Text" xml:space="preserve">
+		<value>Rechercher</value>
+	</data>
+	<data name="cmdUnlockUser.confirm" xml:space="preserve">
+		<value>Débloquer un utilisateur ?</value>
+	</data>
+	<data name="cmdUnlockUser.Text" xml:space="preserve">
+		<value>Débloquer l'utilisateur</value>
+	</data>
+	<data name="cmdValidateUser.Text" xml:space="preserve">
+		<value>Valider l'utilisateur</value>
+	</data>
+	<data name="cmdViewOrders.Text" xml:space="preserve">
+		<value>Voir commandes</value>
+	</data>
+	<data name="lblauthorised.Text" xml:space="preserve">
+		<value>Autorisé</value>
+	</data>
+	<data name="lblDisplayName.Text" xml:space="preserve">
+		<value>Nom d'affichage</value>
+	</data>
+	<data name="lblEmail.Text" xml:space="preserve">
+		<value>Email</value>
+	</data>
+	<data name="lblFirstName.Text" xml:space="preserve">
+		<value>Prénom</value>
+	</data>
+	<data name="lblisdeleted.Text" xml:space="preserve">
+		<value>Est supprimé</value>
+	</data>
+	<data name="lblLastName.Text" xml:space="preserve">
+		<value>Nom de famille</value>
+	</data>
+	<data name="lblupdatepassword.Text" xml:space="preserve">
+		<value>Mise à jour de mot de passe</value>
+	</data>
+	<data name="lblUserID.Text" xml:space="preserve">
+		<value>UserID</value>
+	</data>
+	<data name="lblUserName.Text" xml:space="preserve">
+		<value>Nom d'utilisateur</value>
+	</data>
+	<data name="UserID.Header" xml:space="preserve">
+		<value>UserID</value>
+	</data>
+	<data name="cmdValidateUser.confirm" xml:space="preserve">
+		<value>Autorise l'utilisateur et accorder un client rôle accès ?</value>
+	</data>
+	<data name="cmdViewAddressBook.Text" xml:space="preserve">
+		<value>Carnet d'adresses</value>
+	</data>
+	<data name="cmdViewClient.Text" xml:space="preserve">
+		<value>Voir Client</value>
+	</data>
+	<data name="cmdViewClientIcon.Text" xml:space="preserve">
+		<value>&lt;i title="View Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdViewClientButton.Text" xml:space="preserve">
+		<value>&lt;i title="View Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; Découvre le Client</value>
+	</data>
+	<data name="usageleft.Text" xml:space="preserve">
+		<value>Utilisation</value>
+	</data>
+	<data name="validuntil.Text" xml:space="preserve">
+		<value>Valable jusqu'au</value>
+	</data>
+	<data name="notsale.Text" xml:space="preserve">
+		<value>Non valide pour les produits en vente </value>
+	</data>
+	<data name="validcategory.Text" xml:space="preserve">
+		<value>Catégorie valide</value>
+	</data>
+	<data name="FindaClient.Text" xml:space="preserve">
+		<value>Recherche Client</value>
+	</data>
+	<data name="cmdEditOrderIcon.Text" xml:space="preserve">
+		<value>&lt;i title="View and Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdEditOrderButton.Text" xml:space="preserve">
+		<value>&lt;i title="View and Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; modifier</value>
+	</data>
+	<data name="cmdEmailAmended.confirm" xml:space="preserve">
+		<value>Envoyer Email modifiée au Client ?</value>
+	</data>
+	<data name="cmdEmailAmended.Text" xml:space="preserve">
+		<value>Modifié</value>
+	</data>
+	<data name="cmdEmailReceipt.confirm" xml:space="preserve">
+		<value>Envoyer Email de réception au Client ?</value>
+	</data>
+	<data name="cmdEmailReceipt.Text" xml:space="preserve">
+		<value>Reçu</value>
+	</data>
+	<data name="cmdEmailShipped.confirm" xml:space="preserve">
+		<value>Envoi expédié par courriel au Client ?</value>
+	</data>
+	<data name="cmdEmailShipped.Text" xml:space="preserve">
+		<value>Expédié</value>
+	</data>
+	<data name="cmdEmailValidated.confirm" xml:space="preserve">
+		<value>Envoyer Email confirmé au Client ?</value>
+	</data>
+	<data name="cmdEmailValidated.Text" xml:space="preserve">
+		<value>Confirmé</value>
+	</data>
+	<data name="cmdPrintOrder.Text" xml:space="preserve">
+		<value>Imprimer</value>
+	</data>
+	<data name="cmdPrintReceipt.Text" xml:space="preserve">
+		<value>Reçu</value>
+	</data>
+	<data name="cmdReOrder.Text" xml:space="preserve">
+		<value>Répéter</value>
+	</data>
+	<data name="cmdReOrderIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Repeat" class="fa fa-repeat fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdReOrderButton.Text" xml:space="preserve">
+		<value>&lt;i title="Repeat" class="fa fa-repeat fa-fw fa-lg"&gt;&lt;/i&gt; répéter</value>
+	</data>
+	<data name="cmdReturn.Text" xml:space="preserve">
+		<value>Retour</value>
+	</data>
+	<data name="cmdView.Text" xml:space="preserve">
+		<value>Voir</value>
+	</data>
+	<data name="cmdViewIcon.Text" xml:space="preserve">
+		<value>&lt;i title="View and Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdViewButton.Text" xml:space="preserve">
+		<value>&lt;i title="View and Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; vue</value>
+	</data>
+	<data name="cmdPrintDeliveryLabel.Text" xml:space="preserve">
+		<value>Étiquette de livraison</value>
+	</data>
+	<data name="cmdDeleteInvoice.confirm" xml:space="preserve">
+		<value>Supprimer une facture ?</value>
+	</data>
+	<data name="cmdDeleteInvoice.Text" xml:space="preserve">
+		<value>Supprimer une facture</value>
+	</data>
+	<data name="ProcessOrder.Text" xml:space="preserve">
+		<value>Suivi de la commande</value>
+	</data>
+	<data name="VATincluded.Text" xml:space="preserve">
+		<value>TVA incluse</value>
+	</data>
+	<data name="qty.Text" xml:space="preserve">
+		<value>Qté</value>
+	</data>
+	<data name="total.Text" xml:space="preserve">
+		<value>Total</value>
+	</data>
+	<data name="myorders.Text" xml:space="preserve">
+		<value>Mes commandes</value>
+	</data>
+	<data name="orderdate.Text" xml:space="preserve">
+		<value>Date de la commande</value>
+	</data>
+	<data name="ordernumber.Text" xml:space="preserve">
+		<value>Numéro de commande</value>
+	</data>
+	<data name="none.Text" xml:space="preserve">
+		<value>Aucun</value>
+	</data>
+	<data name="PaymentMethod.Text" xml:space="preserve">
+		<value>Mode de paiement</value>
+	</data>
+	<data name="admin.Text" xml:space="preserve">
+		<value>Admin</value>
+	</data>
+	<data name="catalog.Text" xml:space="preserve">
+		<value>Catalogue</value>
+	</data>
+	<data name="dashboard.Text" xml:space="preserve">
+		<value>Tableau de bord</value>
+	</data>
+	<data name="exit.Text" xml:space="preserve">
+		<value>Sortie</value>
+	</data>
+	<data name="lblctrl.Help" xml:space="preserve">
+		<value>plugin Ref à identifier le plugin pour le système, doit être unique et utilisé pour référencer l'entrée du fichier resx pour le nom de menu.</value>
+	</data>
+	<data name="lblctrl.Text" xml:space="preserve">
+		<value>Ref plugin</value>
+	</data>
+	<data name="lbldescription.Help" xml:space="preserve">
+		<value>Activer la recherche de texte de description de produit</value>
+	</data>
+	<data name="lbldescription.Text" xml:space="preserve">
+		<value>Recherche de texte de description</value>
+	</data>
+	<data name="lblhelp.Help" xml:space="preserve">
+		<value>Description du public pour l'info-bulle du menu.</value>
+	</data>
+	<data name="lblhelp.Text" xml:space="preserve">
+		<value>Aide</value>
+	</data>
+	<data name="lblname.Help" xml:space="preserve">
+		<value>Nom convivial pour le Plugin. (utilisé comme nom par défaut sur le menu si aucune entrée resx dans plugins.ascx.resx)</value>
+	</data>
+	<data name="lblname.Text" xml:space="preserve">
+		<value>Nom par défaut</value>
+	</data>
+	<data name="lblpath.Help" xml:space="preserve">
+		<value>Chemin d'accès relatif au contrôle ascx du plugin.</value>
+	</data>
+	<data name="lblpath.Text" xml:space="preserve">
+		<value>Chemin d'accès au contrôle</value>
+	</data>
+	<data name="settings.Text" xml:space="preserve">
+		<value>Paramètres</value>
+	</data>
+	<data name="addressbook.Text" xml:space="preserve">
+		<value>Carnet d'adresses</value>
+	</data>
+	<data name="promotions.Text" xml:space="preserve">
+		<value>Promotions</value>
+	</data>
+	<data name="shipping.Text" xml:space="preserve">
+		<value>Expédition</value>
+	</data>
+	<data name="shipping_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="tax.Text" xml:space="preserve">
+		<value>TVA</value>
+	</data>
+	<data name="utilities.Text" xml:space="preserve">
+		<value>Utilitaires</value>
+	</data>
+	<data name="clients.Text" xml:space="preserve">
+		<value>Clients</value>
+	</data>
+	<data name="dashSummary.Text" xml:space="preserve">
+		<value>Résumé</value>
+	</data>
+	<data name="plugins.Text" xml:space="preserve">
+		<value>Plugins</value>
+	</data>
+	<data name="lblhidden.Help" xml:space="preserve">
+		<value>Ne pas afficher le menu.</value>
+	</data>
+	<data name="lblhidden.Text" xml:space="preserve">
+		<value>Invisible</value>
+	</data>
+	<data name="lblroles.Help" xml:space="preserve">
+		<value>Liste CSV des rôles qui sont en mesure d'afficher ce contrôle</value>
+	</data>
+	<data name="lblroles.Text" xml:space="preserve">
+		<value>Rôles de sécurité</value>
+	</data>
+	<data name="bomenuattributes.Text" xml:space="preserve">
+		<value>Class = « nav menu principal »</value>
+	</data>
+	<data name="bosubmenuattributes.Text" xml:space="preserve">
+		<value>Class = « menu déroulant »</value>
+	</data>
+	<data name="lblgroup.Text" xml:space="preserve">
+		<value>Groupe</value>
+	</data>
+	<data name="cmdEdit.Text" xml:space="preserve">
+		<value>Edit</value>
+	</data>
+	<data name="cmdEditIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdUpIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Move Up" class="fa fa-arrow-circle-up fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdDownIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Move Down" class="fa fa-arrow-circle-down fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="lblicon.Hep" xml:space="preserve">
+		<value>Icône pour afficher le menu.</value>
+	</data>
+	<data name="lblicon.Text" xml:space="preserve">
+		<value>Icône html</value>
+	</data>
+	<data name="admin_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="catalog_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="dashboard_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="sales_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="utilities_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="exit_icon.Text" xml:space="preserve">
+		<value>&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="categories.Text" xml:space="preserve">
+		<value>Catégories</value>
+	</data>
+	<data name="export.Text" xml:space="preserve">
+		<value>Exportation</value>
+	</data>
+	<data name="import.Text" xml:space="preserve">
+		<value>Importation</value>
+	</data>
+	<data name="properties.Text" xml:space="preserve">
+		<value>Propriétés</value>
+	</data>
+	<data name="propertyGroups.Text" xml:space="preserve">
+		<value>Groupes de propriétés</value>
+	</data>
+	<data name="sales.Text" xml:space="preserve">
+		<value>Ventes</value>
+	</data>
+	<data name="tools.Text" xml:space="preserve">
+		<value>Outils</value>
+	</data>
+	<data name="orders.Text" xml:space="preserve">
+		<value>Commandes</value>
+	</data>
+	<data name="assembly.Text" xml:space="preserve">
+		<value>Assemblée</value>
+	</data>
+	<data name="lblprovidertype.Text" xml:space="preserve">
+		<value>Type de fournisseur</value>
+	</data>
+	<data name="namespaceclass.Text" xml:space="preserve">
+		<value>Namespace et classe</value>
+	</data>
+	<data name="providertype.data" xml:space="preserve">
+		<value>Interface utilisateur uniquement;Expéditions;TVA;Promotions;Planificateur;Événements;Paiements;CodePromo;Autre</value>
+	</data>
+	<data name="providertype.datavalue" xml:space="preserve">
+		<value>01 02 03, 04, 05, 06 ; 07 ; 08 ; 99</value>
+	</data>
+	<data name="templatepath.Text" xml:space="preserve">
+		<value>Chemin d'accès relatif du fichier modèle</value>
+	</data>
+	<data name="lblinstock.Text" xml:space="preserve">
+		<value>Stock Checkbox : </value>
+	</data>
+	<data name="lblRedirectTab.Help" xml:space="preserve">
+		<value>Page de redirection après mise à jour</value>
+	</data>
+	<data name="lblRedirectTab.Text" xml:space="preserve">
+		<value>Page de redirection : </value>
+	</data>
+	<data name="lblsearchtemplate.Text" xml:space="preserve">
+		<value>Modèle : </value>
+	</data>
+	<data name="lbltargetmodulekey.Help" xml:space="preserve">
+		<value>Module clé du module qui affiche les résultats.</value>
+	</data>
+	<data name="lbltargetmodulekey.Text" xml:space="preserve">
+		<value>Clé de cible de Module : </value>
+	</data>
+	<data name="lbltheme.Help" xml:space="preserve">
+		<value>Nom du thème à utiliser pour cette liste de cart.</value>
+	</data>
+	<data name="lbltheme.Text" xml:space="preserve">
+		<value>Thème : </value>
+	</data>
+	<data name="ControlTitle_settings.Text" xml:space="preserve">
+		<value>Paramètres de formulaire de profil</value>
+	</data>
+	<data name="lbladvancedsettings.Text" xml:space="preserve">
+		<value>Advanced</value>
+	</data>
+	<data name="lblbasicsettings.Text" xml:space="preserve">
+		<value>Générales</value>
+	</data>
+	<data name="lblcascaderesults.Help" xml:space="preserve">
+		<value>Si une catégorie parent est sélectionnée, tous les produits dans les catégories enfants aussi apparaît.</value>
+	</data>
+	<data name="lblcascaderesults.Text" xml:space="preserve">
+		<value>Résultats de la cascade : </value>
+	</data>
+	<data name="lbldefaultcatid.Help" xml:space="preserve">
+		<value>Catégorie par défaut à afficher de la liste, si aucune autre catégorie sélectionnée.  Désélectionnez ceci si vous utilisez le jeton « sqlfilter » dans le modèle d'en-tête.</value>
+	</data>
+	<data name="lbldefaultcatid.Text" xml:space="preserve">
+		<value>Catégorie par défaut : </value>
+	</data>
+	<data name="lbldefaultlistmodule.Help" xml:space="preserve">
+		<value>Définissez ce module soit le module de retour par défaut pour la liste des produits.  Cela dit la DDRMenu quelle page pour rediriger vers lorsque plusieurs pages sont utilisés avec le DDRMenu.  Si aucune valeur par défaut n'est définie la DDRMenu retournera à la page actuelle.</value>
+	</data>
+	<data name="lbldefaultlistmodule.Text" xml:space="preserve">
+		<value>Module de liste par défaut : </value>
+	</data>
+	<data name="lbldetailbody.Help" xml:space="preserve">
+		<value>Modèle pour être utilisé comme corps de détail produit.</value>
+	</data>
+	<data name="lbldetailbody.Text" xml:space="preserve">
+		<value>Corps en détail : </value>
+	</data>
+	<data name="lbldetailfooter.Help" xml:space="preserve">
+		<value>Modèle pour servir de pied de page détail produit.</value>
+	</data>
+	<data name="lbldetailfooter.Text" xml:space="preserve">
+		<value>Détail pied de page : </value>
+	</data>
+	<data name="lbldetailheader.Help" xml:space="preserve">
+		<value>Modèle à utiliser comme en-tête de détail produit.</value>
+	</data>
+	<data name="lbldetailheader.Text" xml:space="preserve">
+		<value>En-tête de détail : </value>
+	</data>
+	<data name="lbldetailmoduleref.Help" xml:space="preserve">
+		<value>Module clé du module détail d'exposer le produit.  Si vide, alors tous les modules de vue produit sur la page peuvent afficher le détail de l'entrée.  Cette fonction est activée à l'aide du jeton de paramètres sur l'attribut modkey du jeton "nbs:entrylink" dans le modèle de liste.</value>
+	</data>
+	<data name="lbldetailmoduleref.Text" xml:space="preserve">
+		<value>Détail Module clé : </value>
+	</data>
+	<data name="lbldetailtab.Help" xml:space="preserve">
+		<value>La page l'utilisateur sera redirigé vers lorsque l'utilisateur clique sur le bouton « Voir le produit ».  Si vide, la page actuelle est utilisée.  Cette fonction est activée à l'aide du jeton de paramètres sur l'attribut tabid du jeton "nbs:entrylink" dans le modèle de liste.</value>
+	</data>
+	<data name="lbldetailtab.Text" xml:space="preserve">
+		<value>Détail de la Page produit : </value>
+	</data>
+	<data name="lbllistbody.Help" xml:space="preserve">
+		<value>Modèle à utiliser comme organisme de liste de produits, cela est répété pour chaque produit.</value>
+	</data>
+	<data name="lbllistbody.Text" xml:space="preserve">
+		<value>Corps de liste : </value>
+	</data>
+	<data name="lbllistfooter.Help" xml:space="preserve">
+		<value>Modèle pour servir de pied de page produit liste.</value>
+	</data>
+	<data name="lbllistfooter.Text" xml:space="preserve">
+		<value>Pied de page liste : </value>
+	</data>
+	<data name="lbllistheader.Help" xml:space="preserve">
+		<value>Modèle à utiliser comme en-tête produit de la liste.</value>
+	</data>
+	<data name="lbllistheader.Text" xml:space="preserve">
+		<value>En-tête de la liste : </value>
+	</data>
+	<data name="lbllistonly.Help" xml:space="preserve">
+		<value>Afficher uniquement l'affichage de la liste pour ce module, aucune vue de détail ne sera affichée sur ce module.</value>
+	</data>
+	<data name="lbllistonly.Text" xml:space="preserve">
+		<value>Liste uniquement : </value>
+	</data>
+	<data name="lblmoduleref.Help" xml:space="preserve">
+		<value>Module unique clé.  Ceci est utilisé pour identifier ce module avec d'autres modules NBS.</value>
+	</data>
+	<data name="lblmoduleref.Text" xml:space="preserve">
+		<value>Module clé : </value>
+	</data>
+	<data name="lblpagesize.Help" xml:space="preserve">
+		<value>Nombre de produits à afficher sur chaque page.</value>
+	</data>
+	<data name="lblpagesize.Text" xml:space="preserve">
+		<value>Taille de la page : </value>
+	</data>
+	<data name="lblreturnlimit.Help" xml:space="preserve">
+		<value>Nombre maximum de produits qui sera affichée par le module.  (zéro n'est pas imparti)</value>
+	</data>
+	<data name="lblreturnlimit.Text" xml:space="preserve">
+		<value>Limite de retour produit</value>
+	</data>
+	<data name="lblreturntab.Help" xml:space="preserve">
+		<value>La page, l'utilisateur est retourné à lorsque l'utilisateur clique sur le bouton « Retour à la liste ».  Si vide, la page actuelle est utilisée.  Cette fonction est activée à l'aide du jeton de paramètres sur l'attribut tabid du jeton "nbs:returnlink" dans le modèle de détails.</value>
+	</data>
+	<data name="lblreturntab.Text" xml:space="preserve">
+		<value>Page de la liste : </value>
+	</data>
+	<data name="lblstaticlist.Help" xml:space="preserve">
+		<value>Listes statiques utilisera toujours les catégories par défaut, indépendamment de toute catégorie sélectionnée.  Ceux-ci servent à afficher les coups de coeur ou de produits en promotion.</value>
+	</data>
+	<data name="lblstaticlist.Text" xml:space="preserve">
+		<value>Liste statique : </value>
+	</data>
+	<data name="lblthemesettings.Text" xml:space="preserve">
+		<value>Paramètres thème</value>
+	</data>
+	<data name="themehidden.Text" xml:space="preserve">
+		<value>Anciens paramètres de thème ont été désactivés, mise à jour pour activer le nouveau thème. </value>
+	</data>
+	<data name="lblinputform.Help" xml:space="preserve">
+		<value>Modèle à utiliser comme l'OFEV d'entrée de données pour l'adresse.</value>
+	</data>
+	<data name="lblinputform.Text" xml:space="preserve">
+		<value>Modèle de formulaire de saisie : </value>
+	</data>
+	<data name="lblemailtemplate.Help" xml:space="preserve">
+		<value>Courriel à envoyer lorsqu'un profil est mis à jour.  Si elle est vide (aucun courrier électronique n'est envoyé)</value>
+	</data>
+	<data name="lblemailtemplate.Text" xml:space="preserve">
+		<value>Modèle d'e-mail : </value>
+	</data>
+	<data name="emailsubject.Text" xml:space="preserve">
+		<value>Mise à jour du profil utilisateur</value>
+	</data>
+	<data name="lblclientrole.Help" xml:space="preserve">
+		<value>Les utilisateurs recevront un message qu'ils doivent attendre pour le niveau de sécurité pour le rôle « Client » avant que le magasin est accessible.  </value>
+	</data>
+	<data name="lblclientrole.Text" xml:space="preserve">
+		<value>Activer le rôle de Client Security : </value>
+	</data>
+	<data name="lblemailregisteredclienttemplate.Help" xml:space="preserve">
+		<value>Courriel à envoyer au Client lorsqu'ils s'enregistrent. Si elle est vide (aucun courrier électronique n'est envoyé)</value>
+	</data>
+	<data name="lblemailregisteredclienttemplate.Text" xml:space="preserve">
+		<value>Modèle d'e-mail Client enregistré : </value>
+	</data>
+	<data name="lblemailregisteredtemplate.Help" xml:space="preserve">
+		<value>Courriel à envoyer au gestionnaire lorsqu'un client enregistre. Si elle est vide (aucun courrier électronique n'est envoyé)</value>
+	</data>
+	<data name="lblemailregisteredtemplate.Text" xml:space="preserve">
+		<value>Modèle enregistré d'e-mail : </value>
+	</data>
+	<data name="pagesize.Text" xml:space="preserve">
+		<value>Longueur de la page</value>
+	</data>
+	<data name="storagetypeclient.Help" xml:space="preserve">
+		<value>Client cartid et autres données spécifiques de client peuvent être stockées comme les Cookies ou SessionMemory</value>
+	</data>
+	<data name="storagetypeclient.Text" xml:space="preserve">
+		<value>Type de stockage client</value>
+	</data>
+	<data name="productlisttab.Help" xml:space="preserve">
+		<value>Utilisé pour rediriger/gestionnaire des utilisateurs vers la page du produit lorsque certaines actions sont faites.</value>
+	</data>
+	<data name="productlisttab.Text" xml:space="preserve">
+		<value>Liste des produits</value>
+	</data>
+	<data name="adminemail.Help" xml:space="preserve">
+		<value>Adresse e-mail de l'administrateur de la Banque, c'est le magasin de défaut envoyant l'adresse e-mail.</value>
+	</data>
+	<data name="adminemail.Text" xml:space="preserve">
+		<value>Administrateur</value>
+	</data>
+	<data name="carttab.Help" xml:space="preserve">
+		<value>Utilisé pour rediriger/gestionnaire des utilisateurs vers la page du panier lorsque certaines actions sont faites.</value>
+	</data>
+	<data name="carttab.Text" xml:space="preserve">
+		<value>Caisse</value>
+	</data>
+	<data name="manageremail.Help" xml:space="preserve">
+		<value>Liste CSV de gestionnaire de courriels.</value>
+	</data>
+	<data name="manageremail.Text" xml:space="preserve">
+		<value>Gestionnaire</value>
+	</data>
+	<data name="resetpasswordonclientvalidate.Text" xml:space="preserve">
+		<value>Réinitialiser mot de passe sur la Validation Client</value>
+	</data>
+	<data name="cataloguemode.Text" xml:space="preserve">
+		<value>Mode catalogue</value>
+	</data>
+	<data name="folderdocs.Text" xml:space="preserve">
+		<value>Dossier de document</value>
+	</data>
+	<data name="folderimages.Text" xml:space="preserve">
+		<value>Dossier d'images</value>
+	</data>
+	<data name="folderuploads.Text" xml:space="preserve">
+		<value>Télécharger le dossier</value>
+	</data>
+	<data name="minimumstocklevel.Text" xml:space="preserve">
+		<value>Stock minimum</value>
+	</data>
+	<data name="pageactions.Text" xml:space="preserve">
+		<value>Actions de la page</value>
+	</data>
+	<data name="backofficeexittab.Text" xml:space="preserve">
+		<value>Page de sortie de Back-Office</value>
+	</data>
+	<data name="sendclientroleemail.Text" xml:space="preserve">
+		<value>Envoyer Email Client quand ajouté au rôle de Client</value>
+	</data>
+	<data name="defaultthemefolder.Text" xml:space="preserve">
+		<value>Dossier de thème par défaut</value>
+	</data>
+	<data name="devoptions.Text" xml:space="preserve">
+		<value>Options de développeur</value>
+	</data>
+	<data name="enabledealer.Text" xml:space="preserve">
+		<value>Activez le négociant</value>
+	</data>
+	<data name="removelogo.confirm" xml:space="preserve">
+		<value>Enlever le logo ?</value>
+	</data>
+	<data name="removelogo.Text" xml:space="preserve">
+		<value>Supprimer</value>
+	</data>
+	<data name="orderprefix.Text" xml:space="preserve">
+		<value>Préfixe d'ordre</value>
+	</data>
+	<data name="currencysymbol.Text" xml:space="preserve">
+		<value>Symbole monétaire</value>
+	</data>
+	<data name="paymenttab.Help" xml:space="preserve">
+		<value>Onglet où le client sera redirigé pour sélectionner un mode de paiement.</value>
+	</data>
+	<data name="EmailOrder.Text" xml:space="preserve">
+		<value>Envoi emails</value>
+	</data>
+	<data name="copyorderto.Text" xml:space="preserve">
+		<value>Envoyer copie commande par email</value>
+	</data>
+	<data name="paymenttab.Text" xml:space="preserve">
+		<value>Paiement</value>
+	</data>
+	<data name="PrintOrder.Text" xml:space="preserve">
+		<value>Imprimer commande</value>
+	</data>
+	<data name="ordermanagertab.Text" xml:space="preserve">
+		<value>Mes commandes</value>
+	</data>
+	<data name="PaymentStatus.Text" xml:space="preserve">
+		<value>Statut du paiement</value>
+	</data>
+	<data name="addressestab.Text" xml:space="preserve">
+		<value>Mes adresses</value>
+	</data>
+	<data name="profiletab.Text" xml:space="preserve">
+		<value>Mon profil</value>
+	</data>
+	<data name="OrderCreatedClient.Text" xml:space="preserve">
+		<value>Commande confirmée</value>
+	</data>
+	<data name="OrderAmended.Text" xml:space="preserve">
+		<value>Commande modifiée</value>
+	</data>
+	<data name="OrderShipped.Text" xml:space="preserve">
+		<value>Commande expédiée</value>
+	</data>
+	<data name="cmdReturnButton.Text" xml:space="preserve">
+		<value>&lt;i  title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
+	</data>
+	<data name="Enabled.Text" xml:space="preserve">
+		<value>Activé</value>
 	</data>
 </root>

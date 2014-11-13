@@ -288,4 +288,7 @@
 	<data name="contact.Text" xml:space="preserve">
     <value>Merci de nous contacter</value>
   </data>
+	<data name="choosemodel.Text" xml:space="preserve">
+		<value>Sélectionner modèle</value>
+	</data>
 </root>

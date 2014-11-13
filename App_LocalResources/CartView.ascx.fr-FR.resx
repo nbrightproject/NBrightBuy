@@ -142,10 +142,10 @@
 		<value>Commander</value>
 	</data>
 	<data name="SelectBill.Text" xml:space="preserve">
-		<value>Sélectionnez l'adresse de facturation</value>
+		<value>Sélectionner l'adresse de facturation</value>
 	</data>
 	<data name="SelectShip.Text" xml:space="preserve">
-		<value>Sélectionnez l'adresse de livraison</value>
+		<value>Sélectionner l'adresse de livraison</value>
 	</data>
 	<data name="txtItems.Text" xml:space="preserve">
 		<value>Article(s)</value>
@@ -154,25 +154,25 @@
 		<value>Adresse de livraison</value>
 	</data>
 	<data name="ForCollection.Text" xml:space="preserve">
-		<value>Collecte</value>
+		<value>Pour collecte</value>
 	</data>
 	<data name="UseBillingAddress.Text" xml:space="preserve">
 		<value>Utilisez l'adresse de facturation</value>
 	</data>
 	<data name="collectiontimes.Text" xml:space="preserve">
-		<value>Heures de collecte</value>
+		<value>Heure de collecte</value>
 	</data>
 	<data name="selectaddress.Text" xml:space="preserve">
 		<value>Carnet d'adresses</value>
 	</data>
 	<data name="shippingoption1.data" xml:space="preserve">
-		<value>Expédier à l'adresse de facturation;Expédier à une autre adresse;Je retirerais ma commande</value>
+		<value>Adresse de facturation / Relais colis;Nouvelle adresse;Je passerais prendre ma commande</value>
 	</data>
 	<data name="shippingoption2.data" xml:space="preserve">
 		<value>Utiliser adresse de facturation;Saisir une adresse de livraison</value>
 	</data>
 	<data name="SaveAddress.Text" xml:space="preserve">
-		<value>Enregistrez l'adresse</value>
+		<value>Enregistrer l'adresse</value>
 	</data>
 	<data name="SaveAddress.Title" xml:space="preserve">
 		<value>Sauvegarder l'adresse dans le carnet d'adresses</value>
@@ -193,10 +193,10 @@
 		<value>Vider le panier</value>
 	</data>
 	<data name="cmdClearCart.confirm" xml:space="preserve">
-		<value>Supprimer tous les articles ?</value>
+		<value>Supprimer tous les articles et annuler la commande ?</value>
 	</data>
 	<data name="chknews.Text" xml:space="preserve">
-		<value>Newsletter</value>
+		<value>Recevoir notre Newsletter</value>
 	</data>
 	<data name="chkterms.Text" xml:space="preserve">
 		<value>J'ai lu et j'accepte les Termes et Conditions.</value>
@@ -217,7 +217,7 @@
 		<value>Total à régler</value>
 	</data>
 	<data name="PaymentComplete.Text" xml:space="preserve">
-		<value>Paiement terminé</value>
+		<value>Votre paiement a été accepté</value>
 	</data>
 	<data name="PaymentFailed.Text" xml:space="preserve">
 		<value>Paiement échoué</value>
@@ -230,5 +230,8 @@
 	</data>
 	<data name="ProcessingDiv.Text" xml:space="preserve">
 		<value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="Previous.Text" xml:space="preserve">
+		<value>Précédent</value>
 	</data>
 </root>

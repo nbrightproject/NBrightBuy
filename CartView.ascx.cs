@@ -203,9 +203,9 @@ namespace Nevoweb.DNN.NBrightBuy
             {
 
                 // display footer
+                cartL[0].SetXmlProperty("genxml/hidden/currentcartstage", cartL[0].GetXmlProperty("genxml/currentcartstage")); // set the cart stage so we appear on correct stage.
                 checkoutlayout.DataSource = cartL;
                 checkoutlayout.DataBind();
-
 
                 var objl = new List<NBrightInfo>();
                 var billaddr = _cartInfo.GetBillingAddress();
@@ -349,7 +349,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 Response.Redirect(href, true);
             }
             else
+            {
+                var currentcartstage = GenXmlFunctions.GetField(checkoutlayout, "currentcartstage");
+                _cartInfo.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", currentcartstage);
+                var pickuppointref = GenXmlFunctions.GetField(rpExtra, "pickuppointref");
+                _cartInfo.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
+                var pickuppointaddr = GenXmlFunctions.GetField(rpExtra, "pickuppointaddr");
+                _cartInfo.PurchaseInfo.SetXmlProperty("genxml/pickuppointaddr", pickuppointaddr);
+
                 _cartInfo.Save(DebugMode);
+            }
             if (UserId == -1)
             {
                 // no user registered so save address as cookie

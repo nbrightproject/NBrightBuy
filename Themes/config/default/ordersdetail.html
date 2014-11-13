@@ -16,7 +16,10 @@
 					</address>
 					<address>
 					<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]</b></div>
-					<div>[<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="Manual" displayelse="Credit Card" />][<tag type="endtestof"  />]</div>
+    <div>
+    [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{ON}" displayelse="{OFF}" />][<tag type="valueof" resourcekey="General.manualpayment" />][<tag type="endtestof" />]
+    [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{OFF}" displayelse="{ON}" />][<tag type="valueof" resourcekey="General.creditcardpayment" />][<tag type="endtestof" />]
+    </div>
 					</address>
 					<address>
 					<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentStatus" />]</b></div>
@@ -25,7 +28,9 @@
 				</div>
 				
 				<div class="col-xs-3 shipaddress">
+
 			    [<tag type="if" xpath="genxml/pickuppointaddr" testvalue="" display="{ON}" />]<!-- Hide shipping address if shipping provider generates a pickup location -->
+
 				[<tag type="if" xpath="genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions" testvalue="2" display="{ON}" />]<!-- If shipping address is supplied show it -->
 					<h4>[<tag type="valueof" resourcekey="General.ShipTo" />]</h4>
 					<address>
@@ -61,6 +66,9 @@
 						<div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
 					</address>
 			    [<tag type="endif" />]
+
+[<tag type="endif" />]
+
 			    
 				    <address>
 					<div><b>[<tag type="valueof" resourcekey="Notification.ShippingMethod" />]</b></div><!-- Show shipping method -->
@@ -76,7 +84,7 @@
 					</address>
 				[<tag type="endif" />]
 				
-			    [<tag type="endif" />]
+
 			    
 					<address>
 					[<tag type="if" xpath="genxml/textbox/shippingdate" testvalue="" display="{OFF}" />]<!-- Show shipping date if present -->
@@ -127,6 +135,6 @@
 						<div>[<tag type='valueof' resourcekey='General.Ph' />]: [Settings:storephone]</div>
 						[<tag type="endtestof" />]
 					</address>
-				    <h3 class="invoice-header">[<tag type='valueof' resourcekey='General.OrderNumber' />]# [<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
+				    <h3 class="invoice-header">[<tag type='valueof' resourcekey='General.OrderNumber' />] [<tag type="valueof" xpath="genxml/ordernumber" />]</h3>
 					<p>[<tag type='valueof' resourcekey='General.OrderDate' />]: [<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</p>
 				</div>

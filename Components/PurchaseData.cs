@@ -345,6 +345,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //add additional costs from optionvalues (Add to both dealer and unit cost)
                 if (additionalCosts > 0)
                 {
+                    objInfo.SetXmlPropertyDouble("genxml/additionalcosts", additionalCosts);
                     var uc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var dc = objInfo.GetXmlPropertyDouble("genxml/dealercost");
                     uc += additionalCosts;

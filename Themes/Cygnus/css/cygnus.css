@@ -348,14 +348,6 @@ a.entryurl{color:#333;display:block;}
 #addressinput H3{line-height:34px;margin:0 0 12px;padding:0;}
 #addressinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
 
-/* Chronopost Shipping provider */
-#chronoposttemplate .radiobuttonlist{margin:10px 0 15px;display:block;}
-#chronopostrelaistemplate #relais{float:left;margin:0 5% 0 0;min-width:240px;width:45%;list-style:none outside none;}
-#chronopostrelaistemplate #relais a{border-radius:4px;color:inherit;display:block;margin-bottom:5px;padding:5px;text-transform:capitalize;}
-#chronopostrelaistemplate #relais a:hover{background:#efefef;color:inherit;}
-#chronopostrelaistemplate #relais a:active, .relaisselected a:hover, .relaisselected a{background:#f75448 !important;;color:#ffffff !important;}
-#chronopostrelaistemplate #map-canvas{position:relative;width:49%;height:400px;margin-right:0;float:left;min-width:240px;border-radius:7px;border:1px solid #bbbbbb;}
-
 /* Order Manager */
 .ordersearch{margin-bottom:30px;overflow:hidden;}
 .ordersearch div{float:left;margin:0 15px 0 0;}

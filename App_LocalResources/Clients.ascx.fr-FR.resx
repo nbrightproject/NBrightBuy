@@ -397,7 +397,7 @@
 		<value>Aucun</value>
 	</data>
 	<data name="PaymentMethod.Text" xml:space="preserve">
-		<value>Mode de paiement : </value>
+		<value>Mode de paiement</value>
 	</data>
 	<data name="admin.Text" xml:space="preserve">
 		<value>Admin</value>
@@ -457,7 +457,7 @@
 		<value>&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
 	</data>
 	<data name="tax.Text" xml:space="preserve">
-		<value>Taxes</value>
+		<value>TVA</value>
 	</data>
 	<data name="utilities.Text" xml:space="preserve">
 		<value>Utilitaires</value>
@@ -475,7 +475,7 @@
 		<value>Ne pas afficher dans le menu.</value>
 	</data>
 	<data name="lblhidden.Text" xml:space="preserve">
-		<value>Caché</value>
+		<value>Invisible</value>
 	</data>
 	<data name="lblroles.Help" xml:space="preserve">
 		<value>Liste CSV des rôles qui sont en mesure d'afficher ce contrôle</value>
@@ -562,7 +562,7 @@
 		<value>Namespace et classe</value>
 	</data>
 	<data name="providertype.data" xml:space="preserve">
-		<value>Interface utilisateur uniquement;Expéditions;Taxes;Promotions;Planificateur;Événements;Paiements;Autre</value>
+		<value>Interface utilisateur uniquement;Expéditions;TVA;Promotions;Planificateur;Événements;Paiements;Autre</value>
 	</data>
 	<data name="providertype.datavalue" xml:space="preserve">
 		<value>01;02;03;04;05;06;07;08</value>
@@ -571,7 +571,7 @@
 		<value>Chemin d'accès relatif du fichier gabarit</value>
 	</data>
 	<data name="lblinstock.Text" xml:space="preserve">
-		<value>Dans la sélection du stock</value>
+		<value>Case à cocher stock :</value>
 	</data>
 	<data name="lblRedirectTab.Help" xml:space="preserve">
 		<value>Page de redirection après mise à jour</value>
@@ -580,7 +580,7 @@
 		<value>Page de redirection : </value>
 	</data>
 	<data name="lblsearchtemplate.Text" xml:space="preserve">
-		<value>Gabarit de recherche :</value>
+		<value>Gabarit :</value>
 	</data>
 	<data name="lbltargetmodulekey.Help" xml:space="preserve">
 		<value>Clé module du module qui affichera les résultats.</value>
@@ -688,7 +688,7 @@
 		<value>Taille de la page : </value>
 	</data>
 	<data name="lblreturnlimit.Help" xml:space="preserve">
-		<value>Nombre maximum de produits qui sera affiché par le module.  (zéro n'est pas imparti)</value>
+		<value>Nombre maximum de produits qui sera affiché par le module. (zéro n'est pas imparti)</value>
 	</data>
 	<data name="lblreturnlimit.Text" xml:space="preserve">
 		<value>Limite de retour produit</value>
@@ -721,7 +721,7 @@
 		<value>Email à envoyer lorsqu'un profil est mis à jour. (Si vide, aucun email n'est envoyé)</value>
 	</data>
 	<data name="lblemailtemplate.Text" xml:space="preserve">
-		<value>Gabarit d'e-mail : </value>
+		<value>Gabarit d'email : </value>
 	</data>
 	<data name="emailsubject.Text" xml:space="preserve">
 		<value>Mise à jour du profil utilisateur</value>
@@ -736,13 +736,13 @@
 		<value>Email à envoyer au client lorsqu'il s'enregistre. (Si vide, aucun email n'est envoyé)</value>
 	</data>
 	<data name="lblemailregisteredclienttemplate.Text" xml:space="preserve">
-		<value>Gabarit d'e-mail client enregistré : </value>
+		<value>Gabarit d'email client enregistré : </value>
 	</data>
 	<data name="lblemailregisteredtemplate.Help" xml:space="preserve">
 		<value>Email à envoyer au manager lorsqu'un client s'enregistre. (Si vide, aucun email n'est envoyé)</value>
 	</data>
 	<data name="lblemailregisteredtemplate.Text" xml:space="preserve">
-		<value>Gabarit d'e-mail manager client enregistré : </value>
+		<value>Gabarit d'email manager client enregistré : </value>
 	</data>
 	<data name="pagesize.Text" xml:space="preserve">
 		<value>Longueur de la page</value>
@@ -835,16 +835,16 @@
 		<value>Vous pouvez retirer votre commande en magasin suivant les horaires d'ouverture. Merci de procéder au passage en caisse et compléter votre commande. </value>
 	</data>
 	<data name="bankinginstructions.Text" xml:space="preserve">
-		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Merci d'insérer le numéro de commande dans le champ référence et d'inclure votre nom si celui-ci est différent de votre nom de compte.</value>
+		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Veuillez insérer le numéro de commande dans le champ référence et inclure votre nom si celui-ci est différent de votre nom de compte.</value>
 	</data>
 	<data name="checkoutfailmessage.Text" xml:space="preserve">
-		<value>La commande a été annulé ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance avec votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
+		<value>La commande a été annulée ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance liée à votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
 	</data>
 	<data name="checkoutsuccessmessage.Text" xml:space="preserve">
 		<value>Merci pour votre commande. Vous recevrez en suivant un email de confirmation contenant tous les détails de la commande. Merci de vérifier votre dossier de courrier indésirable si vous ne le recevez pas d'ici 30 minutes. Prenez note du numéro de commande ci-dessous si vous souhaitez nous contacter à son sujet.</value>
 	</data>
 	<data name="emailmessage.Text" xml:space="preserve">
-		<value>Merci pour votre commande. Nous sommes là pour toute assistance ! N'hésitez pas à nous contacter aux heures indiquées pour toutes questions concernant votre commande. </value>
+		<value>Merci pour votre commande. Nous sommes là pour toute assistance ! N'hésitez pas à nous contacter aux heures indiquées sur notre site pour toutes questions concernant votre commande. </value>
 	</data>
 	<data name="Contactus.Text" xml:space="preserve">
 		<value>Contactez-nous</value>
@@ -901,7 +901,7 @@
 		<value>Catégorie groupe de recherche</value>
 	</data>
 	<data name="lblpricerange.Help" xml:space="preserve">
-		<value>Tourner sur la sélection de la plage de prix</value>
+		<value>Activer la sélection des fourchettes de prix</value>
 	</data>
 	<data name="lblpricerange.Text" xml:space="preserve">
 		<value>Gamme de prix</value>
@@ -910,37 +910,37 @@
 		<value>Sélecteur d'ordre de tri</value>
 	</data>
 	<data name="lbltextsearch.Help" xml:space="preserve">
-		<value>Activer le sélecteur de commande de tri</value>
+		<value>Activer le sélecteur de tri de commande</value>
 	</data>
 	<data name="lbltextsearch.Text" xml:space="preserve">
 		<value>Recherche de texte</value>
 	</data>
 	<data name="lbltxtmanufacturer.Help" xml:space="preserve">
-		<value>Activer la recherche de texte fabricant</value>
+		<value>Activer la recherche de texte sur fabricant</value>
 	</data>
 	<data name="lbltxtmanufacturer.Text" xml:space="preserve">
 		<value> Recherche de texte fabricant</value>
 	</data>
 	<data name="lbltxtseoname.Help" xml:space="preserve">
-		<value>Activer la recherche de texte de nom SEO</value>
+		<value>Activer la recherche de texte sur nom SEO</value>
 	</data>
 	<data name="lbltxtseoname.Text" xml:space="preserve">
-		<value>Nom SEO la recherche de texte</value>
+		<value>Recherche texte sur nom SEO</value>
 	</data>
 	<data name="lbltxtseopagetitle.Help" xml:space="preserve">
-		<value>Activer la recherche de texte de titre SEOpage</value>
+		<value>Activer la recherche de texte sur titre SEO de la page</value>
 	</data>
 	<data name="lbltxtseopagetitle.Text" xml:space="preserve">
-		<value>Titre de la page SEO la recherche de texte</value>
+		<value>Recherche texte sur titre SEO de la page</value>
 	</data>
 	<data name="lbltxtsummary.Help" xml:space="preserve">
-		<value>Activer la recherche de texte sommaire</value>
+		<value>Activer la recherche de texte sur résumé</value>
 	</data>
 	<data name="lbltxtsummary.Text" xml:space="preserve">
-		<value>Recherche de texte sommaire</value>
+		<value>Recherche de texte sur résumé</value>
 	</data>
 	<data name="lbltxttagwords.Help" xml:space="preserve">
-		<value>Activer la recherche de texte mots tag</value>
+		<value>Activer la recherche de texte sur mots tag</value>
 	</data>
 	<data name="lbltxttagwords.Text" xml:space="preserve">
 		<value> Recherche de texte mots tag</value>
@@ -1132,7 +1132,7 @@
 		<value>Espace réservé Image icône (fontawesome.io) : </value>
 	</data>
 	<data name="lblallowzeroprice.Text" xml:space="preserve">
-		<value>Permettre l'achat de zéro-prix : </value>
+		<value>Permettre l'achat à prix zéro : </value>
 	</data>
 	<data name="lblholidaymode.Text" xml:space="preserve">
 		<value>Mode de vacances : </value>
@@ -1181,5 +1181,62 @@
 	</data>
 	<data name="ordermanagertab.Text" xml:space="preserve">
 		<value>Gestionnaire de commandes</value>
+	</data>
+	<data name="FindaClient.Text" xml:space="preserve">
+		<value>Recherche client</value>
+	</data>
+	<data name="Collection.Text" xml:space="preserve">
+		<value>Détails d'enlèvement</value>
+	</data>
+	<data name="Enabled.Text" xml:space="preserve">
+		<value>Activé</value>
+	</data>
+	<data name="copyorderto.Text" xml:space="preserve">
+		<value>Copier commande dans email</value>
+	</data>
+	<data name="notsale.Text" xml:space="preserve">
+		<value>Non valide pour produits en vente</value>
+	</data>
+	<data name="ShippingOption.Text" xml:space="preserve">
+		<value>Option de livraison</value>
+	</data>
+	<data name="ShippingDate.Text" xml:space="preserve">
+		<value>Date d'envoi en expédition</value>
+	</data>
+	<data name="PaymentStatus.Text" xml:space="preserve">
+		<value>Status de paiement</value>
+	</data>
+	<data name="addressestab.Text" xml:space="preserve">
+		<value>Mes adresses</value>
+	</data>
+	<data name="profiletab.Text" xml:space="preserve">
+		<value>Mon profil</value>
+	</data>
+	<data name="subscribenewsletter.Text" xml:space="preserve">
+		<value>Case à cocher Newsletter</value>
+	</data>
+	<data name="checkoutpromocode.Text" xml:space="preserve">
+		<value>Champ code promo</value>
+	</data>
+	<data name="usageleft.Text" xml:space="preserve">
+		<value>Utilisation</value>
+	</data>
+	<data name="checkouttaxcode.Text" xml:space="preserve">
+		<value>Champ code TVA</value>
+	</data>
+	<data name="validuntil.Text" xml:space="preserve">
+		<value>Valide jusqu'à</value>
+	</data>
+	<data name="validcategory.Text" xml:space="preserve">
+		<value>Catégorie valide</value>
+	</data>
+	<data name="fontawesome.Text" xml:space="preserve">
+		<value>Inclure FontAwesome</value>
+	</data>
+	<data name="jqueryuicss.Text" xml:space="preserve">
+		<value>Inclure jQuery UI CSS</value>
+	</data>
+	<data name="jqueryuijs.Text" xml:space="preserve">
+		<value>Inclure jQuery UI JS</value>
 	</data>
 </root>

@@ -298,7 +298,7 @@
     <value>Copier</value>
   </data>
 	<data name="Hidden.Text" xml:space="preserve">
-    <value>Cachée</value>
+    <value>Invisible</value>
   </data>
 	<data name="Keywords.Text" xml:space="preserve">
     <value>Mots clés</value>
@@ -373,7 +373,7 @@
     <value>Code Postal</value>
   </data>
 	<data name="lblRegion.Text" xml:space="preserve">
-    <value>Région</value>
+    <value>Département</value>
   </data>
 	<data name="lblPhone.Text" xml:space="preserve">
     <value>Tél.</value>
@@ -382,7 +382,7 @@
     <value>Pays</value>
   </data>
 	<data name="TaxNumber.Text" xml:space="preserve">
-    <value>Numéro Taxe</value>
+    <value>N° TVA</value>
   </data>
 	<data name="PromotionalCode.Text" xml:space="preserve">
     <value>Code promotionnel</value>
@@ -460,7 +460,7 @@
     <value>Charger image</value>
   </data>
 	<data name="CopyTo.Text" xml:space="preserve">
-    <value>Copier vers</value>
+    <value>Copier à</value>
   </data>
 	<data name="MoveTo.Text" xml:space="preserve">
     <value>Déplacer vers</value>
@@ -556,7 +556,7 @@
     <value>Code</value>
   </data>
 	<data name="Cost.Text" xml:space="preserve">
-    <value>Coût</value>
+    <value>Prix d'achat</value>
   </data>
 	<data name="Dealer.Text" xml:space="preserve">
     <value>Revendeur</value>
@@ -679,7 +679,7 @@
     <value>Sous-total</value>
   </data>
 	<data name="Tax.Text" xml:space="preserve">
-    <value>Taxe</value>
+    <value>TVA</value>
   </data>
 	<data name="Total.Text" xml:space="preserve">
     <value>Total</value>
@@ -781,7 +781,7 @@
 		<value>Numéro de commande</value>
 	</data>
 	<data name="Active.Text" xml:space="preserve">
-		<value>Active</value>
+		<value>Actif</value>
 	</data>
 	<data name="Type.Text" xml:space="preserve">
 		<value>Type</value>
@@ -823,7 +823,7 @@
 		<value>Le profil du compte utilisateur suivant a été mis à jour. Merci de modifier votre registre si nécessaire.</value>
 	</data>
 	<data name="Number.Text" xml:space="preserve">
-		<value>Nombre</value>
+		<value>Numéro</value>
 	</data>
 	<data name="ShipTo.Text" xml:space="preserve">
 		<value>Expédier à</value>
@@ -841,21 +841,66 @@
 		<value>Mode débogage</value>
 	</data>
 	<data name="Taxno.Text" xml:space="preserve">
-		<value>Pas de taxe</value>
+		<value>N° TVA</value>
 	</data>
 	<data name="Sales.Text" xml:space="preserve">
-		<value>Ventes</value>
+		<value>Contact commercial</value>
 	</data>
 	<data name="Support.Text" xml:space="preserve">
-		<value>Prise en charge</value>
+		<value>Contact technique</value>
 	</data>
 	<data name="Web.Text" xml:space="preserve">
-		<value>Web</value>
+		<value>Site Internet</value>
 	</data>
 	<data name="Ph.Text" xml:space="preserve">
-		<value>Ph</value>
+		<value>Tél.</value>
 	</data>
 	<data name="Att.Text" xml:space="preserve">
 		<value>Att</value>
+	</data>
+	<data name="cmdMyOrdersIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Mes commandes" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Mon carnet d'adresses" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="cmdMyAccount.Text" xml:space="preserve">
+		<value>&lt;i title="Mon profil de compte" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
+	<data name="PickupReference.Text" xml:space="preserve">
+		<value>Référence Relais Colis</value>
+	</data>
+	<data name="PickupAddress.Text" xml:space="preserve">
+		<value>Adresse Relais Colis</value>
+	</data>
+	<data name="Amount.Text" xml:space="preserve">
+		<value>Montant</value>
+	</data>
+	<data name="Authorised.Text" xml:space="preserve">
+		<value>Autorisé</value>
+	</data>
+	<data name="copyorderto.Text" xml:space="preserve">
+		<value>Envoyer une copie à </value>
+	</data>
+	<data name="Voucher.Text" xml:space="preserve">
+		<value>Coupon</value>
+	</data>
+	<data name="Percentage.Text" xml:space="preserve">
+		<value>Pourcentage</value>
+	</data>
+	<data name="Username.Text" xml:space="preserve">
+		<value>Nom d'utilisateur</value>
+	</data>
+	<data name="SalePrice.Text" xml:space="preserve">
+		<value>Prix soldé</value>
+	</data>
+	<data name="shippingmethods.Text" xml:space="preserve">
+		<value>Méthodes de livraison</value>
+	</data>
+	<data name="manualpayment.Text" xml:space="preserve">
+		<value>Manuel</value>
+	</data>
+	<data name="creditcardpayment.Text" xml:space="preserve">
+		<value>Carte bancaire</value>
 	</data>
 </root>

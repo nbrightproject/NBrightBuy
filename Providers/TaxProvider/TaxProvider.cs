@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -173,18 +174,18 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var rtnDic = new Dictionary<string, double>();
 
             var rate = info.GetXmlProperty("genxml/textbox/taxdefault").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("0", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("0", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
 
             rate = info.GetXmlProperty("genxml/textbox/rate1").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("1", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("1", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
             rate = info.GetXmlProperty("genxml/textbox/rate2").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("2", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("2", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
             rate = info.GetXmlProperty("genxml/textbox/rate3").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("3", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("3", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
             rate = info.GetXmlProperty("genxml/textbox/rate4").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("4", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("4", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
             rate = info.GetXmlProperty("genxml/textbox/rate5").Replace("%", "").Trim();
-            if (Utils.IsNumeric(rate)) rtnDic.Add("5", Convert.ToDouble(rate));
+            if (Utils.IsNumeric(rate)) rtnDic.Add("5", Convert.ToDouble(rate, CultureInfo.GetCultureInfo("en-US")));
 
             return rtnDic;
         }

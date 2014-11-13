@@ -262,9 +262,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double shippingcost = 0;
             Double shippingdealercost = 0;
             var shippingkey = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
-            if (shippingkey != "")
+            var currentcartstage = PurchaseInfo.GetXmlProperty("genxml/currentcartstage");
+            if (currentcartstage == "cartshipping") // can only calc shipping on this stage.
             {
-                var shipprov = ShippingInterface.Instance(shippingkey);
+                ShippingInterface shipprov = null;
+                if (shippingkey == "")
+                {
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetShippingProviders();
+                    foreach (var d in provList)
+                    {
+                        var isValid = true;
+                        var shipprov1 = ShippingInterface.Instance(d.Key);
+                        if (shipprov1 != null) isValid = shipprov1.IsValid(PurchaseInfo);
+                        if (isValid)
+                        {
+                            shipprov = shipprov1;
+                            if (shipprov != null) PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", shipprov.Shippingkey);
+                            break;
+                        }
+                    }
+                }
+                else
+                    shipprov = ShippingInterface.Instance(shippingkey);
+
+                if (shipprov != null && !shipprov.IsValid(PurchaseInfo)) // Check we have a valid one!! if not the get another!!
+                {
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetShippingProviders();
+                    foreach (var d in provList)
+                    {
+                        var isValid = true;
+                        var shipprov1 = ShippingInterface.Instance(d.Key);
+                        if (shipprov1 != null) isValid = shipprov1.IsValid(PurchaseInfo);
+                        if (isValid)
+                        {
+                            shipprov = shipprov1;
+                            if (shipprov != null) PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", shipprov.Shippingkey);
+                            break;
+                        }
+                    }
+                }
+
+
                 if (shipprov != null)
                 {
                     PurchaseInfo = shipprov.CalculateShipping(PurchaseInfo);
@@ -273,6 +313,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
             }
+            else
+            {
+                // clear the provider if not cartshipping stage
+                PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", "");
+            }
+
 
             //add tax
             Double appliedtax = 0;
@@ -320,14 +366,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var unitcost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
             var dealercost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
             var saleprice = prdModel.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
-            if (unitcost != cartItemInfo.GetXmlPropertyDouble("genxml/unitcost") || dealercost != cartItemInfo.GetXmlPropertyDouble("genxml/dealercost") || saleprice != cartItemInfo.GetXmlPropertyDouble("genxml/saleprice"))
-            {
-                cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
-                cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
-                cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
-                cartItemInfo.RemoveXmlNode("genxml/productxml");
-                cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
-            }
+
 
             // calc sale price
             var sellcost = unitcost;
@@ -363,31 +402,47 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
-                var totalcost = qty * sellcost;
-                var totaldealercost = qty*dealercost;
-                var totalweight = weight * qty;
-
+                Double additionalCosts = 0;
                 var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
                 if (optNods != null)
                 {
                     var lp = 0;
                     foreach (XmlNode nod in optNods)
                     {
-                        var optvalcostnod = nod.SelectSingleNode("option/optvalcost");
+                        var optvalcostnod = nod.SelectSingleNode("optvalcost");
                         if (optvalcostnod != null)
                         {
                             var optvalcost = optvalcostnod.InnerText;
                             if (Utils.IsNumeric(optvalcost))
                             {
-                                var optvaltotal = Convert.ToDouble(optvalcost)*qty;
+                                var optvaltotal = Convert.ToDouble(optvalcost, CultureInfo.GetCultureInfo("en-US")) * qty;
                                 cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
-                                totalcost += optvaltotal;
-                                totaldealercost += optvaltotal;
+                                additionalCosts += optvaltotal;
                             }
                         }
                         lp += 1;
                     }
                 }
+
+                unitcost += (additionalCosts / qty);
+                dealercost += (additionalCosts / qty);
+                saleprice += (additionalCosts / qty);
+                sellcost += (additionalCosts / qty);
+
+                var totalcost = qty * sellcost;
+                var totaldealercost = qty * dealercost;
+                var totalweight = weight * qty;
+
+
+                if (unitcost != cartItemInfo.GetXmlPropertyDouble("genxml/unitcost") || dealercost != cartItemInfo.GetXmlPropertyDouble("genxml/dealercost") || saleprice != cartItemInfo.GetXmlPropertyDouble("genxml/saleprice"))
+                {
+                    cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
+                    cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
+                    cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
+                    cartItemInfo.RemoveXmlNode("genxml/productxml");
+                    cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
+                }
+
 
                 cartItemInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight.ToString(""));
                 cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);

@@ -1,4 +1,4 @@
-﻿<div class="nbs myprofile">
+<div class="nbs myprofile">
 
 <div class="clientmenu">
 [<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
@@ -21,11 +21,11 @@
 
 <!-- This function not ready yet -->
 
-<div class="reqlegend">* [<tag type='valueof' resourcekey='General.txtRequiredFields' />]</div>
-
 <div id="profileinputform" >
 
     <div id="profileinput" class="panel">
+
+<div class="reqlegend">* [<tag type='valueof' resourcekey='General.txtRequiredFields' />]</div>
 
     <div class="formrow">
         <div class="leftside">
@@ -86,6 +86,11 @@
 	    </div>
     </div>
     
+<!--[<tag id="chkTerms" type="checkbox" resourcekey='ProfileForm.txtTerms' />]
+[<tag id="captcha" type="dnn:captcha" captchawidth="130" captchaheight="40"  />]-->
+
+[<tag id="cmdUpdateProfile" type="linkbutton" resourcekey="General.Update" commandname="saveprofile" cssclass="primarybutton" />]
+
 
 </div>
 
@@ -94,16 +99,6 @@
     </div>
 
 </div>
-
-
-
-[<tag id="chkTerms" type="checkbox" resourcekey='ProfileForm.txtTerms' />]
-
-[<tag id="captcha" type="dnn:captcha" captchawidth="130" captchaheight="40"  />]
-
-[<tag id="cmdUpdateProfile" type="linkbutton" resourcekey="General.Update" commandname="saveprofile" />] - 
-
-
 
 <script>
     $(document).ready(function () {

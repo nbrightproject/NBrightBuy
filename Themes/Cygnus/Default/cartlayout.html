@@ -1,13 +1,22 @@
 <!-- This loader needs to be made to work here -->
 <div id="loader" class="processing" style="display:none">[<tag type="htmlof" resourcekey="Cartview.ProcessingDiv" />]</div>
 
+[<tag id="currentcartstage" type="postback" value="" persistance="True"  />]
+
 <!-- Layout template -->
-<div id="cartdetails" class="nbs dnnform">
-<div id="cartlist"></div>
-<div id="cartbilladdress" class="panel"></div>
-<div id="cartshippingoptions" class="panel"></div>
-<div id="cartshippingmethods" class="panel"></div>
-<div id="cartextra" class="panel"></div>
+<div id="cartdetails" class="nbs dnnform"  style="display:none;" >
+<div id="cartlist" style="display:none;"></div>
+<div id="cartbilladdress" class="panel" style="display:none;"></div>
+<div id="cartshippingoptions" class="panel" style="display:none;"></div>
+<div id="cartshippingmethods" class="panel" style="display:none;"></div>
+<div id="cartextra" class="panel" style="display:none;"></div>
+    
+    <div style="clear:both;">
+    <a id="cartlistprevious" href="javascript:void(0)" class="secondarybutton cartlistprevclick" >[<tag type="valueof" resourcekey="Cartview.Previous" />]</a>
+    <a id="cartlistupdate" href="javascript:void(0)" class="secondarybutton cartlistupdate" >[<tag type="valueof" resourcekey="CartView.UpdateCart" />]</a>        
+    <a id="cartlistnext" href="javascript:void(0)" class="primarybutton cartlistnextclick" >[<tag type="valueof" resourcekey="Cartview.Next" />]</a>        
+    </div>
+
 </div>
 
 <script type="text/javascript">
@@ -30,33 +39,29 @@
         $("a[[id*='cmdSaveShipAddress']]").hide();
         $("#selectshipaddress").hide();
 
+
         //hide/show shipping option
         if ($("input[[id*='rblshippingoptions']]:checked").val() == "2") $('#shippinginput').show();
         if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") {
             $('.checkoutship').show();
-            $('#cartshippingmethods').hide();
-            $('#providertemplates').hide();
         }
 
         $("input[[id*='rblshippingoptions']]").change(function () {
             $('.checkoutship').hide();
             $('#shippinginput').hide();
-            $("a[[id*='cmdSaveShipAddress']]").hide();
             $("#selectshipaddress").hide();
-            $("#shippinginput").find('input').attr('disabled', 'disabled');
-            $('#cartshippingmethods').show();
             if ($(this).val() == "2") {
                 $('#shippinginput').show();
                 $("a[[id*='cmdSaveShipAddress']]").show();
                 $("#selectshipaddress").show();
-                $("#shippinginput").find('input').removeAttr('disabled');
             }
             if ($(this).val() == "3") {
                 $('.checkoutship').show();
                 $('#cartshippingmethods').hide();
-                $('#providertemplates').hide();
             }
-            if ($(this).val() != "3") $(".updatecart").trigger("click");
+            // disable validation on hidden controls
+            //$('.checkoutshipform:visible').removeAttr('disabled');
+            //$('.checkoutshipform:hidden').attr('disabled', 'disabled');
         });
 
 
@@ -76,17 +81,73 @@
                 for (var i = 0; i < arrayLength; i++) {
                     $(selectordiv).find("[[id*='" + valuearray[[i]] + "']]").val(datarray[[i]]);
                 }
-                $(".updatecart").trigger("click");
             }
         }
 
-        // auto fire postback when the country dropdown is changed. 
-        $("select[[id*='_Country_']]").change(function () {
+        function displaystage() {
+            $('#cartlist').hide();
+            $('#cartbilladdress').hide();
+            $('#cartshippingoptions').hide();
+            $('#cartshippingmethods').hide();
+            $('#cartextra').hide();
+
+            // show or hide sections based on stage
+            if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
+                $('#cartlist').show();
+                $(".cartlistnextclick").show();
+                $(".cartlistprevclick").hide();
+                $(".cartlistupdate").show();
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+                $('#cartbilladdress').show();
+                $('#cartshippingoptions').show();
+                $(".cartlistnextclick").show();
+                $(".cartlistprevclick").show();
+                $(".cartlistupdate").show();
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartshipping") {
+                $('#cartshippingmethods').show();
+                $('#cartextra').show();
+                $(".cartlistnextclick").hide();
+                $(".cartlistprevclick").show();
+                $(".cartlistupdate").hide();
+            }
+            $('#cartdetails').show();
+            // disable validation on hidden controls
+            //$('.checkoutshipform:visible').removeAttr('disabled');
+            //$('.checkoutshipform:hidden').attr('disabled', 'disabled');
+        }
+
+        // show or hide sections based on stage
+        displaystage();
+
+        // pickup stage change
+        $(".cartlistnextclick").click(function (e) {
+            // do stages backwards so we don't just to the end by assiging value to field.
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+                $("input[[id*='currentcartstage']]").val('cartshipping');
+                $(".updatecart").trigger("click");
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
+                $("input[[id*='currentcartstage']]").val('cartaddress');
+                displaystage();
+            }
+        });
+        $(".cartlistupdate").click(function (e) {
             $(".updatecart").trigger("click");
         });
-        // auto fire postback when the region dropdown is changed. 
-        $("select[[id*='_Region_']]").change(function () {
-            $(".updatecart").trigger("click");
+        
+        $(".cartlistprevclick").click(function (e) {
+            // do stages backwards so we don't just to the end by assiging value to field.
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+                $("input[[id*='currentcartstage']]").val('cartlist');
+                displaystage();
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartshipping") {
+                $("input[[id*='currentcartstage']]").val('cartaddress');
+                displaystage();
+            }
+
         });
 
         // auto fire postback when the shipping providerdropdown is changed. 
@@ -94,16 +155,8 @@
             $(".updatecart").trigger("click");
         });
 
-        // disable validation on hidden controls
-        if ($('#shippinginput').is(':visible')) {
-            $("#shippinginput").find('input').removeAttr('disabled');
-        }
-        else {
-            $("#shippinginput").find('input').attr('disabled', 'disabled');
-        }
-
         // update the order email with the billing email, if it's not already there
-        $('.checkoutbillform input[[id*="_Email_"]]').change(function(e) {
+        $('.checkoutbillform input[[id*="_Email_"]]').change(function (e) {
             if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($(this).val());
         });
 
@@ -115,7 +168,7 @@
             if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
         });
 
-    
-        
+
+
     });
 </script>

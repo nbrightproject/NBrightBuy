@@ -136,7 +136,7 @@
     <value>Liste produits</value>
   </data>
 	<data name="adminemail.Help" xml:space="preserve">
-    <value>Adresse e-mail de l'administrateur de la boutique, cette adresse étant l'adresse expéditeur par défaut de la boutique.</value>
+    <value>Adresse email de l'administrateur de la boutique, cette adresse étant l'adresse expéditeur par défaut de la boutique.</value>
   </data>
 	<data name="adminemail.Text" xml:space="preserve">
     <value>Administrateur</value>
@@ -487,7 +487,7 @@
 		<value>Aucun</value>
 	</data>
 	<data name="PaymentMethod.Text" xml:space="preserve">
-		<value>Mode de paiement : </value>
+		<value>Mode de paiement</value>
 	</data>
 	<data name="admin.Text" xml:space="preserve">
 		<value>Admin</value>
@@ -544,7 +544,7 @@
 		<value>&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
 	</data>
 	<data name="tax.Text" xml:space="preserve">
-		<value>Taxes</value>
+		<value>TVA</value>
 	</data>
 	<data name="utilities.Text" xml:space="preserve">
 		<value>Utilitaires</value>
@@ -649,7 +649,7 @@
 		<value>Namespace et classe</value>
 	</data>
 	<data name="providertype.data" xml:space="preserve">
-		<value>Interface utilisateur uniquement;Expéditions;Taxes;Promotions;Planificateur;Évènements;Paiements;Autre</value>
+		<value>Interface utilisateur uniquement;Expéditions;TVA;Promotions;Planificateur;Évènements;Paiements;Autre</value>
 	</data>
 	<data name="providertype.datavalue" xml:space="preserve">
 		<value>01;02;03;04;05;06;07;08</value>
@@ -658,7 +658,7 @@
 		<value>Chemin d'accès relatif au fichier gabarits</value>
 	</data>
 	<data name="lblinstock.Text" xml:space="preserve">
-		<value>Sélection en stock</value>
+		<value>Case à cocher stock</value>
 	</data>
 	<data name="lblRedirectTab.Help" xml:space="preserve">
 		<value>Page de redirection après mise à jour</value>
@@ -832,10 +832,10 @@
 		<value>Gabarit d'email client enregistré : </value>
 	</data>
 	<data name="bankinginstructions.Text" xml:space="preserve">
-		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Merci d'insérer le numéro de commande dans le champ référence et d'inclure votre nom si celui-ci est différent de votre nom de compte.</value>
+		<value>Merci d'effectuer votre paiement en banque, sur le compte spécifié ci-dessus, le plus rapidement possible suite à la commande. Veuillez insérer le numéro de commande dans le champ référence et inclure votre nom si celui-ci est différent de votre nom de compte.</value>
 	</data>
 	<data name="checkoutfailmessage.Text" xml:space="preserve">
-		<value>La commande a été annulé ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance avec votre carte de paiement, ou nous contacter si vous pensez que le problème vienne du passage en caisse sur ce site. </value>
+		<value>La commande a été annulée ou le paiement a échoué. Merci de contacter votre banque pour obtenir une assistance liée à votre carte de paiement, ou nous contacter si vous pensez que le problème vient du passage en caisse sur ce site. </value>
 	</data>
 	<data name="emailmessage.Text" xml:space="preserve">
 		<value>Merci pour votre commande. Nous sommes là pour toute assistance ! N'hésitez pas à nous contacter aux heures indiquées pour toutes questions concernant votre commande. </value>
@@ -853,7 +853,7 @@
 		<value>Mode vacances</value>
 	</data>
 	<data name="ordermanagertab.Text" xml:space="preserve">
-		<value>Gestionnaire de commandes</value>
+		<value>Mes commandes</value>
 	</data>
 	<data name="Contactus.Text" xml:space="preserve">
 		<value>Contactez-nous</value>
@@ -892,7 +892,7 @@
 		<value>Envoyer commande par email</value>
 	</data>
 	<data name="PrintOrder.Text" xml:space="preserve">
-		<value>Ordre d'impression</value>
+		<value>Impression commande</value>
 	</data>
 	<data name="ToggleDropdown.Text" xml:space="preserve">
 		<value>Liste déroulante activer/désactiver</value>
@@ -928,13 +928,13 @@
 		<value>Activer la recherche de texte fabricant</value>
 	</data>
 	<data name="lbltxtmanufacturer.Text" xml:space="preserve">
-		<value> Recherche de texte fabricant</value>
+		<value>Recherche de texte fabricant</value>
 	</data>
 	<data name="lbltxtseoname.Help" xml:space="preserve">
 		<value>Activer la recherche de texte de nom SEO</value>
 	</data>
 	<data name="lbltxtseoname.Text" xml:space="preserve">
-		<value>Nom SEO la recherche de texte</value>
+		<value>Recherche de texte sur nom SEO</value>
 	</data>
 	<data name="lbltxtseopagetitle.Help" xml:space="preserve">
 		<value>Activer la recherche de texte du titre SEO de la page SEO</value>
@@ -1042,7 +1042,7 @@
 		<value>Mode de recherche : </value>
 	</data>
 	<data name="rblfiltermode.data" xml:space="preserve">
-		<value>Rechercher ;Filtre</value>
+		<value>Rechercher;Filtre</value>
 	</data>
 	<data name="lblprimarybuttonclass.Text" xml:space="preserve">
 		<value>Classe de bouton principal de CSS : </value>
@@ -1111,16 +1111,16 @@
 		<value>Hauteur de l'Image connexes en px ou 0 pour auto : </value>
 	</data>
 	<data name="lblcategorydetails.Text" xml:space="preserve">
-		<value>Voir la catégorie Détails : </value>
+		<value>Voir les détails de la catégorie : </value>
 	</data>
 	<data name="lblmodelstable.Text" xml:space="preserve">
-		<value>Afficher la Table de modèles : </value>
+		<value>Afficher le tableau des modèles : </value>
 	</data>
 	<data name="lblproductcode.Text" xml:space="preserve">
-		<value>Voir la Code/Réf : </value>
+		<value>Voir le Code/Réf : </value>
 	</data>
 	<data name="lblshowstock.Text" xml:space="preserve">
-		<value>Voir la crosse : </value>
+		<value>Voir le stock : </value>
 	</data>
 	<data name="lblcurrencyconverter.Text" xml:space="preserve">
 		<value>Activer le convertisseur de devises : </value>
@@ -1181,5 +1181,50 @@
 	</data>
 	<data name="lbltwitteruser.Help" xml:space="preserve">
 		<value>Le nom d'utilisateur Twitter, y compris le symbole de l'affiche contenu @. Peut être le même que l'utilisateur du site Twitter. Référence https://dev.twitter.com/docs/cards/markup-reference</value>
+	</data>
+	<data name="addressestab.Text" xml:space="preserve">
+		<value>Mes adresses</value>
+	</data>
+	<data name="Enabled.Text" xml:space="preserve">
+		<value>Activé</value>
+	</data>
+	<data name="copyorderto.Text" xml:space="preserve">
+		<value>Envoyer une copie à </value>
+	</data>
+	<data name="FindaClient.Text" xml:space="preserve">
+		<value>Recherche client</value>
+	</data>
+	<data name="Collection.Text" xml:space="preserve">
+		<value>Détails d'enlèvement</value>
+	</data>
+	<data name="profiletab.Text" xml:space="preserve">
+		<value>Mon profil</value>
+	</data>
+	<data name="subscribenewsletter.Text" xml:space="preserve">
+		<value>Case à cocher Newsletter</value>
+	</data>
+	<data name="checkoutpromocode.Text" xml:space="preserve">
+		<value>Champ code promo</value>
+	</data>
+	<data name="checkouttaxcode.Text" xml:space="preserve">
+		<value>Champ code TVA</value>
+	</data>
+	<data name="ShippingOption.Text" xml:space="preserve">
+		<value>Option de livraison</value>
+	</data>
+	<data name="ShippingDate.Text" xml:space="preserve">
+		<value>Date d'expédition</value>
+	</data>
+	<data name="PaymentStatus.Text" xml:space="preserve">
+		<value>Statut du paiement</value>
+	</data>
+	<data name="usageleft.Text" xml:space="preserve">
+		<value>Utilisation</value>
+	</data>
+	<data name="validuntil.Text" xml:space="preserve">
+		<value>Valide jusqu'à</value>
+	</data>
+	<data name="validcategory.Text" xml:space="preserve">
+		<value>Catégorie valide</value>
 	</data>
 </root>

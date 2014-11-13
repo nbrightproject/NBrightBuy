@@ -193,7 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                     //Default orderby if not set
-                    const string strOrder = "   order by GUIDKey, [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+                    const string strOrder = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
                     rpData.DataSource = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 0, pagenumber, pagesize, recordcount);
                     rpData.DataBind();
                     

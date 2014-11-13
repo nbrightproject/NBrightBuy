@@ -312,4 +312,10 @@
 	<data name="lblsecondarybuttonclass.Text" xml:space="preserve">
 		<value>Classe de bouton secondaire de CSS : </value>
 	</data>
+	<data name="lblhidden.Text" xml:space="preserve">
+		<value>Invisible</value>
+	</data>
+	<data name="emailmessage.Text" xml:space="preserve">
+		<value>Merci pour votre commande. Nous sommes là pour toute assistance ! N'hésitez pas à nous contacter aux heures indiquées sur notre site pour toutes questions concernant votre commande.</value>
+	</data>
 </root>

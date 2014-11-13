@@ -465,7 +465,6 @@
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
     <Content Include="Themes\config\default\clientvouchercodes.html" />
-    <Content Include="Themes\config\default\frontofficepageheader.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\productfields.html" />
@@ -546,6 +545,10 @@
     <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
     <Content Include="Themes\Cygnus\Default\cartextra.html" />
     <Content Include="Themes\Cygnus\Default\cartlayout.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\cartlistheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartpageheader.html" />
     <Content Include="Themes\Cygnus\Default\cartshipment.html" />
     <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
     <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
@@ -577,6 +580,9 @@
     <Content Include="Themes\Cygnus\Default\minicartbody.html" />
     <Content Include="Themes\Cygnus\Default\minicartfooter.html" />
     <Content Include="Themes\Cygnus\Default\minicartheader.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistbody.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistfooter.html" />
+    <Content Include="Themes\Cygnus\Default\minicartlistheader.html" />
     <Content Include="Themes\Cygnus\Default\modellist.html" />
     <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
     <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
@@ -604,11 +610,11 @@
     <Content Include="Themes\Cygnus\Default\orderreceiptemail.html" />
     <Content Include="Themes\Cygnus\Default\ordershippedemail.html" />
     <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
-    <Content Include="Themes\Cygnus\Default\pageheader.html" />
     <Content Include="Themes\Cygnus\Default\paymentFAIL.html" />
     <Content Include="Themes\Cygnus\Default\paymentfooter.html" />
     <Content Include="Themes\Cygnus\Default\paymentheader.html" />
     <Content Include="Themes\Cygnus\Default\paymentOK.html" />
+    <Content Include="Themes\Cygnus\Default\paymentpageheader.html" />
     <Content Include="Themes\Cygnus\Default\printorder.html" />
     <Content Include="Themes\Cygnus\Default\printreceipt.html" />
     <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
@@ -618,14 +624,13 @@
     <Content Include="Themes\Cygnus\Default\profileformupdate.html" />
     <Content Include="Themes\Cygnus\Default\profileregisteredemail.html" />
     <Content Include="Themes\Cygnus\Default\relatedlist.html" />
+    <Content Include="Themes\Cygnus\Default\useraccount.html" />
     <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
     <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
-    <Content Include="Themes\Cygnus\js\jquery.metisMenu.js" />
     <Content Include="Themes\Cygnus\js\jquery.navgoco.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.responsiveTabs.min.js" />
     <Content Include="Themes\Cygnus\js\masonry.pkgd.min.js" />
-    <Content Include="Themes\Cygnus\js\stacktable.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\Support\NBrightCore\NBrightCore.csproj">

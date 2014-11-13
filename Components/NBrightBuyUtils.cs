@@ -525,7 +525,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
                 if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
                 var emailarray = emaillist.Split(',');
-                emailsubject = storeSettings.Get("PortalName") + " : " + emailsubject;
+                emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
                 foreach (var email in emailarray)
                 {
                     if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))

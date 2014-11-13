@@ -1,6 +1,6 @@
-[<tag id="shippingproductcode" type="postback" aria-valuemax="" />]
-[<tag id="pickuppointref" type="postback" aria-valuemax="" />]
-[<tag id="pickuppointaddr" type="postback" aria-valuemax="" />]
+[<tag id="shippingproductcode" type="postback" value="" />]
+[<tag id="pickuppointref" type="postback" value="" />]
+[<tag id="pickuppointaddr" type="postback" value="" />]
 
 <!-- This template contains shipping and summary functionality that needs to be here in order to save properly -->
 
@@ -15,7 +15,7 @@
 <!-- Shipping methods  -->
 <div id="shippingmethods">
     <div class="formrow dnnForm">
-        <h3>Shipping Methods</h3>
+        <h3>[<tag type='valueof' resourcekey='General.shippingmethods' />]</h3>
 	    <div id="providerselection">
 	        [<tag cssclass="radiobuttonlist" type="shippingproviders" RepeatDirection="Horizontal" RepeatColumns="0" RepeatLayout="Flow" />]
 		</div>
@@ -53,11 +53,9 @@
 	[<tag type="endtestof"  />]
 
 	[<tag type="if" function="settings" key="copyorderto" testvalue="True" display="{ON}" />]
-    <div class="formrow dnnForm">
-        <div class="leftside">
-	        <h6>[<tag type='valueof' resourcekey='General.copyorderto' />]</h6>
-	        [<tag type='cartemailaddress' required="" datatype="email"/>] 
-        </div>
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.copyorderto' />]</h6>
+	    [<tag type='cartemailaddress' datatype="email"/>] 
     </div>
 	[<tag type="endtestof"  />]
 
