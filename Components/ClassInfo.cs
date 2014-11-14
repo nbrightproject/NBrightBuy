@@ -31,7 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool archived { get; set; }
         public bool ishidden { get; set; }
         public int parentcatid { get; set; }
-        public int recordsortorder { get; set; }
+        public Double recordsortorder { get; set; }
         public string imageurl { get; set; }
         public string categoryname { get; set; }
         public string categorydesc { get; set; }

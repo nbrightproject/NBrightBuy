@@ -142,7 +142,7 @@
     <value>Supprimer</value>
   </data>
 	<data name="cmdDeleteIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
 	<data name="cmdDelete.ToolTip" xml:space="preserve">
     <value>Supprimer</value>
@@ -160,7 +160,7 @@
     <value>Editer</value>
   </data>
 	<data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Editer" class="fa fa-edit fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Editer" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
 	<data name="cmdEdit.ToolTip" xml:space="preserve">
     <value>Editer</value>
@@ -439,7 +439,7 @@
     <value>Déplacer</value>
   </data>
 	<data name="cmdMoveIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Déplacer ici" class="fa fa-arrow-circle-left fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Déplacer ici" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
 	<data name="Undo.Text" xml:space="preserve">
     <value>Annuler</value>
@@ -903,4 +903,7 @@
 	<data name="creditcardpayment.Text" xml:space="preserve">
 		<value>Carte bancaire</value>
 	</data>
+	<data name="ExtraCost.Text" xml:space="preserve">
+    <value>Supplément</value>
+  </data>
 </root>

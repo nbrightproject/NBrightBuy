@@ -25,6 +25,20 @@
 					<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentStatus" />]</b></div>
 					<div>[<tag id="orderstatus" cssclass="form-control" enabled="false" type="orderstatus" />]</div>
 					</address>
+					[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/promocode" testvalue="" display="{OFF}" />]
+					<address>
+					<div><b>[<tag type="valueof" resourcekey="General.PromotionalCode" />]</b></div>					
+					<div>[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/promocode' />]</div>
+					</address>
+					[<tag type="endtestof" />]
+					[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/taxnumber" testvalue="" display="{OFF}" />]
+					<address>
+					<div><b>[<tag type="valueof" resourcekey="General.TaxNumber" />]</b></div>					
+					<div>[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/taxnumber' />]</div>
+					</address>
+					[<tag type="endtestof" />]
+										
+					
 				</div>
 				
 				<div class="col-xs-3 shipaddress">

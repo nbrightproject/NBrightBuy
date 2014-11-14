@@ -258,10 +258,10 @@
 	<data name="import.Text" xml:space="preserve">
     <value>Import</value>
   </data>
-	<data name="properties.Text" xml:space="preserve">
+	<data name="propertiesvalue.Text" xml:space="preserve">
     <value>Properties</value>
   </data>
-	<data name="propertyGroups.Text" xml:space="preserve">
+	<data name="propertygroups.Text" xml:space="preserve">
     <value>Property Groups</value>
   </data>
 	<data name="sales.Text" xml:space="preserve">
@@ -864,8 +864,8 @@
 	<data name="Contactus.Text" xml:space="preserve">
 		<value>Contact us</value>
 	</data>
-	<data name="ManualPayment.Text" xml:space="preserve">
-		<value>Chque and Bank Payment</value>
+	<data name="manualpayment.Text" xml:space="preserve">
+		<value>Manual payment</value>
 	</data>
 	<data name="Bank.Text" xml:space="preserve">
 		<value>Bank</value>
@@ -1239,4 +1239,13 @@
 	<data name="checkouttaxcode.Text" xml:space="preserve">
 		<value>Tax Code Field</value>
 	</data>
+	<data name="products.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+	<data name="dashsummary.Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+	<data name="cmcicpayment.Text" xml:space="preserve">
+    <value>CMCIC Payment</value>
+  </data>
 </root>

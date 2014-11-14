@@ -452,7 +452,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
 
             var objCtrl = new NBrightBuyController();
-            const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','int') ";
+            const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
             var grpcatList = new List<GroupCategoryData>();
 
             var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
@@ -464,7 +464,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var grpcat = new GroupCategoryData();
                 grpcat.categoryid = i.ItemID;
-                grpcat.recordsortorder = i.GetXmlPropertyInt("genxml/hidden/recordsortorder");
+                grpcat.recordsortorder = i.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 grpcat.imageurl = i.GetXmlProperty("genxml/hidden/imageurl");
                 grpcat.categoryref = i.GetXmlProperty("genxml/textbox/txtcategoryref");
                 grpcat.archived = i.GetXmlPropertyBool("genxml/checkbox/chkarchived");

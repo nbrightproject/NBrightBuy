@@ -261,10 +261,10 @@
 	<data name="import.Text" xml:space="preserve">
     <value>Importer</value>
   </data>
-	<data name="properties.Text" xml:space="preserve">
+	<data name="propertiesvalue.Text" xml:space="preserve">
     <value>Propriétés</value>
   </data>
-	<data name="propertyGroups.Text" xml:space="preserve">
+	<data name="propertygroups.Text" xml:space="preserve">
     <value>Groupes de propriétés</value>
   </data>
 	<data name="sales.Text" xml:space="preserve">
@@ -568,7 +568,7 @@
 		<value>Commande de processus</value>
 	</data>
 	<data name="VATincluded.Text" xml:space="preserve">
-		<value>TVA inclus</value>
+		<value>TVA incluse</value>
 	</data>
 	<data name="qty.Text" xml:space="preserve">
 		<value>Qté</value>
@@ -870,8 +870,8 @@
 	<data name="Contactus.Text" xml:space="preserve">
 		<value>Contactez-nous</value>
 	</data>
-	<data name="ManualPayment.Text" xml:space="preserve">
-		<value>Chque et virement bancaire</value>
+	<data name="manualpayment.Text" xml:space="preserve">
+		<value>Paiement manuel</value>
 	</data>
 	<data name="Bank.Text" xml:space="preserve">
 		<value>Banque</value>
@@ -1239,4 +1239,13 @@
 	<data name="checkouttaxcode.Text" xml:space="preserve">
 		<value>Champ de Code fiscal</value>
 	</data>
+	<data name="products.Text" xml:space="preserve">
+    <value>Produits</value>
+  </data>
+	<data name="dashsummary.Text" xml:space="preserve">
+    <value>Tableau de bord</value>
+  </data>
+	<data name="cmcicpayment.Text" xml:space="preserve">
+    <value>Paiement CMCIC</value>
+  </data>
 </root>

@@ -903,4 +903,7 @@
 	<data name="manualpayment.Text" xml:space="preserve">
     <value>Manual</value>
   </data>
+	<data name="ExtraCost.Text" xml:space="preserve">
+    <value>Extra cost</value>
+  </data>
 </root>

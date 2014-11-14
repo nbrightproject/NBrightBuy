@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -348,8 +349,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
                     if (!Utils.IsNumeric(strneworder)) strneworder = "1";
                     if (!Utils.IsNumeric(selorder)) selorder = "1";
-                    var neworder = Convert.ToDouble(strneworder);
-                    if (Convert.ToDouble(strneworder) < Convert.ToDouble(selorder))
+                    var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
+                    if (Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(selorder, CultureInfo.GetCultureInfo("en-US")))
                         neworder = neworder - 0.5;
                     else
                         neworder = neworder + 0.5;
@@ -400,7 +401,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             foreach (NBrightInfo catinfo in levelList)
             {
                 var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
-                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder) != lp)
+                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder, CultureInfo.GetCultureInfo("en-US")) != lp)
                 {
                     var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
                     catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
