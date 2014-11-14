@@ -13,6 +13,7 @@
     
     <div style="clear:both;">
     <a id="cartlistprevious" href="javascript:void(0)" class="secondarybutton cartlistprevclick" >[<tag type="valueof" resourcekey="Cartview.Previous" />]</a>
+    <a id="cartlistclear" href="javascript:void(0)" class="secondarybutton cartlistclear" >[<tag type="valueof" resourcekey="CartView.cmdClearCart" />]</a>        
     <a id="cartlistupdate" href="javascript:void(0)" class="secondarybutton cartlistupdate" >[<tag type="valueof" resourcekey="CartView.UpdateCart" />]</a>        
     <a id="cartlistnext" href="javascript:void(0)" class="primarybutton cartlistnextclick" >[<tag type="valueof" resourcekey="Cartview.Next" />]</a>        
     </div>
@@ -91,26 +92,34 @@
             $('#cartshippingmethods').hide();
             $('#cartextra').hide();
 
+            // reset if it's not valid
+            if ($("input[[id*='currentcartstage']]").val() != "cartlist" && $("input[[id*='currentcartstage']]").val() != "cartaddress" && $("input[[id*='currentcartstage']]").val() != "cartsummary") {
+                $("input[[id*='currentcartstage']]").val('');
+            }
+
             // show or hide sections based on stage
             if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
                 $('#cartlist').show();
                 $(".cartlistnextclick").show();
                 $(".cartlistprevclick").hide();
                 $(".cartlistupdate").show();
+                $(".cartlistclear").show();
             }
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
                 $('#cartbilladdress').show();
                 $('#cartshippingoptions').show();
+                $('#cartshippingmethods').show();
                 $(".cartlistnextclick").show();
                 $(".cartlistprevclick").show();
                 $(".cartlistupdate").show();
+                $(".cartlistclear").hide();                
             }
-            if ($("input[[id*='currentcartstage']]").val() == "cartshipping") {
-                $('#cartshippingmethods').show();
+            if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
                 $('#cartextra').show();
                 $(".cartlistnextclick").hide();
                 $(".cartlistprevclick").show();
                 $(".cartlistupdate").hide();
+                $(".cartlistclear").hide();
             }
             $('#cartdetails').show();
             // disable validation on hidden controls
@@ -125,7 +134,7 @@
         $(".cartlistnextclick").click(function (e) {
             // do stages backwards so we don't just to the end by assiging value to field.
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
-                $("input[[id*='currentcartstage']]").val('cartshipping');
+                $("input[[id*='currentcartstage']]").val('nextcartaddress');
                 $(".updatecart").trigger("click");
             }
             if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
@@ -133,19 +142,24 @@
                 displaystage();
             }
         });
+
+
         $(".cartlistupdate").click(function (e) {
             $(".updatecart").trigger("click");
         });
-        
+        $(".cartlistclear").click(function (e) {
+            $(".clearcart").trigger("click");
+        });
+
         $(".cartlistprevclick").click(function (e) {
             // do stages backwards so we don't just to the end by assiging value to field.
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
                 $("input[[id*='currentcartstage']]").val('cartlist');
                 displaystage();
             }
-            if ($("input[[id*='currentcartstage']]").val() == "cartshipping") {
-                $("input[[id*='currentcartstage']]").val('cartaddress');
-                displaystage();
+            if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
+                $("input[[id*='currentcartstage']]").val('prevcartaddress');
+                $(".updatecart").trigger("click");
             }
 
         });
@@ -161,14 +175,20 @@
         });
 
         $("#Form").submit(function (e) {
+            // switch of stage done here, so validation doesn't stop stage change working correctly.
+            if ($("input[[id*='currentcartstage']]").val() == "nextcartaddress") $("input[[id*='currentcartstage']]").val('cartsummary');
+            if ($("input[[id*='currentcartstage']]").val() == "prevcartaddress") $("input[[id*='currentcartstage']]").val('cartaddress');
             $(".processing").show();
         });
+
 
         $(".updatecart").mousedown(function (e) {
             if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
         });
 
-
-
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $(".updatecart").trigger("click");
+        });
     });
 </script>

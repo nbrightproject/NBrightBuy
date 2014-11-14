@@ -263,7 +263,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double shippingdealercost = 0;
             var shippingkey = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
             var currentcartstage = PurchaseInfo.GetXmlProperty("genxml/currentcartstage");
-            if (currentcartstage == "cartshipping") // can only calc shipping on this stage.
+            if (currentcartstage == "cartaddress") // can only calc shipping on this stage.
             {
                 ShippingInterface shipprov = null;
                 if (shippingkey == "")

@@ -60,8 +60,8 @@
 	[<tag type="endtestof"  />]
 
     <div class="formrow">            
-        <!-- "updatecart" class is used by JQuery to trigger events, must be left on -->
-        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
+        <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
+        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton clearcart" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
     </div>
 
 </div>
@@ -77,7 +77,7 @@
 		[<tag type="if" function="settings" key="subscribenewsletter" testvalue="True" display="{ON}" />]
 		<li class="dnnForm">[<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews" />]</li>
 		[<tag type="endtestof"  />]
-		<li class="dnnForm">[<tag id="chkterms" type="checkbox" cssclass="acceptterms" resourcekey="CartView.chkterms" />]</li>
+		<li class="dnnForm">[<tag id="chkterms" type="checkbox" cssclass="acceptterms" resourcekey="CartView.chkterms" checked="True" />]</li>
 		<li class="submission">[<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]</li>
 	</ul>
 
