@@ -159,15 +159,13 @@
                 displaystage();
             }
         });
-
-
         $(".cartlistupdate").click(function (e) {
             $(".updatecart").trigger("click");
         });
         $(".cartlistclear").click(function (e) {
             $(".clearcart").trigger("click");
         });
-
+        
         $(".cartlistprevclick").click(function (e) {
             // do stages backwards so we don't just to the end by assiging value to field.
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
@@ -197,7 +195,6 @@
             if ($("input[[id*='currentcartstage']]").val() == "prevcartaddress") $("input[[id*='currentcartstage']]").val('cartaddress');
             $(".processing").show();
         });
-
 
         $(".updatecart").mousedown(function (e) {
             if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
