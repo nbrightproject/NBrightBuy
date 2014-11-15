@@ -21,6 +21,23 @@
 </div>
 
 <script type="text/javascript">
+
+
+    jQuery.fn.extend({
+        renameAttr: function (name, newName, removeData) {
+            var val;
+            return this.each(function () {
+                val = jQuery.attr(this, name);
+                jQuery.attr(this, newName, val);
+                jQuery.removeAttr(this, name);
+                // remove original data
+                if (removeData !== false) {
+                    jQuery.removeData(this, name.replace('data-', ''));
+                }
+            });
+        }
+    });
+
     $(document).ready(function () {
 
         // JQuery used to move cart elements into required area 
@@ -61,8 +78,8 @@
                 $('#cartshippingmethods').hide();
             }
             // disable validation on hidden controls
-            //$('.checkoutshipform:visible').removeAttr('disabled');
-            //$('.checkoutshipform:hidden').attr('disabled', 'disabled');
+            $('input:visible').renameAttr('ignorerequired', 'required');;
+            $('input:hidden').renameAttr('required', 'ignorerequired');
         });
 
 
@@ -123,8 +140,8 @@
             }
             $('#cartdetails').show();
             // disable validation on hidden controls
-            //$('.checkoutshipform:visible').removeAttr('disabled');
-            //$('.checkoutshipform:hidden').attr('disabled', 'disabled');
+            $('input:visible').renameAttr('ignorerequired', 'required');;
+            $('input:hidden').renameAttr('required', 'ignorerequired');
         }
 
         // show or hide sections based on stage
@@ -133,7 +150,7 @@
         // pickup stage change
         $(".cartlistnextclick").click(function (e) {
             // do stages backwards so we don't just to the end by assiging value to field.
-            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress" || $("input[[id*='currentcartstage']]").val() == "nextcartaddress") {
                 $("input[[id*='currentcartstage']]").val('nextcartaddress');
                 $(".updatecart").trigger("click");
             }
