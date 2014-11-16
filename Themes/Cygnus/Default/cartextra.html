@@ -8,12 +8,7 @@
 <div id="shippingoptions">
     <div class="formrow dnnForm">
     <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
-    [<tag type="if" function="settings" key="collectionactive" testvalue="True" display="{ON}" />]
-	    [<tag id="rblshippingoptions" cssclass="radiobuttonlist" type="radiobuttonlist" resourcekey='CartView.shippingoption1' RepeatDirection="Vertical" RepeatColumns="1" RepeatLayout="Flow" SelectedValue="1" />]        
-    [<tag type="endif"  />]
-    [<tag type="if" function="settings" key="collectionactive" testvalue="True" display="{OFF}" />]
 	    [<tag id="rblshippingoptions" cssclass="radiobuttonlist" type="radiobuttonlist" resourcekey='CartView.shippingoption2' RepeatDirection="Vertical" RepeatColumns="1" RepeatLayout="Flow" SelectedValue="1" />]        
-    [<tag type="endif"  />]
 	</div>
 </div>
 
