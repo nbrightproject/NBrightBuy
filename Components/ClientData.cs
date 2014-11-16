@@ -165,16 +165,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objCtrl.Update(DataRecord);
         }
 
-        public void AddNewDiscountCode()
+        public void AddNewDiscountCode(String xmldata = "")
         {
-            var strXml = "<genxml><discountcodes><genxml><textbox><coderef>" + Utils.GetUniqueKey().ToUpper() + "</coderef></textbox></genxml></discountcodes></genxml>";
+            if (xmldata == "") xmldata = "<genxml><discountcodes><genxml><textbox><coderef>" + Utils.GetUniqueKey().ToUpper() + "</coderef></textbox></genxml></discountcodes></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/discountcodes") == null)
             {
-                DataRecord.AddXmlNode(strXml, "genxml/discountcodes", "genxml");
+                DataRecord.AddXmlNode(xmldata, "genxml/discountcodes", "genxml");
             }
             else
             {
-                DataRecord.AddXmlNode(strXml, "genxml/discountcodes/genxml", "genxml/discountcodes");
+                DataRecord.AddXmlNode(xmldata, "genxml/discountcodes/genxml", "genxml/discountcodes");
             }
             DiscountCodes = GetEntityList("discountcodes");
         }
