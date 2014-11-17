@@ -291,6 +291,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "viewclient":
                     param[1] = "ctrl=clients";
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var orderData = new OrderData(PortalId, Convert.ToInt32(cArg));
+                        param[0] = "uid=" + orderData.UserId.ToString("");
+                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "save":

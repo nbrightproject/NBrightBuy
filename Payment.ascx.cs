@@ -166,6 +166,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
+            if (UserId > 0 && _cartInfo.UserId == -1) // user may have just logged in.
+            {
+                _cartInfo.UserId = UserId;
+                _cartInfo.Save();
+            }
+
             if (_provList.Count == 0)
             {
                 #region "No Payment providers, so process as a ordering system"

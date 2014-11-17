@@ -205,5 +205,12 @@
         $("select[[id*='_Country_']]").change(function () {
             $(".updatecart").trigger("click");
         });
+
+        // trigger on postcode change
+        $("input[[id*='_PostalCode_']]").change(function (e) {
+            $("input[[id*='currentcartstage']]").val('cartaddress'); // make sure we go back the the address form
+            $(".updatecart").trigger("click");
+        });
+
     });
 </script>
