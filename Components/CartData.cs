@@ -331,8 +331,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //cart full total
-            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax);
-            var total = (subtotalcost + shippingcost + appliedtax);
+            var dealertotal = ((subtotaldealercost + shippingdealercost + appliedtax) - totaldealerdiscount);
+            var total = ((subtotalcost + shippingcost + appliedtax) - totaldiscount);
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));

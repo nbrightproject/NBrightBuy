@@ -27,7 +27,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             {
                 var validutil = d.GetXmlProperty("genxml/textbox/validuntil");
                 var validutildate = DateTime.Today;
-                if (Utils.IsDate(validutil)) validutildate = Convert.ToDateTime(validutil, CultureInfo.InvariantCulture);
+                if (Utils.IsDate(validutil)) validutildate = Convert.ToDateTime(validutil);
                 if (d.GetXmlProperty("genxml/textbox/coderef").ToLower() == discountcode.ToLower() && validutildate >= DateTime.Today)
                 {
                     var usageleft = d.GetXmlPropertyDouble("genxml/textbox/usageleft");

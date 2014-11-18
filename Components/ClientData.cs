@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -128,14 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<genxml><discountcodes>";
             foreach (var discountcodesInfo in discountcodesList)
             {
-                var objInfo = new NBrightInfo(true);
-
-                var fields = discountcodesInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                foreach (var f in fields.Where(f => f != ""))
-                {
-                    objInfo.SetXmlProperty(f, discountcodesInfo.GetXmlProperty(f));
-                }
-                strXml += objInfo.XMLData;
+                strXml += discountcodesInfo.XMLData;
             }
             strXml += "</discountcodes></genxml>";
 
