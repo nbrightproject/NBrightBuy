@@ -84,12 +84,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
-                // check for empty cart 
+
                 var carttype = ModSettings.Get("ddlcarttype");
-                if (!_cartInfo.GetCartItemList().Any() && carttype == "2")
+                if (carttype == "2") // check if we need to add cookie items
                 {
-                    _templH = "cartempty.html";
+                    _cartInfo.AddCookieToCart();
+                    _cartInfo.Save();
                 }
+                if (!_cartInfo.GetCartItemList().Any() && carttype == "2") _templH = "cartempty.html"; // check for empty cart 
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
@@ -116,9 +118,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (carttype == "2")
                 {
-                    _cartInfo.AddCookieToCart();
-                    _cartInfo.Save();
-
                     // add any shiiping provider templates to the cart layout, so we can process any data required by them
                     rpShip.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templS, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     rpAddrB.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, templAB, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);

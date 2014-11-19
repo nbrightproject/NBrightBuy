@@ -24,7 +24,9 @@
 					<thead>
 						<tr>
 							<th>[<tag type="valueof" resourcekey="General.Customer" />]</th>
+ [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
 							<th>[<tag type="valueof" resourcekey="General.Total" />]</th>
+  [<tag type="endif"  />]
 							<th>[<tag type="valueof" resourcekey="General.OrderNumber" />]</th>
 							<th>[<tag type="valueof" resourcekey="General.OrderDate" />]</th>
 							<th>[<tag type="valueof" resourcekey="General.status" />]</th>
