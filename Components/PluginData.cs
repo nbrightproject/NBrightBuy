@@ -198,14 +198,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetProviders("07", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
-        {
-            return GetProviders("99", activeOnly);
-        }
-
         public Dictionary<String, NBrightInfo> GetDiscountCodeProviders(Boolean activeOnly = true)
         {
             return GetProviders("08", activeOnly);
+        }
+
+        public Dictionary<String, NBrightInfo> GetFilterProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("09", activeOnly);
+        }
+
+        public Dictionary<String, NBrightInfo> GetTemplateExtProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("10", activeOnly);
+        }
+
+        public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("99", activeOnly);
         }
 
         public NBrightInfo GetPaymentProviderDefault()

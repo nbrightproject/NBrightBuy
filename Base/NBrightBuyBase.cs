@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
@@ -57,8 +58,16 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
             //add template provider to NBright Templating
             NBrightCore.providers.GenXProviderManager.AddProvider("NBrightBuy,Nevoweb.DNN.NBrightBuy.render.GenXmlTemplateExt");
-			var pInfo = ModCtrl.GetByGuidKey(PortalId, -1, "PROVIDERS", "NBrightTempalteProviders");
-			if (pInfo != null) NBrightCore.providers.GenXProviderManager.AddProvider(pInfo.XMLDoc);
+          
+            // search for any other NBright Tenmplating providers that might have been added.
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var l = pluginData.GetTemplateExtProviders();
+            foreach (var p in l)
+            {
+                var prov = p.Value;
+                NBrightCore.providers.GenXProviderManager.AddProvider(prov.GetXmlProperty("genxml/textbox/assembly" + "," + prov.GetXmlProperty("genxml/textbox/namespaceclass")));
+            }
+
         }
 
         protected override void OnLoad(EventArgs e)

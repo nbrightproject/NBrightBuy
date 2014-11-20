@@ -39,7 +39,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             _providerList = new Dictionary<string, FilterInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-		    var l = pluginData.GetOtherProviders();
+		    var l = pluginData.GetFilterProviders();
 
             foreach (var p in l)
             {
