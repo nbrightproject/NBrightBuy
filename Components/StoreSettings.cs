@@ -62,9 +62,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
 
-            FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
-            FolderImages = Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
-            FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
+            FolderDocuments = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
+            FolderImages = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
+            FolderUploads = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
 
             if (!_settingDic.ContainsKey("FolderDocumentsMapPath")) _settingDic.Add("FolderDocumentsMapPath",FolderDocumentsMapPath );
             if (!_settingDic.ContainsKey("FolderImagesMapPath")) _settingDic.Add("FolderImagesMapPath",FolderImagesMapPath );
