@@ -853,13 +853,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // we have no datalang record for this language, so get an existing one and save it.
                 var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
                 if (l.Count > 0)
-                {
-                    DataLangRecord = (NBrightInfo)l[0].Clone();
-                    DataLangRecord.ItemID = -1;
-                    DataLangRecord.Lang = _lang;
-                    DataLangRecord.ValidateXmlFormat();
-                    objCtrl.Update(DataLangRecord);
-                }
+                    DataLangRecord = (NBrightInfo) l[0].Clone();
+                else
+                    DataLangRecord = new NBrightInfo(true);
+
+                DataLangRecord.ItemID = -1;
+                DataLangRecord.ValidateXmlFormat();
+                DataLangRecord.TypeCode = "PRDLANG";
+                DataLangRecord.ParentItemId = Info.ItemID;
+                DataLangRecord.Lang = _lang;
+                objCtrl.Update(DataLangRecord);
             }
 
             //Fix image paths
