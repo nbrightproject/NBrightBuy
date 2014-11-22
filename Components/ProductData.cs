@@ -36,6 +36,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _lang = lang;
             if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
+
+            #region "Init data objects to prevent possible errors"
+
+            Models = new List<NBrightInfo>();
+            Options = new List<NBrightInfo>();
+            OptionValues = new List<NBrightInfo>();
+            Imgs = new List<NBrightInfo>();
+            Docs = new List<NBrightInfo>();
+
+            DataRecord = new NBrightInfo(true);
+            DataRecord.TypeCode = "PRD";
+            DataRecord.Lang = "";
+            DataLangRecord = new NBrightInfo(true);
+            DataLangRecord.TypeCode = "PRDLANG";
+            DataLangRecord.Lang = lang;
+
+            #endregion
+
             LoadData(productId, hydrateLists);
         }
 
@@ -254,9 +272,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
+            DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
 
             var objCtrl = new NBrightBuyController();
-            objCtrl.Update(DataRecord);
+            var productid = objCtrl.Update(DataRecord);
+            DataLangRecord.ParentItemId = productid;
             objCtrl.Update(DataLangRecord);
             ResetCache();
         }
@@ -655,14 +675,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddNewModel()
         {
-            var strXml = "<genxml><models><genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml></models></genxml>";
+            var strXml = "<genxml><models><genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden><textbox/><checkbox/><checkboxlist/><radiobuttonlist/><dropdownlist/></genxml></models></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/models") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
+                DataLangRecord.AddXmlNode(strXml, "genxml/models", "genxml");
             }
             else
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
+                DataLangRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
             }
         }
 
