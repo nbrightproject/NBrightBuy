@@ -433,15 +433,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Set Notify Message
         /// </summary>
-        /// <param name="moduleId"></param>
-        /// <param name="msgcode"></param>
-        /// <param name="result"></param>
-        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result)
+        /// <param name="moduleId">modelid</param>
+        /// <param name="msgcode">message code to pick in resx</param>
+        /// <param name="result">result code</param>
+        /// <param name="resxpath">resx folder path of the message</param>
+        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result, String resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx")
         {
             if (msgcode != "")
             {
                 var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
                 HttpContext.Current.Session[sessionkey] = msgcode + "_" + result;
+                sessionkey = "NBrightBuyNotify*" + moduleId.ToString("") + "*resxpath";
+                HttpContext.Current.Session[sessionkey] = resxpath;
             }
         }
 
@@ -452,17 +455,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String) HttpContext.Current.Session[sessionkey];
             if (msgcode != "")
             {
-                var msgtempl = GetResxMessage(msgcode);
+                var sessionkeyresx = "NBrightBuyNotify*" + moduleId.ToString("") + "*resxpath";
+                var resxmsgpath = (String)HttpContext.Current.Session[sessionkeyresx];
                 HttpContext.Current.Session.Remove(sessionkey);
+                HttpContext.Current.Session.Remove(sessionkeyresx);
+
+                var msgtempl = GetResxMessage(msgcode, resxmsgpath);
                 return msgtempl;
             }
             return "";
         }
 
-        public static String GetResxMessage(String msgcode = "general_ok")
+        public static String GetResxMessage(String msgcode = "general_ok",String resxmsgpath = "")
         {
             const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
-            var msg = DnnUtils.GetLocalizedString(msgcode, resxpath, Utils.GetCurrentCulture());
+            if (resxmsgpath == "") resxmsgpath = resxpath;
+            var msg = DnnUtils.GetLocalizedString(msgcode, resxmsgpath, Utils.GetCurrentCulture());
             var level = "ok";
             if (msgcode.EndsWith("_" + NotifyCode.fail.ToString())) level = NotifyCode.fail.ToString();
             if (msgcode.EndsWith("_" + NotifyCode.warning.ToString())) level = NotifyCode.warning.ToString();
