@@ -81,17 +81,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String SEOTitle
         {
-            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle"); }
+            get
+            {
+                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
+                return strOut;
+            }
         }
 
         public String SEOTagwords
         {
-            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords"); }
+            get
+            {
+                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords");
+                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
+                return strOut;
+            }
         }
 
         public String SEODescription
         {
-            get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"); }
+            get
+            {
+                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");
+                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
+                return strOut;
+            }
         }
 
         public List<NBrightInfo> GetOptionValuesById(String optionid)

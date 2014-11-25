@@ -237,6 +237,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);                    
                 }
 
+                CreatedDate = DateTime.Now.ToString("O");
                 ApplyModelTransQty();
                 OrderStatus = orderStatus;
                 SavePurchaseData();

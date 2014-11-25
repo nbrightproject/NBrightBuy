@@ -102,8 +102,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var searchVal = obj.GetXmlProperty(search);
                     if (searchVal == "") searchVal = GenXmlFunctions.GetGenXmlValue(mt, "tag/@static");
 
-                    var searchValFrom = obj.GetXmlProperty(searchfrom);
-                    var searchValTo = obj.GetXmlProperty(searchto);
+                    var searchValFrom = obj.GetXmlPropertyRaw(searchfrom);
+                    var searchValTo = obj.GetXmlPropertyRaw(searchto);
 
                     if (sqltype.ToLower() == "datetime")
                     {

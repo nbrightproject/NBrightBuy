@@ -270,24 +270,6 @@
   &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
-	<data name="endurance.Text" xml:space="preserve">
-    <value>Endurance / Longue distance</value>
-  </data>
-	<data name="sport.Text" xml:space="preserve">
-    <value>Sport / Saut</value>
-  </data>
-	<data name="education.Text" xml:space="preserve">
-    <value>Education / Dressage</value>
-  </data>
-	<data name="loisir.Text" xml:space="preserve">
-    <value>Loisir / TREC</value>
-  </data>
-	<data name="articlecontact.Text" xml:space="preserve">
-    <value>Cet article vous intéresse ?</value>
-  </data>
-	<data name="contact.Text" xml:space="preserve">
-    <value>Merci de nous contacter</value>
-  </data>
 	<data name="choosemodel.Text" xml:space="preserve">
 		<value>Sélectionner modèle</value>
 	</data>

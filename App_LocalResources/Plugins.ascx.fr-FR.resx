@@ -300,4 +300,13 @@
   <data name="propertiesvalue.Text" xml:space="preserve">
     <value>Propriétés</value>
   </data>
-</root>
+	<data name="products.Text" xml:space="preserve">
+    <value>Produits</value>
+  </data>
+	<data name="dashsummary.Text" xml:space="preserve">
+    <value>Tableau de bord</value>
+  </data>
+	<data name="cmcicpayment.Text" xml:space="preserve">
+    <value>Paiement CMCIC</value>
+  </data>
+ </root>

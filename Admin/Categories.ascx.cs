@@ -26,7 +26,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch;
         private String _entryid = "";
         private String _templatType = "list";
-        private String _ctrl = "";
 
         public String Edittype { get; set; }
         //NOTE:  This code is dual use: by Categories.ascx and PropertiesValue.ascx.  The "Edittype" attr identifies this.
@@ -40,8 +39,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
 
             base.OnInit(e);
-
-            _ctrl = Utils.RequestParam(Context, "ctrl");
 
             _entryid = Utils.RequestParam(Context, "eid");
             if (_entryid != "") _templatType = "detail";
@@ -151,7 +148,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
-            param[0] = "ctrl=" + _ctrl;
 
             var navigationData = new NavigationData(PortalId, "CategoryAdmin");
             switch (e.CommandName.ToLower())
