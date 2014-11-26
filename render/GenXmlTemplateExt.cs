@@ -1577,15 +1577,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         {
                             if (grpcat.ishidden == false || showHidden)
                             {
-                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
-                                if (catreflist == "")
-                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                else
+                                if (!rtnDic.ContainsKey(grpcat.categoryid))
                                 {
-                                    if (grpcat.categoryref != "" &&
-                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
-                                    {
+                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                    if (catreflist == "")
                                         rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                    else
+                                    {
+                                        if (grpcat.categoryref != "" &&
+                                            (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                        {
+                                            rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                        }
                                     }
                                 }
                             }
