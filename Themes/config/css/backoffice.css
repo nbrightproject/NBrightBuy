@@ -260,3 +260,16 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 
 
 
+/* Breadcrumbs : ADDED BY DCL from Cygnus for tempoary fix on BO category admin */
+.categorybreadcrumbs{text-align:left;margin-bottom:14px;}
+.categorybreadcrumbs ul{list-style:none;display:inline-table;margin:0;}
+.categorybreadcrumbs ul li{display:inline;}
+.categorybreadcrumbs ul li a{background:none repeat scroll 0 0 #C2C2C2;color:#FFFFFF;display:block;float:left;font-size:12px;font-weight:bold;height:28px;line-height:28px;padding:0 14px 0 28px;position:relative;text-align:center;text-decoration:none;margin-right:2px;}
+.categorybreadcrumbs ul li a:after{border-bottom:14px solid transparent;border-left:14px solid #C2C2C2;border-top:14px solid transparent;content:"";position:absolute;right:-14px;top:0;z-index:1;}
+.categorybreadcrumbs ul li a:before{border-bottom:14px solid transparent;border-left:14px solid #EFEFEF;border-top:14px solid transparent;content:"";left:0;position:absolute;top:0;}
+.categorybreadcrumbs ul li:first-child a{}
+.categorybreadcrumbs ul li:first-child a:before{display:none;}
+.categorybreadcrumbs ul li:last-child a{}
+.categorybreadcrumbs ul li:last-child a:after{}
+.categorybreadcrumbs ul li a:hover{background:#000000;color:#ffffff;}
+.categorybreadcrumbs ul li a:hover:after{border-left-color:#000000;color:#ffffff;}

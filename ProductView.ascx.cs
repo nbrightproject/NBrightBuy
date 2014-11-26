@@ -296,6 +296,21 @@ namespace Nevoweb.DNN.NBrightBuy
                             _catid = defcatid;
                         }
                     }
+                    else
+                    {
+                        defcatid = ModSettings.Get("defaultpropertyid");
+                        if (Utils.IsNumeric(defcatid))
+                        {
+                            // if we have no filter use the default category
+                            if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+
+                            // If we have a static list,then always display the default category
+                            if (ModSettings.Get("staticlist") == "True")
+                            {
+                                _catid = defcatid;
+                            }
+                        }                        
+                    }
 
                     //check if we are display categories 
                     // get category list data

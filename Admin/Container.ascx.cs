@@ -12,6 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using NBrightCore.common;
@@ -56,6 +57,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         ctrl = "products";
                         ctlpath = GetControlPath(ctrl);                        
+                    }
+
+                    // check for group data, this MUST be there otherwise this is the first time into the BO, so redirect to Admin.
+                    var l = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture());
+                    if (!l.Any())
+                    {
+                        ctrl = "settings";
+                        ctlpath = GetControlPath(ctrl);
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, "settingssetup", NotifyCode.fail);
                     }
 
                     if (ctlpath != "")

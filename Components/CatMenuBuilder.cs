@@ -104,6 +104,77 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        public string GetTreePropertyList(int displaylevels = 20, int parentid = 0, int tabid = 0, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
+        {
+            if (tabid == 0) tabid = PortalSettings.Current.ActiveTab.TabID;
+            var rtnList = "";
+            var strCacheKey = "NBrightBuy_GetTreePropertyList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + parentid + "*" + Utils.GetCurrentCulture() + "*" + _currentCatId.ToString("");
+            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
+            if (objCache == null | StoreSettings.Current.DebugMode)
+            {
+                rtnList = BuildTreePropertyList(rtnList, 0, parentid, "", tabid, displaylevels, identClass, styleClass, activeClass);
+                //remove emprty <ul> elements
+                rtnList = rtnList.Replace("<ul></ul>", "");
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnList);
+            }
+            else
+            {
+                rtnList = (string)objCache;
+            }
+            return rtnList;
+        }
+        private String BuildTreePropertyList(String rtnList, int level, int parentid, string groupref, int tabid, int displaylevels = 50, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
+        {
+            if (level > displaylevels) return rtnList; // stop infinate loop
+
+            // header
+            if (level == 0)
+                rtnList += "<ul class='" + identClass + " " + styleClass + "'>";
+            else
+                rtnList += "<ul>";
+
+            var activeCat = _catGrpCtrl.GetCategory(_currentCatId);
+            if (activeCat == null) activeCat = new GroupCategoryData();
+            var depth = 0;
+            var levelList = _catGrpCtrl.GetGrpCategories(parentid, ""); // force this to always categories
+            foreach (GroupCategoryData grpcat in levelList)
+            {
+                if (grpcat.isvisible)
+                {
+                    // update cat info
+                    grpcat.url = _catGrpCtrl.GetCategoryUrl(grpcat, tabid);
+                    grpcat.depth = level; //make base 1, to pick up the
+
+                    var openClass = "";
+                    if (activeCat.Parents.Contains(grpcat.categoryid) || grpcat.categoryid == _currentCatId) openClass = " open ";
+
+                    if (_currentCatId == grpcat.categoryid)
+                        rtnList += "<li class='" + activeClass + openClass + "'>";
+                    else
+                    {
+                        if (openClass == "")
+                            rtnList += "<li>";
+                        else
+                            rtnList += "<li class='" + openClass + "'>";
+                    }
+
+                    //body 
+                    if (_templateBody.Count > grpcat.depth) depth = grpcat.depth;
+                    rtnList += GenXmlFunctions.RenderRepeater(grpcat, _templateBody[depth], "", "XMLData", "", StoreSettings.Current.Settings());
+
+                    rtnList = BuildTreeCatList(rtnList, level + 1, grpcat.categoryid, groupref, tabid, displaylevels);
+
+                    rtnList += "</li>";
+
+                }
+            }
+
+            //footer
+            rtnList += "</ul>";
+
+            return rtnList;
+        }
+
         private List<string> GetMenuTemplates(string basetempl)
         {
             var rtnL = new List<string>();

@@ -165,6 +165,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "catdropdown":
                     CreateCatDropDownList(container, xmlNod);
                     return true;
+                case "propertydropdown":
+                    CreatePropertyDropDownList(container, xmlNod);
+                    return true;
                 case "categoryparentname":
                     CreateCategoryParentName(container, xmlNod);
                     return true;
@@ -1286,6 +1289,42 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+        private void CreatePropertyDropDownList(Control container, XmlNode xmlNod)
+        {
+            try
+            {
+                var ddl = new DropDownList();
+                ddl = (DropDownList)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["allowblank"] != null))
+                {
+                    var li = new ListItem();
+                    li.Text = "";
+                    li.Value = "";
+                    ddl.Items.Add(li);
+                }
+
+                var tList = GetPropertyList(xmlNod);
+                foreach (var tItem in tList)
+                {
+                    var li = new ListItem();
+                    li.Text = tItem.Value;
+                    li.Value = tItem.Key.ToString("");
+
+                    ddl.Items.Add(li);
+                }
+
+                ddl.DataBinding += DdListDataBinding;
+                container.Controls.Add(ddl);
+            }
+            catch (Exception e)
+            {
+                var lc = new Literal();
+                lc.Text = e.ToString();
+                container.Controls.Add(lc);
+            }
+        }
+
         private void DdListDataBinding(object sender, EventArgs e)
         {
             var ddl = (DropDownList)sender;
@@ -1511,6 +1550,58 @@ namespace Nevoweb.DNN.NBrightBuy.render
             return rtnDic;
         }
 
+        private Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var rtnDic = new Dictionary<int, string>();
+
+            var strCacheKey = "NBrightBuy_BuildPropertyList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
+
+            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
+
+            if (objCache == null | StoreSettings.Current.DebugMode)
+            {
+                var grpCatCtrl = new GrpCatController(lang);
+                var d = new Dictionary<int, string>();
+                var rtnList = new List<GroupCategoryData>();
+                rtnList = grpCatCtrl.GetTreePropertyList(breadcrumbseparator);
+                var strCount = "";
+                foreach (var grpcat in rtnList)
+                {
+                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+
+                    if (grpcat.depth < displaylevels)
+                    {
+                        if (showEmpty || grpcat.entrycount > 0)
+                        {
+                            if (grpcat.ishidden == false || showHidden)
+                            {
+                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                if (catreflist == "")
+                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                else
+                                {
+                                    if (grpcat.categoryref != "" &&
+                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                    {
+                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
+
+            }
+            else
+            {
+                rtnDic = (Dictionary<int, string>)objCache;
+            }
+            return rtnDic;
+        }
+
         private Dictionary<int, string> GetCatList(XmlNode xmlNod)
         {
             var displaylevels = 20;
@@ -1595,6 +1686,93 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             return rtnList;
         }
+
+
+        private Dictionary<int, string> GetPropertyList(XmlNode xmlNod)
+        {
+            var displaylevels = 20;
+            var parentref = "";
+            var prefix = "..";
+            var showhidden = "False";
+            var showarchived = "False";
+            var showempty = "True";
+            var showHidden = false;
+            var showArchived = false;
+            var catreflist = "";
+            var parentid = 0;
+            var displaycount = "False";
+            var displayCount = false;
+            var showEmpty = true;
+            var groupref = "";
+            var filtermode = "";
+            List<int> validCatList = null;
+            var modulekey = "";
+            var redirecttabid = "";
+            var tabid = "";
+            var lang = Utils.GetCurrentCulture();
+
+            if (xmlNod.Attributes != null)
+            {
+                if (xmlNod.Attributes["displaylevels"] != null)
+                {
+                    if (Utils.IsNumeric(xmlNod.Attributes["displaylevels"].Value)) displaylevels = Convert.ToInt32(xmlNod.Attributes["displaylevels"].Value);
+                }
+
+                if (xmlNod.Attributes["parentref"] != null) parentref = xmlNod.Attributes["parentref"].Value;
+                if (xmlNod.Attributes["showhidden"] != null) showhidden = xmlNod.Attributes["showhidden"].Value;
+                if (xmlNod.Attributes["showarchived"] != null) showarchived = xmlNod.Attributes["showarchived"].Value;
+                if (xmlNod.Attributes["showempty"] != null) showempty = xmlNod.Attributes["showempty"].Value;
+                if (xmlNod.Attributes["displaycount"] != null) displaycount = xmlNod.Attributes["displaycount"].Value;
+                if (xmlNod.Attributes["prefix"] != null) prefix = xmlNod.Attributes["prefix"].Value;
+                if (xmlNod.Attributes["groupref"] != null) groupref = xmlNod.Attributes["groupref"].Value;
+                if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
+                if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
+                if (xmlNod.Attributes["lang"] != null) lang = xmlNod.Attributes["lang"].Value;
+
+                if (showhidden.ToLower() == "true") showHidden = true;
+                if (showarchived.ToLower() == "true") showArchived = true;
+                if (showempty.ToLower() == "false") showEmpty = false;
+                if (displaycount.ToLower() == "true") displayCount = true;
+                if (xmlNod.Attributes["catreflist"] != null) catreflist = xmlNod.Attributes["catreflist"].Value;
+                var grpCatCtrl = new GrpCatController(lang);
+                if (parentref != "")
+                {
+                    var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
+                    if (p != null) parentid = p.categoryid;
+                }
+                var catid = "";
+                if (filtermode != "")
+                {
+                    var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
+                    catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId;
+                    if (Utils.IsNumeric(catid))
+                    {
+                        validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
+                    }
+                }
+
+            }
+
+            var rtnList = BuildPropertyList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, ">", lang);
+
+            if (validCatList != null)
+            {
+                var nonValid = new List<int>();
+                // we have a filter on the list, so remove any categories not in valid list.
+                foreach (var k in rtnList)
+                {
+                    if (!validCatList.Contains(k.Key)) nonValid.Add(k.Key);
+                }
+                foreach (var k in nonValid)
+                {
+                    rtnList.Remove(k);
+                }
+            }
+
+            return rtnList;
+        }
+
 
         /// <summary>
         /// Return a list of category ids for all the valid categories for a given product list (selected by a categoryid)  

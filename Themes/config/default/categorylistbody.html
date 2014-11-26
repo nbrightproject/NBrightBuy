@@ -1,7 +1,9 @@
 <tr>
     <td class="text-nowrap" style="padding-right:30px">
-    <div class="hidden">[<tag type="valueof" xpath="genxml/hidden/levelprefix" />]</div><!-- hidden until changed -->
-        [<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="true" groupref="cat" />]<!-- Add select2 here after fixing to allow empty selection -->
+        [<tag id="cmdOpen" type="linkbutton" resourcekey="General.cmdFolderIcon" commandname="open" commandargument="ItemID" />]
+    </td>
+    <td class="text-nowrap">
+        [<tag type='valueof' xpath='genxml/entrycount' />]
     </td>
     <td style="width:100%">
                 [<tag id="txtcategoryname" type="textbox" cssclass="form-control" maxlength="150" />]

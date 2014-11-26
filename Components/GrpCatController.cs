@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
@@ -132,7 +134,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-") + ".aspx");
+                        // check if we are calling from BO with a ctrl param
+                        var ctrl = Utils.RequestParam(HttpContext.Current, "ctrl");
+                        if (ctrl != "") ctrl = "&ctrl=" + ctrl;
+                        
+                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-") + ".aspx");
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
                     }
                 }
@@ -250,6 +256,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (groupref == "" || groupref == "cat") GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
             }
 
+            return rtnList;
+        }
+
+        public List<GroupCategoryData> GetTreePropertyList(string breadcrumbseparator)
+        {
+            var rtnList = new List<GroupCategoryData>();
+            foreach (var grp in GroupList)
+            {
+                if (grp.GUIDKey != "cat")
+                {
+                    var levelList = GetGrpCategories(0, grp.GUIDKey);
+                    foreach (GroupCategoryData tInfo in levelList)
+                    {
+                        var nInfo = tInfo;
+                        nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 50, breadcrumbseparator, false);
+                        nInfo.depth = 0;
+                        rtnList.Add(nInfo);
+                    }                    
+                }
+            }
             return rtnList;
         }
 

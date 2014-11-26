@@ -70,7 +70,9 @@ $(document).ready(function() {
 
 <div class="row">
 	
-	<div class="col-xs-12 col-sm-12">
+<div class="categorybreadcrumbs">[<tag type="catbreadcrumb" links="True" separator="" aslist="true" />]</div>
+
+<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
@@ -90,11 +92,13 @@ $(document).ready(function() {
 				</div>
 				<div class="no-move"></div>
 			</div>
-			<div class="box-content">
+<div class="box-content">
+            [<tag id="cmdClose" type="linkbutton" resourcekey="General.cmdReturnIcon" commandname="close" />]
 						<table class="table table-striped table-hover categorylist">
 							<thead>
 								<tr>
-									<th>[<tag type="valueof" resourcekey="General.Parent" />]</th>
+									<th></th>
+									<th>[<tag type="valueof" resourcekey="General.Products" />]</th>
 									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
 									<th> </th>
 									<th> </th>

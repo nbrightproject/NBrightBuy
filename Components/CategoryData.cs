@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -64,6 +65,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public int ParentItemId
+        {
+            get
+            {
+                return DataRecord.ParentItemId;
+            }
+            set
+            {
+                DataRecord.ParentItemId = value;
+                DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", value.ToString(""));
+            }
+        }
+
+
         public String SEOName
         {
             get
@@ -101,10 +116,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public String CategoryRef
+        {
+            get
+            {
+                return DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+            }
+        }
+
+        public int CategoryId
+        {
+            get
+            {
+                return DataRecord.ItemID;
+            }
+        }
+
+        public String SetCategoryRef()
+        {
+            if (CategoryRef == "") // caregoryref is fixed once set
+            {
+                DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", Utils.GetUniqueKey(10));
+            }
+            DataRecord.GUIDKey = CategoryRef;
+            return CategoryRef;
+        }
+
+        public Boolean IsHidden
+        {
+            get
+            {
+                return DataRecord.GetXmlPropertyBool("genxml/checkbox/chkishidden");
+            }
+            set
+            {
+                DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", value.ToString());
+            }
+        }
+
+
         public void Save()
         {
             var objCtrl = new NBrightBuyController();
-            if (DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref") == "") DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", Utils.GetUniqueKey(10));
+            SetCategoryRef(); // set to uniquekey
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
             
@@ -194,11 +248,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!imgpath.StartsWith(StoreSettings.Current.FolderImagesMapPath))
             {
                 DataRecord.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imagefilename);
+                errorcount += 1;
             }
             if (!imgurl.StartsWith(StoreSettings.Current.FolderImages))
             {
                 DataRecord.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imagefilename);
+                errorcount += 1;
             }
+
+            // check guidkey is correct
+            if (DataRecord.GUIDKey != CategoryRef)
+            {
+                DataRecord.GUIDKey = CategoryRef;
+                errorcount += 1;
+            }
+
+            if (errorcount > 0) objCtrl.Update(DataRecord); // update if we find a error
 
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
@@ -264,6 +329,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.ItemID = -1;
             nbi.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+            nbi.SetXmlPropertyDouble("genxml/hidden/recordsortorder", 99999);
             var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 

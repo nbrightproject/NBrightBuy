@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -26,6 +27,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch;
         private String _entryid = "";
         private String _templatType = "list";
+        private int _openid = 0;
 
         public String Edittype { get; set; }
         //NOTE:  This code is dual use: by Categories.ascx and PropertiesValue.ascx.  The "Edittype" attr identifies this.
@@ -68,6 +70,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // Get Display Footer
             var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
             rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+            // get selected open catid
+            var stropenid = Utils.RequestParam(Context, "catid");
+            if (Utils.IsNumeric(stropenid)) _openid = Convert.ToInt32(stropenid);
+
         }
 
         protected override void OnLoad(EventArgs e)
@@ -119,10 +126,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var selgroup = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
                         if (selgroup == "") selgroup = GenXmlFunctions.GetField(rpSearch, "groupsel");
-                        grpCats = GetTreeCatList(grpCats, 0, 0, selgroup);
+                        grpCats = GetCatList(_openid, selgroup);
                     }
                     else
-                        grpCats = GetTreeCatList(grpCats, 0, 0, "cat");
+                        grpCats = GetCatList(_openid, "cat");
 
                     rpData.DataSource = grpCats;
                     rpData.DataBind();
@@ -155,6 +162,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "entrydetail":
                     SaveAll();
                     param[1] = "eid=" + cArg;
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
@@ -177,6 +185,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "resetsearch":
                     // clear cookie info
                     navigationData.Delete();
+                    param[2] = "catid=0";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":
@@ -193,7 +202,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         if (grp != null) categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grp.categoryid.ToString(""));
                         categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False"); // don't hide property groups by default
                     }
+                    categoryData.ParentItemId = _openid; 
                     categoryData.Save();
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "delete":
@@ -201,12 +212,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         ModCtrl.Delete(Convert.ToInt32(cArg));
                     }
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "saveall":
                     SaveAll();
-                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + "save", NotifyCode.ok);
                     NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "move":
@@ -215,11 +227,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         MoveRecord(Convert.ToInt32(cArg));
                     }
+                    param[2] = "catid=" + _openid;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "open":
+                    param[1] = "catid=" + cArg;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "close":
+                    var catData = new CategoryData(_openid, EditLanguage);
+                    if (catData.DataRecord == null)
+                        param[1] = "catid=0";
+                    else
+                        param[1] = "catid=" + catData.DataRecord.ParentItemId.ToString("");
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
                     UpodateRecord();
-                    param[1] = "eid=" + cArg;
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
 
@@ -243,26 +268,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
                         var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
-                        var parentitemid = GenXmlFunctions.GetField(rtnItem, "ddlparentcatid");
-                        if (parentitemid == "") parentitemid = "0"; //set to no parent cat by default
                         catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
-                       if (catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref") == "") catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref",Utils.GetUniqueKey(10));
-
-                        if (Utils.IsNumeric(parentitemid) && Convert.ToInt32(parentitemid) != catData.DataRecord.ItemID) // don't set it to itself
-                        {
-                            catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", parentitemid);
-                            catData.DataRecord.ParentItemId = Convert.ToInt32(parentitemid);
-                        }
+                        catData.SetCategoryRef(); // set to uniquekey
 
                         if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                         {
                             var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                             var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
-                            if (grp != null)
-                            {
-                                catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grptype);
-                                catData.DataRecord.ParentItemId = grp.ItemID;
-                            }   
+                            if (grp != null) catData.ParentItemId = grp.ItemID;
                         }
 
                         ModCtrl.Update(catData.DataRecord);
@@ -313,7 +326,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                 }
                 catData.Save();
-                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.ok);
             }
             else
             {
@@ -435,6 +447,31 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
 
             return rtnList;
+        }
+
+        private List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "")
+        {
+
+            var strFilter = "";
+            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
+            else
+            {
+                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+            }
+
+            var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+
+            var grpCtrl = new GrpCatController(EditLanguage);
+
+            foreach (var c in levelList)
+            {
+                var g = grpCtrl.GetCategory(c.ItemID);
+                if (g != null) c.SetXmlProperty("genxml/entrycount",g.entrycount.ToString(""));
+            }
+
+            return levelList;
         }
 
     }
