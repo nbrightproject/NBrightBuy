@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
@@ -10,6 +11,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.UI.WebControls;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -21,15 +23,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private List<NBrightInfo> _pluginList;
         public NBrightInfo Info;
-        private NBrightCore.TemplateEngine.TemplateGetter _templCtrl; 
-        public PluginData(int portalId)
+        private NBrightCore.TemplateEngine.TemplateGetter _templCtrl;
+        private Boolean portallevel;
+
+        public PluginData(int portalId, Boolean systemlevel = false)
         {
             _templCtrl = NBrightBuyUtils.GetTemplateGetter("config");
 
-            // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
-            var portallevel = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
+            portallevel = !systemlevel;
 
-            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(),true,true,portallevel);
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
             if (menuplugin != "")
             {
                 Info = new NBrightInfo();
@@ -37,6 +40,75 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _pluginList = new List<NBrightInfo>();
                 _pluginList = GetPluginList();
             }
+        }
+
+
+        /// <summary>
+        /// Search filesystem for any new plugins that have been added. Removed any deleted ones.
+        /// </summary>
+        public void UpdateSystemPlugins()
+        {
+            if (!portallevel) // only want to edit system level file
+            {
+                // remove delete plugins.
+                var updated = false;
+                foreach (var p in _pluginList)
+                {
+                    var remove = false;
+                    var ctrlpath = p.GetXmlProperty("path");
+                    var ctrlmappath = System.Web.Hosting.HostingEnvironment.MapPath(ctrlpath);
+                    var assembly = p.GetXmlProperty("assembly");
+                    if (ctrlpath == "" || !File.Exists(ctrlmappath))
+                    {
+                        if (assembly != "")
+                        {
+                            if (!assembly.EndsWith(".dll")) assembly = assembly + ".dll";
+                            var binmappath = System.Web.Hosting.HostingEnvironment.MapPath("/bin/" + assembly);
+                            if (!File.Exists(binmappath)) remove = true; 
+                        }
+                        else
+                            remove = true;
+                    }
+
+                    if (remove)
+                    {
+                        updated = true;
+                        _pluginList.Remove(p);
+                    }                            
+                }
+
+                if (updated) Save();
+
+                // Add new plugins
+                updated = false;
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+                {
+                    var flist = Directory.GetFiles(pluginfoldermappath);
+                    foreach (var f in flist)
+                    {
+                        if (f.EndsWith(".xml"))
+                        {
+                            var datain = File.ReadAllText(f);
+                            try
+                            {
+                                var nbi = new NBrightInfo();
+                                nbi.XMLData = datain;
+                                AddPlugin(nbi);
+                                updated = true;
+                                File.Delete(f);
+                            }
+                            catch (Exception)
+                            {
+                                // data might not be XML complient (ignore)
+                            }
+                        }
+                    }
+                    if (updated) Save();
+                }
+
+            }
+
         }
 
 
@@ -60,8 +132,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strXml += "</plugin>";
                 Info.RemoveXmlNode("genxml/plugin");
                 Info.AddXmlNode(strXml, "plugin", "genxml");
-                // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
-                var portallevel  = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
                 _templCtrl.SaveTemplate("menuplugin.xml", Info.XMLData, portallevel);
             }
         }

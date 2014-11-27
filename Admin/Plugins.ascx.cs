@@ -40,14 +40,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch; 
         private String _entryid = "";
         private Boolean _displayentrypage = false;
+        private List<NBrightInfo> _systemPlugins;
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
-            // setup a tempoary setting to edit portal or system level templates.
-            if (!StoreSettings.Current.Settings().ContainsKey("plugineditlevel")) StoreSettings.Current.Settings().Add("plugineditlevel", "0");
 
             base.OnInit(e);
 
@@ -87,11 +86,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 #endregion
 
+                #region "Check for plugins"
+
+                var pluginData = new PluginData(PortalId,true);
+                pluginData.UpdateSystemPlugins();
+                _systemPlugins = pluginData.GetPluginList();
+
+                #endregion
 
             }
             catch (Exception exc)
             {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                //display the error on the template (don't want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
                 phData.Controls.Add(l);
@@ -162,7 +168,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
-                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "eid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -226,7 +231,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reload":
-                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
