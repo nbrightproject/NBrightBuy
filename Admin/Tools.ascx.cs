@@ -17,6 +17,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -212,6 +213,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     objCtrl.GetSqlxml(stmt);
                     done = true;
                 }
+
+                DataCache.ClearCache();
 
                 if (done) NBrightBuyUtils.SetNotfiyMessage(ModuleId, "deletecompleted", NotifyCode.ok);
 

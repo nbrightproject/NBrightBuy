@@ -86,7 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (Exists)
                 {
                     var seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                    if (seoname == "") seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
+                    if (seoname == "") seoname = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
                     return seoname;                                    
                 }
                 return "";
@@ -95,14 +95,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String SEOTitle
         {
-            get { if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+            get
+            {
+                if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
             return "";
             }
         }
 
         public String SEOTagwords
         {
-            get { if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords");
+            get
+            {
+                if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
             return "";
             }
         }
@@ -111,7 +115,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get
             {
-                if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");
+                if (Exists) return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
                 return "";
             }
         }

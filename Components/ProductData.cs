@@ -293,7 +293,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             var productid = objCtrl.Update(DataRecord);
             DataLangRecord.ParentItemId = productid;
-            objCtrl.Update(DataLangRecord);
+            var plangid = objCtrl.Update(DataLangRecord);
+
+            // reload data so it's upto date with new ids
+            DataRecord = objCtrl.Get(productid); 
+            DataLangRecord = objCtrl.Get(plangid); 
+            
             ResetCache();
         }
 

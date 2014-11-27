@@ -157,17 +157,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
                 var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
-                var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-
-                var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                if (!Utils.IsNumeric(selorder)) selorder = "1";
-                var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
-                if (Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(selorder, CultureInfo.GetCultureInfo("en-US")))
+                var neworder = movData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                var selorder = selData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                if (neworder < selorder)
                     neworder = neworder - 0.5;
                 else
                     neworder = neworder + 0.5;                    
-                selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder",neworder.ToString(""),TypeCode.Double);
+                selData.DataRecord.SetXmlPropertyDouble("genxml/hidden/recordsortorder",neworder);
                 ModCtrl.Update(selData.DataRecord);
                 FixRecordSortOrder();
             }
@@ -180,11 +176,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var levelList = NBrightBuyUtils.GetCategoryGroups(EditLanguage,true);
             foreach (NBrightInfo catinfo in levelList)
             {
-                var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
-                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder) != lp)
+                var recordsortorder = catinfo.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                if (recordsortorder != lp)
                 {
                     var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
-                    catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
+                    catData.DataRecord.SetXmlPropertyDouble("genxml/hidden/recordsortorder", lp);
                     ModCtrl.Update(catData.DataRecord);
                 }
                 lp += 1;
