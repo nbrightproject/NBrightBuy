@@ -145,7 +145,7 @@
     <value xml:space="preserve">Prijsklasse</value>
   </data>
   <data name="lblprimarybuttonclass.Text" lastModified="2014-11-29 13:52:10">
-    <value xml:space="preserve">Primaire muisknop CSS-klasse: </value>
+    <value xml:space="preserve">Primaire muisknop CSS-class: </value>
   </data>
   <data name="lblRedirectTab.Text" lastModified="2014-11-29 13:52:10">
     <value xml:space="preserve">Pagina weer te geven van de resultaten: </value>
@@ -154,7 +154,7 @@
     <value xml:space="preserve">Sjabloon: </value>
   </data>
   <data name="lblsecondarybuttonclass.Text" lastModified="2014-11-29 13:52:10">
-    <value xml:space="preserve">Secundaire knop CSS-klasse: </value>
+    <value xml:space="preserve">Secundaire knop CSS-class: </value>
   </data>
   <data name="lbltargetmodulekey.Help" lastModified="2014-11-29 13:52:10">
     <value xml:space="preserve">Module sleutel van de module die zal de resultaten weergeven.</value>
