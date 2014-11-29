@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountName.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Accountnaam</value>
+  </data>
+  <data name="AccountNumber.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Rekeningnummer</value>
+  </data>
+  <data name="addressbookupdated_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Adres Update succesvol</value>
+  </data>
+  <data name="AddressUpdate.Text">
+    <value xml:space="preserve">Adres Update</value>
+  </data>
+  <data name="Bank.Text">
+    <value xml:space="preserve">Bank</value>
+  </data>
+  <data name="bankinginstructions.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Maak uw online bankieren zo spoedig mogelijk aan de bovenstaande account te betalen. Bestelling nummer in te voegen in het referentiegedeelte en omvatten uw naam zo goed als het is anders dan de acccount naam.</value>
+  </data>
+  <data name="BillingAddress.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Factuuradres</value>
+  </data>
+  <data name="categoryactionsave_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Categorie update succesvol</value>
+  </data>
+  <data name="checkoutfailmessage.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">De bestelling is geannuleerd, of de betaling is mislukt. Neem contact op met uw bank als u hulp nodig hebt met uw credit card, of neem contact op met ons als u denkt dat er is een probleem met de kassa.</value>
+  </data>
+  <data name="checkoutsuccessmessage.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Dank u voor uw bestelling. U ontvangt een per e-mail bevestiging met alle Orderinformatie. Controleer uw ongewenste e-mail mappen als u het niet hebt ontvangen binnen 30 minuten. Neem nota van de nummer hieronder als u wilt contact met ons op over deze bestelling.</value>
+  </data>
+  <data name="Collection.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Collectie Details</value>
+  </data>
+  <data name="Contactus.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Neem contact op met ons</value>
+  </data>
+  <data name="deletecompleted_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verwijderd voltooid.</value>
+  </data>
+  <data name="emailmessage.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Dank u voor uw bestelling. Wij zijn hier om te helpen! Bel ons voorzitterschap uur maandag tot vrijdag, of bezoek ons in de winkel als u vragen over uw bestelling hebt.</value>
+  </data>
+  <data name="general_error.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Onbekende fout</value>
+  </data>
+  <data name="general_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Bewerking mislukt</value>
+  </data>
+  <data name="general_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Operatie succesvol</value>
+  </data>
+  <data name="general_warning.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Operatie waarschuwing</value>
+  </data>
+  <data name="groupactionsave_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Groep bijwerken geslaagd</value>
+  </data>
+  <data name="InsertReference.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Referentie invoegen.</value>
+  </data>
+  <data name="ManualPayment.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Chque en Bank betaling</value>
+  </data>
+  <data name="notifytemplate_error.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">&lt;div class="nbsnotify nbsnotifyerror bg-danger"&gt;{bericht}&lt;/div&gt;</value>
+  </data>
+  <data name="notifytemplate_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">&lt;div class="nbsnotify nbsnotifyfail bg-danger"&gt;{bericht}&lt;/div&gt;</value>
+  </data>
+  <data name="notifytemplate_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">&lt;div class="nbsnotify bg-success"&gt;{bericht}&lt;/div&gt;</value>
+  </data>
+  <data name="notifytemplate_warning.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">&lt;div class="nbsnotify nbsnotifywarning bg-warning"&gt;{bericht}&lt;/div&gt;</value>
+  </data>
+  <data name="orderactionemailamended_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Bestellen van gewijzigd e-mailbericht gestuurd</value>
+  </data>
+  <data name="orderactionemailreceipt_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Orde ontvangst E-mail</value>
+  </data>
+  <data name="orderactionemailshipped_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzonden E-mail bestellen</value>
+  </data>
+  <data name="orderactionemailvalidated_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Gevalideerde E-mail bestellen</value>
+  </data>
+  <data name="orderactionprintorder_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Volgorde afgedrukt</value>
+  </data>
+  <data name="orderactionprintreceipt_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Ontvangst afgedrukt</value>
+  </data>
+  <data name="orderactionsave_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Bestelling bijwerken geslaagd</value>
+  </data>
+  <data name="OrderAmended.Text">
+    <value xml:space="preserve">Volgorde gewijzigd</value>
+  </data>
+  <data name="orderamended_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Volgorde gewijzigd</value>
+  </data>
+  <data name="OrderCreated.Text">
+    <value xml:space="preserve">Order bevestigd</value>
+  </data>
+  <data name="OrderCreatedClient.Text">
+    <value xml:space="preserve">Order bevestigd</value>
+  </data>
+  <data name="ordercreatedemailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Order bevestigd</value>
+  </data>
+  <data name="OrderReceipt.Text">
+    <value xml:space="preserve">Kwitantie</value>
+  </data>
+  <data name="orderreceipt_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Kwitantie</value>
+  </data>
+  <data name="OrderShipped.Text">
+    <value xml:space="preserve">Verzendingen</value>
+  </data>
+  <data name="ordershipped_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzendingen</value>
+  </data>
+  <data name="OrderValidated.Text">
+    <value xml:space="preserve">Bestelling gevalideerd</value>
+  </data>
+  <data name="ordervalidated_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Bestelling gevalideerd</value>
+  </data>
+  <data name="outofstock.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Niet op voorraad</value>
+  </data>
+  <data name="pickupmessage.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">U bent welkom te halen uw bestelling van ons in winkel tijdens de openingsuren. Gelieve ons bellen als u wilt dat om ervoor te zorgen dat het is klaar voor pickup.</value>
+  </data>
+  <data name="ProfileRegistered.Text">
+    <value xml:space="preserve">Profiel geregistreerd</value>
+  </data>
+  <data name="profileregistered_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Nieuw profiel geregistreerd</value>
+  </data>
+  <data name="profileupdated_emailsubject.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Profiel Update</value>
+  </data>
+  <data name="profileupdated_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Niet in staat om te registreren als gebruiker, gelieve te controleren u profiel informatie.</value>
+  </data>
+  <data name="profileupdated_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Uw profiel is bijgewerkt.</value>
+  </data>
+  <data name="profileupdatedcaptcha_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Ongeldige Security Code.</value>
+  </data>
+  <data name="profileupdatedclientrole_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Uw gegevens zijn opgeslagen, ontvangt u een e-mail wanneer uw account is gevalideerd en je bent in staat om toegang tot de winkel.</value>
+  </data>
+  <data name="profileupdatedexists_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Reeds geregistreerde gebruiker.  Om te registreren probeer een andere gebruikersnaam/e-mail.</value>
+  </data>
+  <data name="settingssetup_fail.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Winkel configuratie moet worden gedaan.</value>
+  </data>
+  <data name="ShippingAddress.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzendadres</value>
+  </data>
+  <data name="ShippingDate.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzenddatum</value>
+  </data>
+  <data name="ShippingMethod.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzendmethode</value>
+  </data>
+  <data name="ShippingOption.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Verzendoptie</value>
+  </data>
+  <data name="stockadjusted.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Aantal aangepast aan beschikbare voorraad</value>
+  </data>
+  <data name="terms.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">De bepalingen en voorwaarden moeten worden aanvaard.</value>
+  </data>
+  <data name="TrackingNumber.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Tracking-nummer</value>
+  </data>
+  <data name="validatecompleted_ok.Text" lastModified="2014-11-29 13:57:51">
+    <value xml:space="preserve">Validatie voltooid.</value>
+  </data>
+</root>

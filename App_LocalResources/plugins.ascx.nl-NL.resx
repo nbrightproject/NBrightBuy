@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addressbook.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Adresboek</value>
+  </data>
+  <data name="admin.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Admin</value>
+  </data>
+  <data name="admin_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="assembly.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Vergadering</value>
+  </data>
+  <data name="bomenuattributes.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">klasse = "nav-hoofdmenu"</value>
+  </data>
+  <data name="bosubmenuattributes.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">klasse = "dropdown-menu"</value>
+  </data>
+  <data name="catalog.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Catalogus</value>
+  </data>
+  <data name="catalog_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="categories.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Categorieën</value>
+  </data>
+  <data name="clients.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Klanten</value>
+  </data>
+  <data name="cmcicpayment.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">CMCIC betalingen</value>
+  </data>
+  <data name="cmdDownIcon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i title="Move Down" class="fa fa-arrow-circle-down fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdEdit.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Bewerken</value>
+  </data>
+  <data name="cmdEditIcon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdUpIcon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i title="Move Up" class="fa fa-arrow-circle-up fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdView.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Weergave</value>
+  </data>
+  <data name="dashboard.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Dashboard</value>
+  </data>
+  <data name="dashboard_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="dashsummary.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Dashboard</value>
+  </data>
+  <data name="dashSummary.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Dashboard</value>
+  </data>
+  <data name="EmailOrder.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">E-mails</value>
+  </data>
+  <data name="exit.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Uitgang</value>
+  </data>
+  <data name="exit_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="export.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Exporteren</value>
+  </data>
+  <data name="import.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Importeren</value>
+  </data>
+  <data name="lblctrl.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Plugin Ref te identificeren van de plugin aan het systeem, moet uniek zijn en gebruikt om te referece de bestandsvermelding resx voor de naam van het menu.</value>
+  </data>
+  <data name="lblctrl.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Plugin Ref</value>
+  </data>
+  <data name="lbldescription.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Inschakelen van het product beschrijving tekst zoeken</value>
+  </data>
+  <data name="lbldescription.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Beschrijving tekst zoeken</value>
+  </data>
+  <data name="lblgroup.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Groep</value>
+  </data>
+  <data name="lblhelp.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Beschrijving van het publiek voor menu tooltip.</value>
+  </data>
+  <data name="lblhelp.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Help</value>
+  </data>
+  <data name="lblhidden.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Worden niet weergegeven op menu.</value>
+  </data>
+  <data name="lblhidden.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Verborgen</value>
+  </data>
+  <data name="lblicon.Hep" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Pictogram weergeven in menu.</value>
+  </data>
+  <data name="lblicon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Pictogram html</value>
+  </data>
+  <data name="lblname.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Beschrijvende naam voor de Plugin. (gebruikt als standaardnaam menu als geen vermelding van de resx in plugins.ascx.resx)</value>
+  </data>
+  <data name="lblname.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Standaardnaam</value>
+  </data>
+  <data name="lblpath.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Relatief pad naar het besturingselement ascx van de plugin.</value>
+  </data>
+  <data name="lblpath.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Pad naar controle</value>
+  </data>
+  <data name="lblprovidertype.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Type gegevensvoorziening</value>
+  </data>
+  <data name="lblroles.Help" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">CSV-lijst met de rollen die zijn in staat om dit besturingselement weer te geven</value>
+  </data>
+  <data name="lblroles.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Beveiligingsrollen</value>
+  </data>
+  <data name="namespaceclass.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Namespace en klasse</value>
+  </data>
+  <data name="orders.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Bestellingen</value>
+  </data>
+  <data name="plugins.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Plugins</value>
+  </data>
+  <data name="products.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Producten</value>
+  </data>
+  <data name="promotions.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Promoties</value>
+  </data>
+  <data name="properties.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Eigenschappen</value>
+  </data>
+  <data name="propertiesvalue.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Eigenschappen</value>
+  </data>
+  <data name="propertygroups.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Groepen eigenschappen</value>
+  </data>
+  <data name="providertype.data" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">UI alleen;Verzending;Belasting;Promoties;Planner;Evenementen;Betalingen; kortingscode;Filter;TemplateExt; andere</value>
+  </data>
+  <data name="providertype.datavalue" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">01 02 03; 04, 05, 06; 07; 08; 09; 10; 99</value>
+  </data>
+  <data name="sales.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Verkoop</value>
+  </data>
+  <data name="sales_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="settings.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Instellingen</value>
+  </data>
+  <data name="shipping.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Verzending</value>
+  </data>
+  <data name="shipping_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="tax.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Belasting</value>
+  </data>
+  <data name="templatepath.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Sjabloon bestand relatief pad</value>
+  </data>
+  <data name="ToggleDropdown.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Afdrukken</value>
+  </data>
+  <data name="tools.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Hulpprogramma 's</value>
+  </data>
+  <data name="utilities.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">Hulpprogramma 's</value>
+  </data>
+  <data name="utilities_icon.Text" lastModified="2014-11-29 13:53:30">
+    <value xml:space="preserve">&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+</root>

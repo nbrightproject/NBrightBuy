@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addtobasket.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Kopen</value>
+  </data>
+  <data name="addtobasketicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;span title="Add to basket" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="choosemodel.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Selecteer Model</value>
+  </data>
+  <data name="code.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Code</value>
+  </data>
+  <data name="convertor.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Currency Converter</value>
+  </data>
+  <data name="currencyconvertormsg.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;p&gt;Als het al niet wordt weergegeven, selecteer uw doel-valuta en klikt u op de knop om te zetten. Het resultaat is berekend op basis van geldende marktwisselkoersen.&lt;/p&gt;&lt;p&gt;Banken en andere instellingen kosten u vergoedingen voor conversie en behandeling van vreemde valuta's en zo de eindprijs op uw creditcard factuur zal waarschijnlijk een paar procent hoger dan het resultaat, worden hier weergegeven. Gebruik dit alleen als een gids.&lt;/p&gt;&lt;p style="font-size:11px;font-style:italic"&gt;Deze dienst wordt geleverd door foreignexchangeresource.com&lt;/p&gt;</value>
+  </data>
+  <data name="dealer.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Dealer</value>
+  </data>
+  <data name="dealerprice.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Dealer prijs</value>
+  </data>
+  <data name="debugmode.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Debug modus is ingeschakeld - Caching is uitgeschakeld</value>
+  </data>
+  <data name="description.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Beschrijving</value>
+  </data>
+  <data name="documentation.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Downloads</value>
+  </data>
+  <data name="download.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Download dit bestand&lt;i class='fa fa-download'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="downloadableproduct.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Dit is een downloadbare product. Na aankoop, of via een link in de aankoop kennisgeving het ophalen vanaf deze pagina.</value>
+  </data>
+  <data name="edit.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Bewerken</value>
+  </data>
+  <data name="editicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;i title="Edit Product" class="fa fa-edit"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="emailmsg.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Informeer mij van de prijs van dit product op</value>
+  </data>
+  <data name="emailprice.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">E-mail voor prijs</value>
+  </data>
+  <data name="filebullets.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;i class='fa-li fa fa-file-o'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="from.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Van</value>
+  </data>
+  <data name="fromlower.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Van</value>
+  </data>
+  <data name="holidaymsg.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Gesloten voor vakantie</value>
+  </data>
+  <data name="instock.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Ja</value>
+  </data>
+  <data name="model.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Model</value>
+  </data>
+  <data name="models.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Modellen</value>
+  </data>
+  <data name="noimage.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;i class="fa fa-camera"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="normally.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Normale Retail</value>
+  </data>
+  <data name="onsale.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Verkoop</value>
+  </data>
+  <data name="onsaleflag.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Uitverkoop!</value>
+  </data>
+  <data name="outofstock.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Niet op voorraad</value>
+  </data>
+  <data name="outofstockflag.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Niet op voorraad</value>
+  </data>
+  <data name="price.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Prijs</value>
+  </data>
+  <data name="pricerequest.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Prijsaanvraag</value>
+  </data>
+  <data name="purchasabledocument.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Download hier na aankoop&lt;i class='fa fa-exclamation-circle'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="related.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Verwante producten</value>
+  </data>
+  <data name="remaining.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Resterende</value>
+  </data>
+  <data name="reserved.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Gereserveerd</value>
+  </data>
+  <data name="retail.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Detailhandel</value>
+  </data>
+  <data name="return.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Terugkeer</value>
+  </data>
+  <data name="returnicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;span title="Return to list" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-reply fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="saleprice.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Verkoopprijs</value>
+  </data>
+  <data name="stock.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Voorraad</value>
+  </data>
+  <data name="view.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Weergave</value>
+  </data>
+  <data name="viewicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;span title="Information" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistadd.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Voeg toe aan wenslijst</value>
+  </data>
+  <data name="wishlistaddicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;span title="Add to wishlist" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistremove.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">Verwijderen uit de lijst van de wens</value>
+  </data>
+  <data name="wishlistremoveicon.Text" lastModified="2014-11-29 13:51:18">
+    <value xml:space="preserve">&lt;span title="Remove from wishlist" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+</root>
