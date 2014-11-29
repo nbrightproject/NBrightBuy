@@ -282,4 +282,25 @@
 	<data name="TrackingNumber.Text" xml:space="preserve">
 		<value>Numéro de suivi</value>
 	</data>
+	<data name="OrderCreatedClient.Text" xml:space="preserve">
+		<value>Commande confirmée</value>
+	</data>
+	<data name="OrderAmended.Text" xml:space="preserve">
+		<value>Commande modifiée</value>
+	</data>
+	<data name="OrderShipped.Text" xml:space="preserve">
+		<value>Commande expédiée</value>
+	</data>
+	<data name="ShippingOption.Text" xml:space="preserve">
+		<value>Optioon de livraison</value>
+	</data>
+	<data name="ShippingDate.Text" xml:space="preserve">
+		<value>Date d'expédition</value>
+	</data>
+	<data name="Collection.Text" xml:space="preserve">
+		<value>Détails d'enlèvement</value>
+	</data>
+	<data name="settingssetup_fail.Text" xml:space="preserve">
+		<value>La configuration de la boutique est à faire </value>
+	</data>
 </root>

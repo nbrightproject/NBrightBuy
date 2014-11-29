@@ -136,7 +136,7 @@
     <value>Nom du thème à utiliser pour la liste produits.</value>
   </data>
 	<data name="lbltheme.Text" xml:space="preserve">
-    <value>Theme : </value>
+    <value>Thème : </value>
   </data>
 	<data name="lbldescription.Help" xml:space="preserve">
 		<value>Description du plugin</value>
@@ -271,28 +271,28 @@
 		<value>Active une clause et sur une deuxième catégorie de groupe « Groupe 2 ».</value>
 	</data>
 	<data name="lblgroupselect1.Text" xml:space="preserve">
-		<value>Activer et recherche groupe 2 : </value>
+		<value>Activer ET rechercher dans groupe 2 : </value>
 	</data>
 	<data name="lblgroupselect2.Help" xml:space="preserve">
 		<value>Active une clause et sur une troisième catégorie de groupe « Groupe 3 ».</value>
 	</data>
 	<data name="lblgroupselect2.Text" xml:space="preserve">
-		<value>Activer et cherchez le groupe 3 : </value>
+		<value>Activer ET rechercher dans groupe 3 : </value>
 	</data>
 	<data name="lblparentcatref.Help" xml:space="preserve">
-		<value>Toutes les catégories sous cette catégorie parente seront retournés. Si non spécifié toutes les catégories seront retournées.</value>
+		<value>Toutes les catégories sous cette catégorie parente seront renvoyées. Si non spécifié toutes les catégories seront renvoyées.</value>
 	</data>
 	<data name="lblparentcatref.Text" xml:space="preserve">
 		<value>Catégorie/groupe Parent Ref : </value>
 	</data>
 	<data name="lblparentcatref1.Help" xml:space="preserve">
-		<value>Toutes les catégories sous cette catégorie parente seront retournés. Si non spécifié toutes les catégories seront retournées.</value>
+		<value>Toutes les catégories sous cette catégorie parente seront renvoyées. Si non spécifié toutes les catégories seront renvoyées.</value>
 	</data>
 	<data name="lblparentcatref1.Text" xml:space="preserve">
 		<value>Catégorie/groupe Parent Ref : </value>
 	</data>
 	<data name="lblparentcatref2.Help" xml:space="preserve">
-		<value>Toutes les catégories sous cette catégorie parente seront retournés. Si non spécifié toutes les catégories seront retournées.</value>
+		<value>Toutes les catégories sous cette catégorie parente seront renvoyées. Si non spécifié toutes les catégories seront renvoyées.</value>
 	</data>
 	<data name="lblparentcatref2.Text" xml:space="preserve">
 		<value>Catégorie/groupe Parent Ref : </value>

@@ -161,6 +161,8 @@ namespace Nevoweb.DNN.NBrightBuy
                             objUser.FirstName = GenXmlFunctions.GetField(rpInp, "FirstName");
                             objUser.LastName = GenXmlFunctions.GetField(rpInp, "LastName");
                             objUser.Username = GenXmlFunctions.GetField(rpInp, "Username");
+                            objUser.Profile.PreferredLocale = Utils.GetCurrentCulture();
+
                             if (objUser.Username == "") objUser.Username = GenXmlFunctions.GetField(rpInp, "Email");
                             objUser.Membership.CreatedDate = System.DateTime.Now;
                             var passwd = GenXmlFunctions.GetField(rpInp, "Password");

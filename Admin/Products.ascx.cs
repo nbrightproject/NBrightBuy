@@ -93,7 +93,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (_eid > 0 && Utils.IsNumeric(cArg))
                     {
                         var newid = Copy(cArg);
-                        Update(Convert.ToInt32(newid));
                         param[0] = "eid=" + newid;
                     }
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -174,6 +173,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
                 var newid = prodData.Copy();
+                Update(newid);
+                prodData = ProductUtils.GetProductData(Convert.ToInt32(newid), StoreSettings.Current.EditLanguage);
+                // update modelid, so it's unique
+                var nodList = prodData.DataRecord.XMLDoc.SelectNodes("genxml/models/genxml");
+                if (nodList != null)
+                {
+                    var lp = 1;
+                    foreach (var nod in nodList)
+                    {
+                        prodData.DataRecord.SetXmlProperty("genxml/models/genxml[" + lp.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
+                        lp += 1;
+                    }
+                }
+                prodData.Save();
                 return newid.ToString("");
             }
             return "";

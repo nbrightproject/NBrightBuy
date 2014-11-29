@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -522,7 +523,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var fields = modelInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
-                    objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
+                    if (f.EndsWith("date")) // ssuem any field ending in date is a date format (Nasty quick fix for chrome forcing datepicker)
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f),TypeCode.DateTime);
+                    else
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
                 strXml += objInfo.XMLData;
             }
@@ -976,7 +980,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //Copy Base record 
             var dr = (NBrightInfo)DataRecord.Clone();
             dr.ItemID = -1;
-            //dr.SetXmlProperty("genxml/textbox/txtproductref", dr.GetXmlProperty("genxml/textbox/txtproductref") + " [Copy]");
             dr.SetXmlProperty("genxml/importref", Utils.GetUniqueKey());
             var newid = objCtrl.Update(dr);
             

@@ -385,9 +385,7 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="CategoryMenu.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="CategoryMenu.ascx" />
     <Content Include="CategoryMenuSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -397,9 +395,7 @@
     <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="AddressAdmin.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="AddressAdmin.ascx" />
     <Content Include="AddressAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -424,9 +420,7 @@
     <Content Include="ProfileFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="OrderAdmin.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="OrderAdmin.ascx" />
     <Content Include="OrderAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

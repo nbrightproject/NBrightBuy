@@ -211,7 +211,7 @@
 		<value>Aucun</value>
 	</data>
 	<data name="PaymentMethod.Text" xml:space="preserve">
-		<value>Mode de paiement : </value>
+		<value>Mode de paiement</value>
 	</data>
 	<data name="cmdReturnButton.Text" xml:space="preserve">
 		<value>&lt;i  title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
@@ -224,5 +224,8 @@
 	</data>
 	<data name="ToggleDropdown.Text" xml:space="preserve">
 		<value>Impression</value>
+	</data>
+	<data name="PaymentStatus.Text" xml:space="preserve">
+		<value>Statut de paiement</value>
 	</data>
 </root>

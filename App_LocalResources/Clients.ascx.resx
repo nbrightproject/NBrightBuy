@@ -201,4 +201,16 @@
 	<data name="FindaClient.Text" xml:space="preserve">
     <value>Find a Client</value>
   </data>
+	<data name="Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+	<data name="Ordering.Text" xml:space="preserve">
+    <value>Ordering</value>
+  </data>
+	<data name="UserAccount.Text" xml:space="preserve">
+    <value>UserAccount</value>
+  </data>
+	<data name="Notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
 </root>

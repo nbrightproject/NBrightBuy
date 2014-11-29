@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,155 +59,92 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Paramètres du menu des catégories</value>
-  </data>
-  <data name="lbladvancedsettings.Text" xml:space="preserve">
-    <value>Avancés</value>
-  </data>
-  <data name="lblalwaysshow.Help" xml:space="preserve">
-    <value>Toujours afficher le menu à la fin de la branche et en vue de produit, lorsqu'aucune entrée de catégorie existe. (La liste Racine des catégories sera affichée)</value>
-  </data>
-  <data name="lblalwaysshow.Text" xml:space="preserve">
-    <value>Toujours afficher : </value>
-  </data>
-  <data name="lblbasicsettings.Text" xml:space="preserve">
-    <value>Général</value>
-  </data>
-  <data name="lbldefaultcatid.Help" xml:space="preserve">
-    <value>Racine de la liste des catégories par laquelle le menu commencera son affichage, laissé vide pour démarrer de la racine.</value>
-  </data>
-  <data name="lbldefaultcatid.Text" xml:space="preserve">
-    <value>Racine des catégories affichée : </value>
-  </data>
-  <data name="lbldepth.Help" xml:space="preserve">
-    <value>Profondeur du menu à afficher.</value>
-  </data>
-  <data name="lbldepth.Text" xml:space="preserve">
-    <value>Profondeur : </value>
-  </data>
-  <data name="lbldetailtab.Help" xml:space="preserve">
-    <value>La page vers laquelle l'utilisateur sera redirigée lorsqu'il cliquera sur une catégorie. Si laissé vide, la page actuelle est utilisée. </value>
-  </data>
-  <data name="lbldetailtab.Text" xml:space="preserve">
-    <value>Page de la liste produits : </value>
-  </data>
-  <data name="lbllistbody.Help" xml:space="preserve">
-    <value>Gabarit à utiliser comme corps de catégorie, ceci est répété pour chaque catégorie.</value>
-  </data>
-  <data name="lbllistbody.Text" xml:space="preserve">
-    <value>Corps de catégorie : </value>
-  </data>
-  <data name="lbllistbodyfoot.Help" xml:space="preserve">
-    <value>Gabarit à utiliser pour la fin des catégories, ceci est répété pour chaque catégorie.</value>
-  </data>
-  <data name="lbllistbodyfoot.Text" xml:space="preserve">
-    <value>Fin des catégories : </value>
-  </data>
-  <data name="lbllistfooter.Help" xml:space="preserve">
-    <value>Gabarit à utiliser pour le pied de page du menu des catégories.</value>
-  </data>
-  <data name="lbllistfooter.Text" xml:space="preserve">
-    <value>Pied de page du menu : </value>
-  </data>
-  <data name="lbllistheader.Help" xml:space="preserve">
-    <value>Gabarit à utiliser pour l'entête du menu des catégories.</value>
-  </data>
-  <data name="lbllistheader.Text" xml:space="preserve">
-    <value>Entête du menu : </value>
-  </data>
-  <data name="lblmenutype.Help" xml:space="preserve">
-    <value>Type d'affichage du menu</value>
-  </data>
-  <data name="lblmenutype.Text" xml:space="preserve">
-    <value>Type de Menu : </value>
-  </data>
-  <data name="lbltargetmodulekey.Help" xml:space="preserve">
-    <value>Clé du module utilisé pour afficher les résultats.</value>
-  </data>
-  <data name="lbltargetmodulekey.Text" xml:space="preserve">
-    <value>Clé module cible : </value>
-  </data>
-  <data name="lbltheme.Help" xml:space="preserve">
-    <value>Nom du thème à utiliser pour cette liste produits.</value>
-  </data>
-  <data name="lbltheme.Text" xml:space="preserve">
-    <value>Thème : </value>
-  </data>
-  <data name="lblthemesettings.Text" xml:space="preserve">
-    <value>Paramètres du thème</value>
-  </data>
-  <data name="lbltreeidentclass.Help" xml:space="preserve">
-    <value>Nom de la classe CSS identifiante à placer à la racine "ul" de la structure arbre. Ceci sera utilisé pour identifier l'Arbre au Javascript.</value>
-  </data>
-  <data name="lbltreeidentclass.Text" xml:space="preserve">
-    <value>Classe CSS identifiante : </value>
-  </data>
-  <data name="lbltreerootclass.Help" xml:space="preserve">
-    <value>Nom de la classe CSS optionnelle à placer à la racine "ul" de la structure arbre. Pour ajouter du style à l'arbre.</value>
-  </data>
-  <data name="lbltreerootclass.Text" xml:space="preserve">
-    <value>Classe CSS de style : </value>
-  </data>
-  <data name="themehidden.Text" xml:space="preserve">
-    <value>Les anciens paramètres du thème ont été désactivés, mettre à jour pour activer le nouveau thème. </value>
-  </data>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="lbltreebehaviour.Text" xml:space="preserve">
+		<value>Menu arborescent auto-fermant</value>
+	</data>
+	<data name="lblplaceholderimage.Text" xml:space="preserve">
+		<value>Autoriser Espace Réservé Image : </value>
+	</data>
+	<data name="lblnoimageicon.Text" xml:space="preserve">
+		<value>Placeholder Image Icon (fontawesome.io) : </value>
+	</data>
+	<data name="lblitemwidth.Text" xml:space="preserve">
+		<value>Largeur Entrée Categorie en px : </value>
+	</data>
+	<data name="lblitemheight.Text" xml:space="preserve">
+		<value>Hauteur Entrée Categorie (incl unit ou auto) : </value>
+	</data>
+	<data name="lblitemimagecontainerheight.Text" xml:space="preserve">
+		<value>Hauteur Container Image Entrée Categorie (incl unit ou auto) : </value>
+	</data>
+	<data name="lblitemgutter.Text" xml:space="preserve">
+		<value>Gouttière Entrée Categorie en px: </value>
+	</data>
+	<data name="lblitembottommargin.Text" xml:space="preserve">
+		<value>Marge Inférieure Entrée Categorie en px : </value>
+	</data>
+	<data name="lblthumbnailwidth.Text" xml:space="preserve">
+		<value>Largeur Image Categorie en px ou 0 pour auto : </value>
+	</data>
+	<data name="lblthumbnailheight.Text" xml:space="preserve">
+		<value>Hauteur Image Categorie en px ou 0 pour auto : </value>
+	</data>
 </root>

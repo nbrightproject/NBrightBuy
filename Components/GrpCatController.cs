@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -137,8 +138,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         // check if we are calling from BO with a ctrl param
                         var ctrl = Utils.RequestParam(HttpContext.Current, "ctrl");
                         if (ctrl != "") ctrl = "&ctrl=" + ctrl;
-                        
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-") + ".aspx");
+                        newBaseName = Utils.CleanInput(newBaseName);
+                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-").Replace(".","") + ".aspx");
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
                     }
                 }

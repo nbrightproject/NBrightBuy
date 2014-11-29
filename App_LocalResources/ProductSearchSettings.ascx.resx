@@ -312,4 +312,10 @@
 	<data name="lblinstock.Text" xml:space="preserve">
 		<value>Stock Checkbox : </value>
 	</data>
+	<data name="lblhidden.Text" xml:space="preserve">
+		<value>Hidden</value>
+	</data>
+	<data name="emailmessage.Text" xml:space="preserve">
+		<value>Thank you for your order. We are here to help ! Do not hesitate to get in touch for any questions regarding your order.</value>
+	</data>
 </root>

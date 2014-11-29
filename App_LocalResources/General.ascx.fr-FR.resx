@@ -658,7 +658,7 @@
     <value>Achat</value>
   </data>
 	<data name="Related.Text" xml:space="preserve">
-    <value>Connexes</value>
+    <value>Associés</value>
   </data>
 	<data name="Remove.Text" xml:space="preserve">
     <value>Supprimer</value>
@@ -906,4 +906,13 @@
 	<data name="ExtraCost.Text" xml:space="preserve">
     <value>Supplément</value>
   </data>
+	<data name="cmdOk.Text" xml:space="preserve">
+		<value>OK</value>
+	</data>
+	<data name="cmdFolder.Text" xml:space="preserve">
+		<value>Dossier</value>
+	</data>
+	<data name="cmdFolderIcon.Text" xml:space="preserve">
+		<value>&lt;i title="Ouvrir" class="fa fa-folder fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+	</data>
 </root>

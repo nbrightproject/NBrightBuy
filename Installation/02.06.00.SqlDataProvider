@@ -268,7 +268,7 @@ CREATE   PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_Update]
 @ModuleId int,
 @TypeCode nvarchar(50),
 @XMLData xml,
-@GUIDKey nvarchar(50),
+@GUIDKey nvarchar(250),
 @ModifiedDate datetime,
 @TextData nvarchar(MAX),
 @XrefItemId int,
