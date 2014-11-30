@@ -1,3 +1,39 @@
+[<tag id="selecteditemid" type="postback" value="" />]
+
+<script>
+    
+    $(document).ready(function() {
+
+        $(".selectmove").hide();
+        $(".selectcancel").hide();		
+        $(".savebutton").hide();
+
+        $(".selectrecord").click(function() {
+            $(".selectrecord").hide();
+            $(".selectmove").show();
+            $(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
+            $(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
+            $("input[[id*='selecteditemid']]").val($(this).attr("itemid"));
+
+            var selectid = $(this).attr("itemid");
+            $(".selectmove").each(function (index) {
+                if ($(this).attr("parentlist").indexOf(selectid + ";") > -1) $(this).hide();
+            });
+
+
+        });
+
+        $(".selectcancel").click(function() {
+            $(".selectmove").hide();
+            $(".selectcancel").hide();		
+            $(".selectrecord").show();		
+            $("input[[id*='selecteditemid']]").val('');
+        });
+
+
+    });
+
+</script>
 
 <br />
 
@@ -14,21 +50,6 @@
 		<!-- No language on this page -->
 	</div>
 </div>
-
-
-[<tag type="if" function="issuperuser" display="{ON}" />]
-<div class="row pageactions"><!-- Page actions - also at top -->
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-content">
-		        [<tag id="cmdRefresh" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSearchIcon" commandname="reload" />]                     
-		        [<tag id="cmdResetPortal" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdResetIcon" commandname="resetportal" confirm="Reset Portals Plugins to system default?" />]                     
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
-[<tag type="endif" />]
 
 
 <div id="plugins"><!-- Is this ID required -->
@@ -61,8 +82,7 @@
 								<tr>
 									<th>[<tag type="valueof" resourcekey="General.Name" />]</th>
 									<th>Control</th>
-									<th>Path</th>
-									<th> </th>
+									<th>[<tag type="valueof" resourcekey="General.Active" />]</th>
 									<th> </th>
 									<th> </th>
 								</tr>

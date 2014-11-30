@@ -1,8 +1,23 @@
 <tr>
 <td class="text-nowrap">[<tag type='valueof' xpath='genxml/textbox/name' />]</td>
 <td class="text-nowrap">[<tag type='valueof' xpath='genxml/textbox/ctrl' />]</td>
-<td style="width:100%">[<tag type='valueof' xpath='genxml/textbox/path' />]</td>
-<td>[<tag id="cmdUp" type="linkbutton" resourcekey="Plugins.cmdUpIcon" commandname="entryup" commandargument="ItemID" />]</td>
-<td>[<tag id="cmdDown" type="linkbutton" resourcekey="Plugins.cmdDownIcon" commandname="entrydown" commandargument="ItemID" />]</td>
+    <td class="text-nowrap">
+        [<tag type="if" xpath="genxml/checkbox/active"  testvalue="True"  display="{ON}"/>]
+        <i  title="Edit" class="fa fa-check-square-o fa-fw fa-2x"></i>
+        [<tag type="endif" />]
+        [<tag type="if" xpath="genxml/checkbox/active"  testvalue="True"  display="{OFF}"/>]
+        [<tag type="if" xpath="genxml/checkbox/hidden"  testvalue="False"  display="{ON}"/>]
+        <i  title="Edit" class="fa fa-check-square-o fa-fw fa-2x"></i>
+        [<tag type="endif" />]
+        [<tag type="endif" />]
+    </td>
+    <td>
+        <a title="Move" href="#" class="selectrecord" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-sort fa-fw fa-2x"></i></a>
+    <a title="Cancel Move" href="#" class="selectcancel" itemid="[<tag type='valueof' databind='ItemID' />]"><i class="fa fa-times-circle fa-fw fa-2x"></i></a>
+<span class="selectmove" itemid="[<tag type='valueof' databind='ItemID' />]" parentlist="[<tag type='valueof' xpath='genxml/parentlist' />]" >
+[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMoveIcon" commandname="move" commandargument="ItemID" />]
+</span>
+
+    </td>
 <td>[<tag id="cmdEdit" type="linkbutton" resourcekey="Plugins.cmdEditIcon" commandname="entrydetail" commandargument="ItemID" />]</td>
 </tr>

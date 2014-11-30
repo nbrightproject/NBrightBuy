@@ -56,25 +56,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var remove = false;
                     var ctrlpath = p.GetXmlProperty("path");
-                    var ctrlmappath = System.Web.Hosting.HostingEnvironment.MapPath(ctrlpath);
-                    var assembly = p.GetXmlProperty("assembly");
-                    if (ctrlpath == "" || !File.Exists(ctrlmappath))
+                    if (ctrlpath != "")
                     {
-                        if (assembly != "")
+                        var ctrlmappath = System.Web.Hosting.HostingEnvironment.MapPath(ctrlpath);
+                        var assembly = p.GetXmlProperty("assembly");
+                        if (ctrlpath == "" || !File.Exists(ctrlmappath))
                         {
-                            if (!assembly.EndsWith(".dll")) assembly = assembly + ".dll";
-                            var binmappath = System.Web.Hosting.HostingEnvironment.MapPath("/bin/" + assembly);
-                            if (!File.Exists(binmappath)) remove = true; 
+                            if (assembly != "")
+                            {
+                                if (!assembly.EndsWith(".dll")) assembly = assembly + ".dll";
+                                var binmappath = System.Web.Hosting.HostingEnvironment.MapPath("/bin/" + assembly);
+                                if (!File.Exists(binmappath)) remove = true;
+                            }
+                            else
+                                remove = true;
                         }
-                        else
-                            remove = true;
-                    }
 
-                    if (remove)
-                    {
-                        updated = true;
-                        _pluginList.Remove(p);
-                    }                            
+                        if (remove)
+                        {
+                            updated = true;
+                            _pluginList.Remove(p);
+                        }
+                    }
                 }
 
                 if (updated) Save();
@@ -165,28 +168,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String AddPlugin(NBrightInfo pluginInfo, int index = -1)
         {
-            if (Utils.IsNumeric(pluginInfo.GetXmlProperty("genxml/hidden/index")))
+            // look to see if we already have the plugin
+            var ctrl = pluginInfo.GetXmlProperty("genxml/textbox/ctrl");
+            if (ctrl != "")
             {
-                if (pluginInfo.GetXmlProperty("genxml/hidden/index") == "") // no index, add the address
+                var ctrllist = from i in _pluginList where i.GetXmlProperty("genxml/textbox/ctrl") == ctrl select i;
+                var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
+                if (nBrightInfos.Any())
                 {
-                    if (index == -1)
-                        _pluginList.Add(pluginInfo);
-                    else
-                        _pluginList.Insert(index,pluginInfo);
-                }
-                else
-                {
-                    var idx = Convert.ToInt32(pluginInfo.GetXmlProperty("genxml/hidden/index"));
-                    UpdatePlugin(pluginInfo.XMLData, idx);
+                    index = nBrightInfos.First().GetXmlPropertyInt("genxml/hidden/index");
                 }
             }
+
+            if (index == -1)
+                _pluginList.Add(pluginInfo);
             else
-            {
-                if (index == -1)
-                    _pluginList.Add(pluginInfo);
-                else
-                    _pluginList.Insert(index, pluginInfo);
-            }
+                UpdatePlugin(pluginInfo.XMLData, index);
+
             return ""; // if everything is OK, don't send a message back.
         }
 

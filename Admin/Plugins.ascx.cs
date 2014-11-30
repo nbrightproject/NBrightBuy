@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -91,6 +92,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var pluginData = new PluginData(PortalId,true);
                 pluginData.UpdateSystemPlugins();
                 _systemPlugins = pluginData.GetPluginList();
+
+                pluginData = new PluginData(PortalId);
+                var portalPlugins = pluginData.GetPluginList();
+                Boolean upd = false;
+                foreach (var p in _systemPlugins)
+                {
+                    var ctrllist = from i in portalPlugins where i.GetXmlProperty("genxml/textbox/ctrl") == p.GetXmlProperty("genxml/textbox/ctrl") select i;
+                    var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
+                    if (!nBrightInfos.Any())
+                    {
+                        pluginData.AddPlugin(p);
+                        upd = true;
+                    }
+                }
+                if (upd) pluginData.Save();
 
                 #endregion
 
@@ -201,6 +217,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "move":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        MoveRecord(Convert.ToInt32(cArg));
+                    }
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "save":
                     if (Utils.IsNumeric(cArg))
                     {
@@ -244,6 +267,47 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
+        private void MoveRecord(int itemId)
+        {
+
+            var selecteditemid = GenXmlFunctions.GetField(rpDataH, "selecteditemid");
+            if (Utils.IsNumeric(selecteditemid))
+            {
+                //var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
+                //var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
+                //var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+
+                //var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
+                //if (!Utils.IsNumeric(strneworder)) strneworder = "1";
+                //if (!Utils.IsNumeric(selorder)) selorder = "1";
+                //var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
+                //if (Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(selorder, CultureInfo.GetCultureInfo("en-US")))
+                //    neworder = neworder - 0.5;
+                //else
+                //    neworder = neworder + 0.5;
+                //selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", neworder.ToString(""), TypeCode.Double);
+                //ModCtrl.Update(selData.DataRecord);
+                //FixRecordSortOrder();
+            }
+        }
+
+        private void FixRecordSortOrder()
+        {
+            // fix any incorrect sort orders
+            Double lp = 1;
+            var levelList = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
+            foreach (NBrightInfo catinfo in levelList)
+            {
+                var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
+                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder) != lp)
+                {
+                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
+                    ModCtrl.Update(catData.DataRecord);
+                }
+                lp += 1;
+            }
+        }
 
         private void DisplayDataEntryRepeater(String entryId)
         {
