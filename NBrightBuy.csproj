@@ -628,12 +628,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CategoryMenu.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductView.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
       <SubType>Designer</SubType>

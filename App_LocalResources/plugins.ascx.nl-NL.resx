@@ -42,9 +42,6 @@
   <data name="clients.Text" lastModified="2014-11-29 12:53:30">
     <value xml:space="preserve">Klanten</value>
   </data>
-  <data name="cmcicpayment.Text" lastModified="2014-11-29 12:53:30">
-    <value xml:space="preserve">CMCIC betalingen</value>
-  </data>
   <data name="cmdDownIcon.Text" lastModified="2014-11-29 12:53:30">
     <value xml:space="preserve">&lt;i title="Move Down" class="fa fa-arrow-circle-down fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
@@ -67,9 +64,6 @@
     <value xml:space="preserve">&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dashsummary.Text" lastModified="2014-11-29 12:53:30">
-    <value xml:space="preserve">Dashboard</value>
-  </data>
-  <data name="dashSummary.Text" lastModified="2014-11-29 12:53:30">
     <value xml:space="preserve">Dashboard</value>
   </data>
   <data name="EmailOrder.Text" lastModified="2014-11-29 12:53:30">
@@ -169,7 +163,7 @@
     <value xml:space="preserve">UI alleen;Verzending;Belasting;Promoties;Planner;Evenementen;Betalingen; kortingscode;Filter;TemplateExt; andere</value>
   </data>
   <data name="providertype.datavalue" lastModified="2014-11-29 12:53:30">
-    <value xml:space="preserve">01 02 03; 04, 05, 06; 07; 08; 09; 10; 99</value>
+    <value xml:space="preserve">01;02;03;04;05;06;07;08;09;10;99</value>
   </data>
   <data name="sales.Text" lastModified="2014-11-29 12:53:30">
     <value xml:space="preserve">Verkoop</value>

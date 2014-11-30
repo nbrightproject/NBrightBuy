@@ -12,6 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
+using System.IO;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
 using DotNetNuke.Common;
@@ -377,9 +378,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.ShippedDate = shippingdate;
             ordData.OrderStatus = orderstatus;
             ordData.TrackingCode = trackingcode;
-            ordData.InvoiceFileExt = nbi.GetXmlProperty("genxml/hidden/hidextinvoicedoc");
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
-            ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName + ordData.InvoiceFileExt;
+            ordData.InvoiceFileExt = Path.GetExtension(ordData.InvoiceFileName);
+            ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName;
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
 
@@ -393,7 +394,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private void DownloadInvoice(int orderid)
         {
             var orderData = new OrderData(PortalId, orderid);
-            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\" +  orderData.InvoiceFileName, orderData.InvoiceDownloadName, Response);
+            Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\" + orderData.InvoiceFileName, orderData.InvoiceDownloadName, Response);
         }
 
         private void DeleteInvoice(int orderid)

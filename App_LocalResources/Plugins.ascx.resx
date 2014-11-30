@@ -297,12 +297,6 @@
 	<data name="products.Text" xml:space="preserve">
     <value>Products</value>
   </data>
-	<data name="dashsummary.Text" xml:space="preserve">
-    <value>Dashboard</value>
-  </data>
-	<data name="cmcicpayment.Text" xml:space="preserve">
-    <value>CMCIC payments</value>
-  </data>
 	<data name="EmailOrder.Text" xml:space="preserve">
 		<value>Emails</value>
 	</data>
