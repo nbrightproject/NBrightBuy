@@ -106,13 +106,13 @@
     <value xml:space="preserve">Verzenden naar het factuuradres;Verzenden naar een ander adres; ik zal verzamelen van winkel</value>
   </data>
   <data name="shippingoption1.datavalue">
-    <value xml:space="preserve">1; 2; 3</value>
+    <value xml:space="preserve">1;2;3</value>
   </data>
   <data name="shippingoption2.data">
     <value xml:space="preserve">Factuuradres; gebruikenVoer van verschepend adres</value>
   </data>
   <data name="shippingoption2.datavalue">
-    <value xml:space="preserve">1; 2</value>
+    <value xml:space="preserve">1;2</value>
   </data>
   <data name="Totaltopay.Text">
     <value xml:space="preserve">Totaal te betalen</value>
