@@ -338,7 +338,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	    }
 
 	    public string GetTemplateData(int moduleId, string templatename, string lang, Dictionary<string,string> settings, bool debugMode = false)
-        {
+	    {
+	        if (lang == "") lang = Utils.GetCurrentCulture();
             string templ = null;
             var strCacheKey = templatename + "*" + moduleId.ToString("") + "*" + lang + "*" + PortalSettings.Current.PortalId.ToString("");
             
@@ -349,7 +350,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var themeFolder = "";
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, settings);
+                templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, settings);
 
                 templ = Utils.ReplaceUrlTokens(templ);
                 // WARNING!! do not inject text here, it will cause a loop on the GetMenuTemplates function.
@@ -361,6 +362,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public string GetTemplate(string templatename, string lang, bool debugMode = false)
         {
+            if (lang == "") lang = Utils.GetCurrentCulture();
             string templ = null;
             var strCacheKey = templatename + "*" + lang + "*" + PortalSettings.Current.PortalId.ToString("");
 
@@ -369,7 +371,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (templ == null)
             {
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
-                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
+                templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, StoreSettings.Current.Settings());
 
                 templ = Utils.ReplaceUrlTokens(templ);
 

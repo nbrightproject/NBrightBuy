@@ -494,10 +494,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
                 var objUser = UserController.GetUserById(ordData.PortalId, ordData.GetInfo().UserId);
-                if (objUser != null && ordData.EmailAddress != objUser.Email)
+                if (objUser != null)
                 {
-                    ordData.EmailAddress = objUser.Email;
-                    ordData.SavePurchaseData();
+                    if (ordData.EmailAddress != objUser.Email)
+                    {
+                        ordData.EmailAddress = objUser.Email;
+                        ordData.SavePurchaseData();
+                    }
                     if (objUser.Profile.PreferredLocale != "") lang = objUser.Profile.PreferredLocale;
                 }
             }
