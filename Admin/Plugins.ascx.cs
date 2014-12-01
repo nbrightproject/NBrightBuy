@@ -187,41 +187,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
-                case "entryup":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var idx = Convert.ToInt32(cArg);
-                        if (idx > 0)
-                        {
-                            var p = pluginData.GetPlugin(idx);
-                            pluginData.RemovePlugin(idx);
-                            p.SetXmlProperty("genxml/hidden/index", "");  //remove index so we add instead of update
-                            pluginData.AddPlugin(p, idx - 1);
-                            pluginData.Save();                            
-                        }
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "entrydown":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var idx = Convert.ToInt32(cArg);
-                        if (idx < pluginData.GetPluginList().Count-1)
-                        {
-                            var p = pluginData.GetPlugin(idx);
-                            pluginData.RemovePlugin(idx);
-                            p.SetXmlProperty("genxml/hidden/index", ""); //remove index so we add instead of update
-                            pluginData.AddPlugin(p, idx + 1);
-                            pluginData.Save();                            
-                        }
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
                 case "move":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        MoveRecord(Convert.ToInt32(cArg));
-                    }
+                    MoveRecord(cArg);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
@@ -267,47 +234,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
-        private void MoveRecord(int itemId)
+        private void MoveRecord(String movectrl)
         {
-
-            var selecteditemid = GenXmlFunctions.GetField(rpDataH, "selecteditemid");
-            if (Utils.IsNumeric(selecteditemid))
-            {
-                //var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
-                //var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
-                //var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-
-                //var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                //if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                //if (!Utils.IsNumeric(selorder)) selorder = "1";
-                //var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
-                //if (Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(selorder, CultureInfo.GetCultureInfo("en-US")))
-                //    neworder = neworder - 0.5;
-                //else
-                //    neworder = neworder + 0.5;
-                //selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", neworder.ToString(""), TypeCode.Double);
-                //ModCtrl.Update(selData.DataRecord);
-                //FixRecordSortOrder();
-            }
+            
+            var selectedctrl = GenXmlFunctions.GetField(rpDataH, "selectedctrl");
+            var pluginData = new PluginData(PortalId);
+            pluginData.MovePlugin(selectedctrl, movectrl);
         }
 
-        private void FixRecordSortOrder()
-        {
-            // fix any incorrect sort orders
-            Double lp = 1;
-            var levelList = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
-            foreach (NBrightInfo catinfo in levelList)
-            {
-                var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
-                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder) != lp)
-                {
-                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
-                    catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
-                    ModCtrl.Update(catData.DataRecord);
-                }
-                lp += 1;
-            }
-        }
 
         private void DisplayDataEntryRepeater(String entryId)
         {

@@ -6,6 +6,7 @@ using System.Runtime.Remoting;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -225,6 +226,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
                     newInfo.ItemID = rtnList.Count;
                     newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                     rtnList.Add(newInfo);
                 }
             }
@@ -353,6 +355,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _pluginList[index];
         }
 
+        public void MovePlugin(String selectedctrl, String movetoctrl)
+        {
+            var selectedplugin = GetPluginByCtrl(selectedctrl);
+            var moveplugin = GetPluginByCtrl(movetoctrl);
+            if (selectedplugin != null & moveplugin != null)
+            {
+                Save(); // save so we know we have valid index
+                
+                //read again for valid idx
+                selectedplugin = GetPluginByCtrl(selectedctrl);
+                moveplugin = GetPluginByCtrl(movetoctrl);
+                
+                // remove and insert plugin
+                var selectedidx = selectedplugin.GetXmlPropertyInt("genxml/hidden/index");
+                _pluginList.RemoveAt(selectedidx);
+                var toctrlidx = moveplugin.GetXmlPropertyInt("genxml/hidden/index");
+                _pluginList.Insert(toctrlidx,selectedplugin);
+                Save();
+            }
+        }
 
         #endregion
 

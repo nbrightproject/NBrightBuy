@@ -1,4 +1,4 @@
-[<tag id="selecteditemid" type="postback" value="" />]
+[<tag id="selectedctrl" type="postback" value="" />]
 
 <script>
     
@@ -11,11 +11,11 @@
         $(".selectrecord").click(function() {
             $(".selectrecord").hide();
             $(".selectmove").show();
-            $(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
-            $(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
-            $("input[[id*='selecteditemid']]").val($(this).attr("itemid"));
+            $(".selectmove[[ctrl='" + $(this).attr("ctrl") + "']]").hide();
+            $(".selectcancel[[ctrl='" + $(this).attr("ctrl") + "']]").show();
+            $("input[[id*='selectedctrl']]").val($(this).attr("ctrl"));
 
-            var selectid = $(this).attr("itemid");
+            var selectid = $(this).attr("ctrl");
             $(".selectmove").each(function (index) {
                 if ($(this).attr("parentlist").indexOf(selectid + ";") > -1) $(this).hide();
             });
@@ -27,7 +27,7 @@
             $(".selectmove").hide();
             $(".selectcancel").hide();		
             $(".selectrecord").show();		
-            $("input[[id*='selecteditemid']]").val('');
+            $("input[[id*='selectedctrl']]").val('');
         });
 
 
