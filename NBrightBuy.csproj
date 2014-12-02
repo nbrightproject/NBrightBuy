@@ -649,7 +649,9 @@
     <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\General.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="NBrightThumb.ashx" />

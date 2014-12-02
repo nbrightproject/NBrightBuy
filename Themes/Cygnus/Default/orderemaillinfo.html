@@ -6,7 +6,10 @@
 			<td width="50%" align="left" valign="top" style="line-height:150%">
 			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.ordernumber" />]: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
 			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.orderdate" />]: </b>[<tag type="valueof" xpath="genxml/createddate" datatype="date" />]</div>
-			<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]: </b>[<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="Manual" displayelse="Credit Card" />][<tag type="endtestof"  />]</div>
+			    <div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]: </b>
+                [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{ON}" displayelse="{OFF}" />][<tag type="valueof" resourcekey="General.manualpayment" />][<tag type="endtestof" />]
+                [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{OFF}" displayelse="{ON}" />][<tag type="valueof" resourcekey="General.creditcardpayment" />][<tag type="endtestof" />]
+			    </div>
 
 			    [<tag type="if" xpath="genxml/extrainfo/genxml/textbox/promocode" testvalue="" display="{OFF}" />]
 					<div><b>[<tag type="valueof" resourcekey="General.PromotionalCode" />]: </b>[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/promocode' />]</div>
