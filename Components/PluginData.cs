@@ -41,6 +41,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _pluginList = new List<NBrightInfo>();
                 _pluginList = GetPluginList();
             }
+            else
+            {
+                // no menuplugin.xml exists, so must be new install, get new config
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(pluginfoldermappath + "\\menu.config");
+                    pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Themes/config/default");
+                    xmlDoc.Save(pluginfoldermappath + "\\menuplugin.xml");
+                    //load new config
+                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
+                    if (menuplugin != "")
+                    {
+                        Info = new NBrightInfo();
+                        Info.XMLData = menuplugin;
+                        _pluginList = new List<NBrightInfo>();
+                        _pluginList = GetPluginList();
+                    }
+                }
+            }
         }
 
 
