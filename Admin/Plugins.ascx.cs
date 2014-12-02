@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
@@ -40,14 +41,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch; 
         private String _entryid = "";
         private Boolean _displayentrypage = false;
+        private List<NBrightInfo> _systemPlugins;
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
-            // setup a tempoary setting to edit portal or system level templates.
-            if (!StoreSettings.Current.Settings().ContainsKey("plugineditlevel")) StoreSettings.Current.Settings().Add("plugineditlevel", "0");
 
             base.OnInit(e);
 
@@ -87,11 +87,33 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 #endregion
 
+                #region "Check for plugins"
+
+                var pluginData = new PluginData(PortalId,true);
+                pluginData.UpdateSystemPlugins();
+                _systemPlugins = pluginData.GetPluginList();
+
+                pluginData = new PluginData(PortalId);
+                var portalPlugins = pluginData.GetPluginList();
+                Boolean upd = false;
+                foreach (var p in _systemPlugins)
+                {
+                    var ctrllist = from i in portalPlugins where i.GetXmlProperty("genxml/textbox/ctrl") == p.GetXmlProperty("genxml/textbox/ctrl") select i;
+                    var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
+                    if (!nBrightInfos.Any())
+                    {
+                        pluginData.AddPlugin(p);
+                        upd = true;
+                    }
+                }
+                if (upd) pluginData.Save();
+
+                #endregion
 
             }
             catch (Exception exc)
             {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                //display the error on the template (don't want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
                 phData.Controls.Add(l);
@@ -162,38 +184,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             switch (e.CommandName.ToLower())
             {
                 case "entrydetail":
-                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "eid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
-                case "entryup":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var idx = Convert.ToInt32(cArg);
-                        if (idx > 0)
-                        {
-                            var p = pluginData.GetPlugin(idx);
-                            pluginData.RemovePlugin(idx);
-                            p.SetXmlProperty("genxml/hidden/index", "");  //remove index so we add instead of update
-                            pluginData.AddPlugin(p, idx - 1);
-                            pluginData.Save();                            
-                        }
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "entrydown":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var idx = Convert.ToInt32(cArg);
-                        if (idx < pluginData.GetPluginList().Count-1)
-                        {
-                            var p = pluginData.GetPlugin(idx);
-                            pluginData.RemovePlugin(idx);
-                            p.SetXmlProperty("genxml/hidden/index", ""); //remove index so we add instead of update
-                            pluginData.AddPlugin(p, idx + 1);
-                            pluginData.Save();                            
-                        }
-                    }
+                case "move":
+                    MoveRecord(cArg);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
@@ -226,7 +221,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reload":
-                    StoreSettings.Current.Settings()["plugineditlevel"] = GenXmlFunctions.GetField(rpDataH, "editlevel");
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -239,6 +233,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         }
 
         #endregion
+
+        private void MoveRecord(String movectrl)
+        {
+            
+            var selectedctrl = GenXmlFunctions.GetField(rpDataH, "selectedctrl");
+            var pluginData = new PluginData(PortalId);
+            pluginData.MovePlugin(selectedctrl, movectrl);
+        }
 
 
         private void DisplayDataEntryRepeater(String entryId)

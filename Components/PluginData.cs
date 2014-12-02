@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.UI.WebControls;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -21,15 +24,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private List<NBrightInfo> _pluginList;
         public NBrightInfo Info;
-        private NBrightCore.TemplateEngine.TemplateGetter _templCtrl; 
-        public PluginData(int portalId)
+        private NBrightCore.TemplateEngine.TemplateGetter _templCtrl;
+        private Boolean portallevel;
+
+        public PluginData(int portalId, Boolean systemlevel = false)
         {
             _templCtrl = NBrightBuyUtils.GetTemplateGetter("config");
 
-            // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
-            var portallevel = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
+            portallevel = !systemlevel;
 
-            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(),true,true,portallevel);
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
             if (menuplugin != "")
             {
                 Info = new NBrightInfo();
@@ -37,6 +41,99 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _pluginList = new List<NBrightInfo>();
                 _pluginList = GetPluginList();
             }
+            else
+            {
+                // no menuplugin.xml exists, so must be new install, get new config
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(pluginfoldermappath + "\\menu.config");
+                    pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Themes/config/default");
+                    xmlDoc.Save(pluginfoldermappath + "\\menuplugin.xml");
+                    //load new config
+                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
+                    if (menuplugin != "")
+                    {
+                        Info = new NBrightInfo();
+                        Info.XMLData = menuplugin;
+                        _pluginList = new List<NBrightInfo>();
+                        _pluginList = GetPluginList();
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Search filesystem for any new plugins that have been added. Removed any deleted ones.
+        /// </summary>
+        public void UpdateSystemPlugins()
+        {
+            if (!portallevel) // only want to edit system level file
+            {
+                // remove delete plugins.
+                var updated = false;
+                foreach (var p in _pluginList)
+                {
+                    var remove = false;
+                    var ctrlpath = p.GetXmlProperty("path");
+                    if (ctrlpath != "")
+                    {
+                        var ctrlmappath = System.Web.Hosting.HostingEnvironment.MapPath(ctrlpath);
+                        var assembly = p.GetXmlProperty("assembly");
+                        if (ctrlpath == "" || !File.Exists(ctrlmappath))
+                        {
+                            if (assembly != "")
+                            {
+                                if (!assembly.EndsWith(".dll")) assembly = assembly + ".dll";
+                                var binmappath = System.Web.Hosting.HostingEnvironment.MapPath("/bin/" + assembly);
+                                if (!File.Exists(binmappath)) remove = true;
+                            }
+                            else
+                                remove = true;
+                        }
+
+                        if (remove)
+                        {
+                            updated = true;
+                            _pluginList.Remove(p);
+                        }
+                    }
+                }
+
+                if (updated) Save();
+
+                // Add new plugins
+                updated = false;
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+                {
+                    var flist = Directory.GetFiles(pluginfoldermappath);
+                    foreach (var f in flist)
+                    {
+                        if (f.EndsWith(".xml"))
+                        {
+                            var datain = File.ReadAllText(f);
+                            try
+                            {
+                                var nbi = new NBrightInfo();
+                                nbi.XMLData = datain;
+                                AddPlugin(nbi);
+                                updated = true;
+                                File.Delete(f);
+                            }
+                            catch (Exception)
+                            {
+                                // data might not be XML complient (ignore)
+                            }
+                        }
+                    }
+                    if (updated) Save();
+                }
+
+            }
+
         }
 
 
@@ -60,8 +157,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strXml += "</plugin>";
                 Info.RemoveXmlNode("genxml/plugin");
                 Info.AddXmlNode(strXml, "plugin", "genxml");
-                // plugineditlevel 0=portallevel or 1=system.  This setting is set by the Plugin.ascx.cs
-                var portallevel  = !Convert.ToBoolean(StoreSettings.Current.GetInt("plugineditlevel"));
                 _templCtrl.SaveTemplate("menuplugin.xml", Info.XMLData, portallevel);
             }
         }
@@ -95,28 +190,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String AddPlugin(NBrightInfo pluginInfo, int index = -1)
         {
-            if (Utils.IsNumeric(pluginInfo.GetXmlProperty("genxml/hidden/index")))
+            // look to see if we already have the plugin
+            var ctrl = pluginInfo.GetXmlProperty("genxml/textbox/ctrl");
+            if (ctrl != "")
             {
-                if (pluginInfo.GetXmlProperty("genxml/hidden/index") == "") // no index, add the address
+                var ctrllist = from i in _pluginList where i.GetXmlProperty("genxml/textbox/ctrl") == ctrl select i;
+                var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
+                if (nBrightInfos.Any())
                 {
-                    if (index == -1)
-                        _pluginList.Add(pluginInfo);
-                    else
-                        _pluginList.Insert(index,pluginInfo);
-                }
-                else
-                {
-                    var idx = Convert.ToInt32(pluginInfo.GetXmlProperty("genxml/hidden/index"));
-                    UpdatePlugin(pluginInfo.XMLData, idx);
+                    index = nBrightInfos.First().GetXmlPropertyInt("genxml/hidden/index");
                 }
             }
+
+            if (index == -1)
+                _pluginList.Add(pluginInfo);
             else
-            {
-                if (index == -1)
-                    _pluginList.Add(pluginInfo);
-                else
-                    _pluginList.Insert(index, pluginInfo);
-            }
+                UpdatePlugin(pluginInfo.XMLData, index);
+
             return ""; // if everything is OK, don't send a message back.
         }
 
@@ -157,6 +247,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
                     newInfo.ItemID = rtnList.Count;
                     newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                     rtnList.Add(newInfo);
                 }
             }
@@ -285,6 +376,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _pluginList[index];
         }
 
+        public void MovePlugin(String selectedctrl, String movetoctrl)
+        {
+            var selectedplugin = GetPluginByCtrl(selectedctrl);
+            var moveplugin = GetPluginByCtrl(movetoctrl);
+            if (selectedplugin != null & moveplugin != null)
+            {
+                Save(); // save so we know we have valid index
+                
+                //read again for valid idx
+                selectedplugin = GetPluginByCtrl(selectedctrl);
+                moveplugin = GetPluginByCtrl(movetoctrl);
+                
+                // remove and insert plugin
+                var selectedidx = selectedplugin.GetXmlPropertyInt("genxml/hidden/index");
+                _pluginList.RemoveAt(selectedidx);
+                var toctrlidx = moveplugin.GetXmlPropertyInt("genxml/hidden/index");
+                _pluginList.Insert(toctrlidx,selectedplugin);
+                Save();
+            }
+        }
 
         #endregion
 
