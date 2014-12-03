@@ -290,6 +290,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
             DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
+            
+            DataRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
+            DataLangRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
 
             var objCtrl = new NBrightBuyController();
             var productid = objCtrl.Update(DataRecord);

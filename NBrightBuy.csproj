@@ -428,9 +428,7 @@
     <Content Include="ProductViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductView.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProductView.ascx" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\addressbookbody.html" />
     <Content Include="Themes\config\default\addressbookfooter.html" />
