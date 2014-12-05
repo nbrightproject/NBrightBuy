@@ -279,12 +279,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var qty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining");
                 var minqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyminstock");
                 var currentstatus = DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus");
-                if (currentstatus != "040" && currentstatus != "050")
+                var activatestock = DataRecord.GetXmlPropertyBool("genxml/models/genxml[" + model.ItemID.ToString("") + "]/checkbox/chkstockon");
+                if (activatestock && currentstatus != "040" && currentstatus != "050")
                 {
                     if (qty > 0) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "010");
                     if (minqty == qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "020");
                     if (qty <= 0 && minqty < qty) DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "030");
                 }
+                else
+                {
+                    // stock not activate so set status to available
+                    DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/dropdownlist/modelstatus", "010");
+                }
+
                 if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
             }
 
@@ -519,15 +526,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var localfields = modelInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
                 foreach (var f in localfields.Where(f => f != ""))
                 {
-                    objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
+                    var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
+                    else
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
 
                 var fields = modelInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
-                    if (f.EndsWith("date")) // ssuem any field ending in date is a date format (Nasty quick fix for chrome forcing datepicker)
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f),TypeCode.DateTime);
+                    var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -675,9 +687,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public void AddNewOptionValue(String optionid)
+        public String AddNewOptionValue(String optionid)
         {
-            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid><optionvalueid>" + Utils.GetUniqueKey() + "</optionvalueid></hidden></genxml></optionvalues></genxml>";
+            var newkey = Utils.GetUniqueKey();
+            var strXml = "<genxml><optionvalues optionid='" + optionid + "'><genxml><hidden><optionid>" + optionid + "</optionid><optionvalueid>" + newkey + "</optionvalueid></hidden></genxml></optionvalues></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/optionvalues[@optionid='" + optionid + "']") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']", "genxml");
@@ -686,11 +699,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 DataRecord.AddXmlNode(strXml, "genxml/optionvalues[@optionid='" + optionid + "']/genxml", "genxml/optionvalues[@optionid='" + optionid + "']");
             }
+            return newkey;
         }
 
-        public void AddNewOption()
+        public String AddNewOption()
         {
-            var strXml = "<genxml><options><genxml><hidden><optionid>" + Utils.GetUniqueKey() + "</optionid></hidden></genxml></options></genxml>";
+            var newkey = Utils.GetUniqueKey();
+            var strXml = "<genxml><options><genxml><new>new</new><hidden><optionid>" + newkey + "</optionid></hidden></genxml></options></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/options") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/options", "genxml");
@@ -699,11 +714,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 DataRecord.AddXmlNode(strXml, "genxml/options/genxml", "genxml/options");
             }
+            return newkey;
         }
 
-        public void AddNewModel()
+        public String AddNewModel()
         {
-            var strXml = "<genxml><models><genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden><textbox/><checkbox/><checkboxlist/><radiobuttonlist/><dropdownlist/></genxml></models></genxml>";
+            var newkey = Utils.GetUniqueKey();
+            var strXml = "<genxml><models><genxml><hidden><modelid>" + newkey + "</modelid></hidden><textbox/><checkbox/><checkboxlist/><radiobuttonlist/><dropdownlist/></genxml></models></genxml>";
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/models") == null)
             {
                 DataRecord.AddXmlNode(strXml, "genxml/models", "genxml");
@@ -714,6 +731,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
                 DataLangRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
             }
+            return newkey;
         }
 
         public void AddNewImage(String imageurl, String imagepath)

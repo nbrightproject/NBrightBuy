@@ -54,34 +54,57 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 </script>
 
 <script type="text/javascript">
-// Product details validation
-$(document).ready(function () {
-    $('.modelsradio input').attr('required', '');// Add required attribute to field
-	$('.addtobasket').click(function(e){// Validate the requirement
-	if (!$("#Form").validate({
-	errorPlacement: function(error, element) {
-	error.appendTo( ".alertmessage" );
-	},
-	errorClass: "invalid",
-	validClass: "success"
-	}).element(".modelsradio input")){
-	showNotification('teal');// colors defined in cygnus.css
-	e.preventDefault();
-	};
- }); 
-});
-</script>
+    // Product details validation
+    $(document).ready(function () {
+        $('.modelsradio input').attr('required', '');// Add required attribute to field
 
-<script type="text/javascript">
-	var def="black";
-	function showNotification(color){
-	$( "#notification" ).removeClass(def);
-	$( "#notification" ).addClass(color);
-	def=color;
-	$( "#notification" ).fadeIn( "fast" );
-	$(".win8-notif-button").click(function(){
-	$(".notification").fadeOut("slow");
-	});
-	}
-</script>
+        // ------------------------------------------------------------------------------
+        // ---START SECTION ----THIS SECTION WILL NEED MOVING INTO THE DETAIL TEMPLATE, SO WE CAN USE RESOURCEKEY TOKEN --------------
+        // ------------------------------------------------------------------------------
+        $('.addtobasket').click(function (e) { // Validate the requirement
 
+            if (!validateField(".modelsradio input", "Please choose from the available product models")) {
+                e.preventDefault();
+            }
+
+            /// extra tests can be added here.....
+
+        });
+        // ------------------------------------------------------------------------------
+        // ---END SECTION---------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
+
+    });
+
+    var def = "black";
+
+    function validateField(fieldselector, message) {
+
+        if (!$("#Form").validate({
+            errorPlacement: function (error, element) {
+                if (message == '') {
+                    error.appendTo(".alertmessage");
+                } else {
+                    $(".alertmessage").append(message);
+                }
+            },
+            errorClass: "invalid",
+            validClass: "success"
+        }).element(fieldselector)) {
+            showNotification('teal'); // colors defined in cygnus.css
+            return false;
+        };
+        return true;
+    }
+
+    function showNotification(color) {
+        $("#notification").removeClass(def);
+        $("#notification").addClass(color);
+        def = color;
+        $("#notification").fadeIn("fast");
+        $(".win8-notif-button").click(function () {
+            $(".notification").fadeOut("slow");
+        });
+    }
+
+</script>

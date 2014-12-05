@@ -355,6 +355,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prd = new ProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists) return null; //Invalid product remove from cart
             var prdModel = prd.GetModel(modelid);
+            if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)
             var userInfo = UserController.GetUserById(portalId, userId);
             if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")

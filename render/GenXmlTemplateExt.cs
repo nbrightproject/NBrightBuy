@@ -4337,57 +4337,62 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     // check if Deleted
                     var selectDeletedFlag = nod.SelectSingleNode("checkbox/chkdeleted");
-                    if ((selectDeletedFlag != null) && (selectDeletedFlag.InnerText == "False"))
+                    if ((selectDeletedFlag == null) || selectDeletedFlag.InnerText != "True")
                     {
-                        // check if dealer
-                        var selectDealerFlag = nod.SelectSingleNode("checkbox/chkdealeronly");
-                        if (((selectDealerFlag != null) && (!isDealer && (selectDealerFlag.InnerText == "False"))) | isDealer)
+                    // check if hidden
+                        var selectHiddenFlag = nod.SelectSingleNode("checkbox/chkishidden");
+                        if ((selectHiddenFlag == null) || selectHiddenFlag.InnerText != "True")
                         {
-                            // get modelid
-                            var nodModelId = nod.SelectSingleNode("hidden/modelid");
-                            var modelId = "";
-                            if (nodModelId != null) modelId = nodModelId.InnerText;
-
-                            //Build NBrightInfo class for model
-                            var o = new NBrightInfo();
-                            o.XMLData = nod.OuterXml;
-
-                            #region "Add Lanaguge Data"
-
-                            var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
-                            if (nodLang != null)
+                            // check if dealer
+                            var selectDealerFlag = nod.SelectSingleNode("checkbox/chkdealeronly");
+                            if (((selectDealerFlag == null) || (!isDealer && (selectDealerFlag.InnerText == "False"))) | isDealer)
                             {
-                                o.AddSingleNode("lang", "", "genxml");
-                                o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
-                            }
+                                // get modelid
+                                var nodModelId = nod.SelectSingleNode("hidden/modelid");
+                                var modelId = "";
+                                if (nodModelId != null) modelId = nodModelId.InnerText;
 
-                            #endregion
+                                //Build NBrightInfo class for model
+                                var o = new NBrightInfo();
+                                o.XMLData = nod.OuterXml;
 
-                            #region "Prices"
+                                #region "Add Lanaguge Data"
 
-                            if (addSalePrices)
-                            {
-                                var uInfo = UserController.GetCurrentUserInfo();
-                                if (uInfo != null)
+                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
+                                if (nodLang != null)
                                 {
-                                    o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
-                                    //[TODO: convert to new promotion provider]
-                                    //var objPromoCtrl = new PromoController();
-                                    //var objPCtrl = new ProductController();
-                                    //var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
-                                    //var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
-                                    //o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                    o.AddSingleNode("lang", "", "genxml");
+                                    o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
                                 }
+
+                                #endregion
+
+                                #region "Prices"
+
+                                if (addSalePrices)
+                                {
+                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    if (uInfo != null)
+                                    {
+                                        o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
+                                        //[TODO: convert to new promotion provider]
+                                        //var objPromoCtrl = new PromoController();
+                                        //var objPCtrl = new ProductController();
+                                        //var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
+                                        //var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
+                                        //o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                    }
+                                }
+
+                                #endregion
+
+                                // product data for display in modellist
+                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
+                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
+                                o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
+
+                                objL.Add(o);
                             }
-
-                            #endregion
-
-                            // product data for display in modellist
-                            o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
-                            o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
-                            o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
-
-                            objL.Add(o);
                         }
                     }
                     lp += 1;

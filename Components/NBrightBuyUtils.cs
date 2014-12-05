@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Net.Mail;
 using System.Resources;
 using System.Runtime.Remoting.Contexts;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -790,6 +793,68 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!foundCtrl) newparam[param.Length] = "ctrl=" + HttpContext.Current.Session["nbrightbackofficectrl"];
             return Globals.NavigateURL(tabId, "", newparam);
         }
+
+        public static List<String> GetAllFieldxPaths(NBrightInfo nbi, Boolean ignoreHiddenFields = false)
+        {
+            var ignorefields = nbi.GetXmlProperty("genxml/hidden/ignorefields");
+            ignorefields = ignorefields + ",ignorefields";
+            var ignoreAry = ignorefields.Split(',');
+            
+            var rtnList = new List<String>();
+            var nods = nbi.XMLDoc.SelectNodes("genxml/hidden/*");
+            if (!ignoreHiddenFields)
+            {
+                if (nods != null)
+                {
+                    foreach (XmlNode xmlNod in nods)
+                    {
+                        if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/hidden/" + xmlNod.Name);
+                    }
+                }                
+            }
+            nods = nbi.XMLDoc.SelectNodes("genxml/textbox/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/textbox/" + xmlNod.Name);
+                }
+            }
+            nods = nbi.XMLDoc.SelectNodes("genxml/checkbox/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/checkbox/" + xmlNod.Name);
+                }
+            }
+            nods = nbi.XMLDoc.SelectNodes("genxml/dropdownlist/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/dropdownlist/" + xmlNod.Name);
+                }
+            }
+            nods = nbi.XMLDoc.SelectNodes("genxml/radiobuttonlist/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/radiobuttonlist/" + xmlNod.Name);
+                }
+            }
+            nods = nbi.XMLDoc.SelectNodes("genxml/edt/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/edt/" + xmlNod.Name);
+                }
+            }
+
+            return rtnList;
+        }       
     }
 }
 

@@ -831,21 +831,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
                     var lp = 1;
-                    var modelcount = prodData.Models.Count;
+                    var rtnKeys = new List<String>();
                     while (lp <= Convert.ToInt32(qty))
                     {
-                        prodData.AddNewModel();
+                        rtnKeys.Add(prodData.AddNewModel());
                         lp += 1;
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    var modelcount2 = prodData.Models.Count;
                     var rtnList = new List<NBrightInfo>();
-                    for (var i = modelcount; i < modelcount2; i++)
+                    foreach (var k in rtnKeys)
                     {
-                        rtnList.Add(prodData.Models[i]);                        
+                        rtnList.Add(prodData.GetModel(k));
                     }
-
 
                     // get template
                     var themeFolder = StoreSettings.Current.ThemeFolder;
@@ -884,20 +882,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
                     var lp = 1;
+                    var rtnKeys = new List<String>();
                     while (lp <= Convert.ToInt32(qty))
                     {
-                        prodData.AddNewOption();
+                        rtnKeys.Add(prodData.AddNewOption());
                         lp += 1;
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-
                     var rtnList = new List<NBrightInfo>();
-                    for (var i = 1; i < lp; i++)
+                    foreach (var k in rtnKeys)
                     {
-                        rtnList.Add(prodData.Options.Last());
+                        rtnList.Add(prodData.GetOption(k));
                     }
-
 
                     // get template
                     var themeFolder = StoreSettings.Current.ThemeFolder;
@@ -939,21 +936,21 @@ namespace Nevoweb.DNN.NBrightBuy
                     var itemId = Convert.ToInt32(productitemid);
                     var prodData = ProductUtils.GetProductData(itemId, _lang);
                     var lp = 1;
+                    var rtnKeys = new List<String>();
                     while (lp <= Convert.ToInt32(qty))
                     {
-                        prodData.AddNewOptionValue(optionid);
+                        rtnKeys.Add(prodData.AddNewOptionValue(optionid));
                         lp += 1;
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
 
                     var rtnList = new List<NBrightInfo>();
-                    for (var i = 1; i < lp; i++)
+                    foreach (var k in rtnKeys)
                     {
-                        rtnList.Add(prodData.OptionValues.Where(ov => ov.GetXmlProperty("genxml/hidden/optionid") == optionid).Select(o => o).Last());
+                        rtnList.Add(prodData.GetOptionValue(optionid, k));
                     }
-
-
+                    
                     // get template
                     var themeFolder = StoreSettings.Current.ThemeFolder;
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];

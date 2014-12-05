@@ -47,7 +47,7 @@
             }
         });
         //trigger select option, to display correct option values
-        $('.selectoption').first().trigger('click');
+        $('.selectoption').last().trigger('click');
     });
     $('#productoptionvalues').change(function () {
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
