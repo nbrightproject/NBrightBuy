@@ -2276,6 +2276,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var objInfo = (NBrightInfo) container.DataItem;
                 var useCtrlType = "";
                 var index = "1";
+
+                var xpathprefix = "";
+                var cartrecord = objInfo.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+                if (cartrecord) xpathprefix = "genxml/productxml/";
+
                 DropDownList ddl = null;
                 CheckBox chk = null;
                 TextBox txt = null;
@@ -2309,15 +2314,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var optionid = "";
                 var optiondesc = "";
                 XmlNodeList nodList = null;
-                var nod = objInfo.XMLDoc.SelectSingleNode("genxml/options/genxml[" + index + "]/hidden/optionid");
+                var nod = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/options/genxml[" + index + "]/hidden/optionid");
                 if (nod != null)
                 {
                     optionid = nod.InnerText;
                     if (hid != null) hid.Value = optionid;
-                    var nodDesc = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
+                    var nodDesc = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
                     if (nodDesc != null) optiondesc = nodDesc.InnerText;
 
-                     nodList = objInfo.XMLDoc.SelectNodes("genxml/optionvalues[@optionid='" + optionid + "']/*");
+                    nodList = objInfo.XMLDoc.SelectNodes(xpathprefix + "genxml/optionvalues[@optionid='" + optionid + "']/*");
                      if (nodList != null)
                      {
                          switch (nodList.Count)
@@ -2363,7 +2368,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 {
                                     var optionvalueid = nodVal.InnerText;
                                     var li = new ListItem();
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         li.Text = nodLang.InnerText;
@@ -2373,8 +2378,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 }
                                 lp += 1;
                             }
-                            if (nodList.Count > 0) ddl.SelectedIndex = 0;
+                            if (cartrecord)
+                            {
+                                // assign cart value   
+                                var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
+                                if (selectSingleNode != null && ddl.Items.FindByValue(selectSingleNode.InnerText) != null) ddl.SelectedValue = selectSingleNode.InnerText;
+                            }
+                            else
+                            {
+                                if (nodList.Count > 0) ddl.SelectedIndex = 0;
+                            }
                         }
+
 
                     }
                     catch (Exception)
@@ -2398,12 +2413,20 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 if (nodVal != null)
                                 {
                                     var optionvalueid = nodVal.InnerText;
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         chk.Text = nodLang.InnerText;
                                         chk.Attributes.Add("optionvalueid",optionvalueid);
                                         chk.Attributes.Add("optionid", optionid);
+
+                                        if (cartrecord)
+                                        {
+                                            // assign cart value   
+                                            var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
+                                            if (selectSingleNode != null && selectSingleNode.InnerText == "True") chk.Checked = true;
+                                        }
+
                                     }
                                 }
                                 lp += 1;
@@ -2424,6 +2447,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     txt.Enabled = true;
                     txt.Attributes.Add("optionid", optionid);
                     txt.Attributes.Add("optiondesc", optiondesc);
+                    if (cartrecord)
+                    {
+                        // assign cart value   
+                        var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvaltext");
+                        if (selectSingleNode != null) txt.Text = selectSingleNode.InnerText;
+                    }
+
                 }
             }
         }

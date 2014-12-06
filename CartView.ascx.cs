@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList();
+                var l = _cartInfo.GetCartItemList(true);
                 rpData.DataSource = l;
                 rpData.DataBind();
             }

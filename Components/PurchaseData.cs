@@ -428,7 +428,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get Current Cart Item List
         /// </summary>
         /// <returns></returns>
-        public List<NBrightInfo> GetCartItemList()
+        public List<NBrightInfo> GetCartItemList(Boolean groupByProduct = false)
         {
             var rtnList = new List<NBrightInfo>();
             var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
@@ -440,6 +440,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     rtnList.Add(newInfo);
                 }
             }
+
+            if (groupByProduct)
+            {
+
+                var grouped = from p in rtnList group p by p.GetXmlProperty("genxml/productid") into g select new {g.Key,Value = g};
+                rtnList = new List<NBrightInfo>();
+                foreach (var group in grouped)
+                {
+                    // inject header record for the product
+                    var itemheader = (NBrightInfo)group.Value.First().Clone();
+                    itemheader.SetXmlProperty("genxml/groupheader","True");
+                    rtnList.Add(itemheader);
+
+                    foreach (var item in group.Value)
+                    {
+                        rtnList.Add(item);
+                    }
+                }
+            }
+
             return rtnList;
         }
 
