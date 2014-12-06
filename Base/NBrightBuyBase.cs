@@ -65,7 +65,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             foreach (var p in l)
             {
                 var prov = p.Value;
-                NBrightCore.providers.GenXProviderManager.AddProvider(prov.GetXmlProperty("genxml/textbox/assembly" + "," + prov.GetXmlProperty("genxml/textbox/namespaceclass")));
+                NBrightCore.providers.GenXProviderManager.AddProvider(prov.GetXmlProperty("genxml/textbox/assembly") + "," + prov.GetXmlProperty("genxml/textbox/namespaceclass"));
             }
 
         }
