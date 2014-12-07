@@ -276,7 +276,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deletecartitem":
-                    _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    if (cArg == "")
+                        _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    else
+                        _cartInfo.RemoveItem(cArg);
                     _cartInfo.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -380,7 +383,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strXml = GenXmlFunctions.GetGenXml(i);
                 var cInfo = new NBrightInfo();
                 cInfo.XMLData = strXml;
-                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);
+                _cartInfo.MergeCartInputData(cInfo.GetXmlProperty("genxml/hidden/itemcode"), cInfo);
             }
             //update data
             _cartInfo.AddExtraInfo(rpExtra);

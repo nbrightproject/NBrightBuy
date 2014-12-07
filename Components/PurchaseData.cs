@@ -10,6 +10,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -289,9 +290,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             var optvaltext = nod.InnerText;
                             strXmlIn += "<optid>" + optionid + "</optid>";
                             strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
-                            var itemcodeText = "";
-                            if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
-                            itemcode += optionid + itemcodeText + "-";
+                            itemcode += optionid + "-" + Utils.GetUniqueKey() + "-";
                             strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
                             strXmlIn += "</option>";
                         }
@@ -318,8 +317,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            if (nod.InnerText.ToLower() == "true")
-                            {
                                 strXmlIn += "<option>";
                                 var idx = nod.Name.Replace("optionchk", "");
                                 var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
@@ -333,8 +330,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
                                 strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                                 strXmlIn += "</option>";
-                                additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
-                            }
+                                if (nod.InnerText.ToLower() == "true") additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
                         }
                 }
                 strXmlIn += "</options>";
@@ -437,6 +433,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (XmlNode carNod in xmlNodeList)
                 {
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/itemcode");
                     rtnList.Add(newInfo);
                 }
             }
@@ -451,6 +448,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // inject header record for the product
                     var itemheader = (NBrightInfo)group.Value.First().Clone();
                     itemheader.SetXmlProperty("genxml/groupheader","True");
+                    itemheader.SetXmlProperty("genxml/seeditemcode", itemheader.GUIDKey);
+                    itemheader.GUIDKey = "";
                     rtnList.Add(itemheader);
 
                     foreach (var item in group.Value)
@@ -463,19 +462,57 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Get Current Cart Item List
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveItem(String itemCode)
+        {
+            var removeindex = GetItemIndex(itemCode);
+            if (removeindex >= 0) RemoveItem(removeindex);
+        }
+
+        public void MergeCartInputData(String itemCode, NBrightInfo inputInfo)
+        {
+            var index = GetItemIndex(itemCode);
+            if (index >= 0) MergeCartInputData(index,inputInfo);
+        }
 
         /// <summary>
         /// Merges data entered in the cartview into the cart item
         /// </summary>
         /// <param name="index">index of cart item</param>
         /// <param name="inputInfo">genxml data of cartview item</param>
-        /// <param name="debugMode">Debug mode</param>
         public void MergeCartInputData(int index, NBrightInfo inputInfo)
         {
             //get cart item
             //_itemList = GetCartItemList();  // Don;t get get here, it resets previous altered itemlist records.
             if (_itemList[index] != null)
             {
+                #region "merge option data"
+                var nodList = inputInfo.XMLDoc.SelectNodes("genxml/hidden/*[starts-with(name(), 'optionid')]");
+                if (nodList != null)
+                    foreach (XmlNode nod in nodList)
+                    {
+                        var idx = nod.Name.Replace("optionid", "");
+                        var optid = nod.InnerText;
+                        if (inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx) != "")
+                        {
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx));   
+                        }
+                        if (inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx) != "")
+                        {
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx));
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx + "/@selectedtext"));                            
+                        }
+                        if (inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx) != "")
+                        {
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx));
+                        }
+                    }
+
+                #endregion
+
                 var nods = inputInfo.XMLDoc.SelectNodes("genxml/textbox/*");
                 if (nods != null)
                 {
@@ -806,6 +843,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void PopulateItemList()
         {
             _itemList = GetCartItemList();
+        }
+
+        public int GetItemIndex(String itemCode)
+        {
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (xmlNodeList != null)
+            {
+                var lp = 0;
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                    if (newInfo.GetXmlProperty("genxml/itemcode") == itemCode)
+                    {
+                        return lp;
+                        break;
+                    }
+                    lp += 1;
+                }
+            }
+            return -1;
         }
 
         #endregion
