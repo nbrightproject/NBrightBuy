@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -2588,8 +2589,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         templ = ddl.Attributes["template"];
                         ddl.Attributes.Remove("template");                        
                     }
+                    var dataInfo = (NBrightInfo) container.DataItem;
 
-                    var objL = BuildModelList((NBrightInfo)container.DataItem, true);
+                    var objL = BuildModelList(dataInfo, true);
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
 
@@ -2609,7 +2611,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") ddl.Items.Add(li);
                     }
-                    if (ddl.Items.Count > 0) ddl.SelectedIndex = 0;
+
+                    if (ddl.Items.Count > 0)
+                    {
+                        if (ddl.Items.FindByValue(dataInfo.GetXmlProperty("genxml/modelid")) != null)
+                            ddl.SelectedValue = dataInfo.GetXmlProperty("genxml/modelid");
+                        else
+                            ddl.SelectedIndex = 0;
+                    }
                 }
 
             }
@@ -4350,15 +4359,21 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj,Boolean addSalePrices = false)
         {
+            // see  if we have a cart record
+            var xpathprefix = "";
+            var cartrecord = dataItemObj.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+            if (cartrecord) xpathprefix = "genxml/productxml/";
+
             //build models list
             var objL = new List<NBrightInfo>();
-            var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
+            var nodList = dataItemObj.XMLDoc.SelectNodes(xpathprefix + "genxml/models/*");
             if (nodList != null)
             {
 
                 #region "Init"
 
                 var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+
 
                 #endregion
 
@@ -4388,7 +4403,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                                 #region "Add Lanaguge Data"
 
-                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
+                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
                                 if (nodLang != null)
                                 {
                                     o.AddSingleNode("lang", "", "genxml");
@@ -4417,9 +4432,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 #endregion
 
                                 // product data for display in modellist
-                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
-                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
-                                o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
+                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty(xpathprefix + "genxml/lang/genxml/textbox/txtproductname"));
+                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty(xpathprefix + "genxml/textbox/txtproductref"));
+
+                                if (cartrecord)
+                                    o.SetXmlProperty("genxml/hidden/productid", dataItemObj.GetXmlProperty("genxml/productid"));
+                                else
+                                    o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
+
 
                                 objL.Add(o);
                             }

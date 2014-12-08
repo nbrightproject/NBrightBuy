@@ -489,6 +489,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //_itemList = GetCartItemList();  // Don;t get get here, it resets previous altered itemlist records.
             if (_itemList[index] != null)
             {
+                var removethisitem = false;
+
                 #region "merge option data"
                 var nodList = inputInfo.XMLDoc.SelectNodes("genxml/hidden/*[starts-with(name(), 'optionid')]");
                 if (nodList != null)
@@ -524,20 +526,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             _itemList[index].SetXmlProperty("genxml/textbox/" + nod.Name.ToLower(), nod.InnerText);
                     }
                 }
-                nods = inputInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
-                if (nods != null)
-                {
-                    foreach (XmlNode nod in nods)
-                    {
-                        if (nod.Name.ToLower() == "qty")
-                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
-                        else
-                        {
-                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name.ToLower(), nod.InnerText);
-                            if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
-                        }
-                    }
-                }
                 nods = inputInfo.XMLDoc.SelectNodes("genxml/radiobuttonlist/*");
                 if (nods != null)
                 {
@@ -560,6 +548,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         _itemList[index].SetXmlProperty("genxml/checkbox/" + nod.Name.ToLower(), nod.InnerText);
                     }
                 }
+
+                nods = inputInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (nod.Name.ToLower() == "qty")
+                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
+                        else
+                        {
+                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name.ToLower(), nod.InnerText);
+                            if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
+
+                            // see if we've changed the model, if so update required fields
+                            if (nod.Name.ToLower() == "ddlmodelsel")
+                            {
+                                var oldmodelid = _itemList[index].GetXmlProperty("genxml/modelid");
+                                var newmodelid = nod.InnerText;
+                                if (oldmodelid != newmodelid)
+                                {
+                                    AddSingleItem(_itemList[index].GetXmlProperty("genxml/productid"), newmodelid, _itemList[index].GetXmlProperty("genxml/qty"), inputInfo);
+                                    removethisitem = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // do this last, so if the modelid has changed, we add new item and remove this one.
+                if (removethisitem) _itemList.RemoveAt(index);
 
             }
         }
