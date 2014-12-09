@@ -498,19 +498,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     {
                         var idx = nod.Name.Replace("optionid", "");
                         var optid = nod.InnerText;
+                        var oldoptvalue = _itemList[index].GetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid");
+                        var newoptvalue = "";
                         if (inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx) != "")
                         {
                             _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx));   
                         }
                         if (inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx) != "")
                         {
+                            newoptvalue = inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx);
                             _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx));
-                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx + "/@selectedtext"));                            
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx + "/@selectedtext"));
+                            if (oldoptvalue != newoptvalue) //rebuild itemcode
+                            {
+                                var icode = _itemList[index].GetXmlProperty("genxml/itemcode");
+                                _itemList[index].SetXmlProperty("genxml/itemcode", icode.Replace(optid + ":" + oldoptvalue, optid + ":" + newoptvalue));
+                            }
                         }
                         if (inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx) != "")
                         {
-                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx));
+                            newoptvalue = inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx);
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", newoptvalue);
+                            if (oldoptvalue != newoptvalue) //rebuild itemcode
+                            {
+                                var icode = _itemList[index].GetXmlProperty("genxml/itemcode");
+                                _itemList[index].SetXmlProperty("genxml/itemcode", icode.Replace(optid + ":" + oldoptvalue, optid + ":" + newoptvalue));
+                            }
                         }
+
                     }
 
                 #endregion

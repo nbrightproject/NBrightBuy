@@ -179,7 +179,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList(true);
+                var groupresults = ModSettings.Get("chkgroupresults") == "True";
+                var l = _cartInfo.GetCartItemList(groupresults);
                 rpData.DataSource = l;
                 rpData.DataBind();
             }
