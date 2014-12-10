@@ -85,6 +85,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "productoption":
                     Createproductoptions(container, xmlNod);
                     return true;
+                case "productlist":
+                    Createproductlist(container, xmlNod);
+                    return true;
                 case "modelslist":
                     Createmodelslist(container, xmlNod);
                     return true;
@@ -2458,6 +2461,64 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
             }
         }
+
+        #endregion
+
+        #region "productlist"
+
+        private void Createproductlist(Control container, XmlNode xmlNod)
+        {
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                var templName = xmlNod.Attributes["template"].Value;
+                var buyCtrl = new NBrightBuyController();
+                var rpTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
+
+                //remove templName from template, so we don't get a loop.
+                if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                var rpt = new Repeater { ItemTemplate = new GenXmlTemplate(rpTempl, _settings) };
+                rpt.Init += ProductlistInit; // use init so we don;t get a infinate loop on databind.
+                var paramList = new Dictionary<String, String>();
+                var cascade = "false";
+                var orderby = " order by NB3.ProductName";
+                if (xmlNod.Attributes["cascade"] != null) cascade = xmlNod.Attributes["cascade"].Value;
+                paramList.Add("cascade", cascade);
+                if (xmlNod.Attributes["orderby"] != null) orderby = xmlNod.Attributes["orderby"].Value;
+                paramList.Add("orderby", orderby);
+                rpt.DataSource = paramList;
+                container.Controls.Add(rpt);
+            }
+        }
+
+        private void ProductlistInit(object sender, EventArgs e)
+        {
+            var rpt = (Repeater)sender;
+            var container = (IDataItemContainer)rpt.NamingContainer;
+            rpt.Visible = NBrightGlobal.IsVisible;
+            if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
+            {
+                //build models list
+                var nbi = (GroupCategoryData)container.DataItem;
+                var paramList = (Dictionary<String, String>) rpt.DataSource;
+                var buyCtrl = new NBrightBuyController();
+                var strFilter = "";
+                var strOrder = paramList["orderby"];
+                var cascade = paramList["cascade"];
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+                if (cascade.ToLower() == "true")
+                {
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+                }
+                else
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+
+                var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId,-1,"PRD","PRDLANG",Utils.GetCurrentCulture(),strFilter,strOrder) ;
+                rpt.DataSource = objL;
+                rpt.DataBind();
+            }
+        }
+
 
         #endregion
 
