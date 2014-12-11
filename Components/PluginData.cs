@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             portallevel = !systemlevel;
 
-            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, StoreSettings.Current.Settings());
             if (menuplugin != "")
             {
                 Info = new NBrightInfo();
@@ -44,15 +44,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             else
             {
                 // no menuplugin.xml exists, so must be new install, get new config
-                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
                 if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
                 {
                     var xmlDoc = new XmlDocument();
                     xmlDoc.Load(pluginfoldermappath + "\\menu.config");
-                    pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Themes/config/default");
+                    pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Themes/config/default");
                     xmlDoc.Save(pluginfoldermappath + "\\menuplugin.xml");
                     //load new config
-                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel);
+                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, StoreSettings.Current.Settings());
                     if (menuplugin != "")
                     {
                         Info = new NBrightInfo();
@@ -106,7 +106,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 // Add new plugins
                 updated = false;
-                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/NBright/NBrightBuy/Plugins");
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
                 if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
                 {
                     var flist = Directory.GetFiles(pluginfoldermappath);

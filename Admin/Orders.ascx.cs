@@ -57,7 +57,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             base.OnInit(e);
 
             // if we want to print a order we need to open the browser with a startup script, this points to a Printview.aspx. (Must go after the ModSettings has been init.)
-            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printorder", "window.open('/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + _entryid + "&printcode=" + _print + "&template=" + _printtemplate + "&theme=" + ModSettings.Get("theme") + "','_blank');", true);
+            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printorder", "window.open('" + StoreSettings.NBrightBuyPath() + "/PrintView.aspx?itemid=" + _entryid + "&printcode=" + _print + "&template=" + _printtemplate + "&theme=" + ModSettings.Get("theme") + "','_blank');", true);
 
             CtrlPaging.Visible = true;
             CtrlPaging.UseListDisplay = true;
