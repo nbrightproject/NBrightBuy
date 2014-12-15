@@ -38,7 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public static TemplateGetter GetTemplateGetter(string themeFolder)
         {
-            var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy");
+            var controlMapPath = HttpContext.Current.Server.MapPath(StoreSettings.NBrightBuyPath());
             themeFolder = "Themes\\" + themeFolder;
             var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder);
             return templCtrl;
@@ -155,6 +155,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (modulekey != "") rdModId = "&modkey=" + modulekey;
 
             guidkey = Utils.CleanInput(guidkey);
+            guidkey = guidkey.Replace(".", "-").Replace("@", "").Trim('-'); // remove chars not dealt with by cleaninput.
             var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
             return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
 
@@ -397,10 +398,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var itemTempl = new GenXmlTemplate(templateData, settingsDic);
             // add default resx folder to template
-            itemTempl.AddResxFolder("/DesktopModules/NBright/NBrightBuy/App_LocalResources/");
+            itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/App_LocalResources/");
             if (settingsDic.ContainsKey("themefolder") && settingsDic["themefolder"] != "")
             {
-                itemTempl.AddResxFolder("/DesktopModules/NBright/NBrightBuy/Themes/" + settingsDic["themefolder"] +
+                itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/Themes/" + settingsDic["themefolder"] +
                                         "/resx/");
             }
             return itemTempl;
@@ -440,8 +441,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="msgcode">message code to pick in resx</param>
         /// <param name="result">result code</param>
         /// <param name="resxpath">resx folder path of the message</param>
-        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result, String resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx")
+        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result, String resxpath = "")
         {
+            if (resxpath == "") resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
             if (msgcode != "")
             {
                 var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
@@ -471,7 +473,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String GetResxMessage(String msgcode = "general_ok",String resxmsgpath = "")
         {
-            const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+            var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
             if (resxmsgpath == "") resxmsgpath = resxpath;
             var msg = DnnUtils.GetLocalizedString(msgcode, resxmsgpath, Utils.GetCurrentCulture());
             var level = "ok";
@@ -524,7 +526,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var emailsubject = "";
                 if (emailsubjectresxkey != "")
                 {
-                    const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Notification.ascx.resx";
+                    var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
                     emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
                     if (emailsubject == null) emailsubject = emailsubjectresxkey;
                 }
@@ -621,7 +623,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static Dictionary<String, String> GetCountryList(String dnnlistname = "Country")
         {
-             const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/CountryNames.ascx.resx";
+            var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/CountryNames.ascx.resx";
 
             var objCtrl = new DotNetNuke.Common.Lists.ListController();
             var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname);
@@ -653,8 +655,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static Dictionary<String, String> GetRegionList(String countrycode, String dnnlistname = "Region")
         {
-            const string resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/RegionNames.ascx.resx";
-
+            var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/RegionNames.ascx.resx";
             var parentkey = "Country." + countrycode;
             var objCtrl = new DotNetNuke.Common.Lists.ListController();
             var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname, parentkey);

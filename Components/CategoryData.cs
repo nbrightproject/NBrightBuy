@@ -251,12 +251,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var imagefilename = Path.GetFileName(imgpath);
             if (!imgpath.StartsWith(StoreSettings.Current.FolderImagesMapPath))
             {
-                DataRecord.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imagefilename);
+                    DataRecord.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imagefilename);
+                errorcount += 1;
+            }
+            if (imagefilename == "")
+            {
+                DataRecord.SetXmlProperty("genxml/hidden/imagepath", "");
                 errorcount += 1;
             }
             if (!imgurl.StartsWith(StoreSettings.Current.FolderImages))
             {
-                DataRecord.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imagefilename);
+                    DataRecord.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imagefilename);
+                errorcount += 1;
+            }
+            if (imagefilename == "")
+            {
+                DataRecord.SetXmlProperty("genxml/hidden/imageurl", "");
                 errorcount += 1;
             }
 

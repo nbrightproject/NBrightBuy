@@ -61,11 +61,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         switch (htmlDecode.ToLower())
                         {
                             case "<tag:menu>":
-                                var c1 = LoadControl("/DesktopModules/NBright/NBrightBuy/Admin/Menu.ascx");
+                                var c1 = LoadControl(ControlPath +  "/Menu.ascx");
                                 phData.Controls.Add(c1);
                                 break;
                             case "<tag:container>":
-                                var c2 = LoadControl("/DesktopModules/NBright/NBrightBuy/Admin/Container.ascx");
+                                var c2 = LoadControl(ControlPath +  "/Container.ascx");
                                 phData.Controls.Add(c2);
                                 break;
                             default:

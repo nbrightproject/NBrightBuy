@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     /// -----------------------------------------------------------------------------
     public partial class Menu : NBrightBuyAdminBase
     {
-        const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/Plugins.ascx.resx";
+        private string _resxpath = "";
 
         protected override void OnLoad(EventArgs e)
         {
@@ -41,6 +41,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 if (UserId > 0) //do nothing if user not logged on
                 {
+                    _resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Plugins.ascx.resx";
+
                     base.OnLoad(e);
 
                     var rpDataTemplH = ModCtrl.GetTemplateData(ModSettings, "menuheader.html",
@@ -80,8 +82,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var pluginData = new PluginData(PortalId);
 
-                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", Resxpath, Utils.GetCurrentCulture());
-                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", Resxpath, Utils.GetCurrentCulture());
+                var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", _resxpath, Utils.GetCurrentCulture());
+                var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", _resxpath, Utils.GetCurrentCulture());
                
                 //get group list (these are the sections/first level of the menu)
                 var rootList = new Dictionary<String, String>();
@@ -94,7 +96,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         if (rootname == "") rootname = p.GetXmlProperty("genxml/textbox/ctrl");
                         if (!rootList.ContainsKey(rootname))
                         {
-                            var resxname = DnnUtils.GetLocalizedString(rootname.ToLower(), Resxpath, Utils.GetCurrentCulture());
+                            var resxname = DnnUtils.GetLocalizedString(rootname.ToLower(), _resxpath, Utils.GetCurrentCulture());
                             if (resxname == "") resxname = rootname;
                             rootList.Add(rootname, resxname);
                         }
@@ -128,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         ctrl = rootname.Key;
                         name = rootname.Value;
                         hrefclass = "class='dropdown-toggle'";
-                        icon = DnnUtils.GetLocalizedString(ctrl.ToLower() + "_icon", Resxpath, Utils.GetCurrentCulture());
+                        icon = DnnUtils.GetLocalizedString(ctrl.ToLower() + "_icon", _resxpath, Utils.GetCurrentCulture());
                         strOut += "<li class='dropdown'>";
                     }
                     else
@@ -179,7 +181,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var tabid = StoreSettings.Current.Get("exittab");
                 var exithref = "/";
                 if (Utils.IsNumeric(tabid)) exithref = Globals.NavigateURL(Convert.ToInt32(tabid));
-                strOut += GetRootLinkNode("Exit", "exit", DnnUtils.GetLocalizedString("exit_icon", Resxpath, Utils.GetCurrentCulture()),exithref,"");
+                strOut += GetRootLinkNode("Exit", "exit", DnnUtils.GetLocalizedString("exit_icon", _resxpath, Utils.GetCurrentCulture()), exithref, "");
                 strOut += "</li>";
 
                 strOut += "</ul>";
@@ -212,7 +214,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String GetRootLinkNode(String name,String ctrl,String icon,String href,String hrefclass)
         {
             var strOutSub = "";
-            var dispname = DnnUtils.GetLocalizedString(ctrl.ToLower(), Resxpath, Utils.GetCurrentCulture());
+            var dispname = DnnUtils.GetLocalizedString(ctrl.ToLower(), _resxpath, Utils.GetCurrentCulture());
             if (string.IsNullOrEmpty(dispname)) dispname = name;
             strOutSub += "<a " + hrefclass + " href='" + href + "'>" + icon + "<span class='hidden-xs'>" + dispname + "</span></a>";
             return strOutSub;
@@ -221,7 +223,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String GetSubLinkNode(String name, String ctrl, String icon, String href)
         {
             var strOutSub = "";
-            var dispname = DnnUtils.GetLocalizedString(ctrl.ToLower(), Resxpath, Utils.GetCurrentCulture());
+            var dispname = DnnUtils.GetLocalizedString(ctrl.ToLower(), _resxpath, Utils.GetCurrentCulture());
             if (string.IsNullOrEmpty(dispname)) dispname = name;
             strOutSub += "<a href='" + href + "'>" + icon + dispname + "</a>";
             return strOutSub;

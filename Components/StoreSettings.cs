@@ -41,12 +41,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //add DNN Portalsettings
-            var pCtrl = new PortalController();
-            var portalInfo = pCtrl.GetPortal(portalId);
-            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalInfo.PortalID.ToString(""));
-            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", portalInfo.PortalName);
-            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", portalInfo.HomeDirectory);
-            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", portalInfo.HomeDirectoryMapPath);
+            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalId.ToString(""));
+            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
+            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
+            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
             if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
@@ -62,9 +60,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
 
-            FolderDocuments = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
-            FolderImages = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
-            FolderUploads = "/" + Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
+            FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
+            FolderImages =  Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
+            FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
 
             if (!_settingDic.ContainsKey("FolderDocumentsMapPath")) _settingDic.Add("FolderDocumentsMapPath",FolderDocumentsMapPath );
             if (!_settingDic.ContainsKey("FolderImagesMapPath")) _settingDic.Add("FolderImagesMapPath",FolderImagesMapPath );
@@ -73,9 +71,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!_settingDic.ContainsKey("FolderImages")) _settingDic.Add("FolderImages",FolderImages );
             if (!_settingDic.ContainsKey("FolderUploads")) _settingDic.Add("FolderUploads", FolderUploads);
 
+            if (!_settingDic.ContainsKey("NBrightBuyPath")) _settingDic.Add("NBrightBuyPath", NBrightBuyPath());
+            
         }
 
         #endregion
+
+        /// <summary>
+        /// get relitive patyh of NBrightBuy Module (For compatiblity with DNN running in a virtual directory)
+        /// </summary>
+        /// <returns></returns>
+        public static String NBrightBuyPath()
+        {
+            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
+            return "/DesktopModules/NBright/NBrightBuy";
+        }
 
         public static StoreSettings Current
         {

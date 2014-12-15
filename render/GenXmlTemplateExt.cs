@@ -926,7 +926,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + imageparams[0] + "]/hidden/imageurl");
                 if ((nod != null)) imagesrc = nod.InnerText;
-                var url = "/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=" + imagesrc + imageparams[1];
+                var url = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?src=" + imagesrc + imageparams[1];
                 l.Text = url;
             }
             catch (Exception ex)
@@ -2793,7 +2793,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (ddl.Visible)
                 {
 
-                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/General.ascx.resx";
+                    var Resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
                     var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", Resxpath, Utils.GetCurrentCulture());
                     var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", Resxpath, Utils.GetCurrentCulture());
                     if (orderstatuscode != null && orderstatustext != null)
@@ -2864,9 +2864,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (ddl.Visible)
                 {
 
-                    const string Resxpath = "/DesktopModules/NBright/NBrightBuy/App_LocalResources/General.ascx.resx";
-                    var orderstatuscode = DnnUtils.GetLocalizedString("modelstatus.Code", Resxpath, Utils.GetCurrentCulture());
-                    var orderstatustext = DnnUtils.GetLocalizedString("modelstatus.Text", Resxpath, Utils.GetCurrentCulture());
+                    var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
+                    var orderstatuscode = DnnUtils.GetLocalizedString("modelstatus.Code", resxpath, Utils.GetCurrentCulture());
+                    var orderstatustext = DnnUtils.GetLocalizedString("modelstatus.Text", resxpath, Utils.GetCurrentCulture());
                     if (orderstatuscode != null && orderstatustext != null)
                     {
                         if (ddl.Attributes["blank"] != null)
@@ -3473,20 +3473,20 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var cmd = "";
                     if (lk.Attributes["action"] == "add")
                     {
-                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=additemlist&itemid=" + entryid + "&listname=" + listname;
+                        cmd = StoreSettings.NBrightBuyPath() + "/XmlConnector.ashx?cmd=additemlist&itemid=" + entryid + "&listname=" + listname;
                         lk.ID = "nbxItemListAdd" + entryid;
                         lk.Target = entryid;
                     }
                     if (lk.Attributes["action"] == "remove")
                     {
-                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=removeitemlist&itemid=" + entryid + "&listname=" + listname;
+                        cmd = StoreSettings.NBrightBuyPath() + "/XmlConnector.ashx?cmd=removeitemlist&itemid=" + entryid + "&listname=" + listname;
                         lk.ID = "nbxItemListRemove" + entryid;
                         lk.Target = entryid;
                     }
                     if (lk.Attributes["action"] == "delete")
                     {
                         lk.ID = "nbxItemListDelete";
-                        cmd = "/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=deleteitemlist&listname=" + listname;
+                        cmd = StoreSettings.NBrightBuyPath() + "/XmlConnector.ashx?cmd=deleteitemlist&listname=" + listname;
                     }
 
                     lk.Attributes.Add("cmd", cmd);
@@ -3748,7 +3748,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (w == "-1") w = "0";
                     if (h == "-1") h = "0";
                     img.Attributes.Remove("thumb");
-                    img.ImageUrl = "/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=" + w + "&h=" + h + "&src=" + src;
+                    img.ImageUrl = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?w=" + w + "&h=" + h + "&src=" + src;
                 }
 
             }
@@ -3889,7 +3889,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var lc = new Literal();
             var size = "16";
             if (xmlNod.Attributes != null && (xmlNod.Attributes["size"] != null)) size = xmlNod.Attributes["size"].Value;
-            lc.Text = "<img src='/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/" + size + "/" + StoreSettings.Current.EditLanguage + ".png' />";
+            lc.Text = "<img src='" + StoreSettings.NBrightBuyPath() + "/Themes/config/img/flags/" + size + "/" + StoreSettings.Current.EditLanguage + ".png' />";
             lc.DataBinding += EditFlagDataBind;
             container.Controls.Add(lc);
         }

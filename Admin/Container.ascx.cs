@@ -70,6 +70,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (ctlpath != "")
                     {
+                        // make compatible with running DNN in virtual directory
+                        if (HttpContext.Current.Request.ApplicationPath != null && !ctlpath.StartsWith(HttpContext.Current.Request.ApplicationPath)) ctlpath = HttpContext.Current.Request.ApplicationPath + ctlpath;
                         var c1 = LoadControl(ctlpath);
                         phData.Controls.Add(c1);
                     }

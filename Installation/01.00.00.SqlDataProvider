@@ -1,0 +1,663 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- CREATE NBrightStore
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table {databaseOwner}[{objectQualifier}NBrightStore]
+GO
+
+CREATE TABLE {databaseOwner}[{objectQualifier}NBrightStore] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL ,
+	[ModuleId] [int] NULL ,
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_NBrightStore_UserId] DEFAULT ((-1)),
+	[LegacyItemId] [int] NULL,
+	CONSTRAINT [PK_NBrightStore] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+GO
+
+
+-------------------------------------------------------------------------------
+--------------                       Indexes                       ------------
+-------------------------------------------------------------------------------
+-- Index NBrightStore
+ CREATE  INDEX [IX_NBrightStoreXref] ON {databaseOwner}[{objectQualifier}NBrightStore]([XrefItemId]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStoreMod] ON {databaseOwner}[{objectQualifier}NBrightStore]([ModuleId]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStoreParent] ON {databaseOwner}[{objectQualifier}NBrightStore]([ParentItemId]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStorePortal] ON {databaseOwner}[{objectQualifier}NBrightStore]([PortalId]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStoreType] ON {databaseOwner}[{objectQualifier}NBrightStore]([TypeCode]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStoreUserId] ON {databaseOwner}[{objectQualifier}NBrightStore]([UserId]) ON [PRIMARY]
+GO
+
+ CREATE  INDEX [IX_NBrightStoreLegacyItemId] ON {databaseOwner}[{objectQualifier}NBrightStore]([LegacyItemId]) ON [PRIMARY]
+GO
+ CREATE  INDEX [IX_NBrightStoreLang] ON {databaseOwner}[{objectQualifier}NBrightStore]([Lang]) ON [PRIMARY]
+GO
+
+-------------------------------------------------------------------------------
+--------------                       FUNCTIONS                     ------------
+-------------------------------------------------------------------------------
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStoreLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+drop function {databaseOwner}[{objectQualifier}NBrightStoreLangMerge]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}NBrightStoreLangMerge](@xmldata AS XML,@xmldatalang AS XML)
+RETURNS XML
+BEGIN
+
+IF NOT CONVERT(nvarchar(max),ISNULL(@xmldatalang,'')) = ''
+BEGIN
+	SET @xmldata.modify('insert <lang/> as last into /genxml[1]')
+	SET @xmldata.modify('insert sql:variable("@xmldatalang") as last into /genxml[1]/lang[1]')
+END
+
+RETURN @xmldata
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+-------------------------------------------------------------------------------
+--------------                       VIEWS                         ------------
+-------------------------------------------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_NBrightStoreLang]') and OBJECTPROPERTY(id, N'IsView') = 1)
+DROP VIEW {databaseOwner}[{objectQualifier}vw_NBrightStoreLang]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_NBrightStoreLang]
+AS
+
+SELECT NB1.ItemId
+,{databaseOwner}[{objectQualifier}NBrightStoreLangMerge](NB1.[XMLData],(select top 1 NB2.[XMLData] from {databaseOwner}[{objectQualifier}NBrightStore] as NB2 where NB2.ParentItemId = NB1.ItemId)) as [XMLData]  
+,NB1.Lang
+FROM {databaseOwner}[{objectQualifier}NBrightStore] as NB1
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_CleanData]
+GO
+
+
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_CleanData]
+AS
+begin
+
+/***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
+delete from {databaseOwner}{objectQualifier}NBrightStore where moduleid not in (select moduleid from {databaseOwner}{objectQualifier}Modules) and moduleid > 0 
+	
+end
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_Delete]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_Delete]
+GO
+
+
+
+
+
+
+
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_Delete]
+@ItemID int
+AS
+begin
+	delete from {databaseOwner}[{objectQualifier}NBrightStore] 
+	where ItemId = @ItemId
+	
+	-- Delete all linked child records.
+	delete from {databaseOwner}[{objectQualifier}NBrightStore] 
+	where ParentItemId = @ItemId
+	
+end
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_Update]
+GO
+
+
+
+
+
+
+
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_Update]
+(
+@ItemId int,
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@XMLData xml,
+@GUIDKey nvarchar(50),
+@ModifiedDate datetime,
+@TextData nvarchar(MAX),
+@XrefItemId int,
+@ParentItemId int,
+@UserId int,
+@Lang nvarchar(10)
+)
+AS
+BEGIN
+
+	if not exists (select ItemID from {databaseOwner}[{objectQualifier}NBrightStore] where ItemID = @ItemID
+ )
+	begin
+		insert into {databaseOwner}[{objectQualifier}NBrightStore]
+		(
+PortalId, 
+ModuleId,
+TypeCode,
+XMLData,
+GUIDKey,
+ModifiedDate,
+TextData,
+XrefItemId,
+ParentItemId,
+UserId,
+Lang
+		)
+		values
+		(
+@PortalId, 
+@ModuleId,
+@TypeCode,
+@XMLData,
+@GUIDKey,
+@ModifiedDate,
+@TextData,
+@XrefItemId,
+@ParentItemId,
+@UserId,
+@Lang
+		)
+		
+		set @ItemID = @@IDENTITY
+
+	end
+	else
+	begin
+		Update {databaseOwner}[{objectQualifier}NBrightStore]
+		set 
+PortalId = @PortalId, 
+ModuleId = @ModuleId,
+TypeCode = @TypeCode,
+XMLData = @XMLData,
+GUIDKey = @GUIDKey,
+ModifiedDate = @ModifiedDate,
+TextData = @TextData,
+XrefItemId = @XrefItemId,
+ParentItemId = @ParentItemId,
+UserId = @UserId,
+Lang = @Lang
+		where ItemId = @ItemId
+ 
+	end
+	
+	select @ItemID
+
+END
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_Get]
+GO
+
+
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_Get]
+@ItemID int,
+@TypeCodeLang nvarchar(50),
+@Lang nvarchar(5)
+AS
+begin
+	select
+	NB1.[ItemId]
+	,[PortalId]
+	,[ModuleId]
+	,[TypeCode]
+	,NB2.[XMLData]
+	,[GUIDKey]
+	,[ModifiedDate]
+	,[TextData]
+	,[XrefItemId]
+	,[ParentItemId]
+	,NB2.[Lang]
+	,[UserId]
+	from {databaseOwner}[{objectQualifier}NBrightStore] as NB1
+	inner join {databaseOwner}[{objectQualifier}vw_NBrightStoreLang] as NB2 on NB2.ItemId = NB1.ItemId
+	where NB1.ItemId = @ItemId
+end
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_GetListCount]
+GO
+
+CREATE  PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_GetListCount]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(5) = ''
+
+AS
+begin
+
+-- This SPROC return the Get List COUNT with LANGAUGE and NO PAGING
+
+	SET NOCOUNT ON
+	  DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@recct int                  -- total # of records (for paging interface)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or PortalId = ''-1'') and (ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','NB2.[XMLData]')
+
+	-- Return records without paging.
+	set @STMT = ' SELECT  @recct = COUNT(NB1.[ItemId]) FROM {databaseOwner}[{objectQualifier}NBrightStore] as NB1 ' 	
+	set @STMT = @STMT + '  inner join {databaseOwner}[{objectQualifier}vw_NBrightStoreLang] as NB2 on NB2.ItemId = NB1.ItemId ' 
+		
+	IF (RIGHT(@TypeCode,1) = '%')
+	BEGIN
+		set @STMT = @STMT + ' WHERE TypeCode Like ''' + @TypeCode + ''' ' + @Filter 
+	END ELSE
+	BEGIN
+		IF (@TypeCode = '')
+		BEGIN
+			set @STMT = @STMT + ' WHERE TypeCode != '''' ' + @Filter 
+		END ELSE
+		BEGIN
+			set @STMT = @STMT + ' WHERE TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+		END
+	END
+               
+	EXEC sp_executeSQL @STMT, @params = N'@recct INT OUTPUT', @recct = @recct OUTPUT
+	SELECT @recct AS recct       -- return the total # of records
+
+end
+
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_GetListLangNoPage]
+GO
+
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_GetListLangNoPage]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(5) = ''
+
+AS
+begin
+
+-- This SPROC return the Get List with LANGAUGE and NO PAGING
+
+	SET NOCOUNT ON
+	  DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or PortalId = ''-1'') and (ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','NB2.[XMLData]')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','NB2.[XMLData]')
+
+	set @rtnFields = ' NB1.[ItemId] '
+	set @rtnFields = @rtnFields + ',NB2.[XMLData] '				
+	set @rtnFields = @rtnFields + ',NB2.[Lang] '
+
+	set @rtnFields = @rtnFields + ',[PortalId] '
+	set @rtnFields = @rtnFields + ',[ModuleId] '
+	set @rtnFields = @rtnFields + ',[TypeCode] '
+	set @rtnFields = @rtnFields + ',[GUIDKey] '
+	set @rtnFields = @rtnFields + ',[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',[TextData] '
+	set @rtnFields = @rtnFields + ',[XrefItemId] '
+	set @rtnFields = @rtnFields + ',[ParentItemId] '
+	set @rtnFields = @rtnFields + ',[UserId] '
+
+
+	-- Return records without paging.
+	set @STMT = ' SELECT ' 
+				
+	if @ReturnLimit > 0 
+	begin
+		set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+	end
+
+	set @STMT = @STMT + @rtnFields + ' FROM {databaseOwner}[{objectQualifier}NBrightStore] as NB1 '
+
+	set @STMT = @STMT + '  inner join {databaseOwner}[{objectQualifier}vw_NBrightStoreLang] as NB2 on NB2.ItemId = NB1.ItemId ' 
+		
+	IF (RIGHT(@TypeCode,1) = '%')
+	BEGIN
+		set @STMT = @STMT + ' WHERE TypeCode Like ''' + @TypeCode + ''' ' + @Filter + ' ' + @OrderBy
+	END ELSE
+	BEGIN
+		IF (@TypeCode = '')
+		BEGIN
+			set @STMT = @STMT + ' WHERE TypeCode != '''' ' + @Filter + @OrderBy
+		END ELSE
+		BEGIN
+			set @STMT = @STMT + ' WHERE TypeCode = ''' + @TypeCode + ''' ' + @Filter  + ' ' + @OrderBy
+		END
+	END
+               
+	EXEC sp_executeSQL @STMT                 -- return requested records
+
+end
+
+
+GO
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_GetListLangPage]
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_GetListLangPage]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(5) = ''
+
+AS
+begin
+
+-- This SPROC return the Get List with LANGAUGE and PAGING
+
+	SET NOCOUNT ON
+	  DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or PortalId = ''-1'') and (ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','NB2.[XMLData]')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','NB2.[XMLData]')
+
+	set @rtnFields = ' NB1.[ItemId] '
+	set @rtnFields = @rtnFields + ',NB2.[XMLData] '				
+	set @rtnFields = @rtnFields + ',NB2.[Lang] '
+
+	set @rtnFields = @rtnFields + ',[PortalId] '
+	set @rtnFields = @rtnFields + ',[ModuleId] '
+	set @rtnFields = @rtnFields + ',[TypeCode] '
+	set @rtnFields = @rtnFields + ',[GUIDKey] '
+	set @rtnFields = @rtnFields + ',[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',[TextData] '
+	set @rtnFields = @rtnFields + ',[XrefItemId] '
+	set @rtnFields = @rtnFields + ',[ParentItemId] '
+	set @rtnFields = @rtnFields + ',[UserId] '
+
+
+
+			-- Do Paging
+		SET @STMT = 'DECLARE @recct int '
+		set @STMT = @STMT + ' SET @recct = ' + Convert(nvarchar(5),@RecordCount) 
+		
+		set @STMT = @STMT + '   DECLARE @lbound int, @ubound int '
+
+		SET @pageNum = ABS(@pageNum)
+		SET @pageSize = ABS(@pageSize)
+		IF @pageNum < 1 SET @pageNum = 1
+		IF @pageSize < 1 SET @pageSize = 1
+
+		set @STMT = @STMT + ' SET @lbound = ' + convert(nvarchar(50),((@pageNum - 1) * @pageSize))
+		set @STMT = @STMT + ' SET @ubound = @lbound + ' + convert(nvarchar(50),(@pageSize + 1))
+		set @STMT = @STMT + ' IF @lbound >= @recct BEGIN '
+		set @STMT = @STMT + '   SET @ubound = @recct + 1 '
+		set @STMT = @STMT + '   SET @lbound = @ubound - (' + convert(nvarchar(50),(@pageSize + 1)) + ') ' -- return the last page of records if no records would be on the specified page '
+		set @STMT = @STMT + ' END '
+		
+		-- Default order by clause
+		if @OrderBy = '' 
+		Begin
+			set @OrderBy = ' ORDER BY ModifiedDate DESC '
+		End
+		
+		set @STMT = @STMT + ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM    (
+								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
+		set @STMT = @STMT + @rtnFields		
+		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}NBrightStore]  as NB1  inner join {databaseOwner}[{objectQualifier}vw_NBrightStoreLang] as NB2 on NB2.ItemId = NB1.ItemId '
+		
+				IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @STMT = @STMT + 'WHERE TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @STMT = @STMT + 'WHERE TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @STMT = @STMT + 'WHERE TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              
+			
+			set @STMT = @STMT + ' ) AS NB1 inner join {databaseOwner}[{objectQualifier}vw_NBrightStoreLang] as NB2 on NB2.ItemId = NB1.ItemId 
+							  WHERE
+							  row > @lbound AND
+							  row < @ubound '
+
+		EXEC sp_executeSQL @STMT                 -- return requested records
+
+
+end
+
+
+
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightStore_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}NBrightStore_GetList]
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}NBrightStore_GetList]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(5) = ''
+
+AS
+begin
+
+	IF @pageSize = 0 BEGIN
+		-- NO PAGING
+		   exec {databaseOwner}[{objectQualifier}NBrightStore_GetListLangNoPage] @PortalId,@ModuleId,@TypeCode,@Filter,@OrderBy, @ReturnLimit ,@TypeCodeLang,@Lang
+	END ELSE BEGIN
+		-- PAGING
+		   exec {databaseOwner}[{objectQualifier}NBrightStore_GetListLangPage] @PortalId,@ModuleId,@TypeCode,@Filter,@OrderBy, @ReturnLimit ,@pageNum,@PageSize,@RecordCount,@TypeCodeLang,@Lang
+	END
+end
+GO
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+

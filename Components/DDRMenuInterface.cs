@@ -130,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (img != "")
                     {
                         n.LargeImage = img;
-                        n.Icon = "/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=50&amp;h=50&amp;src=/" + img;
+                        n.Icon = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?w=50&amp;h=50&amp;src=/" + img;
                     }
                     n.Keywords = obj.metakeywords;
                     n.Description = obj.metadescription;

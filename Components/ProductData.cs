@@ -963,6 +963,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 lp += 1;
             }
 
+            if (errorcount > 0) objCtrl.Update(DataRecord); // update if we find a error
+
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
             {

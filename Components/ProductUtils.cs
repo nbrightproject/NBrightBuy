@@ -376,7 +376,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //Merge with existing models
             var templCtrl = new TemplateGetter(controlMapPath,controlMapPath);
             Repeater rpEntity;
-            var strTemplate = templCtrl.GetTemplateData("AdminProducts_Models.html", Utils.GetCurrentCulture());
+            var strTemplate = templCtrl.GetTemplateData("AdminProducts_Models.html", Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
             
             // remove models no longer needed
             XmlNodeList nodes = objInfo.XMLDoc.SelectNodes("genxml/models/genxml");
