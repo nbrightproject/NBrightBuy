@@ -24,12 +24,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _tabid = PortalSettings.Current.ActiveTab.TabID.ToString("");
 
             var defaultListPage = "";
-            var defaultListModule = "";
-            var objGlobal = NBrightBuyUtils.GetGlobalSettings(portalSettings.PortalId);
-            defaultListPage = objGlobal.GetXmlProperty("genxml/hidden/defaultlistpage");
-            defaultListModule = objGlobal.GetXmlProperty("genxml/hidden/defaultlistmodule");
+            defaultListPage = StoreSettings.Current.Get("productlisttab");
 
-            var catNodeList = GetCatNodeXml(_tabid, 0, true, 0, null, defaultListPage, defaultListModule);
+            var catNodeList = GetCatNodeXml(_tabid, 0, true, 0, null, defaultListPage);
 
             // [TODO: We want to cache this data, but doing so brakes the menu, becuase the cache is by Reference to the object, which is changed on display to fit into the menu.  We can't easily clone the object because MenuNode doesn't support IClone, need to find a way around this.]
             //const string cacheListKey = "catnodesxml_list"; // keep a list of menu nodes so we can remove them
@@ -87,7 +84,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        private List<MenuNode> GetCatNodeXml(string currentTabId, int parentItemId = 0, bool recursive = true, int depth = 0, MenuNode pnode = null, string defaultListPage = "", string defaultListModule = "")
+        private List<MenuNode> GetCatNodeXml(string currentTabId, int parentItemId = 0, bool recursive = true, int depth = 0, MenuNode pnode = null, string defaultListPage = "")
         {
             
             var nodes = new List<MenuNode>();
@@ -130,14 +127,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     n.LargeImage = "";
                     n.Icon = "";
                     var img = obj.imageurl;
-                    //if (img != "")
-                    //{
-                    //    n.LargeImage = imgFolder + "/" + img;
-                    //    n.Icon = imgFolder + "/Thumb_50x0" + img;
-                    //    if (defimgsize != "") n.Icon = imgFolder + "/Thumb_" + defimgsize + img;
-                    //    var imgsize = obj.GetXmlProperty("genxml/textbox/txtsmallimgsize");
-                    //    if (imgsize != "") n.Icon = imgFolder + "/Thumb_" + imgsize + img;
-                    //}
+                    if (img != "")
+                    {
+                        n.LargeImage = img;
+                        n.Icon = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?w=50&amp;h=50&amp;src=/" + img;
+                    }
                     n.Keywords = obj.metakeywords;
                     n.Description = obj.metadescription;
                     n.CommandName = "";
@@ -147,7 +141,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (recursive && depth < 50) //stop infinate loop, only allow 50 sub levels
                     {
                         depth += 1;
-                        var childrenNodes = GetCatNodeXml(tabid, obj.categoryid, true, depth, n, defaultListPage, defaultListModule);
+                        var childrenNodes = GetCatNodeXml(tabid, obj.categoryid, true, depth, n, defaultListPage);
                         if (childrenNodes.Count > 0)
                         {
                             n.Children = childrenNodes;

@@ -8,6 +8,16 @@ using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
+    /// <summary>
+    /// Class to hold transient stock data
+    /// </summary>
+    public class ModelTransData
+    {
+        public String modelid { get; set; }
+        public int orderid { get; set; }
+        public Double qty { get; set; }
+        public DateTime setdate { get; set; }
+    }
 
     /// <summary>
     /// Class to hold Category data, so we can use linq and help speed up access from the memory var CategoryList
@@ -17,10 +27,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int categoryid { get; set; }
         public string categoryref { get; set; }
         public string grouptyperef { get; set; }
+        public string groupname { get; set; }
         public bool archived { get; set; }
         public bool ishidden { get; set; }
         public int parentcatid { get; set; }
-        public int recordsortorder { get; set; }
+        public Double recordsortorder { get; set; }
         public string imageurl { get; set; }
         public string categoryname { get; set; }
         public string categorydesc { get; set; }
@@ -56,5 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public enum ModuleEventCodes { none, displaycategoryheader, displaycategorybody, displaycategoryfooter, displayentryheader, displayentrybody, displayentryfooter, displayheader, displaybody, displayfooter, selectsearch, selectheader, selectbody, selectfooter, selectedheader, selectedbody, selectedfooter, editheader, editbody, editlang, editfooter, editlistsearch, editlistheader, editlistbody, editlistfooter, email, emailsubject, emailclient, emailreturnmsg, jsinsert, exportxsl };
 
     public enum DataStorageType { Cookie,SessionMemory,Database };
+
+    public enum NotifyCode { ok,fail,warning,error,log};
 
 }

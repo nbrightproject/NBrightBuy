@@ -1,0 +1,23 @@
+<tr>
+    <td class="text-nowrap" style="padding-right:30px">
+        [<tag id="cmdOpen" type="linkbutton" resourcekey="General.cmdFolderIcon" commandname="open" commandargument="ItemID" />]
+    </td>
+    <td class="text-nowrap">
+        [<tag type='valueof' xpath='genxml/entrycount' />]
+    </td>
+    <td style="width:100%">
+                [<tag id="txtcategoryname" type="textbox" cssclass="form-control" maxlength="150" />]
+    </td>
+<td>
+[<tag id="itemid" type="hidden" databind="ItemID" />]
+[<tag id="isdirty" type="postback" value="false" />]
+<a title="Move" href="#" class="selectrecord" itemid="[<tag type='valueof' databind='ItemID' />]" ><i class="fa fa-sort fa-fw fa-2x"></i></a>
+    <a title="Cancel Move" href="#" class="selectcancel" itemid="[<tag type='valueof' databind='ItemID' />]" style="display:none;" ><i class="fa fa-times-circle fa-fw fa-2x"></i></a>
+<span style="display:none;"  class="selectmove" itemid="[<tag type='valueof' databind='ItemID' />]" parentlist="[<tag type='valueof' xpath='genxml/parentlist' />]" >
+[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMoveIcon" commandname="move" commandargument="ItemID" />]
+</span>
+</td>
+<td>[<tag id="cmdEdit" type="linkbutton" resourcekey="General.cmdEditIcon" commandname="entrydetail" commandargument="ItemID" />]</td>
+<td>[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteIcon" commandname="delete" commandargument="ItemID" />]</td>
+<td class="text-center"><div class="dnnForm dnnFormItem">[<tag id="chkishidden" type="checkbox" />]</div></td><!-- wrap checkboxes in "dnnForm dnnFormItem" classes to pick up DNN styles -->
+</tr>

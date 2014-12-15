@@ -1,11 +1,20 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
+using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
 
+    public abstract class DataCtrlInterfaceNBrightBuy : DataCtrlInterface
+    {
+        public abstract List<NBrightInfo> GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
+        public abstract NBrightInfo GetData(int itemId);
+        public abstract NBrightInfo GetDataLang(int parentItemId, string lang);
+    }
 	/// -----------------------------------------------------------------------------
 	/// <summary>
 	/// An abstract class for the data access layer
@@ -64,10 +73,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 		public abstract IDataReader GetList(int PortalId, int ModuleId, string TypeCode, string SQLSearchFilter, string SQLOrderBy, int ReturnLimit, int PageNumber, int PageSize, int RecordCount, string TypeCodeLang, string lang);
         public abstract int GetListCount(int PortalId, int ModuleId, string TypeCode, string SQLSearchFilter, string TypeCodeLang, string lang);
         public abstract IDataReader Get(int ItemID, string TypeCodeLang, string lang);
-		public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang);
+        public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang);
 		public abstract void Delete(int ItemID);
 		public abstract void CleanData();
         public abstract string GetSqlxml(string commandText);
+        public abstract IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
+        public abstract IDataReader GetData(int itemId);
+        public abstract IDataReader GetDataLang(int parentItemId, string lang);
 
 		#endregion
 

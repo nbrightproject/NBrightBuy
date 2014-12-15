@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class ProductSearch : NBrightBuyBase
+    public partial class ProductSearch : NBrightBuyFrontOfficeBase
     {
 
         private GenXmlTemplate _templD;
@@ -38,7 +38,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            DisablePaging = true; // stop paging control being created
             
             base.OnInit(e);
 
@@ -76,7 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var obj = new NBrightInfo();
                 
-                var searchcookie = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                var searchcookie = new NavigationData(PortalId, _targetModuleKey);
                 if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
                 DoDetail(rpData, obj);
             }
@@ -92,7 +91,7 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var param = new string[2];
-            var navigationData = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+            var navigationData = new NavigationData(PortalId, _targetModuleKey);
             switch (e.CommandName.ToLower())
             {
                 case "search":

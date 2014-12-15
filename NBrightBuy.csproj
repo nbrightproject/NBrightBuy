@@ -49,23 +49,152 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AddressBook.ascx.cs">
+      <DependentUpon>AddressBook.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\AddressBook.ascx.designer.cs">
+      <DependentUpon>AddressBook.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Categories.ascx.cs">
+      <DependentUpon>Categories.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Categories.ascx.designer.cs">
+      <DependentUpon>Categories.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Clients.ascx.cs">
+      <DependentUpon>Clients.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Clients.ascx.designer.cs">
+      <DependentUpon>Clients.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\BackOffice.ascx.cs">
+      <DependentUpon>BackOffice.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\BackOffice.ascx.designer.cs">
+      <DependentUpon>BackOffice.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Tools.ascx.cs">
+      <DependentUpon>Tools.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Tools.ascx.designer.cs">
+      <DependentUpon>Tools.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Import.ascx.cs">
+      <DependentUpon>Import.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Import.ascx.designer.cs">
+      <DependentUpon>Import.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Export.ascx.cs">
+      <DependentUpon>Export.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Export.ascx.designer.cs">
+      <DependentUpon>Export.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\EditLanguage.ascx.cs">
+      <DependentUpon>EditLanguage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditLanguage.ascx.designer.cs">
+      <DependentUpon>EditLanguage.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Products.ascx.cs">
+      <DependentUpon>Products.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Products.ascx.designer.cs">
+      <DependentUpon>Products.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\PropertyGroups.ascx.cs">
+      <DependentUpon>PropertyGroups.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\PropertyGroups.ascx.designer.cs">
+      <DependentUpon>PropertyGroups.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Settings.ascx.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Settings.ascx.designer.cs">
+      <DependentUpon>Settings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\DashSummary.ascx.cs">
+      <DependentUpon>DashSummary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DashSummary.ascx.designer.cs">
+      <DependentUpon>DashSummary.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Plugins.ascx.cs">
+      <DependentUpon>Plugins.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Plugins.ascx.designer.cs">
+      <DependentUpon>Plugins.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Orders.ascx.cs">
+      <DependentUpon>Orders.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Orders.ascx.designer.cs">
+      <DependentUpon>Orders.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\NBrightBuyFrontOfficeBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\NBrightBuyAdminBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Base\NBrightBuyBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\CartData.cs" />
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
+    <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\ClientData.cs" />
+    <Compile Include="Components\CategoryData.cs" />
+    <Compile Include="Components\GroupData.cs" />
+    <Compile Include="Components\Interfaces\DiscountCodeInterface.cs" />
+    <Compile Include="Components\Interfaces\FilterInterface.cs" />
+    <Compile Include="Components\Interfaces\PaymentsInterface.cs" />
+    <Compile Include="Components\ProfileData.cs" />
+    <Compile Include="Components\PluginData.cs" />
+    <Compile Include="Components\PurchaseData.cs" />
+    <Compile Include="Components\OrderData.cs" />
+    <Compile Include="Components\UserData.cs" />
+    <Compile Include="Components\Interfaces\ShippingInterface.cs" />
+    <Compile Include="Components\Interfaces\EventInterface.cs" />
+    <Compile Include="Components\Interfaces\PromoInterface.cs" />
+    <Compile Include="Components\Interfaces\TaxInterface.cs" />
     <Compile Include="Components\ItemListData.cs" />
     <Compile Include="Components\DdrMenuInterface.cs" />
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
     <Compile Include="Components\NavigationData.cs" />
-    <Compile Include="Components\NBrightBuyV2Utils.cs" />
+    <Compile Include="Components\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
     <Compile Include="CategoryMenu.ascx.cs">
       <DependentUpon>CategoryMenu.ascx</DependentUpon>
@@ -81,6 +210,97 @@
     <Compile Include="CategoryMenuSettings.ascx.designer.cs">
       <DependentUpon>CategoryMenuSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="CartView.ascx.cs">
+      <DependentUpon>CartView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartView.ascx.designer.cs">
+      <DependentUpon>CartView.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CartViewSettings.ascx.cs">
+      <DependentUpon>CartViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartViewSettings.ascx.designer.cs">
+      <DependentUpon>CartViewSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAdmin.ascx.cs">
+      <DependentUpon>AddressAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressAdmin.ascx.designer.cs">
+      <DependentUpon>AddressAdmin.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddressAdminSettings.ascx.cs">
+      <DependentUpon>AddressAdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressAdminSettings.ascx.designer.cs">
+      <DependentUpon>AddressAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Container.ascx.cs">
+      <DependentUpon>Container.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Container.ascx.designer.cs">
+      <DependentUpon>Container.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment.ascx.cs">
+      <DependentUpon>Payment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Payment.ascx.designer.cs">
+      <DependentUpon>Payment.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentSettings.ascx.cs">
+      <DependentUpon>PaymentSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentSettings.ascx.designer.cs">
+      <DependentUpon>PaymentSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrintView.aspx.cs">
+      <DependentUpon>PrintView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrintView.aspx.designer.cs">
+      <DependentUpon>PrintView.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSearch.ascx.cs">
+      <DependentUpon>ProductSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductSearch.ascx.designer.cs">
+      <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileForm.ascx.cs">
+      <DependentUpon>ProfileForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileForm.ascx.designer.cs">
+      <DependentUpon>ProfileForm.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileFormSettings.ascx.cs">
+      <DependentUpon>ProfileFormSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileFormSettings.ascx.designer.cs">
+      <DependentUpon>ProfileFormSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrderAdmin.ascx.cs">
+      <DependentUpon>OrderAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderAdmin.ascx.designer.cs">
+      <DependentUpon>OrderAdmin.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrderAdminSettings.ascx.cs">
+      <DependentUpon>OrderAdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderAdminSettings.ascx.designer.cs">
+      <DependentUpon>OrderAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
     </Compile>
@@ -90,13 +310,6 @@
     </Compile>
     <Compile Include="ProductSearchSettings.ascx.designer.cs">
       <DependentUpon>ProductSearchSettings.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductSearch.ascx.cs">
-      <DependentUpon>ProductSearch.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductSearch.ascx.designer.cs">
-      <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="render\GenXmlTemplateExt.cs" />
     <Compile Include="Components\DataProvider.cs" />
@@ -124,40 +337,282 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CategoryMenu.ascx">
+    <Content Include="Admin\AddressBook.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\Categories.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Clients.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\BackOffice.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\PropertiesValue.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Tools.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Import.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Export.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\EditLanguage.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Products.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\PropertyGroups.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Settings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\DashSummary.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Plugins.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Menu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Orders.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CategoryMenu.ascx" />
     <Content Include="CategoryMenuSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="NBrightTemplates\Default\ajaxincludes.html" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_AddNew.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Delete.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Edit.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Exit.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Save.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCD.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCE.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCED.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SCEs.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SD.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SED.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCDL.txt" />
-    <Content Include="NBrightTemplates\Default\CategoryMenu_Settings.html" />
-    <Content Include="NBrightTemplates\Default\ProductSearch_Settings.html" />
-    <Content Include="NBrightTemplates\Default\ProductView_Settings.html" />
-    <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductSearch.ascx" />
-    <Content Include="menu\ControlTabMenu.xsl" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_Search.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSC.txt" />
-    <Content Include="NBrightTemplates\Default\buttonsDiv_SxSCD.txt" />
-    <Content Include="NBrightTemplates\Default\buttons_SortList.txt" />
-    <Content Include="NBrightTemplates\Default\buttons_SxSCD.txt" />
-    <Content Include="ProductViewSettings.ascx" />
-    <Content Include="ProductView.ascx">
+    <Content Include="CartView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="CartViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="AddressAdmin.ascx" />
+    <Content Include="AddressAdminSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Admin\Container.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Payment.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="PaymentSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="PrintView.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProductSearch.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileForm.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileFormSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="OrderAdmin.ascx" />
+    <Content Include="OrderAdminSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProductSearchSettings.ascx" />
+    <Content Include="ProductViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProductView.ascx" />
+    <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
+    <Content Include="Themes\config\default\addressbookbody.html" />
+    <Content Include="Themes\config\default\addressbookfooter.html" />
+    <Content Include="Themes\config\default\addressbookheader.html" />
+    <Content Include="Themes\config\default\addressbookinput.html" />
+    <Content Include="Themes\config\default\ajaxincludes.html" />
+    <Content Include="Themes\config\default\backoffice.html" />
+    <Content Include="Themes\config\default\backofficepageheader.html" />
+    <Content Include="Themes\config\default\CartView_Settings.html" />
+    <Content Include="Themes\config\default\categorydetailbody.html" />
+    <Content Include="Themes\config\default\categorydetailfooter.html" />
+    <Content Include="Themes\config\default\categorydetailheader.html" />
+    <Content Include="Themes\config\default\categorylistbody.html" />
+    <Content Include="Themes\config\default\categorylistfooter.html" />
+    <Content Include="Themes\config\default\categorylistheader.html" />
+    <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
+    <Content Include="Themes\config\default\categoryproductbody.html" />
+    <Content Include="Themes\config\default\categoryproductfooter.html" />
+    <Content Include="Themes\config\default\categoryproductheader.html" />
+    <Content Include="Themes\config\default\clientsbody.html" />
+    <Content Include="Themes\config\default\clientsdetail.html" />
+    <Content Include="Themes\config\default\clientsdetailfooter.html" />
+    <Content Include="Themes\config\default\clientsdetailheader.html" />
+    <Content Include="Themes\config\default\clientsfooter.html" />
+    <Content Include="Themes\config\default\clientsheader.html" />
+    <Content Include="Themes\config\default\clientssearch.html" />
+    <Content Include="Themes\config\default\clientdiscountcodes.html" />
+    <Content Include="Themes\config\default\clientvouchercodes.html" />
+    <Content Include="Themes\config\default\datepicker.html" />
+    <Content Include="Themes\config\default\Payment_Settings.html" />
+    <Content Include="Themes\config\default\productfields.html" />
+    <Content Include="Themes\config\default\productlistbody-as-thumbs.html" />
+    <Content Include="Themes\config\default\productlistfooter-as-thumbs.html" />
+    <Content Include="Themes\config\default\productlistheader-as-thumbs.html" />
+    <Content Include="Themes\config\default\propertiesdetailbody.html" />
+    <Content Include="Themes\config\default\propertiesdetailfooter.html" />
+    <Content Include="Themes\config\default\propertiesdetailheader.html" />
+    <Content Include="Themes\config\default\propertieslistbody.html" />
+    <Content Include="Themes\config\default\propertieslistfooter.html" />
+    <Content Include="Themes\config\default\propertieslistheader.html" />
+    <Content Include="Themes\config\default\propertiessearch.html" />
+    <Content Include="Themes\config\default\propertyproductbody.html" />
+    <Content Include="Themes\config\default\propertyproductfooter.html" />
+    <Content Include="Themes\config\default\propertyproductheader.html" />
+    <Content Include="Themes\config\default\Tools.html" />
+    <Content Include="Themes\config\default\import.html" />
+    <Content Include="Themes\config\default\export.html" />
+    <Content Include="Themes\config\default\selecteditlanguage.html" />
+    <Content Include="Themes\config\default\productadmingroupcategories.html" />
+    <Content Include="Themes\config\default\productadminlist.html" />
+    <Content Include="Themes\config\default\productadminrelated.html" />
+    <Content Include="Themes\config\default\productadmincategories.html" />
+    <Content Include="Themes\config\default\productadmindocs.html" />
+    <Content Include="Themes\config\default\productadminimages.html" />
+    <Content Include="Themes\config\default\productadminoptionvalues.html" />
+    <Content Include="Themes\config\default\productadminoptions.html" />
+    <Content Include="Themes\config\default\productadminmodels.html" />
+    <Content Include="Themes\config\default\productlistbody.html" />
+    <Content Include="Themes\config\default\productlistfooter.html" />
+    <Content Include="Themes\config\default\productlistheader.html" />
+    <Content Include="Themes\config\default\productadmin.html" />
+    <Content Include="Themes\config\default\grouplistbody.html" />
+    <Content Include="Themes\config\default\grouplistfooter.html" />
+    <Content Include="Themes\config\default\grouplistheader.html" />
+    <Content Include="Themes\config\default\menufooter.html" />
+    <Content Include="Themes\config\default\menuheader.html" />
+    <Content Include="Themes\config\default\OrderAdmin_Settings.html" />
+    <Content Include="Themes\config\default\ordersbody.html" />
+    <Content Include="Themes\config\default\ordersdetail.html" />
+    <Content Include="Themes\config\default\ordersdetailfooter.html" />
+    <Content Include="Themes\config\default\ordersdetailheader.html" />
+    <Content Include="Themes\config\default\ordersdetailitem.html" />
+    <Content Include="Themes\config\default\ordersdetailitemfooter.html" />
+    <Content Include="Themes\config\default\ordersdetailitemheader.html" />
+    <Content Include="Themes\config\default\ordersfooter.html" />
+    <Content Include="Themes\config\default\ordersheader.html" />
+    <Content Include="Themes\config\default\orderssearch.html" />
+    <Content Include="Themes\config\default\pluginsbody.html" />
+    <Content Include="Themes\config\default\pluginsdetail.html" />
+    <Content Include="Themes\config\default\pluginsdetailfooter.html" />
+    <Content Include="Themes\config\default\pluginsdetailheader.html" />
+    <Content Include="Themes\config\default\pluginsfooter.html" />
+    <Content Include="Themes\config\default\pluginsheader.html" />
+    <Content Include="Themes\config\default\ProductSearch_Settings.html" />
+    <Content Include="Themes\config\default\productselectbody.html" />
+    <Content Include="Themes\config\default\productselectfooter.html" />
+    <Content Include="Themes\config\default\productselectheader.html" />
+    <Content Include="Themes\config\default\ProductView_Settings.html" />
+    <Content Include="Themes\config\default\ProfileForm_Settings.html" />
+    <Content Include="Themes\config\default\settingsbody.html" />
+    <Content Include="Themes\config\js\categoryajax.js" />
+    <Content Include="Themes\config\js\jquery.genxmlajax.js" />
+    <Content Include="Themes\config\js\nbbajax.js" />
+    <Content Include="Themes\config\js\nbbitemlist.js" />
+    <Content Include="Themes\config\js\productajax.js" />
+    <Content Include="Themes\Cygnus\css\cygnus.css" />
+    <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
+    <Content Include="Themes\Cygnus\Default\addclientrole.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminemail.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\addressadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\addressadmininput.html" />
+    <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
+    <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
+    <Content Include="Themes\Cygnus\Default\cartextra.html" />
+    <Content Include="Themes\Cygnus\Default\cartlayout.html" />
+    <Content Include="Themes\Cygnus\Default\cartshipment.html" />
+    <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
+    <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\categorybody.html" />
+    <Content Include="Themes\Cygnus\Default\categoryclosetree.html" />
+    <Content Include="Themes\Cygnus\Default\CategoryMenuSettings.html" />
+    <Content Include="Themes\Cygnus\Default\catmenu.html" />
+    <Content Include="Themes\Cygnus\Default\catmenubody.html" />
+    <Content Include="Themes\Cygnus\Default\catmenufooter.html" />
+    <Content Include="Themes\Cygnus\Default\catmenuheader.html" />
+    <Content Include="Themes\Cygnus\Default\cattreebody.html" />
+    <Content Include="Themes\Cygnus\Default\cattreefooter.html" />
+    <Content Include="Themes\Cygnus\Default\cattreeheader.html" />
+    <Content Include="Themes\Cygnus\Default\cartempty.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutbody.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutfooter.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutheader.html" />
+    <Content Include="Themes\Cygnus\Default\detail.html" />
+    <Content Include="Themes\Cygnus\Default\detailfooter.html" />
+    <Content Include="Themes\Cygnus\Default\detailheader.html" />
+    <Content Include="Themes\Cygnus\Default\detailpageheader.html" />
+    <Content Include="Themes\Cygnus\Default\frontofficepageheader.html" />
+    <Content Include="Themes\Cygnus\Default\fullcartbody.html" />
+    <Content Include="Themes\Cygnus\Default\fullcartfooter.html" />
+    <Content Include="Themes\Cygnus\Default\fullcartheader.html" />
+    <Content Include="Themes\Cygnus\Default\list.html" />
+    <Content Include="Themes\Cygnus\Default\listfooter.html" />
+    <Content Include="Themes\Cygnus\Default\listheader.html" />
+    <Content Include="Themes\Cygnus\Default\minicartbody.html" />
+    <Content Include="Themes\Cygnus\Default\minicartfooter.html" />
+    <Content Include="Themes\Cygnus\Default\minicartheader.html" />
+    <Content Include="Themes\Cygnus\Default\modellist.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitem.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemf.html" />
+    <Content Include="Themes\Cygnus\Default\orderadmindetailitemh.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminfooter.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminheader.html" />
+    <Content Include="Themes\Cygnus\Default\orderadminsearch.html" />
+    <Content Include="Themes\Cygnus\Default\orderamendedemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordercreatedclientemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordercreatedemail.html" />
+    <Content Include="Themes\Cygnus\Default\orderemail-reference-copy.html" />
+    <Content Include="Themes\Cygnus\Default\orderemailaddresses.html" />
+    <Content Include="Themes\Cygnus\Default\orderemailbank.html" />
+    <Content Include="Themes\Cygnus\Default\orderemailfooter.html" />
+    <Content Include="Themes\Cygnus\Default\orderemailhead.html" />
+    <Content Include="Themes\Cygnus\Default\orderemaillinfo.html" />
+    <Content Include="Themes\Cygnus\Default\orderemaillitems.html" />
+    <Content Include="Themes\Cygnus\Default\orderemaillogo.html" />
+    <Content Include="Themes\Cygnus\Default\orderemailmessage.html" />
+    <Content Include="Themes\Cygnus\Default\orderitemlist.html" />
+    <Content Include="Themes\Cygnus\Default\orderreceiptemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordershippedemail.html" />
+    <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
+    <Content Include="Themes\Cygnus\Default\paymentFAIL.html" />
+    <Content Include="Themes\Cygnus\Default\paymentfooter.html" />
+    <Content Include="Themes\Cygnus\Default\paymentheader.html" />
+    <Content Include="Themes\Cygnus\Default\paymentOK.html" />
+    <Content Include="Themes\Cygnus\Default\printorder.html" />
+    <Content Include="Themes\Cygnus\Default\printreceipt.html" />
+    <Content Include="Themes\Cygnus\Default\ProductSearchSettings.html" />
+    <Content Include="Themes\Cygnus\Default\ProductViewSettings.html" />
+    <Content Include="Themes\Cygnus\Default\profileformemail.html" />
+    <Content Include="Themes\Cygnus\Default\profileforminput.html" />
+    <Content Include="Themes\Cygnus\Default\profileformupdate.html" />
+    <Content Include="Themes\Cygnus\Default\profileregisteredemail.html" />
+    <Content Include="Themes\Cygnus\Default\relatedlist.html" />
+    <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
+    <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.navgoco.min.js" />
+    <Content Include="Themes\Cygnus\js\jquery.responsiveTabs.min.js" />
+    <Content Include="Themes\Cygnus\js\masonry.pkgd.min.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\Support\NBrightCore\NBrightCore.csproj">
@@ -168,17 +623,32 @@
       <Project>{EC815D38-62CF-4B46-8177-CF40CE1AAB62}</Project>
       <Name>NBrightDNN</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NB_Store\NB_Store.vbproj">
-      <Project>{981AF709-BC75-4D90-84B0-34B66F5ED2A6}</Project>
-      <Name>NB_Store</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CategoryMenu.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Clients.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductView.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\menu.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\General.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="NBrightThumb.ashx" />

@@ -1,1 +1,0 @@
-[<tag id="cmdEdit" type="linkbutton" resourcekey="General.cmdEditImg" cssclass="nwb-button" commandname="Edit" commandargument="ItemID" />]

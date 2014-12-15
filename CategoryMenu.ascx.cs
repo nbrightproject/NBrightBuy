@@ -20,7 +20,7 @@ using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class CategoryMenu : NBrightBuyBase
+    public partial class CategoryMenu : NBrightBuyFrontOfficeBase
     {
 
         private String _catid = "";
@@ -53,10 +53,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            base.EntityTypeCode = "CATEGORY";
-            base.CtrlTypeCode = "CATEGORY";
-            base.EntityTypeCodeLang = "CATEGORYLANG";
-            base.DisableUserInfo = true;
 
             base.OnInit(e);
 
@@ -75,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 _entryid = Utils.RequestQueryStringParam(Context, "eid");
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
-                var navigationdata = new NavigationData(PortalId, _targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                var navigationdata = new NavigationData(PortalId, _targetModuleKey);
                 if (Utils.IsNumeric(_catid)) navigationdata.Delete(); // if a category button has been clicked (in url) then clear search;
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) _catid = navigationdata.CategoryId;
                 if (_catid == "") _catid = ModSettings.Get("defaultcatid");
@@ -137,21 +133,21 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            if (Page.IsPostBack == false)
-            {
                 var catid = 0;
                 if (Utils.IsNumeric(_catid)) catid = Convert.ToInt32(_catid);
 
                 #region "Get default category into list for displaying header and footer templates on product (breadcrumb)"
 
                 // if we have a product displaying, get the deault category for the category
-                var obj = new GroupCategoryData();
-                if (Utils.IsNumeric(_entryid))
-                {
-                    var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
-                    obj = _catGrpCtrl.GetCategory(catiddef);
-                }
-                var catl = new List<object> {obj};
+            var obj = new GroupCategoryData();
+            if (Utils.IsNumeric(_entryid))
+            {
+                var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
+                obj = _catGrpCtrl.GetCategory(catiddef);
+                if (catid == 0) catid = catiddef;
+            }
+            var catl = new List<object> {obj};
+
 
                 #endregion
 
@@ -230,7 +226,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 rpDataF.DataBind();
 
                 #endregion
-            }
         }
 
         #endregion

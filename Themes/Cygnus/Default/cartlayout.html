@@ -1,0 +1,216 @@
+<!-- This loader needs to be made to work here -->
+<div id="loader" class="processing" style="display:none">[<tag type="htmlof" resourcekey="Cartview.ProcessingDiv" />]</div>
+
+[<tag id="currentcartstage" type="postback" value="" persistance="True"  />]
+
+<!-- Layout template -->
+<div id="cartdetails" class="nbs dnnform"  style="display:none;" >
+<div id="cartlist" style="display:none;"></div>
+<div id="cartbilladdress" class="panel" style="display:none;"></div>
+<div id="cartshippingoptions" class="panel" style="display:none;"></div>
+<div id="cartshippingmethods" class="panel" style="display:none;"></div>
+<div id="cartextra" class="panel" style="display:none;"></div>
+    
+    <div style="clear:both;">
+    <a id="cartlistprevious" href="javascript:void(0)" class="secondarybutton cartlistprevclick" >[<tag type="valueof" resourcekey="Cartview.Previous" />]</a>
+    <a id="cartlistclear" href="javascript:void(0)" class="secondarybutton cartlistclear" >[<tag type="valueof" resourcekey="CartView.cmdClearCart" />]</a>        
+    <a id="cartlistupdate" href="javascript:void(0)" class="secondarybutton cartlistupdate" >[<tag type="valueof" resourcekey="CartView.UpdateCart" />]</a>        
+    <a id="cartlistnext" href="javascript:void(0)" class="primarybutton cartlistnextclick" >[<tag type="valueof" resourcekey="Cartview.Next" />]</a>        
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+
+    jQuery.fn.extend({
+        renameAttr: function (name, newName, removeData) {
+            var val;
+            return this.each(function () {
+                val = jQuery.attr(this, name);
+                jQuery.attr(this, newName, val);
+                jQuery.removeAttr(this, name);
+                // remove original data
+                if (removeData !== false) {
+                    jQuery.removeData(this, name.replace('data-', ''));
+                }
+            });
+        }
+    });
+
+    $(document).ready(function () {
+
+        // JQuery used to move cart elements into required area 
+        $('#cartbilladdress').append($('.checkoutbillform'));
+        $('#cartshippingoptions').append($('#shippingoptions'));
+        $('#cartextra').append($('#shippingmethods'));
+        $('#cartshippingoptions').append($('.checkoutshipform'));
+        $('#cartshippingoptions').append($('.checkoutship'));
+        $('#cartextra').append($('.checkoutextra'));
+        $('#cartlist').append($('#checkoutitemlist'));
+
+        $('.checkoutbillform').show();
+        $('.checkoutshipform').show();
+        $('.checkoutextra').show();
+        $('#checkoutitemlist').show();
+        $('#shippingoptions').show();
+        $("a[[id*='cmdSaveShipAddress']]").hide();
+        $("#selectshipaddress").hide();
+
+
+        //hide/show shipping option
+        if ($("input[[id*='rblshippingoptions']]:checked").val() == "2") $('#shippinginput').show();
+        if ($("input[[id*='rblshippingoptions']]:checked").val() == "3") {
+            $('.checkoutship').show();
+        }
+
+        $("input[[id*='rblshippingoptions']]").change(function () {
+            $('.checkoutship').hide();
+            $('#shippinginput').hide();
+            $("#selectshipaddress").hide();
+            if ($(this).val() == "2") {
+                $('#shippinginput').show();
+                $("a[[id*='cmdSaveShipAddress']]").show();
+                $("#selectshipaddress").show();
+            }
+            if ($(this).val() == "3") {
+                $('.checkoutship').show();
+                $('#cartshippingmethods').hide();
+            }
+            // disable validation on hidden controls
+            $('input:visible').renameAttr('ignorerequired', 'required');;
+            $('input:hidden').renameAttr('required', 'ignorerequired');
+        });
+
+
+        $("select[[id*='selectaddress']]").change(function () {
+            populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalue'), $(this).find('option:selected').attr('data'));
+        });
+
+        function populateAddressForm(selectordiv, datavalue, data) {
+            // Take the address dropdown data and popluate the address for with it.
+            // selectordiv = the selector for the form section that needs popluating
+            // datavalue = the list of field ids that need popluating (in seq order matching the "data" param)
+            // data = the list of data values to be populated.
+            if (data != null && data != '') {
+                var datarray = data.split(',');
+                var valuearray = datavalue.split(',');
+                var arrayLength = valuearray.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    $(selectordiv).find("[[id*='" + valuearray[[i]] + "']]").val(datarray[[i]]);
+                }
+            }
+            $(".updatecart").trigger("click");
+        }
+
+        function displaystage() {
+            $('#cartlist').hide();
+            $('#cartbilladdress').hide();
+            $('#cartshippingoptions').hide();
+            $('#cartshippingmethods').hide();
+            $('#cartextra').hide();
+
+            // reset if it's not valid
+            if ($("input[[id*='currentcartstage']]").val() != "cartlist" && $("input[[id*='currentcartstage']]").val() != "cartaddress" && $("input[[id*='currentcartstage']]").val() != "cartsummary") {
+                $("input[[id*='currentcartstage']]").val('');
+            }
+
+            // show or hide sections based on stage
+            if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
+                $('#cartlist').show();
+                $(".cartlistnextclick").show();
+                $(".cartlistprevclick").hide();
+                $(".cartlistupdate").show();
+                $(".cartlistclear").show();
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+                $('#cartbilladdress').show();
+                $('#cartshippingoptions').show();
+                $('#cartshippingmethods').show();
+                $(".cartlistnextclick").show();
+                $(".cartlistprevclick").show();
+                $(".cartlistupdate").show();
+                $(".cartlistclear").hide();                
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
+                $('#cartextra').show();
+                $(".cartlistnextclick").hide();
+                $(".cartlistprevclick").show();
+                $(".cartlistupdate").hide();
+                $(".cartlistclear").hide();
+            }
+            $('#cartdetails').show();
+            // disable validation on hidden controls
+            $('input:visible').renameAttr('ignorerequired', 'required');;
+            $('input:hidden').renameAttr('required', 'ignorerequired');
+        }
+
+        // show or hide sections based on stage
+        displaystage();
+
+        // pickup stage change
+        $(".cartlistnextclick").click(function (e) {
+            // do stages backwards so we don't just to the end by assiging value to field.
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress" || $("input[[id*='currentcartstage']]").val() == "nextcartaddress") {
+                $("input[[id*='currentcartstage']]").val('nextcartaddress');
+                $(".updatecart").trigger("click");
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "" || $("input[[id*='currentcartstage']]").val() == "cartlist") {
+                $("input[[id*='currentcartstage']]").val('cartaddress');
+                displaystage();
+            }
+        });
+        $(".cartlistupdate").click(function (e) {
+            $(".updatecart").trigger("click");
+        });
+        $(".cartlistclear").click(function (e) {
+            $(".clearcart").trigger("click");
+        });
+        
+        $(".cartlistprevclick").click(function (e) {
+            // do stages backwards so we don't just to the end by assiging value to field.
+            if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
+                $("input[[id*='currentcartstage']]").val('cartlist');
+                displaystage();
+            }
+            if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
+                $("input[[id*='currentcartstage']]").val('prevcartaddress');
+                $(".updatecart").trigger("click");
+            }
+
+        });
+
+        // auto fire postback when the shipping providerdropdown is changed. 
+        $("input[[id*='_shippingprovider_']]").change(function (e) {
+            $(".updatecart").trigger("click");
+        });
+
+        // update the order email with the billing email, if it's not already there
+        $('.checkoutbillform input[[id*="_Email_"]]').change(function (e) {
+            if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($(this).val());
+        });
+
+        $("#Form").submit(function (e) {
+            // switch of stage done here, so validation doesn't stop stage change working correctly.
+            if ($("input[[id*='currentcartstage']]").val() == "nextcartaddress") $("input[[id*='currentcartstage']]").val('cartsummary');
+            if ($("input[[id*='currentcartstage']]").val() == "prevcartaddress") $("input[[id*='currentcartstage']]").val('cartaddress');
+            $(".processing").show();
+        });
+
+        $(".updatecart").mousedown(function (e) {
+            if ($('input[[id*="_cartemailaddress_"]]').val() == '') $('input[[id*="_cartemailaddress_"]]').val($('.checkoutbillform input[[id*="_Email_"]]').val());
+        });
+
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $(".updatecart").trigger("click");
+        });
+
+        // trigger on postcode change
+        $("input[[id*='_PostalCode_']]").change(function (e) {
+            $("input[[id*='currentcartstage']]").val('cartaddress'); // make sure we go back the the address form
+            $(".updatecart").trigger("click");
+        });
+
+    });
+</script>

@@ -1,0 +1,21 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<li class="selproductid[<tag type='valueof' databind='itemid' />]">
+	<ul class="selectlistitem">
+	
+     [<tag id="parentitemid" type="hidden" databind="itemid"/>]
+     [<tag id="xrefitemid" type="hidden" value="{Settings:itemid}" />] <!-- This setting is taken from the ajax params uploaded in calling template -->
+
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
+	<li class="image"><img src="[<tag type='thumbnail' w='100' h='0' />]"></li>
+	[<tag type="endif" />]
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
+	<li class="noimage"><i class="fa fa-camera"></i></li>
+	[<tag type="endif" />]
+	[<tag type="endif" />]
+	<li class="title">
+	[<tag type="if" xpath="genxml/lang/genxml/textbox/txtmanufacturer" testvalue="" display="{OFF}" displayelse="{ON}" />][<tag type="manufacturer" />] [<tag type="endif" />][<tag type="productname" />]</li>
+	<li class="additem"><a title="Add" class="selectproduct selectproductid[<tag type='valueof' databind='itemid' />]" itemid="[<tag type='valueof' databind='itemid' />]"><i class="fa fa-plus-square"></i></a></li>
+	</ul>
+</li>

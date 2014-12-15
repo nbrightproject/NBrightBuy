@@ -1,14 +1,16 @@
+[<tag id="includeinheader" type="meta" value="pageheader.html" />]<!-- This template injects into page head section with static data only -->
+
 <div class="categorybreadcrumbs">[<tag type="catbreadcrumb" links="True" separator="" aslist="true" targetmodulekey="{Settings:modulekey}" />]</div>
+
+<!-- Use special filter privder -->
+[<tag id="providerfilterkey" type="meta" value="nbrightguerbetfilter" />]
 
 [<tag type="if" function="productcount" modulekey="{Settings:modulekey}" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
 <!-- Product List header  -->
       
 Wishlist: [<tag type="itemlistcount" listname="wishlist" />]
 
-[<tag id="includeinheader" type="meta" value="listpageheader.html" />]
-
-<div class="NBB">
-
+<div class="nbs">
 
 [<tag id="searchpagesize" type="meta" value="{Settings:pagesize}" />] 
 
@@ -21,19 +23,19 @@ Wishlist: [<tag type="itemlistcount" listname="wishlist" />]
 [<tag id="orderby4" type="meta" value="NB3.FromPrice DESC" />]
 [<tag id="orderby5" type="meta" value="NB3.Qty" />]
 
-<!-- List header -->
-<select class="sorter" onchange="location=this.options[[this.selectedIndex]].value">
-<option value="">Sort by</option>
-<option value="?orderby=0">Code</option>
-<option value="?orderby=1">Title</option>
-<option value="?orderby=2">Manufacturer</option>
-<option value="?orderby=3">Lowest price</option>
-<option value="?orderby=4">Highest price</option>
-<option value="?orderby=5">Quantity</option>
-</select>
 
+
+<!-- Show category details -->
+[<tag type="if" function="settings" key="categorydetails" testvalue="True" display="{ON}" displayelse="{OFF}" />]
+<div class="categorydetails">
+<h3>[<tag type="catdefault" name="categoryname" />] - [<tag type="catdefault" name="entrycount" />] Products</h3>
+<h5>[<tag type="catdefault" name="categorydesc" />]</h5>
+<img style="width:160px;height:auto;float:left;margin:0 18px 18px 0" class="categoryimage" src="[<tag type='catdefault' name='imageurl' />]" />
+<div class="categorydetails">[<tag type="catdefault" name="message" />]</div>
+</div>
+
+[<tag type="endif"  />]
 
 <div id="listwrapper" class="productlist">
-
 
 [<tag type="endif"  />]<!-- End hide product list when current category has zero items -->

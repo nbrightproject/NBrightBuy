@@ -1,8 +1,5 @@
 </div>
 
-<!-- Cygnus jQuery UI -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery-ui-1.10.4.custom.min.js"></script>
-
 <!-- Responsive Tabs https://github.com/jellekralt/Responsive-Tabs -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.responsiveTabs.min.js"></script>
 <script type="text/javascript">
@@ -19,20 +16,12 @@
     });
 </script>
 
-<!-- Responsive Tables http://johnpolacek.github.io/stacktable.js/ -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/stacktable.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-      $('.StackThis').stacktable({myClass:'stacktable small-only'});
-    });
-</script>
-
 <!-- Lightbox http://osvaldas.info/image-lightbox-responsive-touch-friendly -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagelightbox.nbb.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
-//Integrate custom lightBox 
+//Integrate custom lightBox for NBS
 $(function() {
     var activityIndicatorOn = function() {
         $('<div id="imagelightbox-loading"><div></div></div>').appendTo('body');
@@ -106,29 +95,16 @@ $(function() {
 		    onLoadStart: function() { captionOff(); activityIndicatorOff(); },
 		    onLoadEnd: function() { captionOn(); activityIndicatorOff(); }
 		});
-
-
 });
-	
-	
 });
-
 
 </script>
 
-<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagesloaded.pkgd.min.js"></script>
-
 <!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/masonry.pkgd.min.js"></script>
-
 <script type="text/javascript">
-
 $( document ).ready(function() {
 
-var $container = $('#relatedwrapper');
-// initialize
-$container.masonry({
+var $container = $('#relatedwrapper').masonry({
   columnWidth: [Settings:relateditemwidth], // List item width - Can also use CSS width of first list item
   itemSelector: '.relateditem',
   gutter: [Settings:relateditemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
@@ -142,5 +118,4 @@ $container.imagesLoaded( function() {
 });
 
 });
-
 </script>

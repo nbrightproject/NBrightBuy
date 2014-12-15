@@ -1,0 +1,18 @@
+﻿<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.datepick.xlang.eur.js"></script>  
+<script>
+
+	$(function () {
+
+	if (!Modernizr.inputtypes.date) {
+
+	   $.datepicker.setDefaults($.datepicker.regional[['']]);
+	   if ('[<tag type="culturecode" />]' == 'en-GB') $.datepicker.setDefaults($.datepicker.regional[['en-GB']]);
+	   if ('[<tag type="culturecode" />]' == 'fr-FR') $.datepicker.setDefaults($.datepicker.regional[['fr']]);
+	   if ('[<tag type="culturecode" />]' == 'nl-NL') $.datepicker.setDefaults($.datepicker.regional[['nl']]);
+
+        $('input[[type=date]]').datepicker();
+	}
+
+    }); 
+
+</script>

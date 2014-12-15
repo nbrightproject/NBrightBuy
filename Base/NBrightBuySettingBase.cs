@@ -78,6 +78,15 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 		{
 			try
 			{
+                // load the notificationmessage if with have a placeholder control to display it.
+                var ctrlMsg = this.FindControl("notifymsg");
+                if (ctrlMsg != null)
+                {
+                    var msg = NBrightBuyUtils.GetNotfiyMessage(ModuleId);
+                    var l = new Literal { Text = msg };
+                    ctrlMsg.Controls.Add(l);
+                }
+
                 if (CtrlTypeCode != "")
                 {
                     // display the detail
@@ -163,6 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
                 // clear any store level cache, might be overkill to clear ALL Store cache, 
                 // but editing of settings should only happen when changes are being made.
                 NBrightBuyUtils.RemoveModCache(-1);
+                NBrightBuyUtils.RemoveModCache(ModuleId);
 
             }
 		}

@@ -1,0 +1,77 @@
+[<tag id="default" type="hidden" value="" />] <!-- Default flag for DNN profile link: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
+
+<div class="checkoutbillform">
+    <h3>[<tag type="valueof" resourcekey="CartView.BillingAddress" />]</h3> 
+    
+    [<tag type="if" function="isuser" />] 
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.ChooseAddress' />]</h6>
+		    [<tag id="selectaddress" cssclass="chooseaddress" formselector=".checkoutbillform" type="addressdropdown" blank=""
+    template="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode" 
+    datavalue="FirstName,LastName,Company,Unit,Street,PostalCode,City,Country,Phone,Email" 
+    data="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode,genxml/textbox/city,genxml/dropdownlist/country,genxml/textbox/phone,genxml/textbox/email" 
+        />]
+    </div>
+	[<tag type="endif" />]
+
+    <div class="formrow">
+        <div class="leftside">
+        <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
+        [<tag id='FirstName' type='textbox' />]
+        </div>
+        <div class="rightside">
+        <h6>[<tag type='valueof' resourcekey='General.lblLastName' />]</h6>
+        [<tag id='LastName' type='textbox' />]
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="leftside">
+        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
+        [<tag id='Telephone' type='textbox' required="" />]
+        </div>
+        <div class="rightside">
+        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+        [<tag id='Email' type='textbox' datatype="email" required="" />]
+        </div>
+    </div>
+    
+    <div class="formrow">
+    <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
+    [<tag id='Company' type='textbox' />]
+    </div>
+
+    <div class="formrow">
+    <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
+    [<tag id='Unit' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+    <h6>[<tag type='valueof' resourcekey='General.lblAddress2' />]</h6>
+    [<tag id='Street' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+        <div class="leftside">
+        <h6>[<tag type='valueof' resourcekey='General.lblCity' />]</h6>
+        [<tag id='City' type='textbox' />]
+        </div>
+        <div class="rightside">
+        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
+        [<tag id='PostalCode' type='textbox' required=""/>]
+        </div>
+    </div>
+
+    <div class="formrow">
+        <div class="leftside">
+        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
+        [<tag id="Country" type="countrydropdown" />]
+    </div>
+        <div class="rightside">
+        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
+        [<tag id='Region' type='regioncontrol' blank="" />]
+    </div>
+    </div>
+    
+
+</div>

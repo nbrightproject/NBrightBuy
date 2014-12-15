@@ -1,0 +1,54 @@
+﻿	<tr>
+		<td class="detailscolumn">
+
+		[<tag type="if" xpath="genxml/productxml/genxml/imgs/genxml[[1]]/hidden/imageurl" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Image -->
+		<div class="image"><img title="[<tag type='valueof' xpath='genxml/summary' />]" src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=200&h=200&src=[Settings:genxml/hidden/uploadrelpath]/[<tag type='valueof' xpath='genxml/productxml/genxml/imgs/genxml[[1]]/hidden/imageurl'/>]" /></div><!-- Retina -->
+		[<tag type="endif" />]
+		[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present and placeholder image option is enabled -->
+		[<tag type="if" xpath="genxml/productxml/genxml/imgs/genxml[[1]]/hidden/imageurl" testvalue="" display="{ON}" displayelse="{OFF}" />]
+		<div class="noimage"><i class="fa fa-camera"></i></div>
+		[<tag type="endif" />]
+		[<tag type="endif" />]
+
+
+		<div class="details"><!-- Details -->
+		<div class="title">
+		<a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</a>
+		</div>
+		<div class="cartlistoptions">
+		[<tag type="if" xpath="genxml/options/option[[1]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[1]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[1]]/optvalcost" />][<tag type="endif" />]</div></div>
+		[<tag type="endif" />]
+		[<tag type="if" xpath="genxml/options/option[[2]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div>[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[2]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[2]]/optvalcost" />][<tag type="endif" />]</div></div>
+		[<tag type="endif" />]
+		[<tag type="if" xpath="genxml/options/option[[3]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div>[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[3]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[3]]/optvalcost" />][<tag type="endif" />]</div></div>
+		[<tag type="endif" />]
+		[<tag type="if" xpath="genxml/options/option[[4]]/optname" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div>[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]: <div style="display:inline-block">[<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />][<tag type="if" xpath="genxml/options/option[[4]]/optvalcost" testvalue="0.00" display="{OFF}" displayelse="{ON}" />] [<tag type="currencyof" xpath="genxml/options/option[[4]]/optvalcost" />][<tag type="endif" />]</div></div>
+		[<tag type="endif" />]
+		</div>
+		
+		[<tag type="if" xpath="genxml/modelref" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div class="cartlistref">[<tag type='valueof' resourcekey='General.Code' />]: [<tag type="concatenate" xpath2="genxml/txtproductref " xpath1="genxml/modelref" />]</div>
+		[<tag type="endif" />]
+		</div>
+		
+		</td>
+		<td class="quantitycolumn">
+		[<tag cssclass="quantity" id="qty" type="cartqtytextbox" maxlength="10" text="" />]
+		<!-- Stock adjustment message -->
+		[<tag type="if" xpath="genxml/validatecode" testvalue="STOCKADJ" display="{ON}" />]
+		[<tag type="valueof" resourcekey="Notification.stockadjusted" />]
+		[<tag type="endif"  />]
+		[<tag type="if" xpath="genxml/validatecode" testvalue="OUTOFSTOCK" display="{ON}" />]
+		[<tag type="valueof" resourcekey="Notification.outofstock" />]
+		[<tag type="endif"  />]
+		</td>
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+		<td class="pricecolumn">[<tag type="currencyof" xpath="genxml/appliedcost" />]</td>
+		<td class="totalcolumn">[<tag type="currencyof" xpath="genxml/appliedtotalcost" />]</td>
+		[<tag type="endif"  />]
+		<td class="removecolumn">[<tag id="cmdDeleteItem" type="linkbutton" cssclass="deleteitem" resourcekey="CartView.cmdDeleteItem" commandname="deletecartitem" />]</td>
+	</tr>

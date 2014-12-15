@@ -117,41 +117,46 @@ $(document).ready(function() {
 [<tag id="search101" type="meta" action="cat" />]
 
 <!-- Define all the poosible orderby columns we want, this will specfied by the dropdownlist values-->
-[<tag id="orderby0" type="hidden" value="NB3.ProductRef" />]
-[<tag id="orderby1" type="hidden" value="NB3.ProductName" />]
-[<tag id="orderby2" type="hidden" value="NB3.Manufacturer" />]
-[<tag id="orderby3" type="hidden" value="NB3.FromPrice" />]
-[<tag id="orderby4" type="hidden" value="NB3.Qty" />]
+[<tag id="orderby0" type="hidden" value="NB3.FromPrice" />]
+[<tag id="orderby1" type="hidden" value="NB3.FromPrice DESC" />]
+[<tag id="orderby2" type="hidden" value="NB3.ProductName" />]
+[<tag id="orderby3" type="hidden" value="NB3.Manufacturer" />]
+[<tag id="orderby4" type="hidden" value="NB3.ProductRef" />]
+[<tag id="orderby5" type="hidden" value="NB3.Qty" />]
 
 <!--*********************************-->
 <!--***  START OF DISPLAY SECTION ***-->
 <!--*********************************-->
 <!-- This section display the control needs to do an advanced search, certain fields can be hidden by the module settings. -->
 
-<div class="NBB dnnForm">
+<div class="nbs dnnForm">
 
 <ul class="advancedsearch">
 
 <!-- text search -->
 [<tag type='if' settings='chktextsearch' testvalue='True' display='{ON}' />]
-<li class="searchtext">[<tag id='txtSearch' cssclass='advsearchtext' type='textbox' maxlength='150' />][<tag type="valueof" resourcekey="General.Search" />]</li>
+<li class="searchtext">[<tag id='txtSearch' cssclass='advsearchtext' type='textbox' maxlength='150' />]<span class="filterlabel">[<tag type="valueof" resourcekey="ProductSearch.SearchText" />]</span>
+</li>
+[<tag type='endif' />]
+
+<!-- sorting -->
+[<tag type='if' settings='orderselector' testvalue='True' display='{ON}' />]
+<li class="orderby">
+[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4;5" />]<span class="filterlabel">[<tag type="valueof" resourcekey="General.OrderBy" />]</span>
+</li>
 [<tag type='endif' />]
 
 <!-- Price range search -->
 [<tag type='if' settings='chkpricerange' testvalue='True' display='{ON}' />]
 <li class="pricerange">
-[<tag id="txtFrom" type="textbox" />][<tag type="valueof" resourcekey="ProductSearch.PriceRange" />][<tag id="txtTo" type="textbox" />]
+[<tag id="txtFrom" cssclass="rangemin" type="textbox" />]<span class="rangeseperator">[<tag type="valueof" resourcekey="ProductSearch.PriceRangeSeperator" />]</span>[<tag id="txtTo" cssclass="rangemax" type="textbox" />]
 <div id="pricerangeslider"></div>
+<span class="filterlabel">[<tag type="valueof" resourcekey="ProductSearch.PriceRange" />]</span>
 </li>
 [<tag type='endif' />]
 
-<li class="orderby">
-[<tag id="ddlOrderBy" type="dropdownlist" resourcekey="ProductSearch.ddlOrderBy" datavalue="0;1;2;3;4" />][<tag type="valueof" resourcekey="General.OrderBy" />]
-</li>
-
-
 [<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide Manufacturers and Attributes category search when current category has zero items -->
-<li><h4>Refine your search</h4></li>
+<li><h5>[<tag type="valueof" resourcekey="ProductSearch.RefineSearch" />]</h5></li>
 
 <!-- Is in Stock search -->
 [<tag type='if' settings='chkinstock' testvalue='True' display='{ON}' />]
@@ -160,20 +165,20 @@ $(document).ready(function() {
 
 <!-- category search -->
 [<tag type='if' settings='chkcatselect' testvalue='True' display='{ON}' />]
-<li class="manufacturer"><h5>{Settings:parentcatref}</h5>
+<li class="manufacturer"><h6>{Settings:parentcatref}</h6>
 [<tag id="chknbbcats" type="catcheckboxlist" displaylevels="{Settings:displaylevels}" parentref="{Settings:parentcatref}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
 [<tag type='endif' />]
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect1' testvalue='True' display='{ON}' />]
-<li class="attributes"><h5>{Settings:parentcatref1}</h5>
+<li class="attributes"><h6>{Settings:parentcatref1}</h6>
 [<tag id="chkcatsgrp1" type="catcheckboxlist" displaylevels="{Settings:displaylevels1}" parentref="{Settings:parentcatref1}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist1}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns1}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
 [<tag type='endif' />]
 <!-- END: AND category search on Group 1 -->
 
 <!-- START: AND category search on Group 1 -->
 [<tag type='if' settings='chkgroupselect2' testvalue='True' display='{ON}' />]
-<li class="promotions"><h5>{Settings:parentcatref2}</h5>
+<li class="promotions"><h6>{Settings:parentcatref2}</h6>
 [<tag id="chkcatsgrp2" type="catcheckboxlist" displaylevels="{Settings:displaylevels2}" parentref="{Settings:parentcatref2}" showarchived="False" showhidden="False" catreflist="{Settings:catreflist2}" RepeatDirection="0" RepeatColumns="{Settings:catrepeatcolumns2}" filtermode="true" modulekey="{Settings:targetmodulekey}" />]</li>
 [<tag type='endif' />
 <!-- END: AND category search on Group 1 -->

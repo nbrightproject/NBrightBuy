@@ -1,0 +1,110 @@
+[<tag type="if" function="settings" key="fontawesome" testvalue="True" display="{ON}" />]
+<!-- Vector Font Icons http://fontawesome.io - These font-icons are used in the productview.resx resource file -->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+[<tag type="endif" />]
+
+[<tag type="if" function="settings" key="jqueryuijs" testvalue="True" display="{ON}" />]
+<!-- Cygnus jQuery UI -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery-ui-1.10.4.custom.min.js"></script>
+[<tag type="endif" />]
+
+<!-- Cygnus CSS -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/cygnus.css" rel="stylesheet">
+
+[<tag type="if" function="settings" key="jqueryuicss" testvalue="True" display="{ON}" />]
+<!-- Cygnus jQuery Theme-->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+[<tag type="endif" />]
+
+<!-- jQuery Validation http://jqueryvalidation.org/ -->
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+
+<!-- Treeview menu https://github.com/tefra/navgoco -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.cookie.min.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery.navgoco.min.js"></script>
+
+<!-- Ajax for wishlist -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbitemlist.js" type="text/javascript"></script>
+
+<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagesloaded.pkgd.min.js"></script>
+
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/masonry.pkgd.min.js"></script>
+
+<script type="text/javascript">
+// Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+        document.createTextNode(
+            "@-ms-viewport{width:auto!important}"
+        )
+    );
+    document.getElementsByTagName("head")[[0]].appendChild(msViewportStyle); // Fixed for NBS
+    }
+</script>
+
+<script type="text/javascript">
+// Checkout validation
+//$(document).ready(function () {
+//    $('.acceptterms input').attr('required', '');
+//});
+</script>
+
+<script type="text/javascript">
+    // Product details validation
+    $(document).ready(function () {
+        $('.modelsradio input').attr('required', '');// Add required attribute to field
+
+        // ------------------------------------------------------------------------------
+        // ---START SECTION ----THIS SECTION WILL NEED MOVING INTO THE DETAIL TEMPLATE, SO WE CAN USE RESOURCEKEY TOKEN --------------
+        // ------------------------------------------------------------------------------
+        $('.addtobasket').click(function (e) { // Validate the requirement
+
+            if (!validateField(".modelsradio input", "Please choose from the available product models")) {
+                e.preventDefault();
+            }
+
+            /// extra tests can be added here.....
+
+        });
+        // ------------------------------------------------------------------------------
+        // ---END SECTION---------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------
+
+    });
+
+    var def = "black";
+
+    function validateField(fieldselector, message) {
+
+        if (!$("#Form").validate({
+            errorPlacement: function (error, element) {
+                if (message == '') {
+                    error.appendTo(".alertmessage");
+                } else {
+                    $(".alertmessage").append(message);
+                }
+            },
+            errorClass: "invalid",
+            validClass: "success"
+        }).element(fieldselector)) {
+            showNotification('teal'); // colors defined in cygnus.css
+            return false;
+        };
+        return true;
+    }
+
+    function showNotification(color) {
+        $("#notification").removeClass(def);
+        $("#notification").addClass(color);
+        def = color;
+        $("#notification").fadeIn("fast");
+        $(".win8-notif-button").click(function () {
+            $(".notification").fadeOut("slow");
+        });
+    }
+
+</script>

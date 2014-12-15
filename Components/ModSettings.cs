@@ -97,6 +97,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 _settingsDic = (Dictionary<string, string>)obj;
             }
+
+            // redo the edit langauge for backoffice.
+            if (_settingsDic != null)
+            {
+                if (_settingsDic.ContainsKey("editlanguage"))
+                    _settingsDic["editlanguage"] = StoreSettings.Current.EditLanguage;
+                else
+                    _settingsDic.Add("editlanguage", StoreSettings.Current.EditLanguage);                
+            }
+
+
         }
 
         private void AddToSettingDic(NBrightInfo settings, string xpath)

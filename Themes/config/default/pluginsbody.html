@@ -1,0 +1,23 @@
+<tr>
+<td class="text-nowrap">[<tag type='valueof' xpath='genxml/textbox/name' />]</td>
+<td class="text-nowrap">[<tag type='valueof' xpath='genxml/textbox/ctrl' />]</td>
+    <td class="text-nowrap">
+        [<tag type="if" xpath="genxml/checkbox/active"  testvalue="True"  display="{ON}"/>]
+        <i  title="Edit" class="fa fa-check-square-o fa-fw fa-2x"></i>
+        [<tag type="endif" />]
+        [<tag type="if" xpath="genxml/checkbox/active"  testvalue="True"  display="{OFF}"/>]
+        [<tag type="if" xpath="genxml/checkbox/hidden"  testvalue="False"  display="{ON}"/>]
+        <i  title="Edit" class="fa fa-check-square-o fa-fw fa-2x"></i>
+        [<tag type="endif" />]
+        [<tag type="endif" />]
+    </td>
+    <td>
+        <a title="Move" href="#" class="selectrecord" ctrl="[<tag type='valueof' xpath='genxml/textbox/ctrl' />]" ><i class="fa fa-sort fa-fw fa-2x"></i></a>
+    <a title="Cancel Move" href="#" class="selectcancel" ctrl="[<tag type='valueof' xpath='genxml/textbox/ctrl' />]"  style="display:none;"><i class="fa fa-times-circle fa-fw fa-2x"></i></a>
+<span class="selectmove" ctrl="[<tag type='valueof' xpath='genxml/textbox/ctrl' />]" style="display:none;" >
+[<tag id="cmdMove" type="linkbutton" resourcekey="General.cmdMoveIcon" commandname="move" commandargument="GUIDKey" />]
+</span>
+
+    </td>
+<td>[<tag id="cmdEdit" type="linkbutton" resourcekey="Plugins.cmdEditIcon" commandname="entrydetail" commandargument="ItemID" />]</td>
+</tr>

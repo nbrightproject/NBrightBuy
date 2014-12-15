@@ -1,0 +1,370 @@
+<!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
+
+[Template:datepicker.html]
+
+<!-- this div is used as a recycle bin for undo JS-->
+<div id="recyclebin" style="display:none;"></div>
+
+<div id="nbsnotify"></div>
+<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        // start load all ajax data
+        nbxget('productoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
+        nbxget('productmodels', '#productselectparams', '#productmodels'); // load models
+        nbxget('productimages', '#productselectparams', '#productimages'); // load images
+        nbxget('productdocs', '#productselectparams', '#productdocs'); // load docs        
+        nbxget('productcategories', '#productselectparams', '#productcategories'); // load categories
+        nbxget('productgroupcategories', '#productselectparams', '#productgroupcategories'); // load categories
+        nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
+        nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
+    });
+    
+</script>
+
+<!-- postback fields to keep ajax populated data for update -->
+[<tag id="xmlupdatemodeldata" type="postback" value=""/>]
+[<tag id="xmlupdateproductoptions" type="postback" value=""/>]
+[<tag id="xmlupdateproductoptionvalues" type="postback" value=""/>]
+[<tag id="xmlupdateproductimages" type="postback" value=""/>]
+[<tag id="xmlupdateproductdocs" type="postback" value=""/>]
+[<tag id="xmlupdateproductrelated" type="postback" value=""/>]
+
+
+<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+	<div class="col-xs-9 col-sm-9">
+		<a href="#" class="show-sidebar">
+		  <i class="fa fa-bars"></i>
+		</a>
+		<div class="actionbuttonwrapper">
+		[<tag id="cmdSave" type="linkbutton" cssclass="btn btn-primary" resourcekey="General.cmdSaveButton" commandname="save" commandargument="ItemID" />] 
+		[<tag id="cmdSaveAs" type="linkbutton" cssclass="btn btn-warning" resourcekey="General.cmdSaveAsButton" commandname="copy" commandargument="ItemId" />]
+		[<tag id="cmdDelete" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.cmdDeleteButton" commandname="delete" commandargument="ItemID" />]
+        [<tag id="cmdReturn" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdReturnButton" commandname="return" />]
+	    </div>
+	</div>
+	<div class="col-xs-3 col-sm-3 top-panel-right">
+		[<tag type="selectlocalebutton" size="32"/>]
+	</div>
+</div>
+
+<br />
+<!-- Required: id="productdatasection" -->
+<div id="productdatasection">
+
+    <!-- Required: id="productdata" -->
+    <div id="productdata">
+        
+        <!-- Required: id="productselectparams" -->
+        <div id="productselectparams">
+            [<tag id="itemid" type="hidden" databind="ItemId" />]
+            [<tag id="lang" type="editculture" />]
+            [<tag id="header" type="hidden" value="productlistheader.html"/>]
+            [<tag id="body" type="hidden" value="productlistbody.html"/>]
+            [<tag id="footer" type="hidden" value="productlistfooter.html"/>]
+            [<tag id="orderby" type="hidden" value="order by NB3.productname"/>]
+            [<tag id="pagesize" type="hidden" value="30"/>]
+            [<tag id="pagenumber" type="hidden" value="1"/>]
+            [<tag id="selectedcatid" type="hidden" value=""/>]   
+            [<tag id="searchtext" type="hidden" value=""/>]     
+            [<tag id="searchcategory" type="hidden" value=""/>]
+            [<tag id="selectedoptionid" type="hidden" value=""/>]
+            [<tag id="selectedgroupref" type="hidden" value=""/>]            
+            [<tag id="selectedrelatedid" type="hidden" value=""/>]   
+            [<tag id="addqty" type="hidden" value=""/>]
+        </div>
+
+        <!-- Required for update: fields,localizedfields -->
+        [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden" />]
+        [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+			<div class="box" id="accordion">
+			
+				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />] 
+				[<tag type="if" function="settings" key="devoptions" testvalue="True" display="{ON}" />] 
+				<span> Ref: [<tag type="valueof" xpath="genxml/importref" />] ID: [<tag type="valueof" databind="ItemId" />] </span>
+				[<tag type="endif" />]
+				</h3>
+				<div class="box-content editdetails">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-6">
+					<div class="form-group">
+						<div class="col-sm-8">
+						    <label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />]
+							[<tag id="txtproductname" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+						<div class="col-sm-4">
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Code" />]</label>
+							[<tag id="txtproductref" cssclass="form-control" type="textbox" maxlength="250" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+						<label class="control-label">[<tag type="valueof" resourcekey="General.Summary" />]</label>[<tag type="editflag" />]
+							[<tag id="txtsummary" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
+						</div>
+					</div>
+					</div>
+				    <div class="col-sm-6">
+				        <div class="form-group">
+				            <div class="col-sm-6">
+				                <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />]
+				                [<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
+				            </div>
+				            <div class="col-sm-6">
+				                <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Title" />]</label>[<tag type="editflag" />]
+				                [<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
+				            </div>
+				        </div>
+				        <div class="form-group">
+				            <div class="col-sm-12">
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.Tags" />]</label>[<tag type="editflag" />]
+				                [<tag id="txttagwords" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine" />]
+				            </div>
+				        </div>
+				    </div>
+   				    <div class="col-sm-12">
+				        <div class="form-group">
+				        [Template:productfields.html]
+				        </div>
+				    </div>
+				    <div class="col-sm-12">
+				        <div class="form-group">
+				            <div class="col-sm-2">
+				                [<tag id="chkishidden" type="checkbox" Text="" />]
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+
+			    <h3>[<tag type="valueof" resourcekey="General.Description" />]</h3>
+				<div class="box-content productdescription">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<div class="col-md-12">
+						<label class="control-label sr-only">[<tag type="valueof" resourcekey="General.Description" />]</label>[<tag type="editflag" />]
+							[<tag id="description" cssclass="form-control" type="dnn:dnntexteditor" height="400" width="100%"  />]
+						</div>
+					</div>
+			  	  	</div>
+			    </div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Models" />]</h3>
+				<div class="box-content editmodels">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-12">
+					<div class="form-group form-inline">
+				        <a class="btn btn-primary" id="addmodels">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddmodelqty" cssclass="form-control onedigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undomodel" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+					</div>
+				        <ul id="productmodels"></ul>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+
+				<h3>[<tag type="valueof" resourcekey="General.Options" />]</h3>
+				<div class="box-content editoptions">
+				<div class="form-horizontal dnnForm">
+					<div class="col-sm-6">
+					<div class="form-group form-inline">
+				        <a class="btn btn-primary" id="addopt">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddoptqty" cssclass="form-control twodigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undooption" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+					</div>
+				        <ul id="productoptions"></ul>
+					</div>
+					<div class="col-sm-6">
+					<div class="form-group form-inline">
+				        <div id="optionvaluecontrol" style="display:none;">
+				        <a class="btn btn-primary" id="addoptvalues">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				        [<tag id="txtaddoptvalueqty" cssclass="form-control twodigit text-center" type="textbox" maxlength="2" text="1" />]
+				        <a class="btn btn-warning" id="undooptionvalue" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+				        </div>
+					</div>
+				        <ul id="productoptionvalues"></ul>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Images" />]</h3>
+				<div class="box-content editimages">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<div class="col-sm-12">
+				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveImg" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
+				        <a class="btn btn-warning" id="undoimage" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+				        </div>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-12">
+				        <ul id="productimages"></ul>
+				        </div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Documents" />] &amp; [<tag type="valueof" resourcekey="General.Downloads" />]</h3>
+				<div class="box-content editdocuments">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<div class="col-md-12">
+				            [<tag id="document" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveDoc" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
+				        <a class="btn btn-warning" id="undodoc" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+				        </div>
+				        <div class="col-md-12">
+				        <ul id="productdocs"></ul>
+				        </div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Categories" />]</h3>
+				<div class="box-content editcategories">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+			            <div class="col-md-3 fixlist">
+			                [<tag id="selectcategory" cssclass='selectcategory form-control' type="catlistbox" groupref="cat"/>]
+			            </div>
+			            <div class="col-md-9">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>[<tag type="valueof" resourcekey="General.Category" />]</th>
+										<th style="width:100%">[<tag type="valueof" resourcekey="General.Breadcrumb" />]</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="productcategories">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Properties" />]</h3>
+				<div class="box-content editproperties">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+			            <div class="col-md-3 fixlist">
+			                [<tag id="selectgrouptype" cssclass='selectgrouptype form-control' type="grouplistbox" />]
+			            	<div id="groupcategorylist"></div>
+			            </div>
+			            <div class="col-md-9">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>[<tag type="valueof" resourcekey="General.Property" />]</th>
+										<th style="width:100%">[<tag type="valueof" resourcekey="General.Value" />]</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="productgroupcategories">
+								</tbody>
+							</table>
+			            </div>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+				
+				<h3>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</h3>
+				<div class="box-content editrelated">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<div class="col-sm-12">
+				        <a class="btn btn-primary" id="productselect">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+				    </div>
+					</div>
+					<div class="form-group">
+				        <div class="col-sm-12">
+				        <ul id="productrelated" class="productrelated"></ul>
+				        </div>
+					</div>
+					</div>
+				</div>
+				</div>
+				
+			</div>
+	</div>
+</div>
+        
+    </div>
+</div>
+
+						
+<!-- All "id" for the divs/ul are required for ajax in this section -->
+<div id="productselectsection" style="display:none;">
+<div class="row selectrelated">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
+						<div class="col-sm-3">
+							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
+						</div>
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Category" />]</label>
+						<div class="col-sm-3">
+							[<tag id="ddlsearchcategory" cssclass="s2_with_tag populate placeholder" type="catdropdown" allowblank="true" showhidden="true" />]<!-- Use groupref="cat" to restrict list to categories -->
+						</div>
+						<div class="col-md-4">
+							<a class="btn btn-primary" href="#" id="selectsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
+							<a class="btn btn-default" href="#" id="selectreset">[<tag type="htmlof" resourcekey="General.cmdResetIcon" />]</a>
+							<a class="btn btn-default" href="#" id="returnfromselect">[<tag type="htmlof" resourcekey="General.cmdReturnButton" />]</a>
+						</div>
+					</div>
+					</div>
+						<div class="clearfix"></div>
+						<div id="productselectlist"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

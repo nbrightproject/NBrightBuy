@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -13,12 +14,12 @@ using DotNetNuke.Services.Search;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-using NEvoWeb.Modules.NB_Store;
+
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
 
-	public class NBrightBuyController : DataCtrlInterface, IPortable, ISearchable
+    public class NBrightBuyController : DataCtrlInterfaceNBrightBuy, IPortable, ISearchable
 	{
 
         #region "NBrightBuy override DB Public Methods"
@@ -50,6 +51,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public override NBrightInfo Get(int itemId, string typeCodeLang = "", string lang = "")
         {
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().Get(itemId, typeCodeLang, lang));
+        }
+
+        public override NBrightInfo GetData(int itemId)
+        {
+            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetData(itemId));
+        }
+        public override NBrightInfo GetDataLang(int parentItemId, string lang)
+        {
+            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentItemId, lang));
         }
 
         /// <summary>
@@ -85,6 +95,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	    public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string typeCodeLang = "", string lang = "")
         {
             return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, typeCodeLang, lang);
+        }
+
+        /// <summary>
+        /// Get DNN user list
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="sqlSearchFilter"></param>
+        /// <param name="returnLimit"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="recordCount"></param>
+        /// <returns></returns>
+        public override List<NBrightInfo> GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUsers(portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount));
+        }
+
+        /// <summary>
+        /// Get full record count for user search. (Needed for paging)
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="sqlSearchFilter"></param>
+        /// <returns></returns>
+        public override int GetDnnUsersCount(int portalId, string sqlSearchFilter = "")
+        {
+            return DataProvider.Instance().GetDnnUsersCount(portalId, sqlSearchFilter);
         }
 
         /// <summary>
@@ -262,9 +298,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	    /// <param name="pageNumber"></param>
 	    /// <param name="pageSize"></param>
 	    /// <param name="recordCount"></param>
-	    /// <param name="visibleOnly"> </param>
 	    /// <returns></returns>
-	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,bool visibleOnly = true)
+	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
             if (selUserId != "")
             {
@@ -274,7 +309,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             List<NBrightInfo> l = null;
 
             // get cache template 
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture() + "*" + visibleOnly.ToString(CultureInfo.InvariantCulture);
+            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
             if (debugMode == false)
             {
                 l = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
@@ -282,7 +317,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (l == null)
             {
-                if (visibleOnly)strFilters += " and (NB3.Visible = 1) ";
                 l = GetList(portalId, moduleId, entityTypeCode, strFilters, strOrderBy, returnLimit, pageNumber, pageSize, recordCount, entityTypeCodeLang, cultureCode);
                 //add rowcount, so we can use databind RowCount in the templates
                 foreach (var i in l)
@@ -304,7 +338,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	    }
 
 	    public string GetTemplateData(int moduleId, string templatename, string lang, Dictionary<string,string> settings, bool debugMode = false)
-        {
+	    {
+	        if (lang == "") lang = Utils.GetCurrentCulture();
             string templ = null;
             var strCacheKey = templatename + "*" + moduleId.ToString("") + "*" + lang + "*" + PortalSettings.Current.PortalId.ToString("");
             
@@ -315,9 +350,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var themeFolder = "";
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
+                templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, settings);
 
-                templ = Utils.ReplaceSettingTokens(templ, settings);
+                templ = Utils.ReplaceUrlTokens(templ);
+                // WARNING!! do not inject text here, it will cause a loop on the GetMenuTemplates function.
+
+                if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
+            }
+            return templ;
+        }
+
+        public string GetTemplate(string templatename, string lang, bool debugMode = false)
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            string templ = null;
+            var strCacheKey = templatename + "*" + lang + "*" + PortalSettings.Current.PortalId.ToString("");
+
+            if (debugMode == false) templ = (String)Utils.GetCache(strCacheKey);
+
+            if (templ == null)
+            {
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
+                templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, StoreSettings.Current.Settings());
+
                 templ = Utils.ReplaceUrlTokens(templ);
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
@@ -411,7 +466,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // build StoreSettings and place in httpcontext
                 if (HttpContext.Current.Items["NBBStoreSettings"] == null)
                 {
-                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStoreSettings());
+                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStaticStoreSettings(PortalSettings.Current.PortalId));
                 }
                 objPortalSettings = (StoreSettings)HttpContext.Current.Items["NBBStoreSettings"];
             }
@@ -422,13 +477,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Cache the current store settings
         /// </summary>
         /// <returns></returns>
-        private static StoreSettings GetStoreSettings()
+        private static StoreSettings GetStaticStoreSettings(int portalId)
         {
-            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + portalId.ToString(""));
             if (objSs == null)
             {
-                objSs = new StoreSettings();
-                Utils.SetCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""), objSs);
+                objSs = new StoreSettings(portalId);
+                Utils.SetCache("NBBStoreSettings" + portalId.ToString(""), objSs);
+            }
+            return objSs;
+        }
+        public StoreSettings GetStoreSettings(int portalId)
+        {
+            var objSs = (StoreSettings)Utils.GetCache("NBBStoreSettings" + portalId.ToString(""));
+            if (objSs == null)
+            {
+                objSs = new StoreSettings(portalId);
+                Utils.SetCache("NBBStoreSettings" + portalId.ToString(""), objSs);
             }
             return objSs;
         }
@@ -460,10 +525,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			if (objModInfo != null)
 			{
 				var portalId = objModInfo.PortalID;
+                var moduleSettings = NBrightBuyUtils.GetSettings(portalId, ModuleId, "", false);
 
-				xmlOut += "<root>";
-
-				xmlOut += "</root>";
+			    xmlOut += moduleSettings.ToXmlItem();
 			}
 
 			return xmlOut;
@@ -490,8 +554,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			var objModInfo = objModCtrl.GetModule(ModuleID);
 			if (objModInfo != null)
 			{
+			    var objImp = new NBrightInfo(false);
+                objImp.FromXmlItem(Content);
+			    objImp.ModuleId = ModuleID;
+			    objImp.PortalId = objModInfo.PortalID;
+			    objImp.ItemID = -1; // create new record
 
-				xmlDoc.LoadXml(Content);
+                //delete the old setting record.
+                var moduleSettings = NBrightBuyUtils.GetSettings(objModInfo.PortalID, ModuleID, "", false);
+                if (moduleSettings.ItemID > -1) Delete(moduleSettings.ItemID);
+
+			    Update(objImp);
+
+                NBrightBuyUtils.RemoveModCache(ModuleID);
 
 			}
 

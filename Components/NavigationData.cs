@@ -28,16 +28,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleKey"> </param>
         /// <param name="storageType"> Select data storgae type "SessionMemory" or "Cookie" (Default Cookie) </param>
         /// <param name="nameAppendix">specifiy Unique key for search data</param>
-        public NavigationData(int portalId, String moduleKey, String storageType = "Cookie", string nameAppendix = "")
+        public NavigationData(int portalId, String moduleKey, string nameAppendix = "")
         {
-            if (storageType != null)
-                if (storageType.ToLower() == "sessionmemory")
-                    _storageType = DataStorageType.SessionMemory;
-                else
-                    _storageType = DataStorageType.Cookie;
-            else
-                _storageType = DataStorageType.Cookie;
-
+            _storageType = StoreSettings.Current.StorageTypeClient;
             Exists = false;
             _portalId = portalId;
             _cookieName = "NBrightBuyNav" + "*" + moduleKey + nameAppendix;
@@ -109,8 +102,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var searchVal = obj.GetXmlProperty(search);
                     if (searchVal == "") searchVal = GenXmlFunctions.GetGenXmlValue(mt, "tag/@static");
 
-                    var searchValFrom = obj.GetXmlProperty(searchfrom);
-                    var searchValTo = obj.GetXmlProperty(searchto);
+                    var searchValFrom = obj.GetXmlPropertyRaw(searchfrom);
+                    var searchValTo = obj.GetXmlPropertyRaw(searchto);
+
+                    if (sqltype.ToLower() == "datetime")
+                    {
+                        if (Utils.IsDate(searchValFrom))
+                            searchValFrom = Convert.ToDateTime(searchValFrom).ToString("yyyy-MM-dd HH:mm:ss");
+                        else
+                            searchValFrom = "";
+                        if (Utils.IsDate(searchValTo))
+                        {
+                            var searchToDate = Convert.ToDateTime(searchValTo);
+                            searchToDate = searchToDate.AddDays(1);
+                            var strippedToDate = searchToDate.Date;
+                            searchValTo = strippedToDate.ToString("yyyy-MM-dd HH:mm:ss");                            
+                        }
+                        else
+                            searchValTo = "";
+                        if (Utils.IsDate(searchVal))
+                            searchVal = Convert.ToDateTime(searchVal).ToString("yyyy-MM-dd HH:mm:ss");
+                        else
+                            searchVal = "";
+                    }
 
                     switch (action.ToLower())
                     {
@@ -132,8 +146,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             break;
                         case "range":
                             // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
-                            if (searchValFrom == "") searchValFrom = "0";
-                            if (searchValTo == "") searchValTo = "9999999";
+                            if (searchValFrom == "")
+                            {
+                                if (sqltype.ToLower() == "datetime")
+                                    searchValFrom = "1800-01-01";
+                                else
+                                    searchValFrom = "0";                                
+                            }
+                            if (searchValTo == "")
+                            {
+                                if (sqltype.ToLower() == "datetime")
+                                    searchValTo = "3000-12-30";
+                                else
+                                    searchValTo = "999999999";
+                            }
+
                             _criteria += " " + sqloperator + " " +
                                          GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
                             break;
@@ -429,7 +456,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string RecordCount { get; set; }
 
         /// <summary>
-        /// Mode:  "F" = filter will persist past category selection
+        /// Mode:  "F" = filter will persist past category selection, "S" = SingleSearchMode (The filter will only exist for 1 search) 
         /// </summary>
         public string Mode { get; set; }
 
@@ -441,6 +468,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get
             {
                 return Mode.ToLower() == "f";
+            }
+        }
+
+        public bool SingleSearchMode
+        {
+            get
+            {
+                return Mode.ToLower() == "s";
             }
         }
 

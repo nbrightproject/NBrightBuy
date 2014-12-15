@@ -1,3 +1,5 @@
+<!-- modellist.html - This repeating template creates the rows but not the header of the models table in detail.html. -->
+
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]<!-- Point to language file  -->
 
 	<tr>
@@ -13,17 +15,21 @@
 		[<tag type="endif"  />]
 		
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
-		
+        [<tag type="if" xpath="genxml/textbox/txtunitcost" testvalue="0.00" display="{OFF}" />]<!-- If price is zero then hide all prices -->
+
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Retail price -->
 		
 		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Sale price -->
+		[<tag type='testof' xpath='genxml/textbox/txtunitcost' testvalue='0.00' display='{OFF}' displayelse='{ON}' />]<!-- Also hide when product price is zero -->
 		<td>[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
+		[<tag type='endtestof' />]
 		[<tag type='endtestof' />]
 		
 		[<tag type="if" function="isinrole" role="Dealer" display="{ON}" displayelse="{OFF}" />]<!-- Dealer price -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtdealercost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td>
 		[<tag type="endif"  />]
 
+		[<tag type="endif" />]<!-- End if price is zero then hide all prices -->
 		[<tag type="endif"  />]<!-- End hide all prices in catalogue mode -->
 		
 		[<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]<!-- Stock and availability -->
@@ -32,8 +38,8 @@
 		[<tag type="endif"  />]
 		[<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='-1' display='{OFF}' displayelse='{ON}' />]<!-- Infinite stock no -->
 		<td>[<tag type="valueof" xpath="genxml/textbox/txtqtyremaining" />]</td>
-		<td>[<tag type="valueof" xpath="genxml/hidden/stockincart" />]</td>
-		<td>[<tag type="valueof" xpath="genxml/hidden/calcstock" />]</td>
+		<td></td>
+		<td></td>
 		[<tag type="endif"  />]
 		[<tag type="endif"  />]
 	</tr>

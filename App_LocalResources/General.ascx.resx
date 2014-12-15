@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -123,11 +123,20 @@
   <data name="cmdAdd.ToolTip" xml:space="preserve">
     <value>Add New</value>
   </data>
+  <data name="cmdAddIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdAddButton.Text" xml:space="preserve">
+    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+  </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="cmdCancel.ToolTip" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="cmdCancelButton.Text" xml:space="preserve">
+    <value>&lt;i title="Cancel" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Cancel</value>
   </data>
   <data name="cmdClear.Text" xml:space="preserve">
     <value>Clear</value>
@@ -141,16 +150,13 @@
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="cmdDeleteIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Delete" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdDeleteButton.Text" xml:space="preserve">
+    <value>&lt;i title="Delete" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Delete</value>
+  </data>
   <data name="cmdDelete.ToolTip" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="cmdDeleteImg.confirm" xml:space="preserve">
-    <value>Delete Item?</value>
-  </data>
-  <data name="cmdDeleteImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/delete.png</value>
-  </data>
-  <data name="cmdDeleteImg.ToolTip" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="cmdDeleteLang.confirm" xml:space="preserve">
@@ -165,13 +171,13 @@
   <data name="cmdEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="cmdEditIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdEditButton.Text" xml:space="preserve">
+    <value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Edit</value>
+  </data>
   <data name="cmdEdit.ToolTip" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="cmdEditImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/edit.png</value>
-  </data>
-  <data name="cmdEditImg.ToolTip" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="cmdExit.confirm" xml:space="preserve">
@@ -188,6 +194,12 @@
   </data>
   <data name="cmdReset.ToolTip" xml:space="preserve">
     <value>Reset Data</value>
+  </data>
+  <data name="cmdResetIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdResetButton.Text" xml:space="preserve">
+    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset</value>
   </data>
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Save</value>
@@ -210,28 +222,25 @@
   <data name="cmdSearch.ToolTip" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="cmdSearchIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Search" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdSearchButton.Text" xml:space="preserve">
+    <value>&lt;i title="Search" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Search</value>
+  </data>
   <data name="cmdSelect.Text" xml:space="preserve">
     <value>Select</value>
   </data>
   <data name="cmdSelect.ToolTip" xml:space="preserve">
     <value>Select</value>
   </data>
-  <data name="cmdSelectImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/back.png</value>
-  </data>
-  <data name="cmdSelectImg.ToolTip" xml:space="preserve">
-    <value>Select</value>
+  <data name="cmdAddProducts.Text" xml:space="preserve">
+    <value>Add Products</value>
   </data>
   <data name="cmdSort.Text" xml:space="preserve">
     <value>Sort</value>
   </data>
   <data name="cmdSort.ToolTip" xml:space="preserve">
-    <value>Sort</value>
-  </data>
-  <data name="cmdSortImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/refresh.png</value>
-  </data>
-  <data name="cmdSortImg.ToolTip" xml:space="preserve">
     <value>Sort</value>
   </data>
   <data name="cmdUpdateExit.Text" xml:space="preserve">
@@ -252,17 +261,14 @@
   <data name="cmdUploadFile.ToolTip" xml:space="preserve">
     <value>Upload File</value>
   </data>
-  <data name="cmdUploadFile.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/up.png</value>
+  <data name="cmdUploadFileButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Upload" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Upload</value>
   </data>
   <data name="cmdDeleteFile.commandname" xml:space="preserve">
     <value>deletefile</value>
   </data>
   <data name="cmdDeleteFile.confirm" xml:space="preserve">
     <value>Delete File?</value>
-  </data>
-  <data name="cmdDeleteFile.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/delete.png</value>
   </data>
   <data name="cmdDeleteFile.ToolTip" xml:space="preserve">
     <value>Delete File</value>
@@ -276,17 +282,17 @@
   <data name="cmdReturn.ToolTip" xml:space="preserve">
     <value>Return</value>
   </data>
+  <data name="cmdReturnIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Return</value>
+  </data>
+  <data name="cmdReturnButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
+  </data>
   <data name="cmdExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="cmdExport.ToolTip" xml:space="preserve">
     <value>Export Module Data</value>
-  </data>
-  <data name="cmdCopyImg.src" xml:space="preserve">
-    <value>/DesktopModules/NBright/NBrightBuy/ui/images/copy_paste.png</value>
-  </data>
-  <data name="cmdCopyImg.ToolTip" xml:space="preserve">
-    <value>Copy</value>
   </data>
   <data name="Value.Text" xml:space="preserve">
     <value>Value</value>
@@ -351,6 +357,9 @@
   <data name="Download.Text" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="cmdDownloadButton.Text" xml:space="preserve">
+    <value>&lt;i title="Download" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Download</value>
+  </data>
   <data name="Categories.Text" xml:space="preserve">
     <value>Categories</value>
   </data>
@@ -368,5 +377,542 @@
   </data>
   <data name="Any.Text" xml:space="preserve">
     <value>Any</value>
+  </data>
+  <data name="cmdRemove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="cmdRemoveIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Remove" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdRemoveButton.Text" xml:space="preserve">
+    <value>&lt;i title="Remove" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Remove</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="cmdSaveIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-2x"&gt;&lt;/i&gt; Save</value>
+  </data>
+  <data name="cmdSaveButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save</value>
+  </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="lblCompany.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="lblFirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="lblLastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="lblAddress1.Text" xml:space="preserve">
+    <value>Address line 1</value>
+  </data>
+  <data name="lblAddress2.Text" xml:space="preserve">
+    <value>Address line 2</value>
+  </data>
+  <data name="lblTown.Text" xml:space="preserve">
+    <value>Town</value>
+  </data>
+  <data name="lblCity.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="lblPostCode.Text" xml:space="preserve">
+    <value>Post Code</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="lblPhone.Text" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="lblCountry.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="TaxNumber.Text" xml:space="preserve">
+    <value>Tax Number</value>
+  </data>
+  <data name="PromotionalCode.Text" xml:space="preserve">
+    <value>Promotional Code</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="From.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="To.Text" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="lblshippingoptions.Text" xml:space="preserve">
+    <value>Shipping Options</value>
+  </data>
+  <data name="lblspecialinstructions.Text" xml:space="preserve">
+    <value>Special Instructions</value>
+  </data>
+  <data name="lblordersummary.Text" xml:space="preserve">
+    <value>Order Summary</value>
+  </data>
+  <data name="lblTotals.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="lblcollectionoptions.Text" xml:space="preserve">
+    <value>Collection Options</value>
+  </data>
+  <data name="lblcartlist.Text" xml:space="preserve">
+    <value>Items in Cart</value>
+  </data>
+  <data name="orderstatus.Code" xml:space="preserve">
+    <value>010,020,030,040,050,060,070,080,120,090,100,110</value>
+  </data>
+  <data name="orderstatus.Text" xml:space="preserve">
+    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Closed,Archived</value>
+  </data>
+  <data name="shippingdate.Text" xml:space="preserve">
+    <value>Shipping Date</value>
+  </data>
+  <data name="status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="trackingcode.Text" xml:space="preserve">
+    <value>Tracking Code</value>
+  </data>
+  <data name="cmdCancelSelect.Text" xml:space="preserve">
+    <value>Cancel Select</value>
+  </data>
+  <data name="cmdMove.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="cmdMoveIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Move to here" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Undo.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="UndoIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Undo" class="fa fa-undo fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="UndoButton.Text" xml:space="preserve">
+    <value>&lt;i title="Undo" class="fa fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Undo</value>
+  </data>
+  <data name="RemoveAll.Text" xml:space="preserve">
+    <value>Remove All</value>
+  </data>
+  <data name="RemoveAllButton.Text" xml:space="preserve">
+    <value>&lt;i title="Remove All" class="fa fa-eraser fa-fw fa-lg"&gt;&lt;/i&gt; Remove All</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="ProcessingDiv.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-cog fa-spin fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload </value>
+  </data>
+  <data name="UploadImage.Text" xml:space="preserve">
+    <value>Upload Image</value>
+  </data>
+  <data name="CopyTo.Text" xml:space="preserve">
+    <value>Copy To</value>
+  </data>
+  <data name="CopyToButton.Text" xml:space="preserve">
+    <value>&lt;i title="Copy To" class="fa fa-copy fa-fw fa-lg"&gt;&lt;/i&gt; Copy To</value>
+  </data>
+  <data name="MoveTo.Text" xml:space="preserve">
+    <value>Move To</value>
+  </data>
+  <data name="MoveToButton.Text" xml:space="preserve">
+    <value>&lt;i title="Move To" class="fa fa-cut fa-fw fa-lg"&gt;&lt;/i&gt; Move To</value>
+  </data>
+  <data name="New.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Orders.Text" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Products.Text" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Properties.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="ExportImages.Text" xml:space="preserve">
+    <value>Export Images</value>
+  </data>
+  <data name="ExportImages.confirm" xml:space="preserve">
+    <value>Export Images? </value>
+  </data>
+  <data name="Export.confirm" xml:space="preserve">
+    <value>Export selected data?</value>
+  </data>
+  <data name="ExportDocuments.confirm" xml:space="preserve">
+    <value>Export Documents?</value>
+  </data>
+  <data name="ExportDocuments.Text" xml:space="preserve">
+    <value>Export Documents</value>
+  </data>
+  <data name="DataXML.Text" xml:space="preserve">
+    <value>Data XML File</value>
+  </data>
+  <data name="DocumentZip.Text" xml:space="preserve">
+    <value>Document Zip File</value>
+  </data>
+  <data name="ImageZip.Text" xml:space="preserve">
+    <value>Image Zip File</value>
+  </data>
+  <data name="Import.confirm" xml:space="preserve">
+    <value>Import data?</value>
+  </data>
+  <data name="Enter.Text" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RemovefromStore.confirm" xml:space="preserve">
+    <value>Clear ALL selected data from store. Are You Sure?</value>
+  </data>
+  <data name="RemovefromStore.Text" xml:space="preserve">
+    <value>Remove from Store</value>
+  </data>
+  <data name="Tools.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="Invoice.Text" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="Register.Text" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Submit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="FileName.Text" xml:space="preserve">
+    <value>FileName</value>
+  </data>
+  <data name="modelstatus.Code" xml:space="preserve">
+    <value>010,020,030,040,050</value>
+  </data>
+  <data name="modelstatus.Text" xml:space="preserve">
+    <value>Available,Out of Stock,In Stock With Supplier,Pre-Order,Special</value>
+  </data>
+  <data name="ActivateStock.Text" xml:space="preserve">
+    <value>Activate Stock</value>
+  </data>
+  <data name="availabledate.Text" xml:space="preserve">
+    <value>Available Date</value>
+  </data>
+  <data name="Barcode.Text" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="Code.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Cost.Text" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="Dealer.Text" xml:space="preserve">
+    <value>Dealer</value>
+  </data>
+  <data name="Deleted.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Extra.Text" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Price.Text" xml:space="preserve">
+    <value>Retail</value>
+  </data>
+  <data name="Max.Text" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="Min.Text" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Stock.Text" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="Disable.Text" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="delay.Text" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="unit.Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="SaveChanges.Text" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="cmdDeleteIcon.confirm" xml:space="preserve">
+    <value>Delete Item?</value>
+  </data>
+  <data name="Depth.Text" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="Weight.Text" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Catalogue.Text" xml:space="preserve">
+    <value>Catalogue</value>
+  </data>
+  <data name="Category.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Detail.Text" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Documents.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="Downloads.Text" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="Editor.Text" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="Find.Text" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="Images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="List.Text" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Meta.Text" xml:space="preserve">
+    <value>Meta</value>
+  </data>
+  <data name="Models.Text" xml:space="preserve">
+    <value>Models</value>
+  </data>
+  <data name="Options.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Property.Text" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="Purchase.Text" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="Related.Text" xml:space="preserve">
+    <value>Related</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Templates.Text" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="Discount.Text" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="Shipping.Text" xml:space="preserve">
+    <value>Shipping</value>
+  </data>
+  <data name="Subtotal.Text" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Tax.Text" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="Total.Text" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Address.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Item.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Modified.Text" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="Qty.Text" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+  <data name="AdminPin.Text" xml:space="preserve">
+    <value>Administrator PIN</value>
+  </data>
+  <data name="RemoveAll.confirm" xml:space="preserve">
+    <value>Be careful. You are going to remove all your products. If you agree, click Validate. To come back to your cart, click Cancel</value>
+  </data>
+  <data name="Product.Text" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="OrderDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Customer.Text" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="OrderNumber.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Active.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="cmdDeleteButton.confirm" xml:space="preserve">
+    <value>Delete record ?</value>
+  </data>
+  <data name="cmdSaveAsButton.confirm" xml:space="preserve">
+    <value>Save as a new record ?</value>
+  </data>
+  <data name="cmdSaveAsButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Save As" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save As</value>
+  </data>
+  <data name="CopyToIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Copy" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ChooseAddress.Text" xml:space="preserve">
+    <value>Insert a Saved Address</value>
+  </data>
+  <data name="AddressBook.Text" xml:space="preserve">
+    <value>Address Book</value>
+  </data>
+  <data name="AddressEditor.Text" xml:space="preserve">
+    <value>Address Editor</value>
+  </data>
+  <data name="PrimaryAddress.Text" xml:space="preserve">
+    <value>Primary Address</value>
+  </data>
+  <data name="PrimaryAddressMessage.Text" xml:space="preserve">
+    <value>Please ensure your primary customer address is always current and accurate.</value>
+  </data>
+  <data name="OptionalAddress.Text" xml:space="preserve">
+    <value>Optional Address</value>
+  </data>
+  <data name="AccountUpdate.Text" xml:space="preserve">
+    <value>User Account Update</value>
+  </data>
+  <data name="AccountUpdateMessage.Text" xml:space="preserve">
+    <value>The following website user account profile has been updated. Please adjust your records if necessary.</value>
+  </data>
+  <data name="Number.Text" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="ShipTo.Text" xml:space="preserve">
+    <value>Ship to</value>
+  </data>
+  <data name="BillTo.Text" xml:space="preserve">
+    <value>Bill to</value>
+  </data>
+  <data name="Quantity.Text" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="DebugMessage.Text" xml:space="preserve">
+    <value>Debug mode is on - Caching is off</value>
+  </data>
+  <data name="DebugMode.Text" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="Taxno.Text" xml:space="preserve">
+    <value>Tax no</value>
+  </data>
+  <data name="Sales.Text" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="Support.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Web.Text" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="Ph.Text" xml:space="preserve">
+    <value>Ph</value>
+  </data>
+  <data name="Att.Text" xml:space="preserve">
+    <value>Att</value>
+  </data>
+  <data name="Amount.Text" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Voucher.Text" xml:space="preserve">
+    <value>Voucher</value>
+  </data>
+  <data name="Percentage.Text" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Authorised.Text" xml:space="preserve">
+    <value>Authorised</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="PickupReference.Text" xml:space="preserve">
+    <value>Pickup Reference</value>
+  </data>
+  <data name="PickupAddress.Text" xml:space="preserve">
+    <value>Pickup Address</value>
+  </data>
+  <data name="SalePrice.Text" xml:space="preserve">
+    <value>Sale</value>
+  </data>
+  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Orders" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Address Book" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAccount.Text" xml:space="preserve">
+    <value>&lt;i title="My Account Profile" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="copyorderto.Text" xml:space="preserve">
+    <value>Copy this order to</value>
+  </data>
+  <data name="shippingmethods.Text" xml:space="preserve">
+    <value>Shipping methods</value>
+  </data>
+  <data name="creditcardpayment.Text" xml:space="preserve">
+    <value>Credit card</value>
+  </data>
+  <data name="manualpayment.Text" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="cmdOk.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="cmdFolder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="cmdFolderIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Open" class="fa fa-folder fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ExtraCost.Text" xml:space="preserve">
+    <value>Extra cost</value>
   </data>
 </root>

@@ -1,0 +1,18 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+	
+<!-- class and productid attr needed for remove -->
+<li>
+	<ul class="relatedlistitem">
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
+	<li class="image name"><img src="[<tag type='thumbnail' w='100' h='' />]"></li>
+	[<tag type="endif" />]
+	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
+	<li class="noimage name"><i class="fa fa-camera"></i></li>
+	[<tag type="endif" />]
+	[<tag type="endif" />]
+	<li class="title name">
+	[<tag type="productname" />]</li>
+	<li class="removeitem"><a title="Remove" class="removerelated" productid="[<tag type='valueof' databind='itemid' />]"><i class="fa fa-minus-square"></i></a></li>
+	</ul>
+</li>

@@ -1,0 +1,40 @@
+		<tr>
+			<td></td>
+			<td></td>
+			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Subtotal" />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/subtotalcost' />]</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Discount" />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/totaldiscount' />]</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Shipping" />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/shippingcost' />]</td>
+		</tr>
+		<tr>
+			<td><small>[<tag type="valueof" resourcekey="OrderAdmin.VATincluded" />]</small></td>
+			<td></td>
+			<td colspan="2" class="text-right removecolumn">[<tag type="valueof" resourcekey="General.Tax" />]</td>
+			<td>[<tag type='currencyof' xpath='genxml/taxcost' />]</td>
+		</tr>
+		<tr class="active">
+			<td></td>
+			<td></td>
+			<td colspan="2" class="text-right removecolumn"><b>[<tag type="valueof" resourcekey="General.Total" />]</b></td>
+			<td><b>[<tag type='currencyof' xpath='genxml/total' />]</b></td>
+		</tr>
+		[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
+		<tr class="noborders">
+			<td colspan="5">
+				<div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</b></div>
+				<div>[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]</div>				
+			</td>
+		</tr>
+		[<tag type="endif" />]
+	</tbody>
+</table>

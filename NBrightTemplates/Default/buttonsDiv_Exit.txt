@@ -1,1 +1,0 @@
-[<tag id="cmdExit" type="linkbutton" resourcekey="General.cmdExit" cssclass="nwb-button" commandname="Exit" />]

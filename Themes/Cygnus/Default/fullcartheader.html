@@ -1,0 +1,11 @@
+﻿<div class="fullcart">
+
+<h3>[<tag type='valueof' resourcekey='General.txtBasket' />]</h3>
+
+[<tag type="if" xpath="genxml/totalqty" testvalue="0" display="{OFF}" />]
+<a href="/tabid/[Settings:carttab]">[<tag type="valueof" xpath="genxml/totalqty" />] [<tag type='valueof' resourcekey='CartView.txtitems' />]: [<tag type="currencyof" xpath="genxml/appliedtotal" />]</a>
+[<tag type="endif"  />]
+
+[<tag type="if" xpath="genxml/totalqty" testvalue="0" display="{ON}" />]
+[<tag type='valueof' resourcekey='General.emptyfullcart' />]
+[<tag type="endif"  />]

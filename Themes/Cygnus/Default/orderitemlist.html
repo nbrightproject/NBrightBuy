@@ -1,0 +1,38 @@
+﻿<tr>
+	<td align="left" valign="top" style="border-bottom:1px solid #aaaaaa">
+		<div><b>[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</b></div>
+		<div>
+			[<tag type="if" xpath="genxml/options/option[[1]]/optvaltext"  testvalue="" display="{OFF}" />]
+				<span>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />] 
+				[<tag type="if" xpath="genxml/options/option[[1]]/optvalcost"  testvalue="0.00" display="{OFF}" />]
+					[<tag type="valueof" xpath="genxml/options/option[[1]]/optvalcost" />]
+		[<tag type="endif" />]
+				</span>
+		[<tag type="endif" />]
+			[<tag type="if" xpath="genxml/options/option[[2]]/optvaltext"  testvalue="" display="{OFF}" />]
+				<span>,[<tag type="valueof" xpath="genxml/options/option[[2]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[2]]/optvaltext" />] 
+				[<tag type="if" xpath="genxml/options/option[[2]]/optvalcost"  testvalue="0.00" display="{OFF}" />]
+					[<tag type="valueof" xpath="genxml/options/option[[2]]/optvalcost" />]
+		[<tag type="endif" />]
+				</span>
+			[<tag type="endif" />]
+			[<tag type="if" xpath="genxml/options/option[[3]]/optvaltext"  testvalue="" display="{OFF}" />]
+				<span>,[<tag type="valueof" xpath="genxml/options/option[[3]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[3]]/optvaltext" />] 
+				[<tag type="if" xpath="genxml/options/option[[3]]/optvalcost"  testvalue="0.00" display="{OFF}" />]
+					[<tag type="valueof" xpath="genxml/options/option[[3]]/optvalcost" />]
+				[<tag type="endif" />]
+				</span>
+			[<tag type="endif" />]
+			[<tag type="if" xpath="genxml/options/option[[4]]/optvaltext"  testvalue="" display="{OFF}" />]
+				<span>,[<tag type="valueof" xpath="genxml/options/option[[4]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[4]]/optvaltext" />] 
+				[<tag type="if" xpath="genxml/options/option[[4]]/optvalcost"  testvalue="0.00" display="{OFF}" />]
+					[<tag type="valueof" xpath="genxml/options/option[[4]]/optvalcost" />]
+				[<tag type="endif" />]
+				</span>
+		[<tag type="endif" />]
+		</div>
+	</td>
+	<td align="center" valign="top" style="border-bottom:1px solid #aaaaaa">[<tag type='valueof' xpath='genxml/modelref' />]</td>
+	<td align="center" valign="top" style="border-bottom:1px solid #aaaaaa">[<tag type='valueof' xpath='genxml/qty' />]</td>
+	<td align="right" valign="top" style="border-bottom:1px solid #aaaaaa">[<tag type='currencyof' xpath='genxml/totalcost' />]</td>
+</tr>

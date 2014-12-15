@@ -1,12 +1,11 @@
-[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
 <!-- List item -->
 
 <ul class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
 
-	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button -->
-	<li class="edit">[<tag resourcekey="ProductView.editicon" type="editlink"  />]</li>[<tag type="endtestof" />]
+	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button requires nbs namespace -->
+	<li class="edit">[<tag resourcekey="ProductView.editicon" type="nbs:editlink"  />]</li>[<tag type="endtestof" />]
 	
-<a class="entryurl" href="[<tag type='entryurl' />]"><!-- Link to details -->
+<a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="entryurl"><!-- Link to details -->
 	
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
 	<li class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:thumbnailwidth}' h='{Settings:thumbnailheight}' />]"></li>
@@ -69,4 +68,3 @@
 	[<tag type="endif"  />]<!-- End Hide all prices, models and options in catalogue mode -->
 </a>
 </ul>
-[<tag type="endif"  />]<!-- End hide product list when current category has zero items -->

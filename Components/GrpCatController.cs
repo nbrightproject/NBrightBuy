@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Text.RegularExpressions;
+using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
+using NBrightCore.render;
 using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
     public class GrpCatController
     {
+        private NBrightBuyController _objCtrl;
 
+        private String _lang = "";
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
+        public List<NBrightInfo> GroupList;
+        public Dictionary<String, String> GroupsDictionary; 
 
-        public GrpCatController(String lang)
+        public GrpCatController(String lang,Boolean debugMode = false)
         {
-            // build group category list
-            var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
-            GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (GrpCategoryList == null)
-            {
-                GrpCategoryList = GetGrpCatListFromDatabase(Utils.GetCurrentCulture());
-                NBrightBuyUtils.SetModCache(-1, strCacheKey,GrpCategoryList);
-            }
-
-            // build cateogry list for navigation from group category list
-            strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
-            CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
-            if (CategoryList == null)
-            {
-                var lenum = from i in GrpCategoryList where i.grouptyperef == "cat" select i;
-                CategoryList = lenum.ToList();
-                NBrightBuyUtils.SetModCache(-1, strCacheKey, CategoryList);
-            }
-
+            Load(lang, debugMode);
         }
 
         #region "base methods"
 
+        public void Reload()
+        {
+            ClearCache();
+            Load(_lang);
+        }
+
+        public void ClearCache()
+        {
+            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            {
+                var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);
+                strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);                
+            }
+        }
 
         public GroupCategoryData GetGrpCategory(int categoryid)
         {
@@ -54,15 +60,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l.Any() ? l[0] : null;
         }
 
-        public List<GroupCategoryData> GetGrpCategories(int parentcategoryid,string groupref = "")
+        public List<GroupCategoryData> GetGrpCategories(int parentcategoryid, string groupref = "")
         {
-                var lenum = from i in GrpCategoryList where i.parentcatid == parentcategoryid select i;
-                if (groupref != "")
-                {
-                    var lenum2 = from i2 in lenum where i2.grouptyperef == groupref select i2;
-                    return lenum2.ToList();
-                }
-                return lenum.ToList();                
+            IEnumerable<GroupCategoryData> lenum;
+            if (groupref == "" || groupref == "cat")
+                lenum = from i in GrpCategoryList where i.parentcatid == parentcategoryid select i;
+            else
+                lenum = from i in GrpCategoryList select i; // if we're getting group categories, the parentitemid is set to the group itemid + we only have the 1 level.
+
+            if (groupref != "")
+            {
+                var lenum2 = from i2 in lenum where i2.grouptyperef == groupref select i2;
+                return lenum2.ToList();
+            }
+            return lenum.ToList();
         }
 
         public List<GroupCategoryData> GetCategories(int parentcategoryid)
@@ -90,6 +101,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l[0];
         }
 
+        public List<GroupCategoryData> GetSubCategoryList(List<GroupCategoryData> catList, int categoryid, int lvl = 0)
+        {
+            if (lvl > 50) return catList; // stop possible infinate loop
+
+            var subcats = from i in GrpCategoryList where i.parentcatid == categoryid select i;
+            foreach (var c in subcats)
+            {
+                catList.Add(c);
+                GetSubCategoryList(catList, c.categoryid, lvl + 1);
+            }
+            return catList;
+        }
+
         #endregion
 
         #region "Special methods"
@@ -97,9 +121,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public string GetCategoryUrl(GroupCategoryData groupCategoryInfo, int tabid)
         {
+            // if diabled return a javascript void
+            if (groupCategoryInfo.disabled) return "javascript:void(0)";
 
             //set a default url
             var url = "?catid=" + groupCategoryInfo.categoryid.ToString("");
+
             // get friendly url if possible
                 if (groupCategoryInfo.categoryname != "")
                 {
@@ -108,7 +135,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString(""), newBaseName.Replace(" ", "-") + ".aspx");
+                        // check if we are calling from BO with a ctrl param
+                        var ctrl = Utils.RequestParam(HttpContext.Current, "ctrl");
+                        if (ctrl != "") ctrl = "&ctrl=" + ctrl;
+                        newBaseName = Utils.CleanInput(newBaseName);
+                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-").Replace(".","") + ".aspx");
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
                     }
                 }
@@ -183,7 +214,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (targetModuleKey != "")
             {
-                var navigationdata = new NavigationData(portalId, targetModuleKey, StoreSettings.Current.Get("DataStorageType"));
+                var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
             }
 
@@ -192,13 +223,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (settings != null && settings["defaultcatid"] != null)
                 {
                     var setcatid = settings["defaultcatid"];
-                    if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
-                }
-
-                if (Utils.IsNumeric(portalId) && defcatid == 0)
-                {
-                    var nbSettings = NBrightBuyUtils.GetGlobalSettings(Convert.ToInt32(portalId));
-                    var setcatid = nbSettings.GetXmlProperty("genxml/hidden/defaultcatid");
                     if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
                 }
             }
@@ -215,15 +239,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
 
-            if (defcatid == 0)
-            {
-                if (Utils.IsNumeric(portalId))
-                {
-                    var nbSettings = NBrightBuyUtils.GetGlobalSettings(Convert.ToInt32(portalId));
-                    var setcatid = nbSettings.GetXmlProperty("genxml/hidden/defaultcatid");
-                    if (Utils.IsNumeric(setcatid)) defcatid = Convert.ToInt32(setcatid);
-                }
-            }
             var objCtrl = new NBrightBuyController();
             return objCtrl.GetData(defcatid,"CATEGORYLANG");
         }
@@ -236,13 +251,69 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             foreach (GroupCategoryData tInfo in levelList)
             {
                 var nInfo = tInfo;
-                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 7, breadcrumbseparator,false);
+                nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 50, breadcrumbseparator,false);
                 nInfo.depth = level;
                 rtnList.Add(nInfo);
-                GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
+                if (groupref == "" || groupref == "cat") GetTreeCategoryList(rtnList, level + 1, tInfo.categoryid, groupref, breadcrumbseparator);
             }
 
             return rtnList;
+        }
+
+        public List<GroupCategoryData> GetTreePropertyList(string breadcrumbseparator)
+        {
+            var rtnList = new List<GroupCategoryData>();
+            foreach (var grp in GroupList)
+            {
+                if (grp.GUIDKey != "cat")
+                {
+                    var levelList = GetGrpCategories(0, grp.GUIDKey);
+                    foreach (GroupCategoryData tInfo in levelList)
+                    {
+                        var nInfo = tInfo;
+                        nInfo.breadcrumb = GetBreadCrumb(nInfo.categoryid, 50, breadcrumbseparator, false);
+                        nInfo.depth = 0;
+                        rtnList.Add(nInfo);
+                    }                    
+                }
+            }
+            return rtnList;
+        }
+
+        /// <summary>
+        /// Select categories linked to product, by groupref
+        /// </summary>
+        /// <param name="productid"></param>
+        /// <param name="groupref">groupref for select, "" = all, "cat"= Category only, "!cat" = all non-category, "{groupref}"=this group only</param>
+        /// <param name="cascade">get all cascade records to get all parent categories</param>
+        /// <returns></returns>
+        public List<GroupCategoryData> GetProductCategories(int productid, String groupref = "", Boolean cascade = false)
+        {
+            var objCtrl = new NBrightBuyController();
+            var catxrefList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.[ParentItemId] = " + productid);
+
+            if (cascade)
+            {
+                var catcascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.[ParentItemId] = " + productid);
+                foreach (var c in catcascadeList)
+                {
+                    catxrefList.Add(c);
+                }                
+            }
+
+
+            var notcat = "";
+            if (groupref == "!cat")
+            {
+                groupref = "";
+                notcat = "cat";
+            }
+
+            var joinItems = (from d1 in GrpCategoryList
+                             join d2 in catxrefList on d1.categoryid equals d2.XrefItemId
+                             where (d1.grouptyperef == groupref || groupref == "") && d1.grouptyperef != notcat
+                             select d1).OrderBy(d1 => d1.grouptyperef).ThenBy(d1 => d1.breadcrumb).ToList<GroupCategoryData>();
+            return joinItems;
         }
 
         #endregion
@@ -331,6 +402,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "private methods"
 
+        private void Load(String lang, Boolean debugMode = false)
+        {
+            _objCtrl = new NBrightBuyController();
+            _lang = lang;
+
+            // get groups
+            GroupList = NBrightBuyUtils.GetCategoryGroups(_lang, true);
+
+            GroupsDictionary = new Dictionary<String, String>();
+            foreach (var g in GroupList)
+            {
+                if (!GroupsDictionary.ContainsKey(g.GetXmlProperty("genxml/textbox/groupref"))) GroupsDictionary.Add(g.GetXmlProperty("genxml/textbox/groupref"), g.GetXmlProperty("genxml/lang/genxml/textbox/groupname"));
+            }
+
+            // build group category list
+            var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (GrpCategoryList == null || debugMode)
+            {
+                GrpCategoryList = GetGrpCatListFromDatabase(lang);
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, GrpCategoryList);
+            }
+
+            // build cateogry list for navigation from group category list
+            strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (CategoryList == null || debugMode)
+            {
+                var lenum = from i in GrpCategoryList where i.grouptyperef == "cat" select i;
+                CategoryList = lenum.ToList();
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, CategoryList);
+            }
+        }
+
         private NBrightInfo GetLangData(List<NBrightInfo> langList,int categoryid)
         {
             var lenum = from i in langList where i.ParentItemId == categoryid select i;
@@ -374,7 +479,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
 
             var objCtrl = new NBrightBuyController();
-            const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','int') ";
+            const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
             var grpcatList = new List<GroupCategoryData>();
 
             var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
@@ -386,15 +491,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var grpcat = new GroupCategoryData();
                 grpcat.categoryid = i.ItemID;
-                grpcat.recordsortorder = i.GetXmlPropertyInt("genxml/hidden/recordsortorder");
+                grpcat.recordsortorder = i.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 grpcat.imageurl = i.GetXmlProperty("genxml/hidden/imageurl");
                 grpcat.categoryref = i.GetXmlProperty("genxml/textbox/txtcategoryref");
                 grpcat.archived = i.GetXmlPropertyBool("genxml/checkbox/chkarchived");
                 grpcat.ishidden = i.GetXmlPropertyBool("genxml/checkbox/chkishidden");
+                grpcat.disabled = i.GetXmlPropertyBool("genxml/checkbox/chkdisable");
                 grpcat.grouptyperef = i.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                 grpcat.parentcatid = i.ParentItemId;
                 grpcat.entrycount = GetEntryCount(lx, grpcat.categoryid);
-                
+                if (GroupsDictionary.ContainsKey(grpcat.grouptyperef)) grpcat.groupname = GroupsDictionary[grpcat.grouptyperef];
+
                 // get the language data
                 var langItem =  GetLangData(lg,grpcat.categoryid);
                 if (langItem != null)
@@ -419,6 +526,84 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return grpcatList;
 
         }
+
+        private void AddCatCascadeRecord(int categoryid,int productid)
+        {
+            var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
+            var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+            if (nbi == null)
+            {
+                nbi = new NBrightInfo();
+                nbi.ItemID = -1;
+                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.ModuleId = -1;
+                nbi.TypeCode = "CATCASCADE";
+                nbi.XrefItemId = categoryid;
+                nbi.ParentItemId = productid;
+                nbi.XMLData = null;
+                nbi.TextData = null;
+                nbi.Lang = null;
+                nbi.GUIDKey = strGuid;
+                _objCtrl.Update(nbi);
+            }
+        }
+
+        #endregion
+
+        #region "indexing"
+
+        /// <summary>
+        /// Reindex catcascade records for category and all parent categories 
+        /// </summary>
+        /// <param name="categoryid"></param>
+        public void ReIndexCascade(int categoryid)
+        {
+            ReIndexSingleCascade(categoryid);
+            var cat = GetCategory(categoryid);
+            if (cat != null)
+            {
+                foreach (var p in cat.Parents)
+                {
+                    ReIndexSingleCascade(p);
+                }                
+            }
+        }
+
+        /// <summary>
+        /// Rebuild the CATCASCADE index records for a single category
+        /// </summary>
+        /// <param name="categoryid"></param>
+        private void ReIndexSingleCascade(int categoryid)
+        {
+            //get all category product ids from catxref sub category records.
+            var xrefList = new List<NBrightInfo>();
+            var prodItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+            var catList = new List<GroupCategoryData>();
+            var subCats = GetSubCategoryList(catList, categoryid);
+            foreach (var c in subCats)
+            {
+                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
+                prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
+            }
+            //Get the current catascade records
+            xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
+            var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+
+            //Update the catcascade records.
+            foreach (var prodId in prodItemIdList)
+            {
+                AddCatCascadeRecord(categoryid, prodId);
+                casacdeProdItemIdList.RemoveAll(i => i == prodId);
+            }
+            //remove any cascade records that no longer exists
+            foreach (var productid in casacdeProdItemIdList)
+            {
+                var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
+                var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                if (nbi != null) _objCtrl.Delete(nbi.ItemID);
+            }
+        }
+
 
         #endregion
 

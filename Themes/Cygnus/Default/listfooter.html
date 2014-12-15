@@ -1,25 +1,20 @@
-[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
-<!-- Product List header  -->
+[<tag type="if" function="productcount" modulekey="{Settings:modulekey}" testvalue="0" display="{OFF}" />]<!-- Hide product list when current category has zero items -->
+<!-- Product List footer -->
 
 </div>
+
+[<tag type="if" function="debugmode" display="{ON}" />]
+<div class="debug">[<tag type='valueof' resourcekey='General.DebugMessage' />]</div>
+[<tag type="endif" />]
+
 </div>
-
-<!-- Cygnus jQuery UI -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/jquery-ui-1.10.4.custom.min.js"></script>
-
-<!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/imagesloaded.pkgd.min.js"></script>
 
 <!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/js/masonry.pkgd.min.js"></script>
-
 <script type="text/javascript">
 
 $( document ).ready(function() {
 
-var $container = $('#listwrapper');
-// initialize
-$container.masonry({
+var $container = $('#listwrapper').masonry({
   columnWidth: [Settings:itemwidth], // List item width - Can also use CSS width of first list item
   itemSelector: '.product',
   gutter: [Settings:itemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap

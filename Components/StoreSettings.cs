@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
+using NBrightCore.common;
 using NBrightDNN;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
@@ -13,52 +15,107 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private readonly Dictionary<string, string> _settingDic;
 
+        public const String ManagerRole = "Manager";
+        public const String EditorRole = "Editor";
+        public const String DealerRole = "Dealer";
+
         #region Constructors
-        public StoreSettings()
+        public StoreSettings(int portalId)
         {
             DebugMode = false;
 
-            //[TODO: NB_Store v2.4 code for settings, needs to be changed/removed for v3]
-            DataInfo = NBrightBuyUtils.GetGlobalSettings(PortalSettings.Current.PortalId);
-            if (DataInfo != null)
-            {
-                _settingDic = DataInfo.ToDictionary();
-                if (DataInfo.GetXmlProperty("genxml/hidden/debug.mode") == "1") DebugMode = true; // set debug mmode
-            }
+            _settingDic = new Dictionary<string, string>();
 
             //Get NBrightBuy Portal Settings.
             var modCtrl = new NBrightBuyController();
-            var indexSettings = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SETTINGS", "NBrightBuySettings");
-            if (indexSettings != null)
+            SettingsInfo = modCtrl.GetByGuidKey(portalId, -1, "SETTINGS", "NBrightBuySettings");
+            if (SettingsInfo != null)
             {
-                AddToSettingDic(indexSettings, "genxml/hidden/*");
-                AddToSettingDic(indexSettings, "genxml/textbox/*");
-                AddToSettingDic(indexSettings, "genxml/checkbox/*");
-                AddToSettingDic(indexSettings, "genxml/dropdownlist/*");
-                AddToSettingDic(indexSettings, "genxml/radiobuttonlist/*");
+                AddToSettingDic(SettingsInfo, "genxml/hidden/*");
+                AddToSettingDic(SettingsInfo, "genxml/textbox/*");
+                AddToSettingDic(SettingsInfo, "genxml/checkbox/*");
+                AddToSettingDic(SettingsInfo, "genxml/dropdownlist/*");
+                AddToSettingDic(SettingsInfo, "genxml/radiobuttonlist/*");
+                AddToSettingDicSelectedTextAttr(SettingsInfo, "genxml/dropdownlist/*");
+                AddToSettingDicSelectedTextAttr(SettingsInfo, "genxml/radiobuttonlist/*");
             }
 
             //add DNN Portalsettings
-            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
+            if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalId.ToString(""));
             if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
             if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
-            if (!_settingDic.ContainsKey("defaultportalalias")) _settingDic.Add("defaultportalalias", PortalSettings.Current.DefaultPortalAlias);
+            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
+            if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
             ThemeFolder = Get("themefolder");
 
+            if (_settingDic.ContainsKey("debug.mode") && _settingDic["debug.mode"] == "True") DebugMode = true;  // set debug mmode
+            StorageTypeClient = DataStorageType.Cookie;
+            if (Get("storagetypeclient") == "SessionMemory") StorageTypeClient = DataStorageType.SessionMemory;
+            
+            AdminEmail = Get("adminemail");
+            ManagerEmail = Get("manageremail");
+            FolderDocumentsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderdocs");
+            FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
+            FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
+
+            FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
+            FolderImages =  Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
+            FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
+
+            if (!_settingDic.ContainsKey("FolderDocumentsMapPath")) _settingDic.Add("FolderDocumentsMapPath",FolderDocumentsMapPath );
+            if (!_settingDic.ContainsKey("FolderImagesMapPath")) _settingDic.Add("FolderImagesMapPath",FolderImagesMapPath );
+            if (!_settingDic.ContainsKey("FolderUploadsMapPath")) _settingDic.Add("FolderUploadsMapPath",FolderUploadsMapPath );
+            if (!_settingDic.ContainsKey("FolderDocuments")) _settingDic.Add("FolderDocuments", FolderDocuments);
+            if (!_settingDic.ContainsKey("FolderImages")) _settingDic.Add("FolderImages",FolderImages );
+            if (!_settingDic.ContainsKey("FolderUploads")) _settingDic.Add("FolderUploads", FolderUploads);
+
+            if (!_settingDic.ContainsKey("NBrightBuyPath")) _settingDic.Add("NBrightBuyPath", NBrightBuyPath());
+            
         }
 
         #endregion
+
+        /// <summary>
+        /// get relitive patyh of NBrightBuy Module (For compatiblity with DNN running in a virtual directory)
+        /// </summary>
+        /// <returns></returns>
+        public static String NBrightBuyPath()
+        {
+            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.Trim('/') + "/DesktopModules/NBright/NBrightBuy";
+            return "/DesktopModules/NBright/NBrightBuy";
+        }
 
         public static StoreSettings Current
         {
             get { return NBrightBuyController.GetCurrentPortalData(); }
         }
-
+        
         public Dictionary<string, string> Settings()
         {
+            // redo the edit langauge for backoffice.
+            if (_settingDic != null)
+            {
+                if (_settingDic.ContainsKey("editlanguage"))
+                    _settingDic["editlanguage"] = EditLanguage;
+                else
+                    _settingDic.Add("editlanguage", EditLanguage);
+            }
             return _settingDic;
+        }
+
+        public String EditLanguage
+        {
+            get
+            {
+                var editlang = "";
+                // need to test if HttpContext.Current.Session is null, because webservice calling storesettings will raise exception. 
+                if (HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
+                if (editlang == "") return Utils.GetCurrentCulture();
+                return editlang;
+            }
+            set { HttpContext.Current.Session["NBrightBuy_EditLanguage"] = value; }
         }
 
 
@@ -74,12 +131,58 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _settingDic.ContainsKey(key) ? _settingDic[key] : "";
         }
 
+        public int GetInt(string key)
+        {
+            if (_settingDic.ContainsKey(key))
+            {
+                if (Utils.IsNumeric(_settingDic[key]))
+                {
+                    return Convert.ToInt32(_settingDic[key]);
+                }
+            }
+            return 0;
+        }
+
+        //get properties
+        public int CartTabId
+        {
+            get
+            {
+                var i = Get("carttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+
+        public int PaymentTabId
+        {
+            get
+            {
+                var i = Get("paymenttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
-        public NBrightInfo DataInfo { get; private set; }
+        /// <summary>
+        /// Get Client StorageType type Cookie,SessionMemory
+        /// </summary>
+        public DataStorageType StorageTypeClient { get; private set; }
+        public String AdminEmail { get; private set; }
+        public String ManagerEmail { get; private set; }
+        public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
         public int ActiveCatId { get; set; }
+
+        public String FolderImagesMapPath { get; private set; }
+        public String FolderDocumentsMapPath { get; private set; }
+        public String FolderUploadsMapPath { get; private set; }
+        public String FolderImages { get; private set; }
+        public String FolderDocuments { get; private set; }
+        public String FolderUploads { get; private set; }
 
         #endregion
 
@@ -99,6 +202,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         else
                         {
                             _settingDic.Add(nod.Name, nod.InnerText);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddToSettingDicSelectedTextAttr(NBrightInfo settings, string xpath)
+        {
+            if (settings.XMLDoc != null)
+            {
+                var nods = settings.XMLDoc.SelectNodes(xpath);
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (_settingDic.ContainsKey(nod.Name + "text"))
+                        {
+                            if (nod.Attributes != null) _settingDic[nod.Name + "text"] = nod.Attributes["selectedtext"].InnerText;
+                        }
+                        else
+                        {
+                            if (nod.Attributes != null) _settingDic.Add(nod.Name + "text", nod.Attributes["selectedtext"].InnerText);
                         }
                     }
                 }
