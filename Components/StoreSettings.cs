@@ -83,7 +83,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public static String NBrightBuyPath()
         {
-            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.Trim('/') + "/DesktopModules/NBright/NBrightBuy";
+            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
             return "/DesktopModules/NBright/NBrightBuy";
         }
 
