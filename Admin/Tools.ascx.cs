@@ -117,7 +117,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "validatestore":
                     param[0] = "";
-                    ValidateStore();
+                    NBrightBuyUtils.ValidateStore();
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "validatecompleted", NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -131,37 +131,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
-        private int ValidateStore()
-        {
-            var objCtrl = new NBrightBuyController();
-            var errcount = 0;
-
-            // Validate Products
-            var prodList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");            
-            foreach (var p in prodList)
-            {
-                var prodData = new ProductData(p.ItemID, StoreSettings.Current.EditLanguage);
-                errcount += prodData.Validate();
-            }
-
-            // Validate Categories
-            var catList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "CATEGORY");
-            foreach (var c in catList)
-            {
-                var catData = new CategoryData(c.ItemID, StoreSettings.Current.EditLanguage);
-                errcount += catData.Validate();
-            }
-
-            // Validate Groups
-            var grpList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "GROUP");
-            foreach (var c in grpList)
-            {
-                var grpData = new GroupData(c.ItemID, StoreSettings.Current.EditLanguage);
-                errcount += grpData.Validate();
-            }
-
-            return errcount;
-        }
 
         private void DoClearDown()
         {
