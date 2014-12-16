@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -74,6 +75,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 var navigationdata = new NavigationData(PortalId, _targetModuleKey);
                 if (Utils.IsNumeric(_catid)) navigationdata.Delete(); // if a category button has been clicked (in url) then clear search;
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) _catid = navigationdata.CategoryId;
+                if (Utils.IsNumeric(_entryid)) 
+                {
+                    // Get catid from product
+                    var prodData = new ProductData(Convert.ToInt32(_entryid), Utils.GetCurrentCulture());
+                    var catDef = prodData.GetDefaultCategory();
+                    if (catDef != null) _catid = catDef.categoryid.ToString("");
+                }
                 if (_catid == "") _catid = ModSettings.Get("defaultcatid");
 
                 _templH = ModSettings.Get("txtdisplayheader");

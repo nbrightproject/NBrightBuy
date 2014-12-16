@@ -295,12 +295,50 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         //if we already have a record with this xref guid then we don;t need to update
                         var c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ParentItemId = '" + nbi.ParentItemId.ToString("") + "' and NB1.XrefItemId = '" + nbi.XrefItemId.ToString("") + "' ");
                         if (c > 0) update = false;
+                        // check both xrefvalue exists
+                        if (nbi.ParentItemId > 0)
+                        {
+                            c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ItemId = " + nbi.ParentItemId.ToString(""));
+                            if (c == 0) update = false;
+                        }
+                        if (nbi.XrefItemId > 0)
+                        {
+                            c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ItemId = " + nbi.XrefItemId.ToString(""));
+                            if (c == 0) update = false;                            
+                        }
                     }
 
                     if (update) newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
                     if (typeCode == "PRD") _productList.Add(newitemid);
 
+                }
+
+                // fix any parentitemid that may be wrong (category tree imported in wrong order)
+                if (typeCode == "CATEGORY")
+                {
+                    var l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
+                    foreach (var i in l)
+                    {
+                        if (_recordXref.ContainsKey(i.ParentItemId))
+                        {
+                            i.ParentItemId = _recordXref[i.ParentItemId];
+                            ModCtrl.Update(i);
+                        }
+                    }
+                }
+                // fix any GUID that may be wrong (category tree imported in wrong order)
+                if (typeCode == "CASCADE")
+                {
+                    var l = ModCtrl.GetList(PortalId, -1, "CASCADE");
+                    foreach (var i in l)
+                    {
+                        if (i.GUIDKey != i.XrefItemId + "x" + i.ParentItemId)
+                        {
+                            i.GUIDKey = i.XrefItemId + "x" + i.ParentItemId;
+                            ModCtrl.Update(i);
+                        }
+                    }
                 }
             }
         }

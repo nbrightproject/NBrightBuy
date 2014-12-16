@@ -232,6 +232,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var itemcode = ""; // The itemcode var is used to decide if a cart item is new or already existing in the cart.
                 var productData = ProductUtils.GetProductData(Convert.ToInt32(strproductid), Utils.GetCurrentCulture());
 
+                if (productData.Info == null) return ""; // we may have a invalid productid that has been saved by a cookie, but since has been deleted.
+
                 objInfo.AddSingleNode("productid", strproductid, "genxml");
                 itemcode += strproductid + "-";
 
@@ -437,6 +439,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (XmlNode carNod in xmlNodeList)
                 {
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                    newInfo.PortalId = PortalId;
                     rtnList.Add(newInfo);
                 }
             }
@@ -530,6 +533,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetBillingAddress()
         {
             var rtnInfo = new NBrightInfo();
+            rtnInfo.PortalId = PortalId;
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/billaddress");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
@@ -559,6 +563,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetShippingAddress()
         {
             var rtnInfo = new NBrightInfo();
+            rtnInfo.PortalId = PortalId;
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/shipaddress");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
@@ -593,6 +598,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetExtraInfo()
         {
             var rtnInfo = new NBrightInfo(true);
+            rtnInfo.PortalId = PortalId;
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
 
@@ -629,6 +635,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetShipData()
         {
             var rtnInfo = new NBrightInfo();
+            rtnInfo.PortalId = PortalId;
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/shipdata");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
