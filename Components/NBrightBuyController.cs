@@ -464,11 +464,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (HttpContext.Current != null)
             {
                 // build StoreSettings and place in httpcontext
-                if (HttpContext.Current.Items["NBBStoreSettings"] == null)
+                if (HttpContext.Current.Items["NBBStoreSettings" + PortalSettings.Current.PortalId.ToString("")] == null)
                 {
-                    HttpContext.Current.Items.Add("NBBStoreSettings", GetStaticStoreSettings(PortalSettings.Current.PortalId));
+                    HttpContext.Current.Items.Add("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""), GetStaticStoreSettings(PortalSettings.Current.PortalId));
                 }
-                objPortalSettings = (StoreSettings)HttpContext.Current.Items["NBBStoreSettings"];
+                objPortalSettings = (StoreSettings)HttpContext.Current.Items["NBBStoreSettings" + PortalSettings.Current.PortalId.ToString("")];
             }
             return objPortalSettings;
 	    }

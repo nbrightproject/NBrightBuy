@@ -198,6 +198,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void DoExportImages()
         {
+            NBrightBuyUtils.ValidateStore(); // validate store so we have valid file paths.
+
             var fileMapPathList = new List<string>();
 
             var l = ModCtrl.GetList(PortalId, -1, "PRD");

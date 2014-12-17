@@ -246,6 +246,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
         }
 
+        public GroupCategoryData GetDefaultCategory()
+        {
+            var catl = GetCategories();
+            if (catl.Any()) return catl[0];
+            return null;
+        }
+
         public Boolean HasProperty(String propertyref)
         {
             var objGrpCtrl = new GrpCatController(_lang);
