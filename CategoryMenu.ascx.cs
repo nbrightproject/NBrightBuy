@@ -154,6 +154,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 obj = _catGrpCtrl.GetCategory(catiddef);
                 if (catid == 0) catid = catiddef;
             }
+            else
+            {
+                if (catid != 0) obj = _catGrpCtrl.GetCategory(catid);
+            }
             var catl = new List<object> {obj};
 
 
