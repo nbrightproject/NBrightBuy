@@ -70,4 +70,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     public enum NotifyCode { ok,fail,warning,error,log};
 
+    public enum EventActions { ValidateCartBefore, ValidateCartAfter, ValidateCartItemBefore, ValidateCartItemAfter };
+
 }

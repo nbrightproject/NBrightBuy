@@ -2416,21 +2416,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 var nodVal = nodOptVal.SelectSingleNode("hidden/optionvalueid");
                                 if (nodVal != null)
                                 {
+                                    chk.Text = "";
                                     var optionvalueid = nodVal.InnerText;
                                     var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
-                                    if (nodLang != null)
+                                    if (nodLang != null) chk.Text = nodLang.InnerText;
+
+                                    chk.Attributes.Add("optionvalueid", optionvalueid);
+                                    chk.Attributes.Add("optionid", optionid);
+
+                                    if (cartrecord)
                                     {
-                                        chk.Text = nodLang.InnerText;
-                                        chk.Attributes.Add("optionvalueid",optionvalueid);
-                                        chk.Attributes.Add("optionid", optionid);
-
-                                        if (cartrecord)
-                                        {
-                                            // assign cart value   
-                                            var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
-                                            if (selectSingleNode != null && selectSingleNode.InnerText == "True") chk.Checked = true;
-                                        }
-
+                                        // assign cart value   
+                                        var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
+                                        if (selectSingleNode != null && selectSingleNode.InnerText == "True") chk.Checked = true;
                                     }
                                 }
                                 lp += 1;

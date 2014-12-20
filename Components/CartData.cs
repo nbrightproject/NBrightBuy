@@ -214,6 +214,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ValidateCart()
         {
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartBefore, PurchaseInfo);
+
             var itemList = GetCartItemList();
             Double subtotalcost = 0;
             Double subtotaldealercost = 0;
@@ -343,11 +345,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (!UserController.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
             }
 
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartAfter, PurchaseInfo);
+
             SavePurchaseData();
         }
 
         private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
         {
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemBefore, cartItemInfo);
+
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
@@ -507,6 +513,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             }
+
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemAfter, cartItemInfo);
 
             return cartItemInfo;
         }
