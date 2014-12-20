@@ -258,6 +258,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
             switch (e.CommandName.ToLower())
             {
+                case "additems":
+                    _cartInfo.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    _cartInfo.Save();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "addqty":
                     if (!Utils.IsNumeric(cArg)) cArg = "1";
                     if (Utils.IsNumeric(cArg))

@@ -205,20 +205,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
                 if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
                 if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
+
                 modelidlist.Add(strmodelId);
                 var strqtyId = objInfoIn.GetXmlProperty("genxml/textbox/selectedaddqty");
-                qtylist.Add(strmodelId,strqtyId);
+                if (!Utils.IsNumeric(strqtyId)) strqtyId = "1";
+                qtylist.Add(strmodelId, strqtyId);
             }
 
             var strRtn = "";
             foreach (var m in modelidlist)
             {
-                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
+                var numberofmodels = objInfoIn.GetXmlPropertyDouble("genxml/textbox/additemqty"); // use additemqty field to add multiple items
+                if (numberofmodels == 0) numberofmodels = 1;
+                for (var i = 1; i <= numberofmodels; i++)
+                {
+                    strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
+                }
             }
             return strRtn;
         }
 
-        public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false)
+        public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false, int replaceIndex = -1)
         {
             if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
 
@@ -358,7 +365,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null)
-                    _itemList.Add(objInfo); //add as new item
+                    if (replaceIndex >= 0 && replaceIndex < _itemList.Count)
+                        _itemList[replaceIndex] = objInfo; //replace
+                    else
+                        _itemList.Add(objInfo); //add as new item
                 else
                 {
                     //replace item
@@ -453,6 +463,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     itemheader.SetXmlProperty("genxml/groupheader","True");
                     itemheader.SetXmlProperty("genxml/seeditemcode", itemheader.GUIDKey);
                     itemheader.GUIDKey = "";
+                    // remove option data, so we get a clear item 
+                    itemheader.RemoveXmlNode("genxml/options");
                     rtnList.Add(itemheader);
 
                     foreach (var item in group.Value)
@@ -492,7 +504,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             //_itemList = GetCartItemList();  // Don;t get get here, it resets previous altered itemlist records.
             if (_itemList[index] != null)
             {
-                var removethisitem = false;
 
                 #region "merge option data"
                 var nodList = inputInfo.XMLDoc.SelectNodes("genxml/hidden/*[starts-with(name(), 'optionid')]");
@@ -586,16 +597,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 var newmodelid = nod.InnerText;
                                 if (oldmodelid != newmodelid)
                                 {
-                                    AddSingleItem(_itemList[index].GetXmlProperty("genxml/productid"), newmodelid, _itemList[index].GetXmlProperty("genxml/qty"), inputInfo);
-                                    removethisitem = true;
+                                    AddSingleItem(_itemList[index].GetXmlProperty("genxml/productid"), newmodelid, _itemList[index].GetXmlProperty("genxml/qty"), inputInfo,false,index);
                                 }
                             }
                         }
                     }
                 }
-
-                // do this last, so if the modelid has changed, we add new item and remove this one.
-                if (removethisitem) _itemList.RemoveAt(index);
 
             }
         }
