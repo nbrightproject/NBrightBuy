@@ -352,11 +352,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, settings);
 
-                templ = Utils.ReplaceUrlTokens(templ);
                 // WARNING!! do not inject text here, it will cause a loop on the GetMenuTemplates function.
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
             }
+            // always replace url tokens after cache, they could be different per url, not by cache key
+            templ = Utils.ReplaceUrlTokens(templ);
+
             return templ;
         }
 
@@ -373,10 +375,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, StoreSettings.Current.Settings());
 
-                templ = Utils.ReplaceUrlTokens(templ);
-
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
             }
+            // always replace url tokens after cache, they could be different per url, not by cache key
+            templ = Utils.ReplaceUrlTokens(templ);
             return templ;
         }
 
