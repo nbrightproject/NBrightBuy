@@ -4158,7 +4158,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 lc.Text = xmlNod.Attributes["template"].Value;
+                if (xmlNod.Attributes["groupby"] != null) lc.Text = lc.Text + ":GROUPBY";
             }
+            
             lc.DataBinding += OrderItemlistDataBind;
             container.Controls.Add(lc);
         }
@@ -4177,6 +4179,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
                     if (lang == "") lang = Utils.GetCurrentCulture();
+                    var groupresults = false;
+                    if (lc.Text.EndsWith(":GROUPBY"))
+                    {
+                        groupresults = true;
+                        lc.Text = lc.Text.Replace(":GROUPBY", "");
+                    }
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
@@ -4192,7 +4200,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings);
                         }
                         catch (Exception exc)
                         {
@@ -4219,6 +4227,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 lc.Text = xmlNod.Attributes["template"].Value;
+                if (xmlNod.Attributes["groupby"] != null) lc.Text = lc.Text + ":GROUPBY";
             }
             lc.DataBinding += CartItemlistDataBind;
             container.Controls.Add(lc);
@@ -4238,6 +4247,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
                     if (lang == "") lang = Utils.GetCurrentCulture();
+                    var groupresults = false;
+                    if (lc.Text.EndsWith(":GROUPBY"))
+                    {
+                        groupresults = true;
+                        lc.Text = lc.Text.Replace(":GROUPBY", "");
+                    }
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
@@ -4253,7 +4268,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings);
                         }
                         catch (Exception exc)
                         {
