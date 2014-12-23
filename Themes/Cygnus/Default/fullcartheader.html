@@ -1,11 +1,11 @@
-﻿<div class="fullcart">
-
-<h3>[<tag type='valueof' resourcekey='General.txtBasket' />]</h3>
-
-[<tag type="if" xpath="genxml/totalqty" testvalue="0" display="{OFF}" />]
-<a href="/tabid/[Settings:carttab]">[<tag type="valueof" xpath="genxml/totalqty" />] [<tag type='valueof' resourcekey='CartView.txtitems' />]: [<tag type="currencyof" xpath="genxml/appliedtotal" />]</a>
-[<tag type="endif"  />]
-
-[<tag type="if" xpath="genxml/totalqty" testvalue="0" display="{ON}" />]
-[<tag type='valueof' resourcekey='General.emptyfullcart' />]
-[<tag type="endif"  />]
+﻿<div id="checkoutitemlist" >
+<table cellspacing="0" class="StackThis large-only">
+	<tr>
+		<th class="detailscolumn">[<tag type='valueof' resourcekey='General.lblcartlist' />]</th>
+		<th class="quantitycolumn">[<tag type='valueof' resourcekey='General.Quantity' />]</th>
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+		<th class="pricecolumn">[<tag type='valueof' resourcekey='General.Price' />]</th>
+		<th class="totalcolumn">[<tag type='valueof' resourcekey='General.Total' />]</th>
+		[<tag type="endif"  />]
+		<th class="removecolumn">[<tag type='valueof' resourcekey='General.Remove' />]</th>
+	</tr>
