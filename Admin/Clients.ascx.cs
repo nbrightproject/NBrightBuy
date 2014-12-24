@@ -225,6 +225,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "uid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "deleteuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.DeleteUser();
+                    }
+                    param[0] = "uid=" + cArg;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "removeuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        var ok = clientData.RemoveUser();
+                        if (!ok)
+                        {
+                            NBrightBuyUtils.SetNotfiyMessage(ModuleId,"removeuser", NotifyCode.fail);
+                            param[0] = "uid=" + cArg;
+                        }
+                    }
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "validateuser":
                     if (Utils.IsNumeric(cArg))
                     {

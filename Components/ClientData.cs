@@ -117,6 +117,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void DeleteUser()
+        {
+            if (_userInfo != null)
+            {
+                var usrInfo = UserController.GetUserById(PortalSettings.Current.PortalId,_userInfo.UserID);
+                UserController.DeleteUser(ref usrInfo, false, false);
+            }
+        }
+
+        public Boolean RemoveUser()
+        {
+            if (_userInfo != null)
+            {
+                var objCtrl = new NBrightBuyController();
+                var strFilter = " and UserId = " + _userInfo.UserID.ToString("") + " ";
+                var recordcount = objCtrl.GetListCount(PortalId, -1, "ORDER", strFilter);
+                if (recordcount == 0) // don't remove if we have orders
+                {
+                    var usrInfo = UserController.GetUserById(PortalSettings.Current.PortalId, _userInfo.UserID);
+                    UserController.RemoveUser(usrInfo);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void OutputDebugFile(String fileName)
         {
             _clientInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);

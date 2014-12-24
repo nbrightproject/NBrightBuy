@@ -123,13 +123,17 @@
 						
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblauthorised" />]</label>
 						<div class="col-sm-4">
-							<p class="form-control-static">[<tag type='valueof' xpath='genxml/textbox/authorised' />]</p>
+						    <p class="form-control-static">
+					        <i class="[<tag type='if' xpath='genxml/textbox/authorised' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
+						    </p>
 						</div>
 						<div class="clearfix"></div>
 
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblupdatepassword" />]</label>
 						<div class="col-sm-4">
-							<p class="form-control-static">[<tag type='valueof' xpath='genxml/textbox/updatepassword' />]</p>
+						    <p class="form-control-static">
+						        <i class="[<tag type='if' xpath='genxml/textbox/updatepassword' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
+						    </p>
 						</div>
 						<div class="clearfix"></div>
 
@@ -137,7 +141,7 @@
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblisdeleted" />]</label>
 						<div class="col-sm-4">
 							<p class="form-control-static">
-								<i class="[<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />][<tag type='endif' />]"></i>
+								<i class="[<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
 							</p>
 						</div>
 						<div class="clearfix"></div>
@@ -204,6 +208,14 @@
 						<div class="col-sm-4">
 						[<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
 						</div>
+					    <div class="col-sm-4">
+					        [<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='{OFF}' />]
+    					        [<tag id="Tag1" type="linkbutton" resourcekey="Clients.cmdDeleteUser" commandname="deleteuser" cssclass="btn btn-warning btn-block" commandargument="ItemID" />]					        
+                            [<tag type='endif' />]
+					        [<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='{ON}' />]
+    					        [<tag id="cmdRemoveUser" type="linkbutton" resourcekey="Clients.cmdRemoveUser" commandname="removeuser" cssclass="btn btn-warning btn-block" commandargument="ItemID" />]					        
+                            [<tag type='endif' />]
+					    </div>
 					</div>
 					</div>
 
