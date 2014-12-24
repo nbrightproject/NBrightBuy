@@ -425,10 +425,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
-                unitcost += (additionalCosts / qty);
-                dealercost += (additionalCosts / qty);
-                saleprice += (additionalCosts / qty);
-                sellcost += (additionalCosts / qty);
+                if (qty > 0)  // can't devide by zero
+                {                   
+                    unitcost += (additionalCosts / qty);
+                    dealercost += (additionalCosts / qty);
+                    saleprice += (additionalCosts / qty);
+                    sellcost += (additionalCosts / qty);
+                }
 
                 var totalcost = qty * sellcost;
                 var totaldealercost = qty * dealercost;

@@ -104,7 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
                     // Get CartLayout
-                    var layouttemplate = "cartlayout.html";
+                    var layouttemplate = "checkoutlayout.html";
                     if (carttype == "3") layouttemplate = "fullcartlayout.html";
                     var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, layouttemplate, Utils.GetCurrentCulture(), DebugMode);
                     checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
@@ -310,6 +310,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "gotocart":
                     if (_cartInfo.GetCartItemList().Count > 0)
                     {
+                        UpdateCartInfo();
                         SaveCart();
                         var paytabid = ModSettings.Get("paymenttab");
                         if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");

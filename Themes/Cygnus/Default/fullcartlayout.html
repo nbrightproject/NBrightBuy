@@ -8,9 +8,9 @@
 <div id="cartlist" style="display:none;"></div>
     
     <div style="clear:both;">
-        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
 		[<tag id="cmdDelete" type="button" cssclass="secondarybutton clearcart" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]	
-		[<tag id="cmdGotoCart" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="gotocart" />]
+        [<tag id="cmdUpdate" type="button" cssclass="secondarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
+		[<tag id="cmdGotoCart" type="button" cssclass="primarybutton" resourcekey="CartView.Next" commandname="gotocart" />]
     </div>
 
 </div>
@@ -27,8 +27,7 @@
         $('#cartdetails').show();
 		
         $("#Form").submit(function (e) {
-            // switch of stage done here, so validation doesn't stop stage change working correctly.
-			$("input[[id*='currentcartstage']]").val('nextcartaddress');
+            $("input[[id*='currentcartstage']]").val('cartaddress');  // move to address stage for next checkout module.
             $(".processing").show();
         });
 
