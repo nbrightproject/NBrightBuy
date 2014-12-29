@@ -124,15 +124,23 @@
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblauthorised" />]</label>
 						<div class="col-sm-4">
 						    <p class="form-control-static">
-					        <i class="[<tag type='if' xpath='genxml/textbox/authorised' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
+					        <i class="[<tag type='if' xpath='genxml/membership/approved' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
 						    </p>
 						</div>
 						<div class="clearfix"></div>
 
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblupdatepassword" />]</label>
+					<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.userlockedout" />]</label>
 						<div class="col-sm-4">
 						    <p class="form-control-static">
-						        <i class="[<tag type='if' xpath='genxml/textbox/updatepassword' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
+						        <i class="[<tag type='if' xpath='genxml/membership/lockedout' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
+						    </p>
+						</div>
+						<div class="clearfix"></div>
+
+				    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Clients.lblupdatepassword" />]</label>
+						<div class="col-sm-4">
+						    <p class="form-control-static">
+						        <i class="[<tag type='if' xpath='genxml/membership/updatepassword' testvalue='True' display='fa fa-check-circle fa-lg' displayelse='' />]"></i>
 						    </p>
 						</div>
 						<div class="clearfix"></div>

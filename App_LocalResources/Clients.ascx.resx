@@ -225,4 +225,7 @@
   <data name="cmdRemoveUser.Text" xml:space="preserve">
     <value>Remove User</value>
   </data>
+  <data name="userlockedout.Text" xml:space="preserve">
+    <value>User Locked Out</value>
+  </data>
 </root>
