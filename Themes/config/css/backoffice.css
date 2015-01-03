@@ -273,3 +273,21 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .categorybreadcrumbs ul li:last-child a:after{}
 .categorybreadcrumbs ul li a:hover{background:#000000;color:#ffffff;}
 .categorybreadcrumbs ul li a:hover:after{border-left-color:#000000;color:#ffffff;}
+
+/* Order Status Colour : ADDED BY DCL  */
+/* 010       ,020             ,030      ,040       ,050                 ,060                ,070              ,120               ,080    ,090    ,100      ,110      */
+/* Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived */
+.orderstatus010 {background:lightgray}
+.orderstatus020 {background:darkorange}
+.orderstatus030 {background:dimgrey}
+.orderstatus040 {background:lightgreen}
+.orderstatus050 {background:lightgray}
+.orderstatus060 {background:lightgray}
+.orderstatus070 {background:lightgray}
+.orderstatus080 {background:lightgray}
+.orderstatus090 {background:lightgray}
+.orderstatus100 {background:lightgray}
+.orderstatus110 {background:lightgray}
+.orderstatus120 {background:lightgray}
+
+

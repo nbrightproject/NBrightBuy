@@ -47,6 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
                 UserController.GetCurrentUserInfo().IsInRole("Administrators")) 
             {
+                AddAuditMessage("EDIT ORDER");
                 PurchaseTypeCode = "CART";
                 EditMode = "E";
                 var cartId = base.SavePurchaseData();
@@ -68,6 +69,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             InvoiceFileExt = "";
             InvoiceFileName = "";
             InvoiceFilePath = "";
+            PurchaseInfo.SetXmlProperty("genxml/audit","");
 
             var cartId = base.SavePurchaseData(true);
             var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
@@ -78,8 +80,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         /// <summary>
         /// Order status
-        /// 010,020,030,040,050,060,070,080,090,100,110
-        /// Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Waiting,Shipped,Closed,Archived
+        /// 010       ,020             ,030      ,040       ,050                 ,060                ,070              ,120               ,080    ,090    ,100      ,110
+        /// Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived
         /// </summary>
         public String OrderStatus { 
             get
@@ -88,6 +90,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             } 
             set
             {
+                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value);
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
             }  
@@ -228,7 +231,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
-            if (OrderStatus == "020") // only process this on waiting for bank.  On return to cart this could be triggered more than once, but IPN and return.
+            if (OrderStatus == "020") // only process this on waiting for bank.  On return to cart this could be triggered more than once, by IPN and return.
             {
                 var discountprov = DiscountCodeInterface.Instance();
                 if (discountprov != null)

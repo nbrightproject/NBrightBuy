@@ -367,7 +367,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var trackingcode = GenXmlFunctions.GetField(rpDataF, "trackingcode");
             var shippingdate = GenXmlFunctions.GetField(rpDataF, "shippingdate");
             var orderstatus = GenXmlFunctions.GetField(rpDataF, "orderstatus");
-            var strUpd = GenXmlFunctions.GetGenXml(rpDataF,"",StoreSettings.Current.FolderUploadsMapPath);
+            var notes = GenXmlFunctions.GetField(rpDataF, "notes");
+            var strUpd = GenXmlFunctions.GetGenXml(rpDataF, "", StoreSettings.Current.FolderUploadsMapPath);
             var nbi = new NBrightInfo(true);
             nbi.XMLData = strUpd;
 
@@ -381,6 +382,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFileExt = Path.GetExtension(ordData.InvoiceFileName);
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName;
+            ordData.AddAuditMessage(notes);
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
 

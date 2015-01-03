@@ -235,7 +235,7 @@
     <value>Previous</value>
   </data>
   <data name="addressmessage.Text" xml:space="preserve">
-    <value>Please ensure your address is completed correctly, otherwise order may be delayed.</value>
+    <value>Please ensure your address is completed correctly, otherwise your order may be delayed.</value>
   </data>
   <data name="PlaceOrder.Text" xml:space="preserve">
     <value>Order</value>

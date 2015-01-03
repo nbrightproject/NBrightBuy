@@ -220,19 +220,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             //update resx fields
             var resxDic = GenXmlFunctions.GetGenXmlResx(rpData);
             var genTempl = (GenXmlTemplate)rpData.ItemTemplate;
-            var resxfolders = genTempl.GetResxFolders();
-            // we're only going to create resx files for this portal, so remove all other paths formt he folders list.
-            var resxfolder = new List<String>();
-            foreach (var p in resxfolders)
-            {
-                if (p.StartsWith(PortalSettings.HomeDirectory))
-                {
-                    resxfolder.Add(p);
-                    break;
-                }
-            }
-
-            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolder, StoreSettings.Current.EditLanguage,true);
+            var resxfolders = genTempl.GetResxFolders();  // ideally we'd create the settings resx at the portal level, but can't easily get that to work.
+            var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolders, StoreSettings.Current.EditLanguage,true);
 
             //remove current setting from cache for reload
             HttpContext.Current.Items.Remove("NBBStoreSettings");

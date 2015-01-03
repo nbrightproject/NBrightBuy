@@ -401,9 +401,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/App_LocalResources/");
             if (settingsDic.ContainsKey("themefolder") && settingsDic["themefolder"] != "")
             {
-                itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/Themes/" + settingsDic["themefolder"] +
-                                        "/resx/");
+                itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/Themes/" + settingsDic["themefolder"] + "/resx/");
             }
+
             return itemTempl;
         }
 
@@ -696,7 +696,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var fpath = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx.resx");
                     //var fpathlang = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".resx");
-                    var fpathlangportal = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".Portal-" + PortalSettings.Current.PortalId.ToString("") + ".resx");
+                    var fpathlangportal = "";
+                    if (lang.EndsWith(Localization.SystemLocale))
+                        fpathlangportal = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx.Portal-" + PortalSettings.Current.PortalId.ToString("") + ".resx");
+                    else
+                        fpathlangportal = HttpContext.Current.Server.MapPath(r + f.Key + ".ascx" + lang + ".Portal-" + PortalSettings.Current.PortalId.ToString("") + ".resx");
                     if (File.Exists(fpath))
                     {
                         if (!File.Exists(fpathlangportal)) CreateResourceFile(fpathlangportal);

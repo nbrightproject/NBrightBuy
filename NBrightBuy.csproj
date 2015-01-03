@@ -429,6 +429,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductView.ascx" />
+    <Content Include="Themes\config\css\backoffice.css" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\addressbookbody.html" />
     <Content Include="Themes\config\default\addressbookfooter.html" />
@@ -457,6 +458,7 @@
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
     <Content Include="Themes\config\default\clientvouchercodes.html" />
+    <Content Include="Themes\config\default\ordersauditlist.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\productfields.html" />

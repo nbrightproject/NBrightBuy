@@ -90,6 +90,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "orderitemlist":
                     CreateOrderItemlist(container, xmlNod);
                     return true;
+                case "orderauditlist":
+                    CreateOrderAuditlist(container, xmlNod);
+                    return true;
                 case "cartitemlist":
                     CreateCartItemlist(container, xmlNod);
                     return true;
@@ -236,6 +239,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "orderstatus":
                     Createorderstatusdropdown(container, xmlNod);
+                    return true;
+                case "orderstatusdisplay":
+                    Createorderstatusdisplay(container, xmlNod);
                     return true;
                 case "modelstatus":
                     Createmodelstatusdropdown(container, xmlNod);
@@ -2738,6 +2744,59 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
+        #region "orderstatusdisplay"
+
+        private void Createorderstatusdisplay(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["xpath"] != null)) l.Text = xmlNod.Attributes["xpath"].Value;
+            l.DataBinding += OrderstatusDisplayDataBind;
+            container.Controls.Add(l);
+        }
+
+        private void OrderstatusDisplayDataBind(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                    var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
+                    var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", resxpath, Utils.GetCurrentCulture());
+                    var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", resxpath, Utils.GetCurrentCulture());
+                    if (orderstatuscode != null && orderstatustext != null)
+                    {
+                        var aryCode = orderstatuscode.Split(',');
+                        var aryText = orderstatustext.Split(',');
+                        var statuslist = new Dictionary<String, String>();
+                        var lp = 0;
+                        foreach (var c in aryCode)
+                        {
+                            statuslist.Add(c,aryText[lp]);
+                            lp += 1;
+                        }
+                        var strValue = "";
+                        if (l.Text == "")
+                        strValue = GenXmlFunctions.GetGenXmlValue("orderstatus", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        else
+                        {
+                            var nbi = (NBrightInfo) container.DataItem;
+                            strValue = nbi.GetXmlProperty(l.Text);
+                        }
+                        if (statuslist.ContainsKey(strValue))
+                            l.Text = "<span class='orderstatus" + strValue + "'>" +  statuslist[strValue] + "</span>";
+                        else
+                            l.Text = "<span class='orderstatus" + strValue + "'>" + strValue + "</span>";
+                    }
+            }
+            catch (Exception)
+            {
+                l.Visible = false;
+            }
+        }
+
+
+        #endregion
+
         #region "modelstatus"
 
         private void Createmodelstatusdropdown(Control container, XmlNode xmlNod)
@@ -4095,6 +4154,67 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         try
                         {
                             strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                        }
+                        catch (Exception exc)
+                        {
+                            strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
+                        }
+                    }
+                }
+                lc.Text = strOut;
+
+            }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+        }
+
+        #endregion
+
+        #region "Order Auditlist"
+
+        private void CreateOrderAuditlist(Control container, XmlNode xmlNod)
+        {
+            var lc = new Literal();
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                lc.Text = xmlNod.Attributes["template"].Value;
+            }
+            lc.DataBinding += OrderAuditlistDataBind;
+            container.Controls.Add(lc);
+        }
+
+        private void OrderAuditlistDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            try
+            {
+                var strOut = "";
+                lc.Visible = NBrightGlobal.IsVisible;
+                if (lc.Visible)
+                {
+
+                    var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
+                    var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
+                    if (lang == "") lang = Utils.GetCurrentCulture();
+                    var templName = lc.Text;
+                    if (Utils.IsNumeric(id) && (templName != ""))
+                    {
+                        var buyCtrl = new NBrightBuyController();
+                        var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
+
+                        //remove templName from template, so we don't get a loop.
+                        if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                        //build models list
+
+                        var objInfo = (NBrightInfo)container.DataItem;
+                        var ordData = new OrderData(objInfo.PortalId, objInfo.ItemID);
+                        // render repeater
+                        try
+                        {
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetAuditItemList(), rpTempl, "", "XMLData", "", _settings);
                         }
                         catch (Exception exc)
                         {
