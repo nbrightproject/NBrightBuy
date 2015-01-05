@@ -331,8 +331,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //cart full total
-            var dealertotal = ((subtotaldealercost + shippingdealercost + appliedtax) - totaldealerdiscount);
-            var total = ((subtotalcost + shippingcost + appliedtax) - totaldiscount);
+            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax);
+            var total = (subtotalcost + shippingcost + appliedtax);
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
@@ -456,23 +456,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Double salediscount = 0;
                 Double dealerdiscount = 0;
                 Double discountcodeamt = 0;
- 
+                Double totaldiscount = 0;
+
                 //add update genxml/discountcodeamt
                 if (saleprice == 0) // discount codes are only valid for items not on sale
                 {
                     var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
                     cartItemInfo = DiscountCodeInterface.UpdateItemPercentDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
                     discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
-                    if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed", "False");                    
+                    if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed", "False");
+                    totaldiscount = discountcodeamt;
                 }
                 else
                 {
                     salediscount = (unitcost - saleprice);
+                    totaldiscount = salediscount * qty;
                 }
 
                 var totalsalediscount = salediscount * qty;
-                var totaldealerdiscount = dealerdiscount*qty;
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", discountcodeamt);
+                var totaldealerdiscount = dealerdiscount * qty;
+                cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/salediscount", totalsalediscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
 
