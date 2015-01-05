@@ -189,7 +189,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // update status to completed
                     _orderData = new OrderData(PortalId, _cartInfo.PurchaseInfo.ItemID);
-                    _orderData.OrderStatus = "100";
                     _orderData.SavePurchaseData();
 
                     var cartL = new List<NBrightInfo>();
