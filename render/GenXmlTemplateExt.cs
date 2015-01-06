@@ -2783,9 +2783,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             strValue = nbi.GetXmlProperty(l.Text);
                         }
                         if (statuslist.ContainsKey(strValue))
-                            l.Text = "<span class='orderstatus" + strValue + "'>" +  statuslist[strValue] + "</span>";
+                            l.Text = "<span class='orderstatus orderstatus" + strValue + "'>" + statuslist[strValue] + "</span>";
                         else
-                            l.Text = "<span class='orderstatus" + strValue + "'>" + strValue + "</span>";
+                            l.Text = "<span class='orderstatus orderstatus" + strValue + "'>" + strValue + "</span>";
                     }
             }
             catch (Exception)
