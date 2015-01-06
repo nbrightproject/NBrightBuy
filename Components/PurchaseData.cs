@@ -41,7 +41,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public int SavePurchaseData(Boolean copyrecord = false )
         {
-            if (copyrecord) _entryId = -1;
+            if (copyrecord)
+            {
+                _entryId = -1;
+                PurchaseInfo.SetXmlProperty("genxml/audit", ""); // remove audit
+            }
+
             var strXml = "<items>";
             foreach (var info in _itemList)
             {
@@ -93,6 +98,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set { PurchaseInfo.SetXmlProperty("genxml/shippingregion", value); }
         }
 
+        #region "Audit data"
+
+        public void AddAuditMessage(String msg)
+        {
+            if (msg != "")
+            {
+                if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><msg>" + msg + "</msg></genxml>";
+                PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
+            }
+
+        }
+
+        public void AddAuditStatusChange(String newstatuscode)
+        {
+            if (newstatuscode != "")
+            {
+                if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><status>" + newstatuscode + "</status></genxml>";
+                PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
+            }
+        }
+
+        #endregion
 
         #region "Stock Control"
         /// <summary>
@@ -477,6 +506,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnList;
         }
 
+        /// <summary>
+        /// Get Audit Item List
+        /// </summary>
+        /// <returns></returns>
+        public List<NBrightInfo> GetAuditItemList()
+        {
+            var rtnList = new List<NBrightInfo>();
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/audit/*");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                    newInfo.PortalId = PortalId;
+                    rtnList.Add(newInfo);
+                }
+            }
+            return rtnList;
+        }
         /// <summary>
         /// Get Current Cart Item List
         /// </summary>

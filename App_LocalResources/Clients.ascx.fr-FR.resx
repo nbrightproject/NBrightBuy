@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,158 +59,173 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="cmdCreateOrder.Text" xml:space="preserve">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cmdCreateOrder.Text" xml:space="preserve">
     <value>Créer une commande</value>
   </data>
-	<data name="cmdResetPass.confirm" xml:space="preserve">
+  <data name="cmdResetPass.confirm" xml:space="preserve">
     <value>Réinitialiser le mot de passe utilisateur et lui envoyer un e-mail avec le nouveau mot de passe ?</value>
   </data>
-	<data name="cmdResetPass.Text" xml:space="preserve">
+  <data name="cmdResetPass.Text" xml:space="preserve">
     <value>Réinitialiser le mot de passe</value>
   </data>
-	<data name="cmdSearch.Text" xml:space="preserve">
+  <data name="cmdSearch.Text" xml:space="preserve">
     <value>Rechercher</value>
   </data>
-	<data name="cmdUnlockUser.confirm" xml:space="preserve">
+  <data name="cmdUnlockUser.confirm" xml:space="preserve">
     <value>Débloquer l'utilisateur?</value>
   </data>
-	<data name="cmdUnlockUser.Text" xml:space="preserve">
+  <data name="cmdUnlockUser.Text" xml:space="preserve">
     <value>Débloquer l'utilisateur</value>
   </data>
-	<data name="cmdValidateUser.Text" xml:space="preserve">
+  <data name="cmdValidateUser.Text" xml:space="preserve">
     <value>Valider l'utilisateur</value>
   </data>
-	<data name="cmdViewOrders.Text" xml:space="preserve">
+  <data name="cmdViewOrders.Text" xml:space="preserve">
     <value>Voir les commandes</value>
   </data>
-	<data name="lblauthorised.Text" xml:space="preserve">
+  <data name="lblauthorised.Text" xml:space="preserve">
     <value>Autorisé</value>
   </data>
-	<data name="lblDisplayName.Text" xml:space="preserve">
+  <data name="lblDisplayName.Text" xml:space="preserve">
     <value>Nom d'affichage</value>
   </data>
-	<data name="lblEmail.Text" xml:space="preserve">
+  <data name="lblEmail.Text" xml:space="preserve">
     <value>Email</value>
   </data>
-	<data name="lblFirstName.Text" xml:space="preserve">
+  <data name="lblFirstName.Text" xml:space="preserve">
     <value>Prénom</value>
   </data>
-	<data name="lblisdeleted.Text" xml:space="preserve">
+  <data name="lblisdeleted.Text" xml:space="preserve">
     <value>Est supprimé</value>
   </data>
-	<data name="lblLastName.Text" xml:space="preserve">
+  <data name="lblLastName.Text" xml:space="preserve">
     <value>Nom</value>
   </data>
-	<data name="lblupdatepassword.Text" xml:space="preserve">
+  <data name="lblupdatepassword.Text" xml:space="preserve">
     <value>Mettre à jour le mot de passe</value>
   </data>
-	<data name="lblUserID.Text" xml:space="preserve">
+  <data name="lblUserID.Text" xml:space="preserve">
     <value>ID Utilisateur</value>
   </data>
-	<data name="lblUserName.Text" xml:space="preserve">
+  <data name="lblUserName.Text" xml:space="preserve">
     <value>Nom d'utilisateur</value>
   </data>
-	<data name="UserID.Header" xml:space="preserve">
+  <data name="UserID.Header" xml:space="preserve">
     <value>ID Utilisateur</value>
   </data>
-	<data name="cmdValidateUser.confirm" xml:space="preserve">
+  <data name="cmdValidateUser.confirm" xml:space="preserve">
     <value>Autoriser l'utilisateur et permettre l'accès au rôle client?</value>
   </data>
-	<data name="cmdViewAddressBook.Text" xml:space="preserve">
+  <data name="cmdViewAddressBook.Text" xml:space="preserve">
     <value>Carnet d'adresses</value>
   </data>
-	<data name="cmdViewClient.Text" xml:space="preserve">
+  <data name="cmdViewClient.Text" xml:space="preserve">
     <value>Voir détails client</value>
   </data>
-	<data name="cmdViewClientIcon.Text" xml:space="preserve">
-		<value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
-	</data>
-	<data name="cmdViewClientButton.Text" xml:space="preserve">
-		<value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; Voir Client</value>
-	</data>
-	<data name="usageleft.Text" xml:space="preserve">
-		<value>Utilisation</value>
-	</data>
-	<data name="validuntil.Text" xml:space="preserve">
-		<value>Valide jusqu'au</value>
-	</data>
-	<data name="notsale.Text" xml:space="preserve">
-		<value>Non-valide pour produits en vente</value>
-	</data>
-	<data name="validcategory.Text" xml:space="preserve">
-		<value>Catégorie valide</value>
-	</data>
-	<data name="FindaClient.Text" xml:space="preserve">
-		<value>Chercher un client</value>
-	</data>
-	<data name="Actions.Text" xml:space="preserve">
-		<value>Actions</value>
-	</data>
-	<data name="Ordering.Text" xml:space="preserve">
-		<value>Commande</value>
-	</data>
-	<data name="UserAccount.Text" xml:space="preserve">
-		<value>Compte Utilisateur</value>
-	</data>
-	<data name="Notes.Text" xml:space="preserve">
-		<value>Notes</value>
-	</data>
+  <data name="cmdViewClientIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdViewClientButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; Voir Client</value>
+  </data>
+  <data name="usageleft.Text" xml:space="preserve">
+    <value>Utilisation</value>
+  </data>
+  <data name="validuntil.Text" xml:space="preserve">
+    <value>Valide jusqu'au</value>
+  </data>
+  <data name="notsale.Text" xml:space="preserve">
+    <value>Non-valide pour produits en vente</value>
+  </data>
+  <data name="validcategory.Text" xml:space="preserve">
+    <value>Catégorie valide</value>
+  </data>
+  <data name="FindaClient.Text" xml:space="preserve">
+    <value>Chercher un client</value>
+  </data>
+  <data name="Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Ordering.Text" xml:space="preserve">
+    <value>Commande</value>
+  </data>
+  <data name="UserAccount.Text" xml:space="preserve">
+    <value>Compte Utilisateur</value>
+  </data>
+  <data name="Notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="cmdDeleteUser.confirm" xml:space="preserve">
+    <value>Supprimer le client ?</value>
+  </data>
+  <data name="cmdDeleteUser.Text" xml:space="preserve">
+    <value>Supprimer le client</value>
+  </data>
+  <data name="cmdRemoveUser.confirm" xml:space="preserve">
+    <value>Supprimer l'utilisateur du système ?</value>
+  </data>
+  <data name="cmdRemoveUser.Text" xml:space="preserve">
+    <value>Supprimer l'utilisateur</value>
+  </data>
+  <data name="userlockedout.Text" xml:space="preserve">
+    <value>Utilisateur verrouillé</value>
+  </data>
 </root>

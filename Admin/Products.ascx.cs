@@ -154,6 +154,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 if (StoreSettings.Current.DebugMode) prodData.OutputDebugFile("debug_productupdate.xml");
 
+                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+
                 
             }
         }
@@ -164,6 +166,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
                 prodData.Delete();
+                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
             }
         }
 

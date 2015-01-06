@@ -429,6 +429,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductView.ascx" />
+    <Content Include="Themes\config\css\backoffice.css" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\addressbookbody.html" />
     <Content Include="Themes\config\default\addressbookfooter.html" />
@@ -457,6 +458,7 @@
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
     <Content Include="Themes\config\default\clientvouchercodes.html" />
+    <Content Include="Themes\config\default\ordersauditlist.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
     <Content Include="Themes\config\default\productfields.html" />
@@ -535,7 +537,6 @@
     <Content Include="Themes\Cygnus\Default\advancedsearch.html" />
     <Content Include="Themes\Cygnus\Default\cartbillingaddress.html" />
     <Content Include="Themes\Cygnus\Default\cartextra.html" />
-    <Content Include="Themes\Cygnus\Default\cartlayout.html" />
     <Content Include="Themes\Cygnus\Default\cartshipment.html" />
     <Content Include="Themes\Cygnus\Default\cartshippingaddress.html" />
     <Content Include="Themes\Cygnus\Default\CartViewSettings.html" />
@@ -553,6 +554,7 @@
     <Content Include="Themes\Cygnus\Default\checkoutbody.html" />
     <Content Include="Themes\Cygnus\Default\checkoutfooter.html" />
     <Content Include="Themes\Cygnus\Default\checkoutheader.html" />
+    <Content Include="Themes\Cygnus\Default\checkoutlayout.html" />
     <Content Include="Themes\Cygnus\Default\detail.html" />
     <Content Include="Themes\Cygnus\Default\detailfooter.html" />
     <Content Include="Themes\Cygnus\Default\detailheader.html" />
@@ -561,6 +563,7 @@
     <Content Include="Themes\Cygnus\Default\fullcartbody.html" />
     <Content Include="Themes\Cygnus\Default\fullcartfooter.html" />
     <Content Include="Themes\Cygnus\Default\fullcartheader.html" />
+    <Content Include="Themes\Cygnus\Default\fullcartlayout.html" />
     <Content Include="Themes\Cygnus\Default\list.html" />
     <Content Include="Themes\Cygnus\Default\listfooter.html" />
     <Content Include="Themes\Cygnus\Default\listheader.html" />

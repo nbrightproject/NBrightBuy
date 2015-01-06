@@ -86,31 +86,35 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
                 var carttype = ModSettings.Get("ddlcarttype");
-                if (carttype == "2") // check if we need to add cookie items
+                if (carttype == "3" || carttype == "2") // check if we need to add cookie items
                 {
                     _cartInfo.AddCookieToCart();
                     _cartInfo.Save();
                 }
-                if (!_cartInfo.GetCartItemList().Any() && carttype == "2") _templH = "cartempty.html"; // check for empty cart 
+                if (!_cartInfo.GetCartItemList().Any() && (carttype == "3" || carttype == "2"))
+                    _templH = "cartempty.html"; // check for empty cart 
+                else
+                {
+                    // Get Display Body
+                    var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
+                    rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
+                    // Get Display Footer
+                    var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+                    rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+                    // Get CartLayout
+                    var layouttemplate = "checkoutlayout.html";
+                    if (carttype == "3") layouttemplate = "fullcartlayout.html";
+                    var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, layouttemplate, Utils.GetCurrentCulture(), DebugMode);
+                    checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    _templateHeader = (GenXmlTemplate)checkoutlayout.ItemTemplate;
+                    
+                }
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get CartLayout
-                var checkoutlayoutTempl = ModCtrl.GetTemplateData(ModSettings, "cartlayout.html", Utils.GetCurrentCulture(), DebugMode);
-                checkoutlayout.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(checkoutlayoutTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)checkoutlayout.ItemTemplate;
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
@@ -147,7 +151,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Page.IsPostBack == false)
                 {
                     // check for empty cart 
-                    if (!_cartInfo.GetCartItemList().Any() && ModSettings.Get("ddlcarttype") == "2")
+                    if (!_cartInfo.GetCartItemList().Any() && (ModSettings.Get("ddlcarttype") == "2" || ModSettings.Get("ddlcarttype") == "3"))
                     {
                         var cartL = new List<NBrightInfo>();
                         cartL.Add(_cartInfo.GetInfo());
@@ -199,7 +203,14 @@ namespace Nevoweb.DNN.NBrightBuy
             #endregion
 
             var carttype =  ModSettings.Get("ddlcarttype");
-            if (carttype == "2")
+            if (carttype == "3") // full cart list
+            {
+                // display footer
+                cartL[0].SetXmlProperty("genxml/hidden/currentcartstage", cartL[0].GetXmlProperty("genxml/currentcartstage")); // set the cart stage so we appear on correct stage.
+                checkoutlayout.DataSource = cartL;
+                checkoutlayout.DataBind();
+            }
+            if (carttype == "2") // full checkout
             {
 
                 // display footer
@@ -303,6 +314,17 @@ namespace Nevoweb.DNN.NBrightBuy
                     UpdateCartAddresses();
                     UpdateCartInfo();
                     SaveCart();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "gotocart":
+                    if (_cartInfo.GetCartItemList().Count > 0)
+                    {
+                        UpdateCartInfo();
+                        SaveCart();
+                        var paytabid = ModSettings.Get("paymenttab");
+                        if (!Utils.IsNumeric(paytabid)) paytabid = TabId.ToString("");
+                        Response.Redirect(Globals.NavigateURL(Convert.ToInt32(paytabid), "", param), true);
+                    }
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "order":

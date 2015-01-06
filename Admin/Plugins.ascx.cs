@@ -179,7 +179,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var cArg = e.CommandArgument.ToString();
             var param = new string[3];
             var pluginData = new PluginData(PortalId);
-            var strCacheKey = "bomenuhtml*" + Utils.GetCurrentCulture() + "*" + PortalId.ToString("");
 
             switch (e.CommandName.ToLower())
             {
@@ -197,7 +196,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         pluginData.UpdatePlugin(rpData,Convert.ToInt32(cArg));
                         pluginData.Save();
                     }
-                    HttpContext.Current.Session[strCacheKey] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "add":

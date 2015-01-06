@@ -243,7 +243,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
-                    UpodateRecord();
+                    UpdateRecord();
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -299,7 +299,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
-        private void UpodateRecord()
+        private void UpdateRecord()
         {
             var xmlData = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderImagesMapPath);
             var objInfo = new NBrightInfo();
@@ -317,12 +317,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                 {
-                    var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                    var grptype = objInfo.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
                     var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
                     if (grp != null)
                     {
                         catData.DataRecord.GUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
                         catData.DataRecord.ParentItemId = grp.ItemID;
+                        // list done using ddlgrouptype, in  GetCatList 
+                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype); 
                     }
                 }
                 catData.Save();

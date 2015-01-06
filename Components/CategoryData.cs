@@ -304,6 +304,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            // fix groups with mismatching ddlgrouptype
+            if (GroupType != "cat")
+            {
+                var grp = objCtrl.Get(DataRecord.ParentItemId, "GROUP");
+                if (grp != null)
+                {
+                    if (grp.GUIDKey != GroupType)
+                    {
+                        DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grp.GUIDKey);
+                        objCtrl.Update(DataRecord);
+                        errorcount += 1;
+                    }
+                }
+            }
+
 
             return errorcount;
         }

@@ -172,10 +172,10 @@
     <value>Cart Type : </value>
   </data>
   <data name="lblPaymentTab.Help" xml:space="preserve">
-    <value>Page which the NBS_Payment module is placed. The cart will be redirected to this page and processing of the order will be taken over by the NBS_Payment module.</value>
+    <value>Page which this module will redirect to on Submit.  Usually The Checkout option for this module will redirect to the Payment page with the NBS_Payment module.  The Fullcart list option for this module should redirect to the Checkout page. </value>
   </data>
   <data name="lblPaymentTab.Text" xml:space="preserve">
-    <value>Payment Page : </value>
+    <value>Redirect Page : </value>
   </data>
   <data name="lblgroupresults.Help" xml:space="preserve">
     <value>Cart items will be grouped by product&gt;model</value>

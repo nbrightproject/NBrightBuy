@@ -9,7 +9,8 @@
 			  <i class="fa fa-bars"></i>
 			</a>
 			<div class="actionbuttonwrapper">
-				<!-- No button in this page -->
+			[<tag id="cmdSave1" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="btn btn-primary" commandname="save" commandargument="ItemID" />]
+			[<tag id="cmdReturn1" type="linkbutton" resourcekey="General.cmdReturnButton" cssclass="btn btn-default" commandname="return" />]
 		    </div>
 		</div>
 		<div class="col-xs-3 col-sm-3 top-panel-right">
@@ -39,6 +40,16 @@
 						<div class="col-sm-2">
 							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
 						</div>
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.status" />]</label>
+						<div class="col-sm-2">
+							[<tag id="orderstatus" cssclass="form-control" type="orderstatus" blank="True" />]
+						</div>
+						<div class="col-sm-2">
+						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchIcon" cssclass="btn btn-primary" commandname="search"/>]
+						[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetIcon" cssclass="btn btn-default" commandname="resetsearch"/>]
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.From" />]</label>
 						<div class="col-sm-2">
 							[<tag id="dateSearchFrom" cssclass="form-control" type="textbox" datatype="date" />]
@@ -46,10 +57,6 @@
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.To" />]</label>
 						<div class="col-sm-2">
 							[<tag id="dateSearchTo" cssclass="form-control" type="textbox" datatype="date" />]
-						</div>
-						<div class="col-sm-3">
-						[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchIcon" cssclass="btn btn-primary" commandname="search"/>]
-						[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetIcon" cssclass="btn btn-default" commandname="resetsearch"/>]
 						</div>
 					</div>
 				</div>
@@ -75,4 +82,6 @@
 [<tag id="search17" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/ordernumber" sqloperator="or" />]
 [<tag id="search18" type="meta" action="close" />]
 [<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlcol="ModifiedDate" sqltype="datetime" sqloperator="and"  />]
+
+[<tag id="search30" type="meta" action="like" search="genxml/dropdownlist/orderstatus" static="%" sqlcol="GUIDKey" sqloperator="and" />]
 

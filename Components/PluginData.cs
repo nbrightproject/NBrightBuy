@@ -158,6 +158,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Info.RemoveXmlNode("genxml/plugin");
                 Info.AddXmlNode(strXml, "plugin", "genxml");
                 _templCtrl.SaveTemplate("menuplugin.xml", Info.XMLData, portallevel);
+
+                NBrightBuyUtils.RemoveModCache(0);
+
             }
         }
 

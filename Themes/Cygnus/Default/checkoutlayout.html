@@ -8,7 +8,7 @@
 <div id="cartlist" style="display:none;"></div>
 <div id="cartbilladdress" class="panel" style="display:none;"></div>
 <div id="cartshippingoptions" class="panel" style="display:none;"></div>
-<div id="cartshippingmethods" class="panel" style="display:none;"></div>
+<div id="cartshippingmethods" class="panel" style="display:none;">[<tag type="valueof" resourcekey="Cartview.addressmessage" />]<br/></div>
 <div id="cartextra" class="panel" style="display:none;"></div>
     
     <div style="clear:both;">
@@ -207,10 +207,10 @@
         });
 
         // trigger on postcode change
-        $("input[[id*='_PostalCode_']]").change(function (e) {
-            $("input[[id*='currentcartstage']]").val('cartaddress'); // make sure we go back the the address form
-            $(".updatecart").trigger("click");
-        });
+        //$("input[[id*='_PostalCode_']]").change(function (e) {
+        //    $("input[[id*='currentcartstage']]").val('cartaddress'); // make sure we go back the the address form
+        //    $(".updatecart").trigger("click");
+        //});
 
     });
 </script>
