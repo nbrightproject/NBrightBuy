@@ -129,7 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Build Urls"
 
-        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid)
+        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid,string catid = "")
         {
             var rdTabid = -1;
             var objTabInfo = new TabInfo();
@@ -158,6 +158,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             guidkey = Utils.CleanInput(guidkey);
             guidkey = guidkey.Replace(".", "-").Replace("@", "").Trim('-'); // remove chars not dealt with by cleaninput.
             var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
+            if (Utils.IsNumeric(catid)) strurl += "&catid=" + catid;
             return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
 
         }

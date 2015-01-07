@@ -514,6 +514,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     testValue = "TRUE";
                                 }
                                 break;
+                            case "isincategory":
+                                dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
+                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                                if (prodData.IsInCategory(testValue))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
                             case "isdocpurchasable":
                                 dataValue = "FALSE";
                                 nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
@@ -955,6 +965,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["tabid"] != null) lk.Attributes.Add("tabid", xmlNod.Attributes["tabid"].InnerText);
                 if (xmlNod.Attributes["modkey"] != null) lk.Attributes.Add("modkey", xmlNod.Attributes["modkey"].InnerText);
                 if (xmlNod.Attributes["xpath"] != null) lk.Attributes.Add("xpath", xmlNod.Attributes["xpath"].InnerText);
+                if (xmlNod.Attributes["catid"] != null) lk.Attributes.Add("catid", xmlNod.Attributes["catid"].InnerText);
             }
             lk.DataBinding += EntryLinkDataBinding;
             container.Controls.Add(lk);
@@ -985,7 +996,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 			    var moduleref = "";
                 if ((lk.Attributes["modkey"] != null)) moduleref = lk.Attributes["modkey"];
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
                 lk.NavigateUrl = url;
 
 			}
@@ -1004,11 +1015,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var t = PortalSettings.Current.ActiveTab.TabID.ToString("");
                 var mk = "";
                 var xp = "";
+                var c = "";
                 if (xmlNod.Attributes["tabid"] != null) t = xmlNod.Attributes["tabid"].InnerText;
                 if (xmlNod.Attributes["modkey"] != null) mk = xmlNod.Attributes["modkey"].InnerText;
                 if (xmlNod.Attributes["xpath"] != null) xp = xmlNod.Attributes["xpath"].InnerText;
+                if (xmlNod.Attributes["catid"] != null) c = xmlNod.Attributes["catid"].InnerText;
 
-                l.Text = t + '*' + mk + '*' + xp.Replace('*','-');
+                l.Text = t + '*' + mk + '*' + xp.Replace('*','-') + '*' + c;
             }
             l.DataBinding += EntryUrlDataBinding;
             container.Controls.Add(l);
@@ -1029,16 +1042,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var urlname = "Default";
                 var t = "";
                 var moduleref = "";
+                var c = "";
 
-                if (dataIn.Length == 3)
+                if (dataIn.Length == 4)
                 {
                     if (Utils.IsNumeric(dataIn[0])) t = dataIn[0];
                     if (Utils.IsNumeric(dataIn[1])) moduleref = dataIn[1];
+                    if (Utils.IsNumeric(dataIn[3])) c = dataIn[3];
                     var nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), dataIn[2]);
                     if ((nod != null)) urlname = nod.InnerText;
                 }
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
                 l.Text = url;
 
             }
@@ -2507,6 +2522,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var buyCtrl = new NBrightBuyController();
                 var strFilter = "";
                 var strOrder = paramList["orderby"];
+
                 var cascade = paramList["cascade"];
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
