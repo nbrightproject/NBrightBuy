@@ -57,15 +57,24 @@ namespace Nevoweb.DNN.NBrightBuy
         private const String EntityTypeCode = "PRD";
         private const String EntityTypeCodeLang = "PRDLANG";
         private String _itemListName = "";
+        private String _print = "";
+        private String _printtemplate = "";
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
+            _eid = Utils.RequestQueryStringParam(Context, "eid");
+            _print = Utils.RequestParam(Context, "print");
+            _printtemplate = Utils.RequestParam(Context, "template");
+
             EnablePaging = true;
 
             base.OnInit(e);
+
+            // if we want to print we need to open the browser with a startup script, this points to a Printview.aspx. (Must go after the ModSettings has been init.)
+            if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printproduct", "window.open('" + StoreSettings.NBrightBuyPath() + "/PrintView.aspx?itemid=" + _eid + "&printcode=" + _print + "&template=" + _printtemplate + "&theme=" + ModSettings.Get("themefolder") + "','_blank');", true);
 
             if (ModuleKey == "")  // if we don't have module setting jump out
             {
@@ -86,7 +95,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 
                 #region "set templates based on entry id (eid) from url"
 
-                _eid = Utils.RequestQueryStringParam(Context, "eid");
                 _ename = Utils.RequestQueryStringParam(Context, "entry");
                 _modkey = Utils.RequestQueryStringParam(Context, "modkey");
                 _pagemid = Utils.RequestQueryStringParam(Context, "pagemid");
@@ -559,6 +567,12 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                         
                     }
+                    break;
+                case "printproduct":
+                    param[0] = "eid=" + _eid;
+                    param[1] = "print=printproduct";
+                    param[2] = "template=printproduct.html";
+                    Response.Redirect(Globals.NavigateURL(TabId,"", param), true);
                     break;
             }
 

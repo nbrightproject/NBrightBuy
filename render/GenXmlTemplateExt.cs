@@ -1051,6 +1051,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (Utils.IsNumeric(dataIn[3])) c = dataIn[3];
                     var nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), dataIn[2]);
                     if ((nod != null)) urlname = nod.InnerText;
+                    // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
+                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/categoryid");
+                    if (nod != null && c == "" && Utils.IsNumeric(nod.InnerText)) c = nod.InnerText;
                 }
 
                 var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
@@ -1863,7 +1866,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         // Must be displaying a product or category with (NBrightInfo), so get categoryid
                         var objCInfo = (NBrightInfo) container.DataItem;
-                        if (objCInfo.TypeCode == "PRD" || String.IsNullOrEmpty(objCInfo.TypeCode)) // no type is list header, so use catid in url if there. 
+                        if (String.IsNullOrEmpty(objCInfo.TypeCode) || objCInfo.TypeCode == "PRD") // no type is list header, so use catid in url if there. 
                         {
                             //Is product so get categoryid    
                             var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
@@ -2534,6 +2537,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
 
                 var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId,-1,"PRD","PRDLANG",Utils.GetCurrentCulture(),strFilter,strOrder) ;
+                // inject the categoryid into the data, so the entryurl can have the correct catid
+                foreach (var i in objL)
+                {
+                    i.SetXmlProperty("genxml/categoryid", nbi.categoryid.ToString(""));
+                }
                 rpt.DataSource = objL;
                 rpt.DataBind();
             }
