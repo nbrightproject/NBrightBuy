@@ -40,7 +40,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var controlMapPath = HttpContext.Current.Server.MapPath(StoreSettings.NBrightBuyPath());
             themeFolder = "Themes\\" + themeFolder;
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder);
+            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder,"Themes\\" + StoreSettings.Current.ThemeFolder);
             return templCtrl;
         }
 
@@ -367,13 +367,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, bool debugMode = false)
+        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, String themeFolder, bool debugMode = false)
         {
 
             if (!page.Items.Contains("nbrightbuyinject")) page.Items.Add("nbrightbuyinject", "");
             if (templatename != "" && !page.Items["nbrightbuyinject"].ToString().Contains(templatename + ","))
             {
-                var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(), debugMode);
+                var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(),themeFolder, debugMode);
                 var objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
                 includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext,"","XMLData","",StoreSettings.Current.Settings());
                 if (includetext != "")

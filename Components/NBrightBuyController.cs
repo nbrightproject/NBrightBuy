@@ -362,7 +362,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templ;
         }
 
-        public string GetTemplate(string templatename, string lang, bool debugMode = false)
+        public string GetTemplate(string templatename, string lang, string themeFolder, bool debugMode = false)
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
             string templ = null;
@@ -372,7 +372,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (templ == null)
             {
-                var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, StoreSettings.Current.Settings());
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);

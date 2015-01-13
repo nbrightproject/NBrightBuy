@@ -20,7 +20,13 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         {
             base.OnInit(e);
 
-            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "frontofficepageheader.html", DebugMode);
+            var themefolder = "";
+            if (ModSettings.Settings().ContainsKey("themefolder") && ModSettings.Settings()["themefolder"] != "")
+            {
+                themefolder = ModSettings.Settings()["themefolder"];
+            }
+            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "frontofficepageheader.html", themefolder, DebugMode);
+            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "pageheader" + ModuleContext.Configuration.DesktopModule.ModuleName + ".html", themefolder, DebugMode);
         }
 	}
 }
