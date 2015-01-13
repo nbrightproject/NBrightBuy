@@ -19,7 +19,7 @@
     <value xml:space="preserve">Minicart;Fullcart;Kassa</value>
   </data>
   <data name="ddlcarttype.datavalue" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">1 3; 2</value>
+    <value xml:space="preserve">1;3;2</value>
   </data>
   <data name="lbladvancedsettings.Text" lastModified="2014-11-29 14:00:11">
     <value xml:space="preserve">Geavanceerde</value>
