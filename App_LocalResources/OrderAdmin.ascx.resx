@@ -234,4 +234,7 @@
   <data name="addnotes.Text" xml:space="preserve">
     <value>Add a note to the order history</value>
   </data>
+  <data name="emailmsg.Text" xml:space="preserve">
+    <value>Email message for client </value>
+  </data>
 </root>

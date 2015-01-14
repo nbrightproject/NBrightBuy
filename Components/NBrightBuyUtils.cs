@@ -491,7 +491,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
-        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "")
+        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "", String emailmsg = "")
         {
             var ordData = new OrderData(orderId);
             var lang = ordData.Lang;
@@ -514,6 +514,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var emailList = ordData.EmailAddress;
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
+            ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
             SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 

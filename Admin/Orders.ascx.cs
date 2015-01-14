@@ -233,6 +233,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (_uid != "") param[0] = "uid=" + _uid;
             var navigationData = new NavigationData(PortalId, "AdminOrders");
             var cmd = e.CommandName.ToLower();
+            var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
+            var emailoption = "";
 
             switch (cmd)
             {
@@ -325,24 +327,32 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "emailamended":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("orderamended_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderamendedemail.html", "orderamended_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailreceipt":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("orderreceipt_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderreceiptemail.html", "orderreceipt_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailshipped":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("ordershipped_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordershippedemail.html", "ordershipped_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailvalidated":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("ordervalidated_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordervalidatedemail.html", "ordervalidated_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -361,13 +371,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
-        private NotifyCode Update()
+        private NotifyCode Update(String emailoption = "")
         {
             // we don;t have the full field set on this form, so only update the fields we know are there.
             var trackingcode = GenXmlFunctions.GetField(rpDataF, "trackingcode");
             var shippingdate = GenXmlFunctions.GetField(rpDataF, "shippingdate");
             var orderstatus = GenXmlFunctions.GetField(rpDataF, "orderstatus");
+            var showtouser = GenXmlFunctions.GetField(rpDataF, "showtouser");
             var notes = GenXmlFunctions.GetField(rpDataF, "notes");
+            var emailmsg = GenXmlFunctions.GetField(rpDataF, "emailmsg");
+            
             var strUpd = GenXmlFunctions.GetGenXml(rpDataF, "", StoreSettings.Current.FolderUploadsMapPath);
             var nbi = new NBrightInfo(true);
             nbi.XMLData = strUpd;
@@ -382,7 +395,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFileExt = Path.GetExtension(ordData.InvoiceFileName);
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName;
-            ordData.AddAuditMessage(notes);
+            ordData.AddAuditMessage(notes,"msg",UserInfo.Username,showtouser);
+            if (emailoption != "")
+            {
+                emailmsg = emailoption + ": " + emailmsg;
+                ordData.AddAuditMessage(emailmsg, "email", UserInfo.Username, showtouser);                
+            }
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
 
@@ -435,8 +453,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void SendOrderEmail(int orderid, String emailtemplate,String emailsubjectresxkey)
         {
-            var ordData = new OrderData(PortalId, orderid);
-            NBrightBuyUtils.SendEmailOrderToClient(emailtemplate,orderid, emailsubjectresxkey);
+            var emailmsg = GenXmlFunctions.GetField(rpDataF, "emailmsg");
+            NBrightBuyUtils.SendEmailOrderToClient(emailtemplate, orderid, emailsubjectresxkey,"", emailmsg);
         }
 
     }

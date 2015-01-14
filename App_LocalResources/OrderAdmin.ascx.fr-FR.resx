@@ -234,4 +234,7 @@
   <data name="OrderHistory.Text" xml:space="preserve">
     <value>Historique de commande</value>
   </data>
+  <data name="emailmsg.Text" xml:space="preserve">
+    <value>Message de Email pour le client</value>
+  </data>
 </root>

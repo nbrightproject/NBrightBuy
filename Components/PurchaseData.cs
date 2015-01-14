@@ -99,23 +99,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Audit data"
 
-        public void AddAuditMessage(String msg)
+        public void AddAuditMessage(String msg,String type, String username,String showtouser)
         {
             if (msg != "")
             {
                 if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
-                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><msg>" + msg + "</msg></genxml>";
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date>";
+                strXml += "<showtouser>" + showtouser + "</showtouser>";
+                strXml += "<type>" + type + "</type>";
+                strXml += "<username>" + username + "</username>";
+                strXml += "<msg>" + msg + "</msg></genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
             }
 
         }
 
-        public void AddAuditStatusChange(String newstatuscode)
+        public void AddAuditStatusChange(String newstatuscode, String username)
         {
             if (newstatuscode != "")
             {
                 if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
-                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><status>" + newstatuscode + "</status></genxml>";
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><status>" + newstatuscode + "</status>";
+                strXml += "<username>" + username + "</username>";
+                strXml += "<showtouser>True</showtouser>";
+                strXml += "</genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
             }
         }

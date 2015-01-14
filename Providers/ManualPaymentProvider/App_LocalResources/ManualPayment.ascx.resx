@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="checkouttemplate.Text" xml:space="preserve">
     <value>Template</value>
@@ -133,12 +133,12 @@
     <value>Image URL</value>
   </data>
   <data name="ManualPaymentMethod.Text" xml:space="preserve">
-    <value>Manual Payment Method</value>
+    <value>Payment by Cheque or Transfer</value>
   </data>
   <data name="Continue.Text" xml:space="preserve">
     <value>Continue</value>
   </data>
   <data name="ManualPayment.Text" xml:space="preserve">
-    <value>Manual Payment</value>
+    <value>Cheque or Transfer</value>
   </data>
 </root>

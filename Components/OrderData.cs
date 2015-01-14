@@ -47,7 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
                 UserController.GetCurrentUserInfo().IsInRole("Administrators")) 
             {
-                AddAuditMessage("EDIT ORDER");
+                AddAuditMessage("EDIT ORDER","sys",UserController.GetCurrentUserInfo().Username,"False");
                 PurchaseTypeCode = "CART";
                 EditMode = "E";
                 var cartId = base.SavePurchaseData();
@@ -90,7 +90,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             } 
             set
             {
-                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value);
+                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value, UserController.GetCurrentUserInfo().Username);
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
             }  
