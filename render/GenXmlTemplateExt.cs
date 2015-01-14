@@ -33,6 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private string _rootname = "genxml";
         private string _databindColumn = "XMLData";
         private Dictionary<string, string> _settings = null;
+        private Control _container;
 
         #region "Override methods"
 
@@ -41,6 +42,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         public override bool CreateGenControl(string ctrltype, Control container, XmlNode xmlNod, string rootname = "genxml", string databindColum = "XMLData", string cultureCode = "", Dictionary<string, string> settings = null)
         {
+            _container = container;
+
             //remove namespace of token.
             // If the NBrigthCore template system is being used across mutliple modules in the portal (that use a provider interface for tokens),
             // then a namespace should be added to the front of the type attribute, this stops clashes in the tokening system. NOTE: the "tokennamespace" tag is now supported as well
@@ -331,7 +334,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 
                 ProductData prodData;
 
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 var xmlDoc = new XmlDataDocument();
                 string display = "{ON}";
                 string displayElse = "{OFF}";
@@ -658,17 +661,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 // If the Visible flag is OFF then keep it off, even if the child test is true
                 // This allows nested tests to function correctly, by using the parent result.
-                if (!NBrightGlobal.IsVisible)
+                if (!Utils.GetVisibleState(_container))
                 {
-                    if (output == "{ON}" | output == "{OFF}") NBrightGlobal.IsVisibleList.Add(false); // only add level on {} testof
+                    if (output == "{ON}" | output == "{OFF}") Utils.SetVisibleState(_container,false); // only add level on {} testof
                 }
                 else
                 {
-                    if (output == "{ON}") NBrightGlobal.IsVisibleList.Add(true);
-                    if (output == "{OFF}") NBrightGlobal.IsVisibleList.Add(false);
+                    if (output == "{ON}") Utils.SetVisibleState(_container,true);
+                    if (output == "{OFF}") Utils.SetVisibleState(_container,false);
                 }
 
-                if (NBrightGlobal.IsVisible && output != "{ON}") lc.Text = output;
+                if (Utils.GetVisibleState(_container) && output != "{ON}") lc.Text = output;
                 if (output == "{ON}" | output == "{OFF}") lc.Text = ""; // don;t display the test tag
             }
             catch (Exception)
@@ -817,7 +820,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -840,7 +843,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -863,7 +866,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -922,7 +925,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var imagesrc = "0";
                 var imageparams = l.Text.Split(':');
 
@@ -964,7 +967,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 			{
 				//set a default url
 
-                lk.Visible = NBrightGlobal.IsVisible;
+                lk.Visible = Utils.GetVisibleState(_container);
 
 				var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
 
@@ -1018,7 +1021,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //set a default url
 
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 var dataIn = l.Text.Split('*'); 
@@ -1068,7 +1071,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lk.NamingContainer;
             try
             {
-                lk.Visible = NBrightGlobal.IsVisible;
+                lk.Visible = Utils.GetVisibleState(_container);
 
                 var t = "";
                 if (lk.Attributes["tabid"] != null && Utils.IsNumeric(lk.Attributes["tabid"]))
@@ -1107,7 +1110,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var catparam = "";
                 var pagename = PortalSettings.Current.ActiveTab.TabName + ".aspx";
                 var catid = Utils.RequestParam(HttpContext.Current, "catid");
@@ -1143,7 +1146,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 //set a default url
                 var url = DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.FullUrl;
                 l.Text = url;
@@ -1200,7 +1203,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)chk.NamingContainer;
             try
             {
-                chk.Visible = NBrightGlobal.IsVisible;
+                chk.Visible = Utils.GetVisibleState(_container);
                 var xmlNod = GenXmlFunctions.GetGenXmLnode(chk.ID, "checkboxlist", (string)DataBinder.Eval(container.DataItem, _databindColumn));
                 var xmlNodeList = xmlNod.SelectNodes("./chk");
                 if (xmlNodeList != null)
@@ -1338,7 +1341,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
 
                 var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
 
@@ -1437,7 +1440,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
 
                 var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
 
@@ -1487,7 +1490,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 l.Text = "";
                  var strValue = Convert.ToString(DataBinder.Eval(container.DataItem, "ParentItemId"));
                 if (Utils.IsNumeric(strValue))
@@ -1830,9 +1833,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
 
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
 
-                if (NBrightGlobal.IsVisible)
+                if (Utils.GetVisibleState(_container))
                 {
 
                     var xmlDoc = new XmlDataDocument();
@@ -1938,7 +1941,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
                 var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                 var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
@@ -1980,7 +1983,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
                 var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                 var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
@@ -2089,7 +2092,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
 
                 var id = 0;
                 try
@@ -2138,7 +2141,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 var id = 0;
                 try
                 {
@@ -2188,7 +2191,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 var id = 0;
                 try
                 {
@@ -2273,7 +2276,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void ProductoptionsDataBind(object sender, EventArgs e)
         {
-            if (NBrightGlobal.IsVisible)
+            if (Utils.GetVisibleState(_container))
             {
                 #region "Init"
 
@@ -2458,7 +2461,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var rpt = (Repeater)sender;
             var container = (IDataItemContainer)rpt.NamingContainer;
-            rpt.Visible = NBrightGlobal.IsVisible;
+            rpt.Visible = Utils.GetVisibleState(_container);
             if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
             {
                 //build models list
@@ -2493,7 +2496,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)rbl.NamingContainer;
             try
             {
-                rbl.Visible = NBrightGlobal.IsVisible;
+                rbl.Visible = Utils.GetVisibleState(_container);
                 if (rbl.Visible)
                 {
                     var templ = "{name} {price}";
@@ -2555,7 +2558,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
                     var templ = "{name} {price}";
@@ -2609,7 +2612,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)hf.NamingContainer;
             try
             {
-                hf.Visible = NBrightGlobal.IsVisible;
+                hf.Visible = Utils.GetVisibleState(_container);
                 var obj = (NBrightInfo)container.DataItem;
                 if (obj != null) hf.Value = obj.GetXmlProperty("genxml/models/genxml[1]/hidden/modelid");
             }
@@ -2695,7 +2698,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -2819,7 +2822,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -2888,7 +2891,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text);
                 l.Text = navdata.RecordCount;
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
             }
             catch (Exception ex)
             {
@@ -2922,7 +2925,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)cmd.NamingContainer;
             try
             {
-                cmd.Visible = NBrightGlobal.IsVisible;
+                cmd.Visible = Utils.GetVisibleState(_container);
                 if (cmd.Visible)
                 {
                     var index = cmd.Attributes["index"];
@@ -2988,7 +2991,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 if (lc.Visible)
                 {
 
@@ -3052,7 +3055,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void QtyFieldDataBind(object sender, EventArgs e)
         {
             var txt = (TextBox)sender;
-            txt.Visible = NBrightGlobal.IsVisible;
+            txt.Visible = Utils.GetVisibleState(_container);
         }
 
         #endregion
@@ -3081,7 +3084,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var nbi = new NBrightInfo();
             nbi.XMLData = strXml;
             txt.Value = nbi.GetXmlProperty("genxml/hidden/modelid");
-            txt.Visible = NBrightGlobal.IsVisible;
+            txt.Visible = Utils.GetVisibleState(_container);
         }
 
         private void ModelQtyFieldDataBind(object sender, EventArgs e)
@@ -3093,7 +3096,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             nbi.XMLData = strXml;
             if (nbi.GetXmlProperty("genxml/hidden/modelid") == "") txt.Text = "ERR! - MODELQTY can only be used on modellist template";
             txt.Attributes.Add("modelid", nbi.GetXmlProperty("genxml/hidden/modelid"));
-            txt.Visible = NBrightGlobal.IsVisible;
+            txt.Visible = Utils.GetVisibleState(_container);
         }
 
         #endregion
@@ -3125,7 +3128,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lk.NamingContainer;
             try
             {
-                lk.Visible = NBrightGlobal.IsVisible;
+                lk.Visible = Utils.GetVisibleState(_container);
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
 
@@ -3180,7 +3183,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var sp = GetSalePrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3218,7 +3221,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var sp = GetDealerPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3256,7 +3259,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 l.Text = NBrightBuyUtils.GetCurrencyIsoCode();
             }
             catch (Exception ex)
@@ -3285,7 +3288,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var sp = GetFromPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3323,7 +3326,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var sp = GetBestPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3421,7 +3424,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lk.NamingContainer;
             try
             {
-                lk.Visible = NBrightGlobal.IsVisible;
+                lk.Visible = Utils.GetVisibleState(_container);
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 var moduleId = Convert.ToString(DataBinder.Eval(container.DataItem, "ModuleId"));
@@ -3465,7 +3468,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 if (l.Text == "add") l.Text = "<script>nbxajaxaction('a[id*=\"nbxItemListAdd" + entryid + "\"]');</script>";
                 if (l.Text == "remove") l.Text = "<script>nbxajaxaction('a[id*=\"nbxItemListRemove" + entryid + "\"]');</script>";
@@ -3504,7 +3507,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                txt.Visible = NBrightGlobal.IsVisible;
+                txt.Visible = Utils.GetVisibleState(_container);
                 if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
                 else
                 {
@@ -3558,7 +3561,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                txt.Visible = NBrightGlobal.IsVisible;
+                txt.Visible = Utils.GetVisibleState(_container);
                 if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
                 else
                 {
@@ -3611,7 +3614,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -3680,7 +3683,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)img.NamingContainer;
             try
             {
-                img.Visible = NBrightGlobal.IsVisible;
+                img.Visible = Utils.GetVisibleState(_container);
                 var src = "";
 
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), img.ImageUrl);
@@ -3746,7 +3749,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -3808,7 +3811,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -3856,7 +3859,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void EditFlagDataBind(object sender, EventArgs e)
         {
             var lc = (Literal)sender;
-            lc.Visible = NBrightGlobal.IsVisible;
+            lc.Visible = Utils.GetVisibleState(_container);
         }
 
         private void CreateSelectLangaugeButton(Control container, XmlNode xmlNod)
@@ -3882,7 +3885,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void SelectLangaugeDataBind(object sender, EventArgs e)
         {
             var lc = (EditLanguage)sender;
-            lc.Visible = NBrightGlobal.IsVisible;
+            lc.Visible = Utils.GetVisibleState(_container);
         }
 
         private void CreateRegionControl(Control container, XmlNode xmlNod)
@@ -3915,7 +3918,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var container = (IDataItemContainer)ddl.NamingContainer;
                 try
                 {
-                    ddl.Visible = NBrightGlobal.IsVisible;
+                    ddl.Visible = Utils.GetVisibleState(_container);
                     if (ddl.Visible)
                     {
 
@@ -3963,7 +3966,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var container = (IDataItemContainer)txt.NamingContainer;
                 try
                 {
-                    txt.Visible = NBrightGlobal.IsVisible;
+                    txt.Visible = Utils.GetVisibleState(_container);
                     if (txt.Visible)
                     {
                         var show = true;
@@ -4045,7 +4048,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = NBrightGlobal.IsVisible;
+                ddl.Visible = Utils.GetVisibleState(_container);
                 if (ddl.Visible)
                 {
 
@@ -4131,7 +4134,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 if (lc.Visible)
                 {
 
@@ -4192,7 +4195,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 if (lc.Visible)
                 {
 
@@ -4253,7 +4256,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 if (lc.Visible)
                 {
 
@@ -4331,7 +4334,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     if (s != "" && !l.Text.Contains(nbi.GetXmlProperty(s))) l.Text += " " + nbi.GetXmlProperty(s);
                 }
-                l.Visible = NBrightGlobal.IsVisible;
+                l.Visible = Utils.GetVisibleState(_container);
 
             }
             catch (Exception ex)
@@ -4360,7 +4363,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)rbl.NamingContainer;
             try
             {
-                rbl.Visible = NBrightGlobal.IsVisible;
+                rbl.Visible = Utils.GetVisibleState(_container);
                 if (rbl.Visible)
                 {
                     var strXML = Convert.ToString(DataBinder.Eval(container.DataItem, "XMLData"));
@@ -4424,7 +4427,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var nbi = (NBrightInfo) container.DataItem;
             try
             {
-                lc.Visible = NBrightGlobal.IsVisible;
+                lc.Visible = Utils.GetVisibleState(_container);
                 lc.Text = NBrightBuyUtils.FormatToStoreCurrency(nbi.GetXmlPropertyDouble(lc.Text));
             }
             catch (Exception)
