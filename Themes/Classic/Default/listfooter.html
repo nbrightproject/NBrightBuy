@@ -1,0 +1,26 @@
+<!-- Product List footer -->
+
+</div>
+
+[<tag type="if" function="debugmode" display="{ON}" />]
+<div class="debug">[<tag type='valueof' resourcekey='General.DebugMessage' />]</div>
+[<tag type="endif" />]
+
+</div>
+
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+var $container = $('#listwrapper').masonry({
+  columnWidth: [Settings:itemwidth], // List item width - Can also use CSS width of first list item
+  itemSelector: '.product',
+  gutter: [Settings:itemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+  isOriginLeft: true, // Build from right to left if false
+  isOriginTop: true, // Build from bottom to top if false
+});
+
+});
+
+</script>

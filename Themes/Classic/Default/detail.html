@@ -1,0 +1,161 @@
+<!-- detail.html - The product details view template. It has 3 divs (images, purchasing, details) contained within 1 div (productdetail)  -->
+
+[<tag id="includeinheader" type="meta" value="detailpageheader.html" />]<!-- Injects a template with dynamic data into page head section -->
+
+<div class="productdetail" itemscope itemtype="http://schema.org/Product">
+	
+	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" />]
+	<div class="images">
+	<div class="image"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[1]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:imagewidth}' h='{Settings:imageheight}' image='1' />]" alt="[<tag type='productimgdesc' index='1'  />]" title="[<tag type='productimgdesc' index='1'  />]" /></a></div>
+	[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+	<ul class="gallery">
+		[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		<li class="image2"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[2]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='2' />]" alt="[<tag type='productimgdesc' index='2'  />]" title="[<tag type='productimgdesc' index='2'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
+		<li class="image3"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[3]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='3' />]" alt="[<tag type='productimgdesc' index='3'  />]" title="[<tag type='productimgdesc' index='3'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
+		<li class="image4"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[4]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='4' />]" alt="[<tag type='productimgdesc' index='4'  />]" title="[<tag type='productimgdesc' index='4'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="5" display="{ON}" displayelse="{OFF}" />]
+		<li class="image5"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[5]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='5' />]" alt="[<tag type='productimgdesc' index='5'  />]" title="[<tag type='productimgdesc' index='5'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="6" display="{ON}" displayelse="{OFF}" />]
+		<li class="image6"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[6]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='6' />]" alt="[<tag type='productimgdesc' index='6'  />]" title="[<tag type='productimgdesc' index='6'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="7" display="{ON}" displayelse="{OFF}" />]
+		<li class="image7"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[7]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='7' />]" alt="[<tag type='productimgdesc' index='7'  />]" title="[<tag type='productimgdesc' index='7'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="8" display="{ON}" displayelse="{OFF}" />]
+		<li class="image8"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[8]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='8' />]" alt="[<tag type='productimgdesc' index='8'  />]" title="[<tag type='productimgdesc' index='8'  />]" /></a></li>
+		[<tag type="endif" />]
+		[<tag type="if" function="imgexists" testvalue="9" display="{ON}" displayelse="{OFF}" />]
+		<li class="image9"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[9]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:gallerywidth}' h='{Settings:galleryheight}' image='9' />]" alt="[<tag type='productimgdesc' index='9'  />]" title="[<tag type='productimgdesc' index='9'  />]" /></a></li>
+		[<tag type="endif" />]
+	</ul>
+	[<tag type="endif" />]
+</div>
+	[<tag type="endif" />]
+
+<div class="purchasing">
+
+		<h1 itemprop="name">[<tag type="productname" />]</h1>
+
+		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtsummary" testvalue="" display="{OFF}" displayelse="{ON}" />]
+		<div itemprop="description" class="summary">[<tag type="breakof" xpath="genxml/lang/genxml/textbox/txtsummary" />]</div>
+		[<tag type="endif"  />]
+		
+		<div class="price">
+		[<tag type="if" function="isonsale" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.onsale" />] [<tag type="endif"  />]<!-- Sale Label -->
+		[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.from" />] [<tag type="endif" />]<!-- From Label -->
+		<span class="bestprice">[<tag type="bestprice" />]</span><!-- Always show best price -->
+		</div>
+		
+		[<tag type="if" function="isonsale" display="{ON}" />]<!-- If on sale, also show normal retail price -->
+		<div class="retailprice">[<tag type="valueof" resourcekey="ProductView.normally" />] <span class="strikethrough">[<tag type="price" />]</span></div>
+		[<tag type="endif"  />]
+
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+
+		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		<div class="models"><h3>[<tag type="valueof" resourcekey="ProductView.choosemodel" />]</h3>[<tag type="modelsradio" template="{name} {bestprice}" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]</div>
+		[<tag type="endif"  />]
+		
+		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+		<div class="options option1"><span class="optionname optionname1">[<tag type="productoptionname" index="1" />]</span><span class="optionvalue optionvalue1">[<tag type="productoption" index="1" />]</span></div>
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
+		<div class="options option2"><span class="optionname optionname2">[<tag type="productoptionname" index="2" />]</span><span class="optionvalue optionvalue2">[<tag type="productoption" index="2" />]</span></div>
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
+		<div class="options option3"><span class="optionname optionname3">[<tag type="productoptionname" index="3" />]</span><span class="optionvalue optionvalue3">[<tag type="productoption" index="3" />]</span></div>
+		[<tag type="endif"  />]
+		[<tag type="if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
+		<div class="options option4"><span class="optionname optionname4">[<tag type="productoptionname" index="4" />]</span><span class="optionvalue optionvalue4">[<tag type="productoption" index="4" />]</span></div>
+		[<tag type="endif"  />]
+		
+		[<tag type="endif"  />]<!-- End Catalogue mode -->
+
+	
+    [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+    <div class="buy">
+
+    [<tag type="if" function="isinstock" testvalue="0" display="{ON}"/>]
+    <div class="quantityoptions">
+      <a itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)">-</a>
+      [<tag type="addqty" text="1" width="21" cssclass="quantity" />]
+      <a itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)">+</a>
+    </div>
+    [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton" commandname="addtobasket" commandargument="ItemID" />]
+    [<tag type="endif"  />]
+
+		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
+		<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>
+		[<tag type="endif"  />]
+
+		<span class="return">[<tag type="returnlink" resourcekey="ProductView.return" cssclass="classicbutton" />]</span>
+
+		</div>
+    [<tag type="endif"  />]<!-- End Catalogue mode -->
+
+		[<tag type="if" function="settings" key="sharingwidget" testvalue="" display="{OFF}" />]<!-- Sharing widget -->
+		<div class="sharingwidget">[Settings:sharingwidget]</div>
+		[<tag type="endif"  />]
+
+</div>
+
+<!-- Details -->
+<div class="details">
+	
+<h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
+<section>[<tag type="description" />]</section>
+        
+[<tag type="if" function="hasdocuments" display="{ON}" />]
+<h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
+<section>
+            <ul class="fa-ul documents">
+	            [<tag type="if" xpath="genxml/docs/genxml[[1]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="1" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="1" />]
+	            [<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="1" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[2]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="2" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="2" />]
+	            [<tag type="if" function="isdocpurchased" index="2" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="2" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+	            
+	            [<tag type="if" xpath="genxml/docs/genxml[[3]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="3" />]</span>
+	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="3" />]
+	            [<tag type="if" function="isdocpurchased" index="3" display="{OFF}" />]
+	            [<tag type="if" function="isdocpurchasable" index="3" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+	            [<tag type="endif" />]
+	            </li>
+	            [<tag type="endif" />]
+            </ul>
+</section>
+[<tag type="endif" />]
+        
+[<tag type="if" function="hasrelateditems" display="{ON}" />]
+<h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
+<section id="relatedwrapper">
+[<tag type="relatedproducts" template="relatedlist.html" />]
+</section>
+[<tag type="endif"  />]
+
+</div>
+
+</div>
+
+[<tag type="if" function="debugmode" display="{ON}" />]
+<div class="debug">[<tag type='valueof' resourcekey='General.DebugMessage' />]</div>
+[<tag type="endif" />]
