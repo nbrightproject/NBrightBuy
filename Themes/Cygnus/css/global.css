@@ -1,0 +1,179 @@
+/*#Body {background:#FFF}Temporary white for DNN skin */
+.dnnEditState .DnnModule{opacity:1 !important;transition:none !important;}/* Fix DNN */
+
+/* Common */
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+.nbs{}
+
+/* Debug mode message */
+.debug{clear:both;background:#AB0000;color:#FFFFFF;font-weight:bold;padding:2px;text-align:center;}
+
+/* Default buttons */
+.nbs .primarybutton{background:#1AA8E3;color:#FFFFFF;}
+.nbs .primarybutton:hover{background:#23BAF5;color:#FFFFFF;}
+.nbs .secondarybutton{background:#C2C2C2;color:#FFFFFF;}
+.nbs .secondarybutton:hover{background:#777777;color:#FFFFFF;}
+.nbs .warningbutton{background:#c62222;color:#FFFFFF;}
+.nbs .warningbutton:hover{background:#DD2222;color:#FFFFFF;}
+.nbs .primarybutton,.nbs .secondarybutton,.nbs .warningbutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
+.nbs .primarybutton:hover,.nbs .secondarybutton:hover,.nbs .warningbutton:hover{text-decoration:none;}
+
+/* Alert overlays*/
+.alertmessage label{cursor:default;}
+.notification{display:none;left:0;position:absolute;z-index:999;top:0;width:100%;}
+/* To dim the background Elements */
+.dark-back{position:fixed;z-index:999;top:0px;opacity:0.9;background-color:black;width:100%;height:100%;}
+/* The Notification body */
+.win8-notif-body{box-sizing:border-box;font-family:sans-serif;margin:0;min-height:20%;padding:40px 20%;position:fixed;text-align:left;top:30%;width:100%;z-index:1000;}
+.win8-notif-body h3{font-size:x-large;color:#ffffff;text-transform:capitalize;}
+.win8-notif-body p{font-size:medium;color:#ffffff;}
+.win8-notif-button{border:solid 2px #ffffff;color:#ffffff !important;padding:10px;min-width:10%;display:block;margin-top:2%;margin-left:2%;float:right;font-weight:bold;margin-bottom:2%;text-decoration:none;text-transform:uppercase;}
+.win8-notif-button:hover{text-decoration:none;color:#ffffff;}
+/*  Various Colors supported by Windows 8.x */
+.black{background-color:rgb(39, 37, 37);}
+.black a{background-color:rgb(66, 60, 60);cursor:pointer;}
+.black .win8-notif-body{background-color:rgb(39, 37, 37);}
+.black a:hover{background-color:rgb(182, 44, 88);}
+.green{background-color:rgb(50, 179, 106);}
+.green a{background-color:rgb(50, 179, 106);cursor:pointer;}
+.green .win8-notif-body{background-color:rgb(50, 179, 106);}
+.green a:hover{background-color:rgb(29, 92, 56);}
+.teal{background-color:#008299;}
+.teal a{background-color:#008299;cursor:pointer;}
+.teal .win8-notif-body{background-color:#008299;}
+.teal a:hover{background-color:#00A0B1;}
+.blue{background-color:#2672EC;}
+.blue a{background-color:#2672EC;cursor:pointer;}
+.blue .win8-notif-body{background-color:#2672EC;}
+.blue a:hover{background-color:#2E8DEF;}
+.purple{background-color:#8C0095;}
+.purple a{background-color:#8C0095;cursor:pointer;}
+.purple .win8-notif-body{background-color:#8C0095;}
+.purple a:hover{background-color:#A700AE;}
+.dark-purple{background-color:#5133AB;}
+.dark-purple a{background-color:#5133AB;cursor:pointer;}
+.dark-purple .win8-notif-body{background-color:#5133AB;}
+.dark-purple a:hover{background-color:#643EBF;}
+.pink{background-color:rgb(244, 114, 208);}
+.pink a{background-color:rgb(244, 114, 208);cursor:pointer;}
+.pink .win8-notif-body{background-color:rgb(244, 114, 208);}
+.pink a:hover{background-color:#BF1E4B;}
+.red{background-color:#AC193D;}
+.red a{background-color:#AC193D;cursor:pointer;}
+.red .win8-notif-body{background-color:#AC193D;}
+.red a:hover{background-color:#BF1E4B;}
+.orange{background-color:#D24726;}
+.orange a{background-color:#D24726;cursor:pointer;}
+.orange .win8-notif-body{background-color:#D24726;}
+.orange a:hover{background-color:#DC572E;}
+.amber{background-color:rgb(240, 163, 10);}
+.amber a{background-color:rgb(240, 163, 10);cursor:pointer;}
+.amber .win8-notif-body{background-color:rgb(240, 163, 10);}
+.amber a:hover{background-color:#FFAC0A;}
+.yellow{background-color:rgb(227, 200, 0);}
+.yellow a{background-color:rgb(227, 200, 0);cursor:pointer;}
+.yellow .win8-notif-body{background-color:rgb(227, 200, 0);}
+.yellow a:hover{background-color:#F5DB00;}
+.brown{background-color:rgb(130, 90, 44);}
+.brown a{background-color:rgb(130, 90, 44);cursor:pointer;}
+.brown .win8-notif-body{background-color:rgb(130, 90, 44);}
+.brown a:hover{background-color:#A97439;}
+
+/* Misc */
+.large{font-size:115%}
+.larger{font-size:150%}
+.nowrap{white-space:nowrap;}
+.text-right{text-align:right !important;}
+/* Gallagher clearfix */
+.clearfix:before, .clearfix:after{content:" ";display:table;}
+.clearfix:after{clear:both;}
+.clearfix{*zoom:1;}
+.noborders, .noborders th, .noborders td{border:none !important;}
+/* Custom strike for sale pricing */
+.strikethrough{position:relative;white-space:nowrap;}
+.strikethrough:after{border-top:2px solid #D00000;position:absolute;content:"";right:-3px;top:45%;left:-3px;opacity:0.5}
+input[type=radio].invalid{box-shadow:0 0 4px #ff0000;}
+
+/**********************************************************/
+/* MEDIA QUERIES : NEEDS TO BE DIVIDED IN EACH .CSS FILES */
+/**********************************************************/
+
+/* Responsive layout - Any screen at less than 768px - Most tablets */
+@media only screen 
+and (min-width : 481px) 
+and (max-width : 768px) {
+.panel{padding:30px 60px;}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment, #addressinput{min-width:240px;width:100%;float:none;}
+.checkoutextra .summaryleft, .checkoutextra .checkoutdetails{width:100%;}
+#checkoutitemlist .detailscolumn .details{clear:left;}
+#checkoutitemlist .detailscolumn .noimage{height:160px;margin-right:0;width:160px;}
+#checkoutitemlist .detailscolumn .image{height:160px;margin-right:0;width:160px;}
+#checkoutitemlist .detailscolumn .image{height:160px;width:160px;}
+#chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
+#chronopostrelaistemplate #map-canvas{width:100%;height:400px;float:none;}
+#checkoutselectaddress li{width:48%;margin:0 2% 24px 0;min-width:240px;}
+#orderadmin .orders .removecolumn{display:none;}
+#payment h1{font-size:28px;margin:24px 58px;}
+.paymentcomplete, .paymentfailed{width:80%;}
+#imagelightbox-close{top:1.25em;right:1.25em;}
+#imagelightbox-nav{bottom:1.25em;}
+.currencyconverter, .ccinfo{display:table-row;}
+
+}
+
+/* Responsive layout - Any screen at less than 480px - Most phones */
+@media only screen 
+and (min-width : 0px) 
+and (max-width : 480px) {
+.panel{padding:15px;margin-bottom:15px;}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{width:100%;float:none;}
+#cartlist{padding:0;}
+.checkoutextra .summaryleft, .checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
+#checkoutitemlist .detailscolumn .details{clear:left;}
+#checkoutitemlist .detailscolumn .noimage{height:130px;margin-right:0;width:130px;}
+#checkoutitemlist .detailscolumn .image{height:130px;margin-right:0;width:130px;}
+.pricecolumn, .removecolumn{display:none;}
+#chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
+#chronopostrelaistemplate #map-canvas{width:100%;height:320px;float:none;}
+#checkoutselectaddress li{width:100%;margin:0 0 15px 0;min-width:240px;}
+#orderadmin .leftside{margin:0 0 15px;width:100%;}
+#orderadmin .rightside{margin:0;width:100%;}
+#orderadmin .rightside .text-right{text-align:left !important;}
+#orderadmin .panel{padding:15px;}
+#payment .paymentlogo{float:none;margin:0 0 15px;}
+#payment h1{font-size:22px;margin:15px;}
+.paymentcomplete, .paymentfailed{width:100%;}
+#imagelightbox-close{top:1.25em;right:1.25em;}
+#imagelightbox-nav{bottom:1.25em;}
+.currencyconverter, .ccinfo{display:table-row;}
+
+}
+
+/* Responsive layout - iPhones in portrait and landscape view
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) {
+}*/
+
+/* Responsive layout - iPads in portrait and landscape view
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+} */
+
+
+
+/* Responsive Product List and Detail
+@media only screen and (max-width: 1200px){
+.productdetail .purchasing{width:100%}
+}
+@media only screen and (max-width: 380px){
+.productdetail .images {float: none;margin-right: 0;width: 100% !important;}
+.productdetail .gallery li {height: auto;width: 20%;}
+}
+ */
+

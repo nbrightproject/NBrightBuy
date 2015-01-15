@@ -1,0 +1,73 @@
+/* Minicart */
+.minicart{background:#041839;margin-bottom:24px;max-width:240px;}
+.minicart .checkoutbuttonleft, .minicart .checkoutbuttonright{color:#FFFFFF;display:inline-block;font-size:16px;line-height:35px;padding:0 16px;}
+.minicart .checkoutbuttonright{background:#AE0051;font-weight:bold;float:right;}
+.minicart .checkoutbuttonright:hover{background:#FF0076;}
+
+/* Checkout and Order manager panel style */
+.panel{background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}
+#cartdetails{overflow:hidden;padding:1%;}/* some padding for panel shadows */
+
+/* Checkout */
+#cartdetails H3{line-height:34px;margin:0 0 12px;padding:0;}
+#cartdetails H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
+#cartdetails .formrow{clear:both;}
+#cartlist .formrow{clear:both;text-align:right;}
+#cartdetails .chooseaddress{background:#fefff4;box-shadow:none;padding:3px;}
+#cartdetails .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
+#cartdetails .leftside{float:left;width:48%;}
+#cartdetails .rightside{float:right;width:48%;}
+#shippingoptions{margin-bottom:10px;}
+#shippingoptions input{vertical-align:-2px;margin:0 0 0 10px;}
+#shippingoptions label{line-height:22px;margin:0 0 0 6px;}
+.checkoutship input{vertical-align:-2px;margin:0 0 0 10px;}
+.checkoutship label{line-height:22px;margin:0 0 0 6px;}
+#checkoutdetails .primarybutton{margin-right:0;}
+.checkoutextra .summaryleft{float:left;width:43%;min-width:240px;overflow:hidden;margin-bottom:25px;}
+.checkoutextra .summaryright{float:right;min-width:240px;width:45%;}
+.summaryleft .newscheckbox{padding-top:26px;}
+.checkoutdetails{list-style:none outside none;margin:0;padding:0 0 15px;display:inline-block;}
+.checkoutdetails li{line-height:180%;}
+.checkoutdetails li div{display:inline-block;width:140px;}
+.checkoutdetails li.total{border-top:2px solid #bbbbbb;margin-bottom:12px;}
+.checkoutdetails .submission{margin-top:15px;}
+.checkoutdetails .dnnForm{margin-bottom:4px}
+.productdetail .purchasing{}
+#cartempty{}
+#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{overflow:hidden;box-sizing:border-box;}
+#cartbilladdress{float:left;width:47%;margin-bottom:30px;min-width:240px;}
+#cartshippingoptions{float:right;width:47%;margin-bottom:30px;min-width:240px;}
+#cartshippingmethods{clear:both;width:100%;margin-bottom:30px;}
+#cartextra{clear:both;width:100%;margin-bottom:30px;}
+#cartlist{clear:both;width:100%;margin-bottom:30px;overflow:visible;}
+#cartlist .secondarybutton{margin-right:0;}
+#cartdetails .radiobuttonlist .dnnRadiobutton{margin:0 0 9px;}
+#cartdetails .radiobuttonlist .dnnBoxLabel{margin-right:15px;}
+
+/* cartlist Table - www.csstablegenerator.com */
+#cartlist{margin-bottom:24px;}
+#cartlist table{margin:0px;padding:0px;width:100%;border-collapse:collapse;border-spacing:0;width:100%;}
+#cartlist table tr:nth-child(odd){background-color:#f2f2f2;}
+#cartlist table tr:nth-child(even){background-color:#ffffff;}
+#cartlist table td{vertical-align:middle;text-align:center;padding:6px;font-family:inherit;font-weight:normal;border:1px solid #DDDDDD;padding:10px;text-align:center;}
+#cartlist table tr:last-child td{}
+#cartlist table tr td:last-child{}
+#cartlist table tr:last-child td:last-child{}
+#cartlist table th{background:#777777;color:#FFFFFF;line-height:34px;padding:0;}
+#cartlist table tr:first-child td:first-child{}
+#cartlist table tr:first-child td:last-child{}
+
+/* cartlist items */
+#cartlist .detailscolumn .noimage{float:left;height:100px;margin-right:12px;width:100px;}
+#cartlist .detailscolumn .image{float:left;height:100px;margin-right:12px;width:100px;}
+#cartlist .detailscolumn img{width:100%;height:100%;}
+#cartlist .detailscolumn .details{overflow:hidden;}
+#cartlist th.detailscolumn{padding-left:12px;}
+#cartlist .detailscolumn{text-align:left;}
+#cartlist .detailscolumn .title{font-weight:bold;}
+#cartlist .cartlistoptions{clear:both;}
+#cartlist .quantity{box-shadow:none;text-align:center;width:33px;}
+#cartlist .ui-spinner{font-size:17px;}
+#cartlist .deleteitem{}
+#cartlist .fa-times-circle{color:#666;}
+#cartlist .fa-times-circle:hover{color:#C80000;}

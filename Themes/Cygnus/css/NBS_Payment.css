@@ -1,0 +1,5 @@
+/* Payment */
+#payment{width:66%;margin:0 auto;padding:1%;}/* padding to allow for box shadow on panel */
+#payment .paymentlogo{float:right;margin:0 0 15px 15px;}
+#payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
+.paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}
