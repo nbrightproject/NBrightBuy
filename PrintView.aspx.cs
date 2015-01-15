@@ -105,6 +105,11 @@ namespace Nevoweb.DNN.NBrightBuy
                             DisplayOrderData(portalId, objUserInfo, _itemid);
                             break;
                         }
+                    case "printproduct":
+                        {
+                            DisplayProductData(portalId, _itemid);
+                            break;
+                        }
                 }           
                 
             }
@@ -154,6 +159,26 @@ namespace Nevoweb.DNN.NBrightBuy
                         strOut = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                         if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, strOut);                       
                     }
+                }
+            }
+            var l = new Literal();
+            l.Text = strOut;
+            phData.Controls.Add(l);
+        }
+
+        private void DisplayProductData(int portalId, String entryId)
+        {
+            var strOut = "***ERROR***  Invalid Data";
+            if (Utils.IsNumeric(entryId) && entryId != "0")
+            {
+                var prodData = new ProductData(Convert.ToInt32(entryId),Utils.GetCurrentCulture());
+                if (prodData.Exists)
+                {
+                    var modCtrl = new NBrightBuyController();
+                    var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+
+                    strOut = GenXmlFunctions.RenderRepeater(prodData.Info, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                    if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(prodData.Info.XMLData, strOut);
                 }
             }
             var l = new Literal();

@@ -208,16 +208,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var defcatid = 0;
             var qrycatid = Utils.RequestQueryStringParam(request, "catid");
-            if (Utils.IsNumeric(entryId) && entryId > 0) defcatid = GetDefaultCatId(entryId);
-
-            if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
+            // always use the catid in url if we have no target module
+            if (Utils.IsNumeric(qrycatid) && targetModuleKey == "") return GetCategory(Convert.ToInt32(qrycatid));
 
             if (targetModuleKey != "")
             {
                 var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
+                // always use the catid in url if we have no navigation categoryid for the target module.
+                if (Utils.IsNumeric(qrycatid) && defcatid == 0) return GetCategory(Convert.ToInt32(qrycatid));
             }
 
+            // use the first/default category the proiduct has
+            if (Utils.IsNumeric(entryId) && entryId > 0) defcatid = GetDefaultCatId(entryId);
+
+            // get any default set in the settings
             if (defcatid == 0)
             {
                 if (settings != null && settings["defaultcatid"] != null)

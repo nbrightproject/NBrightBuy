@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -86,6 +87,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "productoption":
                     Createproductoptions(container, xmlNod);
+                    return true;
+                case "productlist":
+                    Createproductlist(container, xmlNod);
                     return true;
                 case "modelslist":
                     Createmodelslist(container, xmlNod);
@@ -508,6 +512,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 info = (NBrightInfo)container.DataItem;
                                 prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
                                 if (prodData.HasProperty(testValue))
+                                {
+                                    dataValue = "TRUE";
+                                    testValue = "TRUE";
+                                }
+                                break;
+                            case "isincategory":
+                                dataValue = "FALSE";
+                                info = (NBrightInfo)container.DataItem;
+                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                                if (prodData.IsInCategory(testValue))
                                 {
                                     dataValue = "TRUE";
                                     testValue = "TRUE";
@@ -954,6 +968,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["tabid"] != null) lk.Attributes.Add("tabid", xmlNod.Attributes["tabid"].InnerText);
                 if (xmlNod.Attributes["modkey"] != null) lk.Attributes.Add("modkey", xmlNod.Attributes["modkey"].InnerText);
                 if (xmlNod.Attributes["xpath"] != null) lk.Attributes.Add("xpath", xmlNod.Attributes["xpath"].InnerText);
+                if (xmlNod.Attributes["catid"] != null) lk.Attributes.Add("catid", xmlNod.Attributes["catid"].InnerText);
             }
             lk.DataBinding += EntryLinkDataBinding;
             container.Controls.Add(lk);
@@ -984,7 +999,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 			    var moduleref = "";
                 if ((lk.Attributes["modkey"] != null)) moduleref = lk.Attributes["modkey"];
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
                 lk.NavigateUrl = url;
 
 			}
@@ -1003,11 +1018,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var t = PortalSettings.Current.ActiveTab.TabID.ToString("");
                 var mk = "";
                 var xp = "";
+                var c = "";
                 if (xmlNod.Attributes["tabid"] != null) t = xmlNod.Attributes["tabid"].InnerText;
                 if (xmlNod.Attributes["modkey"] != null) mk = xmlNod.Attributes["modkey"].InnerText;
                 if (xmlNod.Attributes["xpath"] != null) xp = xmlNod.Attributes["xpath"].InnerText;
+                if (xmlNod.Attributes["catid"] != null) c = xmlNod.Attributes["catid"].InnerText;
 
-                l.Text = t + '*' + mk + '*' + xp.Replace('*','-');
+                l.Text = t + '*' + mk + '*' + xp.Replace('*','-') + '*' + c;
             }
             l.DataBinding += EntryUrlDataBinding;
             container.Controls.Add(l);
@@ -1028,16 +1045,21 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var urlname = "Default";
                 var t = "";
                 var moduleref = "";
+                var c = "";
 
-                if (dataIn.Length == 3)
+                if (dataIn.Length == 4)
                 {
                     if (Utils.IsNumeric(dataIn[0])) t = dataIn[0];
                     if (Utils.IsNumeric(dataIn[1])) moduleref = dataIn[1];
+                    if (Utils.IsNumeric(dataIn[3])) c = dataIn[3];
                     var nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), dataIn[2]);
                     if ((nod != null)) urlname = nod.InnerText;
+                    // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
+                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/categoryid");
+                    if (nod != null && c == "" && Utils.IsNumeric(nod.InnerText)) c = nod.InnerText;
                 }
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
                 l.Text = url;
 
             }
@@ -1847,7 +1869,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         // Must be displaying a product or category with (NBrightInfo), so get categoryid
                         var objCInfo = (NBrightInfo) container.DataItem;
-                        if (objCInfo.TypeCode == "PRD" || String.IsNullOrEmpty(objCInfo.TypeCode)) // no type is list header, so use catid in url if there. 
+                        if (String.IsNullOrEmpty(objCInfo.TypeCode) || objCInfo.TypeCode == "PRD") // no type is list header, so use catid in url if there. 
                         {
                             //Is product so get categoryid    
                             var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
@@ -2285,6 +2307,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var objInfo = (NBrightInfo) container.DataItem;
                 var useCtrlType = "";
                 var index = "1";
+
+                var xpathprefix = "";
+                var cartrecord = objInfo.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+                if (cartrecord) xpathprefix = "genxml/productxml/";
+
                 DropDownList ddl = null;
                 CheckBox chk = null;
                 TextBox txt = null;
@@ -2318,15 +2345,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var optionid = "";
                 var optiondesc = "";
                 XmlNodeList nodList = null;
-                var nod = objInfo.XMLDoc.SelectSingleNode("genxml/options/genxml[" + index + "]/hidden/optionid");
+                var nod = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/options/genxml[" + index + "]/hidden/optionid");
                 if (nod != null)
                 {
                     optionid = nod.InnerText;
                     if (hid != null) hid.Value = optionid;
-                    var nodDesc = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
+                    var nodDesc = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
                     if (nodDesc != null) optiondesc = nodDesc.InnerText;
 
-                     nodList = objInfo.XMLDoc.SelectNodes("genxml/optionvalues[@optionid='" + optionid + "']/*");
+                    nodList = objInfo.XMLDoc.SelectNodes(xpathprefix + "genxml/optionvalues[@optionid='" + optionid + "']/*");
                      if (nodList != null)
                      {
                          switch (nodList.Count)
@@ -2372,7 +2399,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 {
                                     var optionvalueid = nodVal.InnerText;
                                     var li = new ListItem();
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null)
                                     {
                                         li.Text = nodLang.InnerText;
@@ -2382,8 +2409,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 }
                                 lp += 1;
                             }
+                            if (cartrecord)
+                            {
+                                // assign cart value   
+                                var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
+                                if (selectSingleNode != null && ddl.Items.FindByValue(selectSingleNode.InnerText) != null) ddl.SelectedValue = selectSingleNode.InnerText;
+                            }
+                            else
+                            {
                             if (nodList.Count > 0) ddl.SelectedIndex = 0;
                         }
+                        }
+
 
                     }
                     catch (Exception)
@@ -2406,13 +2443,19 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 var nodVal = nodOptVal.SelectSingleNode("hidden/optionvalueid");
                                 if (nodVal != null)
                                 {
+                                    chk.Text = "";
                                     var optionvalueid = nodVal.InnerText;
-                                    var nodLang = objInfo.XMLDoc.SelectSingleNode("genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
-                                    if (nodLang != null)
-                                    {
-                                        chk.Text = nodLang.InnerText;
+                                    var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
+                                    if (nodLang != null) chk.Text = nodLang.InnerText;
+
                                         chk.Attributes.Add("optionvalueid",optionvalueid);
                                         chk.Attributes.Add("optionid", optionid);
+
+                                    if (cartrecord)
+                                    {
+                                        // assign cart value   
+                                        var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvalueid");
+                                        if (selectSingleNode != null && selectSingleNode.InnerText == "True") chk.Checked = true;
                                     }
                                 }
                                 lp += 1;
@@ -2433,9 +2476,80 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     txt.Enabled = true;
                     txt.Attributes.Add("optionid", optionid);
                     txt.Attributes.Add("optiondesc", optiondesc);
+                    if (cartrecord)
+                    {
+                        // assign cart value   
+                        var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvaltext");
+                        if (selectSingleNode != null) txt.Text = selectSingleNode.InnerText;
                 }
+
             }
         }
+        }
+
+        #endregion
+
+        #region "productlist"
+
+        private void Createproductlist(Control container, XmlNode xmlNod)
+        {
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                var templName = xmlNod.Attributes["template"].Value;
+                var buyCtrl = new NBrightBuyController();
+                var rpTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
+
+                //remove templName from template, so we don't get a loop.
+                if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                var rpt = new Repeater { ItemTemplate = new GenXmlTemplate(rpTempl, _settings) };
+                rpt.Init += ProductlistInit; // use init so we don;t get a infinate loop on databind.
+                var paramList = new Dictionary<String, String>();
+                var cascade = "false";
+                var orderby = " order by NB3.ProductName";
+                if (xmlNod.Attributes["cascade"] != null) cascade = xmlNod.Attributes["cascade"].Value;
+                paramList.Add("cascade", cascade);
+                if (xmlNod.Attributes["orderby"] != null) orderby = xmlNod.Attributes["orderby"].Value;
+                paramList.Add("orderby", orderby);
+                rpt.DataSource = paramList;
+                container.Controls.Add(rpt);
+            }
+        }
+
+        private void ProductlistInit(object sender, EventArgs e)
+        {
+            var rpt = (Repeater)sender;
+            var container = (IDataItemContainer)rpt.NamingContainer;
+            rpt.Visible = visibleStatus.Last();
+            if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
+            {
+                //build models list
+                var nbi = (GroupCategoryData)container.DataItem;
+                var paramList = (Dictionary<String, String>) rpt.DataSource;
+                var buyCtrl = new NBrightBuyController();
+                var strFilter = "";
+                var strOrder = paramList["orderby"];
+
+                var cascade = paramList["cascade"];
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+                if (cascade.ToLower() == "true")
+                {
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+                }
+                else
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+
+                var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId,-1,"PRD","PRDLANG",Utils.GetCurrentCulture(),strFilter,strOrder) ;
+                // inject the categoryid into the data, so the entryurl can have the correct catid
+                foreach (var i in objL)
+                {
+                    i.SetXmlProperty("genxml/categoryid", nbi.categoryid.ToString(""));
+                }
+                rpt.DataSource = objL;
+                rpt.DataBind();
+            }
+        }
+
 
         #endregion
 
@@ -2567,8 +2681,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         templ = ddl.Attributes["template"];
                         ddl.Attributes.Remove("template");                        
                     }
+                    var dataInfo = (NBrightInfo) container.DataItem;
 
-                    var objL = BuildModelList((NBrightInfo)container.DataItem, true);
+                    var objL = BuildModelList(dataInfo, true);
 
                     var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
 
@@ -2588,7 +2703,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") ddl.Items.Add(li);
                     }
-                    if (ddl.Items.Count > 0) ddl.SelectedIndex = 0;
+
+                    if (ddl.Items.Count > 0)
+                    {
+                        if (ddl.Items.FindByValue(dataInfo.GetXmlProperty("genxml/modelid")) != null)
+                            ddl.SelectedValue = dataInfo.GetXmlProperty("genxml/modelid");
+                        else
+                            ddl.SelectedIndex = 0;
+                }
                 }
 
             }
@@ -4125,7 +4247,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 lc.Text = xmlNod.Attributes["template"].Value;
+                if (xmlNod.Attributes["groupby"] != null) lc.Text = lc.Text + ":GROUPBY";
             }
+            
             lc.DataBinding += OrderItemlistDataBind;
             container.Controls.Add(lc);
         }
@@ -4144,6 +4268,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
                     if (lang == "") lang = Utils.GetCurrentCulture();
+                    var groupresults = false;
+                    if (lc.Text.EndsWith(":GROUPBY"))
+                    {
+                        groupresults = true;
+                        lc.Text = lc.Text.Replace(":GROUPBY", "");
+                    }
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
@@ -4159,8 +4289,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings, visibleStatus);
-                        }
+							strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings, visibleStatus);                        }
                         catch (Exception exc)
                         {
                             strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
@@ -4247,6 +4376,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 lc.Text = xmlNod.Attributes["template"].Value;
+                if (xmlNod.Attributes["groupby"] != null) lc.Text = lc.Text + ":GROUPBY";
             }
             lc.DataBinding += CartItemlistDataBind;
             container.Controls.Add(lc);
@@ -4266,6 +4396,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
                     if (lang == "") lang = Utils.GetCurrentCulture();
+                    var groupresults = false;
+                    if (lc.Text.EndsWith(":GROUPBY"))
+                    {
+                        groupresults = true;
+                        lc.Text = lc.Text.Replace(":GROUPBY", "");
+                    }
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
@@ -4281,7 +4417,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(), rpTempl, "", "XMLData", "", _settings);
+                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings);
                         }
                         catch (Exception exc)
                         {
@@ -4446,15 +4582,21 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj,Boolean addSalePrices = false)
         {
+            // see  if we have a cart record
+            var xpathprefix = "";
+            var cartrecord = dataItemObj.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+            if (cartrecord) xpathprefix = "genxml/productxml/";
+
             //build models list
             var objL = new List<NBrightInfo>();
-            var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
+            var nodList = dataItemObj.XMLDoc.SelectNodes(xpathprefix + "genxml/models/*");
             if (nodList != null)
             {
 
                 #region "Init"
 
                 var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+
 
                 #endregion
 
@@ -4484,7 +4626,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                                 #region "Add Lanaguge Data"
 
-                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode("genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
+                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
                                 if (nodLang != null)
                                 {
                                     o.AddSingleNode("lang", "", "genxml");
@@ -4513,9 +4655,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 #endregion
 
                                 // product data for display in modellist
-                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
-                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty("genxml/textbox/txtproductref"));
+                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty(xpathprefix + "genxml/lang/genxml/textbox/txtproductname"));
+                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty(xpathprefix + "genxml/textbox/txtproductref"));
+
+                                if (cartrecord)
+                                    o.SetXmlProperty("genxml/hidden/productid", dataItemObj.GetXmlProperty("genxml/productid"));
+                                else
                                 o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
+
 
                                 objL.Add(o);
                             }

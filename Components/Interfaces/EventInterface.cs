@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+using DotNetNuke.Entities.Portals;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -21,7 +23,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 		// singleton reference to the instantiated object 
 
-        private static EventInterface objProvider = null;
+        private static Dictionary<String, EventInterface> _providerList;
         // constructor
         static EventInterface()
 		{
@@ -31,28 +33,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 		// dynamically create provider
 		private static void CreateProvider()
 		{
-			ObjectHandle handle = null;
-			string[] Prov = null;
-			string ProviderName = null;
 
-            ProviderName = StoreSettings.Current.Get("event.provider");
-            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.EventProvider,Nevoweb.DNN.NBrightBuy.Providers.EventProvider";
-            if (!string.IsNullOrEmpty(ProviderName))
-			{
-			    Prov = ProviderName.Split(',');
-				handle = Activator.CreateInstance(Prov[0], Prov[1]);
-                objProvider = (EventInterface)handle.Unwrap();
-			}
+            string providerName = null;
+
+            _providerList = new Dictionary<string, EventInterface>();
+
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var l = pluginData.GetEventsProviders();
+
+            foreach (var p in l)
+            {
+                var prov = p.Value;
+                ObjectHandle handle = null;
+                handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                var objProvider = (EventInterface)handle.Unwrap();
+                var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
+                var lp = 1;
+                while (_providerList.ContainsKey(ctrlkey))
+                {
+                    ctrlkey = ctrlkey + lp.ToString("");
+                    lp += 1;
+                }
+                objProvider.Key = ctrlkey;
+                _providerList.Add(ctrlkey, objProvider);
+            }
+
+
         }
 
 		// return the provider
-        public static new EventInterface Instance()
+        public static new EventInterface Instance(String ctrlkey)
 		{
-            return objProvider;
+            if (_providerList.ContainsKey(ctrlkey)) return _providerList[ctrlkey];
+            if (_providerList.Count > 0) return _providerList.Values.First();
+            return null;
 		}
 
 		#endregion
-        
+
+        public abstract String Key { get; set; }
+
         public abstract NBrightInfo ValidateCartBefore(NBrightInfo cartInfo);
         public abstract NBrightInfo ValidateCartAfter(NBrightInfo cartInfo);
 

@@ -8,6 +8,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 {
     public class EventProvider : Nevoweb.DNN.NBrightBuy.Components.Interfaces.EventInterface 
     {
+        public override string Key { get; set; }
+
         public override NBrightInfo ValidateCartBefore(NBrightInfo cartInfo)
         {
             throw new NotImplementedException();

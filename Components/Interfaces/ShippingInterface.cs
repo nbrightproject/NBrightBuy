@@ -23,7 +23,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 		// singleton reference to the instantiated object 
 
-        //private static ShippingInterface objProvider = null;
 	    private static Dictionary<String,ShippingInterface> _providerList; 
         // constructor
         static ShippingInterface()

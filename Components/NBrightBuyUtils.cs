@@ -26,6 +26,7 @@ using NBrightCore.TemplateEngine;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -128,7 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Build Urls"
 
-        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid)
+        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid,string catid = "")
         {
             var rdTabid = -1;
             var objTabInfo = new TabInfo();
@@ -157,6 +158,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             guidkey = Utils.CleanInput(guidkey);
             guidkey = guidkey.Replace(".", "-").Replace("@", "").Trim('-'); // remove chars not dealt with by cleaninput.
             var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
+            if (Utils.IsNumeric(catid)) strurl += "&catid=" + catid;
             return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
 
         }
@@ -892,6 +894,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             return errcount;
+        }
+
+        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo)
+        {
+            var rtnInfo = nbrightInfo;
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetShippingProviders();
+            foreach (var d in provList)
+            {
+                var eventprov = EventInterface.Instance(d.Key);
+                if (eventprov != null)
+                {
+                    if (eventaction == EventActions.ValidateCartBefore)
+                    {
+                        rtnInfo = eventprov.ValidateCartBefore(nbrightInfo);                        
+                    }
+                    else if (eventaction == EventActions.ValidateCartAfter)
+                    {
+                        rtnInfo = eventprov.ValidateCartAfter(nbrightInfo);
+                    }
+                    else if (eventaction == EventActions.ValidateCartItemBefore)
+                    {
+                        rtnInfo = eventprov.ValidateCartItemBefore(nbrightInfo);
+                    }
+                    else if (eventaction == EventActions.ValidateCartItemAfter)
+                    {
+                        rtnInfo = eventprov.ValidateCartItemAfter(nbrightInfo);
+                    }
+                }
+            }
+            return rtnInfo;
         }
 
     }

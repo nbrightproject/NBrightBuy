@@ -214,6 +214,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ValidateCart()
         {
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartBefore, PurchaseInfo);
+
             var itemList = GetCartItemList();
             Double subtotalcost = 0;
             Double subtotaldealercost = 0;
@@ -343,11 +345,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (!UserController.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
             }
 
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartAfter, PurchaseInfo);
+
             SavePurchaseData();
         }
 
         private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
         {
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemBefore, cartItemInfo);
+
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
@@ -407,18 +413,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
                 if (optNods != null)
                 {
-                    var lp = 0;
+                    var lp = 1;
                     foreach (XmlNode nod in optNods)
                     {
-                        var optvalcostnod = nod.SelectSingleNode("optvalcost");
-                        if (optvalcostnod != null)
+                        var optid = nod.SelectSingleNode("optid");
+                        if (optid != null)
                         {
-                            var optvalcost = optvalcostnod.InnerText;
-                            if (Utils.IsNumeric(optvalcost))
+                            var optvalueid = nod.SelectSingleNode("optvalueid");
+                            if (optvalueid != null && optvalueid.InnerText != "False")
                             {
-                                var optvaltotal = Convert.ToDouble(optvalcost, CultureInfo.GetCultureInfo("en-US")) * qty;
-                                cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
-                                additionalCosts += optvaltotal;
+                                XmlNode  optvalcostnod;
+                                if (optvalueid.InnerText == "True")
+                                    optvalcostnod = cartItemInfo.XMLDoc.SelectSingleNode("genxml/productxml/genxml/optionvalues[@optionid='" + optid.InnerText + "']/genxml/textbox/txtaddedcost");
+                                else
+                                    optvalcostnod = cartItemInfo.XMLDoc.SelectSingleNode("genxml/productxml/genxml/optionvalues/genxml[./hidden/optionvalueid='" + optvalueid.InnerText + "']/textbox/txtaddedcost");
+
+                                if (optvalcostnod != null)
+                                {
+                                    var optvalcost = optvalcostnod.InnerText;
+                                    if (Utils.IsNumeric(optvalcost))
+                                    {
+                                        cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvalcost", optvalcost);
+                                        var optvaltotal = Convert.ToDouble(optvalcost, CultureInfo.GetCultureInfo("en-US"))*qty;
+                                        cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
+                                        additionalCosts += optvaltotal;
+                                    }
+                                }
+                                else
+                                {
+                                    cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvalcost", "0");
+                                    cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", "0");
+                                }
                             }
                         }
                         lp += 1;
@@ -494,6 +519,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             }
+
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemAfter, cartItemInfo);
 
             return cartItemInfo;
         }

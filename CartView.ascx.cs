@@ -183,7 +183,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList();
+                var groupresults = ModSettings.Get("chkgroupresults") == "True";
+                var l = _cartInfo.GetCartItemList(groupresults);
                 rpData.DataSource = l;
                 rpData.DataBind();
             }
@@ -268,6 +269,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
             switch (e.CommandName.ToLower())
             {
+                case "additems":
+                    _cartInfo.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    _cartInfo.Save();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "addqty":
                     if (!Utils.IsNumeric(cArg)) cArg = "1";
                     if (Utils.IsNumeric(cArg))
@@ -287,7 +293,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deletecartitem":
-                    _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    if (cArg == "")
+                        _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    else
+                        _cartInfo.RemoveItem(cArg);
                     _cartInfo.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -402,7 +411,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strXml = GenXmlFunctions.GetGenXml(i);
                 var cInfo = new NBrightInfo();
                 cInfo.XMLData = strXml;
-                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);
+                _cartInfo.MergeCartInputData(cInfo.GetXmlProperty("genxml/hidden/itemcode"), cInfo);
             }
             //update data
             _cartInfo.AddExtraInfo(rpExtra);
