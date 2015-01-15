@@ -398,8 +398,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.AddAuditMessage(notes,"msg",UserInfo.Username,showtouser);
             if (emailoption != "")
             {
-                emailmsg = emailoption + ": " + emailmsg;
-                ordData.AddAuditMessage(emailmsg, "email", UserInfo.Username, showtouser);                
+                ordData.AddAuditMessage(emailmsg, "email", UserInfo.Username, showtouser, emailoption); 
             }
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;

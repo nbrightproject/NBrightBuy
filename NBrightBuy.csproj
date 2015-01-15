@@ -408,9 +408,7 @@
     <Content Include="PaymentSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="PrintView.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="PrintView.aspx" />
     <Content Include="ProductSearch.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

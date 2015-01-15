@@ -99,14 +99,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Audit data"
 
-        public void AddAuditMessage(String msg,String type, String username,String showtouser)
+        public void AddAuditMessage(String msg,String type, String username,String showtouser,String emailsubject = "")
         {
-            if (msg != "")
+            if (msg != "" || emailsubject != "")
             {
                 if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
                 var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date>";
                 strXml += "<showtouser>" + showtouser + "</showtouser>";
                 strXml += "<type>" + type + "</type>";
+                if (type == "email")
+                {
+                    strXml += "<emailsubject>" + emailsubject + "</emailsubject>";                    
+                }
                 strXml += "<username>" + username + "</username>";
                 strXml += "<msg>" + msg + "</msg></genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");

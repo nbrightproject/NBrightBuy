@@ -3,8 +3,10 @@
         <b>[<tag type="valueof" xpath="genxml/date" datatype="date" format="dd MMM yyyy H:mm" />]</b>
     </td>
     <td width="100px">[<tag type="breakof" xpath="genxml/username" />]</td>
-    <td width="100px">[<tag type="breakof" xpath="genxml/type" />]</td>
     <td>
+        [<tag type="if" xpath="genxml/type" testvalue="email" display="{ON}"/>]
+        <span class='orderstatus orderstatus000'>Email: [<tag type="breakof" xpath="genxml/emailsubject" />]</span><br/> 
+        [<tag type="endif" />]
         [<tag type="orderstatusdisplay" xpath="genxml/status" />]
         [<tag type="breakof" xpath="genxml/msg" />]
     </td>
