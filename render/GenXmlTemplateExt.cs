@@ -315,7 +315,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #region "create nbs:testof"
 
-        public override String TestOfDataBinding(object sender, EventArgs e, Boolean currentVisibleStatus)
+        public override String TestOfDataBinding(object sender, EventArgs e)
         {
 
             var dataValue = "";
@@ -326,8 +326,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 NBrightInfo info;
                                 
                 ProductData prodData;
-
-                lc.Visible = currentVisibleStatus;
 
                 var xmlDoc = new XmlDataDocument();
                 CartData currentcart;
