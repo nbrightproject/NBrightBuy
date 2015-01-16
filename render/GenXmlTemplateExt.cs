@@ -311,6 +311,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             return null;
         }
 
+        public override void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+        }
+
         #endregion
 
         #region "create nbs:testof"

@@ -574,6 +574,18 @@ namespace Nevoweb.DNN.NBrightBuy
                     param[2] = "template=printproduct.html";
                     Response.Redirect(Globals.NavigateURL(TabId,"", param), true);
                     break;
+                default :
+                    //check for any command providers.
+                    var providerList = NBrightCore.providers.GenXProviderManager.ProviderList;
+                    if (providerList != null)
+                    {
+                        foreach (var prov in providerList)
+                        {
+                            prov.Value.CtrlItemCommand(source, e);
+                        }
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
