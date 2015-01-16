@@ -220,12 +220,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "cathtmlof":
                     CreateCatHtmlOf(container, xmlNod);
                     return true;
-                case "testof":
-                    CreateTestOf(container, xmlNod);
-                    return true;
-                case "if":
-                    CreateTestOf(container, xmlNod);
-                    return true;
                 case "itemlistcount":
                     CreateItemListCount(container, xmlNod);
                     return true;
@@ -321,15 +315,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #region "create nbs:testof"
 
-        private void CreateTestOf(Control container, XmlNode xmlNod)
+        public override String TestOfDataBinding(object sender, EventArgs e, Boolean currentVisibleStatus)
         {
-            var lc = new Literal { Text = xmlNod.OuterXml };
-            lc.DataBinding += TestOfDataBinding;
-            container.Controls.Add(lc);
-        }
 
-        private void TestOfDataBinding(object sender, EventArgs e)
-        {
+            var dataValue = "";
             var lc = (Literal)sender;
             var container = (IDataItemContainer)lc.NamingContainer;
             try
@@ -338,34 +327,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 
                 ProductData prodData;
 
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = currentVisibleStatus;
+
                 var xmlDoc = new XmlDataDocument();
-                string display = "{ON}";
-                string displayElse = "{OFF}";
-                string dataValue = "";
                 CartData currentcart;
 
                 xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
                 var xmlNod = xmlDoc.SelectSingleNode("root/tag");
-
-
-                if (xmlNod != null && (xmlNod.Attributes != null && (xmlNod.Attributes["display"] != null)))
-                {
-                    display = xmlNod.Attributes["display"].InnerXml;
-                }
-
-                if (xmlNod != null && (xmlNod.Attributes != null && (xmlNod.Attributes["displayelse"] != null)))
-                {
-                    displayElse = xmlNod.Attributes["displayelse"].InnerXml;
-                }
-                else
-                {
-                    if (display == "{ON}") displayElse = "{OFF}";
-                    if (display == "{OFF}") displayElse = "{ON}";
-                }
-
-                //get test value, set all tests to else
-                string output = displayElse;
 
                 if (container.DataItem != null && xmlNod != null && (xmlNod.Attributes != null && xmlNod.Attributes["function"] != null))
                 {
@@ -665,33 +633,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         }
                     }
 
-                    if (testValue == dataValue)
-                        output = display;
-                    else
-                        output = displayElse;
-
                 }
 
-
-                // If the Visible flag is OFF then keep it off, even if the child test is true
-                // This allows nested tests to function correctly, by using the parent result.
-                if (!visibleStatus.Last())
-                {
-                    if (output == "{ON}" | output == "{OFF}") visibleStatus.Add(false); // only add level on {} testof
-                }
-                else
-                {
-                    if (output == "{ON}") visibleStatus.Add(true);
-                    if (output == "{OFF}") visibleStatus.Add(false);
-                }
-
-                if (visibleStatus.Last() && output != "{ON}") lc.Text = output;
-                if (output == "{ON}" | output == "{OFF}") lc.Text = ""; // don;t display the test tag
             }
             catch (Exception)
             {
                 lc.Text = "";
             }
+            return dataValue;
         }
 
 
