@@ -317,12 +317,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-        #region "create nbs:testof"
+        #region "nbs:testof functions"
 
-        public override String TestOfDataBinding(object sender, EventArgs e)
+        public override TestOfData TestOfDataBinding(object sender, EventArgs e)
         {
-
-            var dataValue = "";
+            var rtnData = new TestOfData();
+            rtnData.DataValue = null;
+            rtnData.TestValue = null;
             var lc = (Literal)sender;
             var container = (IDataItemContainer)lc.NamingContainer;
             try
@@ -339,6 +340,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 if (container.DataItem != null && xmlNod != null && (xmlNod.Attributes != null && xmlNod.Attributes["function"] != null))
                 {
+                    rtnData.DataValue = "FALSE";
+
                     XmlNode nod;
                     var testValue = "";
                     if ((xmlNod.Attributes["testvalue"] != null)) testValue = xmlNod.Attributes["testvalue"].Value;
@@ -359,290 +362,252 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var targetmodulekey = "";
                     if ((xmlNod.Attributes["targetmodulekey"] != null)) targetmodulekey = xmlNod.Attributes["targetmodulekey"].Value;
 
-                    // do normal xpath test
-                    if (xmlNod.Attributes["xpath"] != null)
-                    {
-                        nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), xmlNod.Attributes["xpath"].InnerXml);
-                        if (nod != null)
-                        {
-                            dataValue = nod.InnerText;
-                        }
-                    }
-
-                    // do test on static
-                    if (xmlNod.Attributes["staticvalue"] != null) dataValue = xmlNod.Attributes["staticvalue"].InnerText;
 
                     // do special tests for named fucntions
-                    if (xmlNod.Attributes["function"] != null)
+                    switch (xmlNod.Attributes["function"].Value.ToLower())
                     {
-                        switch (xmlNod.Attributes["function"].Value.ToLower())
-                        {
-                            case "searchactive":
-                                var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey);
-                                if (navdata2.Criteria == "") dataValue = "false"; else dataValue = "true";
-                                break;
-                            case "productcount":
-                                var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey);
-                                dataValue = navdata.RecordCount;
-                                break;
-                            case "price":
-                                dataValue = GetFromPrice((NBrightInfo) container.DataItem);
-                                break;
-                            case "dealerprice":
-                                dataValue = GetDealerPrice((NBrightInfo) container.DataItem);
-                                break;
-                            case "saleprice":
-                                dataValue = GetSalePrice((NBrightInfo) container.DataItem);
-                                break;
-                            case "imgexists":
-                                dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + dataValue + "]");
-                                if (nod == null) dataValue = "FALSE";
-                                break;
-                            case "modelexists":
-                                dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + dataValue + "]");
-                                if (nod == null) dataValue = "FALSE";
-                                break;
-                            case "optionexists":
-                                dataValue = testValue;
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + dataValue + "]");
-                                if (nod == null) dataValue = "FALSE";
-                                break;
-                            case "isinstock":
-                                dataValue = "FALSE";
-                                if (IsInStock((NBrightInfo) container.DataItem))
+                        case "searchactive":
+                            var navdata2 = new NavigationData(PortalSettings.Current.PortalId, targetmodulekey);
+                            if (navdata2.Criteria == "") rtnData.DataValue = "FALSE";
+                            else rtnData.DataValue = "TRUE";
+                            break;
+                        case "productcount":
+                            var navdata = new NavigationData(PortalSettings.Current.PortalId, modulekey);
+                            rtnData.DataValue = navdata.RecordCount;
+                            break;
+                        case "price":
+                            rtnData.DataValue = GetFromPrice((NBrightInfo) container.DataItem);
+                            break;
+                        case "dealerprice":
+                            rtnData.DataValue = GetDealerPrice((NBrightInfo) container.DataItem);
+                            break;
+                        case "saleprice":
+                            rtnData.DataValue = GetSalePrice((NBrightInfo) container.DataItem);
+                            break;
+                        case "imgexists":
+                            rtnData.DataValue = testValue;
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/imgs/genxml[" + rtnData.DataValue + "]");
+                            if (nod == null) rtnData.DataValue = "FALSE";
+                            break;
+                        case "modelexists":
+                            rtnData.DataValue = testValue;
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[" + rtnData.DataValue + "]");
+                            if (nod == null) rtnData.DataValue = "FALSE";
+                            break;
+                        case "optionexists":
+                            rtnData.DataValue = testValue;
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[" + rtnData.DataValue + "]");
+                            if (nod == null) rtnData.DataValue = "FALSE";
+                            break;
+                        case "isinstock":
+                            if (IsInStock((NBrightInfo) container.DataItem))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "ismodelinstock":
+                            if (IsModelInStock((NBrightInfo) container.DataItem))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "inwishlist":
+                            var productid = DataBinder.Eval(container.DataItem, "ItemId").ToString();
+                            if (Utils.IsNumeric(productid))
+                            {
+                                var wl = new ItemListData(-1, StoreSettings.Current.StorageTypeClient);
+                                if (wl.IsInList(productid))
                                 {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
+                                    rtnData.DataValue = "TRUE";
+                                    rtnData.TestValue = "TRUE";
                                 }
-                                break;
-                            case "ismodelinstock":
-                                dataValue = "FALSE";
-                                if (IsModelInStock((NBrightInfo)container.DataItem))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "inwishlist":
-                                var productid = DataBinder.Eval(container.DataItem, "ItemId").ToString();
-                                dataValue = "FALSE";
-                                if (Utils.IsNumeric(productid))
-                                {
-                                    var wl = new ItemListData(-1,StoreSettings.Current.StorageTypeClient );
-                                    if (wl.IsInList(productid))
-                                    {
-                                        dataValue = "TRUE";
-                                        testValue = "TRUE";
-                                    }
-                                }
-                                break;
-                            case "isonsale":
-                                dataValue = "FALSE";
-                                var saleprice = GetSalePrice((NBrightInfo) container.DataItem);
-                                if ((Utils.IsNumeric(saleprice)) && (Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US")) > 0))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "hasrelateditems":
-                                dataValue = "FALSE";
-                                info = (NBrightInfo)container.DataItem;
+                            }
+                            break;
+                        case "isonsale":
+                            var saleprice = GetSalePrice((NBrightInfo) container.DataItem);
+                            if ((Utils.IsNumeric(saleprice)) && (Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US")) > 0))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "hasrelateditems":
+                            info = (NBrightInfo) container.DataItem;
+                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                            if (prodData.GetRelatedProducts().Count > 0)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "hasdocuments":
+                            info = (NBrightInfo) container.DataItem;
+                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                            if (prodData.Docs.Count > 0)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "haspurchasedocuments":
+                            info = (NBrightInfo) container.DataItem;
+                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                            if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True").Any())
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "hasproperty":
+                            info = (NBrightInfo) container.DataItem;
+                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                            if (prodData.HasProperty(testValue))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "isincategory":
+                            info = (NBrightInfo) container.DataItem;
+                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
+                            if (prodData.IsInCategory(testValue))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "isdocpurchasable":
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
+                            if (nod != null)
+                            {
+                                info = (NBrightInfo) container.DataItem;
                                 prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                if (prodData.GetRelatedProducts().Count > 0)
+                                if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True" && i.GetXmlProperty("genxml/hidden/docid") == nod.InnerText).Any())
                                 {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
+                                    rtnData.DataValue = "TRUE";
+                                    rtnData.TestValue = "TRUE";
                                 }
-                                break;
-                            case "hasdocuments":
-                                dataValue = "FALSE";
-                                info = (NBrightInfo)container.DataItem;
-                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                if (prodData.Docs.Count > 0)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "haspurchasedocuments":
-                                dataValue = "FALSE";
-                                info = (NBrightInfo)container.DataItem;
-                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True").Any())
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "hasproperty":
-                                dataValue = "FALSE";
-                                info = (NBrightInfo)container.DataItem;
-                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                if (prodData.HasProperty(testValue))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isincategory":
-                                dataValue = "FALSE";
-                                info = (NBrightInfo)container.DataItem;
-                                prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                if (prodData.IsInCategory(testValue))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isdocpurchasable":
-                                dataValue = "FALSE";
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
-                                if (nod != null)
-                                {
-                                    info = (NBrightInfo)container.DataItem;
-                                    prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                                    if (prodData.Docs.Select(i => i.GetXmlProperty("genxml/checkbox/chkpurchase") == "True" && i.GetXmlProperty("genxml/hidden/docid") == nod.InnerText).Any())
-                                    {
-                                        dataValue = "TRUE";
-                                        testValue = "TRUE";
-                                    }
-                                }
-                                break;
-                            case "isdocpurchased":
-                                dataValue = "FALSE";
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
-                                if (nod != null && Utils.IsNumeric(nod.InnerText))
-                                {
-                                    var uInfo = UserController.GetCurrentUserInfo();
-                                    //[TODO: work out method of finding if user purchased document.]
-                                    //if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nod.InnerText)))
-                                    //{
-                                    //    dataValue = "TRUE";
-                                    //    testValue = "TRUE";
-                                    //}
-                                }
-                                break;
-                            case "hasmodelsoroptions":
-
-                                dataValue = "FALSE";
-                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[2]/hidden/modelid");
+                            }
+                            break;
+                        case "isdocpurchased":
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
+                            if (nod != null && Utils.IsNumeric(nod.InnerText))
+                            {
+                                var uInfo = UserController.GetCurrentUserInfo();
+                                //[TODO: work out method of finding if user purchased document.]
+                                //if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nod.InnerText)))
+                                //{
+                                //    rtnData.DataValue = "TRUE";
+                                //    rtnData.TestValue = "TRUE";
+                                //}
+                            }
+                            break;
+                        case "hasmodelsoroptions":
+                            nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/models/genxml[2]/hidden/modelid");
+                            if (nod != null && nod.InnerText != "")
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            if (rtnData.DataValue == "FALSE")
+                            {
+                                nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[1]/hidden/optionid");
                                 if (nod != null && nod.InnerText != "")
                                 {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
+                                    rtnData.DataValue = "TRUE";
+                                    rtnData.TestValue = "TRUE";
                                 }
-                                if (dataValue == "FALSE")
-                                {
-                                    nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/options/genxml[1]/hidden/optionid");
-                                    if (nod != null && nod.InnerText != "")
-                                    {
-                                        dataValue = "TRUE";
-                                        testValue = "TRUE";
-                                    }
-                                }
-                                break;
-                            case "isproductincart":
-                                dataValue = "FALSE";
-                                var cartData = new CartData(PortalSettings.Current.PortalId);
-                                info = (NBrightInfo)container.DataItem;
-                                if (cartData.GetCartItemList().Select(i => i.GetXmlProperty("genxml/productid") == info.ItemID.ToString("")).Any())
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "settings":
-                                dataValue = "FALSE";
-                                if (_settings[settingkey] != null && _settings[settingkey] == testValue)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "debugmode":
-                                dataValue = "FALSE";
-                                if (StoreSettings.Current.DebugMode)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isinrole":
-                                dataValue = "FALSE";
-                                if (CmsProviderManager.Default.IsInRole(role))
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "issuperuser":
-                                dataValue = "FALSE";
-                                if (UserController.GetCurrentUserInfo().IsSuperUser)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isuser":
-                                dataValue = "FALSE";
-                                if (UserController.GetCurrentUserInfo().UserID >= 0)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "isclientordermode":
-                                dataValue = "FALSE";
-                                currentcart = new CartData(PortalSettings.Current.PortalId);
-                                if (currentcart.IsClientOrderMode())
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "carteditmode":
-                                dataValue = "FALSE";
-                                currentcart = new CartData(PortalSettings.Current.PortalId);
-                                var editmode = currentcart.GetInfo().GetXmlProperty("genxml/carteditmode");
-                                if (editmode == testValue)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";
-                                }
-                                break;
-                            case "hasshippingproviders":
-                                dataValue = "FALSE";
-                                var pluginData = new PluginData(PortalSettings.Current.PortalId);
-                                var provList = pluginData.GetShippingProviders();
-                                if (provList.Count > 1)
-                                {
-                                    dataValue = "TRUE";
-                                    testValue = "TRUE";                                    
-                                }
-                                break;
-                            case "profile":
-                                var userInfo = UserController.GetCurrentUserInfo();
-                                if (userInfo.UserID >= 0) dataValue = userInfo.Profile.GetPropertyValue(settingkey);
-                                break;
-                            case "static":
-                                break;
-                            default:
-                                dataValue = "";
-                                break;
-                        }
+                            }
+                            break;
+                        case "isproductincart":
+                            var cartData = new CartData(PortalSettings.Current.PortalId);
+                            info = (NBrightInfo) container.DataItem;
+                            if (cartData.GetCartItemList().Select(i => i.GetXmlProperty("genxml/productid") == info.ItemID.ToString("")).Any())
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "settings":
+                            if (_settings[settingkey] != null && _settings[settingkey] == testValue)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "debugmode":
+                            if (StoreSettings.Current.DebugMode)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "isinrole":
+                            if (CmsProviderManager.Default.IsInRole(role))
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "issuperuser":
+                            if (UserController.GetCurrentUserInfo().IsSuperUser)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "isuser":
+                            if (UserController.GetCurrentUserInfo().UserID >= 0)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "isclientordermode":
+                            currentcart = new CartData(PortalSettings.Current.PortalId);
+                            if (currentcart.IsClientOrderMode())
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "carteditmode":
+                            currentcart = new CartData(PortalSettings.Current.PortalId);
+                            var editmode = currentcart.GetInfo().GetXmlProperty("genxml/carteditmode");
+                            if (editmode == testValue)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "hasshippingproviders":
+                            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                            var provList = pluginData.GetShippingProviders();
+                            if (provList.Count > 1)
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
+                        case "profile":
+                            var userInfo = UserController.GetCurrentUserInfo();
+                            if (userInfo.UserID >= 0) rtnData.DataValue = userInfo.Profile.GetPropertyValue(settingkey);
+                            break;
+                        case "static":
+                            break;
+                        default:
+                            rtnData.DataValue = null;
+                            break;
                     }
-
                 }
-
             }
             catch (Exception)
             {
                 lc.Text = "";
             }
-            return dataValue;
+            return rtnData;
         }
 
 
