@@ -1,5 +1,6 @@
 ﻿	<tr>
 		<td class="detailscolumn">
+        [<tag id="itemcode" type='hidden' xpath="genxml/itemcode" value="" />] <!-- This is required, so mergecart can work on update -->
 
 		[<tag type="if" xpath="genxml/productxml/genxml/imgs/genxml[[1]]/hidden/imageurl" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Image -->
 		<div class="image"><img title="[<tag type='valueof' xpath='genxml/summary' />]" src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=200&h=200&src=[Settings:genxml/hidden/uploadrelpath]/[<tag type='valueof' xpath='genxml/productxml/genxml/imgs/genxml[[1]]/hidden/imageurl'/>]" /></div><!-- Retina -->

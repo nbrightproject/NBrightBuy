@@ -552,12 +552,12 @@ namespace Nevoweb.DNN.NBrightBuy
                                 var purchase = docInfo.GetXmlProperty("genxml/checkbox/chkpurchase");
 
                                 if (fileName == "") fileName = "filename";
-                                if (!docFilePath.EndsWith(fileExt)) docFilePath += fileExt;
                                 if (!fileName.EndsWith(fileExt)) fileName += fileExt;
 
                                 if (purchase == "True")
                                 {
                                     //[TODO: check if the document has been purchased]                                    
+                                    Utils.ForceDocDownload(docFilePath, fileName, Response);
                                 }
                                 else
                                 {
