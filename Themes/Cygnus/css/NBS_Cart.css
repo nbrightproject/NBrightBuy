@@ -72,8 +72,3 @@
 #cartlist .fa-times-circle{color:#666;}
 #cartlist .fa-times-circle:hover{color:#C80000;}
 
-/* default payment button */
-.paybutton{background:#1AA8E3;color:#FFFFFF;}
-.paybutton:hover{background:#23BAF5;color:#FFFFFF;}
-.paybutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
-.paybutton:hover{text-decoration:none;}

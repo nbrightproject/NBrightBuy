@@ -141,4 +141,7 @@
   <data name="ManualPayment.Text" xml:space="preserve">
     <value>Cheque or Transfer</value>
   </data>
+  <data name="buttontext.Text" xml:space="preserve">
+    <value>Button Text</value>
+  </data>
 </root>

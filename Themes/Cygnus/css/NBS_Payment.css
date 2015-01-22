@@ -3,3 +3,9 @@
 #payment .paymentlogo{float:right;margin:0 0 15px 15px;}
 #payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
 .paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}
+
+/* default payment button */
+.paybutton{background:#1AA8E3;color:#FFFFFF;}
+.paybutton:hover{background:#23BAF5;color:#FFFFFF;}
+.paybutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
+.paybutton:hover{text-decoration:none;}
