@@ -531,7 +531,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             break;
                         case "settings":
-                            if (_settings[settingkey] != null && _settings[settingkey] == testValue)
+                            if (_settings != null && _settings.ContainsKey(settingkey) && _settings[settingkey] == testValue)
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
