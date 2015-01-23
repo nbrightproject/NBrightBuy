@@ -59,23 +59,29 @@
 		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
 
 		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<div class="models"><h3>[<tag type="valueof" resourcekey="ProductView.choosemodel" />]</h3>[<tag type="modelsradio" template="{name} {bestprice}" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]</div>
+		<div class="models">
+      [<tag type="modelsradio" template="{name} {bestprice}" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]
+    </div>
 		[<tag type="endif"  />]
-		
+
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-		<div class="options option1"><span class="optionname optionname1">[<tag type="productoptionname" index="1" />]</span><span class="optionvalue optionvalue1">[<tag type="productoption" index="1" />]</span></div>
+    <div class="options">
+    [<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
+		<div class="option option1"><span class="optionname optionname1">[<tag type="productoptionname" index="1" />]</span><span class="optionvalue optionvalue1">[<tag type="productoption" index="1" />]</span></div>
 		[<tag type="endif"  />]
 		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<div class="options option2"><span class="optionname optionname2">[<tag type="productoptionname" index="2" />]</span><span class="optionvalue optionvalue2">[<tag type="productoption" index="2" />]</span></div>
+		<div class="option option2"><span class="optionname optionname2">[<tag type="productoptionname" index="2" />]</span><span class="optionvalue optionvalue2">[<tag type="productoption" index="2" />]</span></div>
 		[<tag type="endif"  />]
 		[<tag type="if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
-		<div class="options option3"><span class="optionname optionname3">[<tag type="productoptionname" index="3" />]</span><span class="optionvalue optionvalue3">[<tag type="productoption" index="3" />]</span></div>
+		<div class="option option3"><span class="optionname optionname3">[<tag type="productoptionname" index="3" />]</span><span class="optionvalue optionvalue3">[<tag type="productoption" index="3" />]</span></div>
 		[<tag type="endif"  />]
 		[<tag type="if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
-		<div class="options option4"><span class="optionname optionname4">[<tag type="productoptionname" index="4" />]</span><span class="optionvalue optionvalue4">[<tag type="productoption" index="4" />]</span></div>
+		<div class="option option4"><span class="optionname optionname4">[<tag type="productoptionname" index="4" />]</span><span class="optionvalue optionvalue4">[<tag type="productoption" index="4" />]</span></div>
 		[<tag type="endif"  />]
-		
-		[<tag type="endif"  />]<!-- End Catalogue mode -->
+		</div>
+    [<tag type="endif"  />]
+
+    [<tag type="endif"  />]<!-- End Catalogue mode -->
 
 	
     [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
@@ -83,11 +89,11 @@
 
     [<tag type="if" function="isinstock" testvalue="0" display="{ON}"/>]
     <div class="quantityoptions">
-      <a itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)">-</a>
+      <a class="qtyminus" href="javascript:void(0)">-</a>
       [<tag type="addqty" text="1" width="21" cssclass="quantity" />]
-      <a itemid="[<tag type="valueof" xpath="genxml/hidden/modelid" />]" productid="[<tag type="valueof" xpath="genxml/hidden/productid" />]" href="javascript:void(0)">+</a>
+      <a class="qtyplus" href="javascript:void(0)">+</a>
     </div>
-    [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton" commandname="addtobasket" commandargument="ItemID" />]
+    [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton buybutton" commandname="addtobasket" commandargument="ItemID" />]
     [<tag type="endif"  />]
 
 		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
@@ -99,60 +105,110 @@
 		</div>
     [<tag type="endif"  />]<!-- End Catalogue mode -->
 
-		[<tag type="if" function="settings" key="sharingwidget" testvalue="" display="{OFF}" />]<!-- Sharing widget -->
-		<div class="sharingwidget">[Settings:sharingwidget]</div>
-		[<tag type="endif"  />]
-
 </div>
 
 <!-- Details -->
-<div class="details">
-	
-<h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
-<section>[<tag type="description" />]</section>
-        
-[<tag type="if" function="hasdocuments" display="{ON}" />]
-<h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
-<section>
-            <ul class="fa-ul documents">
-	            [<tag type="if" xpath="genxml/docs/genxml[[1]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="1" />]</span>
-	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="1" />]
-	            [<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
-	            [<tag type="if" function="isdocpurchasable" index="1" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
-	            [<tag type="endif" />]
-	            </li>
-	            [<tag type="endif" />]
-	            
-	            [<tag type="if" xpath="genxml/docs/genxml[[2]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="2" />]</span>
-	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="2" />]
-	            [<tag type="if" function="isdocpurchased" index="2" display="{OFF}" />]
-	            [<tag type="if" function="isdocpurchasable" index="2" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
-	            [<tag type="endif" />]
-	            </li>
-	            [<tag type="endif" />]
-	            
-	            [<tag type="if" xpath="genxml/docs/genxml[[3]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="3" />]</span>
-	            [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="3" />]
-	            [<tag type="if" function="isdocpurchased" index="3" display="{OFF}" />]
-	            [<tag type="if" function="isdocpurchasable" index="3" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
-	            [<tag type="endif" />]
-	            </li>
-	            [<tag type="endif" />]
+    <div class="details">
+           
+        <div id="DetailTabs" class="rtabs">
+
+            <ul class="rtabs-nav">
+                [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" />]
+                <li><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li><!-- Product description -->
+                [<tag type="endif" />]
+                [<tag type="if" function="settings" key="modelstable" testvalue="True" display="{ON}" />]
+                <li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li><!-- Show Models table -->
+                [<tag type="endif" />]
+                [<tag type="if" function="hasdocuments" display="{ON}" />]
+                <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
+                [<tag type="endif" />]
             </ul>
-</section>
-[<tag type="endif" />]
-        
+
+            <div class="sharingwidget"><div class="share">Partager :</div><div class="addthis_sharing_toolbox"></div></div><!-- Sharing widget -->
+
+            [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
+            <div id="tab-1" class="rtabs-panel">
+                <h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
+                [<tag type="description" />]
+            </div>
+            [<tag type="endif" />]
+
+            [<tag type="if" function="settings" key="modelstable" testvalue="True" display="{ON}" />]<!-- Show Models table -->
+            <div id="tab-2" class="rtabs-panel">
+                <h3>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
+                <div class="models">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="text-align:left">[<tag type="label" resourcekey="ProductView.model" />]</th><!-- Model -->
+                                [<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]
+                                <th>[<tag type="label" resourcekey="ProductView.code" />]</th><!-- Product Code/Ref -->
+                                [<tag type="endif" />]
+
+                                [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
+                                <th>[<tag type="label" resourcekey="ProductView.price" />]</th><!-- Retail price -->
+                                [<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]
+                                <th>[<tag type="label" resourcekey="ProductView.saleprice" />]</th><!-- Sale price -->
+                                [<tag type="endif" />]
+                                [<tag type="endif" />]<!-- End hide all prices in catalogue mode -->
+
+                                [<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]
+                                <th>[<tag type="label" resourcekey="ProductView.stock" />]</th><!-- Stock and availability -->
+                                [<tag type="endif" />]
+                            </tr>
+                            [<tag type="modelslist" template="modellist.html" />]
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            [<tag type="endif"  />]
+
+            [<tag type="if" function="hasdocuments" display="{ON}" />]
+            <div id="tab-3" class="rtabs-panel">
+                <h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
+                <ul class="fa-ul documents">
+                    [<tag type="if" xpath="genxml/docs/genxml[[1]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+                    <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="1" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="1" />]</span>
+                        [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="1" />]
+                        [<tag type="if" function="isdocpurchased" index="1" display="{OFF}" />]
+                        [<tag type="if" function="isdocpurchasable" index="1" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+                        [<tag type="endif" />]
+                    </li>
+                    [<tag type="endif" />]
+
+                    [<tag type="if" xpath="genxml/docs/genxml[[2]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+                    <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="2" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="2" />]</span>
+                        [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="2" />]
+                        [<tag type="if" function="isdocpurchased" index="2" display="{OFF}" />]
+                        [<tag type="if" function="isdocpurchasable" index="2" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+                        [<tag type="endif" />]
+                    </li>
+                    [<tag type="endif" />]
+
+                    [<tag type="if" xpath="genxml/docs/genxml[[3]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
+                    <li>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdocfilename" index="3" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="3" />]</span>
+                        [<tag cssclass="documentlink" resourcekey="ProductView.download" type="productdoclink" index="3" />]
+                        [<tag type="if" function="isdocpurchased" index="3" display="{OFF}" />]
+                        [<tag type="if" function="isdocpurchasable" index="3" display="{ON}" />][<tag type="label" resourcekey="ProductView.purchasabledocument" />][<tag type="endif" />]
+                        [<tag type="endif" />]
+                    </li>
+                    [<tag type="endif" />]
+                </ul>
+            </div>
+            [<tag type="endif" />]
+
+        </div>
+
+    </div>
+<!-- End Details -->
+
+<!-- Related Items -->
 [<tag type="if" function="hasrelateditems" display="{ON}" />]
 <h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
-<section id="relatedwrapper">
+<div id="relatedwrapper">
 [<tag type="relatedproducts" template="relatedlist.html" />]
-</section>
-[<tag type="endif"  />]
-
 </div>
+[<tag type="endif"  />]
 
 </div>
 

@@ -1,0 +1,27 @@
+<!-- modellist.html - This repeating template creates the rows but not the header of the models table in detail.html. -->
+
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]<!-- Point to language file  -->
+
+	<tr>
+		<td style="text-align:left">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td><!-- Model -->
+		
+		[<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]<!-- Show Product Code -->
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{ON}' displayelse='{OFF}' />]
+		<td>NC</td><!-- If no Product Code -->
+		[<tag type="endif"  />]
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{OFF}' displayelse='{ON}' />]
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td><!-- Product Code -->
+		[<tag type="endif"  />]
+		[<tag type="endif"  />]
+		
+		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Retail price -->
+		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]
+		<td>[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Sale price -->
+		[<tag type='endtestof' />]
+		[<tag type="endif"  />]<!-- End hide all prices in catalogue mode -->
+		
+		[<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]
+		<td>[<tag type="valueof" resourcekey="ProductView.instock" />]</td><!-- Stock and availability -->
+		[<tag type="endif"  />]
+	</tr>

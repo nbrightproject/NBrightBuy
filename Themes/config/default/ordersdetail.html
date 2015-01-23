@@ -21,9 +21,10 @@
     [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{ON}" displayelse="{OFF}" />][<tag type="valueof" resourcekey="General.manualpayment" />][<tag type="endtestof" />]
     [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{OFF}" displayelse="{ON}" />][<tag type="valueof" resourcekey="General.creditcardpayment" />][<tag type="endtestof" />]
     </div>
+                        [Template:extrapaymentdata.html]
 					</address>
 					<address>
-					<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentStatus" />]</b></div>
+					<div><b>[<tag type="valueof" resourcekey="General.status" />]</b></div>
 					<div>[<tag id="orderstatus" type="orderstatusdisplay" />]</div>
 					</address>
 					[<tag type="if" xpath="genxml/extrainfo/genxml/textbox/promocode" testvalue="" display="{OFF}" />]
@@ -87,7 +88,8 @@
 			    
 				    <address>
 					<div><b>[<tag type="valueof" resourcekey="Notification.ShippingMethod" />]</b></div><!-- Show shipping method -->
-					<div>[<tag type="valueof" xpath="genxml/extrainfo/genxml/radiobuttonlist/shippingprovider/@selectedtext" />]</div>
+				        <div>[<tag type="valueof" xpath="genxml/extrainfo/genxml/radiobuttonlist/shippingprovider/@selectedtext" />]</div>
+                        [Template:extrashippingdata.html]
 					</address>
 
 				[<tag type="if" xpath="genxml/pickuppointaddr" testvalue="" display="{OFF}" />]<!-- Show pickup location if present -->

@@ -582,6 +582,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 rtnData.TestValue = "TRUE";
                             }
                             break;
+                        case "iscartempty":
+                            currentcart = new CartData(PortalSettings.Current.PortalId);
+                            var l = currentcart.GetCartItemList();
+                            if (!l.Any())
+                            {
+                                rtnData.DataValue = "TRUE";
+                                rtnData.TestValue = "TRUE";
+                            }
+                            break;
                         case "hasshippingproviders":
                             var pluginData = new PluginData(PortalSettings.Current.PortalId);
                             var provList = pluginData.GetShippingProviders();

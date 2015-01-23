@@ -38,6 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String _entryid = "";
         private Boolean _displayentrypage = false;
         private String _uid = "";
+        private String _page = "";
         private String _print = "";
         private String _printtemplate = "";
         
@@ -52,6 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             _uid = Utils.RequestParam(Context, "uid");
             _print = Utils.RequestParam(Context, "print");
             _printtemplate = Utils.RequestParam(Context, "template");
+            _page = Utils.RequestParam(Context, "page");
             EnablePaging = true;
 
             base.OnInit(e);
@@ -240,6 +242,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "entrydetail":
                     param[0] = "eid=" + cArg;
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reorder":
@@ -266,6 +269,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "return":
                     param[0] = "";
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":

@@ -22,12 +22,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
 
         private int _eid = 0;
+        private String _page = "";
 
         #region Load Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
 
+            _page = Utils.RequestParam(Context, "page");
             if (Utils.IsNumeric(Utils.RequestParam(Context, "eid"))) _eid = Convert.ToInt32(Utils.RequestParam(Context, "eid"));
 
             base.OnInit(e);
@@ -103,9 +105,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "edit":
                     param[0] = "eid=" + cArg;
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":

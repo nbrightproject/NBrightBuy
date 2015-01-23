@@ -65,42 +65,53 @@ a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-c
 .productdetail .gallery li {float:left;margin:0 5px 5px 0;display:table-cell;width:92px;height:92px;text-align:center;vertical-align:middle;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:#eee solid 1px;}
 .productdetail .gallery li img {max-height:70px;}
 .productdetail .gallery li.image6, .productdetail .gallery li.image11 {margin-right:0;}
-
 .productdetail .purchasing {float:left;overflow:hidden;width:456px;}
 .productdetail .purchasing  h1 {margin:0 0 20px 0;}
 .productdetail .purchasing .summary {border-top:#eaeaea solid 1px;border-bottom:#eaeaea solid 1px;padding:20px 0;margin-bottom:20px;}
-
 .productdetail .purchasing .price {font-size:18px;line-height:21px;margin-bottom:20px;}
 .productdetail .purchasing .retailprice {font-size:14px;margin-bottom:20px;}
 .productdetail .purchasing .retailprice .bestprice {}
 .productdetail .purchasing .zeroprice {}
-
+.productdetail .purchasing .models {background:#eee;margin-bottom:12px;padding:5px 5px 8px 5px;}
+.productdetail .purchasing .modelsradio {border:0;border-collapse:collapse;}
+.productdetail .purchasing .modelsradio td {padding:4px;}
+.productdetail .purchasing .modelsradio td input {vertical-align:top;}
+.productdetail .purchasing .modelsradio td label {font-size:12px;font-weight:bold;margin-left:4px;}
 .productdetail .purchasing .options {background:#eee;margin-bottom:20px;padding:5px;}
-.productdetail .purchasing .optionname {font-weight:bold;width:20%;float:left;padding:7px 10px;font-size:12px;}
-.productdetail .purchasing .optionvalue {width:66%;float:right;padding:4px;font-size:12px;}
-.productdetail .purchasing .optionvalue select {width:100%;padding:4px;color:#4c4c4c;outline:none;background-color:#f8f8f8;border:1px solid #f2f2f2;border-bottom:1px solid #d9d9d9;}
-.productdetail .purchasing .options:after {content:"";display:table;clear:both;}
-
-.productdetail .purchasing .models h5{margin-bottom:0}
-.productdetail .purchasing .modelsradio{margin-bottom:20px}
-.productdetail .purchasing .modelsradio td{padding:4px;}
-.productdetail .purchasing .modelsradio td label{margin-left:6px;vertical-align:middle;}
-
+.productdetail .purchasing .option {}
+.productdetail .purchasing .optionname {font-size:12px;font-weight:bold;width:32%;float:left;padding:7px 10px;}
+.productdetail .purchasing .optionvalue {width:54%;float:right;padding:4px;font-size:12px;}
+.productdetail .purchasing .optionvalue select {width:100%;padding:4px;color:#707070;outline:none;background-color:#f8f8f8;border:1px solid #f2f2f2;border-bottom:1px solid #d9d9d9;}
+.productdetail .purchasing .option:after {content:"";display:table;clear:both;}
 .productdetail .purchasing .buy {border:#eaeaea solid 1px;padding:12px;}
 .productdetail .purchasing .buy .outofstock {color:#CB0505;display:inline-block;font-size:16px;line-height:47px;margin-left:6px;margin-top:3px;}
 .productdetail .purchasing .buy .holiday {color:#CB0505;display:inline-block;font-size:16px;line-height:47px;margin-left:6px;margin-top:3px;}
 .productdetail .purchasing .return {float:right;}
-
 .quantityoptions {float:left;margin:1px 12px 0 0;}
 .quantityoptions a {display:block;float:left;height:22px;background-color:#505050;color:white;font-size:16px;text-decoration:none;padding:0 4px;}
 .quantityoptions a:hover {text-decoration:none;background-color:#56a9df;color:white;}
 .quantityoptions input {text-align:center;outline:none;background-color:#f8f8f8;border:1px solid #f2f2f2;border-bottom:1px solid #d9d9d9;font-size:16px;margin:0;}
 input.quantity {float:left;margin:0 6px;}
+.productdetail .details {clear:both;padding:24px 0;}
 
-.productdetail .details {clear:both;margin-bottom:24px;margin-top:24px;}
-.productdetail #tabsoff {margin-bottom:48px;}
-.productdetail #tabsoff h3 {margin-bottom:16px;}
-.productdetail .sharingwidget {margin-top:24px;}
+/* Details Tabs */
+.rtabs {}
+.rtabs .rtabs-nav {margin:0;padding:0;float:left;}
+.rtabs .rtabs-nav li {display:block;float:left;font-weight:normal;margin-right:1px;}
+.rtabs .rtabs-nav li a {display:block;background:#505050;color:white;text-decoration:none;padding:10px 20px;}
+.rtabs .rtabs-nav li a:hover {background:#56a9df;}
+.rtabs .rtabs-panel {clear:both;padding:20px 0;display:none;}
+.rtabs .rtabs-panel h3 {margin-bottom:20px;}
+.sharingwidget {float:left;background:#505050;color:white;padding:0 20px;}
+.sharingwidget .share {padding:10px 3px 10px 0;float:left;}
+.addthis_sharing_toolbox {margin-top:10px;}
+
+/* Models Table - www.csstablegenerator.com */
+.productdetail .details .models {margin:0px;padding:0px;width:100%;margin-bottom:24px;}
+.productdetail .details .models table {border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
+.productdetail .details .models tr {background-color:#eee;border-bottom:white solid 1px;}
+.productdetail .details .models td {vertical-align:middle;text-align:center;padding:10px 20px;}
+.productdetail .details .models th {background-color:#dedede;text-align:center;padding:10px 20px;font-family:inherit;font-weight:bold;font-size:12px;vertical-align:top;color:#505050;}
 
 /* Document Downloads */
 .productdetail .downloadableproduct{margin-top:12px !important;margin-left:24px !important;}
@@ -109,26 +120,6 @@ input.quantity {float:left;margin:0 6px;}
 .productdetail .documentname{font-weight:bold;}
 .productdetail .documentdescription{display:block;}
 .productdetail .documentlink{}
-
-/* Currency Convertor */
-.ccwrapper{border-collapse:collapse;display:table;table-layout:fixed;}
-.ccinner{display:table-row;}
-.currencyconverter, .ccinfo{display:table-cell;vertical-align:top;}
-.currencyconverter, .currencyconverter iframe{width:200px;}
-.ccinfo{padding-right:24px;width:100%;}
-
-/* Models Table - www.csstablegenerator.com */
-.productdetail .details .models{margin:0px;padding:0px;width:100%;margin-bottom:24px;}
-.productdetail .details .models table{border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
-.productdetail .details .models tr:nth-child(odd){background-color:#f2f2f2;}
-.productdetail .details .models tr:nth-child(even){background-color:#ffffff;}
-.productdetail .details .models td{vertical-align:middle;text-align:center;padding:6px;font-family:inherit;font-weight:normal;}
-.productdetail .details .models tr:last-child td{}
-.productdetail .details .models tr td:last-child{}
-.productdetail .details .models tr:last-child td:last-child{}
-.productdetail .details .models th{background-color:#D8E1EB;text-align:center;padding:6px;font-family:inherit;font-weight:normal;vertical-align:top;}
-.productdetail .details .models tr:first-child td:first-child{}
-.productdetail .details .models tr:first-child td:last-child{}
 
 /* Related Items */
 .productdetail .relateditem{list-style:none outside none;margin:0;padding:0;background:#FFFFFF;float:left;}
@@ -139,22 +130,6 @@ input.quantity {float:left;margin:0 6px;}
 .productdetail .relateditem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size:12px;}
 .productdetail .relateditem .manufacturer{display:inline-block;margin-right:3px;}
 .productdetail .relateditem .name{display:inline-block;}
-
-/* Detail Tabs */
-.r-tabs .r-tabs-nav{margin:0;padding:0;}
-.r-tabs .r-tabs-tab{display:inline-block;margin:0;list-style:none;}
-.r-tabs .r-tabs-panel{padding:15px;display:none;}
-.r-tabs .r-tabs-accordion-title{display:none;}
-.r-tabs .r-tabs-panel.r-tabs-state-active{display:block;}
-.r-tabs{position:relative;}
-.r-tabs .r-tabs-nav{}
-.r-tabs .r-tabs-nav .r-tabs-tab{position:relative;}
-.r-tabs .r-tabs-nav .r-tabs-anchor{background:#DEDEDE;padding:10px 12px;display:inline-block;text-decoration:none;color:inherit;font-weight:bold;}
-.r-tabs .r-tabs-nav .r-tabs-state-active{background-color:#fff;}
-.r-tabs .r-tabs-nav .r-tabs-state-active .r-tabs-anchor{color:inherit;background-color:#fff;}
-.r-tabs .r-tabs-panel{background-color:#fff;}
-.r-tabs .r-tabs-accordion-title .r-tabs-anchor{margin-bottom:1px;display:block;padding:10px;background-color:#DEDEDE;color:inherit;font-weight:bold;text-decoration:none;}
-.r-tabs .r-tabs-accordion-title.r-tabs-state-active .r-tabs-anchor{background-color:#fff;color:inherit;}
 
 /* Loading image - Includes opacity for IE5-8 */
 #loader{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);}
