@@ -78,6 +78,7 @@
     <Content Include="Themes\config\default\settings.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\ManualPayment.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\ManualPayment.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -638,6 +638,14 @@
     <Content Include="Themes\Cygnus\Default\orderreceiptemail.html" />
     <Content Include="Themes\Cygnus\Default\ordershippedemail.html" />
     <Content Include="Themes\Cygnus\Default\ordervalidatedemail.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_AddressAdmin.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_Cart.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_CategoryMenu.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_OrderAdmin.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_Payment.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_ProductSearch.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_ProductView.html" />
+    <Content Include="Themes\Cygnus\Default\pageheaderNBS_ProfileForm.html" />
     <Content Include="Themes\Cygnus\Default\paymentFAIL.html" />
     <Content Include="Themes\Cygnus\Default\paymentfooter.html" />
     <Content Include="Themes\Cygnus\Default\paymentheader.html" />
