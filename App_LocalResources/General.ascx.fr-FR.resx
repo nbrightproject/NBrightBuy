@@ -898,7 +898,7 @@
     <value>Méthodes de livraison</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Manuel</value>
+    <value>Chèque ou Virement</value>
   </data>
   <data name="creditcardpayment.Text" xml:space="preserve">
     <value>Carte bancaire</value>

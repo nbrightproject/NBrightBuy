@@ -523,7 +523,7 @@
     <value xml:space="preserve">Lijst</value>
   </data>
   <data name="manualpayment.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">Handmatig</value>
+    <value xml:space="preserve">Cheque of overdracht</value>
   </data>
   <data name="Max.Text">
     <value xml:space="preserve">Max</value>

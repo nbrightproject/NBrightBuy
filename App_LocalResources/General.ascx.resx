@@ -901,7 +901,7 @@
     <value>Credit card</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Manual</value>
+    <value>Cheque or Transfer</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
