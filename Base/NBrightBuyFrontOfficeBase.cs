@@ -34,14 +34,10 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             }
 
             if (themefolder == "") themefolder = StoreSettings.Current.ThemeFolder;
-            Controls.Add(new LiteralControl("<div class='" + themefolder + "'>"));
+            Controls.AddAt(0, new LiteralControl("<div class='" + themefolder + "'><!-- " + themefolder + " Start -->"));
+            Controls.AddAt(Controls.Count, new LiteralControl("</div><!-- " + themefolder + " End -->"));
 
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            Controls.Add(new LiteralControl("</div>"));
-        }
 	}
 }
