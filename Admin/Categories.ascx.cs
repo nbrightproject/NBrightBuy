@@ -167,6 +167,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "return":
                     param[1] = "";
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
@@ -243,6 +244,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
+                    UpdateRecord();
+                    param[1] = "eid=" + cArg;
+                   param[2] = "catid=" + _openid;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "saveexit":
                     UpdateRecord();
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);

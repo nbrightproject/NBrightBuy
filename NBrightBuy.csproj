@@ -184,6 +184,7 @@
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
+    <Compile Include="Components\RequestForm.cs" />
     <Compile Include="Components\UserData.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />
