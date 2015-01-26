@@ -245,7 +245,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         _cartInfo.SaveModelTransQty(); // move qty into trans
                         _cartInfo.ConvertToOrder(DebugMode);
                         var orderData = new OrderData(_cartInfo.PurchaseInfo.ItemID);
-                        orderData.PaymentProviderKey = cArg;
+                        orderData.PaymentProviderKey = cArg.ToLower(); // provider keys should always be lowecase
                         orderData.SavePurchaseData();
                         var redirecturl = PaymentsInterface.Instance(orderData.PaymentProviderKey).RedirectForPayment(orderData);
                         if (redirecturl != "") Response.Redirect(redirecturl, true);

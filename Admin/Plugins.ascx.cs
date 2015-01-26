@@ -87,29 +87,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 #endregion
 
-                #region "Check for plugins"
-
-                var pluginData = new PluginData(PortalId,true);
-                pluginData.UpdateSystemPlugins();
-                _systemPlugins = pluginData.GetPluginList();
-
-                pluginData = new PluginData(PortalId);
-                var portalPlugins = pluginData.GetPluginList();
-                Boolean upd = false;
-                foreach (var p in _systemPlugins)
-                {
-                    var ctrllist = from i in portalPlugins where i.GetXmlProperty("genxml/textbox/ctrl") == p.GetXmlProperty("genxml/textbox/ctrl") select i;
-                    var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
-                    if (!nBrightInfos.Any())
-                    {
-                        pluginData.AddPlugin(p);
-                        upd = true;
-                    }
-                }
-                if (upd) pluginData.Save();
-
-                #endregion
-
             }
             catch (Exception exc)
             {
@@ -128,6 +105,29 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
+                    #region "Check for plugins"
+
+                    var pluginData = new PluginData(PortalId, true);
+                    pluginData.UpdateSystemPlugins();
+                    _systemPlugins = pluginData.GetPluginList();
+
+                    pluginData = new PluginData(PortalId);
+                    var portalPlugins = pluginData.GetPluginList();
+                    Boolean upd = false;
+                    foreach (var p in _systemPlugins)
+                    {
+                        var ctrllist = from i in portalPlugins where i.GetXmlProperty("genxml/textbox/ctrl") == p.GetXmlProperty("genxml/textbox/ctrl") select i;
+                        var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
+                        if (!nBrightInfos.Any())
+                        {
+                            pluginData.AddPlugin(p);
+                            upd = true;
+                        }
+                    }
+                    if (upd) pluginData.Save();
+
+                    #endregion
+
                     PageLoad();
                 }
             }
@@ -205,6 +205,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "delete":
+                    // NOTE: The delete button cannot work at portal level.  Each plugin must be entered at system level, therefore deleting at portal level has no effect
+                    // the plugin is re-entered back into the portal from the system level. (This is CORRECT, pluging needs to be uninstalled to be removed, at portal level we simply hide them)
                     if (Utils.IsNumeric(cArg))
                     {
                         pluginData.RemovePlugin(Convert.ToInt32(cArg));
