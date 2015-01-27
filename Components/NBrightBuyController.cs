@@ -62,6 +62,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentItemId, lang));
         }
 
+
+        public override List<NBrightInfo> GetListCustom(int portalId, int moduleId, string SPROCname, int pageNumber = 0, string lang = "", string extraParam = "")
+        {
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetListCustom(portalId, moduleId, SPROCname, pageNumber, lang, extraParam));
+        }
+
         /// <summary>
         /// override for Database Function
         /// </summary>

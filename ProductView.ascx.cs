@@ -442,13 +442,15 @@ namespace Nevoweb.DNN.NBrightBuy
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey,1);
 
+                    strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
                     var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
 
                     _navigationdata.RecordCount = recordCount.ToString("");
                     _navigationdata.Save();
 
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
-                    strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
                     rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     rpData.DataBind();
 
