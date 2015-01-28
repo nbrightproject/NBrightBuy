@@ -24,7 +24,7 @@ a, a:visited {color:#428BCA}
 #logo a{background: none;}/* Hide devoops logo*/
 /* .top-panel-right{display: none;}Hide top right menu section */
 #loader{opacity:0}
-#loader{background: none repeat scroll 0 0 #848D92;color: #000000;height: 100%;left: 0;opacity: 0.4;transition:all 0.4s ease-in-out 0s;position: absolute;text-align: right;top: 0;width: 100%;z-index: 9999;}/* Loading graphic */
+#loader{background: none repeat scroll 0 0 #848D92;color:#ffffff;height: 100%;padding-top: 25%;left: 0;opacity: 0.4;transition:all 0.4s ease-in-out 0s;position: absolute;text-align: center;top: 0;width: 100%;z-index: 9999;}/* Loading graphic */
 #loader .fa{margin-right:2px;margin-top:3px;}
 .text-nowrap{white-space:nowrap;}/* Bootstrap nowrap is missing? */
 .nowrap{white-space:nowrap}/* remove this one */
@@ -109,7 +109,7 @@ body{background:#646262}
 
 /* Productlist items as table rows */
 .productadmintable .edititem{top:0;right:0;position:absolute;}
-/*.productadmintable .fa {color:#dddddd;font-size:200%;}*/
+.productadmintable td{display:table-cell;vertical-align:middle !important}
 
 /* Productlist items as thumbnails */
 #accordion{background:#F8F8F8;border:none;box-shadow:none}

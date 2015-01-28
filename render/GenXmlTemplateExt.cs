@@ -2172,131 +2172,139 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private void Createproductoptions(Control container, XmlNode xmlNod)
         {
-            // create all 3 control possible
-            var ddl = new DropDownList();
-            var chk = new CheckBox();
-            var txt = new TextBox();
-            // pass wrapper templates using ddl attributes.
-            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
-            {
-                ddl.Attributes.Add("template", xmlNod.Attributes["template"].Value);
-                chk.Attributes.Add("template", xmlNod.Attributes["template"].Value);
-                txt.Attributes.Add("template", xmlNod.Attributes["template"].Value);
-            }
-            if (xmlNod.Attributes != null && (xmlNod.Attributes["index"] != null))
-            {
-                if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
+
+                // create all 3 control possible
+                var ddl = new DropDownList();
+                var chk = new CheckBox();
+                var txt = new TextBox();
+                // pass wrapper templates using ddl attributes.
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
                 {
-                    ddl.Attributes.Add("index", xmlNod.Attributes["index"].Value);
-                    ddl = (DropDownList) GenXmlFunctions.AssignByReflection(ddl, xmlNod);
-                    ddl.DataBinding += ProductoptionsDataBind;
-                    ddl.Visible = false;
-                    ddl.Enabled = false;
-                    ddl.ID = "optionddl" + xmlNod.Attributes["index"].Value;
-                    if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
-                    {
-                        ddl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
-                    }
-                    container.Controls.Add(ddl);
-                    chk.Attributes.Add("index", xmlNod.Attributes["index"].Value);
-                    chk = (CheckBox)GenXmlFunctions.AssignByReflection(chk, xmlNod);
-                    chk.DataBinding += ProductoptionsDataBind;
-                    chk.ID = "optionchk" + xmlNod.Attributes["index"].Value;
-                    chk.Visible = false;
-                    chk.Enabled = false;
-                    container.Controls.Add(chk);
-                    txt.Attributes.Add("index", xmlNod.Attributes["index"].Value);
-                    txt = (TextBox)GenXmlFunctions.AssignByReflection(txt, xmlNod);
-                    txt.DataBinding += ProductoptionsDataBind;
-                    txt.ID = "optiontxt" + xmlNod.Attributes["index"].Value;
-                    txt.Visible = false;
-                    txt.Enabled = false;
-                    container.Controls.Add(txt);
-                    var hid = new HiddenField();
-                    hid.DataBinding += ProductoptionsDataBind;
-                    hid.ID = "optionid" + xmlNod.Attributes["index"].Value;
-                    hid.Value = xmlNod.Attributes["index"].Value;
-                    container.Controls.Add(hid);                    
+                    ddl.Attributes.Add("template", xmlNod.Attributes["template"].Value);
+                    chk.Attributes.Add("template", xmlNod.Attributes["template"].Value);
+                    txt.Attributes.Add("template", xmlNod.Attributes["template"].Value);
                 }
-            }
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["index"] != null))
+                {
+                    if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
+                    {
+                        ddl.Attributes.Add("index", xmlNod.Attributes["index"].Value);
+                        ddl = (DropDownList) GenXmlFunctions.AssignByReflection(ddl, xmlNod);
+                        ddl.DataBinding += ProductoptionsDataBind;
+                        ddl.Visible = false;
+                        ddl.Enabled = false;
+                        ddl.ID = "optionddl" + xmlNod.Attributes["index"].Value;
+                        if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+                        {
+                            ddl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
+                        }
+                        container.Controls.Add(ddl);
+                        chk.Attributes.Add("index", xmlNod.Attributes["index"].Value);
+                        chk = (CheckBox) GenXmlFunctions.AssignByReflection(chk, xmlNod);
+                        chk.DataBinding += ProductoptionsDataBind;
+                        chk.ID = "optionchk" + xmlNod.Attributes["index"].Value;
+                        chk.Visible = false;
+                        chk.Enabled = false;
+                        container.Controls.Add(chk);
+                        txt.Attributes.Add("index", xmlNod.Attributes["index"].Value);
+                        txt = (TextBox) GenXmlFunctions.AssignByReflection(txt, xmlNod);
+                        txt.DataBinding += ProductoptionsDataBind;
+                        txt.ID = "optiontxt" + xmlNod.Attributes["index"].Value;
+                        if (xmlNod.Attributes["required"] != null) txt.Attributes.Add("required", "");
+                        txt.Visible = false;
+                        txt.Enabled = false;
+                        container.Controls.Add(txt);
+                        var hid = new HiddenField();
+                        hid.DataBinding += ProductoptionsDataBind;
+                        hid.ID = "optionid" + xmlNod.Attributes["index"].Value;
+                        hid.Value = xmlNod.Attributes["index"].Value;
+                        container.Controls.Add(hid);
+                    }
+                }
         }
 
         private void ProductoptionsDataBind(object sender, EventArgs e)
         {
+            #region "Init"
+
+            var ctl = (Control) sender;
+            var container = (IDataItemContainer) ctl.NamingContainer;
+            var objInfo = (NBrightInfo) container.DataItem;
+            var useCtrlType = "";
+            var index = "1";
+
+            var xpathprefix = "";
+            var cartrecord = objInfo.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+            if (cartrecord) xpathprefix = "genxml/productxml/";
+
+            DropDownList ddl = null;
+            CheckBox chk = null;
+            TextBox txt = null;
+            HiddenField hid = null;
+
+            if (ctl is HiddenField)
+            {
+                hid = (HiddenField) ctl;
+                index = hid.Value;
+            }
+
+            if (ctl is DropDownList)
+            {
+                ddl = (DropDownList) ctl;
+                index = ddl.Attributes["index"];
+                ddl.Attributes.Remove("index");
+            }
+            if (ctl is CheckBox)
+            {
+                chk = (CheckBox) ctl;
+                index = chk.Attributes["index"];
+                chk.Attributes.Remove("index");
+            }
+            if (ctl is TextBox)
+            {
+                txt = (TextBox) ctl;
+                index = txt.Attributes["index"];
+                txt.Attributes.Remove("index");
+            }
+
+
+            var optionid = "";
+            var optiondesc = "";
+            XmlNodeList nodList = null;
+            var nod = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/options/genxml[" + index + "]/hidden/optionid");
+            if (nod != null)
+            {
+                optionid = nod.InnerText;
+                if (hid != null) hid.Value = optionid;
+                var nodDesc = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
+                if (nodDesc != null) optiondesc = nodDesc.InnerText;
+
+                nodList = objInfo.XMLDoc.SelectNodes(xpathprefix + "genxml/optionvalues[@optionid='" + optionid + "']/*");
+                if (nodList != null)
+                {
+                    switch (nodList.Count)
+                    {
+                        case 0:
+                            useCtrlType = "TextBox";
+                            break;
+                        case 1:
+                            useCtrlType = "CheckBox";
+                            break;
+                        default:
+                            useCtrlType = "DropDownList";
+                            break;
+                    }
+                }
+            }
+
+            #endregion
+
             if (visibleStatus.Last())
             {
-                #region "Init"
-
-                var ctl = (Control) sender;
-                var container = (IDataItemContainer) ctl.NamingContainer;
-                var objInfo = (NBrightInfo) container.DataItem;
-                var useCtrlType = "";
-                var index = "1";
-
-                var xpathprefix = "";
-                var cartrecord = objInfo.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
-                if (cartrecord) xpathprefix = "genxml/productxml/";
-
-                DropDownList ddl = null;
-                CheckBox chk = null;
-                TextBox txt = null;
-                HiddenField hid = null;
-
-                if (ctl is HiddenField)
-                {
-                    hid = (HiddenField)ctl;
-                    index = hid.Value;
-                }
-
-                if (ctl is DropDownList)
-                {
-                    ddl = (DropDownList) ctl;
-                    index = ddl.Attributes["index"];
-                    ddl.Attributes.Remove("index");
-                }
-                if (ctl is CheckBox)
-                {
-                    chk = (CheckBox) ctl;
-                    index = chk.Attributes["index"];
-                    chk.Attributes.Remove("index");
-                }
-                if (ctl is TextBox)
-                {
-                    txt = (TextBox)ctl;
-                    index = txt.Attributes["index"];
-                    txt.Attributes.Remove("index");
-                }
-
-                var optionid = "";
-                var optiondesc = "";
-                XmlNodeList nodList = null;
-                var nod = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/options/genxml[" + index + "]/hidden/optionid");
-                if (nod != null)
-                {
-                    optionid = nod.InnerText;
-                    if (hid != null) hid.Value = optionid;
-                    var nodDesc = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/options/genxml[" + index + "]/textbox/txtoptiondesc");
-                    if (nodDesc != null) optiondesc = nodDesc.InnerText;
-
-                    nodList = objInfo.XMLDoc.SelectNodes(xpathprefix + "genxml/optionvalues[@optionid='" + optionid + "']/*");
-                     if (nodList != null)
-                     {
-                         switch (nodList.Count)
-                         {
-                             case 0:
-                                 useCtrlType = "TextBox";
-                                 break;
-                             case 1:
-                                 useCtrlType = "CheckBox";
-                                 break;
-                             default:
-                                 useCtrlType = "DropDownList";
-                                 break;
-                         }
-                     }
-                }
-
-                #endregion
+                // hide all the controls
+                if (ddl != null) ddl.Visible = false;
+                if (chk != null) chk.Visible = false;
+                if (txt != null) txt.Visible = false;
 
                 if (ddl != null && useCtrlType == "DropDownList")
                 {
@@ -2342,8 +2350,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             else
                             {
-                            if (nodList.Count > 0) ddl.SelectedIndex = 0;
-                        }
+                                if (nodList.Count > 0) ddl.SelectedIndex = 0;
+                            }
                         }
 
 
@@ -2373,8 +2381,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     var nodLang = objInfo.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/optionvalues[@optionid='" + optionid + "']/genxml[" + lp.ToString("") + "]/textbox/txtoptionvaluedesc");
                                     if (nodLang != null) chk.Text = nodLang.InnerText;
 
-                                        chk.Attributes.Add("optionvalueid",optionvalueid);
-                                        chk.Attributes.Add("optionid", optionid);
+                                    chk.Attributes.Add("optionvalueid", optionvalueid);
+                                    chk.Attributes.Add("optionid", optionid);
 
                                     if (cartrecord)
                                     {
@@ -2406,10 +2414,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // assign cart value   
                         var selectSingleNode = objInfo.XMLDoc.SelectSingleNode("genxml/options/option[optid='" + optionid + "']/optvaltext");
                         if (selectSingleNode != null) txt.Text = selectSingleNode.InnerText;
-                }
+                    }
 
+                }
             }
-        }
+            else
+            {
+                // hide all the controls
+                if (ddl != null) ddl.Visible = false;
+                if (chk != null) chk.Visible = false;
+                if (txt != null) txt.Visible = false;
+            }
         }
 
         #endregion
@@ -3045,13 +3060,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (lc.Visible)
                 {
 
-                    var moduleid = _settings["moduleid"];
                     var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                     var templName = lc.Text;
-                    if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleid) && (templName != ""))
+                    if (Utils.IsNumeric(id) && (templName != ""))
                     {
                         var modCtrl = new NBrightBuyController();
-                        var rpTempl = modCtrl.GetTemplateData(Convert.ToInt32(moduleid), templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
+                        var rpTempl = modCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
 
                         //remove templName from template, so we don't get a loop.
                         if (rpTempl.Contains('"' + templName + '"')) rpTempl = rpTempl.Replace(templName, "");
@@ -3059,14 +3073,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var objInfo = (NBrightInfo)container.DataItem;
 
                         List<NBrightInfo> objL = null;
-                        var strCacheKey = Utils.GetCurrentCulture() + "*" + objInfo.ItemID;
+                        var strCacheKey = Utils.GetCurrentCulture() + "RelatedList*" + objInfo.ItemID;
                         if (!StoreSettings.Current.DebugMode) objL = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
                         if (objL == null)
                         {
                             var prodData = ProductUtils.GetProductData(objInfo.ItemID, Utils.GetCurrentCulture());
                             //objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
                             objL = prodData.GetRelatedProducts();
-                            if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(Convert.ToInt32(moduleid), strCacheKey, objL);                            
+                            if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(-1, strCacheKey, objL);
                         }
                         // render repeater
                         try

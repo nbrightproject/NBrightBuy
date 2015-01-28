@@ -451,7 +451,7 @@
     <value>Etes-vous sûr?</value>
   </data>
   <data name="ProcessingDiv.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog fa-spin fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Upload.Text" xml:space="preserve">
     <value>Charger</value>
@@ -898,7 +898,7 @@
     <value>Méthodes de livraison</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Chèque ou Virement</value>
+    <value>Manuel</value>
   </data>
   <data name="creditcardpayment.Text" xml:space="preserve">
     <value>Carte bancaire</value>

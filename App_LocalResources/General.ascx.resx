@@ -472,7 +472,7 @@
     <value>010,020,030,040,050,060,070,080,120,090,100,110</value>
   </data>
   <data name="orderstatus.Text" xml:space="preserve">
-    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived</value>
+    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Closed,Archived</value>
   </data>
   <data name="shippingdate.Text" xml:space="preserve">
     <value>Shipping Date</value>
@@ -511,7 +511,7 @@
     <value>Are you sure?</value>
   </data>
   <data name="ProcessingDiv.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog fa-spin fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload </value>
@@ -901,7 +901,7 @@
     <value>Credit card</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Cheque or Transfer</value>
+    <value>Manual</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>

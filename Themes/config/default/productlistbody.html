@@ -2,12 +2,10 @@
 
 <tr>
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<td class="image"><img src="[<tag type='thumbnail' w='40' h='40' />]"></td>
+	<td class="image centered"><img src="[<tag type='thumbnail' w='80' h='68' />]"></td>
 	[<tag type="endif" />]
-	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
-	<td class="noimage"><i class="fa fa-camera"></i></td>
-	[<tag type="endif" />]
+	<td class="noimage centered"><i class="fa fa-picture-o fa-5x"></i></td>
 	[<tag type="endif" />]
     <td><div>[<tag type="productname" />]</div>
         [<tag type="if" xpath="genxml/textbox/txtproductref" testvalue="" display="{OFF}" />]

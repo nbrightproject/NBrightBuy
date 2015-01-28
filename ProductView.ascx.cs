@@ -355,7 +355,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             if (Utils.IsNumeric(catseo))
                             {
                                 var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
-                                if (objSEOCat != null)
+                                if (objSEOCat != null && _eid == "")  // we may have a detail page and listonly module, in which can we need the product detail as page title
                                 {
                                     //Page Title
                                     var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");

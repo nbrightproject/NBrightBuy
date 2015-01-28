@@ -511,7 +511,7 @@
     <value xml:space="preserve">Verzendopties</value>
   </data>
   <data name="lblspecialinstructions.Text">
-    <value xml:space="preserve">Uw ordernummer / Opmerkingen</value>
+    <value xml:space="preserve">Speciale instructies</value>
   </data>
   <data name="lblTotals.Text">
     <value xml:space="preserve">Totaal</value>
@@ -523,7 +523,7 @@
     <value xml:space="preserve">Lijst</value>
   </data>
   <data name="manualpayment.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">Cheque of overdracht</value>
+    <value xml:space="preserve">Handmatig</value>
   </data>
   <data name="Max.Text">
     <value xml:space="preserve">Max</value>
@@ -622,7 +622,7 @@
     <value xml:space="preserve">Verwerking</value>
   </data>
   <data name="ProcessingDiv.Text">
-    <value xml:space="preserve">&lt;i class="fa fa-cog fa-spin fa-2x"&gt;&lt;/i&gt;</value>
+    <value xml:space="preserve">&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Product.Text">
     <value xml:space="preserve">Product</value>
