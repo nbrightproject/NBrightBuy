@@ -2446,10 +2446,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var paramList = new Dictionary<String, String>();
                 var cascade = "false";
                 var orderby = " order by NB3.ProductName";
+                var filter = "";
                 if (xmlNod.Attributes["cascade"] != null) cascade = xmlNod.Attributes["cascade"].Value;
                 paramList.Add("cascade", cascade);
                 if (xmlNod.Attributes["orderby"] != null) orderby = xmlNod.Attributes["orderby"].Value;
                 paramList.Add("orderby", orderby);
+                if (xmlNod.Attributes["filter"] != null) filter = xmlNod.Attributes["filter"].Value;
+                paramList.Add("filter", filter);
                 rpt.DataSource = paramList;
                 container.Controls.Add(rpt);
             }
@@ -2470,6 +2473,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var strOrder = paramList["orderby"];
 
                 var cascade = paramList["cascade"];
+                var filter = paramList["filter"];
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
                 if (cascade.ToLower() == "true")
@@ -2478,6 +2482,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
                 else
                     strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+
+                if (filter != "") strFilter += " AND " + filter;
 
                 var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId,-1,"PRD","PRDLANG",Utils.GetCurrentCulture(),strFilter,strOrder) ;
                 // inject the categoryid into the data, so the entryurl can have the correct catid
@@ -2521,7 +2527,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //build models list
                 var objL = BuildModelList((NBrightInfo)container.DataItem, true);
                 rpt.DataSource = objL;
-                //rpt.DataBind();
+                rpt.DataBind();
             }
         }
 
