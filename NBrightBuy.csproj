@@ -177,6 +177,7 @@
     <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
     <Compile Include="Components\GroupData.cs" />
+    <Compile Include="Components\Interfaces\SchedulerInterface.cs" />
     <Compile Include="Components\Interfaces\DiscountCodeInterface.cs" />
     <Compile Include="Components\Interfaces\FilterInterface.cs" />
     <Compile Include="Components\Interfaces\PaymentsInterface.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\OrderData.cs" />
     <Compile Include="Components\RequestForm.cs" />
+    <Compile Include="Components\Scheduler.cs" />
     <Compile Include="Components\UserData.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />

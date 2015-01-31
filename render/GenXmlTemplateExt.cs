@@ -3084,14 +3084,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (objL == null)
                         {
                             var prodData = ProductUtils.GetProductData(objInfo.ItemID, Utils.GetCurrentCulture());
-                            //objL = NBrightBuyV2Utils.GetRelatedProducts(objInfo);
                             objL = prodData.GetRelatedProducts();
                             if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(-1, strCacheKey, objL);
                         }
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(objL, rpTempl, "", "XMLData", "", _settings);
+                            var itemTemplate =  NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            strOut = GenXmlFunctions.RenderRepeater(objL, itemTemplate);
                         }
                         catch (Exception exc)
                         {
@@ -4234,7 +4234,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-							strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings, visibleStatus);                        }
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(groupresults), itemTemplate);
+                        }
                         catch (Exception exc)
                         {
                             strOut = "ERROR: NOTE: sub rendered templates CANNOT contain postback controls.<br/>" + exc;
@@ -4294,7 +4296,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetAuditItemList(), rpTempl, "", "XMLData", "", _settings, visibleStatus);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            strOut = GenXmlFunctions.RenderRepeater(ordData.GetAuditItemList(), itemTemplate);
                         }
                         catch (Exception exc)
                         {
@@ -4362,7 +4365,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(groupresults), rpTempl, "", "XMLData", "", _settings);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(groupresults), itemTemplate);
                         }
                         catch (Exception exc)
                         {

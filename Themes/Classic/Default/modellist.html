@@ -1,27 +1,32 @@
-<!-- modellist.html - This repeating template creates the rows but not the header of the models table in detail.html. -->
-
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]<!-- Point to language file  -->
 
 	<tr>
-		<td style="text-align:left">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td><!-- Model -->
+		<td class="models-option">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtmodelname" />]</td><!-- Model Name -->
+		<td class="models-value">[<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtextra" />]</td><!-- Model Description -->
+
+    [<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]<!-- Show Product Code -->
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{ON}' />]<!-- If no Product Code -->
+		<td>NC</td>
+		[<tag type="endif"  />]
+		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{OFF}' />]<!-- Product Code -->
+		<td>[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td>
+		[<tag type="endif"  />]
+    [<tag type="endif"  />]
 		
-		[<tag type="if" function="settings" key="productcode" testvalue="True" display="{ON}" />]<!-- Show Product Code -->
-		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{ON}' displayelse='{OFF}' />]
-		<td>NC</td><!-- If no Product Code -->
-		[<tag type="endif"  />]
-		[<tag type='if' xpath='genxml/textbox/txtmodelref' testvalue='' display='{OFF}' displayelse='{ON}' />]
-		<td>[<tag type="valueof" xpath="genxml/textbox/txtmodelref" />]</td><!-- Product Code -->
-		[<tag type="endif"  />]
-		[<tag type="endif"  />]
+    <td>
+    [<tag type='testof' xpath='genxml/textbox/txtsaleprice' testvalue='0.00' display='{OFF}' />]
+    <span class="old">[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currencyculturecode}" />]</span><!-- Retail price -->
+		<strong>[<tag type="valueof" xpath="genxml/textbox/txtsaleprice" format="C2" datatype="double" culturecode="{Settings:currencyculturecode}" />]</strong><!-- Sale price -->
+    [<tag type='endtestof' />]
+    [<tag type='testof' xpath='genxml/textbox/txtsaleprice' testvalue='0.00' display='{ON}' />]
+    [<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currencyculturecode}" />]<!-- Retail price -->
+    [<tag type='endtestof' />]
+    </td>
 		
-		[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Hide all prices in catalogue mode -->
-		<td>[<tag type="valueof" xpath="genxml/textbox/txtunitcost" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Retail price -->
-		[<tag type='testof' xpath='genxml/hidden/saleprice' testvalue='-1' display='{OFF}' displayelse='{ON}' />]
-		<td>[<tag type="valueof" xpath="genxml/hidden/saleprice" format="C2" datatype="double" culturecode="{Settings:currency.culture}" />]</td><!-- Sale price -->
-		[<tag type='endtestof' />]
-		[<tag type="endif"  />]<!-- End hide all prices in catalogue mode -->
-		
-		[<tag type="if" function="settings" key="showstock" testvalue="True" display="{ON}" />]
-		<td>[<tag type="valueof" resourcekey="ProductView.instock" />]</td><!-- Stock and availability -->
-		[<tag type="endif"  />]
+		<td>
+    [<tag type='if' xpath='genxml/textbox/txtqtyremaining' testvalue='0' display='{ON}' />]
+    <strong>[<tag type="label" resourcekey="ProductView.outofstock" />]</strong><!-- Out of stock -->
+    [<tag type="endif"  />]
+    </td>
+    
 	</tr>

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Resources;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
@@ -37,12 +38,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Use the setting to get the template system getter control.
         /// </summary>
         /// <returns></returns>
+        public static TemplateGetter GetTemplateGetter(int portalId, string themeFolder)
+        {
+            var controlMapPath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath());
+            themeFolder = "Themes\\" + themeFolder;
+            var map = "";
+            var storeThemeFolder = "";
+            if (PortalSettings.Current == null) // might be ran from scheduler
+            {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(portalId);
+                map = portalsettings.HomeDirectoryMapPath;
+                var storeset = new StoreSettings(portalId);
+                storeThemeFolder = storeset.ThemeFolder;
+            }
+            else
+            {
+                map = PortalSettings.Current.HomeDirectoryMapPath;
+                storeThemeFolder = StoreSettings.Current.ThemeFolder;
+            }
+            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(map, controlMapPath, "Themes\\config", themeFolder, "Themes\\" + storeThemeFolder);
+            return templCtrl;
+        }
+
         public static TemplateGetter GetTemplateGetter(string themeFolder)
         {
-            var controlMapPath = HttpContext.Current.Server.MapPath(StoreSettings.NBrightBuyPath());
-            themeFolder = "Themes\\" + themeFolder;
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder,"Themes\\" + StoreSettings.Current.ThemeFolder);
-            return templCtrl;
+            return GetTemplateGetter(PortalSettings.Current.PortalId, themeFolder);
         }
 
         public static NBrightInfo GetSettings(int portalId, int moduleId, String ctrlTypeCode = "", bool useCache = true)
@@ -900,27 +920,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var rtnInfo = nbrightInfo;
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var provList = pluginData.GetShippingProviders();
+            var provList = pluginData.GetEventsProviders();
+
             foreach (var d in provList)
             {
-                var eventprov = EventInterface.Instance(d.Key);
-                if (eventprov != null)
+                var prov = d.Value;
+                ObjectHandle handle = null;
+                handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                if (handle != null)
                 {
-                    if (eventaction == EventActions.ValidateCartBefore)
+                    var eventprov = (EventInterface) handle.Unwrap();
+                    if (eventprov != null)
                     {
-                        rtnInfo = eventprov.ValidateCartBefore(nbrightInfo);                        
-                    }
-                    else if (eventaction == EventActions.ValidateCartAfter)
-                    {
-                        rtnInfo = eventprov.ValidateCartAfter(nbrightInfo);
-                    }
-                    else if (eventaction == EventActions.ValidateCartItemBefore)
-                    {
-                        rtnInfo = eventprov.ValidateCartItemBefore(nbrightInfo);
-                    }
-                    else if (eventaction == EventActions.ValidateCartItemAfter)
-                    {
-                        rtnInfo = eventprov.ValidateCartItemAfter(nbrightInfo);
+                        if (eventaction == EventActions.ValidateCartBefore)
+                        {
+                            rtnInfo = eventprov.ValidateCartBefore(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartAfter)
+                        {
+                            rtnInfo = eventprov.ValidateCartAfter(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartItemBefore)
+                        {
+                            rtnInfo = eventprov.ValidateCartItemBefore(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartItemAfter)
+                        {
+                            rtnInfo = eventprov.ValidateCartItemAfter(nbrightInfo);
+                        }
                     }
                 }
             }

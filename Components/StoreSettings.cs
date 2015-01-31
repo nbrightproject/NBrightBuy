@@ -42,9 +42,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //add DNN Portalsettings
             if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalId.ToString(""));
-            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
-            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
-            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
+            if (PortalSettings.Current == null)
+            {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(portalId);
+                if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", portalsettings.PortalName);
+                if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", portalsettings.HomeDirectory);
+                if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", portalsettings.HomeDirectoryMapPath);                
+            }
+            else
+            {
+                if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
+                if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
+                if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);                
+            }
             if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
@@ -78,12 +88,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         /// <summary>
-        /// get relitive patyh of NBrightBuy Module (For compatiblity with DNN running in a virtual directory)
+        /// get relitive patyh of NBrightBuy Module (NBS is NOT compatiblity with DNN running in a virtual directory)
         /// </summary>
         /// <returns></returns>
         public static String NBrightBuyPath()
         {
-            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
+            //if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
             return "/DesktopModules/NBright/NBrightBuy";
         }
 
@@ -110,8 +120,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get
             {
                 var editlang = "";
-                // need to test if HttpContext.Current.Session is null, because webservice calling storesettings will raise exception. 
-                if (HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
+                // need to test if HttpContext.Current is null, because webservice calling storesettings will raise exception. 
+                if (HttpContext.Current != null && HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
                 if (editlang == "") return Utils.GetCurrentCulture();
                 return editlang;
             }
