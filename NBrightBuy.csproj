@@ -500,6 +500,9 @@
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
     <Content Include="Themes\config\default\clientvouchercodes.html" />
+    <Content Include="Themes\config\default\MiniCart_Settings.html" />
+    <Content Include="Themes\config\default\FullCart_Settings.html" />
+    <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\extrapaymentdata.html" />
     <Content Include="Themes\config\default\extrashippingdata.html" />
     <Content Include="Themes\config\default\ordersauditlist.html" />

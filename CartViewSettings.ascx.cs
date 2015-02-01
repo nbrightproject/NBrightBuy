@@ -17,7 +17,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
         protected override void OnInit(EventArgs e)
         {          
-            base.CtrlTypeCode = "CartView";
+            // cart type is not a setting, so use the controlanme
+            if (ControlName == "NBS_MiniCart") base.CtrlTypeCode = "MiniCart";
+            if (ControlName == "NBS_FullCart") base.CtrlTypeCode = "FullCart";
+            if (ControlName == "NBS_Checkout") base.CtrlTypeCode = "Checkout";
+
             base.OnInit(e);
         }
 

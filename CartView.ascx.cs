@@ -84,8 +84,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
+                var carttype = ModSettings.Get("ddlcarttype");  // This is left for backward compatiblity with NBS_Cart module (now removed from install).
 
-                var carttype = ModSettings.Get("ddlcarttype");
+                if (carttype == "")
+                {
+                    // cart type is not a setting, so use the controlanme
+                    if (ControlName == "NBS_MiniCart") carttype = "1";
+                    if (ControlName == "NBS_FullCart") carttype = "2";
+                    if (ControlName == "NBS_Checkout") carttype = "3";
+                }
+
                 if (carttype == "3" || carttype == "2") // check if we need to add cookie items
                 {
                     _cartInfo.AddCookieToCart();
