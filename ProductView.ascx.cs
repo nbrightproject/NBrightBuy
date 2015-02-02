@@ -70,8 +70,19 @@ namespace Nevoweb.DNN.NBrightBuy
             _printtemplate = Utils.RequestParam(Context, "template");
 
             EnablePaging = true;
-
+            
             base.OnInit(e);
+
+            // if guidkey entered instead of eid, find it using the guid and assign to _eid
+            var guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
+            if (_eid== "" && guidkey != "")
+            {
+                var guidData = ModCtrl.GetByGuidKey(PortalId, -1, "PRD", guidkey);
+                if (guidData != null)
+                    _eid = guidData.ItemID.ToString("D");
+                else
+                    _eid = "0";
+            }
 
             // if we want to print we need to open the browser with a startup script, this points to a Printview.aspx. (Must go after the ModSettings has been init.)
             if (_print != "") Page.ClientScript.RegisterStartupScript(this.GetType(), "printproduct", "window.open('" + StoreSettings.NBrightBuyPath() + "/PrintView.aspx?itemid=" + _eid + "&printcode=" + _print + "&template=" + _printtemplate + "&theme=" + ModSettings.Get("themefolder") + "','_blank');", true);
