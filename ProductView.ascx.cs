@@ -264,7 +264,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #region "Get filter setup"
 
+                        // check the display header to see if we have a sqlfilter defined.
                         var strFilter = "";
+                        var strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
                         // filter mode and will persist past category selection.
                         if ((_catid == "" && _catname == ""))
                         {
@@ -272,6 +274,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                             // if navdata is not deleted then get filter from navdata, created by productsearch module.
                             strFilter = _navigationdata.Criteria;
+                            if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
                             _strOrder = _navigationdata.OrderBy;
                         }
                         else
@@ -281,9 +284,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             // We have a category selected (in url), so overwrite categoryid navigationdata.
                             // This allows the return to the same category after a returning from a entry view.
                             _navigationdata.CategoryId = _catid;
-
-                            // check the display header to see if we have a sqlfilter defined.
-                            strFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                            strFilter = strHeaderFilter;
                         }
 
                     #endregion
@@ -491,7 +492,7 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
+            var param = new string[4];
             if (_eid != "") param[0] = "eid=" + _eid;
             if (_modkey != "") param[1] = "modkey=" + _modkey;
             if (_catid != "") param[2] = "catid=" + _catid;
@@ -518,6 +519,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var currentcart = new CartData(PortalId);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     currentcart.Save(StoreSettings.Current.DebugMode);
+                    param[3] = "addcart=1";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addalltobasket":
@@ -527,12 +529,14 @@ namespace Nevoweb.DNN.NBrightBuy
                         currentcart2.AddItem(rpData, StoreSettings.Current.SettingsInfo, ri.ItemIndex, DebugMode);
                     }
                     currentcart2.Save(StoreSettings.Current.DebugMode);
+                    param[3] = "addcart=1";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "addcookietobasket":
                     var currentcart3 = new CartData(PortalId);
                     currentcart3.AddCookieToCart();
                     currentcart3.Save(StoreSettings.Current.DebugMode);
+                    param[3] = "addcart=1";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "docdownload":

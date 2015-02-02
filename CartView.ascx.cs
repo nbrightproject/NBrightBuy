@@ -52,6 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _tabid = "";
         private CartData _cartInfo;
         private AddressData _addressData;
+        private String carttype = "";
 
         #region Event Handlers
 
@@ -84,14 +85,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
-                var carttype = ModSettings.Get("ddlcarttype");  // This is left for backward compatiblity with NBS_Cart module (now removed from install).
+                carttype = ModSettings.Get("ddlcarttype");  // This is left for backward compatiblity with NBS_Cart module (now removed from install).
 
                 if (carttype == "")
                 {
                     // cart type is not a setting, so use the controlanme
-                    if (ControlName == "NBS_MiniCart") carttype = "1";
-                    if (ControlName == "NBS_FullCart") carttype = "2";
-                    if (ControlName == "NBS_Checkout") carttype = "3";
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_MiniCart") carttype = "1";
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_FullCart") carttype = "3";
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_Checkout") carttype = "2";
                 }
 
                 if (carttype == "3" || carttype == "2") // check if we need to add cookie items
@@ -159,7 +160,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Page.IsPostBack == false)
                 {
                     // check for empty cart 
-                    if (!_cartInfo.GetCartItemList().Any() && (ModSettings.Get("ddlcarttype") == "2" || ModSettings.Get("ddlcarttype") == "3"))
+                    if (!_cartInfo.GetCartItemList().Any() && (carttype == "2" || carttype == "3"))
                     {
                         var cartL = new List<NBrightInfo>();
                         cartL.Add(_cartInfo.GetInfo());
@@ -210,7 +211,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
-            var carttype =  ModSettings.Get("ddlcarttype");
             if (carttype == "3") // full cart list
             {
                 // display footer
