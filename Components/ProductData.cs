@@ -774,6 +774,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void AddProperty(String propertyref)
+        {
+            var objCtrl = new NBrightBuyController();
+            var pinfo = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1,"CATEGORY",propertyref);
+            if (pinfo == null)
+            {
+                // not using the unique ref, look for the friendly propertyref name.
+                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORY", "NB1.[XMLData].value('(genxml/textbox/propertyref)[1]','nvarchar(max)') = '" + propertyref + "' ", "", 1);
+                if (l.Any()) pinfo = l[0];
+            }
+            if (pinfo != null) AddCategory(pinfo.ItemID);
+        }
+
         public void AddCategory(int categoryid)
         {
             var strGuid = categoryid.ToString("") + "x" + Info.ItemID.ToString("");

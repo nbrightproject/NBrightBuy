@@ -41,6 +41,13 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class CartView : NBrightBuyFrontOfficeBase
     {
 
+        public String DisplayHeader { get; set; }
+        public String DisplayBody { get; set; }
+        public String DisplayFooter { get; set; }
+        public String PaymentTab { get; set; }
+        public String Themefolder { get; set; }
+
+
         private String _catid = "";
         private String _catname = "";
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
@@ -61,6 +68,16 @@ namespace Nevoweb.DNN.NBrightBuy
         {
 
             base.OnInit(e);
+
+            // get setting via control params
+            if (DisplayHeader != null && DisplayHeader == "") DisplayHeader = "minicartheader.html";
+            if (DisplayBody != null && DisplayHeader == "") DisplayBody = "minicartbody.html";
+            if (DisplayFooter != null && DisplayHeader == "") DisplayFooter = "minicartfooter.html";
+            if (!String.IsNullOrEmpty(DisplayHeader) && !ModSettings.Settings().ContainsKey("txtdisplayheader")) ModSettings.Settings().Add("txtdisplayheader", DisplayHeader);
+            if (!String.IsNullOrEmpty(DisplayBody) && !ModSettings.Settings().ContainsKey("txtdisplaybody")) ModSettings.Settings().Add("txtdisplaybody", DisplayBody);
+            if (!String.IsNullOrEmpty(DisplayFooter) && !ModSettings.Settings().ContainsKey("txtdisplayfooter")) ModSettings.Settings().Add("txtdisplayfooter", DisplayFooter);
+            if (!String.IsNullOrEmpty(PaymentTab) && !ModSettings.Settings().ContainsKey("PaymentTab")) ModSettings.Settings().Add("PaymentTab",PaymentTab );
+            if (!String.IsNullOrEmpty(Themefolder) && !ModSettings.Settings().ContainsKey("themefolder")) ModSettings.Settings().Add("themefolder", Themefolder);
 
             _cartInfo = new CartData(PortalId);
 

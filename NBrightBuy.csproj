@@ -412,9 +412,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="PrintView.aspx" />
-    <Content Include="ProductSearch.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProductSearch.ascx" />
     <Content Include="ProfileForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

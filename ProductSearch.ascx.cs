@@ -31,6 +31,12 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class ProductSearch : NBrightBuyFrontOfficeBase
     {
 
+        public String RedirectTabId { get; set; }
+        public String TargetModulekey { get; set; }
+        public String Themefolder { get; set; }
+        public String Searchtemplate { get; set; }
+
+
         private GenXmlTemplate _templD;
         private int _redirecttabid;
         private string _targetModuleKey;
@@ -38,8 +44,13 @@ namespace Nevoweb.DNN.NBrightBuy
 
         override protected void OnInit(EventArgs e)
         {
-            
             base.OnInit(e);
+
+            // get setting via control params
+            if (!String.IsNullOrEmpty(RedirectTabId) && !ModSettings.Settings().ContainsKey("redirecttabid")) ModSettings.Settings().Add("redirecttabid", RedirectTabId);
+            if (!String.IsNullOrEmpty(TargetModulekey) && !ModSettings.Settings().ContainsKey("targetmodulekey")) ModSettings.Settings().Add("targetmodulekey", TargetModulekey);
+            if (!String.IsNullOrEmpty(Themefolder) && !ModSettings.Settings().ContainsKey("themefolder")) ModSettings.Settings().Add("themefolder", Themefolder);
+            if (!String.IsNullOrEmpty(Searchtemplate) && !ModSettings.Settings().ContainsKey("txtsearchtemplate")) ModSettings.Settings().Add("txtsearchtemplate", Searchtemplate);
 
             if (ModSettings.Get("txtsearchtemplate") == "")  // if we don't have module setting jump out
             {
@@ -71,14 +82,11 @@ namespace Nevoweb.DNN.NBrightBuy
             _targetModuleKey = "";
             _targetModuleKey = ModSettings.Get("targetmodulekey");
 
-            if (Page.IsPostBack == false)
-            {
-                var obj = new NBrightInfo();
+            var obj = new NBrightInfo();
                 
-                var searchcookie = new NavigationData(PortalId, _targetModuleKey);
-                if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
-                DoDetail(rpData, obj);
-            }
+            var searchcookie = new NavigationData(PortalId, _targetModuleKey);
+            if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
+            DoDetail(rpData, obj);
         }
 
 
