@@ -257,7 +257,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objGrpCtrl = new GrpCatController(_lang);
             var l = objGrpCtrl.GetProductCategories(Info.ItemID, "!cat");
-            return l.Any(i => i.categoryref == propertyref);
+            return l.Any(i => (i.categoryref == propertyref || i.propertyref == propertyref));
         }
 
         public Boolean IsInCategory(String categoryref)

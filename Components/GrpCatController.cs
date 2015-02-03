@@ -499,6 +499,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.recordsortorder = i.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 grpcat.imageurl = i.GetXmlProperty("genxml/hidden/imageurl");
                 grpcat.categoryref = i.GetXmlProperty("genxml/textbox/txtcategoryref");
+                grpcat.propertyref = i.GetXmlProperty("genxml/textbox/propertyref");
                 grpcat.archived = i.GetXmlPropertyBool("genxml/checkbox/chkarchived");
                 grpcat.ishidden = i.GetXmlPropertyBool("genxml/checkbox/chkishidden");
                 grpcat.disabled = i.GetXmlPropertyBool("genxml/checkbox/chkdisable");
