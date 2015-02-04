@@ -280,6 +280,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "currencyof":
                     CreateCurrencyOf(container, xmlNod);
                     return true;
+                case "xslinject":
+                    CreateXslInject(container, xmlNod);
+                    return true;                    
                 default:
                     return false;
 
@@ -4523,6 +4526,38 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 lc.Text = "";
             }
         }
+
+        #endregion
+
+        #region "XslInject"
+
+        private void CreateXslInject(Control container, XmlNode xmlNod)
+        {
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+            {
+                var lc = new Literal();
+                lc.DataBinding += XslInjectDataBind;
+                lc.Text  = xmlNod.Attributes["template"].Value;
+                container.Controls.Add(lc);
+            }
+        }
+
+        private void XslInjectDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            lc.Visible = visibleStatus.Last();
+            if (lc.Visible && container.DataItem != null)
+            {
+                var templName = lc.Text;
+                var buyCtrl = new NBrightBuyController();
+                var xslTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);                
+                var nbi = (NBrightInfo)container.DataItem;
+                var strOut = XslUtils.XslTransInMemory(nbi.XMLData, xslTempl);
+                lc.Text = strOut;
+            }
+        }
+
 
         #endregion
 

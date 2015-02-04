@@ -185,7 +185,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // Send emails
                     NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", _cartInfo.PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", _cartInfo.PurchaseInfo);
+                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", _cartInfo.PurchaseInfo, "ordercreatedemailsubject");
 
                     // update status to completed
                     _orderData = new OrderData(PortalId, _cartInfo.PurchaseInfo.ItemID);

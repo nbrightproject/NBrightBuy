@@ -156,7 +156,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 prodData.Update(updInfo.XMLData);
                 prodData.Save();
 
-                if (StoreSettings.Current.DebugMode) prodData.OutputDebugFile("debug_productupdate.xml");
+                if (StoreSettings.Current.DebugMode) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
 
                 NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
 

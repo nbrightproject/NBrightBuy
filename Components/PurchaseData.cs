@@ -50,7 +50,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<items>";
             foreach (var info in _itemList)
             {
-                strXml += info.XMLData;
+                // remove injected group header record for the product
+                if (!info.GetXmlPropertyBool("genxml/groupheader")) strXml += info.XMLData;
             }
             strXml += "</items>";
             PurchaseInfo.RemoveXmlNode("genxml/items");
