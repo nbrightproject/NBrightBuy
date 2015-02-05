@@ -287,6 +287,8 @@ namespace Nevoweb.DNN.NBrightBuy
                             strFilter = _navigationdata.Criteria;
                             if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
                             _strOrder = _navigationdata.OrderBy;
+
+                            if (_navigationdata.Mode.ToLower() =="s") _navigationdata.ResetSearch(); // single search so clear after
                         }
                         else
                         {
