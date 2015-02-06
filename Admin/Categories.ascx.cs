@@ -173,7 +173,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "search":
                     var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
                     navigationData.XmlData = strXml;
-                    if (DebugMode)
+                    if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
                         var xmlDoc = new System.Xml.XmlDataDocument();

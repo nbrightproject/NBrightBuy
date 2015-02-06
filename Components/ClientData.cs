@@ -145,7 +145,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void OutputDebugFile(String fileName)
         {
-            _clientInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
+            if (StoreSettings.Current.DebugModeFileOut) _clientInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
         }
 
         public void UpdateDiscountCodes(String xmlAjaxData)

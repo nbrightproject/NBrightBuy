@@ -483,7 +483,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         base.DoDetail(rpDataH);
                     else
                     {
-                        if (DebugMode) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
+                        if (StoreSettings.Current.DebugModeFileOut) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
                         DoDetail(rpDataH, objCat);
                     }
 

@@ -270,7 +270,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
 
-            if (debugMode) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
+            if (StoreSettings.Current.DebugModeFileOut) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
 
             var objInfo = new NBrightInfo();
             objInfo.XMLData = "<genxml></genxml>";

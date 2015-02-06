@@ -110,7 +110,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
                     navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
                     navigationData.Save();
-                    if (DebugMode)
+                    if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
                         var xmlDoc = new System.Xml.XmlDataDocument();

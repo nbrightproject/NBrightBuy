@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var cartId = base.SavePurchaseData();
                 var cartData = new CartData(PortalId, "", cartId.ToString("")); //create the client record (cookie)
                 cartData.Save();
-                if (debugMode) OutputDebugFile("debug_convertedorder.xml");
+                if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedorder.xml");
             }
         }
 
@@ -75,7 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
 
             cartData.Save();
-            if (debugMode) OutputDebugFile("debug_copytocart.xml");
+            if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_copytocart.xml");
         }
 
         /// <summary>

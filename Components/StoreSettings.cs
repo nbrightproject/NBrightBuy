@@ -23,6 +23,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public StoreSettings(int portalId)
         {
             DebugMode = false;
+            DebugModeFileOut = false;
 
             _settingDic = new Dictionary<string, string>();
 
@@ -61,6 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ThemeFolder = Get("themefolder");
 
             if (_settingDic.ContainsKey("debug.mode") && _settingDic["debug.mode"] == "True") DebugMode = true;  // set debug mmode
+            if (_settingDic.ContainsKey("debugfileout") && _settingDic["debugfileout"] == "True") DebugModeFileOut = true;  // set debug mmode
             StorageTypeClient = DataStorageType.Cookie;
             if (Get("storagetypeclient") == "SessionMemory") StorageTypeClient = DataStorageType.SessionMemory;
             
@@ -177,6 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
+        public bool DebugModeFileOut { get; private set; }
         /// <summary>
         /// Get Client StorageType type Cookie,SessionMemory
         /// </summary>

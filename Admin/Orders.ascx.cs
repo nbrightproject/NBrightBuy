@@ -278,7 +278,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpSearch);
                     navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch);
                     navigationData.Save();
-                    if (DebugMode)
+                    if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
                         var xmlDoc = new System.Xml.XmlDataDocument();

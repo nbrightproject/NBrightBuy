@@ -915,4 +915,10 @@
   <data name="ExtraCost.Text" xml:space="preserve">
     <value>Extra cost</value>
   </data>
+  <data name="debugfileout.Text" xml:space="preserve">
+    <value>Output Debug Files</value>
+  </data>
+  <data name="debugfileoutmsg.Text" xml:space="preserve">
+    <value>Warning, do NOT activate this on a Live site.</value>
+  </data>
 </root>

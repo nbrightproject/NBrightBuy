@@ -2438,65 +2438,103 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
-                var templName = xmlNod.Attributes["template"].Value;
-                var buyCtrl = new NBrightBuyController();
-                var rpTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
 
-                //remove templName from template, so we don't get a loop.
-                if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
-                var rpt = new Repeater { ItemTemplate = new GenXmlTemplate(rpTempl, _settings) };
-                rpt.Init += ProductlistInit; // use init so we don;t get a infinate loop on databind.
-                var paramList = new Dictionary<String, String>();
-                var cascade = "false";
-                var orderby = " order by NB3.ProductName";
-                var filter = "";
-                if (xmlNod.Attributes["cascade"] != null) cascade = xmlNod.Attributes["cascade"].Value;
-                paramList.Add("cascade", cascade);
-                if (xmlNod.Attributes["orderby"] != null) orderby = xmlNod.Attributes["orderby"].Value;
-                paramList.Add("orderby", orderby);
-                if (xmlNod.Attributes["filter"] != null) filter = xmlNod.Attributes["filter"].Value;
-                paramList.Add("filter", filter);
-                rpt.DataSource = paramList;
-                container.Controls.Add(rpt);
+                var lc = new Literal();
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
+                {
+                    lc.Text = xmlNod.Attributes["template"].Value;
+                    if (xmlNod.Attributes["cascade"] != null) lc.Text = lc.Text + ":" + xmlNod.Attributes["cascade"].Value;
+                    if (xmlNod.Attributes["orderby"] != null) lc.Text = lc.Text + ":" + xmlNod.Attributes["orderby"].Value;
+                    if (xmlNod.Attributes["filter"] != null) lc.Text = lc.Text + ":" + xmlNod.Attributes["filter"].Value;
+                }
+
+                lc.DataBinding += ProductlistDataBind;
+                container.Controls.Add(lc);
+
             }
         }
 
-        private void ProductlistInit(object sender, EventArgs e)
+        private void ProductlistDataBind(object sender, EventArgs e)
         {
-            var rpt = (Repeater)sender;
-            var container = (IDataItemContainer)rpt.NamingContainer;
-            rpt.Visible = visibleStatus.Last();
-            if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
+
+
+            var lc = (Literal)sender;
+            var container = (IDataItemContainer)lc.NamingContainer;
+            try
             {
-                //build models list
-                var nbi = (GroupCategoryData)container.DataItem;
-                var paramList = (Dictionary<String, String>) rpt.DataSource;
-                var buyCtrl = new NBrightBuyController();
-                var strFilter = "";
-                var strOrder = paramList["orderby"];
-
-                var cascade = paramList["cascade"];
-                var filter = paramList["filter"];
-                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
-                if (cascade.ToLower() == "true")
+                var strOut = "";
+                lc.Visible = visibleStatus.Last();
+                if (lc.Visible)
                 {
-                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
-                }
-                else
-                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
 
-                if (filter != "") strFilter += " AND " + filter;
+                    var param = lc.Text.Split(':');
+                    if (param.Count() == 4)
+                    {
+                        try
+                        {
 
-                var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId,-1,"PRD","PRDLANG",Utils.GetCurrentCulture(),strFilter,strOrder) ;
-                // inject the categoryid into the data, so the entryurl can have the correct catid
-                foreach (var i in objL)
-                {
-                    i.SetXmlProperty("genxml/categoryid", nbi.categoryid.ToString(""));
+                            var strFilter = "";
+                            var templName = param[0];
+                            var cascade = param[1];
+                            var strOrder = param[2];
+                            var filter = param[3];
+
+                            if ((templName != ""))
+                            {
+
+                                var nbi = (GroupCategoryData)container.DataItem;
+                                var lang = Utils.GetCurrentCulture();
+
+                                var strCacheKey = lang + "*" + nbi.categoryid + "*" + lc.Text;
+                                if (!StoreSettings.Current.DebugMode) strOut = (String)Utils.GetCache(strCacheKey);
+
+                                if (String.IsNullOrEmpty(strOut))
+                                {
+                                    var buyCtrl = new NBrightBuyController();
+                                    var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
+
+                                    //remove templName from template, so we don't get a loop.
+                                    if (rpTempl.Contains(templName)) rpTempl = rpTempl.Replace(templName, "");
+                                    //build models list
+
+                                    var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                                    var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+                                    if (cascade.ToLower() == "true")
+                                    {
+                                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+                                    }
+                                    else
+                                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
+
+                                    if (filter != "") strFilter += " AND " + filter;
+
+                                    var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, strOrder);
+
+
+                                    var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                                    strOut = GenXmlFunctions.RenderRepeater(objL, itemTemplate);
+                                    if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(-1, strCacheKey, strOut);                                    
+                                }
+
+                            }
+                        }
+                        catch (Exception exc)
+                        {
+                            strOut = "ERROR: <br/>" + exc;
+                        }
+
+                    }
+
+
                 }
-                rpt.DataSource = objL;
-                rpt.DataBind();
+                lc.Text = strOut;
+
             }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+
         }
 
 

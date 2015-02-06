@@ -45,7 +45,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ValidateCart();
             //save cart after validation so calculated costs are saved.
             _cartId = base.SavePurchaseData();
-            if (debugMode) OutputDebugFile("debug_currentcart.xml");
+            if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_currentcart.xml");
             SaveCartId();
             Exists = true;
 
@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     clientData.UpdateEmail(ordData.EmailAddress);
                 }
 
-                if (debugMode) OutputDebugFile("debug_convertedcart.xml");
+                if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;
                 return true;
             }

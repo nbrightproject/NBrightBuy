@@ -202,7 +202,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid), ModSettings.Get("treeidentclass"), ModSettings.Get("treerootclass"));
 
                         // if debug , output the html used.
-                        if (DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html", strOut);
+                        if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html", strOut);
 
                         var l = new Literal {Text = strOut};
                         phData.Controls.Add(l);

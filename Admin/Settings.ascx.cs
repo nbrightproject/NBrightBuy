@@ -186,7 +186,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             
             ModCtrl.Update(settings);
 
-            if (StoreSettings.Current.DebugMode) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
+            if (StoreSettings.Current.DebugModeFileOut) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
 
 
             // create upload folders
