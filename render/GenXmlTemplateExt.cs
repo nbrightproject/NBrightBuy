@@ -2510,6 +2510,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                                     var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, strOrder);
 
+                                    // inject the categoryid into the data, so the entryurl can have the correct catid
+                                    foreach (var i in objL)
+                                    {
+                                        i.SetXmlProperty("genxml/categoryid", nbi.categoryid.ToString(""));
+                                    }
 
                                     var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
                                     strOut = GenXmlFunctions.RenderRepeater(objL, itemTemplate);

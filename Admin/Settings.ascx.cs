@@ -196,6 +196,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             folder = StoreSettings.Current.FolderUploadsMapPath ;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            folder = StoreSettings.Current.FolderTempMapPath;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
             //Create default category grouptype
             var l = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
