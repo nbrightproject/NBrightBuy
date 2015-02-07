@@ -237,6 +237,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
+                    #region "Order BY"
+                    // get orderby from header if it's there
+                    _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH); 
+                    //Default orderby if not set
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
+                    // NOTE: This setting may be overwritten by the navigatedata class in the filter setup
+                    #endregion
+
                     #region "Get Paging setup"
                     //See if we have a pagesize, uses the "searchpagesize" tag token.
                     // : This can be overwritten by the cookie value if we need user selection of pagesize.
@@ -286,7 +294,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             // if navdata is not deleted then get filter from navdata, created by productsearch module.
                             strFilter = _navigationdata.Criteria;
                             if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
-                            _strOrder = _navigationdata.OrderBy;
+                            if (!String.IsNullOrEmpty(_navigationdata.OrderBy)) _strOrder = _navigationdata.OrderBy;
 
                             if (_navigationdata.Mode.ToLower() =="s") _navigationdata.ResetSearch(); // single search so clear after
                         }
@@ -445,8 +453,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #endregion
 
-                    //Default orderby if not set
-                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
 
                     // save navigation data
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
