@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
@@ -370,9 +371,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ValidateXmlFormat();
             DataLangRecord.ValidateXmlFormat();
 
-
+            var updatefields = new List<String>();
             var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-            foreach (var f in localfields)
+            foreach (var f in localfields) { updatefields.Add(f); }
+            // merge custom field into update
+            var localproductfields = info.GetXmlProperty("genxml/hidden/localizedproductfields").Split(',');
+            foreach (var f in localproductfields){updatefields.Add(f);}
+
+            foreach (var f in updatefields)
             {
                 if (f != "")
                 {
@@ -397,8 +403,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            updatefields = new List<String>();
             var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
-            foreach (var f in fields)
+            foreach (var f in fields) { updatefields.Add(f); }
+            // merge custom field into update
+            var productfields = info.GetXmlProperty("genxml/hidden/productfields").Split(',');
+            foreach (var f in productfields) { updatefields.Add(f); }
+
+            foreach (var f in updatefields)
             {
                 if (f != "")
                 {
