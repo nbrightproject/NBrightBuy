@@ -224,7 +224,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double totaldealerdiscount = 0;
             Double totalqty = 0;
             Double totalweight = 0;
-            
+            Double totalunitcost = 0;
+
             var strXml = "<items>";
             foreach (var info in itemList)
             {
@@ -232,6 +233,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (cartItem != null)
                 {
                     strXml += cartItem.XMLData;
+                    totalunitcost += info.GetXmlPropertyDouble("genxml/unitcost");
                     subtotalcost += info.GetXmlPropertyDouble("genxml/totalcost");
                     subtotaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
                     totaldealerbonus += info.GetXmlPropertyDouble("genxml/totaldealerbonus");
@@ -249,6 +251,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // calculate totals
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalqty", totalqty);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totalunitcost", totalunitcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
