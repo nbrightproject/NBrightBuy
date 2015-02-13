@@ -488,6 +488,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
                     newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/itemcode");
                     newInfo.PortalId = PortalId;
+                    newInfo.ItemID = newInfo.GetXmlPropertyInt("genxml/productid");
                     rtnList.Add(newInfo);
                 }
             }

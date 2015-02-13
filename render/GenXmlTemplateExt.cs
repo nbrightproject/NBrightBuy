@@ -157,6 +157,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "editlink":
                     CreateEditLink(container, xmlNod);
                     return true;
+                case "editurl":
+                    CreateEditUrl(container, xmlNod);
+                    return true;
                 case "entrylink":
                     CreateEntryLink(container, xmlNod);
                     return true;
@@ -3217,7 +3220,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-        #region "create EditLink control"
+        #region "create EditLink/URL control"
 
         private void CreateEditLink(Control container, XmlNode xmlNod)
         {
@@ -3279,6 +3282,64 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 lk.Text = ex.ToString();
             }
         }
+
+
+        private void CreateEditUrl(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            if (xmlNod.Attributes != null)
+            {
+                var i = "";
+                if (xmlNod.Attributes["itemid"] != null) i = xmlNod.Attributes["itemid"].InnerText; // for xsl
+                l.Text = i;
+            }
+            l.DataBinding += EditUrlDataBinding;
+            container.Controls.Add(l);
+        }
+
+        private void EditUrlDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                //set a default url
+
+                l.Visible = visibleStatus.Last();
+                var entryid = l.Text;
+                if (entryid == "") entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
+                var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
+                if (Utils.IsNumeric(entryid) && StoreSettings.Current.GetInt("backofficetabid") > 0)
+                {
+                    var paramlist = new string[4];
+                    paramlist[1] = "eid=" + entryid;
+                    paramlist[2] = "ctrl=products";
+                    if (_settings != null && _settings.ContainsKey("currenttabid")) paramlist[3] = "rtntab=" + _settings["currenttabid"];
+                    if (_settings != null && _settings.ContainsKey("moduleid")) paramlist[3] = "rtnmid=" + _settings["moduleid"];
+                    var urlpage = Utils.RequestParam(HttpContext.Current, "page");
+                    if (urlpage.Trim() != "")
+                    {
+                        IncreaseArray(ref paramlist, 1);
+                        paramlist[paramlist.Length - 1] = "PageIndex=" + urlpage.Trim();
+                    }
+                    var urlcatid = Utils.RequestParam(HttpContext.Current, "catid");
+                    if (urlcatid.Trim() != "")
+                    {
+                        IncreaseArray(ref paramlist, 1);
+                        paramlist[paramlist.Length - 1] = "catid=" + urlcatid.Trim();
+                    }
+                    url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);
+                }
+               
+                l.Text = url;
+
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
 
         #endregion
 
