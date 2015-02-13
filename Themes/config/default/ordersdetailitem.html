@@ -1,6 +1,9 @@
 							<tr>
 								<td class="m-ticker">
-									<div><b>[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</b></div>
+									<div><b>[<tag type="concatenate" xpath2="genxml/productname" xpath1="genxml/modeldesc" />]</b>
+										<a target="_blank" href="[<tag type='editurl' />]">[<tag type="htmlof" resourcekey="General.cmdEditIconSmall" />]</a>
+										<a target="_blank" href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' />]">[<tag type="htmlof" resourcekey="General.cmdExtLinkSmall" />]</a>
+									</div>
 									<div>
 			[<tag type="if" xpath="genxml/options/option[[1]]/optvaltext"  testvalue="" display="{OFF}" />]
 				<span>[<tag type="valueof" xpath="genxml/options/option[[1]]/optname" />]: [<tag type="valueof" xpath="genxml/options/option[[1]]/optvaltext" />] 
@@ -30,6 +33,7 @@
 				[<tag type="endif" />]
 				</span>
 									[<tag type="endif" />]
+
 									</div>
 								</td>
 								<td class="text-center">[<tag type='valueof' xpath='genxml/modelref' />]</td>

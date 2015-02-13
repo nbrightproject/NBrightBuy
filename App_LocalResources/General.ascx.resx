@@ -901,7 +901,7 @@
     <value>Credit card</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Manual</value>
+    <value>Cheque or Transfer</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
@@ -914,6 +914,12 @@
   </data>
   <data name="ExtraCost.Text" xml:space="preserve">
     <value>Extra cost</value>
+  </data>
+  <data name="cmdEditIconSmall.Text" xml:space="preserve">
+    <value>&lt;i title="Edit product" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdExtLinkSmall.Text" xml:space="preserve">
+    <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="debugfileout.Text" xml:space="preserve">
     <value>Output Debug Files</value>

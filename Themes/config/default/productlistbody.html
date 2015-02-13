@@ -2,16 +2,15 @@
 
 <tr>
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<td class="image centered"><img src="[<tag type='thumbnail' w='80' h='68' />]"></td>
+	<td class="image centered"><a target="_blank" href="[<tag type='editurl' />]"><img src="[<tag type='thumbnail' w='80' h='68' />]"></a></td>
 	[<tag type="endif" />]
-	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]
-	<td class="noimage centered"><i class="fa fa-picture-o fa-5x"></i></td>
+	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
+	<td class="noimage centered"><a target="_blank" href="[<tag type='editurl' />]">[Settings:bonoimageicon]</a></td>
 	[<tag type="endif" />]
     <td><div>[<tag type="productname" />]</div>
         [<tag type="if" xpath="genxml/textbox/txtproductref" testvalue="" display="{OFF}" />]
         [<tag type="valueof" resourcekey="General.Code" />]: [<tag type='valueof' xpath='genxml/textbox/txtproductref' />]
         [<tag type="endif" />]
-
     </td>
     <td class="centered">
 <i class="fa fa[<tag type='if' xpath='genxml/checkbox/chkishidden' testvalue='True' display='-check' displayelse='' />][<tag type='endif' />]-circle fa-2x"></i>

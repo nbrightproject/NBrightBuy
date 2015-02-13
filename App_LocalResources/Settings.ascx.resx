@@ -240,4 +240,16 @@
 	<data name="checkouttaxcode.Text" xml:space="preserve">
     <value>Tax Code Field</value>
   </data>
+	<data name="productimageresize.Text" xml:space="preserve">
+    <value>Image Resize</value>
+  </data>
+	<data name="bonoimageicon.Text" xml:space="preserve">
+    <value>Placeholder Icon</value>
+  </data>
+	<data name="productdetailtab.Text" xml:space="preserve">
+    <value>Product Detail</value>
+  </data>
+	<data name="groupresults.Text" xml:space="preserve">
+    <value>Group Models by Product</value>
+  </data>
 </root>
