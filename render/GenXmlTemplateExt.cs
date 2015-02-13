@@ -2217,6 +2217,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         txt.DataBinding += ProductoptionsDataBind;
                         txt.ID = "optiontxt" + xmlNod.Attributes["index"].Value;
                         if (xmlNod.Attributes["required"] != null) txt.Attributes.Add("required", "");
+                        if (xmlNod.Attributes["datatype"] != null) txt.Attributes.Add("datatype", xmlNod.Attributes["datatype"].InnerText);
                         txt.Visible = false;
                         txt.Enabled = false;
                         container.Controls.Add(txt);
