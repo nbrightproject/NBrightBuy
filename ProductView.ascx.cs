@@ -511,10 +511,14 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
+            var rtnTabId = TabId;
             var param = new string[4];
             if (_eid != "") param[0] = "eid=" + _eid;
             if (_modkey != "") param[1] = "modkey=" + _modkey;
             if (_catid != "") param[2] = "catid=" + _catid;
+
+            // redirect to cart after add to basket is arg is redirect
+            if (cArg.ToLower() == "redirect" && Utils.IsNumeric(StoreSettings.Current.CartTabId)) rtnTabId = StoreSettings.Current.CartTabId; 
 
             switch (e.CommandName.ToLower())
             {
@@ -539,7 +543,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
                     currentcart.Save(StoreSettings.Current.DebugMode);
                     param[3] = "addcart=1";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(Globals.NavigateURL(rtnTabId, "", param), true);
                     break;
                 case "addalltobasket":
                     var currentcart2 = new CartData(PortalId);
@@ -549,14 +553,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     currentcart2.Save(StoreSettings.Current.DebugMode);
                     param[3] = "addcart=1";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(Globals.NavigateURL(rtnTabId, "", param), true);
                     break;
                 case "addcookietobasket":
                     var currentcart3 = new CartData(PortalId);
                     currentcart3.AddCookieToCart();
                     currentcart3.Save(StoreSettings.Current.DebugMode);
                     param[3] = "addcart=1";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    Response.Redirect(Globals.NavigateURL(rtnTabId, "", param), true);
                     break;
                 case "docdownload":
                     var s = cArg.Split(':');
