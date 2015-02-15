@@ -472,7 +472,7 @@
     <value>010,020,030,040,050,060,070,080,120,090,100,110</value>
   </data>
   <data name="orderstatus.Text" xml:space="preserve">
-    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Closed,Archived</value>
+    <value>Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived</value>
   </data>
   <data name="shippingdate.Text" xml:space="preserve">
     <value>Shipping Date</value>
@@ -906,6 +906,9 @@
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="hello.Text" xml:space="preserve">
+    <value>Hi there</value>
+  </data>
   <data name="cmdFolder.Text" xml:space="preserve">
     <value>Folder</value>
   </data>
@@ -916,15 +919,9 @@
     <value>Extra cost</value>
   </data>
   <data name="cmdEditIconSmall.Text" xml:space="preserve">
-    <value>&lt;i title="Edit product" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Edit product in store" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdExtLinkSmall.Text" xml:space="preserve">
     <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="debugfileout.Text" xml:space="preserve">
-    <value>Output Debug Files</value>
-  </data>
-  <data name="debugfileoutmsg.Text" xml:space="preserve">
-    <value>Warning, do NOT activate this on a Live site.</value>
   </data>
 </root>

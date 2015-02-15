@@ -93,6 +93,7 @@ namespace Nevoweb.DNN.NBrightBuy
             //{
             //    settings[item.Key] = item.Value;
             //}
+            if (_theme == "") _theme = StoreSettings.Current.Get("emailthemefolder");
             if (_theme == "") _theme = "Cygnus";
             //settings.Add("themefolder",_theme);
 
@@ -153,8 +154,8 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
 
                         // not provider label, so print template
-                        var modCtrl = new NBrightBuyController();
-                        var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+                        var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);
+                        var strTempl = templCtrl.GetTemplateData(_template, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
 
                         strOut = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                         if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, strOut);                       
@@ -174,8 +175,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 var prodData = new ProductData(Convert.ToInt32(entryId),Utils.GetCurrentCulture());
                 if (prodData.Exists)
                 {
-                    var modCtrl = new NBrightBuyController();
-                    var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);
+                    var strTempl = templCtrl.GetTemplateData(_template, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
 
                     strOut = GenXmlFunctions.RenderRepeater(prodData.Info, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                     if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(prodData.Info.XMLData, strOut);

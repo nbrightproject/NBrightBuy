@@ -4300,7 +4300,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 lc.Text = xmlNod.Attributes["template"].Value;
-                if (xmlNod.Attributes["groupby"] != null) lc.Text = lc.Text + ":GROUPBY";
+                if (xmlNod.Attributes["groupby"] != null || StoreSettings.Current.Get("chkgroupresults") == "True") lc.Text = lc.Text + ":GROUPBY";
             }
             
             lc.DataBinding += OrderItemlistDataBind;
