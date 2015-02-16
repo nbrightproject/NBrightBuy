@@ -258,4 +258,10 @@
   <data name="emailthemefolder.Text" xml:space="preserve">
     <value>Email Theme Folder</value>
   </data>
+  <data name="debugfileout.Text" xml:space="preserve">
+    <value>Debug File Output</value>
+  </data>
+  <data name="debugfileoutmsg.Text" xml:space="preserve">
+    <value>Outputs debug files, do NOT use on production site</value>
+  </data>
 </root>
