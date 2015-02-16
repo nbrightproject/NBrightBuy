@@ -116,6 +116,15 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // see if we need to display the entry page.
                 if ((_modkey == ModuleKey | _modkey == "") && (_eid != "" | _ename != "")) _displayentrypage = true;
+
+                // if we have entry detail display, but no catd, get the default one.
+                if (_displayentrypage && _catid == "" && Utils.IsNumeric(_eid))
+                {
+                    var prdData = new ProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
+                    var defcat = prdData.GetDefaultCategory();
+                    _catid = defcat.categoryid.ToString("");
+                }
+
                 if (ModSettings.Get("listonly").ToLower() == "true") _displayentrypage = false;
 
                 // get template codes

@@ -293,7 +293,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 base.DoDetail(rpData, orderData.GetInfo());
 
                 base.DoDetail(rpItemH, orderData.GetInfo());
-                rpItem.DataSource = orderData.GetCartItemList();
+                rpItem.DataSource = orderData.GetCartItemList(StoreSettings.Current.Get("chkgroupresults") == "True");
                 rpItem.DataBind();
                 base.DoDetail(rpItemF, orderData.GetInfo());
 
