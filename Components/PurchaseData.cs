@@ -257,7 +257,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             foreach (var m in modelidlist)
             {
                 var numberofmodels = objInfoIn.GetXmlPropertyDouble("genxml/textbox/additemqty"); // use additemqty field to add multiple items
-                if (numberofmodels == 0) numberofmodels = 1;
+                //if (numberofmodels == 0) numberofmodels = 1;  // ** comment out, zero should be allowed on add all to basket option.
                 for (var i = 1; i <= numberofmodels; i++)
                 {
                     strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
@@ -392,10 +392,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (additionalCosts > 0)
                 {
                     objInfo.SetXmlPropertyDouble("genxml/additionalcosts", additionalCosts);
+                    var bc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var uc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var dc = objInfo.GetXmlPropertyDouble("genxml/dealercost");
                     uc += additionalCosts;
-                    dc += additionalCosts;
+                    if (dc > 0) dc += additionalCosts; // only calc dealer cost if it's > zero (active)
+                    objInfo.SetXmlPropertyDouble("genxml/basecost", bc); // unitcost without any options
                     objInfo.SetXmlPropertyDouble("genxml/unitcost", uc);
                     objInfo.SetXmlPropertyDouble("genxml/dealercost", dc);
                 }

@@ -62,7 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 Save();
                 var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
-                
+                ordData.OrderStatus = "010";
                 // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
                 var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
                 if (objUser != null && objUser.Email != ordData.EmailAddress)
