@@ -456,8 +456,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (qty > 0)  // can't devide by zero
                 {                   
                     unitcost += (additionalCosts / qty);
-                    dealercost += (additionalCosts / qty);
-                    saleprice += (additionalCosts / qty);
+                    if (dealercost > 0) dealercost += (additionalCosts / qty); // zero turns off
+                    if (saleprice > 0) saleprice += (additionalCosts / qty); // zero turns off
                     sellcost += (additionalCosts / qty);
                 }
 
