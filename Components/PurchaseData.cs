@@ -306,6 +306,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
                 objInfo.AddSingleNode("taxratecode", modelInfo.GetXmlProperty("genxml/dropdownlist/taxrate"), "genxml");
                 objInfo.AddSingleNode("saleprice", modelInfo.GetXmlProperty("genxml/textbox/txtsaleprice"), "genxml");
+                objInfo.AddSingleNode("basecost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
 
                 // flag if dealer
                 var userInfo = UserController.GetCurrentUserInfo();
@@ -392,12 +393,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (additionalCosts > 0)
                 {
                     objInfo.SetXmlPropertyDouble("genxml/additionalcosts", additionalCosts);
-                    var bc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var uc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var dc = objInfo.GetXmlPropertyDouble("genxml/dealercost");
                     uc += additionalCosts;
                     if (dc > 0) dc += additionalCosts; // only calc dealer cost if it's > zero (active)
-                    objInfo.SetXmlPropertyDouble("genxml/basecost", bc); // unitcost without any options
                     objInfo.SetXmlPropertyDouble("genxml/unitcost", uc);
                     objInfo.SetXmlPropertyDouble("genxml/dealercost", dc);
                 }
