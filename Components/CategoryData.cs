@@ -230,6 +230,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var errorcount = 0;
             var objCtrl = new NBrightBuyController();
 
+            // default any undefined group type as category (I think quickcategory v1.0.0 plugin causes this)
+            if (DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype") == "")
+            {
+                DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
+                Save();
+            }
+
             DataRecord.ValidateXmlFormat();
             if (DataLangRecord == null)
             {
