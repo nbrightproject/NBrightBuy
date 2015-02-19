@@ -256,8 +256,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strRtn = "";
             foreach (var m in modelidlist)
             {
-                var numberofmodels = objInfoIn.GetXmlPropertyDouble("genxml/textbox/additemqty"); // use additemqty field to add multiple items
-                //if (numberofmodels == 0) numberofmodels = 1;  // ** comment out, zero should be allowed on add all to basket option.
+                var numberofmodels = 0; // use additemqty field to add multiple items
+                var additemqty = objInfoIn.GetXmlProperty("genxml/textbox/additemqty");
+                if (Utils.IsNumeric(additemqty))
+                    numberofmodels = Convert.ToInt32(additemqty); // zero should be allowed on add all to basket option.
+                else
+                    numberofmodels = 1; // if we have no numeric, assume we need to add it
+
                 for (var i = 1; i <= numberofmodels; i++)
                 {
                     strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
