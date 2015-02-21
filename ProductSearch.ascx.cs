@@ -77,7 +77,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
             // must assign a redirect tab, so postback cookie works.
             _redirecttabid = TabId;
-            if (Utils.IsNumeric(ModSettings.Get("redirecttabid"))) _redirecttabid = Convert.ToInt32(ModSettings.Get("redirecttabid"));
+            if (Utils.IsNumeric(RedirectTabId)) 
+                _redirecttabid = Convert.ToInt32(RedirectTabId); // use passed in value over module setting (This stops clashbetween skin object and module)
+            else
+                if (Utils.IsNumeric(ModSettings.Get("redirecttabid"))) _redirecttabid = Convert.ToInt32(ModSettings.Get("redirecttabid"));                
             
             _targetModuleKey = "";
             _targetModuleKey = ModSettings.Get("targetmodulekey");
