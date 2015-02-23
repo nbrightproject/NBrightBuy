@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\..\..\..\Support\DNN6x\bin610\DotNetNuke.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Support\DNN6x\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
       <HintPath>..\..\..\..\..\..\Support\DNN6x\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
