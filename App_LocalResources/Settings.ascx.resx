@@ -267,4 +267,10 @@
   <data name="seoregex.Text" xml:space="preserve">
     <value>SEO regex for url name</value>
   </data>
+  <data name="shareproducts.Text" xml:space="preserve">
+    <value>Share products</value>
+  </data>
+  <data name="shareproductsmsg.Text" xml:space="preserve">
+    <value>Share any products created in this portal with all portals in the DNN installation</value>
+  </data>
 </root>

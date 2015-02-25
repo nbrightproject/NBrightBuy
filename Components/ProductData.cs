@@ -1143,6 +1143,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             }
+            else
+            {
+                // new product being created, so set the portal id to the correct one 
+                if (PortalSettings.Current != null) //(should not be in sceduler, but just check)
+                {
+                    if (StoreSettings.Current.Get("shareproducts") != "True") // option in storesetting to share products created here across all portals.
+                    {
+                        _portalId = PortalSettings.Current.PortalId;                        
+                    }
+                }
+            }
         }
 
         private List<NBrightInfo> GetEntityList(String entityName)
