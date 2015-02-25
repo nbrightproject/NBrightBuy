@@ -271,6 +271,6 @@
     <value>Share products</value>
   </data>
   <data name="shareproductsmsg.Text" xml:space="preserve">
-    <value>Share any products created in this portal with all portals in the DNN installation</value>
+    <value>Share PRODUCTS and CATEGORIES created in this portal with all portals in the DNN installation</value>
   </data>
 </root>
