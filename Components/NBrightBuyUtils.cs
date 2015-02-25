@@ -35,7 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
 
         /// <summary>
-        /// Use the setting to get the template system getter control.
+        /// Used to get the template system getter control.
         /// </summary>
         /// <returns></returns>
         public static TemplateGetter GetTemplateGetter(int portalId, string themeFolder)
@@ -952,6 +952,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnInfo;
         }
+
+        /// <summary>
+        /// Helper function to help plugins get a theme template from their local theme folder.
+        /// This function will get the template, replace settings tokens, replace url tokens
+        /// </summary>
+        /// <param name="templatename">name of template</param>
+        /// <param name="templateControlPath">Relative Control path of plugin e.g."/DesktopModules/NBright/NBrightBuyPluginTempl"</param>
+        /// <param name="themeFolder">Theme folder to use e.g. "config"</param>
+        /// <param name="settings">Settings to use, default to storesettings</param>
+        /// <returns></returns>
+        public static String GetTemplateData(String templatename, String templateControlPath, String themeFolder = "config", Dictionary<String, String> settings = null)
+        {
+            themeFolder = "Themes\\" + themeFolder;
+            if (settings == null) settings = StoreSettings.Current.Settings();
+            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
+            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, themeFolder, StoreSettings.Current.ThemeFolder);
+            var templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
+            templ = Utils.ReplaceSettingTokens(templ, settings);
+            templ = Utils.ReplaceUrlTokens(templ);
+            return templ;
+        }
+
 
     }
 }
