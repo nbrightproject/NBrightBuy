@@ -328,7 +328,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
                     if (grp != null)
                     {
-                        catData.DataRecord.GUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        var newGUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        // make sure we have a unique guidkey
+                        var doloop = true;
+                        var lp = 1;
+                        var testGUIDKey = newGUIDKey;
+                        while (doloop)
+                        {
+                            var obj = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "CATEGORY", testGUIDKey);
+                            if (obj != null && obj.ItemID != catData.CategoryId)
+                            {
+                                testGUIDKey = newGUIDKey + lp.ToString();
+                            }
+                            else
+                                doloop = false;
+
+                            lp += 1;
+                            if (lp > 99) doloop = false; // make sure we never get a infinate loop
+                        }
+                        newGUIDKey = testGUIDKey;
+
+                        catData.DataRecord.GUIDKey = newGUIDKey;
+                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGUIDKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
                         // list done using ddlgrouptype, in  GetCatList 
                         catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype); 
