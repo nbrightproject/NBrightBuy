@@ -264,9 +264,6 @@
   <data name="debugfileoutmsg.Text" xml:space="preserve">
     <value>Outputs debug files, do NOT use on production site</value>
   </data>
-  <data name="seoregex.Text" xml:space="preserve">
-    <value>SEO regex for url name</value>
-  </data>
   <data name="shareproducts.Text" xml:space="preserve">
     <value>Share products</value>
   </data>

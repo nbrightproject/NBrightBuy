@@ -175,7 +175,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rdModId = "";
             if (modulekey != "") rdModId = "&modkey=" + modulekey;
 
-            guidkey = Utils.CleanInput(guidkey,StoreSettings.Current.Get("seoregex"));
+            guidkey = Utils.UrlFriendly(guidkey);
             var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
             if (Utils.IsNumeric(catid)) strurl += "&catid=" + catid;
             return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
