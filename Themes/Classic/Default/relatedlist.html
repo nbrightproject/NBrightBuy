@@ -1,17 +1,15 @@
-[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Themes/Cygnus/resx/" />]<!-- Point to language file  -->
-
-<div class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
+<div class="product" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemheight];margin-bottom:[Settings:classicitembottommargin]px"><!-- Product container -->
 
 	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button requires nbs namespace -->
 	<div class="edit">[<tag resourcekey="ProductView.editicon" type="nbs:editlink"  />]</div>
   [<tag type="endif" />]
 
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<div class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:thumbnailwidth}' h='{Settings:thumbnailheight}' />]"></div>
+	<div class="image" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:classicthumbnailwidth}' h='{Settings:classicthumbnailheight}' />]"></div>
 	[<tag type="endif" />]
 
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
-	<div class="noimage" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]">
+	<div class="noimage" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]">
 	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
 	[Settings:noimageicon]
 	[<tag type="endif" />]
@@ -19,18 +17,14 @@
 	[<tag type="endif" />]
 
 	<div class="description">
-  <h1>[<tag type="productname" />]</h1>
-
-	[<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+  <h1><a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="productname" />]</a></h1>
 
 		[<tag type="if" function="isonsale" display="{OFF}" displayelse="{ON}" />]<!-- Hide this retail price when on sale -->
-		<div class="price"><span class="retail">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]<span class="from">[<tag type="label" resourcekey="ProductView.from" />]</span>[<tag type="endif" />][<tag type="price" />]</span></div><!-- Retail Price -->
+		<div class="price">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]<span class="from">[<tag type="label" resourcekey="ProductView.from" />]</span>[<tag type="endif" />][<tag type="price" />]</div>
 		[<tag type="endif"  />]
 
 		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale Price -->
-		<div class="price"><span class="old">[<tag type="price" />]</span>
-		<span class="sale">[<tag type="label" resourcekey="ProductView.onsale" />] [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]<span class="from">[<tag type="label" resourcekey="ProductView.fromlower" />]</span>[<tag type="endif" />][<tag type="saleprice" />]</span>
-		</div>
+    <div class="price">[<tag type="if" function="hasmodelsoroptions" display="{ON}" />]<span class="from">[<tag type="label" resourcekey="ProductView.from" />]</span>[<tag type="endif" />]<span class="old">[<tag type="price" />]</span><span class="sale">[<tag type="saleprice" />]</span></div>
 		[<tag type="endif"  />]
 
 		[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale flag -->
@@ -41,9 +35,15 @@
 		<div class="outofstockflag">[<tag type="label" resourcekey="ProductView.outofstockflag" />]</div>
 		[<tag type="endif" />]
 
-	[<tag type="endif"  />]<!-- End Catalogue mode -->
+  [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]
+  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">[<tag type="label" resourcekey="ProductView.discover" />]</a>
+  [<tag type="endif"  />]
 
-  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">Découvrir</a>
+  [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+  [<tag type="if" function="hasmodelsoroptions" display="{OFF}" />]
+  [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton entryurl" commandname="addtobasket" commandargument="ItemID" />]
+  [<tag type="endif"  />]
+  [<tag type="endif"  />]<!-- End Catalogue mode -->
 
   </div>
 

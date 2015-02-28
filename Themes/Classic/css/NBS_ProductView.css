@@ -70,7 +70,7 @@ a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-c
 .productdetail .purchasing .models {background:#eee;margin-bottom:12px;padding:5px 5px 8px 5px;}
 .productdetail .purchasing .modelsradio {border:0;border-collapse:collapse;}
 .productdetail .purchasing .modelsradio td {padding:4px;}
-.productdetail .purchasing .modelsradio td input {vertical-align:top;}
+.productdetail .purchasing .modelsradio td input[type=radio] {float:left;margin-top:4px;}
 .productdetail .purchasing .modelsradio td label {font-size:12px;font-weight:bold;margin-left:4px;}
 .productdetail .purchasing .options {background:#eee;margin-bottom:20px;padding:5px;}
 .productdetail .purchasing .option {}
@@ -119,10 +119,11 @@ input.quantity {float:left;margin:0 6px;}
 
 /* Document Downloads */
 .productdetail .documents {}
-.productdetail .documents li {margin-bottom:12px;background:url("/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/pdf.png") no-repeat 0 2px;padding-left:32px;}
+.productdetail .documents li {margin-bottom:12px;padding-left:32px;position:relative;}
+.productdetail .documents li i.fa-file-text {position:absolute;top:0;left:0;color:#dedede;}
 .productdetail .documentname {font-weight:bold;}
 .productdetail .documentdescription {display:block;}
-.productdetail .documentlink {text-decoration:none;}
+.productdetail .documentlink {text-decoration:none;margin-top:10px;}
 
 /* Related Items */
 #relatedwrapper {margin-top:20px;}

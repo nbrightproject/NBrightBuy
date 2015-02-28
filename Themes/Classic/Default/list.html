@@ -1,17 +1,17 @@
 <!-- List item -->
 
-<div class="product" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px"><!-- Product container -->
+<div class="product" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemheight];margin-bottom:[Settings:classicitembottommargin]px"><!-- Product container -->
 
 	[<tag type="if" function="isinrole" role="Administrator|Registered Users" display="{ON}" displayelse="{OFF}" />]<!-- Edit button requires nbs namespace -->
 	<div class="edit">[<tag resourcekey="ProductView.editicon" type="nbs:editlink"  />]</div>
   [<tag type="endif" />]
 	
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<div class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:thumbnailwidth}' h='{Settings:thumbnailheight}' />]"></div>
+	<div class="image" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:classicthumbnailwidth}' h='{Settings:classicthumbnailheight}' />]"></div>
 	[<tag type="endif" />]
 	
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
-	<div class="noimage" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]">
+	<div class="noimage" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]">
 	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
 	[Settings:noimageicon]
 	[<tag type="endif" />]
@@ -38,7 +38,7 @@
 		[<tag type="endif" />]
 
   [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]
-  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">Options</a>
+  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">[<tag type="label" resourcekey="ProductView.discover" />]</a>
   [<tag type="endif"  />]
 
   [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
