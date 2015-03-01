@@ -29,6 +29,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Save order and turn off edit mode.
+        /// </summary>
+        /// <returns></returns>
+        public int Save()
+        {
+            base.EditMode = "E"; // set edit mode so user id is not 
+            var i = SavePurchaseData();
+            TurnOffEditMode();
+            return i;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="portalId">Left to ensure backward compatiblity</param>

@@ -29,10 +29,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String PurchaseTypeCode;
         public int PortalId;
 
-        /// <summary>
-        /// EditMode is a flag to indicate the update process of the cart/order R=Re-order, C=Create New Order for CLient, E=Edit order for client, {Empty}=Normal front office cart
-        /// </summary>
-        public String EditMode;
 
         /// <summary>
         /// Save Purchase record
@@ -62,11 +58,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.PortalId = PortalId;
             PurchaseInfo.ModuleId = -1;
             PurchaseInfo.TypeCode = PurchaseTypeCode;
-            PurchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
             if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
             PurchaseInfo.UserId = UserId;
             _entryId = modCtrl.Update(PurchaseInfo);
             return _entryId;
+        }
+
+        public void TurnOffEditMode()
+        {
+            var modCtrl = new NBrightBuyController();
+            EditMode = "";
+            _entryId = modCtrl.Update(PurchaseInfo);
+        }
+
+        /// <summary>
+        /// EditMode is a flag to indicate the update process of the cart/order R=Re-order, C=Create New Order for CLient, E=Edit order for client, {Empty}=Normal front office cart
+        /// </summary>
+        public String EditMode
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/carteditmode");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/carteditmode", value);
+            }
         }
 
         public String Lang
@@ -932,7 +949,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             PurchaseTypeCode = PurchaseInfo.TypeCode;
-            EditMode = PurchaseInfo.GetXmlProperty("genxml/carteditmode");
             UserId = PurchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
             var currentuserInfo = UserController.GetCurrentUserInfo();
             if (UserId > 0 && EditMode != "") // 0 is default userid for new cart

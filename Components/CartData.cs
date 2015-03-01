@@ -57,19 +57,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (IsValidated() && itemList.Count > 0)
             {
                 PurchaseTypeCode = "ORDER";
-                base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
-                base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
+                if (base.PurchaseInfo.GetXmlProperty("genxml/createddate") == "") base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
+                if (base.PurchaseInfo.GetXmlProperty("genxml/ordernumber") == "") base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
 
                 Save();
                 var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
                 ordData.OrderStatus = "010";
-                // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
-                var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
-                if (objUser != null && objUser.Email != ordData.EmailAddress)
+                if (ordData.EditMode == "") // don't update if we are in edit mode, we dont; want manager email to be altered.
                 {
-                    var clientData = new ClientData(PortalId, ordData.UserId);
-                    clientData.UpdateEmail(ordData.EmailAddress);
+                    // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
+                    var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
+                    if (objUser != null && objUser.Email != ordData.EmailAddress)
+                    {
+                        var clientData = new ClientData(PortalId, ordData.UserId);
+                        clientData.UpdateEmail(ordData.EmailAddress);
+                    }                    
                 }
+                ordData.Save();
 
                 if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;

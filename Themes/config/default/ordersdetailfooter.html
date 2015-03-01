@@ -4,6 +4,11 @@
                     <hr/>
                     <div class="form-group">
                         [<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrderButton" cssclass="btn btn-default" commandname="reorder" commandargument="ItemID" />]
+                        
+                        [<tag type="if" function="settings" key="alloweditorder" testvalue="True" display="{ON}" />]
+                        [<tag id="cmdEditOrder" type="linkbutton" resourcekey="OrderAdmin.cmdEditOrder" cssclass="btn btn-default" commandname="editorder" commandargument="ItemID" />]
+						[<tag type="endif" />]
+                        
                         [<tag id="cmdViewClient" type="linkbutton" resourcekey="Clients.cmdViewClientButton" cssclass="btn btn-default" commandname="viewclient"  commandargument="ItemID" />]
                         <div class="btn-group dropup">
                             <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> [<tag type="valueof" resourcekey="OrderAdmin.EmailOrder" />]</button>

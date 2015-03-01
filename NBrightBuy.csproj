@@ -446,16 +446,9 @@
     <Content Include="Themes\Classic\Default\detailfooter.html" />
     <Content Include="Themes\Classic\Default\detailheader.html" />
     <Content Include="Themes\Classic\Default\detailpageheader.html" />
-    <Content Include="Themes\Classic\Default\frontofficepageheader.html" />
     <Content Include="Themes\Classic\Default\list.html" />
     <Content Include="Themes\Classic\Default\listfooter.html" />
     <Content Include="Themes\Classic\Default\listheader.html" />
-    <Content Include="Themes\Classic\Default\minicartbody.html" />
-    <Content Include="Themes\Classic\Default\minicartfooter.html" />
-    <Content Include="Themes\Classic\Default\minicartheader.html" />
-    <Content Include="Themes\Classic\Default\minicartlistbody.html" />
-    <Content Include="Themes\Classic\Default\minicartlistfooter.html" />
-    <Content Include="Themes\Classic\Default\minicartlistheader.html" />
     <Content Include="Themes\Classic\Default\modellist.html" />
     <Content Include="Themes\Classic\Default\pageheaderNBS_ProductView.html" />
     <Content Include="Themes\Classic\Default\ProductViewSettings.html" />

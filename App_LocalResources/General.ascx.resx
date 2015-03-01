@@ -924,4 +924,10 @@
   <data name="cmdExtLinkSmall.Text" xml:space="preserve">
     <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="Cart.Text" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
 </root>
