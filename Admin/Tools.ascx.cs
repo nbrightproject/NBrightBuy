@@ -121,6 +121,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "validatecompleted", NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "purgecarts":
+                    param[0] = "";
+                    PurgeCarts();
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -206,6 +212,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         }
 
+        private void PurgeCarts()
+        {
+            var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+            if (Utils.IsNumeric(GenXmlFunctions.GetField(rpData, "purgecartsdays")))
+            {
+                var days = Convert.ToInt32(GenXmlFunctions.GetField(rpData, "purgecartsdays"));
+                var d = DateTime.Now.AddDays(days * -1);
+                var strDate = d.ToString("s");
+                var stmt = "";
+                stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CART' and ModifiedDate < '" + strDate + "' ";
+                objCtrl.GetSqlxml(stmt);
+            }
+        }
     }
 
 }

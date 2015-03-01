@@ -306,4 +306,7 @@
   <data name="removeuser_fail.Text" xml:space="preserve">
     <value>Client has existing orders, cannot remove user</value>
   </data>
+  <data name="completed_ok.Text" xml:space="preserve">
+    <value>Operation Completed.</value>
+  </data>
 </root>
