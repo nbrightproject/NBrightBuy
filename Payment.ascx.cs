@@ -66,12 +66,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 _provList = pluginData.GetPaymentProviders();
                 _cartInfo = new CartData(PortalId);
 
+                var orderid = Utils.RequestQueryStringParam(Context, "orderid");
                 var templOk = ModSettings.Get("paymentoktemplate");
                 var templFail = ModSettings.Get("paymentfailtemplate");
                 var templHeader = "";
                 var templFooter = "";
 
-                if (_provList.Count == 0)
+                if ((_provList.Count == 0 || _cartInfo.PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtotal") <= 0) && orderid == "")
                 {
                     #region "No Payment providers, so process as a ordering system"
 
@@ -79,7 +80,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (!_cartInfo.IsValidated()) displayTempl = templFail;
 
                     rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, displayTempl, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
+                    _templateHeader = (GenXmlTemplate) rpDetailDisplay.ItemTemplate;
 
                     #endregion
                 }
@@ -92,12 +93,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     templFooter = ModSettings.Get("paymentfooter");
                     var templPaymentText = "";
                     var msg = "";
-                    var orderid = Utils.RequestQueryStringParam(Context, "orderid");
                     if (Utils.IsNumeric(orderid))
                     {
                         // orderid exists, so must be return from bank; Process it!!
                         _orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
                         _prov = PaymentsInterface.Instance(_orderData.PaymentProviderKey);
+
+                        _orderData.AddAuditMessage(Context.Request.RawUrl, "payurl", "payment.ascx", "False");
+                        _orderData.Save();
                         msg = _prov.ProcessPaymentReturn(Context);
                         if (msg == "") // no message so successful
                         {
@@ -107,6 +110,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                         else
                         {
+                            _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // reload the order, becuase the status and typecode may have changed by the payment provider.
+                            _orderData.AddAuditMessage(msg, "paymsg", "payment.ascx", "False");
+                            _orderData.Save();
                             templHeader = templFail;
                         }
                         templFooter = ""; // return from bank, hide footer
@@ -118,8 +124,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     templPaymentText = ModCtrl.GetTemplateData(ModSettings, templHeader, Utils.GetCurrentCulture(), DebugMode);
-                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText + msg, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                    _templateHeader = (GenXmlTemplate)rpDetailDisplay.ItemTemplate;
+                    rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    _templateHeader = (GenXmlTemplate) rpDetailDisplay.ItemTemplate;
 
                     if (templFooter != "")
                     {
@@ -129,7 +135,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #endregion
                 }
-                
+
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
@@ -172,7 +178,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 _cartInfo.Save();
             }
 
-            if (_provList.Count == 0)
+            var orderid = Utils.RequestQueryStringParam(Context, "orderid");
+
+            if ((_provList.Count == 0 || _cartInfo.PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtotal") <= 0) && orderid == "")
             {
                 #region "No Payment providers, so process as a ordering system"
 
@@ -205,7 +213,6 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 #region "Payment Details"
 
-                                    var orderid = Utils.RequestQueryStringParam(Context, "orderid");
                 if (Utils.IsNumeric(orderid))
                 {
                     // orderid exists, so must be return from bank; Process it!!

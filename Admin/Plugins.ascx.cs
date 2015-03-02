@@ -56,8 +56,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 #region "set templates based on entry id (eid) from url"
 
                 _entryid = Utils.RequestQueryStringParam(Context, "eid");
+                
+                var pluginTemplate = "";
 
-                if (_entryid != "") _displayentrypage = true;
+                if (Utils.IsNumeric(_entryid))
+                {
+                    _displayentrypage = true;
+                    // check if we have bespoke setting that need adding to the template
+                    var pluginData = new PluginData(PortalId);
+                    var pData = pluginData.GetPlugin(Convert.ToInt32(_entryid));
+                    var pluginTemplatePath = pData.GetXmlProperty("genxml/hidden/plugintemplate");
+                    if (pluginTemplatePath != "") pluginTemplate = Utils.ReadFile(MapPath(pluginTemplatePath));
+                }
 
       
                 #endregion
@@ -80,7 +90,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 // Get Display Body
                 var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
+                rpDataTempl = rpDataTempl.Replace("[Template:PluginTemplate]", pluginTemplate); // replace special plugin settings
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
                 // Get Display Footer
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
