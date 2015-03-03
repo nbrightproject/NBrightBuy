@@ -2520,7 +2520,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                         i.SetXmlProperty("genxml/categoryid", nbi.categoryid.ToString(""));
                                     }
 
-                                    var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                                    var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory,visibleStatus);
                                     strOut = GenXmlFunctions.RenderRepeater(objL, itemTemplate);
                                     if (!StoreSettings.Current.DebugMode) NBrightBuyUtils.SetModCache(-1, strCacheKey, strOut);                                    
                                 }
@@ -3140,7 +3140,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            var itemTemplate =  NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory, visibleStatus);
                             strOut = GenXmlFunctions.RenderRepeater(objL, itemTemplate);
                         }
                         catch (Exception exc)
@@ -4342,7 +4342,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory, visibleStatus);
                             strOut = GenXmlFunctions.RenderRepeater(ordData.GetCartItemList(groupresults), itemTemplate);
                         }
                         catch (Exception exc)
@@ -4404,7 +4404,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory, visibleStatus);
                             strOut = GenXmlFunctions.RenderRepeater(ordData.GetAuditItemList(), itemTemplate);
                         }
                         catch (Exception exc)
@@ -4473,7 +4473,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         // render repeater
                         try
                         {
-                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory);
+                            var itemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpTempl, _settings, PortalSettings.Current.HomeDirectory, visibleStatus);
                             strOut = GenXmlFunctions.RenderRepeater(cartData.GetCartItemList(groupresults), itemTemplate);
                         }
                         catch (Exception exc)
