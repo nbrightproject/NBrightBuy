@@ -406,6 +406,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory)
+        {
+            return GetGenXmlTemplate(templateData, settingsDic, portalHomeDirectory,null);
+        }
+
         /// <summary>
         /// Get the GenXmltemplate class and assign required resx files.
         /// </summary>
@@ -414,7 +419,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="portalHomeDirectory"></param>
         /// <param name="visibleStatusIn">List of the visible staus used for nested if</param>
         /// <returns></returns>
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, List<Boolean> visibleStatusIn = null)
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, List<Boolean> visibleStatusIn)
         {
             if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
 
