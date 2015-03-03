@@ -422,9 +422,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductViewSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProductView.ascx" />
     <Content Include="Themes\Classic\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Classic\css\images\animated-overlay.gif" />

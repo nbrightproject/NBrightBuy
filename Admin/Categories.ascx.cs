@@ -126,10 +126,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var selgroup = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
                         if (selgroup == "") selgroup = GenXmlFunctions.GetField(rpSearch, "groupsel");
-                        grpCats = GetCatList(_openid, selgroup);
+                        grpCats = NBrightBuyUtils.GetCatList(_openid, selgroup,EditLanguage);
                     }
                     else
-                        grpCats = GetCatList(_openid, "cat");
+                        grpCats = NBrightBuyUtils.GetCatList(_openid, "cat", EditLanguage);
 
                     rpData.DataSource = grpCats;
                     rpData.DataBind();
@@ -479,30 +479,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             return rtnList;
         }
 
-        private List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "")
-        {
 
-            var strFilter = "";
-            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
-                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
-            else
-            {
-                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
-                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
-            }
-
-            var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
-
-            var grpCtrl = new GrpCatController(EditLanguage);
-
-            foreach (var c in levelList)
-            {
-                var g = grpCtrl.GetCategory(c.ItemID);
-                if (g != null) c.SetXmlProperty("genxml/entrycount",g.entrycount.ToString(""));
-            }
-
-            return levelList;
-        }
 
     }
 

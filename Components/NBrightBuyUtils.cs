@@ -980,6 +980,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templ;
         }
 
+        public static List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "", String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var strFilter = "";
+            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
+            else
+            {
+                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+            }
+
+            var objCtrl = new NBrightBuyController();
+            var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", lang, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+
+            var grpCtrl = new GrpCatController(lang);
+
+            foreach (var c in levelList)
+            {
+                var g = grpCtrl.GetCategory(c.ItemID);
+                if (g != null) c.SetXmlProperty("genxml/entrycount", g.entrycount.ToString(""));
+            }
+
+            return levelList;
+        }
 
     }
 }
