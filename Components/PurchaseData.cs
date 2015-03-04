@@ -878,6 +878,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/isvalidated", "False", TypeCode.String, false);
         }
 
+        public String GetClientEmail()
+        {
+            if (Utils.IsEmail(EmailBillingAddress)) return EmailBillingAddress;
+            if (Utils.IsEmail(EmailAddress)) return EmailAddress;
+            if (Utils.IsEmail(EmailShippingAddress)) return EmailShippingAddress;
+            return "";
+        }
 
         public String EmailAddress
         {
