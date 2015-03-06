@@ -1,7 +1,8 @@
 [<tag id="backofficetabid" type="hidden" value="" />]<!-- hidden fields to store auto populated data -->
 [<tag id="ImageResize" const="true" type="hidden" value="700" />]<!-- This resize token affects all images uploaded on this page -->
+[<tag id="countrysortorder" type="postback" value="" persistance="True"/>]
 
-  <style>
+<style>
   #countrylist { list-style-type: none; margin: 0; padding: 0; width: 60%; }
   #countrylist li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
   html>body #countrylist li { height: 1.5em; line-height: 1.2em; }
@@ -14,12 +15,43 @@
         $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
         $('.merchantdetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
+
+        // move common countries
+        var countries = [["AT", "BE", "BG", "BY", "CH", "CY", "CZ", "DE", "DK", "ES", "FI", "FR", "GI", "GR", "HU", "IE", "IT", "LU", "NL", "NO", "PL", "PT", "RO", "SE", "TR", "GB", "YU", "US", "CA"]];
+        for (i = 0; i < countries.length; i++) {
+            $('.eurocountries').append($('input[[value="Country:' + countries[[i]] + '"]]'));
+            var labselector = 'label[[for="' + $('input[[value="Country:' + countries[[i]] + '"]]').attr('id') + '"]]';
+            $('.eurocountries').append($(labselector));
+            $('.eurocountries').append('<br/>');
+        }
+
+        $('.checkAll').click(function() {
+            if ($(this).is(":checked")) {
+                $('input[[value*="Country:"]]:checkbox').prop('checked', true);
+            } else {
+                $('input[[value*="Country:"]]:checkbox').prop('checked', false);
+            }
+        });
+
     });
 
     $(function () {
-        $("#countrylist").sortable({placeholder: "ui-state-highlight"});
+        $("#countrylist").sortable({ placeholder: "ui-state-highlight", update: function(event, ui) {
+            savecountrysortorder();
+        } });
         $("#countrylist").disableSelection();
+        $("#countrylist").on("sortupdate", function (event, ui) { });
     });
+
+    function savecountrysortorder() {
+        var l = '';
+        var listItems = $("#countrylist li");
+        listItems.each(function (idx) {
+            l += $(this).attr('value') + ';';
+        });
+        $('input[[id*="_countrysortorder_"]]').val(l);
+    };
+
 
 
 
@@ -584,7 +616,7 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
-		<div class="box culturesettings">
+		<div class="box culturesettings no-drop">
 		    <div class="box-header">
 		        <div class="box-name">
 		            <i class="fa fa-search"></i><span>Country Details</span>
@@ -618,16 +650,18 @@
 		        </div>
 		        <div class="form-horizontal dnnForm countrylist">
 		            <div class="form-group">
-		                <div class="col-sm-3 eurocountries"><p class="page-header">European Countries</p></div>
+		                <div class="col-sm-3 eurocountries">
+		                    <p class="page-header">Common Countries</p>
+		                </div>
 		                <div class="col-sm-3">
-		                    <p class="page-header">Selected countries (Drag to sort)</p>[<tag type="countrylist" id="countrylist" />]
+		                    <p class="page-header">Selected countries (Drag to sort)</p>[<tag type="countrylist" id="countrylist"/>]
 		                </div>
 		            </div>
-		             
+
 		        </div>
 		        <div class="form-horizontal dnnForm countryselection">
-		            <p class="page-header">Other Countries</p>
-		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
+		            <p class="page-header">Other Countries &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="checkAll" /> Check ALL</p>
+		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4"/>]
 		        </div>
 		    </div>
 		</div>

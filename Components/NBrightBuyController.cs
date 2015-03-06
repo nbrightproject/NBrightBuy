@@ -354,8 +354,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (templ == null)
             {
                 var themeFolder = "";
-                if (settings.ContainsKey("emailthemefolder")) themeFolder = settings["emailthemefolder"];
-                if (themeFolder == "" && settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, settings);
 

@@ -678,7 +678,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
             }
-            return rtnDic;
+            var sortlist = StoreSettings.Current.Get("countrysortorder");
+            if (sortlist == "") return rtnDic;
+            
+            var rtnSort = new Dictionary<String, String>();
+            var s = sortlist.Split(';');
+            foreach (var c in s)
+            {
+                if (c != "")
+                {
+                    if (rtnDic.ContainsKey(c))
+                    {
+                        var d = rtnDic[c];
+                        rtnSort.Add(c,d);
+                        rtnDic.Remove(c);
+                    }
+                }
+            }
+            foreach (var c in rtnDic)
+            {
+                rtnSort.Add(c.Key,c.Value);    
+            }
+
+            return rtnSort;
         }
 
         public static Dictionary<String, String> GetRegionList(String countrycode, String dnnlistname = "Region")
