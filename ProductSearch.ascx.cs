@@ -40,17 +40,20 @@ namespace Nevoweb.DNN.NBrightBuy
         private GenXmlTemplate _templD;
         private int _redirecttabid;
         private string _targetModuleKey;
+        private bool _isSkinControl;
         #region Event Handlers
 
         override protected void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
+            _isSkinControl = false;
             // get setting via control params
             if (!String.IsNullOrEmpty(RedirectTabId) && !ModSettings.Settings().ContainsKey("redirecttabid")) ModSettings.Settings().Add("redirecttabid", RedirectTabId);
             if (!String.IsNullOrEmpty(TargetModulekey) && !ModSettings.Settings().ContainsKey("targetmodulekey")) ModSettings.Settings().Add("targetmodulekey", TargetModulekey);
             if (!String.IsNullOrEmpty(Themefolder) && !ModSettings.Settings().ContainsKey("themefolder")) ModSettings.Settings().Add("themefolder", Themefolder);
             if (!String.IsNullOrEmpty(Searchtemplate) && !ModSettings.Settings().ContainsKey("txtsearchtemplate")) ModSettings.Settings().Add("txtsearchtemplate", Searchtemplate);
+            if (!String.IsNullOrEmpty(Searchtemplate)) _isSkinControl = true;
 
             if (ModSettings.Get("txtsearchtemplate") == "")  // if we don't have module setting jump out
             {
@@ -85,11 +88,14 @@ namespace Nevoweb.DNN.NBrightBuy
             _targetModuleKey = "";
             _targetModuleKey = ModSettings.Get("targetmodulekey");
 
-            var obj = new NBrightInfo();
-                
-            var searchcookie = new NavigationData(PortalId, _targetModuleKey);
-            if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
-            DoDetail(rpData, obj);
+            if (Page.IsPostBack == false || _isSkinControl)
+            {
+                var obj = new NBrightInfo();
+
+                var searchcookie = new NavigationData(PortalId, _targetModuleKey);
+                if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
+                DoDetail(rpData, obj);
+            }
         }
 
 

@@ -196,6 +196,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "countrydropdown":
                     CreateCountryDropDownList(container, xmlNod);
                     return true;
+                case "countrylist":
+                    CreateCountryList(container, xmlNod);
+                    return true;
                 case "regioncontrol":
                     CreateRegionControl(container, xmlNod);
                     return true;
@@ -4023,6 +4026,45 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 ddl.Visible = false;
             }
         }
+
+        private void CreateCountryList(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            l.DataBinding += CreateCountryListDataBind;
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+            {
+                l.ID = xmlNod.Attributes["id"].InnerText;
+            }
+            container.Controls.Add(l);
+        }
+
+        private void CreateCountryListDataBind(object sender, EventArgs e)
+        {
+
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                l.Visible = visibleStatus.Last();
+                if (l.Visible)
+                {
+                    l.Text = "<ul id='" + l.ID + "'>";
+                    var tList = NBrightBuyUtils.GetCountryList();
+                    foreach (var tItem in tList)
+                    {
+                        l.Text += "<li value='" + tItem.Key + "'>" + tItem.Value + "</li>";
+                    }
+                    l.Text += "</ul>";
+
+                }
+
+            }
+            catch (Exception)
+            {
+                l.Visible = false;
+            }
+        }
+
 
         private void CreateEditFlag(Control container, XmlNode xmlNod)
         {

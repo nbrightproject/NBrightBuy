@@ -243,7 +243,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
-            if (OrderStatus == "020") // only process this on waiting for bank.  On return to cart this could be triggered more than once, by IPN and return.
+            // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
+            if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030") 
             {
                 var discountprov = DiscountCodeInterface.Instance();
                 if (discountprov != null)
@@ -252,6 +253,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);                    
                 }
 
+                PurchaseTypeCode = "ORDER";
                 CreatedDate = DateTime.Now.ToString("O");
                 ApplyModelTransQty();
                 OrderStatus = orderStatus;

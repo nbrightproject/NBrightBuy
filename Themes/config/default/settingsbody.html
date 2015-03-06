@@ -1,12 +1,29 @@
 [<tag id="backofficetabid" type="hidden" value="" />]<!-- hidden fields to store auto populated data -->
 [<tag id="ImageResize" const="true" type="hidden" value="700" />]<!-- This resize token affects all images uploaded on this page -->
 
+  <style>
+  #countrylist { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+  #countrylist li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+  html>body #countrylist li { height: 1.5em; line-height: 1.2em; }
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+  </style>
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
         $('.merchantdetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
     });
+
+    $(function () {
+        $("#countrylist").sortable({placeholder: "ui-state-highlight"});
+        $("#countrylist").disableSelection();
+    });
+
+
+
+
 </script>
 
 <br />
@@ -584,21 +601,32 @@
 		        <div class="form-horizontal dnnForm">
 		            <div class="form-group">
 		                <label class="col-sm-3 control-label">Merchant Culture</label>
-		                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown"/>]
+		                </div>
 		            </div>
 		            <div class="form-group">
 		                <label class="col-sm-3 control-label">Currency Code</label>
-		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown"/>]
+		                </div>
 		            </div>
-    			    <div class="form-group">                
-                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol" />]</label>
-                    	<div class="col-sm-2">
-                    	    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$" />]
-                    	</div>
-				    </div>                    
+		            <div class="form-group">
+		                <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol"/>]</label>
+		                <div class="col-sm-2">
+		                    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$"/>]
+		                </div>
+		            </div>
+		        </div>
+		        <div class="form-horizontal dnnForm countrylist">
+		            <div class="form-group">
+		                <div class="col-sm-3 eurocountries"><p class="page-header">European Countries</p></div>
+		                <div class="col-sm-3">
+		                    <p class="page-header">Selected countries (Drag to sort)</p>[<tag type="countrylist" id="countrylist" />]
+		                </div>
+		            </div>
+		             
 		        </div>
 		        <div class="form-horizontal dnnForm countryselection">
-		            <p class="page-header">Valid countries for the store</p>
+		            <p class="page-header">Other Countries</p>
 		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
 		        </div>
 		    </div>
