@@ -139,7 +139,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (System.IO.File.Exists(fname))
             {
 
-                var xmlFile = new XmlDataDocument();
+                var xmlFile = new XmlDocument();
                 xmlFile.Load(fname);
 
                 if (GenXmlFunctions.GetField(rpData, "importproducts") == "True")
@@ -207,7 +207,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
-        private void ImportRecord(XmlDataDocument xmlFile, String typeCode, Boolean updaterecordsbyref = true)
+        private void ImportRecord(XmlDocument xmlFile, String typeCode, Boolean updaterecordsbyref = true)
         {
             var nodList = xmlFile.SelectNodes("root/item[./typecode='" + typeCode + "']");
             if (nodList != null)

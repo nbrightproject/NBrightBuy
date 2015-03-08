@@ -244,7 +244,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
+                        var xmlDoc = new System.Xml.XmlDocument();
                         xmlDoc.LoadXml(strXml);
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                     }
@@ -284,7 +284,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (StoreSettings.Current.DebugModeFileOut)
                 {
-                    var xmlDoc = new System.Xml.XmlDataDocument();
+                    var xmlDoc = new System.Xml.XmlDocument();
                     xmlDoc.LoadXml(orderData.GetInfo().XMLData);
                     xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_order.xml");
                 }

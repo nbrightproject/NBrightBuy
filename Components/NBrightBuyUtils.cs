@@ -593,7 +593,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnList = new List<NBrightInfo>();
             if (!String.IsNullOrEmpty(xmlAjaxData))
             {
-                var xmlDoc = new XmlDataDocument();
+                var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(xmlAjaxData);
                 var nodList = xmlDoc.SelectNodes("root/root");
                 if (nodList != null)

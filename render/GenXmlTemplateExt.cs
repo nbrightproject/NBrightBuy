@@ -305,12 +305,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
         }
 
-        public override string GetGenXml(List<Control> genCtrls, XmlDataDocument xmlDoc, string originalXml, string folderMapPath, string xmlRootName = "genxml")
+        public override string GetGenXml(List<Control> genCtrls, XmlDocument xmlDoc, string originalXml, string folderMapPath, string xmlRootName = "genxml")
         {
             return "";
         }
 
-        public override string GetGenXmlTextBox(List<Control> genCtrls, XmlDataDocument xmlDoc, string originalXml, string folderMapPath, string xmlRootName = "genxml")
+        public override string GetGenXmlTextBox(List<Control> genCtrls, XmlDocument xmlDoc, string originalXml, string folderMapPath, string xmlRootName = "genxml")
         {
             return "";
         }
@@ -341,7 +341,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 
                 ProductData prodData;
 
-                var xmlDoc = new XmlDataDocument();
+                var xmlDoc = new XmlDocument();
                 CartData currentcart;
 
                 xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
@@ -1755,7 +1755,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var objCtrl = new NBrightBuyController();
             var strXML = objCtrl.GetSqlxml("select distinct XrefItemId from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and parentitemid in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId in (" + categoryId + ")) for xml raw ");
             // get returned XML into generic List
-            var xmlDoc = new XmlDataDocument();
+            var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml("<root>" + strXML + "</root>");
             var nList = xmlDoc.SelectNodes("root/row");
             var rtnList = new List<int>();
@@ -1794,7 +1794,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (visibleStatus.Last())
                 {
 
-                    var xmlDoc = new XmlDataDocument();
+                    var xmlDoc = new XmlDocument();
                     xmlDoc.LoadXml("<root>" + lc.Text + "</root>");
                     var xmlNod = xmlDoc.SelectSingleNode("root/tag");
 

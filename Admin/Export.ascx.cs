@@ -189,7 +189,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             strXml += "</root>";
 
-            var doc = new XmlDataDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(strXml);
             doc.Save(StoreSettings.Current.FolderUploadsMapPath + "\\export.xml");
 

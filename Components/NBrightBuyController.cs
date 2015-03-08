@@ -557,7 +557,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 		public void ImportModule(int ModuleID, string Content, string Version, int UserId)
 		{
-			var xmlDoc = new XmlDataDocument();
+			var xmlDoc = new XmlDocument();
 			var objModCtrl = new ModuleController();
 			var objModInfo = objModCtrl.GetModule(ModuleID);
 			if (objModInfo != null)
