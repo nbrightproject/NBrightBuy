@@ -47,14 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\..\..\Support\NBrightCore\NBrightCore.csproj">
-      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
-      <Name>NBrightCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\..\..\Support\NBrightDNN\NBrightDNN.csproj">
-      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
-      <Name>NBrightDNN</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NBrightBuy.csproj">
       <Project>{8f850303-bec5-4247-9126-1e58f1402205}</Project>
       <Name>NBrightBuy</Name>
