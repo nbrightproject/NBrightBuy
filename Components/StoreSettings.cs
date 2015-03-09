@@ -178,6 +178,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public int ProductListTabId
+        {
+            get
+            {
+                var i = Get("productlisttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+        public int ProductDetailTabId
+        {
+            get
+            {
+                var i = Get("productdetailtab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
@@ -154,7 +155,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
 
         public override String GetSqlxml(string commandText)
         {
-            return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text ,commandText));
+            // With the XML return we often want a large data return, so we need to increase the default command timout.
+            // becuase we're compiling against DNN6 we can't use PetaPocoHelper class.  So create a new connection and command with timeout.
+
+            //Create a new connection
+            var connection = new SqlConnection(ConnectionString);
+            //Create a new command (with no timeout)
+            var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
+
+            connection.Open();
+            var rtnData = Convert.ToString(command.ExecuteScalar());
+            connection.Close();
+            return rtnData;
         }
 
         public override IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
