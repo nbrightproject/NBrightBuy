@@ -262,7 +262,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount));
+            var applieddiscount = AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", applieddiscount);
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", totaldealerbonus);
 
@@ -344,7 +345,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var total = (subtotalcost + shippingcost + appliedtax);
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, (total - totaldiscount), (dealertotal - totaldealerdiscount)));
 
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
@@ -534,6 +535,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private Double AppliedCost(int portalId, int userId, Double cost, Double dealercost)
         {
+            if (cost < 0) cost = 0;
+            if (dealercost < 0) dealercost = 0;
             //always return nortmal price for non-registered users
             if (UserController.GetCurrentUserInfo().UserID == -1) return cost;
 
