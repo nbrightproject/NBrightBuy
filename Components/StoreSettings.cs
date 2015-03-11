@@ -191,7 +191,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get
             {
-                var i = Get("productdetailtab");
+                var i = Get("ddldetailtabid");
                 if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
                 return PortalSettings.Current.ActiveTab.TabID;
             }
