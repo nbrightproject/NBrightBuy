@@ -1946,8 +1946,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 if (Utils.IsNumeric(id) && Utils.IsNumeric(moduleId))
                 {
+                    var moduleKey = "";
+                    // if we have no catid in url, we're going to need a default category from module.
+                    var settings = new System.Collections.Hashtable();
+                    var modSettings = new ModSettings(Convert.ToInt32(moduleId), settings);
+                    moduleKey = modSettings.Get("modulekey");
+
                     var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                    var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id));
+                    var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), modSettings.Settings(), moduleKey);
                     if (objCInfo != null)
                     {
                         switch (name.ToLower())

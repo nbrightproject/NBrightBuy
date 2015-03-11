@@ -99,7 +99,18 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
         public void DoDetail(Repeater rp1)
         {
+            DoDetail(rp1,0);
+        }
+
+        /// <summary>
+        /// Display template with moduleid set
+        /// </summary>
+        /// <param name="rp1"></param>
+        /// <param name="moduleId"></param>
+        public void DoDetail(Repeater rp1,int moduleId) 
+        {
             var obj = new NBrightInfo(true);
+            obj.ModuleId = moduleId;
             var l = new List<object> { obj };
             rp1.DataSource = l;
             rp1.DataBind();

@@ -122,7 +122,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prdData = new ProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
                     var defcat = prdData.GetDefaultCategory();
-                    _catid = defcat.categoryid.ToString("");
+                    if (defcat != null) _catid = defcat.categoryid.ToString("");
                 }
 
                 if (ModSettings.Get("listonly").ToLower() == "true") _displayentrypage = false;
@@ -186,7 +186,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // remove any cookie which might store SQL in error.
                 _navigationdata.Delete();
 
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
+                rpDataF.ItemTemplate = new GenXmlTemplate(exc.ToString(), ModSettings.Settings());
                 // catch any error and allow processing to continue, output error as footer template.
             }
 
@@ -495,7 +495,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // display header (Do header after the data return so the productcount works)
                     if (objCat == null)
-                        base.DoDetail(rpDataH);
+                        base.DoDetail(rpDataH,ModuleId);
                     else
                     {
                         if (StoreSettings.Current.DebugModeFileOut) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
