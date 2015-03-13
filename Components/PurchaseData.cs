@@ -131,7 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     strXml += "<emailsubject>" + emailsubject + "</emailsubject>";                    
                 }
                 strXml += "<username>" + username + "</username>";
-                strXml += "<msg>" + msg + "</msg></genxml>";
+                strXml += "<msg><![CDATA[" + msg + "]]></msg></genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
             }
 
