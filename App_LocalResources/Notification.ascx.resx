@@ -309,4 +309,7 @@
   <data name="completed_ok.Text" xml:space="preserve">
     <value>Operation Completed.</value>
   </data>
+  <data name="noproviderdata_warning.Text" xml:space="preserve">
+    <value>No provider data can be found. Make sure you have saved the provider data in the Back Office.</value>
+  </data>
 </root>

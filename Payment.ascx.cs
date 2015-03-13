@@ -276,7 +276,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 var p = d.Value;
                 var key = p.GetXmlProperty("genxml/textbox/ctrl");
                 var prov = PaymentsInterface.Instance(key);
-                if (prov != null) strRtn += prov.GetTemplate(_cartInfo.PurchaseInfo);
+                if (prov != null)
+                {
+                    var templ = prov.GetTemplate(_cartInfo.PurchaseInfo);
+                    if (templ == "")
+                    {
+                        var msgcode = "noproviderdata_" + NotifyCode.warning.ToString();
+                        templ = "<div>" + key + "</div>";
+                        templ += NBrightBuyUtils.GetResxMessage(msgcode);
+                    }
+                    strRtn += templ;
+                }
             }
             return strRtn;
         }

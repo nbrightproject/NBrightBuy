@@ -49,19 +49,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 #region "load templates"
 
-                var t1 = "dashboardheader.html";
-                var t2 = "dashboardbody.html";
-                var t3 = "dashboardfooter.html";
+                var t1 = "dashboard.html";
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
                 #endregion
 
@@ -98,21 +90,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void PageLoad()
         {
+            var statsInfo = GetStats();
 
-            #region "Data Repeater"
-            if (UserId > 0) // only logged in users can see data on this module.
-            {
-
-                DisplayDataEntryRepeater();
-            }
-
-            #endregion
-
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
-
-            // display footer
-            base.DoDetail(rpDataF);
+            base.DoDetail(rpDataH,statsInfo);
 
         }
 
@@ -142,10 +122,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         #endregion
 
 
-        private void DisplayDataEntryRepeater()
+        private NBrightInfo GetStats()
         {
-                //render the detail page
-                base.DoDetail(rpData);
+            var statsInfo = new NBrightInfo(true);
+
+            return statsInfo;
         }
 
 
