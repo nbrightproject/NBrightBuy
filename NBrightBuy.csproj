@@ -43,14 +43,6 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightCore, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Support\NBright\NBrightCore.dll</HintPath>
-    </Reference>
-    <Reference Include="NBrightDNN, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Support\NBright\NBrightDNN.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -701,13 +693,27 @@
     <None Include="NBrightThumb.ashx" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj">
+      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
+      <Name>NBrightCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj">
+      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
+      <Name>NBrightDNN</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\bin\$(TargetFileName)"
 
 copy "$(AssemblyName).pdb" "..\..\..\..\bin\$(AssemblyName).pdb"
 
+copy "NBrightCore.dll" "..\..\..\..\bin\NBrightCore.dll"
+
+copy "NBrightCore.pdb" "..\..\..\..\bin\NBrightCore.pdb"
+copy "NBrightDNN.dll" "..\..\..\..\bin\NBrightDNN.dll"
+copy "NBrightDNN.pdb" "..\..\..\..\bin\NBrightDNN.pdb"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

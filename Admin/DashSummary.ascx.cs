@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
@@ -50,10 +51,19 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 #region "load templates"
 
                 var t1 = "dashboard.html";
+                var t2 = "dashordersbody.html";
+                var t3 = "dashordersfooter.html";
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+                // Get Display Header
+                var rpDataDTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
+                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataDTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                // Get Display Header
+                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
+                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
 
                 #endregion
 
@@ -92,7 +102,33 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var statsInfo = GetStats();
 
-            base.DoDetail(rpDataH,statsInfo);
+
+            var orderList = new List<NBrightInfo>();
+            var statsData = new NBrightInfo(true);
+
+            // get order list
+            var nodList = statsInfo.XMLDoc.SelectNodes("root/orders/*");
+            foreach (XmlNode nod in nodList)
+            {
+                var nbi = new NBrightInfo();
+                nbi.FromXmlItem(nod.OuterXml);
+                var xmlData = nod.SelectSingleNode("genxml/genxml");
+                if (xmlData != null) nbi.XMLData = xmlData.OuterXml;
+                orderList.Add(nbi);
+            }
+
+            rpData.DataSource = orderList;
+            rpData.DataBind();
+
+
+            nodList = statsInfo.XMLDoc.SelectNodes("root/row");
+            foreach (XmlNode nod in nodList)
+            {
+                statsData.SetXmlProperty("genxml/" + nod.FirstChild.Name, nod.FirstChild.InnerText);
+            }
+
+            base.DoDetail(rpDataH, statsData);
+            base.DoDetail(rpDataF, statsData);
 
         }
 
@@ -125,6 +161,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private NBrightInfo GetStats()
         {
             var statsInfo = new NBrightInfo(true);
+
+            var statsXml = ModCtrl.GetSqlxml("exec NBrightBuy_DashboardStats");
+            statsInfo.XMLData = statsXml;
 
             return statsInfo;
         }
