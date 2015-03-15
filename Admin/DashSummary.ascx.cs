@@ -48,25 +48,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
 
-                #region "load templates"
-
-                var t1 = "dashboard.html";
-                var t2 = "dashordersbody.html";
-                var t3 = "dashordersfooter.html";
-
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get Display Header
-                var rpDataDTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataDTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Header
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                #endregion
-
 
             }
             catch (Exception exc)
@@ -100,14 +81,62 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void PageLoad()
         {
+            #region "get Dashboard"
+
             var statsInfo = GetStats();
-
-
-            var orderList = new List<NBrightInfo>();
             var statsData = new NBrightInfo(true);
 
-            // get order list
-            var nodList = statsInfo.XMLDoc.SelectNodes("root/orders/*");
+            var nodList = statsInfo.XMLDoc.SelectNodes("root/row");
+            foreach (XmlNode nod in nodList)
+            {
+                statsData.SetXmlProperty("genxml/" + nod.FirstChild.Name, nod.FirstChild.InnerText);
+            }
+
+
+            // Get Dash
+            var tdash = "dashboard.html";
+            var templDash = ModCtrl.GetTemplateData(ModSettings, tdash, Utils.GetCurrentCulture(), DebugMode);
+            var strDash = GenXmlFunctions.RenderRepeater(statsData, templDash);
+
+            var lit = new Literal();
+            lit.Text = strDash;
+            phData.Controls.Add(lit);
+
+            #endregion
+
+            #region "get order stats"
+
+            strDash = "<script>$( document ).ready(function() { var data = {";
+            strDash += "'xScale': 'ordinal',";
+            strDash += "'yScale': 'linear',";
+            strDash += "'main': [{";
+            strDash += "'className': '.ordertotals',";
+            strDash += "'data': [";
+            nodList = statsInfo.XMLDoc.SelectNodes("root/orderstats/*");
+            foreach (XmlNode nod in nodList)
+            {
+                var nbi = new NBrightInfo();
+                nbi.XMLData = nod.OuterXml;
+
+                strDash += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth") + "',";
+                strDash += "'y': " + nbi.GetXmlPropertyDouble("item/appliedtotal").ToString() + "},";
+
+            }
+            strDash = strDash.TrimEnd(',');
+            strDash += "]}";
+            strDash += "]}; var myChart = new xChart('bar', data, '#orderstats'); });</script>";
+
+            var litstats = new Literal();
+            litstats.Text = strDash;
+            phData.Controls.Add(litstats);
+
+            #endregion
+
+
+            #region "get order list"
+
+            var orderList = new List<NBrightInfo>();
+            nodList = statsInfo.XMLDoc.SelectNodes("root/orders/*");
             foreach (XmlNode nod in nodList)
             {
                 var nbi = new NBrightInfo();
@@ -117,18 +146,29 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 orderList.Add(nbi);
             }
 
-            rpData.DataSource = orderList;
-            rpData.DataBind();
+            templDash = ModCtrl.GetTemplateData(ModSettings, "dashordersheader.html", Utils.GetCurrentCulture(),
+                DebugMode);
+            strDash = GenXmlFunctions.RenderRepeater(statsData, templDash);
+            var litoh = new Literal();
+            litoh.Text = strDash;
+            phData.Controls.Add(litoh);
+
+            templDash = ModCtrl.GetTemplateData(ModSettings, "dashordersbody.html", Utils.GetCurrentCulture(), DebugMode);
+            strDash = GenXmlFunctions.RenderRepeater(orderList, templDash);
+            var litob = new Literal();
+            litob.Text = strDash;
+            phData.Controls.Add(litob);
+
+            templDash = ModCtrl.GetTemplateData(ModSettings, "dashordersfooter.html", Utils.GetCurrentCulture(),
+                DebugMode);
+            strDash = GenXmlFunctions.RenderRepeater(statsData, templDash);
+            var litof = new Literal();
+            litof.Text = strDash;
+            phData.Controls.Add(litof);
+
+            #endregion
 
 
-            nodList = statsInfo.XMLDoc.SelectNodes("root/row");
-            foreach (XmlNode nod in nodList)
-            {
-                statsData.SetXmlProperty("genxml/" + nod.FirstChild.Name, nod.FirstChild.InnerText);
-            }
-
-            base.DoDetail(rpDataH, statsData);
-            base.DoDetail(rpDataF, statsData);
 
         }
 
@@ -143,11 +183,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             switch (e.CommandName.ToLower())
             {
-                case "save":
+                case "refresh":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "cancel":
+                case "editorder":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -162,7 +202,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             var statsInfo = new NBrightInfo(true);
 
-            var statsXml = ModCtrl.GetSqlxml("exec NBrightBuy_DashboardStats");
+            var statsXml = ModCtrl.GetSqlxml("exec NBrightBuy_DashboardStats " + PortalId);
             statsInfo.XMLData = statsXml;
 
             return statsInfo;

@@ -1,3 +1,5 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
 	<div class="col-xs-9 col-sm-9">
 		<a href="#" class="show-sidebar">
@@ -12,46 +14,39 @@
 	</div>
 </div>
 
-Total Products: [<tag type='valueof' xpath='genxml/totalproducts' />]
-Deleted Products: [<tag type='valueof' xpath='genxml/deletedproducts' />]
-Archived Products: [<tag type='valueof' xpath='genxml/archivedproducts' />]
-Active Products: [<tag type='valueof' xpath='genxml/activeproducts' />]
+Total Products: [<tag type='valueof' xpath='genxml/totalproducts' />]<br/>
+Hidden Products: [<tag type='valueof' xpath='genxml/hiddenproducts' />]<br/>
+Active Products: [<tag type='valueof' xpath='genxml/activeproducts' />]<br/>
+Revenue: [<tag type='currencyof' xpath='genxml/totalrevenue' />]<br/>
+Total Orders: [<tag type='valueof' xpath='genxml/totalorders' />]<br/>
+applieddiscount: [<tag type='currencyof' xpath='genxml/applieddiscount' />]<br/>
+appliedshipping: [<tag type='currencyof' xpath='genxml/appliedshipping' />]<br/>
+Clients: [<tag type='valueof' xpath='genxml/clientcount' />]<br/>
 
-<h1>Latest Orders</h1>
+<span class='orderstatus orderstatus010'>[<tag type="valueof" resourcekey="General.orderstatus010" />] [<tag type='valueof' xpath='genxml/status1' />]</span><br/>
+<span class='orderstatus orderstatus020'>[<tag type="valueof" resourcekey="General.orderstatus020" />] [<tag type='valueof' xpath='genxml/status2' />]</span><br/>
+<span class='orderstatus orderstatus030'>[<tag type="valueof" resourcekey="General.orderstatus030" />] [<tag type='valueof' xpath='genxml/status3' />]</span><br/>
+<span class='orderstatus orderstatus040'>[<tag type="valueof" resourcekey="General.orderstatus040" />] [<tag type='valueof' xpath='genxml/status4' />]</span><br/>
+<span class='orderstatus orderstatus050'>[<tag type="valueof" resourcekey="General.orderstatus050" />] [<tag type='valueof' xpath='genxml/status5' />]</span><br/>
+<span class='orderstatus orderstatus060'>[<tag type="valueof" resourcekey="General.orderstatus060" />] [<tag type='valueof' xpath='genxml/status6' />]</span><br/>
+<span class='orderstatus orderstatus070'>[<tag type="valueof" resourcekey="General.orderstatus070" />] [<tag type='valueof' xpath='genxml/status7' />]</span><br/>
+<span class='orderstatus orderstatus080'>[<tag type="valueof" resourcekey="General.orderstatus080" />] [<tag type='valueof' xpath='genxml/status8' />]</span><br/>
+<span class='orderstatus orderstatus120'>[<tag type="valueof" resourcekey="General.orderstatus120" />] [<tag type='valueof' xpath='genxml/status12' />]</span><br/>
+<span class='orderstatus orderstatus090'>[<tag type="valueof" resourcekey="General.orderstatus090" />] [<tag type='valueof' xpath='genxml/status9' />]</span><br/>
+<span class='orderstatus orderstatus100'>[<tag type="valueof" resourcekey="General.orderstatus100" />] [<tag type='valueof' xpath='genxml/status10' />]</span><br/>
+<span class='orderstatus orderstatus110'>[<tag type="valueof" resourcekey="General.orderstatus110" />] [<tag type='valueof' xpath='genxml/status11' />]</span><br/>
 
-<div class="row orderslist">
+<br/>
+
+<div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
-			<div class="box-header no-box-header">
-				<div class="box-name">
-					<i class="fa fa-table"></i>
-					<span>[<tag type="valueof" resourcekey="General.Orders" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-					<a class="expand-link">
-						<i class="fa fa-expand"></i>
-					</a>
-					<a class="close-link">
-						<i class="fa fa-times"></i>
-					</a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content">
-				<table class="table table-striped table-hover table-responsive">
-					<thead>
-						<tr>
-							<th>[<tag type="valueof" resourcekey="General.Customer" />]</th>
- [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
-							<th>[<tag type="valueof" resourcekey="General.Total" />]</th>
-  [<tag type="endif"  />]
-							<th>[<tag type="valueof" resourcekey="General.OrderNumber" />]</th>
-							<th>[<tag type="valueof" resourcekey="General.OrderDate" />]</th>
-							<th>[<tag type="valueof" resourcekey="General.status" />]</th>
-							<th> </th>
-						</tr>
-					</thead>
-					<tbody>
+		<div class="box-content">
+			<div style="width: 100%; height: 200px;" id="orderstats"></div>
+		</div>
+		</div>
+    </div>
+</div>
+
+
+
