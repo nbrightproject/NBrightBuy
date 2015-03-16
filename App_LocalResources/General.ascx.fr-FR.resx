@@ -859,13 +859,13 @@
     <value>Att</value>
   </data>
   <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Mes commandes" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Mon carnet d'adresses" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMyAccount.Text" xml:space="preserve">
-    <value>&lt;i title="Mon profil de compte" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-user fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="PickupReference.Text" xml:space="preserve">
     <value>Référence Relais Colis</value>

@@ -324,7 +324,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         #region "breadcrumbs"
-
+        /// <summary>
+        /// Get category breadcrumb, using controller langauge
+        /// </summary>
+        /// <param name="categoryid"></param>
+        /// <param name="shortLength">0 = unlimited</param>
+        /// <param name="separator"></param>
+        /// <param name="aslist">if true brings html list as return string</param>
+        /// <returns></returns>
         public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
         {
             var breadCrumb = "";

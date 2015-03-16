@@ -14,27 +14,30 @@
 	</div>
 </div>
 
-Total Products: [<tag type='valueof' xpath='genxml/totalproducts' />]<br/>
-Hidden Products: [<tag type='valueof' xpath='genxml/hiddenproducts' />]<br/>
-Active Products: [<tag type='valueof' xpath='genxml/activeproducts' />]<br/>
-Revenue: [<tag type='currencyof' xpath='genxml/totalrevenue' />]<br/>
-Total Orders: [<tag type='valueof' xpath='genxml/totalorders' />]<br/>
-applieddiscount: [<tag type='currencyof' xpath='genxml/applieddiscount' />]<br/>
-appliedshipping: [<tag type='currencyof' xpath='genxml/appliedshipping' />]<br/>
-Clients: [<tag type='valueof' xpath='genxml/clientcount' />]<br/>
+Total Products: [<tag type='valueof' xpath='root/row/totalproducts' />]<br/>
+Hidden Products: [<tag type='valueof' xpath='root/row/hiddenproducts' />]<br/>
+Active Products: [<tag type='valueof' xpath='root/row/activeproducts' />]<br/>
+Revenue: [<tag type='currencyof' xpath='root/row/totalrevenue' />]<br/>
+Total Orders: [<tag type='valueof' xpath='root/row/totalorders' />]<br/>
+Avg Order: [<tag type='currencyof' xpath='root/row/avgorder' />]<br/>
+applieddiscount: [<tag type='currencyof' xpath='root/row/applieddiscount' />]<br/>
+appliedshipping: [<tag type='currencyof' xpath='root/row/appliedshipping' />]<br/>
+Clients: [<tag type='valueof' xpath='root/row/clientcount' />]<br/>
 
-<span class='orderstatus orderstatus010'>[<tag type="valueof" resourcekey="General.orderstatus010" />] [<tag type='valueof' xpath='genxml/status1' />]</span><br/>
-<span class='orderstatus orderstatus020'>[<tag type="valueof" resourcekey="General.orderstatus020" />] [<tag type='valueof' xpath='genxml/status2' />]</span><br/>
-<span class='orderstatus orderstatus030'>[<tag type="valueof" resourcekey="General.orderstatus030" />] [<tag type='valueof' xpath='genxml/status3' />]</span><br/>
-<span class='orderstatus orderstatus040'>[<tag type="valueof" resourcekey="General.orderstatus040" />] [<tag type='valueof' xpath='genxml/status4' />]</span><br/>
-<span class='orderstatus orderstatus050'>[<tag type="valueof" resourcekey="General.orderstatus050" />] [<tag type='valueof' xpath='genxml/status5' />]</span><br/>
-<span class='orderstatus orderstatus060'>[<tag type="valueof" resourcekey="General.orderstatus060" />] [<tag type='valueof' xpath='genxml/status6' />]</span><br/>
-<span class='orderstatus orderstatus070'>[<tag type="valueof" resourcekey="General.orderstatus070" />] [<tag type='valueof' xpath='genxml/status7' />]</span><br/>
-<span class='orderstatus orderstatus080'>[<tag type="valueof" resourcekey="General.orderstatus080" />] [<tag type='valueof' xpath='genxml/status8' />]</span><br/>
-<span class='orderstatus orderstatus120'>[<tag type="valueof" resourcekey="General.orderstatus120" />] [<tag type='valueof' xpath='genxml/status12' />]</span><br/>
-<span class='orderstatus orderstatus090'>[<tag type="valueof" resourcekey="General.orderstatus090" />] [<tag type='valueof' xpath='genxml/status9' />]</span><br/>
-<span class='orderstatus orderstatus100'>[<tag type="valueof" resourcekey="General.orderstatus100" />] [<tag type='valueof' xpath='genxml/status10' />]</span><br/>
-<span class='orderstatus orderstatus110'>[<tag type="valueof" resourcekey="General.orderstatus110" />] [<tag type='valueof' xpath='genxml/status11' />]</span><br/>
+<br/>
+
+<span class='orderstatus orderstatus010'>[<tag type="valueof" resourcekey="General.orderstatus010" />] [<tag type='valueof' xpath='root/row/status1' />]</span><br/>
+<span class='orderstatus orderstatus020'>[<tag type="valueof" resourcekey="General.orderstatus020" />] [<tag type='valueof' xpath='root/row/status2' />]</span><br/>
+<span class='orderstatus orderstatus030'>[<tag type="valueof" resourcekey="General.orderstatus030" />] [<tag type='valueof' xpath='root/row/status3' />]</span><br/>
+<span class='orderstatus orderstatus040'>[<tag type="valueof" resourcekey="General.orderstatus040" />] [<tag type='valueof' xpath='root/row/status4' />]</span><br/>
+<span class='orderstatus orderstatus050'>[<tag type="valueof" resourcekey="General.orderstatus050" />] [<tag type='valueof' xpath='root/row/status5' />]</span><br/>
+<span class='orderstatus orderstatus060'>[<tag type="valueof" resourcekey="General.orderstatus060" />] [<tag type='valueof' xpath='root/row/status6' />]</span><br/>
+<span class='orderstatus orderstatus070'>[<tag type="valueof" resourcekey="General.orderstatus070" />] [<tag type='valueof' xpath='root/row/status7' />]</span><br/>
+<span class='orderstatus orderstatus080'>[<tag type="valueof" resourcekey="General.orderstatus080" />] [<tag type='valueof' xpath='root/row/status8' />]</span><br/>
+<span class='orderstatus orderstatus120'>[<tag type="valueof" resourcekey="General.orderstatus120" />] [<tag type='valueof' xpath='root/row/status12' />]</span><br/>
+<span class='orderstatus orderstatus090'>[<tag type="valueof" resourcekey="General.orderstatus090" />] [<tag type='valueof' xpath='root/row/status9' />]</span><br/>
+<span class='orderstatus orderstatus100'>[<tag type="valueof" resourcekey="General.orderstatus100" />] [<tag type='valueof' xpath='root/row/status10' />]</span><br/>
+<span class='orderstatus orderstatus110'>[<tag type="valueof" resourcekey="General.orderstatus110" />] [<tag type='valueof' xpath='root/row/status11' />]</span><br/>
 
 <br/>
 
@@ -47,6 +50,34 @@ Clients: [<tag type='valueof' xpath='genxml/clientcount' />]<br/>
 		</div>
     </div>
 </div>
+
+<script>
+
+function xGraphOrderTotals(){
+	
+	var data = {
+		"xScale": "ordinal",
+		"yScale": "linear",
+		"main": [[
+			{
+			"className": ".ordertotals",
+			"data": [[
+			[<tag type="xchartorderrevenue" />]
+			]]
+			}
+		]]
+	};
+	
+	var myChart = new xChart('bar', data, '#orderstats');
+
+}
+
+	$( document ).ready(function() {
+		xGraphOrderTotals();
+	});
+
+
+</script>
 
 
 

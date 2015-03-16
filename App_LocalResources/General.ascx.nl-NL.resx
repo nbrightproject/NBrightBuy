@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -189,14 +189,14 @@
   <data name="cmdMove.Text">
     <value xml:space="preserve">Verplaatsen</value>
   </data>
-  <data name="cmdMoveIcon.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">&lt;i title="Verplaatsen naar hier" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="cmdMyAccount.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">&lt;i title="Mijn accountprofiel" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="cmdMyAddressBookIcon.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">&lt;i title="Mijn adresboek" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdMyAccount.Text" xml:space="preserve">
+    <value>&lt;i class="fa fa-user fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMyOrdersIcon.Text" lastModified="2014-11-29 12:17:28">
     <value xml:space="preserve">&lt;i title="Mijn bestellingen" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>

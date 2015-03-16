@@ -276,13 +276,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
                         var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
                         catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
-                        catData.SetCategoryRef(); // set to uniquekey
 
                         if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                         {
                             var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                             var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
                             if (grp != null) catData.ParentItemId = grp.ItemID;
+                        }
+                        else
+                        {
+                            var grpCatCtrl = new GrpCatController(PortalSettings.DefaultLanguage);
+                            var newGuidKey = grpCatCtrl.GetBreadCrumb(catData.CategoryId, 0, "-", false);
+                            if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey).Replace(" ","");
+                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
+                            catData.DataRecord.GUIDKey = newGuidKey;
                         }
 
                         ModCtrl.Update(catData.DataRecord);
@@ -328,32 +335,22 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
                     if (grp != null)
                     {
-                        var newGUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
-                        // make sure we have a unique guidkey
-                        var doloop = true;
-                        var lp = 1;
-                        var testGUIDKey = newGUIDKey;
-                        while (doloop)
-                        {
-                            var obj = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "CATEGORY", testGUIDKey);
-                            if (obj != null && obj.ItemID != catData.CategoryId)
-                            {
-                                testGUIDKey = newGUIDKey + lp.ToString();
-                            }
-                            else
-                                doloop = false;
-
-                            lp += 1;
-                            if (lp > 99) doloop = false; // make sure we never get a infinate loop
-                        }
-                        newGUIDKey = testGUIDKey;
-
-                        catData.DataRecord.GUIDKey = newGUIDKey;
-                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGUIDKey);
+                        var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey);
+                        catData.DataRecord.GUIDKey = newGuidKey;
+                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
                         // list done using ddlgrouptype, in  GetCatList 
                         catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype); 
                     }
+                }
+                else
+                {
+                    var grpCatCtrl = new GrpCatController(PortalSettings.DefaultLanguage);
+                    var newGuidKey = grpCatCtrl.GetBreadCrumb(catData.CategoryId, 0, "-", false);
+                    if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey).Replace(" ", "");
+                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
+                    catData.DataRecord.GUIDKey = newGuidKey;
                 }
                 catData.Save();
             }
@@ -479,6 +476,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             return rtnList;
         }
 
+
+        private string GetUniqueGuidKey(int categoryId, string newGUIDKey)
+        {
+            // make sure we have a unique guidkey
+            var doloop = true;
+            var lp = 1;
+            var testGUIDKey = newGUIDKey;
+            while (doloop)
+            {
+                var obj = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "CATEGORY", testGUIDKey);
+                if (obj != null && obj.ItemID != categoryId)
+                {
+                    testGUIDKey = newGUIDKey + lp.ToString();
+                }
+                else
+                    doloop = false;
+
+                lp += 1;
+                if (lp > 999) doloop = false; // make sure we never get a infinate loop
+            }
+            return testGUIDKey;
+        }
 
 
     }

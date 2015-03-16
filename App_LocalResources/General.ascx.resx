@@ -883,13 +883,13 @@
     <value>Sale</value>
   </data>
   <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i title="My Orders" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
-    <value>&lt;i title="My Address Book" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMyAccount.Text" xml:space="preserve">
-    <value>&lt;i title="My Account Profile" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-user fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="copyorderto.Text" xml:space="preserve">
     <value>Copy this order to</value>
@@ -942,4 +942,4 @@
 <data name="orderstatus100.Text" xml:space="preserve"><value>Completed</value></data>
 <data name="orderstatus110.Text" xml:space="preserve"><value>Archived</value></data>
 <data name="orderstatus120.Text" xml:space="preserve"><value>Being Manufactured</value></data>
-  </root>
+</root>

@@ -13,13 +13,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin {
     public partial class DashSummary {
         
         /// <summary>
-        /// phData control.
+        /// rpDash control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phData;
+        protected global::System.Web.UI.WebControls.Repeater rpDash;
         
         /// <summary>
         /// rpDataH control.
@@ -47,5 +47,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpDataF;
+        
+        /// <summary>
+        /// phData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phData;
     }
 }

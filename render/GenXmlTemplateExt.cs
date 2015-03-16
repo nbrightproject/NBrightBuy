@@ -288,7 +288,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "xslinject":
                     CreateXslInject(container, xmlNod);
-                    return true;                    
+                    return true;
+                case "xchartorderrevenue":
+                    CreateXchartOrderRev(container, xmlNod);
+                    return true;
+                case "friendlyurl":
+                    GetFriendlyUrl(container, xmlNod);
+                    return true;                                                            
                 default:
                     return false;
 
@@ -1115,6 +1121,61 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
         #endregion
+
+        #region "Friendly Tab and category id url"
+
+        private void GetFriendlyUrl(Control container, XmlNode xmlNod)
+        {
+            var l = new Literal();
+            l.Text = "";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["moduleid"] != null))
+            {
+                if (xmlNod.Attributes["tabid"] != null && Utils.IsNumeric(xmlNod.Attributes["tabid"].InnerXml))
+                    l.Text = xmlNod.Attributes["tabid"].InnerXml;
+                else
+                    l.Text += ",";
+                if (xmlNod.Attributes["catid"] != null && Utils.IsNumeric(xmlNod.Attributes["catid"].InnerXml))
+                    l.Text = xmlNod.Attributes["catid"].InnerXml;
+                else
+                    l.Text += ",";
+                if (xmlNod.Attributes["catref"] != null) l.Text = xmlNod.Attributes["catref"].InnerXml;
+
+            }
+            l.DataBinding += GetFriendlyUrlDataBinding;
+            container.Controls.Add(l);
+        }
+
+        private void GetFriendlyUrlDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                var tabid = PortalSettings.Current.ActiveTab.ToString();
+                var param = new string[2];
+
+                var a = l.Text.Split(',');
+                if (a.Length == 3)
+                {
+                    if (Utils.IsNumeric(a[0])) tabid = a[0];
+                    if (Utils.IsNumeric(a[1])) param[0] = "catid=" + a[1];
+                    if (Utils.IsNumeric(a[2])) param[1] = "category=" + a[2];
+
+                    l.Visible = visibleStatus.Last();
+                    //set a default url                    
+                }
+                var url = Globals.NavigateURL(Convert.ToInt32(tabid),"",param);
+                l.Text = url;
+
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+
+        #endregion
+
 
         #region  "category dropdown and checkbox list"
 
@@ -4682,6 +4743,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
+
         #region "XslInject"
 
         private void CreateXslInject(Control container, XmlNode xmlNod)
@@ -4711,6 +4773,46 @@ namespace Nevoweb.DNN.NBrightBuy.render
             }
         }
 
+
+        #endregion
+
+        #region "Xcharts"
+
+        private void CreateXchartOrderRev(Control container, XmlNode xmlNod)
+        {
+                var lc = new Literal();
+                lc.DataBinding += CreateXchartOrderRevDataBind;
+                lc.Text  = "";
+                container.Controls.Add(lc);
+        }
+
+        private void CreateXchartOrderRevDataBind(object sender, EventArgs e)
+        {
+            var lc = (Literal) sender;
+            var container = (IDataItemContainer) lc.NamingContainer;
+            lc.Visible = visibleStatus.Last();
+            if (lc.Visible && container.DataItem != null)
+            {
+                var nbi1 = (NBrightInfo) container.DataItem;
+                var strOut = "";
+                var nodList = nbi1.XMLDoc.SelectNodes("root/orderstats/*");
+                if (nodList != null)
+                {
+                    foreach (XmlNode nod in nodList)
+                    {
+                        var nbi = new NBrightInfo();
+                        nbi.XMLData = nod.OuterXml;
+
+                        strOut += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth") + "',";
+                        strOut += "'y': " + nbi.GetXmlPropertyDouble("item/appliedtotal").ToString() + "},";
+
+                    }
+                    strOut = strOut.TrimEnd(',');
+                }
+
+                lc.Text = strOut;
+            }
+        }
 
         #endregion
 

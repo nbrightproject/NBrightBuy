@@ -121,7 +121,7 @@ input.quantity {float:left;margin:0 6px;}
 .productdetail .documents {}
 .productdetail .documents li {margin-bottom:12px;padding-left:32px;position:relative;}
 .productdetail .documents li i.fa-file-text {position:absolute;top:0;left:0;color:#dedede;}
-.productdetail .documentname {font-weight:bold;}
+.productdetail .documentname {display:block;font-weight:bold;}
 .productdetail .documentdescription {display:block;}
 .productdetail .documentlink {text-decoration:none;margin-top:10px;}
 

@@ -2,17 +2,21 @@
 
 <div id="addressbook">
 
+<!-- Client Menu -->
+<h1>My account</h1>
 <div class="clientmenu">
+<div class="clientmenuheader">Manage account</div>
+<ul>
 [<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
-<a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />]</a>
+<li><a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />][<tag type="valueof" resourcekey="Settings.profiletab" />]</a></li>
 [<tag type="endif"  />]
 [<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
-<a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />]</a>
+<li class="activetab"><a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />][<tag type="valueof" resourcekey="Settings.addressestab" />]</a></li>
 [<tag type="endif"  />]
 [<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
-<a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />]</a>
+<li><a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />][<tag type="valueof" resourcekey="Settings.ordermanagertab" />]</a></li>
 [<tag type="endif"  />]
-<h1>[<tag type="valueof" resourcekey="Settings.addressestab" />]</h1>
+</ul>
 </div>
 
 <div class="formrow addbutton">

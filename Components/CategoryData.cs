@@ -137,15 +137,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public String SetCategoryRef()
-        {
-            if (CategoryRef == "") // caregoryref is fixed once set
-            {
-                DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", Utils.GetUniqueKey(10));
-            }
-            DataRecord.GUIDKey = CategoryRef;
-            return CategoryRef;
-        }
 
         public Boolean IsHidden
         {
@@ -163,7 +154,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Save()
         {
             var objCtrl = new NBrightBuyController();
-            SetCategoryRef(); // set to uniquekey
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
             
