@@ -527,7 +527,14 @@ namespace Nevoweb.DNN.NBrightBuy
             if (_catid != "") param[2] = "catid=" + _catid;
 
             // redirect to cart after add to basket is arg is redirect
-            if (cArg.ToLower() == "redirect" && Utils.IsNumeric(StoreSettings.Current.CartTabId)) rtnTabId = StoreSettings.Current.CartTabId; 
+            if (cArg.ToLower() == "redirect" && Utils.IsNumeric(StoreSettings.Current.CartTabId)) rtnTabId = StoreSettings.Current.CartTabId;
+            if (cArg.ToLower() == "redirectnoparam" && Utils.IsNumeric(StoreSettings.Current.CartTabId))
+            {
+                rtnTabId = StoreSettings.Current.CartTabId;
+                param[0] = "";
+                param[1] = "";
+                param[2] = "";
+            } 
 
             switch (e.CommandName.ToLower())
             {
