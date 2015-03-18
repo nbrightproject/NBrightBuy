@@ -439,6 +439,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var qty = nodItem.SelectSingleNode("qty");
                     if (qty != null && Utils.IsNumeric(qty.InnerText) && Utils.IsNumeric(strqtyId))
                     {
+                        var userqtylimit = objInfoIn.GetXmlPropertyInt("genxml/hidden/userqtylimit");
+                        if (userqtylimit > 0 && Convert.ToInt32(qty.InnerText) >= userqtylimit) return "";
+
                         //add new qty and replace item
                         PurchaseInfo.RemoveXmlNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                         _itemList = GetCartItemList();

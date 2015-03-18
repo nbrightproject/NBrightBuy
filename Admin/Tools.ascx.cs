@@ -127,6 +127,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "resetlangauge":
+                    param[0] = "";
+                    ResetLanguage();
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -227,6 +232,39 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 objCtrl.GetSqlxml(stmt);
             }
         }
+
+
+        private void ResetLanguage()
+        {
+            var pass = GenXmlFunctions.GetField(rpData, "txtclearpass");
+            var languagetoreset = GenXmlFunctions.GetField(rpData, "languagetoreset");
+            var languageresetto = GenXmlFunctions.GetField(rpData, "languageresetto");
+            if (languagetoreset != "" && languageresetto != languagetoreset)
+            {
+                var objCtrl = new NBrightBuyController();
+
+                var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
+                foreach (var i in l)
+                {
+                    var prdData = new ProductData(i.ItemID, languagetoreset);
+                    prdData.ResetLanguage(languageresetto);
+                }
+
+                l = objCtrl.GetDataList(PortalId, -1, "CATEGORY", "", Utils.GetCurrentCulture(), "", "");
+                foreach (var i in l)
+                {
+                    var catData = new CategoryData(i.ItemID, languagetoreset);
+                    catData.ResetLanguage(languageresetto);
+                }
+
+                DataCache.ClearCache();
+
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+
+            }
+        }
+
+
     }
 
 }

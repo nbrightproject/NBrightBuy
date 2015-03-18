@@ -132,4 +132,16 @@
   <data name="purgecartsdays.Text" xml:space="preserve">
     <value>Days to Keep carts</value>
   </data>
+  <data name="languageresetto.Text" xml:space="preserve">
+    <value>reset to</value>
+  </data>
+  <data name="languagetoreset.Text" xml:space="preserve">
+    <value>Language to Reset</value>
+  </data>
+  <data name="resetlangauge.confirm" xml:space="preserve">
+    <value>Resetting the langauge will NOT be recoverable. Are You Sure?</value>
+  </data>
+  <data name="resetlangauge.Text" xml:space="preserve">
+    <value>Reset Language</value>
+  </data>
 </root>

@@ -215,6 +215,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void ResetLanguage(String resetToLang)
+        {
+            if (resetToLang != DataLangRecord.Lang)
+            {
+                var resetToLangData = new CategoryData(DataRecord.ItemID, resetToLang);
+                var objCtrl = new NBrightBuyController();
+                DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
+                objCtrl.Update(DataLangRecord);
+            }
+        }
 
         public int Validate()
         {

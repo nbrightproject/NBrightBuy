@@ -9,13 +9,18 @@
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/postalcode' />]</div>
 			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/dropdownlist/country/@selectedtext' />]</div>
 					</address>
-					<address>
-						<div><b>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname' />]</b></div>
-			        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone' />]</div>
-						<div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]</a></div>
-						<div><a href="mailto:[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/cartemailaddress' />]">[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/cartemailaddress' />]</a></div>
-					</address>
-					<address>
+				    <address>
+				        <div><b>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/firstname'/>] [<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/lastname'/>]</b>
+				        </div>
+				        <div>[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/telephone'/>]
+				        </div>
+				        <div><a href="mailto:[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email' />]">[<tag type='valueof' xpath='genxml/billaddress/genxml/textbox/email'/>]</a>
+				        </div>
+				        <div><a href="mailto:[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/cartemailaddress' />]">[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/cartemailaddress'/>]</a>
+				        </div>
+				    </address>
+
+				    <address>
 					<div><b>[<tag type="valueof" resourcekey="OrderAdmin.PaymentMethod" />]</b></div>
     <div>
     [<tag type="if" xpath="genxml/paymentproviderkey" testvalue="manualpayment" display="{ON}" displayelse="{OFF}" />][<tag type="valueof" resourcekey="General.manualpayment" />][<tag type="endtestof" />]
@@ -39,6 +44,12 @@
 					<div>[<tag type='valueof' xpath='genxml/extrainfo/genxml/textbox/taxnumber' />]</div>
 					</address>
 					[<tag type="endtestof" />]
+                     [<tag type="if" xpath="genxml/extrainfo/genxml/textbox/extramessage" testvalue="" display="{OFF}" />]
+				    <address>
+                       <div><b>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]:</b></div>
+                       <div>[<tag type="valueof" xpath="genxml/extrainfo/genxml/textbox/extramessage" />]</div>
+                    </address>
+				    [<tag type="endif"/>]
 										
 					
 				</div>

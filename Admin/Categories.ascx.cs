@@ -482,7 +482,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // make sure we have a unique guidkey
             var doloop = true;
             var lp = 1;
-            var testGUIDKey = newGUIDKey;
+            var testGUIDKey = newGUIDKey.ToLower();
             while (doloop)
             {
                 var obj = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "CATEGORY", testGUIDKey);
