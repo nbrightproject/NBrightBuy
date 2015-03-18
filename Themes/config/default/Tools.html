@@ -40,14 +40,6 @@
 				</div>
 		    </div>
 
-		    <div class="box-content dnnForm">
-				<div class="form-inline">
-					[<tag id="resetlangauge" type="linkbutton" cssclass="btn btn-primary" resourcekey="Tools.resetlangauge" commandname="resetlangauge" />]&nbsp;&nbsp;
-				    <label class="">[<tag type="valueof" resourcekey="Tools.languagetoreset"/>]</label>&nbsp;&nbsp;[<tag id="languagetoreset" type="culturecodedropdown" cssclass="form-control"/>]
-				    <label class="">[<tag type="valueof" resourcekey="Tools.languageresetto"/>]</label>&nbsp;&nbsp;[<tag id="languageresetto" type="culturecodedropdown" cssclass="form-control"/>]                    
-				</div>
-		    </div>
-
 			</div>
 		</div>
 	<div class="clearfix">
@@ -58,47 +50,64 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-				    <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.RemovefromStore" />]</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
-					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
-					<a class="close-link"><i class="fa fa-times"></i></a></div>
-				<div class="no-move">
-				</div>
-			</div>
+		    <div class="box-header">
+		        <div class="box-name">
+		            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.RemovefromStore" />]</span>
+		        </div>
+		        <div class="box-icons">
+		            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
+		            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+		            <a class="close-link"><i class="fa fa-times"></i></a>
+		        </div>
+		        <div class="no-move">
+		        </div>
+		    </div>
+
 		    <div class="box-content dnnForm">
+		        <div class="form-inline">
+		            <label class="">[<tag type="valueof" resourcekey="General.AdminPin"/>]</label>&nbsp;&nbsp;[<tag id="txtclearpass" type="textbox" cssclass="form-control" maxlength="50"/>]
+		        </div>
+		    </div>
+		    <div class="box-content dnnForm">
+                
 		        <div class="form-inline dnnForm">
+
 		            <div class="row spacer">
-		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Products" />]</label>
-		                [<tag id="clearproducts" type="checkbox" resourcekey="" />]
+		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Products"/>]</label>
+		                [<tag id="clearproducts" type="checkbox" resourcekey=""/>]
 		            </div>
 		            <div class="row spacer">
-		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Categories" />]</label>
-		                [<tag id="clearcategories" type="checkbox" resourcekey="" />]
+		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Categories"/>]</label>
+		                [<tag id="clearcategories" type="checkbox" resourcekey=""/>]
 		            </div>
 		            <div class="row spacer">
-		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Properties" />]</label>
-		                [<tag id="clearpropertiesonly" type="checkbox" resourcekey="" />]
+		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Properties"/>]</label>
+		                [<tag id="clearpropertiesonly" type="checkbox" resourcekey=""/>]
 		            </div>
 		            <div class="row spacer">
-		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Properties" />] (Groups)</label>
-		                [<tag id="clearproperties" type="checkbox" resourcekey="" />]
+		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Properties"/>] (Groups)</label>
+		                [<tag id="clearproperties" type="checkbox" resourcekey=""/>]
 		            </div>
 		            <div class="row spacer">
-		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Orders" />]</label>
-		                [<tag id="clearorders" type="checkbox" resourcekey="" />]
+		                <label class="col-sm-2 control-label text-right">[<tag type="valueof" resourcekey="General.Orders"/>]</label>
+		                [<tag id="clearorders" type="checkbox" resourcekey=""/>]
 		            </div>
 		        </div>
-            				<div class="form-inline">
-					[<tag id="Tag1" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.RemovefromStore" commandname="cleardownstore" />]&nbsp;&nbsp;
-					<label class="">[<tag type="valueof" resourcekey="General.AdminPin" />]</label>&nbsp;&nbsp;[<tag id="txtclearpass" type="textbox" cssclass="form-control" maxlength="50" />] 
+		        <div class="form-inline">
+		            [<tag id="storecleardown" type="linkbutton" cssclass="btn btn-danger" resourcekey="General.RemovefromStore" commandname="cleardownstore"/>]&nbsp;&nbsp;
+		        </div>
+		    </div>
+
+   		    <div class="box-content dnnForm">
+				<div class="form-inline">
+					[<tag id="resetlangauge" type="linkbutton" cssclass="btn btn-danger" resourcekey="Tools.resetlangauge" commandname="resetlangauge" />]&nbsp;&nbsp;
+				    <label class="">[<tag type="valueof" resourcekey="Tools.languagetoreset"/>]</label>&nbsp;&nbsp;[<tag id="languagetoreset" type="culturecodedropdown" cssclass="form-control"/>]
+				    <label class="">[<tag type="valueof" resourcekey="Tools.languageresetto"/>]</label>&nbsp;&nbsp;[<tag id="languageresetto" type="culturecodedropdown" cssclass="form-control"/>]                    
 				</div>
 		    </div>
 
-			</div>
+
+		</div>
 		</div>
 	<div class="clearfix">
 	</div>

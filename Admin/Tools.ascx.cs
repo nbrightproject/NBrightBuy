@@ -237,30 +237,33 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private void ResetLanguage()
         {
             var pass = GenXmlFunctions.GetField(rpData, "txtclearpass");
+            if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
+            {
             var languagetoreset = GenXmlFunctions.GetField(rpData, "languagetoreset");
             var languageresetto = GenXmlFunctions.GetField(rpData, "languageresetto");
-            if (languagetoreset != "" && languageresetto != languagetoreset)
-            {
-                var objCtrl = new NBrightBuyController();
-
-                var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
-                foreach (var i in l)
+                if (languagetoreset != "" && languageresetto != languagetoreset)
                 {
-                    var prdData = new ProductData(i.ItemID, languagetoreset);
-                    prdData.ResetLanguage(languageresetto);
+                    var objCtrl = new NBrightBuyController();
+
+                    var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
+                    foreach (var i in l)
+                    {
+                        var prdData = new ProductData(i.ItemID, languagetoreset);
+                        prdData.ResetLanguage(languageresetto);
+                    }
+
+                    l = objCtrl.GetDataList(PortalId, -1, "CATEGORY", "", Utils.GetCurrentCulture(), "", "");
+                    foreach (var i in l)
+                    {
+                        var catData = new CategoryData(i.ItemID, languagetoreset);
+                        catData.ResetLanguage(languageresetto);
+                    }
+
+                    DataCache.ClearCache();
+
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+
                 }
-
-                l = objCtrl.GetDataList(PortalId, -1, "CATEGORY", "", Utils.GetCurrentCulture(), "", "");
-                foreach (var i in l)
-                {
-                    var catData = new CategoryData(i.ItemID, languagetoreset);
-                    catData.ResetLanguage(languageresetto);
-                }
-
-                DataCache.ClearCache();
-
-                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
-
             }
         }
 
