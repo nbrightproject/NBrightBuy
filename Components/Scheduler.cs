@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.Remoting;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
@@ -40,6 +41,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 this.ScheduleHistoryItem.AddLogNote(strMsg);
                                 this.ScheduleHistoryItem.Succeeded = true;
                             }
+                        }
+
+                        // clear down NBStore temp folder
+                        var storeSettings = new StoreSettings(portal.PortalID);
+                        string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
+
+                        foreach (string file in files)
+                        {
+                            FileInfo fi = new FileInfo(file);
+                            if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
                         }
                     }
                 }

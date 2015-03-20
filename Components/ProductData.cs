@@ -332,6 +332,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataLangRecord = objCtrl.Get(plangid); 
             
             ResetCache();
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
         }
 
         public void Delete()

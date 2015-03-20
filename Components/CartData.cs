@@ -49,6 +49,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SaveCartId();
             Exists = true;
 
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterCartSave, PurchaseInfo);
+
         }
 
         public Boolean ConvertToOrder(Boolean debugMode = false)

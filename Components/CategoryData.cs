@@ -166,6 +166,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objGrpCtrl.Reload();
             }
             NBrightBuyUtils.RemoveModCachePortalWide(_portalId);
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterCategorySave, DataRecord);
         }
 
         public void Update(NBrightInfo info)

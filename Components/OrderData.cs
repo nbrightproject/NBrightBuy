@@ -102,9 +102,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             } 
             set
             {
+                NBrightBuyUtils.ProcessEventProvider(EventActions.BeforeOrderStatusChange, PurchaseInfo);
+
                 if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value, UserController.GetCurrentUserInfo().Username);
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
+
+                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterOrderStatusChange, PurchaseInfo);
+
             }  
         }
 
@@ -243,38 +248,51 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
-            // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
-            if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030") 
+            NBrightBuyUtils.ProcessEventProvider(EventActions.BeforePaymentOK, PurchaseInfo);
+
+            if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
             {
-                var discountprov = DiscountCodeInterface.Instance();
-                if (discountprov != null)
+
+                // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
+                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030")
                 {
-                    PurchaseInfo = discountprov.UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
-                    PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);                    
+                    var discountprov = DiscountCodeInterface.Instance();
+                    if (discountprov != null)
+                    {
+                        PurchaseInfo = discountprov.UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
+                        PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);
+                    }
+
+                    PurchaseTypeCode = "ORDER";
+                    CreatedDate = DateTime.Now.ToString("O");
+                    ApplyModelTransQty();
+                    OrderStatus = orderStatus;
+                    SavePurchaseData();
+
+                    // Send emails
+                    if (sendEmails)
+                    {
+                        NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                        NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo, "ordercreatedemailsubject");
+                    }
                 }
-
-                PurchaseTypeCode = "ORDER";
-                CreatedDate = DateTime.Now.ToString("O");
-                ApplyModelTransQty();
-                OrderStatus = orderStatus;
-                SavePurchaseData();
-
-                // Send emails
-                if (sendEmails)
-                {
-                    NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo, "ordercreatedemailsubject");
-                }                
             }
-
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentOK, PurchaseInfo);
         }
 
         public void PaymentFail(String orderStatus = "010")
         {
-            ReleaseModelTransQty();
-            OrderStatus = orderStatus;
-            PurchaseTypeCode = "CART";
-            SavePurchaseData();
+            NBrightBuyUtils.ProcessEventProvider(EventActions.BeforePaymentFail, PurchaseInfo);
+
+            if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
+            {
+                ReleaseModelTransQty();
+                OrderStatus = orderStatus;
+                PurchaseTypeCode = "CART";
+                SavePurchaseData();                
+            }
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentFail, PurchaseInfo);
         }
 
     }

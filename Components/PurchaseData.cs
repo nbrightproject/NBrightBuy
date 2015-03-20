@@ -61,6 +61,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
             PurchaseInfo.UserId = UserId;
             _entryId = modCtrl.Update(PurchaseInfo);
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);
+
             return _entryId;
         }
 

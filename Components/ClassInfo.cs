@@ -71,6 +71,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     public enum NotifyCode { ok,fail,warning,error,log};
 
-    public enum EventActions { ValidateCartBefore, ValidateCartAfter, ValidateCartItemBefore, ValidateCartItemAfter };
+    public enum EventActions { ValidateCartBefore, ValidateCartAfter, ValidateCartItemBefore, ValidateCartItemAfter, AfterCartSave, AfterCategorySave, AfterProductSave, AfterSavePurchaseData, BeforeOrderStatusChange, AfterOrderStatusChange, BeforePaymentOK, AfterPaymentOK, BeforePaymentFail, AfterPaymentFail, BeforeSendEmail, AfterSendEmail };
 
 }

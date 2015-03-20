@@ -28,6 +28,7 @@ using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using MailPriority = DotNetNuke.Services.Mail.MailPriority;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -547,37 +548,47 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey, String fromEmail,String lang)
         {
-            if (lang == "") lang = Utils.GetCurrentCulture();
-            var emaillist = toEmail;
-            if (emaillist != "")
+            dataObj = ProcessEventProvider(EventActions.BeforeSendEmail, dataObj, templateName);
+
+            if (!dataObj.GetXmlPropertyBool("genxml/stopprocess"))
             {
-                var emailsubject = "";
-                if (emailsubjectresxkey != "")
+
+                if (lang == "") lang = Utils.GetCurrentCulture();
+                var emaillist = toEmail;
+                if (emaillist != "")
                 {
-                    var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
-                    emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
-                    if (emailsubject == null) emailsubject = emailsubjectresxkey;
-                }
-
-                // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
-                var modCtrl = new NBrightBuyController();
-                var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
-
-                var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
-
-                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, storeSettings.Settings());
-                if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
-                if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
-                var emailarray = emaillist.Split(',');
-                emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
-                foreach (var email in emailarray)
-                {
-                    if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))
+                    var emailsubject = "";
+                    if (emailsubjectresxkey != "")
                     {
-                        DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
+                        var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
+                        emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
+                        if (emailsubject == null) emailsubject = emailsubjectresxkey;
+                    }
+
+                    // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
+                    var modCtrl = new NBrightBuyController();
+                    var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
+
+                    var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
+
+                    var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, storeSettings.Settings());
+                    if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
+                    if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
+                    var emailarray = emaillist.Split(',');
+                    emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
+                    foreach (var email in emailarray)
+                    {
+                        if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))
+                        {
+                            // multiple attachments as csv with "|" seperator
+                            DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, dataObj.GetXmlProperty("genxml/emailattachment"), "HTML", "", "", "", "");
+                        }
                     }
                 }
             }
+
+            ProcessEventProvider(EventActions.AfterSendEmail, dataObj, templateName);
+
 
         }
 
@@ -945,6 +956,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo)
         {
+            return ProcessEventProvider(eventaction, nbrightInfo, "");
+        }
+
+        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, String eventinfo)
+        {
             var rtnInfo = nbrightInfo;
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
             var provList = pluginData.GetEventsProviders();
@@ -975,6 +991,55 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         {
                             rtnInfo = eventprov.ValidateCartItemAfter(nbrightInfo);
                         }
+                        else if (eventaction == EventActions.AfterCartSave)
+                        {
+                            rtnInfo = eventprov.AfterCartSave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterCategorySave)
+                        {
+                            rtnInfo = eventprov.AfterCategorySave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterProductSave)
+                        {
+                            rtnInfo = eventprov.AfterProductSave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterSavePurchaseData)
+                        {
+                            rtnInfo = eventprov.AfterSavePurchaseData(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforeOrderStatusChange)
+                        {
+                            rtnInfo = eventprov.BeforeOrderStatusChange(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterOrderStatusChange)
+                        {
+                            rtnInfo = eventprov.AfterOrderStatusChange(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforePaymentOK)
+                        {
+                            rtnInfo = eventprov.BeforePaymentOK(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterPaymentOK)
+                        {
+                            rtnInfo = eventprov.AfterPaymentOK(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforePaymentFail)
+                        {
+                            rtnInfo = eventprov.BeforePaymentFail(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterPaymentFail)
+                        {
+                            rtnInfo = eventprov.AfterPaymentFail(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforeSendEmail)
+                        {
+                            rtnInfo = eventprov.BeforeSendEmail(nbrightInfo,eventinfo);
+                        }
+                        else if (eventaction == EventActions.AfterSendEmail)
+                        {
+                            rtnInfo = eventprov.AfterSendEmail(nbrightInfo,eventinfo);
+                        }
+
                     }
                 }
             }
