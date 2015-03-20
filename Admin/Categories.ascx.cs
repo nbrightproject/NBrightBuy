@@ -287,7 +287,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         {
                             var grpCatCtrl = new GrpCatController(PortalSettings.DefaultLanguage);
                             var newGuidKey = grpCatCtrl.GetBreadCrumb(catData.CategoryId, 0, "-", false);
-                            if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey).Replace(" ","");
+                            if (newGuidKey != "") newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(catData.CategoryId, newGuidKey));
                             catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                             catData.DataRecord.GUIDKey = newGuidKey;
                         }
@@ -336,7 +336,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (grp != null)
                     {
                         var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
-                        if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey);
+                        if (newGuidKey != "") newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(catData.CategoryId, newGuidKey));
                         catData.DataRecord.GUIDKey = newGuidKey;
                         catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
