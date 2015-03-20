@@ -1,4 +1,5 @@
-﻿
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300);
+
 /* Common */
 @-webkit-viewport   { width: device-width; }
 @-moz-viewport      { width: device-width; }
@@ -6,8 +7,6 @@
 @-o-viewport        { width: device-width; }
 @viewport           { width: device-width; }
 .NBB{}
-
-
 
 /* Adjustments to devoops and DNN */
 body{font-size:13px}
@@ -291,4 +290,5 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .orderstatus100 {background:darkgreen}
 .orderstatus120 {background:purple}
 
-
+/* Branding */
+.nbstore-logo {height:50px;background:#1aa8e3 url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/nb-store_24x24.png") no-repeat 0 12px;font-family:'Source Sans Pro', sans-serif;font-weight:300;font-size:28px;color:white;line-height:48px;padding-left:34px;}

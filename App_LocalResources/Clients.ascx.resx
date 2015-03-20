@@ -228,4 +228,19 @@
   <data name="userlockedout.Text" xml:space="preserve">
     <value>User Locked Out</value>
   </data>
+  <data name="ClientmenuTitle.Text" xml:space="preserve">
+    <value>My account</value>
+  </data>
+  <data name="ClientmenuManage.Text" xml:space="preserve">
+    <value>Manage account</value>
+  </data>
+  <data name="ClientmenuProfile.Text" xml:space="preserve">
+    <value>My profile</value>
+  </data>
+  <data name="ClientmenuAddresses.Text" xml:space="preserve">
+    <value>My addresses</value>
+  </data>
+  <data name="ClientmenuOrders.Text" xml:space="preserve">
+    <value>My orders</value>
+  </data>
 </root>

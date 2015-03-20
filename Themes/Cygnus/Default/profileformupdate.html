@@ -1,18 +1,18 @@
 <div class="nbs myprofile">
 
 <!-- Client Menu -->
-<h1>My account</h1>
+<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuTitle" />]</h1>
 <div class="clientmenu">
-<div class="clientmenuheader">Manage account</div>
+<div class="clientmenuheader">[<tag type="valueof" resourcekey="Clients.ClientmenuManage" />]</div>
 <ul>
 [<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
-<li class="activetab"><a href="/tabid/[Settings:profiletab]">[<tag type="htmlof" resourcekey="General.cmdMyAccount" />][<tag type="valueof" resourcekey="Settings.profiletab" />]</a></li>
+<li class="activetab"><a href="/tabid/[Settings:profiletab]"><i class="fa fa-user fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a></li>
 [<tag type="endif"  />]
 [<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
-<li><a href="/tabid/[Settings:addressestab]">[<tag type="htmlof" resourcekey="General.cmdMyAddressBookIcon" />][<tag type="valueof" resourcekey="Settings.addressestab" />]</a></li>
+<li><a href="/tabid/[Settings:addressestab]"><i class="fa fa-book fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a></li>
 [<tag type="endif"  />]
 [<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
-<li><a href="/tabid/[Settings:ordermanagertab]">[<tag type="htmlof" resourcekey="General.cmdMyOrdersIcon" />][<tag type="valueof" resourcekey="Settings.ordermanagertab" />]</a></li>
+<li><a href="/tabid/[Settings:ordermanagertab]"><i class="fa fa-shopping-cart fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a></li>
 [<tag type="endif"  />]
 </ul>
 </div>

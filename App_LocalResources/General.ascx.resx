@@ -882,15 +882,6 @@
   <data name="SalePrice.Text" xml:space="preserve">
     <value>Sale</value>
   </data>
-  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdMyAccount.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-user fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="copyorderto.Text" xml:space="preserve">
     <value>Copy this order to</value>
   </data>

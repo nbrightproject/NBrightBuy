@@ -3,18 +3,22 @@
 
 [<tag id="currentcartstage" type="postback" value="" persistance="True"  />]
 
-<!-- Classic Steps -->
-<h1>Shopping cart</h1>
+[<tag type="if" function="settings" key="carttitle" testvalue="True" display="{ON}" />]<!-- Cart Title -->
+<h1>[<tag type="valueof" resourcekey="CartView.YourBasket" />]</h1>
+[<tag type="endif"  />]
+
+[<tag type="if" function="settings" key="cartsteps" testvalue="True" display="{ON}" />]<!-- Cart Steps -->
 <div class="checkoutsteps">
-<div class="checkoutstepsheader">Order process</div>
+<div class="checkoutstepsheader">[<tag type="valueof" resourcekey="CartView.CartstepsProcess" />]</div>
 <ol>
-<li class="step1 activestep">Recapitulatif</li>
-<li class="step2">Addresses</li>
-<li class="step3">Shipping</li>
-<li class="step4">Payment</li>
-<li class="step5">Confirmation</li>
+<li class="step1 activestep">[<tag type="valueof" resourcekey="CartView.CartstepsRecap" />]</li>
+<li class="step2">[<tag type="valueof" resourcekey="CartView.CartstepsAddresses" />]</li>
+<li class="step3">[<tag type="valueof" resourcekey="CartView.CartstepsShipping" />]</li>
+<li class="step4">[<tag type="valueof" resourcekey="CartView.CartstepsPayment" />]</li>
+<li class="step5">[<tag type="valueof" resourcekey="CartView.CartstepsConfirm" />]</li>
 </ol>
 </div>
+[<tag type="endif"  />]
 
 <!-- Layout template -->
 <div id="cartdetails" class="nbs dnnform"  style="display:none;" >
@@ -22,7 +26,7 @@
     
     <div style="clear:both;">
 		[<tag id="cmdDelete" type="button" cssclass="secondarybutton clearcart" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]	
-        [<tag id="cmdUpdate" type="button" cssclass="secondarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
+    [<tag id="cmdUpdate" type="button" cssclass="secondarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
 		[<tag id="cmdGotoCart" type="button" cssclass="primarybutton" resourcekey="CartView.Next" commandname="gotocart" />]
     </div>
 

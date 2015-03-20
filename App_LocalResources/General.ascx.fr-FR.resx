@@ -858,15 +858,6 @@
   <data name="Att.Text" xml:space="preserve">
     <value>Att</value>
   </data>
-  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdMyAccount.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-user fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="PickupReference.Text" xml:space="preserve">
     <value>Référence Relais Colis</value>
   </data>

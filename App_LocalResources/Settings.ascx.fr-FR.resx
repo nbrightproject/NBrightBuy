@@ -240,4 +240,10 @@
 	<data name="jqueryuijs.Text" xml:space="preserve">
 		<value>Inclure jQuery UI JS</value>
 	</data>
+  <data name="carttitle.Text" xml:space="preserve">
+    <value>Afficher le titre du panier</value>
+  </data>
+  <data name="cartsteps.Text" xml:space="preserve">
+    <value>Afficher les étapes du panier</value>
+  </data>
 </root>

@@ -72,3 +72,13 @@
 #cartlist .fa-times-circle{color:#666;}
 #cartlist .fa-times-circle:hover{color:#C80000;}
 
+/* Checkout Steps */
+.checkoutsteps {background:#efefef;font-size:12px;color:#3f3030;margin-bottom:12px;}
+.checkoutsteps:after {content:"";display:table;clear:both;}
+.checkoutstepsheader {background:#dedede;padding:12px 24px;font-weight:bold;float:left;}
+.checkoutsteps ol {counter-reset:li;list-style:none;padding:0;margin:0;}
+.checkoutsteps li {position:relative;display:block;padding:6px 36px 6px 24px;margin:6px 0;float:left;color:#747474;}
+.checkoutsteps li:before {content:counter(li);counter-increment:li;position:absolute;left:-12px;top:50%;margin-top:-12px;background:white;color:#a7a7a7;height:24px;width:24px;line-height:22px;text-align:center;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;}
+.checkoutsteps li.activestep {color:#3f3030;}
+.checkoutsteps li.activestep:before {background:#56a9df;color:white;}
+

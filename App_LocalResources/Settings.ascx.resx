@@ -273,4 +273,10 @@
   <data name="alloweditorder.Text" xml:space="preserve">
     <value>Allow Order Edit</value>
   </data>
+  <data name="carttitle.Text" xml:space="preserve">
+    <value>Show Cart Title</value>
+  </data>
+  <data name="cartsteps.Text" xml:space="preserve">
+    <value>Show Cart Steps</value>
+  </data>
 </root>
