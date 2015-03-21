@@ -150,18 +150,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Build Urls"
 
-        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid,string catid = "")
+        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string seoname, string tabid, string catid = "", string catref = "")
         {
+
             var rdTabid = -1;
             var objTabInfo = new TabInfo();
 
-            if (PortalSettings.Current != null)
+            if (Utils.IsNumeric(tabid) && Convert.ToInt32(tabid) > 0) rdTabid = Convert.ToInt32(tabid);
+
+            if (rdTabid == -1 && PortalSettings.Current != null)
             {
                 objTabInfo = PortalSettings.Current.ActiveTab;
                 rdTabid = objTabInfo.TabID;
             }
 
-            if (Utils.IsNumeric(tabid) && Convert.ToInt32(tabid) > 0) rdTabid = Convert.ToInt32(tabid);
+            var cachekey = "entryurl*" + entryid + "*" + catid + "*" + catref + "*" + modulekey + "*" + rdTabid;
+            var urldata = "";
+            var chacheData = Utils.GetCache(cachekey);
+            if (chacheData != null) return (String)chacheData;
+
 
             if (objTabInfo.TabID != rdTabid)
             {
@@ -176,11 +183,50 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rdModId = "";
             if (modulekey != "") rdModId = "&modkey=" + modulekey;
 
-            guidkey = Utils.UrlFriendly(guidkey);
-            var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
-            if (Utils.IsNumeric(catid)) strurl += "&catid=" + catid;
-            return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
+            var strurl = "~/Default.aspx?tabid=" + rdTabid + rdModId;
 
+            if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+            {
+                if (Utils.IsNumeric(catid))
+                {
+                    var catData = new CategoryData(catid, Utils.GetCurrentCulture());
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catref=" + catData.DataLangRecord.GUIDKey;
+                }
+                if (catref != "")
+                {
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catref=" + catref;
+                }
+                if (Utils.IsNumeric(entryid))
+                {
+                    var prdData = new ProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "ref=" + prdData.DataRecord.GUIDKey;
+                    seoname = prdData.SEOName;
+                    seoname = Utils.UrlFriendly(seoname);
+                }
+            }
+            else
+            {
+                if (Utils.IsNumeric(catid))
+                {
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catid=" + catid;
+                }
+                if (Utils.IsNumeric(entryid))
+                {
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "eid=" + entryid;
+                }
+                seoname = Utils.UrlFriendly(seoname);
+            }
+            
+            urldata = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, seoname);
+            
+            Utils.SetCache(cachekey, urldata);
+
+            return urldata;
         }
 
 

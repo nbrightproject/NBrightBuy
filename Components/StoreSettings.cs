@@ -140,12 +140,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string Get(string key)
+        public string Get(String key)
         {
             return _settingDic.ContainsKey(key) ? _settingDic[key] : "";
         }
 
-        public int GetInt(string key)
+        public int GetInt(String key)
         {
             if (_settingDic.ContainsKey(key))
             {
@@ -155,6 +155,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             return 0;
+        }
+
+        public Boolean GetBool(String key)
+        {
+            if (_settingDic.ContainsKey(key))
+            {
+                if (_settingDic[key] == "True") return true;
+            }
+            return false;
         }
 
         //get properties

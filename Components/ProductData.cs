@@ -316,9 +316,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
             }
 
-            if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
-            DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
-            
+            // calcs what the import and guidkey should be.
+            SetGuidKey();
+
             DataRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
             DataLangRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
 
@@ -976,6 +976,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var objCtrl = new NBrightBuyController();
 
+            SetGuidKey();
+            objCtrl.Update(DataRecord);
+
+
             DataRecord.ValidateXmlFormat();
             if (DataLangRecord == null)
             {
@@ -1120,6 +1124,48 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         #region " private functions"
+
+        private void SetGuidKey()
+        {
+            if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10).ToLower());
+
+            if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+            {
+                var refcode = DataRecord.GetXmlProperty("genxml/textbox/txtproductref").Trim();
+                if (refcode != "")
+                    DataRecord.GUIDKey = Utils.UrlFriendly(GetUniqueGuidKey(DataRecord.ItemID, refcode)).ToLower();
+                else
+                    DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
+            }
+            else
+            {
+                DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
+            }
+        }
+
+        private string GetUniqueGuidKey(int productId, string newGUIDKey)
+        {
+            // make sure we have a unique guidkey
+            var objCtrl = new NBrightBuyController();
+            var doloop = true;
+            var lp = 1;
+            var testGUIDKey = newGUIDKey.ToLower();
+            while (doloop)
+            {
+                var obj = objCtrl.GetByGuidKey(_portalId, -1, "PRD", testGUIDKey);
+                if (obj != null && obj.ItemID != productId)
+                {
+                    testGUIDKey = newGUIDKey + lp;
+                }
+                else
+                    doloop = false;
+
+                lp += 1;
+                if (lp > 999) doloop = false; // make sure we never get a infinate loop
+            }
+            return testGUIDKey;
+        }
+
 
         private void LoadData(int productId, Boolean hydrateLists = true)
         {

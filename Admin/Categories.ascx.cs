@@ -281,23 +281,30 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         {
                             var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                             var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
-                            if (grp != null) catData.ParentItemId = grp.ItemID;
+                            if (grp != null)
+                            {
+                                catData.ParentItemId = grp.ItemID;
+                                ModCtrl.Update(catData.DataRecord);
+                            }
                         }
                         else
                         {
-                            var grpCatCtrl = new GrpCatController(PortalSettings.DefaultLanguage);
-                            var newGuidKey = grpCatCtrl.GetBreadCrumb(catData.CategoryId, 0, "-", false);
-                            if (newGuidKey != "") newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(catData.CategoryId, newGuidKey));
-                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
-                            catData.DataRecord.GUIDKey = newGuidKey;
+                            // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                            var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                            if (catref == "")
+                            {
+                                catref = Utils.GetUniqueKey().ToLower();
+                                catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                                catData.DataRecord.GUIDKey = catref;
+                            }
+                            ModCtrl.Update(catData.DataRecord);
                         }
 
-                        ModCtrl.Update(catData.DataRecord);
                         catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                         ModCtrl.Update(catData.DataLangRecord);
                         if (catname != "")
                         {
-                            // update all lanaguge records that have no name
+                            // update all language records that have no name
                             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                             {
                                 var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
@@ -308,6 +315,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 }
                             }
                         }
+
+                        catData.Save();
+                        catData.Validate(); // do validate so we update all refs and children refs
+
                     }
                 }
             }
@@ -341,18 +352,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
                         // list done using ddlgrouptype, in  GetCatList 
-                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype); 
+                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype);
+                        catData.Save();
                     }
                 }
                 else
                 {
-                    var grpCatCtrl = new GrpCatController(PortalSettings.DefaultLanguage);
-                    var newGuidKey = grpCatCtrl.GetBreadCrumb(catData.CategoryId, 0, "-", false);
-                    if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, newGuidKey).Replace(" ", "");
-                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
-                    catData.DataRecord.GUIDKey = newGuidKey;
+                    // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                    var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                    if (catref == "")
+                    {
+                        catref = Utils.GetUniqueKey().ToLower();
+                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                        catData.DataRecord.GUIDKey = catref;
+                    }
+                    catData.Save();
+                    catData.Validate(); // do validate so we update all refs and children refs
                 }
-                catData.Save();
             }
             else
             {

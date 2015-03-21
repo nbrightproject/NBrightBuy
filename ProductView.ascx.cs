@@ -75,6 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             // if guidkey entered instead of eid, find it using the guid and assign to _eid
             var guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
+            if (guidkey == "") guidkey = Utils.RequestQueryStringParam(Context, "ref");
             if (_eid== "" && guidkey != "")
             {
                 var guidData = ModCtrl.GetByGuidKey(PortalId, -1, "PRD", guidkey);
@@ -102,7 +103,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
-                _catname = Utils.RequestQueryStringParam(Context, "category");
+                _catname = Utils.RequestQueryStringParam(Context, "catref");
                 
                 #region "set templates based on entry id (eid) from url"
 

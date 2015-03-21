@@ -228,6 +228,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public List<NBrightInfo> GetDirectChildren()
+        {
+            var objCtrl = new NBrightBuyController();
+            var l = objCtrl.GetList(_portalId, -1, "CATEGORY", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            return l;
+        }
+
         public int Validate()
         {
             var errorcount = 0;
@@ -240,7 +247,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Save();
             }
 
+            if (GroupType == "cat")
+            {
+                // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                var catref = DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                if (catref == "")
+                {
+                    catref = Utils.GetUniqueKey().ToLower();
+                    DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                    DataRecord.GUIDKey = catref;
+                    errorcount += 1;
+                }
+            }
+
             DataRecord.ValidateXmlFormat();
+
             if (DataLangRecord == null)
             {
                 // we have no datalang record for this language, so get an existing one and save it.
@@ -314,6 +335,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            // Build langauge refs
+            if (GroupType == "cat")
+            {
+                foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
+                {
+                    var parentCatData = new CategoryData(CategoryId, lang);
+                    var grpCatCtrl = new GrpCatController(lang);
+                    var newGuidKey = grpCatCtrl.GetBreadCrumb(CategoryId, 0, "-", false);
+                    if (newGuidKey != "")
+                        newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(CategoryId, newGuidKey)).ToLower();
+                    if (parentCatData.DataLangRecord.GUIDKey != newGuidKey)
+                    {
+                        parentCatData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
+                        parentCatData.DataLangRecord.GUIDKey = newGuidKey;
+                        objCtrl.Update(parentCatData.DataLangRecord);
+                        // need to update all children, so call validate recursive.
+                        foreach (var ch in parentCatData.GetDirectChildren())
+                        {
+                            var childCatData = new CategoryData(ch.ItemID, lang);
+                            childCatData.Validate();
+                        }
+                    }
+                }
+            }
+
+
             // fix groups with mismatching ddlgrouptype
             if (GroupType != "cat")
             {
@@ -338,6 +385,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         #region " private functions"
+
+        private string GetUniqueGuidKey(int categoryId, string newGUIDKey)
+        {
+            // make sure we have a unique guidkey
+            var objCtrl = new NBrightBuyController();
+            var doloop = true;
+            var lp = 1;
+            var testGUIDKey = newGUIDKey.ToLower();
+            while (doloop)
+            {
+                var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATEGORY", testGUIDKey);
+                if (obj != null && obj.ItemID != categoryId)
+                {
+                    testGUIDKey = newGUIDKey + lp;
+                }
+                else
+                    doloop = false;
+
+                lp += 1;
+                if (lp > 999) doloop = false; // make sure we never get a infinate loop
+            }
+            return testGUIDKey;
+        }
+
 
         private void LoadData(int categoryId)
         {

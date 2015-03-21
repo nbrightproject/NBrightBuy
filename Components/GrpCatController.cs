@@ -57,7 +57,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var lenum = from i in CategoryList where i.categoryid == categoryid select i;
             var l = lenum.ToList();
+            
             return l.Any() ? l[0] : null;
+        }
+
+        public GroupCategoryData GetCategoryByRef(int portalId, String catref)
+        {
+            // the catref might not be in the CategoryList because the language has changed but the url is still displaying the old catref langauge
+            // try and find it. NASTY!!!! incorrect langyage url left after langauge change!!
+            var catLang = _objCtrl.GetByGuidKey(portalId, -1, "CATEGORYLANG", catref);
+            if (catLang != null)
+            {
+                return GetCategory(catLang.ParentItemId);
+            }
+            return null;
         }
 
         public List<GroupCategoryData> GetGrpCategories(int parentcategoryid, string groupref = "")
@@ -125,22 +138,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (groupCategoryInfo.disabled) return "javascript:void(0)";
 
             //set a default url
-            var url = "?catid=" + groupCategoryInfo.categoryid.ToString("");
+            var url = "";
 
             // get friendly url if possible
                 if (groupCategoryInfo.categoryname != "")
                 {
-                    var newBaseName = groupCategoryInfo.seoname;
-                    if (newBaseName == "") newBaseName = groupCategoryInfo.categoryname;
                     var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
-                        // check if we are calling from BO with a ctrl param
+                        var newBaseName = groupCategoryInfo.seoname;
+                        newBaseName = Utils.UrlFriendly(newBaseName);
                         var ctrl = Utils.RequestParam(HttpContext.Current, "ctrl");
                         if (ctrl != "") ctrl = "&ctrl=" + ctrl;
-                        newBaseName = Utils.UrlFriendly(newBaseName);
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName + ".aspx");
+                        if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+                        {
+                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catref=" + groupCategoryInfo.categoryrefGUIDKey + ctrl + "&language=" + Utils.GetCurrentCulture());
+                        }
+                        else
+                        {
+                            // check if we are calling from BO with a ctrl param
+                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName + ".aspx");
+                        }
+
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
+            
                     }
                 }
             return url;
@@ -208,6 +229,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var defcatid = 0;
             var qrycatid = Utils.RequestQueryStringParam(request, "catid");
+            if (qrycatid == "")
+            {
+                var qrycatref = Utils.RequestQueryStringParam(request, "catref");
+                if (qrycatref != "")
+                {
+                    var catrefData = GetCategoryByRef(portalId, qrycatref);
+                    if (catrefData != null) qrycatid = catrefData.categoryid.ToString("");
+                }                
+            }
+
+
             // always use the catid in url if we have no target module
             if (Utils.IsNumeric(qrycatid) && targetModuleKey == "") return GetCategory(Convert.ToInt32(qrycatid));
 
@@ -522,10 +554,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.categoryname = langItem.GetXmlProperty("genxml/textbox/txtcategoryname");
                     grpcat.categorydesc = langItem.GetXmlProperty("genxml/textbox/txtcategorydesc");
                     grpcat.seoname = langItem.GetXmlProperty("genxml/textbox/txtseoname");
+                    if (grpcat.seoname == "") grpcat.seoname = langItem.GetXmlProperty("genxml/textbox/txtcategoryname");
                     grpcat.metadescription = langItem.GetXmlProperty("genxml/textbox/txtmetadescription");
                     grpcat.metakeywords = langItem.GetXmlProperty("genxml/textbox/txtmetakeywords");
                     grpcat.seopagetitle = langItem.GetXmlProperty("genxml/textbox/txtseopagetitle");
                     grpcat.message = langItem.GetXmlProperty("genxml/edt/message");
+                    grpcat.categoryrefGUIDKey = langItem.GUIDKey;
                 }
 
                 //get parents

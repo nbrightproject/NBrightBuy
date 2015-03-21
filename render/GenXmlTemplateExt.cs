@@ -909,6 +909,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["modkey"] != null) lk.Attributes.Add("modkey", xmlNod.Attributes["modkey"].InnerText);
                 if (xmlNod.Attributes["xpath"] != null) lk.Attributes.Add("xpath", xmlNod.Attributes["xpath"].InnerText);
                 if (xmlNod.Attributes["catid"] != null) lk.Attributes.Add("catid", xmlNod.Attributes["catid"].InnerText);
+                if (xmlNod.Attributes["catid"] != null) lk.Attributes.Add("catref", xmlNod.Attributes["catref"].InnerText);
             }
             lk.DataBinding += EntryLinkDataBinding;
             container.Controls.Add(lk);
@@ -936,10 +937,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
 				if (lk.Attributes["tabid"] != null && Utils.IsNumeric(lk.Attributes["tabid"])) t = lk.Attributes["tabid"];
                 var c = "";
                 if (lk.Attributes["catid"] != null && Utils.IsNumeric(lk.Attributes["catid"])) c = lk.Attributes["catid"];
-			    var moduleref = "";
+                var cref = "";
+                if (lk.Attributes["catref"] != null && Utils.IsNumeric(lk.Attributes["catref"])) cref = lk.Attributes["catref"];
+                var moduleref = "";
                 if ((lk.Attributes["modkey"] != null)) moduleref = lk.Attributes["modkey"];
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c, cref);
                 lk.NavigateUrl = url;
 
 			}
@@ -959,12 +962,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var mk = "";
                 var xp = "";
                 var c = "";
+                var cref = "";
                 if (xmlNod.Attributes["tabid"] != null) t = xmlNod.Attributes["tabid"].InnerText;
                 if (xmlNod.Attributes["modkey"] != null) mk = xmlNod.Attributes["modkey"].InnerText;
                 if (xmlNod.Attributes["xpath"] != null) xp = xmlNod.Attributes["xpath"].InnerText;
                 if (xmlNod.Attributes["catid"] != null) c = xmlNod.Attributes["catid"].InnerText;
+                if (xmlNod.Attributes["catref"] != null) cref = xmlNod.Attributes["catref"].InnerText;
 
-                l.Text = t + '*' + mk + '*' + xp.Replace('*','-') + '*' + c;
+                l.Text = t + '*' + mk + '*' + xp.Replace('*', '-') + '*' + c + "*" + cref;
             }
             l.DataBinding += EntryUrlDataBinding;
             container.Controls.Add(l);
@@ -982,16 +987,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 var dataIn = l.Text.Split('*'); 
-                var urlname = "Default";
+                var urlname = "";
                 var t = "";
                 var moduleref = "";
                 var c = "";
+                var cref = "";
 
-                if (dataIn.Length == 4)
+                if (dataIn.Length == 5)
                 {
                     if (Utils.IsNumeric(dataIn[0])) t = dataIn[0];
                     if (Utils.IsNumeric(dataIn[1])) moduleref = dataIn[1];
                     if (Utils.IsNumeric(dataIn[3])) c = dataIn[3];
+                    if (dataIn[4] != "") cref = dataIn[4];
                     var nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), dataIn[2]);
                     if ((nod != null)) urlname = nod.InnerText;
                     // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
@@ -999,7 +1006,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (nod != null && c == "" && Utils.IsNumeric(nod.InnerText)) c = nod.InnerText;
                 }
 
-                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c);
+                var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c, cref);
                 l.Text = url;
 
             }
@@ -1128,17 +1135,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var l = new Literal();
             l.Text = "";
-            if (xmlNod.Attributes != null && (xmlNod.Attributes["moduleid"] != null))
+            if (xmlNod.Attributes != null)
             {
-                if (xmlNod.Attributes["tabid"] != null && Utils.IsNumeric(xmlNod.Attributes["tabid"].InnerXml))
-                    l.Text = xmlNod.Attributes["tabid"].InnerXml;
-                else
+                if (xmlNod.Attributes["tabid"] != null && Utils.IsNumeric(xmlNod.Attributes["tabid"].InnerXml)) l.Text += xmlNod.Attributes["tabid"].InnerXml;
                     l.Text += ",";
-                if (xmlNod.Attributes["catid"] != null && Utils.IsNumeric(xmlNod.Attributes["catid"].InnerXml))
-                    l.Text = xmlNod.Attributes["catid"].InnerXml;
-                else
+                if (xmlNod.Attributes["catid"] != null && Utils.IsNumeric(xmlNod.Attributes["catid"].InnerXml)) l.Text += xmlNod.Attributes["catid"].InnerXml;
                     l.Text += ",";
-                if (xmlNod.Attributes["catref"] != null) l.Text = xmlNod.Attributes["catref"].InnerXml;
+                if (xmlNod.Attributes["catref"] != null) l.Text += xmlNod.Attributes["catref"].InnerXml;
 
             }
             l.DataBinding += GetFriendlyUrlDataBinding;
@@ -1151,7 +1154,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                var tabid = PortalSettings.Current.ActiveTab.ToString();
+                var tabid = PortalSettings.Current.ActiveTab.TabID.ToString();
                 var param = new string[2];
 
                 var a = l.Text.Split(',');
@@ -1159,7 +1162,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     if (Utils.IsNumeric(a[0])) tabid = a[0];
                     if (Utils.IsNumeric(a[1])) param[0] = "catid=" + a[1];
-                    if (Utils.IsNumeric(a[2])) param[1] = "category=" + a[2];
+                    if (a[2] != "") param[1] = "catref=" + a[2];
 
                     l.Visible = visibleStatus.Last();
                     //set a default url                    

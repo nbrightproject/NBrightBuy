@@ -921,16 +921,43 @@
   <data name="History.Text" xml:space="preserve">
     <value>History</value>
   </data>
-<data name="orderstatus010.Text" xml:space="preserve"><value>Incomplete</value></data>
-<data name="orderstatus020.Text" xml:space="preserve"><value>Waiting for Bank</value></data>
-<data name="orderstatus030.Text" xml:space="preserve"><value>Cancelled</value></data>
-<data name="orderstatus040.Text" xml:space="preserve"><value>Payment OK</value></data>
-<data name="orderstatus050.Text" xml:space="preserve"><value>Payment Not Verified</value></data>
-<data name="orderstatus060.Text" xml:space="preserve"><value>Waiting for Payment</value></data>
-<data name="orderstatus070.Text" xml:space="preserve"><value>Waiting for Stock</value></data>
-<data name="orderstatus080.Text" xml:space="preserve"><value>Waiting</value></data>
-<data name="orderstatus090.Text" xml:space="preserve"><value>Shipped</value></data>
-<data name="orderstatus100.Text" xml:space="preserve"><value>Completed</value></data>
-<data name="orderstatus110.Text" xml:space="preserve"><value>Archived</value></data>
-<data name="orderstatus120.Text" xml:space="preserve"><value>Being Manufactured</value></data>
+  <data name="orderstatus010.Text" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="orderstatus020.Text" xml:space="preserve">
+    <value>Waiting for Bank</value>
+  </data>
+  <data name="orderstatus030.Text" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="orderstatus040.Text" xml:space="preserve">
+    <value>Payment OK</value>
+  </data>
+  <data name="orderstatus050.Text" xml:space="preserve">
+    <value>Payment Not Verified</value>
+  </data>
+  <data name="orderstatus060.Text" xml:space="preserve">
+    <value>Waiting for Payment</value>
+  </data>
+  <data name="orderstatus070.Text" xml:space="preserve">
+    <value>Waiting for Stock</value>
+  </data>
+  <data name="orderstatus080.Text" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="orderstatus090.Text" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="orderstatus100.Text" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="orderstatus110.Text" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="orderstatus120.Text" xml:space="preserve">
+    <value>Being Manufactured</value>
+  </data>
+  <data name="cmdSaveExitButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
+  </data>
 </root>
