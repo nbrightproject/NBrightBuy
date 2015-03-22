@@ -1,9 +1,9 @@
 <script>
 
-    $(document).ready(function () {
+    $(document).ready(function() {
 
 
-        $(function () {
+        $(function() {
             $("#accordion").accordion({
                 heightStyle: "content",
                 header: "h3",
@@ -12,12 +12,12 @@
             });
         });
 
-        $('.themefolder').change(function () {
+        $('.themefolder').change(function() {
             alert('[<tag type="valueof" resourcekey="ProductViewSettings.themehidden" />]');
             $('.themesettings').html('');
         });
 
-        $('select[[id*="ddlmenutype"]]').change(function () {
+        $('select[[id*="ddlmenutype"]]').change(function() {
             if ($(this).val() == 'DrillDown') {
                 $('.treeclass').hide();
                 $('.alwaysshow').show();
@@ -46,6 +46,8 @@
     });
 
 </script>
+
+
 <div id="dnnPanel-ArchivesTemplateSettings">
     <h2 class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">[<tag type="valueof" resourcekey="ProductViewSettings.lblbasicsettings" />]</a></h2>
     <fieldset>
@@ -53,7 +55,7 @@
             [<tag id="lbltheme" type="dnn:labelcontrol" />][<tag id="themefolder" cssclass="themefolder" type="textbox" width="150" maxlength="50" text="Cygnus" />]
         </div>
         <div class="dnnFormItem">
-            [<tag id="lbldefaultcatid" type="dnn:labelcontrol" />][<tag id="defaultcatid" type="catdropdown" allowblank="1" width="300" />]
+            [<tag id="lbldefaultcatid" type="dnn:labelcontrol" />][<tag id="defaultcatid" type="catdropdown" allowblank="1" width="300" />][<tag type="valueof" xpath="genxml/catref" />]
         </div>
         <div class="dnnFormItem">
             [<tag id="lbldetailtab" type="dnn:labelcontrol" />][<tag id="ddllisttabid" type="dropdownlist" datatabs="blank" width="300" />][Settings:ddllisttabid]

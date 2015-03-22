@@ -1171,7 +1171,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             Exists = false;
             var objCtrl = new NBrightBuyController();
-            Info = objCtrl.Get(productId,"PRDLANG",_lang);
+            if (productId == -1) productId = AddNew(); // add new record if -1 is used as id.
+            Info = objCtrl.Get(productId, "PRDLANG", _lang);
             if (Info != null)
             {
                 _portalId = Info.PortalId;
@@ -1202,18 +1203,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             }
-            else
-            {
-                // new product being created, so set the portal id to the correct one 
-                if (PortalSettings.Current != null) //(should not be in sceduler, but just check)
-                {
-                    if (StoreSettings.Current.Get("shareproducts") != "True") // option in storesetting to share products created here across all portals.
-                    {
-                        _portalId = PortalSettings.Current.PortalId;                        
-                    }
-                }
-            }
         }
+
+        private int AddNew()
+        {
+            var nbi = new NBrightInfo(true);
+            if (StoreSettings.Current.Get("shareproducts") == "True") // option in storesetting to share products created here across all portals.
+                _portalId = -1;
+            else
+                _portalId = PortalSettings.Current.PortalId;
+            nbi.PortalId = _portalId;
+            nbi.TypeCode = "PRD";
+            nbi.ModuleId = -1;
+            nbi.ItemID = -1;
+            var objCtrl = new NBrightBuyController();
+            var itemId = objCtrl.Update(nbi);
+
+            foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
+            {
+                nbi = new NBrightInfo(true);
+                nbi.PortalId = _portalId;
+                nbi.TypeCode = "PRDLANG";
+                nbi.ModuleId = -1;
+                nbi.ItemID = -1;
+                nbi.Lang = lang;
+                nbi.ParentItemId = itemId;
+                objCtrl.Update(nbi);
+            }
+
+            return itemId;
+        }
+
+
 
         private List<NBrightInfo> GetEntityList(String entityName)
         {

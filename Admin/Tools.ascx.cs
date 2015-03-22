@@ -214,6 +214,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 if (done) NBrightBuyUtils.SetNotfiyMessage(ModuleId, "deletecompleted", NotifyCode.ok);
 
             }
+            else
+            {
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "nopin", NotifyCode.fail);
+            }
 
         }
 
@@ -264,6 +268,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
 
                 }
+            }
+            else
+            {
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "nopin", NotifyCode.fail);
             }
         }
 

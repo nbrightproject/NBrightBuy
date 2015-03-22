@@ -37,6 +37,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return value;
         }
 
+        public void Set(string key,string value)
+        {
+            if (!_settingsDic.ContainsKey(key))
+                _settingsDic.Add(key, value);
+            else
+                _settingsDic[key] = value;
+        }
+
         public Dictionary<string, string> Settings()
         {
             return _settingsDic;

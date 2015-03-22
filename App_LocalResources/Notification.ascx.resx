@@ -312,4 +312,7 @@
   <data name="noproviderdata_warning.Text" xml:space="preserve">
     <value>No provider data can be found. Make sure you have saved the provider data in the Back Office.</value>
   </data>
+  <data name="nopin_fail.Text" xml:space="preserve">
+    <value>Invalid Admin PIN</value>
+  </data>
 </root>

@@ -997,6 +997,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 errcount += grpData.Validate();
             }
 
+            // reset catid from catref
+            var l = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "SETTINGS", "", Utils.GetCurrentCulture(), " and [XMLdata].value('(genxml/catref)[1]','nvarchar(max)') != ''","");
+            foreach (var s in l)
+            {
+                var info = ModuleSettingsResetCatIdFromRef(s);
+                objCtrl.Update(info);
+            }
+
+
             return errcount;
         }
 
@@ -1139,6 +1148,44 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return levelList;
         }
+
+        public static NBrightInfo ModuleSettingsResetCatIdFromRef(NBrightInfo objInfo)
+        {
+            var ModCtrl = new NBrightBuyController();
+            var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
+            var nbi = ModCtrl.Get(catid);
+            if (nbi == null)
+            {
+                // categoryid no longer exists, see if we can get it back with the catref (might be lost due to cleardown and import)
+                var catref = objInfo.GetXmlProperty("genxml/catref");
+                nbi = ModCtrl.GetByGuidKey(objInfo.PortalId, -1, "CATEGORY", catref);
+                if (nbi != null)
+                {
+                    objInfo.SetXmlProperty("genxml/dropdownlist/defaultcatid", nbi.ItemID.ToString(""));
+                }
+            }
+            return objInfo;
+        }
+
+        public static NBrightInfo ModuleSettingsSaveCatRefFromId(NBrightInfo objInfo)
+        {
+            var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
+            var catData = new CategoryData(catid, Utils.GetCurrentCulture());
+            objInfo.SetXmlProperty("genxml/catref", catData.CategoryRef);
+            return objInfo;
+        }
+
+        public static int ModuleSettingsGetCatIdFromRef(NBrightInfo settingsInfo)
+        {
+            var ModCtrl = new NBrightBuyController();
+            // categoryid no longer exists, see if we can get it back with the catref (might be lost due to cleardown and import)
+            var catref = settingsInfo.GetXmlProperty("genxml/catref");
+            var nbi = ModCtrl.GetByGuidKey(settingsInfo.PortalId, -1, "CATEGORY", catref);
+            if (nbi != null) return nbi.ItemID;
+            return -1;
+        }
+
+
 
     }
 }
