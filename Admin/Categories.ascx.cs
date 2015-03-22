@@ -347,7 +347,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (grp != null)
                     {
                         var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
-                        if (newGuidKey != "") newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(catData.CategoryId, newGuidKey));
+                        if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, Utils.UrlFriendly(newGuidKey));
                         catData.DataRecord.GUIDKey = newGuidKey;
                         catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
@@ -362,9 +362,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
                     if (catref == "")
                     {
-                        catref = Utils.GetUniqueKey().ToLower();
-                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
-                        catData.DataRecord.GUIDKey = catref;
+                        if (catData.DataRecord.GUIDKey == "")
+                        {
+                            catref = Utils.GetUniqueKey().ToLower();
+                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                            catData.DataRecord.GUIDKey = catref;                            
+                        }
+                        else
+                        {
+                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catData.DataRecord.GUIDKey);
+                        }
                     }
                     catData.Save();
                     catData.Validate(); // do validate so we update all refs and children refs

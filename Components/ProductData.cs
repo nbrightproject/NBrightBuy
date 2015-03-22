@@ -1133,7 +1133,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var refcode = DataRecord.GetXmlProperty("genxml/textbox/txtproductref").Trim();
                 if (refcode != "")
-                    DataRecord.GUIDKey = Utils.UrlFriendly(GetUniqueGuidKey(DataRecord.ItemID, refcode)).ToLower();
+                    DataRecord.GUIDKey = GetUniqueGuidKey(DataRecord.ItemID, Utils.UrlFriendly(refcode)).ToLower();
                 else
                     DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
             }

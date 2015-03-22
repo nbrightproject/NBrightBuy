@@ -344,7 +344,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var grpCatCtrl = new GrpCatController(lang);
                     var newGuidKey = grpCatCtrl.GetBreadCrumb(CategoryId, 0, "-", false);
                     if (newGuidKey != "")
-                        newGuidKey = Utils.UrlFriendly(GetUniqueGuidKey(CategoryId, newGuidKey)).ToLower();
+                        newGuidKey = GetUniqueGuidKey(CategoryId, Utils.UrlFriendly(newGuidKey)).ToLower();
                     if (parentCatData.DataLangRecord.GUIDKey != newGuidKey)
                     {
                         parentCatData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
@@ -429,22 +429,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
                 }
             }
-            else
-            {
-                // new product being created, so set the portal id to the correct one 
-                if (PortalSettings.Current != null) //(should not be in sceduler, but just check)
-                {
-                    if (StoreSettings.Current.Get("shareproducts") != "True") // option in storesetting to share products created here across all portals.
-                    {
-                        _portalId = PortalSettings.Current.PortalId;
-                    }
-                }
-            }
         }
 
         private int AddNew()
         {
             var nbi = new NBrightInfo(true);
+            if (StoreSettings.Current.Get("shareproducts") == "True") // option in storesetting to share products created here across all portals.
+                _portalId = -1;
+            else
+                _portalId = PortalSettings.Current.PortalId;
             nbi.PortalId = _portalId;
             nbi.TypeCode = "CATEGORY";
             nbi.ModuleId = -1;
@@ -466,8 +459,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 nbi.ParentItemId = itemId;
                 objCtrl.Update(nbi);
             }
-
-            LoadData(itemId);
 
             return itemId;
         }
