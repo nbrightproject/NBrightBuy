@@ -12,9 +12,11 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.UI.Skins;
 using NBrightCore.common;
@@ -369,6 +371,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + _entryid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "export":
+                    DoExport();
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
             }
 
         }
@@ -458,6 +464,36 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var emailmsg = GenXmlFunctions.GetField(rpDataF, "emailmsg");
             NBrightBuyUtils.SendEmailOrderToClient(emailtemplate, orderid, emailsubjectresxkey,"", emailmsg);
         }
+
+        private void DoExport()
+        {
+            var navigationData = new NavigationData(PortalId, "AdminOrders");
+            var strFilter = navigationData.Criteria;
+            var l2 = new List<NBrightInfo>();
+
+            const string strOrder = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+            var l1 = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 1000);
+            foreach (var i in l1)
+            {
+                var nodList = i.XMLDoc.SelectNodes("genxml/items/*");
+                foreach (XmlNode nod in nodList)
+                {
+                    var itemline = (NBrightInfo)i.Clone();
+                    itemline.RemoveXmlNode("genxml/items");
+                    itemline.AddXmlNode("<item>" + nod.OuterXml + "</item>", "item", "genxml");
+                    l2.Add(itemline);
+                }
+            }
+
+            var rp = new Repeater();
+            var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "ordersexport.html", Utils.GetCurrentCulture(), DebugMode);
+            rp.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+            rp.DataSource = l2;
+            var strOut = GenXmlFunctions.RenderRepeater(rp);
+            Utils.ForceStringDownload(Response,"ordersexport.csv",strOut);
+        }
+
+
 
     }
 

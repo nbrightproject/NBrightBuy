@@ -139,6 +139,8 @@
                 $(".cartlistprevclick").hide();
                 $(".cartlistupdate").show();
                 $(".cartlistclear").show();
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step1").addClass("activestep");
             }
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
                 $('#cartbilladdress').show();
@@ -147,7 +149,9 @@
                 $(".cartlistnextclick").show();
                 $(".cartlistprevclick").show();
                 $(".cartlistupdate").show();
-                $(".cartlistclear").hide();                
+                $(".cartlistclear").hide(); 
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step2").addClass("activestep");
             }
             if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
                 $('#cartextra').show();
@@ -155,6 +159,8 @@
                 $(".cartlistprevclick").show();
                 $(".cartlistupdate").hide();
                 $(".cartlistclear").hide();
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step3").addClass("activestep");
             }
             $('#cartdetails').show();
             // disable validation on hidden controls

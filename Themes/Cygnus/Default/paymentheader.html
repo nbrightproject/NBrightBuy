@@ -1,7 +1,5 @@
 <div class="nbs">
 
-<div id="payment">
-
 [<tag type="if" function="settings" key="carttitle" testvalue="True" display="{ON}" />]<!-- Cart Title -->
 <h1>[<tag type="valueof" resourcekey="CartView.YourBasket" />]</h1>
 [<tag type="endif"  />]
@@ -19,7 +17,27 @@
 </div>
 [<tag type="endif"  />]
 
-<!-- Needs to be finalize -->
+<div id="payment" class="panel">
+
 <div class="formrow">
-[<tag type="valueof" resourcekey="CartView.Totaltopay" />] [<tag type="currencyof" xpath="genxml/appliedtotal" />]
+[<tag type="valueof" resourcekey="CartView.Totaltopay" />] : [<tag type="currencyof" xpath="genxml/appliedtotal" />]
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+	if ('[Url:oid]'=='')
+	{
+		$(".checkoutsteps ol li").removeClass("activestep");
+		$(".step4").addClass("activestep");
+	}
+	else
+	{
+		$(".checkoutsteps ol li").removeClass("activestep");
+		$(".step5").addClass("activestep");
+	}
+	
+    });
+	
+</script>

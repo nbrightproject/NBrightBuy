@@ -19,7 +19,8 @@
 .nbs .secondarybutton:hover{background:#777777;color:#FFFFFF;}
 .nbs .warningbutton{background:#c62222;color:#FFFFFF;}
 .nbs .warningbutton:hover{background:#DD2222;color:#FFFFFF;}
-.nbs .primarybutton,.nbs .secondarybutton,.nbs .warningbutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
+/**********MODIFIED**********.nbs .primarybutton,.nbs .secondarybutton,.nbs .warningbutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;max-width:120px;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}*/
+.nbs .primarybutton,.nbs .secondarybutton,.nbs .warningbutton{font-family:sans-serif;display:inline-block;font-weight:bold;font-size:13px;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;min-width:120px;text-align:center;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
 .nbs .primarybutton:hover,.nbs .secondarybutton:hover,.nbs .warningbutton:hover{text-decoration:none;}
 
 /* Alert overlays*/
@@ -82,6 +83,9 @@
 .brown a{background-color:rgb(130, 90, 44);cursor:pointer;}
 .brown .win8-notif-body{background-color:rgb(130, 90, 44);}
 .brown a:hover{background-color:#A97439;}
+
+/* Checkout and Customer panel style */
+.panel {background:#ffffff;border-radius:5px;box-shadow:1px 1px 6px rgba(159, 159, 159, 0.56);padding:22px 30px 26px;}
 
 /* Misc */
 .large{font-size:115%}
