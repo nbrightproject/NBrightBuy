@@ -127,7 +127,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String AddNew()
         {
             var prodData = new ProductData(-1, StoreSettings.Current.EditLanguage);
-            if (!prodData.Exists) return prodData.CreateNew().ToString("");
             return prodData.Info.ItemID.ToString("");
         }
 

@@ -930,35 +930,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public int CreateNew()
-        {
-
-            var nbi = new NBrightInfo(true);
-            nbi.PortalId = _portalId;
-            nbi.TypeCode = "PRD";
-            nbi.ModuleId = -1;
-            nbi.ItemID = -1;
-            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
-            nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
-            var objCtrl = new NBrightBuyController();
-            var itemId = objCtrl.Update(nbi);
-
-            foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
-            {
-                nbi = new NBrightInfo(true);
-                nbi.PortalId = _portalId;
-                nbi.TypeCode = "PRDLANG";
-                nbi.ModuleId = -1;
-                nbi.ItemID = -1;
-                nbi.Lang = lang;
-                nbi.ParentItemId = itemId;
-                objCtrl.Update(nbi);
-            }
-
-            LoadData(itemId);
-            return itemId;
-        }
-
         public void ResetLanguage(String resetToLang)
         {
             if (resetToLang != DataLangRecord.Lang)
@@ -1207,6 +1178,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private int AddNew()
         {
+
             var nbi = new NBrightInfo(true);
             if (StoreSettings.Current.Get("shareproducts") == "True") // option in storesetting to share products created here across all portals.
                 _portalId = -1;
@@ -1216,6 +1188,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.TypeCode = "PRD";
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
+            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+            nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
             var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
@@ -1233,8 +1207,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return itemId;
         }
-
-
 
         private List<NBrightInfo> GetEntityList(String entityName)
         {
