@@ -6,7 +6,7 @@
 
 <!-- Shipping options radio buttons -->
 <div id="shippingoptions">
-    <div class="formrow dnnForm">
+    <div class="formrow">
     <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
 	    [<tag id="rblshippingoptions" cssclass="radiobuttonlist" type="radiobuttonlist" resourcekey='CartView.shippingoption2' RepeatDirection="Vertical" RepeatColumns="1" RepeatLayout="Flow" SelectedValue="1" />]        
 	</div>
@@ -14,7 +14,7 @@
 
 <!-- Shipping methods  -->
 <div id="shippingmethods">
-    <div class="formrow dnnForm">
+    <div class="formrow">
         <h3>[<tag type='valueof' resourcekey='General.shippingmethods' />]</h3>
 	    <div id="providerselection">
 	        [<tag cssclass="radiobuttonlist" type="shippingproviders" RepeatDirection="Horizontal" RepeatColumns="0" RepeatLayout="Flow" />]
@@ -61,7 +61,7 @@
 
     <div class="formrow">            
         <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
-        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton clearcart" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
+        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
     </div>
 
 </div>

@@ -10,10 +10,10 @@
 .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea {border:1px solid #dddddd;box-sizing:border-box;height:30px;padding:0 7px;width:100%;margin:0 0 15px;}
 .formrow select {padding-right:0;}
 .formrow input[type=radio] {float:left;margin:0 0 0 10px;}
-.radiobuttonlist label {float:left;margin:-1px 0 0 6px;}
+.radiobuttonlist label {float:left;margin:-2px 0 0 6px;text-transform:none;}
 .formrow input[type=checkbox] {float:left;margin:0 0 0 10px;}
 .submissioncheck {margin:0 0 9px !important;}
-.submissioncheck label {float:left;margin:-1px 0 0 6px;font-style:italic;text-transform:none;}
+.submissioncheck label {float:left;margin:-2px 0 0 6px;text-transform:none;font-style:italic;}
 /* === HTML5 Validation Styles === */
 .Cygnus input:required {background:#fff url("/Portals/naturalgames/Themes/Cygnus/img/red_asterisk.png") no-repeat 98% center;outline:none !important;}
 .Cygnus input:focus:invalid {background:#fff url("/Portals/naturalgames/Themes/Cygnus/img/invalid.png") no-repeat 98% center;}
