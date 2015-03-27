@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -215,9 +216,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                         {
                             var rItem = new RangeItem();
                             rItem.RefCsv = "," + i.GetXmlProperty("genxml/textbox/shipref") + ",";
-                            rItem.RangeLow = Convert.ToInt32(riV[0]);
-                            rItem.Cost = Convert.ToInt32(ri[1]);
-                            rItem.RangeHigh = Convert.ToInt32(riV[1]);
+                            rItem.RangeLow = Convert.ToDouble(riV[0],CultureInfo.GetCultureInfo("en-US"));
+                            rItem.Cost = Convert.ToDouble(ri[1], CultureInfo.GetCultureInfo("en-US"));
+                            rItem.RangeHigh = Convert.ToDouble(riV[1],CultureInfo.GetCultureInfo("en-US"));
                             _rangeData.Add(rItem);
                         }
                     }

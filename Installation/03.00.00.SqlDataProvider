@@ -126,4 +126,326 @@ END
 GO
 
 
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]    Script Date: 27/03/2015 11:31:23 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]    Script Date: 27/03/2015 11:31:23 ******/
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry] 
+@PortalId int, 
+@ModuleId int,
+@ReturnLimit int = 0,
+@Lang nvarchar(10) = '',
+@ExtaParams nvarchar(max) = ''
+AS
+BEGIN
+
+
+DECLARE @categoryid int
+DECLARE @moveproductid int
+DECLARE @movetoproductid int
+
+SET @categoryid = convert(int,LTRIM(RTRIM(PARSENAME(replace(@ExtaParams,';','. '), 3))))
+SET @moveproductid = convert(int,LTRIM(RTRIM(PARSENAME(replace(@ExtaParams,';','. '), 2))))
+SET @movetoproductid = convert(int,LTRIM(RTRIM(PARSENAME(replace(@ExtaParams,';','. '), 1))))
+
+declare @newpos decimal(10,5)
+declare @itemid int
+declare @newintpos int
+
+DECLARE db_cursor CURSOR FOR  
+select itemid,ROW_NUMBER() Over (ORDER BY [XMLdata].value('(genxml/sort)[1]','decimal(10,5)') ) As Rank
+ from {databaseOwner}[{objectQualifier}NBrightBuy]
+where XrefItemId  = @categoryid
+order by [XMLdata].value('(genxml/sort)[1]','decimal(10,5)')
+
+OPEN db_cursor   
+FETCH NEXT FROM db_cursor INTO @itemid,@newintpos
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+	update {databaseOwner}[{objectQualifier}NBrightBuy] set XMLData = '<genxml><sort>' + convert(nvarchar(max),@newintpos) + '</sort></genxml>' where itemid = @itemid
+    FETCH NEXT FROM db_cursor INTO @itemid,@newintpos 
+END   
+
+CLOSE db_cursor   
+DEALLOCATE db_cursor 
+
+set @newpos = (select top 1 [XMLdata].value('(genxml/sort)[1]','decimal(10,5)')  from {databaseOwner}[{objectQualifier}NBrightBuy] where XrefItemId = @categoryid and ParentItemId = @movetoproductid)
+set @newpos = @newpos - 0.1
+
+update {databaseOwner}[{objectQualifier}NBrightBuy] set XMLData = '<genxml><sort>' + convert(nvarchar(max),@newpos) + '</sort></genxml>' where  XrefItemId = @categoryid and ParentItemId = @moveproductid
+
+DECLARE db_cursor CURSOR FOR  
+select itemid,ROW_NUMBER() Over (ORDER BY [XMLdata].value('(genxml/sort)[1]','decimal(10,5)') ) As Rank
+ from {databaseOwner}[{objectQualifier}NBrightBuy]
+where XrefItemId  = @categoryid
+order by [XMLdata].value('(genxml/sort)[1]','decimal(10,5)')
+
+OPEN db_cursor   
+FETCH NEXT FROM db_cursor INTO @itemid,@newintpos
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+	update {databaseOwner}[{objectQualifier}NBrightBuy] set XMLData = '<genxml><sort>' + convert(nvarchar(max),@newintpos) + '</sort></genxml>' where itemid = @itemid
+    FETCH NEXT FROM db_cursor INTO @itemid,@newintpos
+END   
+
+CLOSE db_cursor   
+DEALLOCATE db_cursor 
+
+
+
+END
+
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]    Script Date: 27/03/2015 11:32:36 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(10) = ''
+
+AS
+begin
+
+-- This SPROC return the Get List with LANGAUGE and NO PAGING
+
+	SET NOCOUNT ON
+	  DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or NB1.PortalId = ''-1'') and (NB1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or NB1.ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or NB1.PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL(NB2.[XMLData],NB1.[XMLData])')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL(NB2.[XMLData],NB1.[XMLData])')
+
+	set @rtnFields = ' NB1.[ItemId] '
+	set @rtnFields = @rtnFields + ',ISNULL(NB2.[XMLData],NB1.[XMLData]) as [XMLData] '				
+	set @rtnFields = @rtnFields + ',ISNULL(NB2.[Lang],ISNULL(NB1.[Lang],'''')) as [Lang] '	 
+ 
+	set @rtnFields = @rtnFields + ',NB1.[PortalId] '
+	set @rtnFields = @rtnFields + ',NB1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',NB1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',NB1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',NB1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',NB1.[TextData] '
+	set @rtnFields = @rtnFields + ',NB1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',NB1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',NB1.[UserId] '
+
+
+	-- Return records without paging.
+	set @STMT = ' SELECT ' 
+				
+	if @ReturnLimit > 0 
+	begin
+		set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+	end
+
+	set @STMT = @STMT + @rtnFields + ' FROM {databaseOwner}[{objectQualifier}NBrightBuy] as NB1 '
+
+	set @STMT = @STMT + ' left join  {databaseOwner}[{objectQualifier}NBrightBuyIdx] as NB3 on NB3.ItemId = NB1.ItemId and NB3.[Lang] = ''' + @Lang + ''''
+
+	set @STMT = @STMT + '  left join {databaseOwner}[{objectQualifier}NBrightBuyLang] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + ''''
+	
+	IF (@OrderBY like '%{bycategoryproduct}%')
+	BEGIN
+		DECLARE @categoryid nvarchar(max)
+		SET @categoryid = LTRIM(RTRIM(replace(@OrderBY ,'{bycategoryproduct}','')))
+		if (@categoryid != '')
+		BEGIN
+				SET @OrderBY = ' order by NB4.[XMLdata].value(''(genxml/sort)[1]'',''int''), NB3.productname '
+				set @STMT = @STMT + '  left join {databaseOwner}[{objectQualifier}NBrightBuy] as NB4 on (NB4.TypeCode = ''CATXREF'' or NB4.TypeCode = ''CATCASCADE'' ) and NB4.ParentItemId = NB1.ItemId and NB4.XrefItemId = ' + @categoryid + ' '
+		END ELSE
+		BEGIN
+				SET @OrderBY = ' order by NB3.productname '
+		END
+	END
+
+	IF (RIGHT(@TypeCode,1) = '%')
+	BEGIN
+		set @STMT = @STMT + ' WHERE NB1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter + ' ' + @OrderBy
+	END ELSE
+	BEGIN
+		IF (@TypeCode = '')
+		BEGIN
+			set @STMT = @STMT + ' WHERE NB1.TypeCode != '''' ' + @Filter + @OrderBy
+		END ELSE
+		BEGIN
+			set @STMT = @STMT + ' WHERE NB1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  + ' ' + @OrderBy
+		END
+	END
+    
+	EXEC sp_executeSQL @STMT                 -- return requested records
+
+end
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]    Script Date: 27/03/2015 11:33:39 ******/
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@TypeCodeLang nvarchar(50) = '',
+@Lang nvarchar(10) = ''
+
+AS
+begin
+
+-- This SPROC return the Get List with LANGAUGE and PAGING
+
+	SET NOCOUNT ON
+	  DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or NB1.PortalId = ''-1'') and (NB1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or NB1.ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or NB1.PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL(NB2.[XMLData],NB1.[XMLData])')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL(NB2.[XMLData],NB1.[XMLData])')
+
+	set @rtnFields = ' NB1.[ItemId] '
+	set @rtnFields = @rtnFields + ',ISNULL(NB2.[XMLData],NB1.[XMLData]) as [XMLData] '				
+	set @rtnFields = @rtnFields + ',ISNULL(NB2.[Lang],ISNULL(NB1.[Lang],'''')) as [Lang] '	 
+ 
+	set @rtnFields = @rtnFields + ',NB1.[PortalId] '
+	set @rtnFields = @rtnFields + ',NB1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',NB1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',NB1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',NB1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',NB1.[TextData] '
+	set @rtnFields = @rtnFields + ',NB1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',NB1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',NB1.[UserId] '
+
+
+
+			-- Do Paging
+		SET @STMT = 'DECLARE @recct int '
+		set @STMT = @STMT + ' SET @recct = ' + Convert(nvarchar(5),@RecordCount) 
+		
+		set @STMT = @STMT + '   DECLARE @lbound int, @ubound int '
+
+		SET @pageNum = ABS(@pageNum)
+		SET @pageSize = ABS(@pageSize)
+		IF @pageNum < 1 SET @pageNum = 1
+		IF @pageSize < 1 SET @pageSize = 1
+
+		set @STMT = @STMT + ' SET @lbound = ' + convert(nvarchar(50),((@pageNum - 1) * @pageSize))
+		set @STMT = @STMT + ' SET @ubound = @lbound + ' + convert(nvarchar(50),(@pageSize + 1))
+		set @STMT = @STMT + ' IF @lbound >= @recct BEGIN '
+		set @STMT = @STMT + '   SET @ubound = @recct + 1 '
+		set @STMT = @STMT + '   SET @lbound = @ubound - (' + convert(nvarchar(50),(@pageSize + 1)) + ') ' -- return the last page of records if no records would be on the specified page '
+		set @STMT = @STMT + ' END '
+		
+		-- Default order by clause
+		if @OrderBy = '' 
+		Begin
+			set @OrderBy = ' ORDER BY ModifiedDate DESC '
+		End
+		
+		set @STMT = @STMT + ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		DECLARE @categoryid nvarchar(max)
+		declare @NB4join nvarchar(max)
+		SET @NB4join = ''
+		IF (@OrderBY like '%{bycategoryproduct}%')
+		BEGIN
+			SET @categoryid = LTRIM(RTRIM(replace(@OrderBY ,'{bycategoryproduct}','')))
+			if (@categoryid != '')
+			BEGIN
+				SET @OrderBY = ' order by NB4.[XMLdata].value(''(genxml/sort)[1]'',''int''), NB3.productname  '
+				set @NB4join = '  left join {databaseOwner}[{objectQualifier}NBrightBuy] as NB4 on (NB4.TypeCode = ''CATXREF'' or NB4.TypeCode = ''CATCASCADE'' ) and NB4.ParentItemId = NB1.ItemId and NB4.XrefItemId = ' + @categoryid + ' '
+			END ELSE
+			BEGIN
+					SET @OrderBY = ' order by NB3.productname '
+			END
+		END
+
+		set @STMT = @STMT + ' FROM    (
+								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
+		set @STMT = @STMT + @rtnFields		
+		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}NBrightBuy]  as NB1 '
+		set @STMT = @STMT + ' left join  {databaseOwner}[{objectQualifier}NBrightBuyIdx] as NB3 on NB3.ItemId = NB1.ItemId and NB3.[Lang] = ''' + @Lang + ''''
+		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}NBrightBuyLang] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + ''' ' 
+
+			set @STMT = @STMT + @NB4join
+
+		
+			IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @STMT = @STMT + 'WHERE NB1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @STMT = @STMT + 'WHERE NB1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @STMT = @STMT + 'WHERE NB1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              
+			
+			set @STMT = @STMT + ' ) AS NB1 '
+			set @STMT = @STMT + ' left join  {databaseOwner}[{objectQualifier}NBrightBuyIdx] as NB3 on NB3.ItemId = NB1.ItemId and NB3.[Lang] = ''' + @Lang + ''''
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}NBrightBuyLang] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + ''' '
+			set @STMT = @STMT + @NB4join
+			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
+
+		EXEC sp_executeSQL @STMT                 -- return requested records
+
+
+end
+GO
+
+
+
+
+
+
+
 

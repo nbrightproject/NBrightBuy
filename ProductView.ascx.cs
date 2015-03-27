@@ -413,10 +413,14 @@ namespace Nevoweb.DNN.NBrightBuy
                                     }
                                 }
                             }
+
+                            if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
+
                         }
                         else
                         {
                             if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                            if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
                         }
 
                     #endregion

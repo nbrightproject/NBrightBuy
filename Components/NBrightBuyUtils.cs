@@ -164,7 +164,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 rdTabid = objTabInfo.TabID;
             }
 
-            var cachekey = "entryurl*" + entryid + "*" + catid + "*" + catref + "*" + modulekey + "*" + rdTabid;
+            var cachekey = "entryurl*" + entryid + "*" + catid + "*" + catref + "*" + modulekey + "*" + rdTabid + "*" + Utils.GetCurrentCulture();
             var urldata = "";
             var chacheData = Utils.GetCache(cachekey);
             if (chacheData != null) return (String)chacheData;

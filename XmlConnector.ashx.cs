@@ -209,6 +209,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "addclientdiscountcode":
                     if (CheckRights()) strOut = AddClientDiscountCodes(context);
                     break;
+                case "moveproductadmin":
+                    if (CheckRights()) strOut = MoveProductAdmin(context);
+                    break;                    
             }
 
             #endregion
@@ -493,6 +496,35 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
         }
+
+        private String MoveProductAdmin(HttpContext context)
+        {
+            try
+            {
+
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("moveproductid")) settings.Add("moveproductid", "0");
+                var moveproductid = settings["moveproductid"];
+                if (!settings.ContainsKey("movetoproductid")) settings.Add("movetoproductid", "0");
+                var movetoproductid = settings["movetoproductid"];
+                if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "0");
+                var searchcategory = settings["searchcategory"];
+
+                var objCtrl = new NBrightBuyController();
+                objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
+
+                return GetProductListData(settings);
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
 
         private String GetProductDescription(HttpContext context)
         {
@@ -1244,12 +1276,17 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (Utils.IsNumeric(searchCategory))
             {
+                if (orderby == "{bycategoryproduct}") orderby += searchCategory;
                 var objQual = DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
                 if (!cascade)
                     filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
                 else
                     filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") or (typecode = 'CATCASCADE' and XrefItemId = " + searchCategory + ")) ";
+            }
+            else
+            {
+                if (orderby == "{bycategoryproduct}") orderby = " order by NB3.productname ";                
             }
 
             var recordCount = 0;

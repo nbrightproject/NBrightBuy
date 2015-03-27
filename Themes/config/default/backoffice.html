@@ -56,16 +56,6 @@
 </div>
 <!--End Container-->
 
-
-
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!--<script src="http://code.jquery.com/jquery.js"></script>
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jquery/jquery-2.1.0.min.js"></script>
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jquery-ui/jquery-ui.min.js"></script>
--->
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrap/bootstrap.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops-nbb.js"></script><!-- need to replace with minimised version -->
 <!-- Required for Masonry Grid http://desandro.github.io/imagesloaded/ -->
@@ -75,12 +65,14 @@
 <!-- local storage to keep expanded state -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.storage.js"></script>
 
+
+<!-- Any square brackets must be escaped with double square brackets -->
 <script type="text/javascript">
 	// Move page actions to header bar
 	$('#pageactionssource').prependTo('#pageactionstarget');
 // Run Select2 plugin on elements
 function DemoSelect2(){
-	$('.s2_with_tag').select2({allowClear: true,placeholder: ""});
+	$('.s2_with_tag').select2({allowClear: true,placeholder: "Please Select"});
 	$('.s2_country').select2();
 }
 $(document).ready(function() {
@@ -123,8 +115,14 @@ $(document).ready(function() {
 	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
 	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
 
-});
+	//NBS - Tooltips
+    $('[data-toggle="tooltip"]').tooltip({
+    animation : 'true',
+    placement : 'auto top',
+    viewport: { selector: '#content', padding: 0 },
+    delay: { show: 100, hide: 200 }
+    });
+	
+	});
 </script>
-
-
 

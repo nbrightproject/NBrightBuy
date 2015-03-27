@@ -294,7 +294,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "friendlyurl":
                     GetFriendlyUrl(container, xmlNod);
-                    return true;                                                            
+                    return true;
+                case "labelof":
+                    CreateLabelOf(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -4819,6 +4822,42 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
+        #region "labelof"
+
+        private void CreateLabelOf(Control container, XmlNode xmlNod)
+        {
+            var lc = new Label();
+
+            lc.Attributes.Add("data-toggle","tooltip");
+
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["Text"] != null)) lc.Text =  xmlNod.Attributes["Text"].InnerXml;
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["Help"] != null)) lc.Attributes.Add("data-original-title", xmlNod.Attributes["Help"].InnerXml);
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["data-original-title"] != null)) lc.Attributes.Add("data-original-title", xmlNod.Attributes["data-original-title"].InnerXml);
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["data-placement"] != null)) lc.Attributes.Add("data-placement", xmlNod.Attributes["data-placement"].InnerXml);
+
+            lc.DataBinding += LabelOfDataBinding;
+            container.Controls.Add(lc);
+        }
+
+
+        private void LabelOfDataBinding(object sender, EventArgs e)
+        {
+            // NOTE: Do not set Text = "", If we've assign a Text value in the template (or resourcekey) then use it as default. (unless Error)
+            var lc = (Label)sender;
+            lc.Visible = visibleStatus.Last();
+            try
+            {
+                lc.Visible = visibleStatus.Last();
+            }
+            catch (Exception)
+            {
+                lc.Text = "";
+            }
+        }
+
+
+
+        #endregion
 
         #region "Functions"
 

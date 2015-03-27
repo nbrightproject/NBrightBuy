@@ -247,13 +247,13 @@
     <value>Order process</value>
   </data>
   <data name="CartstepsRecap.Text" xml:space="preserve">
-    <value>Recapitulatif</value>
+    <value>Basket</value>
   </data>
   <data name="CartstepsAddresses.Text" xml:space="preserve">
     <value>Addresses</value>
   </data>
   <data name="CartstepsShipping.Text" xml:space="preserve">
-    <value>Shipping</value>
+    <value>Summary</value>
   </data>
   <data name="CartstepsPayment.Text" xml:space="preserve">
     <value>Payment</value>

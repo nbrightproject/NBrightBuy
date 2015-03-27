@@ -1,4 +1,4 @@
-
+﻿
 function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 {
     $.ajaxSetup({ cache: false });
@@ -24,7 +24,17 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	            $(target).html(data).trigger('change');
 	        } else
 	            $(target).append(data).trigger('change');
+
+		    //NBS - Tooltips
+		    $('[data-toggle="tooltip"]').tooltip({
+		    animation : 'true',
+		    placement : 'auto top',
+		    viewport: { selector: '#content', padding: 0 },
+		    delay: { show: 100, hide: 200 }
+		    });
+
 	    }
+
 	});
 
 	request.fail(function (jqXHR, textStatus) {

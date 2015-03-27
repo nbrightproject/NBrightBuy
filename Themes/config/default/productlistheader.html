@@ -1,5 +1,51 @@
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources" />]
 
+
+
+
+<script>
+
+$(document).ready(function() {
+
+	$(".selectmove").hide();
+	$(".selectcancel").hide();		
+	$(".savebutton").hide();
+	if ($("input[[id*='_searchcategory_'").val() == '') $(".selectrecord").hide();
+
+    $(".selectrecord").click(function() {
+		$(".selectrecord").hide();
+		$(".selectmove").show();
+		$(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
+		$(".selectcancel[[itemid='" + $(this).attr("itemid") + "']]").show();
+		$("input[[id*='moveproductid']]").val($(this).attr("itemid"));
+
+		var selectid = $(this).attr("itemid");
+		$(".selectmove").each(function (index) {
+		    if ($(this).attr("parentlist").indexOf(selectid + ";") > -1) $(this).hide();
+        });
+
+
+    });
+
+    $(".selectcancel").click(function() {
+		$(".selectmove").hide();
+		$(".selectcancel").hide();		
+		$(".selectrecord").show();		
+		$("input[[id*='selectedcatid']]").val('');
+    });
+
+    $(".selectmove").click(function() {
+		$(".selectmove").hide();
+		$(".selectcancel").hide();		
+		$(".selectrecord").show();
+		$("input[[id*='movetoproductid']]").val($(this).attr("itemid"));
+        nbxget('moveproductadmin', '#productselectparams', '#productlist');
+    });
+
+});
+
+</script>
+
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div class="box">
@@ -28,6 +74,7 @@
 							<th></th>
 							<th style="width:100%"></th>
 						    <th>[<tag type="valueof" resourcekey="General.Hidden" />]</th>
+							<th></th>
 							<th></th>
 							<th></th>
 						</tr>
