@@ -58,8 +58,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.PortalId = PortalId;
             PurchaseInfo.ModuleId = -1;
             PurchaseInfo.TypeCode = PurchaseTypeCode;
-            if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
-            PurchaseInfo.UserId = UserId;
+            if (UserController.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
+            {
+                if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
+                PurchaseInfo.UserId = UserId;                
+            }
             _entryId = modCtrl.Update(PurchaseInfo);
 
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);

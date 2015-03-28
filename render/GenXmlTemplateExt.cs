@@ -4225,6 +4225,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         }
                         var show = false;
                         var countryCode = GenXmlFunctions.GetGenXmlValue("Country", "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
+                        if (countryCode == "")
+                        {
+                            var cList = NBrightBuyUtils.GetCountryList();
+                            if (cList.Any()) countryCode = cList.First().Value;
+                        }
                         if (countryCode != "")
                         {
                             var tList = NBrightBuyUtils.GetRegionList(countryCode);

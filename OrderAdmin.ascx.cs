@@ -281,24 +281,27 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var orderData = new OrderData(PortalId, Convert.ToInt32(entryId));
 
-                // if debug , output the xml used.
-                if (StoreSettings.Current.DebugModeFileOut)
+                if (orderData.UserId == UserId)
                 {
-                    var xmlDoc = new System.Xml.XmlDocument();
-                    xmlDoc.LoadXml(orderData.GetInfo().XMLData);
-                    xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_order.xml");
+                    // if debug , output the xml used.
+                    if (StoreSettings.Current.DebugModeFileOut)
+                    {
+                        var xmlDoc = new System.Xml.XmlDocument();
+                        xmlDoc.LoadXml(orderData.GetInfo().XMLData);
+                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_order.xml");
+                    }
+
+                    //render the detail page
+                    base.DoDetail(rpData, orderData.GetInfo());
+
+                    base.DoDetail(rpItemH, orderData.GetInfo());
+                    rpItem.DataSource = orderData.GetCartItemList(StoreSettings.Current.Get("chkgroupresults") == "True");
+                    rpItem.DataBind();
+                    base.DoDetail(rpItemF, orderData.GetInfo());
+
+                    // display header (Do header after the data return so the productcount works)
+                    base.DoDetail(rpDataH, orderData.GetInfo());                    
                 }
-
-                //render the detail page
-                base.DoDetail(rpData, orderData.GetInfo());
-
-                base.DoDetail(rpItemH, orderData.GetInfo());
-                rpItem.DataSource = orderData.GetCartItemList(StoreSettings.Current.Get("chkgroupresults") == "True");
-                rpItem.DataBind();
-                base.DoDetail(rpItemF, orderData.GetInfo());
-
-                // display header (Do header after the data return so the productcount works)
-                base.DoDetail(rpDataH, orderData.GetInfo());
 
             }
         }

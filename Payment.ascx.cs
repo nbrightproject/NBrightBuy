@@ -71,6 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var templFail = ModSettings.Get("paymentfailtemplate");
                 var templHeader = "";
                 var templFooter = "";
+                var templText = "";
 
                 if ((_provList.Count == 0 || _cartInfo.PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtotal") <= 0) && orderid == "")
                 {
@@ -99,21 +100,19 @@ namespace Nevoweb.DNN.NBrightBuy
                         _orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
                         _prov = PaymentsInterface.Instance(_orderData.PaymentProviderKey);
 
-                        _orderData.AddAuditMessage(Context.Request.RawUrl, "payurl", "payment.ascx", "False");
-                        _orderData.Save();
                         msg = _prov.ProcessPaymentReturn(Context);
                         if (msg == "") // no message so successful
                         {
                             _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
                             _orderData.PaymentOk("050");
-                            templHeader = templHeader + templOk;
+                            templText = templOk;
                         }
                         else
                         {
                             _orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // reload the order, becuase the status and typecode may have changed by the payment provider.
                             _orderData.AddAuditMessage(msg, "paymsg", "payment.ascx", "False");
                             _orderData.Save();
-                            templHeader = templHeader + templFail;
+                            templText = templFail;
                         }
                         templFooter = ""; // return from bank, hide footer
                     }
@@ -123,7 +122,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         rpPaymentGateways.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(GetPaymentProviderTemplates(), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     }
 
-                    templPaymentText = ModCtrl.GetTemplateData(ModSettings, templHeader, Utils.GetCurrentCulture(), DebugMode);
+                    if (templText == "") templText = templHeader; // if we are NOT returning from bank, then display normal header summary template
+                    templPaymentText = ModCtrl.GetTemplateData(ModSettings, templText, Utils.GetCurrentCulture(), DebugMode);
+
                     rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(templPaymentText, ModSettings.Settings(), PortalSettings.HomeDirectory);
                     _templateHeader = (GenXmlTemplate) rpDetailDisplay.ItemTemplate;
 
