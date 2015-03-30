@@ -30,13 +30,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private int _portalId = -1; // so we don;t need to use Portalsettings.Current (If called from scheduler)
         private StoreSettings _storeSettings = null;
 
-        /// <summary>
-        /// Populate the ProductData in this class
-        /// </summary>
-        /// <param name="productId">productid</param>
-        /// <param name="lang">langauge to populate</param>
-        /// <param name="hydrateLists">populate the sub data into lists</param>
-        public ProductData(int productId, String lang, Boolean hydrateLists = true)
+
+        // used to reset the data, so we don;t have to create new object in import loops for memory management.
+        public void ResetData(int productId, String lang, Boolean hydrateLists = true)
         {
             _lang = lang;
 
@@ -64,6 +60,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _lang = _storeSettings.EditLanguage;
                 DataLangRecord.Lang = _lang;
             }
+            
+        }
+
+        public ProductData()
+        {
+            // do nothing assume, resetdata will be used later in calling code.
+        }
+
+        /// <summary>
+        /// Populate the ProductData in this class
+        /// </summary>
+        /// <param name="productId">productid</param>
+        /// <param name="lang">langauge to populate</param>
+        /// <param name="hydrateLists">populate the sub data into lists</param>
+        public ProductData(int productId, String lang, Boolean hydrateLists = true)
+        {
+            ResetData(productId,lang,hydrateLists);
         }
 
         #region "public functions/interface"
@@ -828,7 +841,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbi.TextData = null;
                     nbi.Lang = null;
                     nbi.GUIDKey = strGuid;
+                    var newitemid = objCtrl.Update(nbi);
+                    nbi = objCtrl.Get(newitemid);
+                    nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort></genxml>";
                     objCtrl.Update(nbi);
+
                     //add all cascade xref 
                     var objGrpCtrl = new GrpCatController(_lang, true);
                     var parentcats = objGrpCtrl.GetCategory(categoryid);
@@ -840,9 +857,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid);
                             if (obj == null)
                             {
+                                nbi = new NBrightInfo();
+                                nbi.ItemID = -1;
                                 nbi.XrefItemId = p;
                                 nbi.TypeCode = "CATCASCADE";
                                 nbi.GUIDKey = strGuid;
+                                newitemid = objCtrl.Update(nbi);
+                                nbi = objCtrl.Get(newitemid);
+                                nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort></genxml>";
                                 objCtrl.Update(nbi);
                             }
                         }

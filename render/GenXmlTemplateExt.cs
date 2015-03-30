@@ -2586,6 +2586,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                     else
                                         strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + nbi.categoryid.ToString("") + ") ";
 
+                                    if (strOrder == "{bycategoryproduct}") strOrder += nbi.categoryid.ToString(""); // do special custom sort in each cateogry
+
                                     if (filter != "") strFilter += " AND " + filter;
 
                                     var objL = buyCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, strOrder);
