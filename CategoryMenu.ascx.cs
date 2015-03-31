@@ -168,6 +168,31 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             var catl = new List<object> {obj};
 
+            if (Utils.IsNumeric(catid) && ModSettings.Get("injectseo") == "True")
+            {
+                var eid = Utils.RequestQueryStringParam(Context, "eid");
+                var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catid), "CATEGORYLANG", Utils.GetCurrentCulture());
+                if (objSEOCat != null && eid == "")  // we may have a detail page and listonly module, in which can we need the product detail as page title
+                {
+                    //Page Title
+                    var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                    if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                    var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                    if (newBaseTitle != "") BasePage.Title = BasePage.Title + " > " + newBaseTitle;
+                    //Page KeyWords
+                    var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                    if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                    //Page Description
+                    var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                    if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                    if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                }
+            }
+
 
                 #endregion
 

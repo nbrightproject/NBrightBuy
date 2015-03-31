@@ -1171,7 +1171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
             var catData = new CategoryData(catid, Utils.GetCurrentCulture());
-            objInfo.SetXmlProperty("genxml/catref", catData.CategoryRef);
+            if (catData.Exists) objInfo.SetXmlProperty("genxml/catref", catData.CategoryRef);
             return objInfo;
         }
 

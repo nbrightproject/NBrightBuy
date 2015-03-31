@@ -389,9 +389,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="CategoryMenu.ascx" />
-    <Content Include="CategoryMenuSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="CategoryMenuSettings.ascx" />
     <Content Include="CartView.ascx" />
     <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
