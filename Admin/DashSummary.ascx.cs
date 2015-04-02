@@ -120,12 +120,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             DoDetail(rpDash, statsInfo); // dashboard
 
-            DoDetail(rpDataH); // orders header
+            DoDetail(rpDataH, statsInfo); // orders header
 
             rpData.DataSource = orderList; // orders body
             rpData.DataBind();
 
-            DoDetail(rpDataF); // orders footer
+            DoDetail(rpDataF, statsInfo); // orders footer
 
 
 

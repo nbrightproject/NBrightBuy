@@ -2023,6 +2023,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), modSettings.Settings(), moduleKey);
                     if (objCInfo != null)
                     {
+                        GroupCategoryData objPcat;
                         switch (name.ToLower())
                         {
                             case "categorydesc":
@@ -2075,6 +2076,26 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 break;
                             case "parentcatid":
                                 lc.Text = objCInfo.parentcatid.ToString("");
+                                break;
+                            case "parentcategoryname":
+                                objPcat = grpCatCtrl.GetCategory(objCInfo.parentcatid);
+                                lc.Text = objPcat.categoryname; 
+                                break;
+                            case "parentcategoryref":
+                                objPcat = grpCatCtrl.GetCategory(objCInfo.parentcatid);
+                                lc.Text = objPcat.categoryref; 
+                                break;
+                            case "parentcategorydesc":
+                                objPcat = grpCatCtrl.GetCategory(objCInfo.parentcatid);
+                                lc.Text = objPcat.categorydesc;
+                                break;
+                            case "parentcategorybreadcrumb":
+                                objPcat = grpCatCtrl.GetCategory(objCInfo.parentcatid);
+                                lc.Text = objPcat.breadcrumb;
+                                break;
+                            case "parentcategoryguidkey":
+                                objPcat = grpCatCtrl.GetCategory(objCInfo.parentcatid);
+                                lc.Text = objPcat.categoryrefGUIDKey;
                                 break;
                             case "recordsortorder":
                                 lc.Text = objCInfo.recordsortorder.ToString("");
