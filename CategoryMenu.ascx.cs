@@ -75,9 +75,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 _catname = Utils.RequestQueryStringParam(Context, "catref");
                 if (_catid == "" && _catname != "")
                 {
-                    // use catref to get catid.
-                    var nbi = ModCtrl.GetByGuidKey(PortalId, -1, "CATEGORY", _catname);
-                    if (nbi != null) _catid = nbi.ItemID.ToString("");
+                    var objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
+                    if (objCat == null)
+                    {
+                        // check it's not just a single language
+                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
+                        if (objCat != null) _catid = objCat.ItemID.ToString("");
+                    }
+                    else
+                    {
+                        _catid = objCat.ParentItemId.ToString("");
+                    }
                 }
 
                 var navigationdata = new NavigationData(PortalId, _targetModuleKey);
