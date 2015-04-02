@@ -17,6 +17,7 @@
     
     $(document).ready(function() {
         // start load all ajax data
+        $('.processing').show();
         nbxget('productoptionvalues', '#productselectparams', '#productoptionvalues'); // load optionvalues (called before option, so select trigger works)
         nbxget('productmodels', '#productselectparams', '#productmodels'); // load models
         nbxget('productimages', '#productselectparams', '#productimages'); // load images
@@ -25,6 +26,7 @@
         nbxget('productgroupcategories', '#productselectparams', '#productgroupcategories'); // load categories
         nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
         nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
+        $('.processing').hide();
     });
     
 </script>
