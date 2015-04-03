@@ -860,6 +860,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 nbi = new NBrightInfo();
                                 nbi.ItemID = -1;
                                 nbi.XrefItemId = p;
+                                nbi.ParentItemId = Info.ItemID;
                                 nbi.TypeCode = "CATCASCADE";
                                 nbi.GUIDKey = strGuid;
                                 newitemid = objCtrl.Update(nbi);
