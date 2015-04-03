@@ -121,6 +121,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     DoImportImages(nbi);
                     DoImportDocs(nbi);
                     Validate();
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "cancel":
@@ -176,6 +177,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 {
                     ImportRecord(xmlFile, "ORDER");
                 }
+
+                RelinkNewIds();
             }
         }
 
@@ -214,13 +217,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 foreach (XmlNode nod in nodList)
                 {
-                    var update = true;
                     var nbi = new NBrightInfo();
                     nbi.FromXmlItem(nod.OuterXml);
                     var olditemid = nbi.ItemID;
 
                     // check to see if we have a new record or updating a existing one, use the ref field to find out.
                     nbi.ItemID = -1;
+                    nbi.PortalId = PortalId;
+
                     if (typeCode == "PRD" && updaterecordsbyref)
                     {
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
@@ -236,6 +240,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         {
                             var l = ModCtrl.GetList(PortalId, -1, "PRDLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                            nbi.ParentItemId = _recordXref[nbi.ParentItemId];
                         }
                     }
                     if (typeCode == "CATEGORY" && updaterecordsbyref)
@@ -251,8 +256,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         if (_recordXref.ContainsKey(nbi.ParentItemId))
                         {
-                        var l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
-                        if (l.Count > 0) nbi.ItemID = l[0].ItemID;                            
+                            var l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
+                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                            nbi.ParentItemId = _recordXref[nbi.ParentItemId];
                         }
                     }
                     if (typeCode == "GROUP" && updaterecordsbyref)
@@ -270,6 +276,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         {
                             var l = ModCtrl.GetList(PortalId, -1, "GROUPLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                            nbi.ParentItemId = _recordXref[nbi.ParentItemId];
                         }
                     }
                     if (typeCode == "SETTINGS") // the setting exported are only the portal settings, not module.  So always update and don;t create new.
@@ -279,68 +286,65 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     //NOTE: if ORDERS are imported, we expect those to ALWAYS be new records, we don't want to delete any validate orders in this import.
 
-                    nbi.PortalId = PortalId;
-
                     // NOTE: we expect the records to be done in typecode order so we know parent and xref itemids.
 
-                    // Get new parentitemid  
-                    if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
-                    // Get new xrefitemid  
-                    if (_recordXref.ContainsKey(nbi.XrefItemId)) nbi.XrefItemId = _recordXref[nbi.XrefItemId];
-                    // if we have a xref record update the guidkey
-                    var newitemid = -1;
-                    if (nbi.ParentItemId > 0 && nbi.XrefItemId > 0)
-                    {
-                        nbi.GUIDKey = nbi.XrefItemId.ToString("") + "x" + nbi.ParentItemId.ToString("");
-                        //if we already have a record with this xref guid then we don;t need to update
-                        var c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ParentItemId = '" + nbi.ParentItemId.ToString("") + "' and NB1.XrefItemId = '" + nbi.XrefItemId.ToString("") + "' ");
-                        if (c > 0) update = false;
-                        // check both xrefvalue exists
-                        if (nbi.ParentItemId > 0)
-                        {
-                            c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ItemId = " + nbi.ParentItemId.ToString(""));
-                            if (c == 0) update = false;
-                        }
-                        if (nbi.XrefItemId > 0)
-                        {
-                            c = ModCtrl.GetListCount(PortalId, -1, "", " and NB1.ItemId = " + nbi.XrefItemId.ToString(""));
-                            if (c == 0) update = false;                            
-                        }
-                    }
-
-                    if (update) newitemid = ModCtrl.Update(nbi);
+                    var newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
                     if (typeCode == "PRD") _productList.Add(newitemid);
 
                 }
 
-                // fix any parentitemid that may be wrong (category tree imported in wrong order)
-                if (typeCode == "CATEGORY")
+
+            }
+        }
+
+        private void RelinkNewIds()
+        {
+            var l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
+            foreach (var i in l)
+            {
+                if (_recordXref.ContainsKey(i.ParentItemId))
                 {
-                    var l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
-                    foreach (var i in l)
-                    {
-                        if (_recordXref.ContainsKey(i.ParentItemId))
-                        {
-                            i.ParentItemId = _recordXref[i.ParentItemId];
-                            ModCtrl.Update(i);
-                        }
-                    }
-                }
-                // fix any GUID that may be wrong (category tree imported in wrong order)
-                if (typeCode == "CASCADE")
-                {
-                    var l = ModCtrl.GetList(PortalId, -1, "CASCADE");
-                    foreach (var i in l)
-                    {
-                        if (i.GUIDKey != i.XrefItemId + "x" + i.ParentItemId)
-                        {
-                            i.GUIDKey = i.XrefItemId + "x" + i.ParentItemId;
-                            ModCtrl.Update(i);
-                        }
-                    }
+                    i.ParentItemId = _recordXref[i.ParentItemId];
+                    ModCtrl.Update(i);
                 }
             }
+
+            l = ModCtrl.GetList(PortalId, -1, "CATCASCADE");
+            foreach (var i in l)
+            {
+                UpdateXrefRecords(i);
+            }
+
+            l = ModCtrl.GetList(PortalId, -1, "CATXREF");
+            foreach (var i in l)
+            {
+                UpdateXrefRecords(i);
+            }
+
+            l = ModCtrl.GetList(PortalId, -1, "PRDXREF");
+            foreach (var i in l)
+            {
+                UpdateXrefRecords(i);
+            }
+
+        }
+
+
+        private void UpdateXrefRecords(NBrightInfo nbi)
+        {
+            // Get new parentitemid  
+            if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
+            // Get new xrefitemid  
+            if (_recordXref.ContainsKey(nbi.XrefItemId)) nbi.XrefItemId = _recordXref[nbi.XrefItemId];
+            // if we have a xref record update the guidkey
+            if (nbi.ParentItemId > 0 && nbi.XrefItemId > 0)
+            {
+                nbi.GUIDKey = nbi.XrefItemId.ToString("") + "x" + nbi.ParentItemId.ToString("");
+                //if we already have a record with this xref guid then we don;t need to update
+                ModCtrl.Update(nbi);
+            }
+
         }
     }
 
