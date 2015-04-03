@@ -882,6 +882,15 @@
   <data name="SalePrice.Text" xml:space="preserve">
     <value>Sale</value>
   </data>
+  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Orders" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
+    <value>&lt;i title="My Address Book" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdMyAccount.Text" xml:space="preserve">
+    <value>&lt;i title="My Account Profile" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
   <data name="copyorderto.Text" xml:space="preserve">
     <value>Copy this order to</value>
   </data>
@@ -959,5 +968,38 @@
   </data>
   <data name="cmdSaveExitButton.Text" xml:space="preserve">
     <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
+  </data>
+  <data name="OrderCount.Text" xml:space="preserve">
+    <value>Order Count</value>
+  </data>
+  <data name="CustomerCount.Text" xml:space="preserve">
+    <value>Customer Count</value>
+  </data>
+  <data name="TotalRevenue.Text" xml:space="preserve">
+    <value>Total Revenue</value>
+  </data>
+  <data name="AverageRevenue.Text" xml:space="preserve">
+    <value>Average Revenue</value>
+  </data>
+  <data name="TotalDiscounts.Text" xml:space="preserve">
+    <value>Total Discounts</value>
+  </data>
+  <data name="TotalShipping.Text" xml:space="preserve">
+    <value>Total Shipping</value>
+  </data>
+  <data name="StatusofOrders.Text" xml:space="preserve">
+    <value>Status of Orders</value>
+  </data>
+  <data name="TotalProducts.Text" xml:space="preserve">
+    <value>Total Products</value>
+  </data>
+  <data name="HiddenProducts.Text" xml:space="preserve">
+    <value>Hidden Products</value>
+  </data>
+  <data name="ActiveProducts.Text" xml:space="preserve">
+    <value>Active Products</value>
+  </data>
+  <data name="MontlyRevenue.Text" xml:space="preserve">
+    <value>Montly Revenue</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300);
+﻿@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300);
 
 /* Common */
 @-webkit-viewport   { width: device-width; }
@@ -224,6 +224,12 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .countryselection .dnnBoxLabel{font-weight:normal}
 
 /* Orders */
+.orderdetail .groupheader td{padding:3px 8px 2px;font-size:12px;font-weight:bold;background-color:#1aa8e3;color:#ffffff}
+.orderdetail .groupheader td a{font-weight:bold;color:#ffffff}
+.orderdetail .groupheader:hover{background-color:#1aa8e3 !important;}
+.orderdetail .edit,.orderdetail .view{float:right}
+.orderdetail .subtotal td{border-top:2px solid #dddddd}
+
 /* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
 .orderslist select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;height:inherit;line-height:inherit;opacity:1;padding:0;}
 .orderslist select.aspNetDisabled.form-control option{padding-bottom:0;}
@@ -259,7 +265,9 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 #addresscards a.deleteaddress:hover{color:#D33030;}
 #addresscards .well {height: 250px;padding: 40px 15px 15px;position: relative;}
 
-
+/* Dashboard */
+.dashboard .statuses .orderstatus{margin:0 1% 5px 0;width:48%;}
+.dashboard .statuses .statusvalue{float:right}
 
 /* Breadcrumbs : ADDED BY DCL from Cygnus for tempoary fix on BO category admin */
 .categorybreadcrumbs{text-align:left;margin-bottom:14px;}
@@ -278,7 +286,7 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 /* Order Status Colour : ADDED BY DCL  */
 /* 010       ,020             ,030      ,040       ,050                 ,060                ,070              ,120               ,080    ,090    ,100      ,110      */
 /* Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived */
-.orderstatus {-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;display:inline-block;color:white;padding:4px 8px;background:lightgray;font-size:12px}
+.orderstatus {border-radius:3px;display:inline-block;color:white;padding:4px 8px;background:lightgray;font-size:12px}
 .orderstatus000 {background:lightseagreen}
 .orderstatus020 {background:blue}
 .orderstatus040 {background:lightgreen}

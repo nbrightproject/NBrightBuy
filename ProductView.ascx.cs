@@ -13,11 +13,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -366,6 +368,39 @@ namespace Nevoweb.DNN.NBrightBuy
                         else
                         {
                             _catid = objCat.ParentItemId.ToString("");
+                            if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
+                            {
+                                // do a 301 redirect to correct url forhte langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                                var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                                var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
+                                if (activeCat != null)
+                                {
+                                    var redirecturl = "";
+                                    if (Utils.IsNumeric(_eid))
+                                    {
+                                        var prdData = new ProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
+                                        redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
+                                    }
+                                    else
+                                    {
+                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId); 
+                                    }
+
+                                    try
+                                    {
+                                        if (redirecturl != "")
+                                        {
+                                            Response.Redirect(redirecturl, false);
+                                            Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
+                                            Response.End();                                            
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        // catch err
+                                    }
+                                }
+                            }
                         }
                         // We have a category selected (in url), so overwrite categoryid navigationdata.
                         // This allows the return to the same category after a returning from a entry view.
