@@ -61,7 +61,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _itemListName = "";
         private String _print = "";
         private String _printtemplate = "";
-
+        private String _guidkey = "";
         #region Event Handlers
 
 
@@ -76,11 +76,11 @@ namespace Nevoweb.DNN.NBrightBuy
             base.OnInit(e);
 
             // if guidkey entered instead of eid, find it using the guid and assign to _eid
-            var guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
-            if (guidkey == "") guidkey = Utils.RequestQueryStringParam(Context, "ref");
-            if (_eid== "" && guidkey != "")
+            _guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
+            if (_guidkey == "") _guidkey = Utils.RequestQueryStringParam(Context, "ref");
+            if (_eid== "" && _guidkey != "")
             {
-                var guidData = ModCtrl.GetByGuidKey(PortalId, -1, "PRD", guidkey);
+                var guidData = ModCtrl.GetByGuidKey(PortalId, -1, "PRD", _guidkey);
                 if (guidData != null)
                     _eid = guidData.ItemID.ToString("D");
                 else
@@ -562,9 +562,20 @@ namespace Nevoweb.DNN.NBrightBuy
             var cArg = e.CommandArgument.ToString();
             var rtnTabId = TabId;
             var param = new string[4];
-            if (_eid != "") param[0] = "eid=" + _eid;
+
+
+            if (_guidkey != "")                
+                param[0] = "ref=" + _guidkey; //using ref is url
+            else
+                if (_eid != "") param[0] = "eid=" + _eid; // using id in url 
+
             if (_modkey != "") param[1] = "modkey=" + _modkey;
-            if (_catid != "") param[2] = "catid=" + _catid;
+
+            if (_catname != "")                
+                param[2] = "catref=" + _catname; //using ref is url
+            else
+                if (_catid != "") param[2] = "catid=" + _catid; //using id is url
+            
 
             // redirect to cart after add to basket is arg is redirect
             if (cArg.ToLower() == "redirect" && Utils.IsNumeric(StoreSettings.Current.CartTabId)) rtnTabId = StoreSettings.Current.CartTabId;
