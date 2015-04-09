@@ -279,4 +279,28 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
 	<data name="choosemodel.Text" xml:space="preserve">
     <value>Select Model</value>
   </data>
+	<data name="addtobasketicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Add to basket" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="viewicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="View details" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="wishlistaddicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Add to wishlist" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="wishlistremoveicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Remove from wishlist" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
 </root>

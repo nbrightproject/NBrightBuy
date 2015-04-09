@@ -1002,4 +1002,10 @@
   <data name="MontlyRevenue.Text" xml:space="preserve">
     <value>Montly Revenue</value>
   </data>
+  <data name="manualpayment.Text" xml:space="preserve">
+    <value>Manual Payment</value>
+  </data>
+  <data name="dashsummary.Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
 </root>

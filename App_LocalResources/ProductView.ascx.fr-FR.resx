@@ -244,7 +244,7 @@
 &lt;/span&gt;</value>
   </data>
 	<data name="view.Text" xml:space="preserve">
-    <value>Voir</value>
+    <value>Voir en détails</value>
   </data>
 	<data name="viewicon.Text" xml:space="preserve">
     <value>&lt;span title="Information" class="fa-stack"&gt;
@@ -273,4 +273,28 @@
 	<data name="choosemodel.Text" xml:space="preserve">
 		<value>Sélectionner modèle</value>
 	</data>
+  <data name="addtobasketicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Ajouter au panier" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="viewicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Voir en détails" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-search fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="wishlistaddicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Ajouter à la liste de souhaits" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+	<data name="wishlistremoveicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Retirer de la liste de souhaits" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
 </root>

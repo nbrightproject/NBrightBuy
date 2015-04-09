@@ -89,8 +89,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 //    if (CheckRights()) strOut = SetCategoryForm(context);
                 //    break;
                 case "getdata":
-                    // commented out for security reasons
-                    //strOut = GetReturnData(context);
+                    strOut = GetReturnData(context);
                     break;
                 case "additemlist":
                     if (Utils.IsNumeric(itemId))
