@@ -29,8 +29,8 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 		    $('[data-toggle="tooltip"]').tooltip({
 		    animation : 'true',
 		    placement : 'auto top',
-		    viewport: { selector: '#content', padding: 0 },
-		    delay: { show: 100, hide: 200 }
+		    viewport: {selector: '#content', padding: 0},
+		    delay: {show: 100, hide: 200}
 		    });
 
 	    }
