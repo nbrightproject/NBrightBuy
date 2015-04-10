@@ -308,6 +308,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     i.ParentItemId = _recordXref[i.ParentItemId];
                     ModCtrl.Update(i);
                 }
+                var pcatid = i.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
+                if (Utils.IsNumeric(pcatid) && pcatid != "0")
+                {
+                    if (_recordXref.ContainsKey(Convert.ToInt32(pcatid)))
+                    {
+                        i.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", _recordXref[Convert.ToInt32(pcatid)].ToString());
+                        ModCtrl.Update(i);
+                    }                    
+                }
             }
 
             l = ModCtrl.GetList(PortalId, -1, "CATCASCADE");

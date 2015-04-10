@@ -303,4 +303,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
+	<data name="share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
 </root>

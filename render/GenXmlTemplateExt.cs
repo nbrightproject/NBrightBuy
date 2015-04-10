@@ -1879,6 +1879,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             var obj = grpCatCtrl.GetCurrentCategoryData(PortalSettings.Current.PortalId, lc.Page.Request, Convert.ToInt32(id), _settings, targetModuleKey);
                             if (obj != null) catid = obj.categoryid;
                         }
+                        else if (objCInfo.TypeCode == "CATEGORYLANG") // no type is list header, so use catid in url if there. 
+                        {
+                            catid = objCInfo.ParentItemId;
+
+                        }
                         else
                         {
                             catid = objCInfo.ItemID;

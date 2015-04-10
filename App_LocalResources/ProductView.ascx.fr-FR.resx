@@ -244,7 +244,7 @@
 &lt;/span&gt;</value>
   </data>
 	<data name="view.Text" xml:space="preserve">
-    <value>Voir en détails</value>
+    <value>Voir</value>
   </data>
 	<data name="viewicon.Text" xml:space="preserve">
     <value>&lt;span title="Information" class="fa-stack"&gt;
@@ -296,5 +296,8 @@
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
   &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
+  </data>
+	<data name="share.Text" xml:space="preserve">
+    <value>Partager</value>
   </data>
 </root>

@@ -258,6 +258,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.GUIDKey = catref;
                     errorcount += 1;
                 }
+
+                if (DataRecord.GetXmlProperty("genxml/dropdownlist/ddlparentcatid") != DataRecord.ParentItemId.ToString())
+                {
+                    DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", DataRecord.ParentItemId.ToString());   
+                }
+
             }
 
             DataRecord.ValidateXmlFormat();
