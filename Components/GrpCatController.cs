@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -174,54 +175,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public int GetDefaultCatId(int productid)
         {
-            var defId = 0;
-            var objCtrl = new NBrightBuyController();
-            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
-            var strFilter = " and NB1.parentitemid = " + productid.ToString("") + " ";
-            var objInfo = objCtrl.Get(productid);
-
-            if (objInfo != null)
-            {
-
-                var l = objCtrl.GetList(objInfo.PortalId, objInfo.ModuleId, "CATXREF", strFilter);
-
-                var catIds = new HashSet<int>(CategoryList.Select(x => x.categoryid));
-                l.RemoveAll(x => !catIds.Contains(x.XrefItemId));
-
-
-                foreach (var e in l)
-                {
-                    if (e.GetXmlProperty("genxml/hidden/defaultcat").ToLower() == "true")
-                    {
-                        defId = e.XrefItemId;
-                        break;
-                    }
-                }
-
-                if (defId == 0)
-                {
-                    foreach (var e in l)
-                    {
-                        if ((e.GetXmlProperty("genxml/checkbox/chkishidden").ToLower() == "false") && (e.GetXmlProperty("genxml/checkbox/chkarchived").ToLower() == "false"))
-                        {
-                            defId = e.XrefItemId;
-                            break;
-                        }
-                    }
-                }
-
-
-                if (defId == 0)
-                {
-                    if (l.Count > 0)
-                    {
-                        defId = l[0].XrefItemId;
-                    }
-                }
-            }
-
-            return defId;
+            var prodData = new ProductData(productid,Utils.GetCurrentCulture());
+            var dcat = prodData.GetDefaultCategory();
+            if (dcat == null) return 0;
+            return dcat.categoryid;
         }
 
         public GroupCategoryData GetCurrentCategoryData(int portalId, System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null, String targetModuleKey = "")

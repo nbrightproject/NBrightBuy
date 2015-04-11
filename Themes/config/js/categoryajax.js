@@ -37,6 +37,7 @@
             //$('.productid' + $(this).attr('itemid')).hide();
             nbxget('getcategoryproductlist', '#categorydata', '#productlist');
         });
+
         $('#removeall').unbind();
         $('#removeall').click(function () {
             if (confirm($('#confirmmsg').html())) {

@@ -48,6 +48,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string url { get; set; }
         public string message { get; set; }
         public string propertyref { get; set; }
+        public bool isdefault { get; set; }
         public bool isvisible
         {
             get
@@ -63,6 +64,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public GroupCategoryData()
         {
             Parents = new List<int>();
+            isdefault = false;
         }
 
     }

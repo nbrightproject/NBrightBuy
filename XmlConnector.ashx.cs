@@ -121,6 +121,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "getcategoryproductlist":
                     strOut = GetCategoryProductList(context);
                     break;
+                case "setdefaultcategory":
+                    if (CheckRights()) strOut = SetDefaultCategory(context);
+                    break;
                 case "deletecatxref":
                     if (CheckRights()) strOut = DeleteCatXref(context);
                     break;
@@ -332,7 +335,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     DeleteCatXref(xrefitemid, parentitemid);
                 }
                 else
-                    return "Invalid parentitemid or xrefitmeid";
+                    return "Invalid parentitemid or xrefitemid";
             }
             catch (Exception e)
             {
@@ -1037,6 +1040,29 @@ namespace Nevoweb.DNN.NBrightBuy
                     var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
                     return GetProductGroupCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        private string SetDefaultCategory(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var parentitemid = "";
+                var xrefitemid = "";
+                if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
+                if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    prodData.SetDefaultCategory(Convert.ToInt32(xrefitemid));
+                    return GetProductCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
             }

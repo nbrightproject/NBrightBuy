@@ -409,54 +409,54 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     if (Utils.IsNumeric(_catid))
+                    {
+                        var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                        var dbOwner = DataProvider.Instance().DatabaseOwner;
+                        if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
                         {
-                            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                            var dbOwner = DataProvider.Instance().DatabaseOwner;
-                            if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
-                            {
-                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
-                            }
-                            else
-                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
-
-                            if (Utils.IsNumeric(catseo))
-                            {
-                                var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
-                                if (objSEOCat != null && _eid == "")  // we may have a detail page and listonly module, in which can we need the product detail as page title
-                                {
-                                    //Page Title
-                                    var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                                    if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
-
-                                    var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
-                                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
-                                    if (newBaseTitle != "") BasePage.Title = newBaseTitle;
-                                    //Page KeyWords
-                                    var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
-                                    if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
-                                    //Page Description
-                                    var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
-                                    if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
-                                    if (newBaseDescription != "") BasePage.Description = newBaseDescription;
-
-                                    if (PortalSettings.HomeTabId == TabId)
-                                        PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
-                                    else
-                                    {
-                                        PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
-                                    }
-                                }
-                            }
-
-                            if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
-
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
                         }
                         else
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                        if (Utils.IsNumeric(catseo))
                         {
-                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
-                            if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                            var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                            if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
+                            {
+                                //Page Title
+                                var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                                var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                                if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                                //Page KeyWords
+                                var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                                if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                                //Page Description
+                                var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                                if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                                if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                                if (PortalSettings.HomeTabId == TabId)
+                                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                                else
+                                {
+                                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                }
+                            }
                         }
+
+                        if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
+
+                    }
+                    else
+                    {
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                    }
 
                     #endregion
                         

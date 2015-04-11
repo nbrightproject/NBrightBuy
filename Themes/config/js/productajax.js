@@ -73,6 +73,12 @@
             $('input[id*="selectedcatid"]').val($(this).attr('categoryid'));
             nbxget('removeproductcategory', '#productselectparams', '#productcategories'); // load             
         });
+        // set default category
+        $('.defaultcategory').click(function () {
+            $('input[id*="selectedcatid"]').val($(this).attr('categoryid'));
+            nbxget('setdefaultcategory', '#productselectparams', '#productcategories'); // load             
+        });
+
     });
 
     $('#groupcategorylist').change(function () {
@@ -205,7 +211,7 @@
         $('input[id*="selectedcatid"]').val($(this).val());
         if ($(this).val() != null) nbxget('addproductcategory', '#productselectparams', '#productcategories'); // load 
     });
-
+    
     //select group category
     $('select[id*="selectgrouptype"]').click(function () {
         $('input[id*="selectedgroupref"]').val($(this).val());

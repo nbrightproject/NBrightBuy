@@ -264,15 +264,41 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<GroupCategoryData> GetCategories(String groupref = "",Boolean cascade = false)
         {
             var objGrpCtrl = new GrpCatController(_lang);
-            return objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
+            var catl = objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            {
+                var objl = catl.Where(i => i.isdefault == true);
+                foreach (var i in objl)
+                {
+                    i.isdefault = false;
+                }
+                var dcatid = Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid"));
+                var obj = catl.First(i => i.categoryid == dcatid);
+                if (obj != null) obj.isdefault = true;
+            }
+            return catl;
         }
 
         public GroupCategoryData GetDefaultCategory()
         {
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            {
+                var objGrpCtrl = new GrpCatController(_lang);
+                var obj = objGrpCtrl.GetCategory(Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultid")));
+                if (obj != null) return obj;
+            }
             var catl = GetCategories();
             if (catl.Any()) return catl[0];
             return null;
         }
+
+        public void SetDefaultCategory(int categoryid)
+        {
+            var objCtrl = new NBrightBuyController();
+            DataRecord.SetXmlProperty("genxml/defaultcatid", categoryid.ToString());
+            objCtrl.Update(DataRecord);
+        }
+
 
         public Boolean HasProperty(String propertyref)
         {
@@ -876,9 +902,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void RemoveCategory(int categoryid)
         {
+            var objCtrl = new NBrightBuyController();
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && categoryid == Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            {
+                DataRecord.SetXmlProperty("genxml/defaultcatid", "");
+                objCtrl.Update(DataRecord);
+            }
+
             var parentitemid = Info.ItemID.ToString("");
             var xrefitemid = categoryid.ToString("");
-            var objCtrl = new NBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
