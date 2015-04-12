@@ -284,7 +284,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))
             {
                 var objGrpCtrl = new GrpCatController(_lang);
-                var obj = objGrpCtrl.GetCategory(Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultid")));
+                var obj = objGrpCtrl.GetCategory(Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid")));
                 if (obj != null) return obj;
             }
             var catl = GetCategories();

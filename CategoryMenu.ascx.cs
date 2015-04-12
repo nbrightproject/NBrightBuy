@@ -166,9 +166,10 @@ namespace Nevoweb.DNN.NBrightBuy
             var obj = new GroupCategoryData();
             if (Utils.IsNumeric(_entryid))
             {
-                var catiddef = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
-                obj = _catGrpCtrl.GetCategory(catiddef);
-                if (catid == 0) catid = catiddef;
+                if (catid == 0)
+                {
+                    catid = _catGrpCtrl.GetDefaultCatId(Convert.ToInt32(_entryid));
+                }
             }
             else
             {

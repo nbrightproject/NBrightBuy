@@ -172,18 +172,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get the default category for the product 
         /// </summary>
         /// <param name="productid"></param>
+        /// <param name="lang">default is current culture</param>
         /// <returns></returns>
-        public int GetDefaultCatId(int productid)
+        public int GetDefaultCatId(int productid,String lang = "")
         {
-            var prodData = new ProductData(productid,Utils.GetCurrentCulture());
-            var dcat = prodData.GetDefaultCategory();
+            var dcat = GetDefaultCategory(productid,lang);
             if (dcat == null) return 0;
             return dcat.categoryid;
         }
 
+        /// <summary>
+        /// Get default category data from product
+        /// </summary>
+        /// <param name="productid"></param>
+        /// <param name="lang">default is current culture</param>
+        /// <returns></returns>
+        public GroupCategoryData GetDefaultCategory(int productid, String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var prodData = new ProductData(productid, lang);
+            return prodData.GetDefaultCategory();
+        }
+
         public GroupCategoryData GetCurrentCategoryData(int portalId, System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null, String targetModuleKey = "")
         {
-
             var defcatid = 0;
             var qrycatid = Utils.RequestQueryStringParam(request, "catid");
             if (qrycatid == "")
@@ -208,8 +220,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (Utils.IsNumeric(qrycatid) && defcatid == 0) return GetCategory(Convert.ToInt32(qrycatid));
             }
 
+            // if we have no catid in url, make sure we have any possible entryid
+            if (entryId == 0)
+            {
+                var qryitemid = Utils.RequestQueryStringParam(request, "eid");
+                if (Utils.IsNumeric(qryitemid))
+                {
+                    entryId = Convert.ToInt32(qryitemid);
+                }
+                else
+                {
+                    var qryguidkey = Utils.RequestQueryStringParam(request, "guidkey");
+                    if (qryguidkey == "") qryguidkey = Utils.RequestQueryStringParam(request, "ref");
+                    if (qryguidkey != "")
+                    {
+                        var objCtrl = new NBrightBuyController();
+                        var guidData = objCtrl.GetByGuidKey(portalId, -1, "PRD", qryguidkey);
+                        if (guidData != null) entryId = guidData.ItemID;
+                    }
+                }
+            }
+
             // use the first/default category the proiduct has
-            if (Utils.IsNumeric(entryId) && entryId > 0) defcatid = GetDefaultCatId(entryId);
+            if (Utils.IsNumeric(entryId) && entryId > 0) return GetDefaultCategory(entryId);
 
             // get any default set in the settings
             if (defcatid == 0)
