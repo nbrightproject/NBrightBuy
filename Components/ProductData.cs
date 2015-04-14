@@ -265,7 +265,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objGrpCtrl = new GrpCatController(_lang);
             var catl = objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
-            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && catl.Count > 0)
             {
                 var objl = catl.Where(i => i.isdefault == true);
                 foreach (var i in objl)
@@ -273,8 +273,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     i.isdefault = false;
                 }
                 var dcatid = Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid"));
-                var obj = catl.First(i => i.categoryid == dcatid);
-                if (obj != null) obj.isdefault = true;
+                var obj = catl.Where(i => i.categoryid == dcatid);
+                var groupCategoryDatas = obj as GroupCategoryData[] ?? obj.ToArray();
+                if (groupCategoryDatas.Any()) groupCategoryDatas.First().isdefault = true;
             }
             return catl;
         }

@@ -966,13 +966,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var xp = "";
                 var c = "";
                 var cref = "";
+                var relative = "";
                 if (xmlNod.Attributes["tabid"] != null) t = xmlNod.Attributes["tabid"].InnerText;
                 if (xmlNod.Attributes["modkey"] != null) mk = xmlNod.Attributes["modkey"].InnerText;
                 if (xmlNod.Attributes["xpath"] != null) xp = xmlNod.Attributes["xpath"].InnerText;
                 if (xmlNod.Attributes["catid"] != null) c = xmlNod.Attributes["catid"].InnerText;
                 if (xmlNod.Attributes["catref"] != null) cref = xmlNod.Attributes["catref"].InnerText;
+                if (xmlNod.Attributes["relative"] != null) relative = xmlNod.Attributes["relative"].InnerText;                
 
-                l.Text = t + '*' + mk + '*' + xp.Replace('*', '-') + '*' + c + "*" + cref;
+                l.Text = t + '*' + mk + '*' + xp.Replace('*', '-') + '*' + c + "*" + cref + "*" + relative;
             }
             l.DataBinding += EntryUrlDataBinding;
             container.Controls.Add(l);
@@ -995,13 +997,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var moduleref = "";
                 var c = "";
                 var cref = "";
+                var relative = "";
 
-                if (dataIn.Length == 5)
+                if (dataIn.Length == 6)
                 {
                     if (Utils.IsNumeric(dataIn[0])) t = dataIn[0];
                     if (Utils.IsNumeric(dataIn[1])) moduleref = dataIn[1];
                     if (Utils.IsNumeric(dataIn[3])) c = dataIn[3];
                     if (dataIn[4] != "") cref = dataIn[4];
+                    if (dataIn[5] != "") relative = dataIn[5];
                     var nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), dataIn[2]);
                     if ((nod != null)) urlname = nod.InnerText;
                     // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
@@ -1010,7 +1014,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 }
 
                 var url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, entryid, moduleref, urlname, t, c, cref);
-                l.Text = url;
+                if (relative.ToLower() == "true") url = Utils.GetRelativeUrl(url);
+
+                l.Text = url;               
 
             }
             catch (Exception ex)
