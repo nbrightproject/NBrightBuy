@@ -1017,7 +1017,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, String eventinfo)
         {
             var rtnInfo = nbrightInfo;
-            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var pluginData = new PluginData(nbrightInfo.PortalId);
             var provList = pluginData.GetEventsProviders();
 
             foreach (var d in provList)

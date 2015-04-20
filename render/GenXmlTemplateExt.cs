@@ -2704,6 +2704,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
             }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["displayprice"] != null))
+            {
+                rbl.Attributes.Add("displayprice", xmlNod.Attributes["displayprice"].Value);
+            }
             rbl = (RadioButtonList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += ModelsradioDataBind;
             rbl.ID = "rblModelsel";
@@ -2728,7 +2732,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     var objL = BuildModelList((NBrightInfo) container.DataItem, true);
 
-                    var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
+                    var displayPrice = true;
+                    if (rbl.Attributes["displayprice"] != null)
+                    {
+                        displayPrice = Convert.ToBoolean(rbl.Attributes["displayprice"]);
+                        rbl.Attributes.Remove("displayprice");
+                    }
+                    else
+                    {
+                        displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
+                    }
 
                     if (rbl.Attributes["blank"] != null)
                     {
@@ -2766,6 +2779,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.Attributes.Add("blank", xmlNod.Attributes["blank"].Value);
             }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["displayprice"] != null))
+            {
+                rbl.Attributes.Add("displayprice", xmlNod.Attributes["displayprice"].Value);
+            }
             rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += ModelsdropdownDataBind;
             rbl.ID = "ddlModelsel";
@@ -2791,7 +2808,16 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     var objL = BuildModelList(dataInfo, true);
 
-                    var displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
+                    var displayPrice = true;
+                    if (ddl.Attributes["displayprice"] != null)
+                    {
+                        displayPrice = Convert.ToBoolean(ddl.Attributes["displayprice"]);
+                        ddl.Attributes.Remove("displayprice");
+                    }
+                    else
+                    {
+                        displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);                        
+                    }
 
                     if (ddl.Attributes["blank"] != null)
                     {                       

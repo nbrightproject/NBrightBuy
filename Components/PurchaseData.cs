@@ -354,15 +354,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 //build option data for cart
                 Double additionalCosts = 0;
-                var strXmlIn = "<options>";
+                var strXmlIn = "";
+                var optionDataList = new Dictionary<String, String>();
                 if (objInfoIn.XMLDoc != null)
                 {
-
                     var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/textbox/*[starts-with(name(), 'optiontxt')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            strXmlIn += "<option>";
+                            strXmlIn = "<option>";
                             var idx = nod.Name.Replace("optiontxt", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionInfo = productData.GetOption(optionid);
@@ -372,12 +372,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             itemcode += optionid + "-" + Utils.GetUniqueKey() + "-";
                             strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
                             strXmlIn += "</option>";
+                            if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                     nodList = objInfoIn.XMLDoc.SelectNodes("genxml/dropdownlist/*[starts-with(name(), 'optionddl')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            strXmlIn += "<option>";
+                            strXmlIn = "<option>";
                             var idx = nod.Name.Replace("optionddl", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionvalueid = nod.InnerText;
@@ -391,12 +392,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                             strXmlIn += "</option>";
                             additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                            if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                     nodList = objInfoIn.XMLDoc.SelectNodes("genxml/checkbox/*[starts-with(name(), 'optionchk')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                                strXmlIn += "<option>";
+                                strXmlIn = "<option>";
                                 var idx = nod.Name.Replace("optionchk", "");
                                 var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                                 var optionvalueid = nod.InnerText;
@@ -410,10 +412,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                                 strXmlIn += "</option>";
                                 if (nod.InnerText.ToLower() == "true") additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                                if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                 }
-                strXmlIn += "</options>";
-                objInfo.AddXmlNode(strXmlIn, "options", "genxml");
+
+                // we need to save the options in the same order as in product, so index works correct on the template tokens.
+                var strXmlOpt = "<options>";
+                for (int i = 1; i <= optionDataList.Count; i++)
+			    {
+			        if (optionDataList.ContainsKey(i.ToString("")))
+			        {
+			            strXmlOpt += optionDataList[i.ToString("")];
+			        }
+			    }
+                strXmlOpt += "</options>";
+
+                objInfo.AddXmlNode(strXmlOpt, "options", "genxml");
 
                 #endregion
 
@@ -535,6 +549,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // inject header record for the product
                     var itemheader = (NBrightInfo)group.Value.First().Clone();
                     itemheader.SetXmlProperty("genxml/groupheader","True");
+                    itemheader.SetXmlProperty("genxml/groupcount", group.Value.Count().ToString(""));
                     itemheader.SetXmlProperty("genxml/seeditemcode", itemheader.GUIDKey);
                     itemheader.GUIDKey = "";
                     // remove option data, so we get a clear item 

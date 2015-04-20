@@ -323,6 +323,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deletecartitem":
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
+                    SaveCart();
                     if (cArg == "")
                         _cartInfo.RemoveItem(e.Item.ItemIndex);
                     else

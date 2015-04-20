@@ -1156,7 +1156,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10).ToLower());
 
-            if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+            if (_storeSettings.GetBool(StoreSettingKeys.friendlyurlids))
             {
                 var refcode = DataRecord.GetXmlProperty("genxml/textbox/txtproductref").Trim();
                 if (refcode != "")
