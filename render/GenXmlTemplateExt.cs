@@ -444,8 +444,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             break;
                         case "isonsale":
-                            var saleprice = GetSalePrice((NBrightInfo) container.DataItem);
-                            if ((Utils.IsNumeric(saleprice)) && (Convert.ToDouble(saleprice, CultureInfo.GetCultureInfo("en-US")) > 0))
+                            var saleprice = GetSalePriceDouble((NBrightInfo) container.DataItem);
+                            if (saleprice > 0)
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
@@ -5020,20 +5020,23 @@ namespace Nevoweb.DNN.NBrightBuy.render
             return objL;
         }
 
-        private String GetSalePrice(NBrightInfo dataItemObj)
+        private Double GetSalePriceDouble(NBrightInfo dataItemObj)
         {
-            var price = "-1";
+            Double price = -1;
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/textbox/txtsaleprice");
-                if (Utils.IsNumeric(s))
-                {
-                    // NBrightBuy numeric always stored in en-US format.
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
-                }
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
             }
+            if (price == -1) price = 0;
             return price;
+        }
+
+        private String GetSalePrice(NBrightInfo dataItemObj)
+        {
+            var price = GetSalePriceDouble(dataItemObj);
+            return price.ToString("");
         }
 
         private String GetDealerPrice(NBrightInfo dataItemObj)
@@ -5071,7 +5074,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
             if (fromprice < 0) fromprice = 0; // make sure we have a valid price
-            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
+            var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
             if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
@@ -5092,7 +5095,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
         {
-            var saleprice = Convert.ToDouble(GetSalePrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
+            var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice >= 0) return true;  // if it's on sale we can assume it has multiple prices
             var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
             if (nodList != null)
