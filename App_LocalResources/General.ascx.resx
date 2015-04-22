@@ -925,7 +925,7 @@
     <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Cart.Text" xml:space="preserve">
-    <value>Basket</value>
+    <value>Cart</value>
   </data>
   <data name="History.Text" xml:space="preserve">
     <value>History</value>
@@ -1007,5 +1007,11 @@
   </data>
   <data name="dashsummary.Text" xml:space="preserve">
     <value>Dashboard</value>
+  </data>
+  <data name="basket.Text" xml:space="preserve">
+    <value>Basket</value>
+  </data>
+  <data name="favorites.Text" xml:space="preserve">
+    <value>Favorites</value>
   </data>
 </root>

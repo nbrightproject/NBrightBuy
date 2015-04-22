@@ -903,4 +903,10 @@
   <data name="dashsummary.Text" xml:space="preserve">
     <value xml:space="preserve">Tableau de bord</value>
   </data>
+  <data name="basket.Text" xml:space="preserve">
+    <value>Panier</value>
+  </data>
+  <data name="favorites.Text" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
 </root>

@@ -147,6 +147,9 @@
   <data name="carttab.Text" xml:space="preserve">
     <value>Checkout</value>
   </data>
+  <data name="favoritestab.Text" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
   <data name="manageremail.Help" xml:space="preserve">
     <value>CSV list of manager emails.</value>
   </data>

@@ -147,6 +147,9 @@
 	<data name="carttab.Text" xml:space="preserve">
     <value>Panier</value>
   </data>
+  <data name="favoritestab.Text" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
 	<data name="manageremail.Help" xml:space="preserve">
     <value>Liste CSV des e-mails manager.</value>
   </data>
