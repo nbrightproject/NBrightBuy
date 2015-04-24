@@ -139,18 +139,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var updInfo = new NBrightInfo(true);
                 updInfo.XMLData = strXml;
 
-                GenXmlFunctions.UploadImgFile(rpData, "image", StoreSettings.Current.FolderImagesMapPath);
-                var fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hidimage")).Attributes["value"];
-                updInfo.SetXmlProperty("genxml/hidden/hidimage",fName);
-
                 GenXmlFunctions.UploadFile(rpData, "document", StoreSettings.Current.FolderDocumentsMapPath);
-                fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hiddocument")).Attributes["value"];
-                updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
-                
-                var imgCtrl = (FileUpload)rpData.Items[0].FindControl("image");
-                updInfo.SetXmlProperty("genxml/hidden/postedimagename", imgCtrl.PostedFile.FileName);
-                var docCtrl = (FileUpload)rpData.Items[0].FindControl("document");
-                updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
+                var ctrl = ((HtmlGenericControl) rpData.Items[0].FindControl("hiddocument"));
+                if (ctrl != null)
+                {
+                    var fName = ctrl.Attributes["value"];
+                    updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
+
+                    var docCtrl = (FileUpload) rpData.Items[0].FindControl("document");
+                    updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
+                }
 
                 prodData.Update(updInfo.XMLData);
                 prodData.Save();

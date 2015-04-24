@@ -624,10 +624,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
                     foreach (var email in emailarray)
                     {
-                        if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))
+                        if (!string.IsNullOrEmpty(email.Trim()) && Utils.IsEmail(fromEmail.Trim()) && Utils.IsEmail(email.Trim()))
                         {
                             // multiple attachments as csv with "|" seperator
-                            DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, dataObj.GetXmlProperty("genxml/emailattachment"), "HTML", "", "", "", "");
+                            DotNetNuke.Services.Mail.Mail.SendMail(fromEmail.Trim(), email.Trim(), "", emailsubject, emailbody, dataObj.GetXmlProperty("genxml/emailattachment"), "HTML", "", "", "", "");
                         }
                     }
                 }

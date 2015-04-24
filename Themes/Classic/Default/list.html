@@ -6,17 +6,32 @@
 	<div class="edit">[<tag resourcekey="ProductView.editicon" type="nbs:editlink"  />]</div>
   [<tag type="endif" />]
 	
+  <div class="productimg" style="width:294px;height:[Settings:classicitemimagecontainerheight]">
+
+  <div class="productimg-overlay">
+  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="label" resourcekey="ProductView.viewicon-lg" />]</a>
+  [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
+  [<tag type="if" function="hasmodelsoroptions" display="{OFF}" />]
+  [<tag type="linkbutton" resourcekey="ProductView.addtobasketicon-lg" commandname="addtobasket" commandargument="ItemID" />]
+  [<tag type="endif"  />]
+  [<tag type="endif"  />]<!-- End Catalogue mode -->
+	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
+  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
+  </div>
+
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<div class="image" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:classicthumbnailwidth}' h='{Settings:classicthumbnailheight}' />]"></div>
+	<div class="image" style="height:[Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="[<tag type='thumbnail' w='{Settings:classicthumbnailwidth}' h='{Settings:classicthumbnailheight}' />]"></div>
 	[<tag type="endif" />]
 	
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
-	<div class="noimage" style="width:[Settings:classicitemwidth]px;height:[Settings:classicitemimagecontainerheight]">
+	<div class="noimage" style="height:[Settings:classicitemimagecontainerheight]">
 	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]
 	[Settings:noimageicon]
 	[<tag type="endif" />]
 	</div>
 	[<tag type="endif" />]
+
+  </div>
 	
 	<div class="description">
   <h1><a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="productname" />]</a></h1>
@@ -38,7 +53,7 @@
 		[<tag type="endif" />]
 
   [<tag type="if" function="hasmodelsoroptions" display="{ON}" />]
-  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">[<tag type="label" resourcekey="ProductView.discover" />]</a>
+  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]" class="classicbutton entryurl">[<tag type="label" resourcekey="ProductView.view" />]</a>
   [<tag type="endif"  />]
 
   [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->

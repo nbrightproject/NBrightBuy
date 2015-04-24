@@ -153,7 +153,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (ctrl != "") ctrl = "&ctrl=" + ctrl;
                         if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
                         {
-                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catref=" + groupCategoryInfo.categoryrefGUIDKey + ctrl + "&language=" + Utils.GetCurrentCulture());
+                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catref=" + Utils.UrlFriendly(groupCategoryInfo.categoryrefGUIDKey) + ctrl + "&language=" + Utils.GetCurrentCulture());
                         }
                         else
                         {

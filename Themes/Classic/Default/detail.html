@@ -128,7 +128,7 @@
             <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
             [<tag type="endif" />]
         </ul>
-        <div class="sharingwidget"><div class="share">Partager :</div><div class="addthis_sharing_toolbox"></div></div><!-- Sharing widget -->
+        <div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_sharing_toolbox"></div></div><!-- Sharing widget -->
 
         [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
         <div id="tab-1" class="tab-content tab-active">
@@ -187,7 +187,3 @@
 [<tag type="endif"  />]
 
 </div>
-
-[<tag type="if" function="debugmode" display="{ON}" />]
-<div class="debug">[<tag type='valueof' resourcekey='General.DebugMessage' />]</div>
-[<tag type="endif" />]

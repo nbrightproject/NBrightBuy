@@ -251,7 +251,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 // the base category ref cannot have language dependant refs, we therefore just use a unique key
                 var catref = DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
-                if (catref == "")
+                if (catref == "" || DataRecord.GUIDKey == "")
                 {
                     catref = Utils.GetUniqueKey().ToLower();
                     DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);

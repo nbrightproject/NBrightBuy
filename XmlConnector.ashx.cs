@@ -17,6 +17,8 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
+using System.Web.Script.Serialization;
+using NBrightCore.images;
 
 namespace Nevoweb.DNN.NBrightBuy
 {
@@ -25,6 +27,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// </summary>
     public class XmlConnector : IHttpHandler
     {
+        private readonly JavaScriptSerializer _js = new JavaScriptSerializer();
         private String _lang = "";
 
         public void ProcessRequest(HttpContext context)
@@ -213,18 +216,31 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "moveproductadmin":
                     if (CheckRights()) strOut = MoveProductAdmin(context);
-                    break;                    
+                    break;
+                case "fileupload":
+                    if (CheckRights() && Utils.IsNumeric(itemId))
+                    {
+                        strOut = FileUpload(context);
+                    }
+                    break;
+                case "updateproductimages":
+                    if (CheckRights())
+                    {
+                        UpdateProductImages(context);
+                        strOut = GetProductImages(context);
+                    }
+                    break;
             }
 
             #endregion
 
             #region "return results"
 
-            //send back xml as plain text
-            context.Response.Clear();
-            context.Response.ContentType = "text/plain";
-            context.Response.Write(strOut);
-            context.Response.End();
+                //send back xml as plain text
+                context.Response.Clear();
+                context.Response.ContentType = "text/plain";
+                context.Response.Write(strOut);
+                context.Response.End();                
 
             #endregion
 
@@ -238,7 +254,195 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        #region "fileupload"
 
+        private void UpdateProductImages(HttpContext context)
+        {
+            //get uploaded params
+            var settings = GetAjaxFields(context);
+            if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+            var productitemid = settings["itemid"];
+            var imguploadlist = settings["imguploadlist"];
+
+            if (Utils.IsNumeric(productitemid))
+            {
+                var imgs = imguploadlist.Split(',');
+                foreach (var img in imgs)
+                {
+                    if (ImgUtils.IsImageFile(Path.GetExtension(img)) && img != "")
+                    {
+                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + img;
+                        if (File.Exists(fullName))
+                        {
+                            var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
+                            if (imgResize == 0) imgResize = 800;
+                            var imagepath = ResizeImage(fullName, imgResize);
+                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
+                            AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);                                                    
+                        }
+                    }
+                }
+                // clear any cache for the product.
+                var prddata = new ProductData(Convert.ToInt32(productitemid), _lang);
+                prddata.ClearCache();
+                var cachekey = "AjaxProductImgs*" + productitemid;
+                Utils.RemoveCache(cachekey);
+
+            }
+        }
+
+        private String ResizeImage(String fullName, int imgSize = 640)
+        {
+            if (ImgUtils.IsImageFile(Path.GetExtension(fullName)))
+            {
+                var extension = Path.GetExtension(fullName);
+                var newImageFileName = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Utils.GetUniqueKey() + extension;
+                if (extension != null && extension.ToLower() == ".png")
+                {
+                    newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
+                }
+                else
+                {
+                    newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
+                }
+                Utils.DeleteSysFile(fullName);
+
+                return newImageFileName;
+
+            }
+            return "";
+        }
+
+
+        private void AddNewImage(int itemId,String imageurl, String imagepath)
+        {
+            var objCtrl = new NBrightBuyController();
+            var dataRecord = objCtrl.Get(itemId);
+            if (dataRecord != null)
+            {
+                var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" + imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
+                if (dataRecord.XMLDoc.SelectSingleNode("genxml/imgs") == null)
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/imgs", "genxml");
+                }
+                else
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/imgs/genxml", "genxml/imgs");
+                }
+                objCtrl.Update(dataRecord);
+            }
+        }
+
+
+        private string FileUpload(HttpContext context)
+        {
+            try
+            {
+
+                var strOut = "";
+                switch (context.Request.HttpMethod)
+                {
+                    case "HEAD":
+                    case "GET":
+                        break;
+                    case "POST":
+                    case "PUT":
+                        strOut = UploadFile(context);
+                        break;
+                    case "DELETE":
+                        break;
+                    case "OPTIONS":
+                        break;
+
+                    default:
+                        context.Response.ClearHeaders();
+                        context.Response.StatusCode = 405;
+                        break;
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            
+        }
+
+        // Upload file to the server
+        private String UploadFile(HttpContext context)
+        {
+            var statuses = new List<FilesStatus>();
+            var headers = context.Request.Headers;
+
+            if (string.IsNullOrEmpty(headers["X-File-Name"]))
+            {
+                return UploadWholeFile(context, statuses);
+            }
+            else
+            {
+                return UploadPartialFile(headers["X-File-Name"], context, statuses);
+            }
+        }
+
+        // Upload partial file
+        private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses)
+        {
+            if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+            var inputStream = context.Request.Files[0].InputStream;
+            var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + fileName;
+
+            using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+            {
+                var buffer = new byte[1024];
+
+                var l = inputStream.Read(buffer, 0, 1024);
+                while (l > 0)
+                {
+                    fs.Write(buffer, 0, l);
+                    l = inputStream.Read(buffer, 0, 1024);
+                }
+                fs.Flush();
+                fs.Close();
+            }
+            statuses.Add(new FilesStatus(new FileInfo(fullName)));
+            return "";
+        }
+
+        // Upload entire file
+        private String UploadWholeFile(HttpContext context, List<FilesStatus> statuses)
+        {
+            for (int i = 0; i < context.Request.Files.Count; i++)
+            {
+                var file = context.Request.Files[i];
+                file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + file.FileName);
+                statuses.Add(new FilesStatus(Path.GetFileName(file.FileName), file.ContentLength));
+            }
+            return "";
+        }
+
+        private void WriteJsonIframeSafe(HttpContext context, List<FilesStatus> statuses)
+        {
+            context.Response.AddHeader("Vary", "Accept");
+            try
+            {
+                if (context.Request["HTTP_ACCEPT"].Contains("application/json"))
+                    context.Response.ContentType = "application/json";
+                else
+                    context.Response.ContentType = "text/plain";
+            }
+            catch
+            {
+                context.Response.ContentType = "text/plain";
+            }
+
+            var jsonObj = _js.Serialize(statuses.ToArray());
+            context.Response.Write(jsonObj);
+        }
+
+
+
+        #endregion
 
         #region "SQL Data return"
 
@@ -292,7 +496,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
         #endregion
-
 
         #region "Category Methods"
 
@@ -679,15 +882,25 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
-                // get template
-                var themeFolder = StoreSettings.Current.ThemeFolder;
-                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", _lang,true,true,true,StoreSettings.Current.Settings());
+                var cachekey = "AjaxProductImgs*" + productitemid.ToString();
+                var cacheData = Utils.GetCache(cachekey);
+                var strOut = "";
+                if (cacheData == null)
+                {
+                    // get template
+                    var themeFolder = StoreSettings.Current.ThemeFolder;
+                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                    var bodyTempl = templCtrl.GetTemplateData("productadminimages.html", _lang, true, true, true, StoreSettings.Current.Settings());
 
-                //get data
-                var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                var strOut = GenXmlFunctions.RenderRepeater(prodData.Imgs, bodyTempl);
+                    //get data
+                    var prodData = ProductUtils.GetProductData(productitemid, _lang);
+                    strOut = GenXmlFunctions.RenderRepeater(prodData.Imgs, bodyTempl);                    
+                }
+                else
+                {
+                    strOut = cacheData.ToString();
+                }
 
                 return strOut;
 

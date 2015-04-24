@@ -1,9 +1,63 @@
-[<tag id="ImageResize" const="true" type="hidden" value="640" />] 
+[<tag id="ImageResize" const="true" type="hidden" value="640" />]
+
+[<tag id="currentsection" type="postback" value=""/>]
+
 
 <!-- In this template we are using a function defined in nbbajax.js and jquery.genxmlajax.js so include the script here -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
+
+<!-- The basic File Upload plugin -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.fileupload.js"></script>
+
+<script>
+    
+    // file upload  (Needs to be in template to get itemid from token)
+
+    var filecount = 0;
+    var filesdone = 0;
+
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        var url = 'http://dcl1.nevoweboffice.com/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload&itemid=[<tag type="valueof" databind="ItemId" />]';
+        $('#fileupload').fileupload({
+            url: url,
+            maxFileSize: 5000000,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            dataType: 'json'
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
+            .bind('fileuploadprogressall', function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css('width', progress + '%');
+            })
+            .bind('fileuploadadd', function (e, data) {
+                $.each(data.files, function (index, file) {
+                    $('input[[id*="imguploadlist"]]').val($('input[[id*="imguploadlist"]]').val() + file.name + ',');
+                    filesdone = filesdone + 1;
+                });
+            })
+            .bind('fileuploadchange', function (e, data) {
+                filecount = data.files.length;
+                $('.processing').show();
+            })
+            .bind('fileuploaddrop', function (e, data) {
+                filecount = data.files.length;
+                $('.processing').show();
+            })
+            .bind('fileuploadstop', function (e) {
+                if (filesdone == filecount) {
+                    nbxget('updateproductimages', '#productselectparams', '#productimages'); // load images
+                    filesdone = 0;
+                    $('input[[id*="imguploadlist"]]').val('');
+                }
+
+            });
+
+    });
+
+</script>
 
 [Template:datepicker.html]
 
@@ -12,6 +66,7 @@
 
 <div id="nbsnotify"></div>
 <div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+
 
 <script type="text/javascript">
     
@@ -80,8 +135,9 @@
             [<tag id="searchcategory" type="hidden" value=""/>]
             [<tag id="selectedoptionid" type="hidden" value=""/>]
             [<tag id="selectedgroupref" type="hidden" value=""/>]            
-            [<tag id="selectedrelatedid" type="hidden" value=""/>]   
+            [<tag id="selectedrelatedid" type="hidden" value=""/>]
             [<tag id="addqty" type="hidden" value=""/>]
+            [<tag id="imguploadlist" type="hidden" value=""/>]            
         </div>
 
         <!-- Required for update: fields,localizedfields -->
@@ -94,11 +150,7 @@
 	<div class="col-xs-12 col-sm-12">
 			<div class="box" id="accordion">
 			
-				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />] 
-				[<tag type="if" function="settings" key="devoptions" testvalue="True" display="{ON}" />] 
-				<span> Ref: [<tag type="valueof" xpath="genxml/importref" />] ID: [<tag type="valueof" databind="ItemId" />] </span>
-				[<tag type="endif" />]
-				</h3>
+				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />] </h3>
 				<div class="box-content editdetails">
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-6">
@@ -144,9 +196,14 @@
 				    </div>
 				    <div class="col-sm-12">
 				        <div class="form-group">
-				            <div class="col-sm-2">
+				            <div class="col-sm-10">
 				                [<tag id="chkishidden" type="checkbox" Text="" />]
 				                <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
+				                &nbsp;[<tag id="chkdisable" type="checkbox" Text="" />]
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.Disable" />]</label>
+				            </div>
+				            <div class="col-sm-2">
+                				Ref: [<tag type="valueof" xpath="genxml/importref" />] ID: [<tag type="valueof" databind="ItemId" />]
 				            </div>
 				        </div>
 				    </div>
@@ -215,10 +272,23 @@
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
 					<div class="form-group">
-						<div class="col-sm-12">
-				            [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdSaveImg" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
-				        <a class="btn btn-warning" id="undoimage" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
-				        </div>
+					    <div class="col-sm-12">
+
+                            					                <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
+    </span>
+					        <a class="btn btn-warning" id="undoimage" style="display: none;">[<tag type="htmlof" resourcekey="General.UndoButton"/>]</a>
+					                <br>
+					                <br>
+					                <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+
+					    </div>
 					</div>
 					<div class="form-group">
 				        <div class="col-sm-12">

@@ -230,7 +230,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
                         if (itemref != "")
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "PRD", " and NB3.ProductRef = '" + itemref + "' ");
+                            var l = ModCtrl.GetList(PortalId, -1, "PRD", " and NB3.ProductRef = '" + itemref.Replace("'", "''") + "' ");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
                         }
                     }
@@ -248,7 +248,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtcategoryref");
                         if (itemref != "")
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "CATEGORY", " and [XMLData].value('(genxml/textbox/txtcategoryref)[1]','nvarchar(max)') = '" + itemref + "' ");
+                            var l = ModCtrl.GetList(PortalId, -1, "CATEGORY", " and [XMLData].value('(genxml/textbox/txtcategoryref)[1]','nvarchar(max)') = '" + itemref.Replace("'","''") + "' ");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
                         }
                     }
@@ -266,7 +266,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var itemref = nbi.GetXmlProperty("genxml/textbox/groupref");
                         if (itemref != "")
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "GROUP", " and [XMLData].value('(genxml/textbox/groupref)[1]','nvarchar(max)') = '" + itemref + "' ");
+                            var l = ModCtrl.GetList(PortalId, -1, "GROUP", " and [XMLData].value('(genxml/textbox/groupref)[1]','nvarchar(max)') = '" + itemref.Replace("'", "''") + "' ");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
                         }
                     }

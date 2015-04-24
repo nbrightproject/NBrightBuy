@@ -60,6 +60,11 @@
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
         $('.removeimage').click(function () { removeelement($(this).parent().parent().parent().parent()); });
+
+        // ajax upload actions
+        $('.processing').hide();
+        $('#progress .progress-bar').css('width', '0');
+
     });
     $('#productdocs').change(function () {
         $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
@@ -312,3 +317,6 @@
     }
 
 });
+
+
+

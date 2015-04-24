@@ -2,6 +2,12 @@
 
 <div class="nbs">
 
+<!-- hidden field to store the wishlist data -->
+[<tag type="itemlistfield" listname="wishlist" />]
+
+<!-- return field for ajax calls -->
+[<tag id="nbxajaxrtn" type="hidden" />]
+
 [<tag id="searchpagesize" type="meta" value="{Settings:pagesize}" />] 
 
 [<tag id="orderby" type="meta" value="NB3.FromPrice" />]
@@ -14,11 +20,8 @@
 [<tag id="orderby5" type="meta" value="NB3.Qty" />]
 
 <!-- Show category details -->
-[<tag type="if" function="settings" key="categorydetails" testvalue="True" display="{ON}" displayelse="{OFF}" />]
 <div class="categorydetails">
 <h1>[<tag type="catdefault" name="categoryname" />]</h1>
-<div class="categorydetails">[<tag type="catdefault" name="message" />]</div>
 </div>
-[<tag type="endif"  />]
 
 <div id="listwrapper" class="productlist">
