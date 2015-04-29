@@ -524,6 +524,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (var f in fields.Where(f => f != ""))
                 {
                     objInfo.SetXmlProperty(f, docInfo.GetXmlProperty(f));
+                    if (f == "genxml/hidden/filepath")
+                    {
+                        // save relitive path also
+                        var fname = Path.GetFileName(docInfo.GetXmlProperty(f));
+                        objInfo.SetXmlProperty("genxml/hidden/filename", fname);
+                        objInfo.SetXmlProperty("genxml/hidden/filerelpath", StoreSettings.Current.FolderDocuments + "/" + fname);
+                    }
                 }
                 strXml += objInfo.XMLData;
             }

@@ -288,4 +288,7 @@
   <data name="friendlyurlids.Text" xml:space="preserve">
     <value>Use SEO friendly URL ids</value>
   </data>
+  <data name="allowdnnindex.Text" xml:space="preserve">
+    <value>Allow DNN Search Indexing of products</value>
+  </data>
 </root>

@@ -157,8 +157,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objTabInfo = new TabInfo();
 
             if (Utils.IsNumeric(tabid) && Convert.ToInt32(tabid) > 0) rdTabid = Convert.ToInt32(tabid);
-
-            if (rdTabid == -1 && PortalSettings.Current != null)
+            if (!Utils.IsNumeric(tabid)) rdTabid = StoreSettings.Current.ProductDetailTabId;
+            if ((!Utils.IsNumeric(rdTabid) || rdTabid == -1) && PortalSettings.Current != null)
             {
                 objTabInfo = PortalSettings.Current.ActiveTab;
                 rdTabid = objTabInfo.TabID;
@@ -201,6 +201,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (Utils.IsNumeric(entryid))
                 {
                     var prdData = new ProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                    if (!strurl.Contains("catref="))
+                    {
+                        var defcat = prdData.GetDefaultCategory();
+                        if (defcat != null && defcat.categoryref != "" && !strurl.EndsWith("?"))
+                        {
+                            strurl += "&";
+                            strurl += "catref=" + defcat.categoryref;
+                        }
+                    }
                     if (!strurl.EndsWith("?")) strurl += "&";
                     strurl += "ref=" + prdData.DataRecord.GUIDKey;
                     seoname = prdData.SEOName;
@@ -214,8 +223,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (!strurl.EndsWith("?")) strurl += "&";
                     strurl += "catid=" + catid;
                 }
+
                 if (Utils.IsNumeric(entryid))
                 {
+                    if (!strurl.Contains("catid="))
+                    {
+                        var prdData = new ProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                        var defcat = prdData.GetDefaultCategory();
+                        if (defcat != null && defcat.categoryid > 0 && !strurl.EndsWith("?"))
+                        {
+                            strurl += "&";
+                            strurl += "catid=" + defcat.categoryid;
+                        }
+                    }
                     if (!strurl.EndsWith("?")) strurl += "&";
                     strurl += "eid=" + entryid;
                 }
