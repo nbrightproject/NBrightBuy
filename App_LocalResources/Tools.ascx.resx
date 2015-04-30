@@ -133,15 +133,18 @@
     <value>Days to Keep carts</value>
   </data>
   <data name="languageresetto.Text" xml:space="preserve">
-    <value>reset to</value>
+    <value>Copy</value>
   </data>
   <data name="languagetoreset.Text" xml:space="preserve">
-    <value>Language to Reset</value>
+    <value>to</value>
   </data>
   <data name="resetlangauge.confirm" xml:space="preserve">
     <value>Resetting the langauge will NOT be recoverable. Are You Sure?</value>
   </data>
   <data name="resetlangauge.Text" xml:space="preserve">
     <value>Reset Language</value>
+  </data>
+  <data name="languageresetwarning.Text" xml:space="preserve">
+    <value>WARNING!!! - Your "{tolanguage}" data will be OVERWRITTEN.</value>
   </data>
 </root>
