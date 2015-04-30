@@ -235,6 +235,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<items>";
             foreach (var info in itemList)
             {
+                // check product still exists and remove if deleted, altered or disabled.
+
                 var cartItem = ValidateCartItem(PortalId, UserId, info);
                 if (cartItem != null)
                 {
@@ -369,7 +371,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
 
             var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-            if (!prd.Exists) return null; //Invalid product remove from cart
+            if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)

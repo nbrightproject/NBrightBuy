@@ -86,6 +86,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public bool Exists { get; private set; }
 
+        public Boolean Disabled
+        {
+            get
+            {
+                return Info.GetXmlPropertyBool("genxml/checkbox/chkdisable");
+            }
+        }
+
         public String SEOName
         {
             get
