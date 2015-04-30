@@ -18,6 +18,7 @@ using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using System.Web.Script.Serialization;
+using DotNetNuke.Common.Utilities;
 using NBrightCore.images;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -718,6 +719,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 var objCtrl = new NBrightBuyController();
                 objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
+
+                DataCache.ClearCache();
 
                 return GetProductListData(settings);
 
