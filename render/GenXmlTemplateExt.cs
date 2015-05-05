@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
+using System.Xml.Xsl;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -4814,16 +4815,17 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         #endregion
 
-
         #region "XslInject"
 
         private void CreateXslInject(Control container, XmlNode xmlNod)
         {
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
+                var argslist = "";
+                if (xmlNod.Attributes["argslist"] != null) argslist = xmlNod.Attributes["argslist"].InnerText;
                 var lc = new Literal();
                 lc.DataBinding += XslInjectDataBind;
-                lc.Text  = xmlNod.Attributes["template"].Value;
+                lc.Text  = xmlNod.Attributes["template"].Value + "*" + argslist;                
                 container.Controls.Add(lc);
             }
         }
@@ -4835,12 +4837,21 @@ namespace Nevoweb.DNN.NBrightBuy.render
             lc.Visible = visibleStatus.Last();
             if (lc.Visible && container.DataItem != null)
             {
-                var templName = lc.Text;
-                var buyCtrl = new NBrightBuyController();
-                var xslTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);                
-                var nbi = (NBrightInfo)container.DataItem;
-                var strOut = XslUtils.XslTransInMemory(nbi.XMLData, xslTempl);
-                lc.Text = strOut;
+                var param = lc.Text.Split('*');
+                if (param.Count() == 2)
+                {
+                    var argsList = new XsltArgumentList();
+                    var templName = param[0];
+                    foreach (var arg in param[1].Split(','))
+                    {
+                        if (_settings.ContainsKey(arg)) argsList.AddParam(arg, "", _settings[arg]);
+                    }
+                    var buyCtrl = new NBrightBuyController();
+                    var xslTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
+                    var nbi = (NBrightInfo) container.DataItem;
+                    var strOut = XslUtils.XslTransInMemory(nbi.XMLData, xslTempl, argsList);
+                    lc.Text = strOut;
+                }
             }
         }
 

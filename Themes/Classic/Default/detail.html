@@ -15,34 +15,9 @@
 		<div class="outofstockflag">[<tag type="label" resourcekey="ProductView.outofstockflag" />]</div>
 		[<tag type="endif" />]
   </div>
-	[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-	<ul class="gallery">
-		[<tag type="if" function="imgexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<li class="image2"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[2]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='2' />]" alt="[<tag type='productimgdesc' index='2'  />]" title="[<tag type='productimgdesc' index='2'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
-		<li class="image3"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[3]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='3' />]" alt="[<tag type='productimgdesc' index='3'  />]" title="[<tag type='productimgdesc' index='3'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
-		<li class="image4"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[4]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='4' />]" alt="[<tag type='productimgdesc' index='4'  />]" title="[<tag type='productimgdesc' index='4'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="5" display="{ON}" displayelse="{OFF}" />]
-		<li class="image5"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[5]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='5' />]" alt="[<tag type='productimgdesc' index='5'  />]" title="[<tag type='productimgdesc' index='5'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="6" display="{ON}" displayelse="{OFF}" />]
-		<li class="image6"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[6]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='6' />]" alt="[<tag type='productimgdesc' index='6'  />]" title="[<tag type='productimgdesc' index='6'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="7" display="{ON}" displayelse="{OFF}" />]
-		<li class="image7"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[7]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='7' />]" alt="[<tag type='productimgdesc' index='7'  />]" title="[<tag type='productimgdesc' index='7'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="8" display="{ON}" displayelse="{OFF}" />]
-		<li class="image8"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[8]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='8' />]" alt="[<tag type='productimgdesc' index='8'  />]" title="[<tag type='productimgdesc' index='8'  />]" /></a></li>
-		[<tag type="endif" />]
-		[<tag type="if" function="imgexists" testvalue="9" display="{ON}" displayelse="{OFF}" />]
-		<li class="image9"><a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[9]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicgallerywidth}' h='{Settings:classicgalleryheight}' image='9' />]" alt="[<tag type='productimgdesc' index='9'  />]" title="[<tag type='productimgdesc' index='9'  />]" /></a></li>
-		[<tag type="endif" />]
-	</ul>
-	[<tag type="endif" />]
+  
+      [<tag type="xslinject" template="detailimages.xsl" argslist="classicgallerywidth,classicgalleryheight"/>]
+
 </div>
 	[<tag type="endif" />]
 
