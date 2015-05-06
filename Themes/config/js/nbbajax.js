@@ -25,6 +25,11 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	        } else
 	            $(target).append(data).trigger('change');
 
+	        $.event.trigger({
+	            type: "nbxgetcompleted",
+	            cmd: cmd
+	        });
+
 		    //NBS - Tooltips
 		    $('[data-toggle="tooltip"]').tooltip({
 		    animation : 'true',

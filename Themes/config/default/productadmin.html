@@ -21,7 +21,7 @@
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
-        var url = 'http://dcl1.nevoweboffice.com/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload&itemid=[<tag type="valueof" databind="ItemId" />]';
+        var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload&itemid=[<tag type="valueof" databind="ItemId" />]';
         $('#fileupload').fileupload({
             url: url,
             maxFileSize: 5000000,

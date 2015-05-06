@@ -2,7 +2,7 @@
 (function ($) {
 
     // Usage: var values = $.fn.genxmlajax(selectordiv);
-    // selectordiv: The div selector whcih encapsulates the controls for whcih data will be passed tothe server.
+    // selectordiv: The div selector which encapsulates the controls for which data will be passed to the server.
     $.fn.genxmlajax = function (selectordiv) {
         return getgenxml(selectordiv);
     };
@@ -90,7 +90,12 @@
                 lp++;
                 shortID = nam[nam.length - lp];
             }
-            values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
+
+			var updAttr = $(this).attr("update");
+			var strUpdate = '';
+			if (updAttr != undefined) strUpdate = 'upd="' + updAttr + '"';
+
+            values += '<f t="dd" ' + strUpdate + ' id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
         });
 
         $(selectordiv).children(selectoritemdiv).each(function () {
@@ -110,7 +115,12 @@
                     lp++;
                     shortID = nam[nam.length - lp];
                 }
-                values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
+				
+				var updAttr = $(this).attr("update");
+				var strUpdate = '';
+				if (updAttr != undefined) strUpdate = 'upd="' + updAttr + '"';
+
+                values += '<f t="dd" ' + strUpdate + ' id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
             });
 
             values += '</root>';
@@ -140,7 +150,11 @@
                 lp++;
                 shortID = nam[nam.length - lp];
             }
-            values += '<f t="dd"  id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
+			var updAttr = $(this).attr("update");
+			var strUpdate = '';
+			if (updAttr != undefined) strUpdate = 'upd="' + updAttr + '"';
+
+            values += '<f t="dd" ' + strUpdate + ' id="' + shortID + '" val="' + $(this).val() + '"><![CDATA[' + $('#' + strID + ' option:selected').text() + ']]></f>';
         });
 
         values += '</root>';
@@ -155,6 +169,20 @@
         var values = "";
         var strID = element.attr("id");
         if (strID != undefined) {
+			var parentflag = false;
+	        var updAttr = element.attr("update");
+			var strUpdate = '';
+			if (updAttr != undefined)
+				strUpdate = 'upd="' + updAttr + '"';
+			else
+			{
+				if ($(element).parent() != undefined)
+				{
+					updAttr = $(element).parent().attr("update");
+					if (updAttr != undefined) strUpdate = 'upd="' + updAttr + '"';
+					parentflag = true;
+				}
+			}
 
             var nam = strID.split('_');
             var shortID = nam[nam.length - 1];
@@ -164,19 +192,21 @@
                 shortID = nam[nam.length - lp];
             }
             if (element.attr("type") == 'radio') {
-                values += '<f t="rb"  id="' + shortID + '" val="' + element.attr("value") + '"><![CDATA[' + element.is(':checked') + ']]></f>';
+                values += '<f t="rb" ' + strUpdate + ' id="' + shortID + '" val="' + element.attr("value") + '"><![CDATA[' + element.is(':checked') + ']]></f>';
             } else if (element.attr("type") == 'checkbox') {
-                values += '<f t="cb"  id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
+				var typecode = 'cb';
+				if (parentflag) typecode = 'cbl';
+					values += '<f t="' + typecode + '" ' + strUpdate + ' id="' + shortID + '" for="' + $('label[for=' + strID + ']').text() + '" val="' + element.attr("value") + '">' + element.is(':checked') + '</f>';
             } else if (element.attr("type") == 'text' || element.attr("type") == 'date' || element.attr("type") == 'email' || element.attr("type") == 'url') {
                 if (element.attr("datatype") === undefined) {
-                    values += '<f t="txt"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+                    values += '<f t="txt" ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
                 } else {
-                    values += '<f t="txt"  id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
+                    values += '<f t="txt" ' + strUpdate + ' id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
                 }
             } else if (element.attr("type") == 'hidden') {
-                values += '<f t="hid"  id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+                values += '<f t="hid" ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
             } else {
-                values += '<f id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+                values += '<f ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
             }
         }
 
