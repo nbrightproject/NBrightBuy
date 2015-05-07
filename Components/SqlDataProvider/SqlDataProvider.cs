@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
@@ -164,7 +165,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
 
             connection.Open();
-            var rtnData = Convert.ToString(command.ExecuteScalar());
+            var rtnData = "Error data reader fail";
+            
+            XmlReader dr = command.ExecuteXmlReader();
+            if (dr.Read())
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(dr);
+                rtnData = doc.OuterXml;
+            }
             connection.Close();
             return rtnData;
         }

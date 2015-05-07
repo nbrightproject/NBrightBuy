@@ -483,7 +483,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     strSql = GenXmlFunctions.StripSqlCommands(strSql); // don't allow anything to update through here.
 
                     strOut = objCtrl.GetSqlxml(strSql);
-                    strOut = "<root>" + strOut + "</root>";
+                    if (!strOut.StartsWith("<root>")) strOut = "<root>" + strOut + "</root>"; // always wrap with root node.
                     strOut = XslUtils.XslTransInMemory(strOut, xslTemp);
                 }
 
