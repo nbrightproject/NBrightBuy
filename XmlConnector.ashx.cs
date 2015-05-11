@@ -34,7 +34,7 @@ namespace Nevoweb.DNN.NBrightBuy
         public void ProcessRequest(HttpContext context)
         {
             #region "Initialize"
-            
+
             var strOut = "";
 
             var paramCmd = Utils.RequestQueryStringParam(context, "cmd");
@@ -66,6 +66,8 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!string.IsNullOrEmpty(lang)) _lang = lang;
             // default to current thread if we have no language.
             if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_lang);
 
             #endregion
 
