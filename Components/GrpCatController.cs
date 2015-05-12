@@ -560,8 +560,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcatList.Add(grpcat);
             }
 
+            // we don;t have the depth number at this point, so use recussive call to calc it.
+            CalcCategoryDepthList(grpcatList, 0, 0);
+
             return grpcatList;
 
+        }
+
+        private void CalcCategoryDepthList(List<GroupCategoryData> grpCatList, int level, int parentid)
+        {
+            if (level < 50) // stop any possiblity of infinite loop
+            {
+                var lenum = from i in grpCatList where i.parentcatid == parentid select i;
+                foreach (GroupCategoryData tInfo in lenum)
+                {
+                    tInfo.depth = level;
+                    CalcCategoryDepthList(grpCatList, level + 1, tInfo.categoryid);
+                }
+            }
         }
 
         private void AddCatCascadeRecord(int categoryid,int productid)
