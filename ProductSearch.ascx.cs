@@ -113,9 +113,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 switch (e.CommandName.ToLower())
                 {
                     case "search":
-                        var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
                         foreach (var targ in targlist)
                         {
+                            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
                             var navigationData = new NavigationData(PortalId, targ);
                             navigationData.Build(strXml, _templD);
                             navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
