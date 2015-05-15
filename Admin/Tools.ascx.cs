@@ -156,33 +156,33 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 if (GenXmlFunctions.GetField(rpData, "clearproducts") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'PRD' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'PRDLANG' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'PRDXREF' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATCASCADE' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATXREF' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     done = true;
                 }
 
                 if (GenXmlFunctions.GetField(rpData, "clearcategories") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY' and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = 'cat' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORYLANG' and ParentItemId not in (Select itemid from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY') ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     done = true;
                 }
 
                 if (GenXmlFunctions.GetField(rpData, "clearpropertiesonly") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY' and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORYLANG' and ParentItemId not in (Select itemid from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY') ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     done = true;
                 }
 
@@ -190,14 +190,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 if (GenXmlFunctions.GetField(rpData, "clearproperties") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY' and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORYLANG' and ParentItemId not in (Select itemid from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATEGORY') ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
 
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'GROUP' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'GROUPLANG' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
 
                     done = true;
                 }
@@ -205,7 +205,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 if (GenXmlFunctions.GetField(rpData, "clearorders") == "True")
                 {
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'ORDER' ";
-                    objCtrl.GetSqlxml(stmt);
+                    objCtrl.ExecSql(stmt);
                     done = true;
                 }
 
@@ -233,7 +233,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var strDate = d.ToString("s");
                 var stmt = "";
                 stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CART' and ModifiedDate < '" + strDate + "' ";
-                objCtrl.GetSqlxml(stmt);
+                objCtrl.ExecSql(stmt);
             }
         }
 

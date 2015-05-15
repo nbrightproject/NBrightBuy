@@ -82,6 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang);
 		public abstract void Delete(int ItemID);
 		public abstract void CleanData();
+        public abstract string ExecSql(string commandText);
         public abstract string GetSqlxml(string commandText);
         public abstract IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
         public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");

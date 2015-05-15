@@ -227,6 +227,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return DataProvider.Instance().GetSqlxml(commandText);
         }
 
+        /// <summary>
+        /// exec sql
+        /// </summary>
+        /// <param name="commandText"></param>
+        /// <returns></returns>
+        public string ExecSql(string commandText)
+        {
+            return DataProvider.Instance().ExecSql(commandText);
+        }
+
 
         /* *********************  list Data Gets ********************** */
 

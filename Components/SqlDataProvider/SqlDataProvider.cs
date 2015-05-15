@@ -154,6 +154,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_CleanData");
         }
 
+        public override String ExecSql(string commandText)
+        {
+            return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
+        }
+
         public override String GetSqlxml(string commandText)
         {
             // With the XML return we often want a large data return, so we need to increase the default command timout.

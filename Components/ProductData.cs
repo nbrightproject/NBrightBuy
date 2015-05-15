@@ -901,6 +901,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             {
                                 nbi = new NBrightInfo();
                                 nbi.ItemID = -1;
+                                nbi.PortalId = _portalId;
+                                nbi.ModuleId = -1;
                                 nbi.XrefItemId = p;
                                 nbi.ParentItemId = Info.ItemID;
                                 nbi.TypeCode = "CATCASCADE";
@@ -930,7 +932,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-            objCtrl.GetSqlxml(stmt);
+            objCtrl.ExecSql(stmt);
             //remove all cascade xref 
             var objGrpCtrl = new GrpCatController(_lang, true);
             var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
@@ -955,7 +957,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (deleterecord)
                         {
                             stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
-                            objCtrl.GetSqlxml(stmt);
+                            objCtrl.ExecSql(stmt);
                         }
 
                     }
@@ -997,7 +999,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-            objCtrl.GetSqlxml(stmt);
+            objCtrl.ExecSql(stmt);
         }
 
 
