@@ -349,7 +349,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var total = (subtotalcost + shippingcost + appliedtax);
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, (total - totaldiscount), (dealertotal - totaldealerdiscount)));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
 
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
