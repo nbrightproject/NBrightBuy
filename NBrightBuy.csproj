@@ -177,6 +177,7 @@
     <Compile Include="Components\AddressData.cs" />
     <Compile Include="Components\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
+    <Compile Include="Components\CatProdXref.cs" />
     <Compile Include="Components\GroupData.cs" />
     <Compile Include="Components\Interfaces\SchedulerInterface.cs" />
     <Compile Include="Components\Interfaces\DiscountCodeInterface.cs" />
@@ -452,11 +453,6 @@
     <Content Include="Themes\Classic\Default\relatedlist.html" />
     <Content Include="Themes\Classic\img\email-facebook.gif" />
     <Content Include="Themes\Classic\img\email-twitter.gif" />
-    <Content Include="Themes\Classic\js\imagelightbox.nbb.js" />
-    <Content Include="Themes\Classic\js\jquery.navgoco.js" />
-    <Content Include="Themes\Classic\js\jquery.navgoco.min.js" />
-    <Content Include="Themes\Classic\js\jquery.responsiveTabs.min.js" />
-    <Content Include="Themes\Classic\js\product.js" />
     <Content Include="Themes\config\css\backoffice.css" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\addressbookbody.html" />
@@ -555,9 +551,16 @@
     <Content Include="Themes\config\default\ProfileForm_Settings.html" />
     <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\config\js\categoryajax.js" />
+    <Content Include="Themes\config\js\imagesloaded.pkgd.min.js" />
+    <Content Include="Themes\config\js\jquery.datepick.xlang.eur.js" />
+    <Content Include="Themes\config\js\jquery.fileupload.js" />
     <Content Include="Themes\config\js\jquery.genxmlajax.js" />
+    <Content Include="Themes\config\js\jquery.storage.js" />
+    <Content Include="Themes\config\js\jquery.validate.min.js" />
+    <Content Include="Themes\config\js\masonry.pkgd.min.js" />
     <Content Include="Themes\config\js\nbbajax.js" />
     <Content Include="Themes\config\js\nbbitemlist.js" />
+    <Content Include="Themes\config\js\nbbqtycookie.js" />
     <Content Include="Themes\config\js\productajax.js" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
@@ -690,6 +693,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NBrightThumb.ashx" />
+    <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -702,17 +706,20 @@
       <Name>NBrightDNN</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\Classic\js\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\bin\$(TargetFileName)"
+    <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"
 
-copy "$(AssemblyName).pdb" "..\..\..\..\bin\$(AssemblyName).pdb"
+copy "$(AssemblyName).pdb" "..\..\..\..\..\bin\$(AssemblyName).pdb"
 
-copy "NBrightCore.dll" "..\..\..\..\bin\NBrightCore.dll"
+copy "NBrightCore.dll" "..\..\..\..\..\bin\NBrightCore.dll"
 
-copy "NBrightCore.pdb" "..\..\..\..\bin\NBrightCore.pdb"
-copy "NBrightDNN.dll" "..\..\..\..\bin\NBrightDNN.dll"
-copy "NBrightDNN.pdb" "..\..\..\..\bin\NBrightDNN.pdb"
+copy "NBrightCore.pdb" "..\..\..\..\..\bin\NBrightCore.pdb"
+copy "NBrightDNN.dll" "..\..\..\..\..\bin\NBrightDNN.dll"
+copy "NBrightDNN.pdb" "..\..\..\..\..\bin\NBrightDNN.pdb"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

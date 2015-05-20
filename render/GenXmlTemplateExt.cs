@@ -350,7 +350,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 NBrightInfo info;
                                 
                 ProductData prodData;
-
+                CatProdXref xrefData;
+ 
                 var xmlDoc = new XmlDocument();
                 CartData currentcart;
 
@@ -481,8 +482,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             break;
                         case "hasproperty":
                             info = (NBrightInfo) container.DataItem;
-                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                            if (prodData.HasProperty(testValue))
+                            xrefData = new CatProdXref();
+                            if (xrefData.IsProductInCategory(info.ItemID,testValue))
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
@@ -490,8 +491,8 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             break;
                         case "isincategory":
                             info = (NBrightInfo) container.DataItem;
-                            prodData = ProductUtils.GetProductData(info.ItemID, info.Lang);
-                            if (prodData.IsInCategory(testValue))
+                            xrefData = new CatProdXref();
+                            if (xrefData.IsProductInCategory(info.ItemID,testValue))
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
