@@ -1044,7 +1044,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var prov = d.Value;
                 ObjectHandle handle = null;
-                handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                var cachekey = prov.PortalId + "*" + prov.GetXmlProperty("genxml/textbox/assembly") + "*" + prov.GetXmlProperty("genxml/textbox/namespaceclass");
+                handle = (ObjectHandle)Utils.GetCache(cachekey);
+                if (handle == null) handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
                 if (handle != null)
                 {
                     var eventprov = (EventInterface) handle.Unwrap();

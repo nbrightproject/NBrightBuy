@@ -236,16 +236,21 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     if (menutype == "treeview")
                     {
-                        var catidtree = 0;
-                        if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
+                        var cachekey = "CatMenu*" + ModuleId.ToString("");
+                        var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
+                        if (strOut == null)
+                        {
+                            var catidtree = 0;
+                            if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
 
-                        rpData.Visible = false;
-                        var catBuiler = new CatMenuBuilder(_templD, ModSettings, catid, DebugMode);
-                        var strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid), ModSettings.Get("treeidentclass"), ModSettings.Get("treerootclass"));
+                            rpData.Visible = false;
+                            var catBuiler = new CatMenuBuilder(_templD, ModSettings, catid, DebugMode);
+                            strOut = catBuiler.GetTreeCatList(50, catidtree, Convert.ToInt32(_tabid), ModSettings.Get("treeidentclass"), ModSettings.Get("treerootclass"));
 
-                        // if debug , output the html used.
-                        if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html", strOut);
-
+                            // if debug , output the html used.
+                            if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "debug_treemenu.html", strOut);
+                            NBrightBuyUtils.SetModCache(ModuleId,cachekey, strOut);
+                        }
                         var l = new Literal {Text = strOut};
                         phData.Controls.Add(l);
                     }

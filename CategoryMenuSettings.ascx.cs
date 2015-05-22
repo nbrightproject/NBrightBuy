@@ -28,6 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 base.UpdateSettings();
+                NBrightBuyUtils.RemoveModCache(ModuleId);
                 UpdateData();
             }
             catch (Exception exc)
