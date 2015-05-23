@@ -286,8 +286,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                 }
                 // clear any cache for the product.
-                var prddata = new ProductData(Convert.ToInt32(productitemid), _lang);
-                prddata.ClearCache();
+                ProductUtils.RemoveProductDataCache(Convert.ToInt32(productitemid), _lang);
                 var cachekey = "AjaxProductImgs*" + productitemid;
                 Utils.RemoveCache(cachekey);
 
@@ -554,7 +553,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
             {
-                var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                 prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
             }
         }
@@ -570,7 +569,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
                 }
                 else
@@ -1232,7 +1231,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
                     return GetProductCategories(context);
                 }
@@ -1255,7 +1254,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
                     return GetProductGroupCategories(context);
                 }
@@ -1278,7 +1277,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.SetDefaultCategory(Convert.ToInt32(xrefitemid));
                     return GetProductCategories(context);
                 }
@@ -1301,7 +1300,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
                     return GetProductCategories(context);
                 }
@@ -1324,7 +1323,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedcatid")) xrefitemid = settings["selectedcatid"];
                 if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(parentitemid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
                     return GetProductGroupCategories(context);
                 }
@@ -1347,7 +1346,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedrelatedid")) selectedrelatedid = settings["selectedrelatedid"];
                 if (Utils.IsNumeric(productid) && Utils.IsNumeric(selectedrelatedid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(productid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
                     prodData.RemoveRelatedProduct(Convert.ToInt32(selectedrelatedid));
                     return GetProductRelated(context);
                 }
@@ -1370,11 +1369,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (settings.ContainsKey("selectedrelatedid")) selectedrelatedid = settings["selectedrelatedid"];
                 if (Utils.IsNumeric(selectedrelatedid) && Utils.IsNumeric(productid))
                 {
-                    var prodData = new ProductData(Convert.ToInt32(productid), _lang, false);
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
                     if (prodData.Exists) prodData.AddRelatedProduct(Convert.ToInt32(selectedrelatedid));
 
                     // do bi-direction
-                    var prodData2 = new ProductData(Convert.ToInt32(selectedrelatedid), _lang, false);
+                    var prodData2 = ProductUtils.GetProductData(Convert.ToInt32(selectedrelatedid), _lang, false);
                     if (prodData2.Exists) prodData2.AddRelatedProduct(Convert.ToInt32(productid));
 
                     return GetProductRelated(context);

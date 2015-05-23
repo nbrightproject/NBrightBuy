@@ -94,7 +94,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Utils.IsNumeric(_entryid)) 
                 {
                     // Get catid from product
-                    var prodData = new ProductData(Convert.ToInt32(_entryid), Utils.GetCurrentCulture());
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(_entryid), Utils.GetCurrentCulture());
                     var catDef = prodData.GetDefaultCategory();
                     if (catDef != null) _catid = catDef.categoryid.ToString("");
                 }

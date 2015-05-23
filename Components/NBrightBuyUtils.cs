@@ -200,7 +200,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 if (Utils.IsNumeric(entryid))
                 {
-                    var prdData = new ProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
                     if (!strurl.Contains("catref="))
                     {
                         var defcat = prdData.GetDefaultCategory();
@@ -228,7 +228,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (!strurl.Contains("catid="))
                     {
-                        var prdData = new ProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                        var prdData = ProductUtils.GetProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
                         var defcat = prdData.GetDefaultCategory();
                         if (defcat != null && defcat.categoryid > 0 && !strurl.EndsWith("?"))
                         {
@@ -997,7 +997,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prodList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");
             foreach (var p in prodList)
             {
-                var prodData = new ProductData(p.ItemID, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(p.ItemID, StoreSettings.Current.EditLanguage);
                 errcount += prodData.Validate();
             }
 

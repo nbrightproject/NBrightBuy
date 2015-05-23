@@ -190,7 +190,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public GroupCategoryData GetDefaultCategory(int productid, String lang = "")
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
-            var prodData = new ProductData(productid, lang);
+            var prodData = ProductUtils.GetProductData(productid, lang);
             return prodData.GetDefaultCategory();
         }
 

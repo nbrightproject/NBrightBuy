@@ -370,7 +370,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
 
-            var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+            var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart

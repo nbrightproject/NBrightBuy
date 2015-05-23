@@ -449,19 +449,44 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return mcList;
         }
 
-        public static ProductData GetProductData(String productid, String lang, Boolean debugMode = false)
+        /// <summary>
+        /// Gte ProductData class with cacheing
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="lang"></param>
+        /// <param name="hydrateLists"></param>
+        /// <returns></returns>
+        public static ProductData GetProductData(int productId, String lang, Boolean hydrateLists = true)
         {
-            if (Utils.IsNumeric(productid)) return GetProductData(Convert.ToInt32(productid), lang, debugMode);
-            return null;
+            ProductData prdData;
+            var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
+            prdData = (ProductData)Utils.GetCache(cacheKey);
+            if (prdData == null)
+            {
+                prdData = new ProductData(productId, lang, hydrateLists);
+                Utils.SetCache(cacheKey, prdData);
+            }
+            return prdData;
         }
 
-	    public static ProductData GetProductData(int productid, String lang, Boolean debugMode = false)
+	    public static ProductData GetProductData(String productId, String lang, Boolean hydrateLists = true)
 	    {
-	        if (debugMode) return new ProductData(productid, lang, true);
-	        var cacheKey = "NBSProductData*" + productid.ToString("") + "*" + lang;
-	        var prodData = (ProductData)Utils.GetCache(cacheKey);
-	        if (prodData == null) prodData = new ProductData(productid, lang, true);
-	        return prodData;
+	        if (Utils.IsNumeric(productId))
+	        {
+	            return GetProductData(Convert.ToInt32(productId),lang,hydrateLists);
+	        }
+	        return null;
+	    }
+
+        public static void RemoveProductDataCache(String productId, String lang)
+        {
+            if (Utils.IsNumeric(productId)) RemoveProductDataCache(Convert.ToInt32(productId), lang);
+        }
+
+	    public static void RemoveProductDataCache(int productId, String lang)
+	    {
+            var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
+	        Utils.RemoveCache(cacheKey);
 	    }
 	}
 }

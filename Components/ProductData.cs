@@ -379,35 +379,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord = objCtrl.Get(productid); 
             DataLangRecord = objCtrl.Get(plangid); 
             
-            ResetCache();
+            ProductUtils.RemoveProductDataCache(DataRecord.ItemID,_lang);
 
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
         }
 
         public void Delete()
         {
+            // remove any cache
+            ProductUtils.RemoveProductDataCache(DataRecord.ItemID, _lang);
+            //delete and allow DB to cascade delete
             var objCtrl = new NBrightBuyController();
             objCtrl.Delete(DataRecord.ItemID);
-            ResetCache();
-        }
-
-        public void ClearCache()
-        {
-            var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-            Utils.RemoveCache(cacheKey);
-        }
-
-        public void ResetCache()
-        {
-            if (Info != null)
-            {
-                LoadData(Info.ItemID);
-                if (Info != null)
-                {
-                    var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-                    Utils.SetCache(cacheKey, this);
-                }
-            }
         }
 
         public void Update(String xmlData)
@@ -1007,7 +990,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (resetToLang != DataLangRecord.Lang)
             {
-                var resetToLangData = new ProductData(DataRecord.ItemID, resetToLang);
+                var resetToLangData = ProductUtils.GetProductData(DataRecord.ItemID, resetToLang);
                 var objCtrl = new NBrightBuyController();
                 DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
                 objCtrl.Update(DataLangRecord);                

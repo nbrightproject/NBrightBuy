@@ -172,7 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = "***ERROR***  Invalid Data";
             if (Utils.IsNumeric(entryId) && entryId != "0")
             {
-                var prodData = new ProductData(Convert.ToInt32(entryId),Utils.GetCurrentCulture());
+                var prodData = ProductUtils.GetProductData(Convert.ToInt32(entryId),Utils.GetCurrentCulture());
                 if (prodData.Exists)
                 {
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);

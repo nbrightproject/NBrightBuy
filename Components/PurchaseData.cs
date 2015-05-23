@@ -171,7 +171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
@@ -193,7 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
 
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
@@ -214,7 +214,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
 
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);

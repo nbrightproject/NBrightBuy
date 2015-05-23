@@ -252,7 +252,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
                     foreach (var i in l)
                     {
-                        var prdData = new ProductData(i.ItemID, languagetoreset);
+                        var prdData = ProductUtils.GetProductData(i.ItemID, languagetoreset);
                         prdData.ResetLanguage(languageresetto);
                     }
 

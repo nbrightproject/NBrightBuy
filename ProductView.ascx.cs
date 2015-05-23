@@ -123,7 +123,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if we have entry detail display, but no catd, get the default one.
                 if (_displayentrypage && _catid == "" && Utils.IsNumeric(_eid))
                 {
-                    var prdData = new ProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
+                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
                     var defcat = prdData.GetDefaultCategory();
                     if (defcat != null) _catid = defcat.categoryid.ToString("");
                 }
@@ -163,8 +163,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 //-------------------------------------------------------------------------
 
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                _templateHeader = (GenXmlTemplate)rpDataH.ItemTemplate;
+                var cachekey = "GenXmlTemplate*rpDataH" + _templH + "*" + ModuleId.ToString();
+                _templateHeader = (GenXmlTemplate)Utils.GetCache(cachekey);
+                if (_templateHeader == null || StoreSettings.Current.DebugMode)
+                {
+                    _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                }
+                rpDataH.ItemTemplate = _templateHeader;
 
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
@@ -176,11 +181,24 @@ namespace Nevoweb.DNN.NBrightBuy
                 // always add a productid hidden field to the data template (for add to cart)
                 rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
 
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                cachekey = "GenXmlTemplate*rpData" + _templD + "*" + ModuleId.ToString();
+                var gXml = (GenXmlTemplate)Utils.GetCache(cachekey);
+                if (gXml == null || StoreSettings.Current.DebugMode)
+                {
+                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);                    
+                }
+                rpData.ItemTemplate = gXml;
 
                 // Get Display Footer
                 var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
+
+                cachekey = "GenXmlTemplate*rpDataF" + _templF + "*" + ModuleId.ToString();
+                gXml = (GenXmlTemplate)Utils.GetCache(cachekey);
+                if (gXml == null || StoreSettings.Current.DebugMode)
+                {
+                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                }
+                rpDataF.ItemTemplate = gXml;
 
 
             }
@@ -251,7 +269,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     #region "Order BY"
                     // get orderby from header if it's there
-                    _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH); 
+                    var cachekey = "GetSqlOrderBy*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    _strOrder = (String)Utils.GetCache(cachekey);
+                    if (_strOrder == null || StoreSettings.Current.DebugMode)
+                    {
+                        _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH);
+                    }
+
                     //Default orderby if not set
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
                     // NOTE: This setting may be overwritten by the navigatedata class in the filter setup
@@ -297,7 +321,13 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         // check the display header to see if we have a sqlfilter defined.
                         var strFilter = "";
-                        var strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                        cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
+                        var strHeaderFilter = (String)Utils.GetCache(cachekey);
+                        if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
+                        {
+                            strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                        }
+                        
                         // filter mode and will persist past category selection.
                         if ((_catid == "" && _catname == ""))
                         {
@@ -370,7 +400,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             _catid = objCat.ParentItemId.ToString("");
                             if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
                             {
-                                // do a 301 redirect to correct url forhte langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                                // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
                                 var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
                                 var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
                                 if (activeCat != null)
@@ -378,7 +408,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                     var redirecturl = "";
                                     if (Utils.IsNumeric(_eid))
                                     {
-                                        var prdData = new ProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
+                                        var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
                                         redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
                                     }
                                     else
@@ -638,7 +668,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (Utils.IsNumeric(idx) && Utils.IsNumeric(itemid))
                         {
                             var index = Convert.ToInt32(idx);
-                            var prdData = new ProductData(Convert.ToInt32(itemid), Utils.GetCurrentCulture());
+                            var prdData = ProductUtils.GetProductData(Convert.ToInt32(itemid), Utils.GetCurrentCulture());
                             if (prdData.Docs.Count >= index)
                             {
                                 var docInfo = prdData.Docs[index -1];
