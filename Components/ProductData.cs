@@ -188,7 +188,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var model = GetModel(modelid);
             var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining");
             newqty = newqty - qty;
-            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining", newqty);
+            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining", newqty);            
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void SetDefaultCategory(int categoryid)
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             DataRecord.SetXmlProperty("genxml/defaultcatid", categoryid.ToString());
             objCtrl.Update(DataRecord);
         }
@@ -325,7 +325,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> GetRelatedProducts()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var strSelectedIds = "";
             var arylist = objCtrl.GetList(_portalId, -1, "PRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
@@ -370,7 +370,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
             DataLangRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
 
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var productid = objCtrl.Update(DataRecord);
             DataLangRecord.ParentItemId = productid;
             var plangid = objCtrl.Update(DataLangRecord);
@@ -379,8 +379,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord = objCtrl.Get(productid); 
             DataLangRecord = objCtrl.Get(plangid); 
             
-            ProductUtils.RemoveProductDataCache(DataRecord.ItemID,_lang);
-
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
         }
 
@@ -389,7 +387,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // remove any cache
             ProductUtils.RemoveProductDataCache(DataRecord.ItemID, _lang);
             //delete and allow DB to cascade delete
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             objCtrl.Delete(DataRecord.ItemID);
         }
 
@@ -835,7 +833,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void AddProperty(String propertyref)
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var pinfo = objCtrl.GetByGuidKey(_portalId, -1,"CATEGORY",propertyref);
             if (pinfo == null)
             {
@@ -851,7 +849,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Info != null)
             {
                 var strGuid = categoryid.ToString("") + "x" + Info.ItemID.ToString("");
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 var nbi = objCtrl.GetByGuidKey(_portalId, -1, "CATXREF", strGuid);
                 if (nbi == null)
                 {
@@ -903,7 +901,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void RemoveCategory(int categoryid)
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && categoryid == Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid")))
             {
                 DataRecord.SetXmlProperty("genxml/defaultcatid", "");
@@ -954,7 +952,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (productid!= Info.ItemID)  //cannot be related to itself
             {
                 var strGuid = productid.ToString("") + "x" + Info.ItemID.ToString("");
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 var nbi = objCtrl.GetByGuidKey(_portalId, -1, "PRDXREF", strGuid);
                 if (nbi == null)
                 {
@@ -978,7 +976,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var parentitemid = Info.ItemID.ToString("");
             var xrefitemid = productid.ToString("");
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
@@ -991,7 +989,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (resetToLang != DataLangRecord.Lang)
             {
                 var resetToLangData = ProductUtils.GetProductData(DataRecord.ItemID, resetToLang);
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
                 objCtrl.Update(DataLangRecord);                
             }
@@ -1001,7 +999,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var errorcount = 0;
 
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             SetGuidKey();
             objCtrl.Update(DataRecord);
@@ -1090,7 +1088,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Copy()
         {
 
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             //Copy Base record 
             var dr = (NBrightInfo)DataRecord.Clone();
@@ -1173,7 +1171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private string GetUniqueGuidKey(int productId, string newGUIDKey)
         {
             // make sure we have a unique guidkey
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var doloop = true;
             var lp = 1;
             var testGUIDKey = newGUIDKey.ToLower();
@@ -1197,7 +1195,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void LoadData(int productId, Boolean hydrateLists = true)
         {
             Exists = false;
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             if (productId == -1) productId = AddNew(); // add new record if -1 is used as id.
             Info = objCtrl.Get(productId, "PRDLANG", _lang);
             if (Info != null)
@@ -1246,7 +1244,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.ItemID = -1;
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
             nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))

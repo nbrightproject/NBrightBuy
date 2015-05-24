@@ -236,12 +236,13 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     if (menutype == "treeview")
                     {
-                        var cachekey = "CatMenu*" + ModuleId.ToString("");
+                        var catidtree = 0;
+                        if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
+
+                        var cachekey = "CatMenu*" + ModuleId.ToString("") + "*" + catid + "*" + catidtree.ToString();
                         var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
                         if (strOut == null)
                         {
-                            var catidtree = 0;
-                            if (Utils.IsNumeric(ModSettings.Get("defaultcatid"))) catidtree = Convert.ToInt32(ModSettings.Get("defaultcatid"));
 
                             rpData.Visible = false;
                             var catBuiler = new CatMenuBuilder(_templD, ModSettings, catid, DebugMode);

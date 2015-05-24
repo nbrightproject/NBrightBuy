@@ -156,6 +156,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
 
                 NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                ProductUtils.RemoveProductDataCache(productid, StoreSettings.Current.EditLanguage);
 
                 
             }
@@ -168,6 +169,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
                 prodData.Delete();
                 NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                ProductUtils.RemoveProductDataCache(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
             }
         }
 
@@ -191,6 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                 }
                 prodData.Save();
+                ProductUtils.RemoveProductDataCache(newid, StoreSettings.Current.EditLanguage);
                 return newid.ToString("");
             }
             return "";

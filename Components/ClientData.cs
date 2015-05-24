@@ -130,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (_userInfo != null)
             {
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 var strFilter = " and UserId = " + _userInfo.UserID.ToString("") + " ";
                 var recordcount = objCtrl.GetListCount(PortalId, -1, "ORDER", strFilter);
                 if (recordcount == 0) // don't remove if we have orders
@@ -181,7 +181,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             objCtrl.Update(DataRecord);
         }
 
@@ -244,7 +244,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
 
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));
                 if (DataRecord == null)
                 {

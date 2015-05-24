@@ -153,7 +153,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
             
@@ -165,7 +165,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objGrpCtrl.ReIndexCascade(DataRecord.ItemID); // reindex self
                 objGrpCtrl.Reload();
             }
-            NBrightBuyUtils.RemoveModCachePortalWide(_portalId);
 
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterCategorySave, DataRecord);
         }
@@ -221,8 +220,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (resetToLang != DataLangRecord.Lang)
             {
-                var resetToLangData = new CategoryData(DataRecord.ItemID, resetToLang);
-                var objCtrl = new NBrightBuyController();
+                var resetToLangData = CategoryUtils.GetCategoryData(DataRecord.ItemID, resetToLang);
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
                 objCtrl.Update(DataLangRecord);
             }
@@ -230,7 +229,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> GetDirectChildren()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var l = objCtrl.GetList(_portalId, -1, "CATEGORY", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             return l;
         }
@@ -238,13 +237,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Validate()
         {
             var errorcount = 0;
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             // default any undefined group type as category (I think quickcategory v1.0.0 plugin causes this)
             if (DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype") == "")
             {
                 DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
-                Save();
+                objCtrl.Update(DataRecord);
             }
 
             if (GroupType == "cat")
@@ -344,28 +343,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // Build langauge refs
             if (GroupType == "cat")
             {
-                foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
+                var updaterequired = CategoryUtils.ValidateLangaugeRef(_portalId,CategoryId);
+                if (updaterequired)
                 {
-                    var parentCatData = new CategoryData(CategoryId, lang);
-                    var grpCatCtrl = new GrpCatController(lang);
-                    var newGuidKey = grpCatCtrl.GetBreadCrumb(CategoryId, 0, "-", false);
-                    if (newGuidKey != "")
-                        newGuidKey = GetUniqueGuidKey(CategoryId, Utils.UrlFriendly(newGuidKey)).ToLower();
-                    if (parentCatData.DataLangRecord.GUIDKey != newGuidKey)
-                    {
-                        parentCatData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
-                        parentCatData.DataLangRecord.GUIDKey = newGuidKey;
-                        objCtrl.Update(parentCatData.DataLangRecord);
-                        // need to update all children, so call validate recursive.
-                        foreach (var ch in parentCatData.GetDirectChildren())
-                        {
-                            var childCatData = new CategoryData(ch.ItemID, lang);
-                            childCatData.Validate();
-                        }
-                    }
+                    // the catref has been updated, so reload the datarecord
+                    DataLangRecord = objCtrl.GetDataLang(CategoryId, _lang);
                 }
             }
-
 
             // fix groups with mismatching ddlgrouptype
             if (GroupType != "cat")
@@ -392,35 +376,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region " private functions"
 
-        private string GetUniqueGuidKey(int categoryId, string newGUIDKey)
-        {
-            // make sure we have a unique guidkey
-            var objCtrl = new NBrightBuyController();
-            var doloop = true;
-            var lp = 1;
-            var testGUIDKey = newGUIDKey.ToLower();
-            while (doloop)
-            {
-                var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATEGORY", testGUIDKey);
-                if (obj != null && obj.ItemID != categoryId)
-                {
-                    testGUIDKey = newGUIDKey + lp;
-                }
-                else
-                    doloop = false;
-
-                lp += 1;
-                if (lp > 999) doloop = false; // make sure we never get a infinate loop
-            }
-            return testGUIDKey;
-        }
-
-
         private void LoadData(int categoryId)
         {
             Exists = false;
             if (categoryId == -1) categoryId = AddNew(); // add new record if -1 is used as id.
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             if (_lang == "") _lang = Utils.GetCurrentCulture();
             Info = objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
             if (Info != null)
@@ -451,7 +411,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
             nbi.SetXmlPropertyDouble("genxml/hidden/recordsortorder", 99999);
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))

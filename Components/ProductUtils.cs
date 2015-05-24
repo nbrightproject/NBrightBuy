@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(parentItemId))
             {
 
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
                 var templCtrl = new TemplateController(controlMapPath);
 
@@ -232,7 +232,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 foreach (var xrefName in xrefList)
                 {
-                    var objCtrl = new NBrightBuyController();
+                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                     var objPInfo = objCtrl.Get(Convert.ToInt32(itemId));
                     if (objPInfo != null)
                     {
@@ -271,7 +271,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     NBrightBuyUtils.RemoveModCache(-1);
                 }
 
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
                 var templCtrl = new TemplateController(controlMapPath);
 
@@ -324,7 +324,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static NBrightInfo CalculateModels(NBrightInfo objInfo,String controlMapPath)
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var optList = new List<NBrightInfo>();
 
             // get list of active options for product models
@@ -450,7 +450,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
-        /// Gte ProductData class with cacheing
+        /// Get ProductData class with cacheing
         /// </summary>
         /// <param name="productId"></param>
         /// <param name="lang"></param>

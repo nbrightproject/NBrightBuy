@@ -67,7 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
         }
@@ -75,7 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Validate()
         {
             var errorcount = 0;
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             DataRecord.ValidateXmlFormat();
             if (DataLangRecord == null)
@@ -171,7 +171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             Exists = false;
             if (groupId == -1) AddNew(); // add new record if -1 is used as id.
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             Info = objCtrl.Get(groupId, "GROUPLANG", _lang);
             if (Info != null)
             {
@@ -188,7 +188,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.TypeCode = "GROUP";
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))

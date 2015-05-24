@@ -155,8 +155,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var selecteditemid = GenXmlFunctions.GetField(rpDataH, "selecteditemid");
             if (Utils.IsNumeric(selecteditemid))
             {
-                var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
-                var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
+                var movData = CategoryUtils.GetCategoryData(itemId, StoreSettings.Current.EditLanguage);
+                var selData = CategoryUtils.GetCategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
                 var neworder = movData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 var selorder = selData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 if (neworder < selorder)
@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var recordsortorder = catinfo.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 if (recordsortorder != lp)
                 {
-                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    var catData = CategoryUtils.GetCategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
                     catData.DataRecord.SetXmlPropertyDouble("genxml/hidden/recordsortorder", lp);
                     ModCtrl.Update(catData.DataRecord);
                 }

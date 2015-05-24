@@ -61,7 +61,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
 
                 var sql = "SELECT NB1.ParentItemId as productid ,NB1.XrefItemId as categoryid,nb2.GUIDKey as categoryref FROM " + dbOwner + "[" + objQual + "NBrightBuy] as NB1 inner join " + dbOwner + "[" + objQual + "NBrightBuy] as NB2 on nb2.ItemId = nb1.XrefItemId where nb1.typecode = 'CATCASCADE' or nb1.typecode = 'CATXREF' for xml path('item'), root('root')";
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 var strOut = objCtrl.GetSqlxml(sql);
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(strOut);

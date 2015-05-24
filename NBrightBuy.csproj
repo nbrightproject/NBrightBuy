@@ -172,6 +172,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\CartData.cs" />
+    <Compile Include="Components\CategoryUtils.cs" />
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />

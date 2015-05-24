@@ -53,7 +53,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.RemoveXmlNode("genxml/items");
             PurchaseInfo.AddXmlNode(strXml, "items", "genxml");
 
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             PurchaseInfo.ItemID = _entryId;
             PurchaseInfo.PortalId = PortalId;
             PurchaseInfo.ModuleId = -1;
@@ -72,7 +72,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void TurnOffEditMode()
         {
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             EditMode = "";
             _entryId = modCtrl.Update(PurchaseInfo);
         }
@@ -506,7 +506,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void DeleteCart()
         {
             //remove DB record
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             modCtrl.Delete(_entryId);
         }
 
@@ -964,7 +964,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _entryId = entryId;
             //populate cart data
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             PurchaseInfo = modCtrl.Get(Convert.ToInt32(_entryId));
             if (PurchaseInfo == null)
             {

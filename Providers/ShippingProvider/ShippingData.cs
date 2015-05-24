@@ -49,7 +49,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 Info.AddXmlNode(strXML, "list", "genxml");
                 if (Info != null)
                 {
-                    var modCtrl = new NBrightBuyController();
+                    var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
                     Info.ItemID = modCtrl.Update(Info);
                 }
         }
@@ -188,7 +188,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void PopulateData(String shippingkey)
         {
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             Info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shippingkey);
             if (Info == null)
             {

@@ -136,6 +136,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public override int Update(NBrightInfo objInfo)
         {
+            // clear any cache data that might be there
+            var strCacheKey = "GetByGudKey*" + objInfo.ModuleId.ToString("") + "*" + objInfo.PortalId.ToString("") + "*" + objInfo.TypeCode + "*" + objInfo.UserId + "*" + objInfo.GUIDKey;
+            Utils.RemoveCache(strCacheKey);
+            strCacheKey = "GetByType*" + objInfo.ModuleId.ToString("") + "*" + objInfo.PortalId.ToString("") + "*" + objInfo.TypeCode + "*" + objInfo.UserId + "*" + objInfo.Lang;
+            Utils.RemoveCache(strCacheKey);
+
+            // do update
             objInfo.ModifiedDate = DateTime.Now;
             return DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
         }
@@ -152,6 +159,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public NBrightInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string entityTypeCodeLang = "", string lang = "")
         {
+            var strCacheKey = "GetByType*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + lang;
+            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
+            if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+
             var strFilter = "";
             if (selUserId != "")
             {
@@ -163,6 +174,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 return l[0];
             }
+            Utils.SetCache(strCacheKey, l[0]);
             return null;
         }
 
@@ -177,6 +189,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
         {
+
+            var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey;
+            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
+            if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+            
             var strFilter = " and GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
             {
@@ -193,6 +210,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     Delete(l[i].ItemID);
                 }
             }
+            Utils.SetCache(strCacheKey, l[0]);
             return l[0];
         }
 

@@ -28,7 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _settingDic = new Dictionary<string, string>();
 
             //Get NBrightBuy Portal Settings.
-            var modCtrl = new NBrightBuyController();
+            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
             SettingsInfo = modCtrl.GetByGuidKey(portalId, -1, "SETTINGS", "NBrightBuySettings");
             if (SettingsInfo != null)
             {

@@ -78,7 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var intModuleId = 0;
             if (Utils.IsNumeric(moduleId)) intModuleId = Convert.ToInt32(moduleId);
 
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             var uInfo = new UserDataInfo(UserController.GetCurrentUserInfo().PortalID, intModuleId, objCtrl, ctlType);
             strOut = "ERROR!! - No Security rights for current user!";
@@ -318,7 +318,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void AddNewImage(int itemId,String imageurl, String imagepath)
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var dataRecord = objCtrl.Get(itemId);
             if (dataRecord != null)
             {
@@ -469,7 +469,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
 
                 if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
                 // run SQL and template to return html
                 if (settings.ContainsKey("sqltpl") && settings.ContainsKey("xsltpl"))
@@ -594,7 +594,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var strFilter = " and XrefItemId = {Settings:itemid} ";
                     strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
 
-                    var objCtrl = new NBrightBuyController();
+                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                     var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
 
                     foreach (var obj in objList)
@@ -626,7 +626,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (Utils.IsNumeric(newcatid) && settings.ContainsKey("itemid"))
                 {
-                    var objCtrl = new NBrightBuyController();
+                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                     var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
 
                     foreach (var obj in objList)
@@ -718,7 +718,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "0");
                 var searchcategory = settings["searchcategory"];
 
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
 
                 DataCache.ClearCache();
@@ -1090,6 +1090,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
+                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
                     {
@@ -1141,6 +1142,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
+                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
                     {
@@ -1195,6 +1197,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
+                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
 
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
@@ -1539,7 +1542,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
 
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
             var headerTempl = templCtrl.GetTemplateData(header, _lang, true, true, true, StoreSettings.Current.Settings());
             var bodyTempl = templCtrl.GetTemplateData(body, _lang, true, true, true, StoreSettings.Current.Settings());

@@ -24,7 +24,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public CatMenuBuilder(String templateBody, ModSettings modSettings, int currentCatId, Boolean debugMode)
         {
             _catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
-            _ctrlObj = new NBrightBuyController();
+            _ctrlObj = NBrightBuyUtils.GetNBrightBuyController();
             _modSettings = modSettings;
             _debugMode = debugMode;
             _templateBody = GetMenuTemplates(templateBody);

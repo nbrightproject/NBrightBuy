@@ -35,7 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 			this.Controls.Add(RpData);
 
 			//set default Data controller
-            ModCtrl = new NBrightBuyController();
+            ModCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
 
             #region "Get all Settings for module"

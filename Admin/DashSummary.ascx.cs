@@ -164,7 +164,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (statsInfo == null || StoreSettings.Current.DebugMode || forceRefresh)
             {
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 statsInfo = new NBrightInfo(true);
 
                 var statsXml = objCtrl.GetSqlxml("exec NBrightBuy_DashboardStats " + portalId);

@@ -149,7 +149,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
             {
                 var done = false;
-                var objCtrl = new NBrightBuyController();
+                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
                 var stmt = "";
@@ -223,7 +223,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void PurgeCarts()
         {
-            var objCtrl = new NBrightBuyController();
+            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             if (Utils.IsNumeric(GenXmlFunctions.GetField(rpData, "purgecartsdays")))
@@ -247,7 +247,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var languageresetto = GenXmlFunctions.GetField(rpData, "languageresetto");
                 if (languagetoreset != "" && languageresetto != languagetoreset)
                 {
-                    var objCtrl = new NBrightBuyController();
+                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
 
                     var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
                     foreach (var i in l)
@@ -259,7 +259,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     l = objCtrl.GetDataList(PortalId, -1, "CATEGORY", "", Utils.GetCurrentCulture(), "", "");
                     foreach (var i in l)
                     {
-                        var catData = new CategoryData(i.ItemID, languagetoreset);
+                        var catData = CategoryUtils.GetCategoryData(i.ItemID, languagetoreset);
                         catData.ResetLanguage(languageresetto);
                     }
 
