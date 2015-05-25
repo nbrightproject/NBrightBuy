@@ -166,20 +166,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
 
             //Create a new connection
             var connection = new SqlConnection(ConnectionString);
-            //Create a new command (with no timeout)
-            var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
-
-            connection.Open();
             var rtnData = "Error data reader fail";
-            
-            XmlReader dr = command.ExecuteXmlReader();
-            if (dr.Read())
+            try
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(dr);
-                rtnData = doc.OuterXml;
+                //Create a new command (with no timeout)
+                var command = new SqlCommand(commandText, connection) {CommandTimeout = 200};
+
+                connection.Open();
+
+                XmlReader dr = command.ExecuteXmlReader();
+                if (dr.Read())
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(dr);
+                    rtnData = doc.OuterXml;
+                }
+
             }
-            connection.Close();
+            finally
+            {
+                // make sure we always close.
+                connection.Close();
+            }
             return rtnData;
         }
 
