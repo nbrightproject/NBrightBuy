@@ -84,6 +84,9 @@ a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-c
 .productimg-overlay a {z-index:3;position:relative;color:#505050;}
 .productimg-overlay a:link, .productimg-overlay a:visited {color:#505050;}
 .productimg-overlay a:active, .productimg-overlay a:hover {color:#c0392b;text-decoration:none;}
+/* Touch Device */
+.productimgtouch .productimg-overlay {-webkit-opacity:1;-moz-opacity:1;opacity:1;}
+.productimgtouch:hover .productimg-overlay:before {display:none;}
 
 /* Pager */
 .NBrightPagingDiv{font-size:18px;margin:24px 0;text-align:left;}
@@ -97,12 +100,15 @@ a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-c
 .NBrightPrevPg a{}
 
 /* Product Detail */
-.productdetail {overflow:hidden;}
+.productdetail {overflow:hidden;line-height:normal;}
 .productdetail .images .noimage {color:#DDDDDD;font-size:230px;line-height:250px;text-align:center;}
 .productdetail .images {float:left;width:480px;margin:0 24px 0 0;}
 .productdetail .image {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:#eee solid 5px;display:table-cell;width:480px;text-align:center;padding:10px 0;position:relative;}
 .productdetail .image .zoomWrapper {margin:0 auto;}
 .productdetail .image img {max-height:460px;}
+.favorite-flag {position:absolute;top:10px;right:10px;}
+.favorite-flag a {color:#505050;cursor:pointer;}
+.favorite-flag a:hover {color:#c0392b;text-decoration:none;}
 .productdetail ul.gallery {list-style:none;padding:0;margin:12px 0 0 0;}
 .productdetail .gallery li {float:left;margin:0 5px 5px 0;display:block;width:92px;height:92px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border:#eee solid 1px;}
 .productdetail .gallery li a {display:table-cell;width:92px;height:92px;text-align:center;vertical-align:middle;}
@@ -156,7 +162,8 @@ input.quantity {float:left;margin:0 6px;}
 .tab-content.tab-hide {display:none;}
 .sharingwidget {float:left;background:#505050;color:white;padding:0 20px;}
 .sharingwidget .share {padding:10px 3px 10px 0;float:left;}
-.addthis_sharing_toolbox {margin-top:10px;}
+.addthis_sharing_toolbox {margin-top:12px;line-height:normal;}
+.addthis_fake {margin-top:6px;}
 
 /* Models Table */
 .productdetail .details .models {margin:0px;padding:0px;width:100%;}

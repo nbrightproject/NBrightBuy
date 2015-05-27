@@ -9,14 +9,16 @@
   <div class="productimg" style="width:294px;height:[Settings:classicitemimagecontainerheight]">
 
   <div class="productimg-overlay">
-  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="label" resourcekey="ProductView.viewicon-lg" />]</a>
+  [<tag type="if" function="settings" key="enablefavorites" testvalue="True" display="{ON}" />]
+	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
+  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
+  [<tag type="endif" />]
   [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
   [<tag type="if" function="hasmodelsoroptions" display="{OFF}" />]
   [<tag type="linkbutton" resourcekey="ProductView.addtobasketicon-lg" commandname="addtobasket" commandargument="ItemID" />]
   [<tag type="endif"  />]
   [<tag type="endif"  />]<!-- End Catalogue mode -->
-	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
-  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
+  <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="label" resourcekey="ProductView.viewicon-lg" />]</a>
   </div>
 
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->

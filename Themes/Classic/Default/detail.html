@@ -7,6 +7,12 @@
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" />]
 	<div class="images">
 	<div class="image">
+  [<tag type="if" function="settings" key="enablefavorites" testvalue="True" display="{ON}" />]
+  <div class="favorite-flag">
+	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
+  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
+  </div>
+  [<tag type="endif" />]
   <a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[1]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicimagewidth}' h='{Settings:classicimageheight}' image='1' />]" alt="[<tag type='productimgdesc' index='1'  />]" title="[<tag type='productimgdesc' index='1'  />]" /></a>
   	[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale flag -->
 		<div class="onsaleflag">[<tag type="label" resourcekey="ProductView.onsaleflag" />]</div>
@@ -16,7 +22,7 @@
 		[<tag type="endif" />]
   </div>
   
-      [<tag type="xslinject" template="detailimages.xsl" argslist="classicgallerywidth,classicgalleryheight"/>]
+  [<tag type="xslinject" template="detailimages.xsl" argslist="classicgallerywidth,classicgalleryheight"/>]
 
 </div>
 	[<tag type="endif" />]
@@ -103,7 +109,8 @@
             <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
             [<tag type="endif" />]
         </ul>
-        <div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_sharing_toolbox"></div></div><!-- Sharing widget -->
+        <!--<div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_sharing_toolbox"></div></div> Sharing widget -->
+        <div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_fake"><img src="/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/addthis.png" /></div></div><!-- Only for Demo Website -->
 
         [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
         <div id="tab-1" class="tab-content tab-active">
