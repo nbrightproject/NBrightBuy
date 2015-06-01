@@ -106,7 +106,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			var strModelXml = "<" + entityName + ">";
             foreach (RepeaterItem i in rpEntity.Items)
 			{
-                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) == "False")
+                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) != "True")
                 {
                     GenXmlFunctions.SetField(rpEntity, "entityindex", i.ItemIndex.ToString(CultureInfo.InvariantCulture), i.ItemIndex);
 					strModelXml += GenXmlFunctions.GetGenXml(i, "", folderMapPath);
@@ -130,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strModelXML = "<" + entityName + ">";
             foreach (RepeaterItem i in rpEntityLang.Items)
 			{
-                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) == "False")
+                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) != "True")
                 {
                     GenXmlFunctions.SetField(rpEntityLang, "entityindex", i.ItemIndex.ToString(CultureInfo.InvariantCulture), i.ItemIndex);
                     strModelXML += GenXmlFunctions.GetGenXml(i, "", folderMapPath);

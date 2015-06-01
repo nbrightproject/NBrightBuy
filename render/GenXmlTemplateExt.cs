@@ -4971,7 +4971,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         {
                             // check if dealer
                             var selectDealerFlag = nod.SelectSingleNode("checkbox/chkdealeronly");
-                            if (((selectDealerFlag == null) || (!isDealer && (selectDealerFlag.InnerText == "False"))) | isDealer)
+                            if (((selectDealerFlag == null) || (!isDealer && (selectDealerFlag.InnerText != "True"))) | isDealer)
                             {
                                 // get modelid
                                 var nodModelId = nod.SelectSingleNode("hidden/modelid");
