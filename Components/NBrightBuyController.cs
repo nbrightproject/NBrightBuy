@@ -172,9 +172,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1, 1, 1, 1, entityTypeCodeLang, lang));
             if (l.Count >= 1)
             {
+                Utils.SetCache(strCacheKey, l[0]);
                 return l[0];
             }
-            Utils.SetCache(strCacheKey, l[0]);
             return null;
         }
 
