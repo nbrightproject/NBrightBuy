@@ -39,7 +39,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (Info != null)
             {
-                var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var modCtrl = new NBrightBuyController();
                 Info.ItemID = modCtrl.Update(Info);
                 if (StoreSettings.Current.DebugModeFileOut) Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_userdata.xml");
                 Exists = true;
@@ -49,7 +49,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void DeleteUserData()
         {
             //remove DB record
-            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var modCtrl = new NBrightBuyController();
             modCtrl.Delete(Info.ItemID);
             Exists = false;
         }
@@ -97,7 +97,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (_userInfo != null && _userInfo.UserID != -1) // only create userdata if we have a user logged in.
             {
-                var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var modCtrl = new NBrightBuyController();
                 Info = modCtrl.GetByType(_userInfo.PortalID, -1, "USERDATA", _userInfo.UserID.ToString(""));
                 if (Info == null && _userInfo.UserID != -1)
                 {

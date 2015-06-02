@@ -47,7 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 Info.AddXmlNode(strXML, "list", "genxml");
                 if (Info != null)
                 {
-                    var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                    var modCtrl = new NBrightBuyController();
                     Info.ItemID = modCtrl.Update(Info);
                 }
         }
@@ -164,7 +164,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void PopulateData(String key)
         {
-            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var modCtrl = new NBrightBuyController();
             Info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PROMOCODES", key);
             if (Info == null)
             {

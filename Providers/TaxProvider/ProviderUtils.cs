@@ -29,7 +29,7 @@ namespace TaxProvider
             var info = (NBrightInfo)Utils.GetCache("TaxProvider" + PortalSettings.Current.PortalId.ToString(""));
             if (info == null)
             {
-                var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var modCtrl = new NBrightBuyController();
 
                 info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "TAX", ctrlkey);
 

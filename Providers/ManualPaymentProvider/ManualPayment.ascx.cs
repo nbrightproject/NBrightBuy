@@ -132,7 +132,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void Update()
         {
-            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var modCtrl = new NBrightBuyController();
             var strXml = GenXmlFunctions.GetGenXml(rpDataH,"",StoreSettings.Current.FolderImagesMapPath);
             _info.XMLData = strXml;
             modCtrl.Update(_info);
@@ -152,7 +152,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void RemoveLogo()
         {
-            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var modCtrl = new NBrightBuyController();
             var strXml = GenXmlFunctions.GetGenXml(rpDataH, "", StoreSettings.Current.FolderImagesMapPath);
             _info.XMLData = strXml;
             _info.SetXmlProperty("genxml/hidden/hidmanualpaymentlogo","");

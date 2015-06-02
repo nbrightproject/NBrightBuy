@@ -47,7 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var updaterequired = false;
             foreach (var lang in DnnUtils.GetCultureCodeList(portalId))
             {
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
                 var parentCatData = GetCategoryData(categoryId, lang);
                 var grpCatCtrl = new GrpCatController(lang);
                 var newGuidKey = grpCatCtrl.GetBreadCrumb(categoryId, 0, "-", false);
@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string GetUniqueGuidKey(int portalId, int categoryId, string newGUIDKey)
         {
             // make sure we have a unique guidkey
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var doloop = true;
             var lp = 1;
             var testGUIDKey = newGUIDKey.ToLower();

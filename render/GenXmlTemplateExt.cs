@@ -1827,7 +1827,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
 
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var strXML = objCtrl.GetSqlxml("select distinct XrefItemId from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and parentitemid in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId in (" + categoryId + ")) for xml raw ");
             // get returned XML into generic List
             var xmlDoc = new XmlDocument();
@@ -2604,7 +2604,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                                 if (String.IsNullOrEmpty(strOut))
                                 {
-                                    var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                                    var buyCtrl = new NBrightBuyController();
                                     var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
 
                                     //remove templName from template, so we don't get a loop.
@@ -2668,7 +2668,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (xmlNod.Attributes != null && (xmlNod.Attributes["template"] != null))
             {
                 var templName = xmlNod.Attributes["template"].Value;
-                var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var buyCtrl = new NBrightBuyController();
                 var rpTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
 
                 //remove templName from template, so we don't get a loop.
@@ -3258,7 +3258,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
-                        var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                        var modCtrl = new NBrightBuyController();
                         var rpTempl = modCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode); 
 
                         //remove templName from template, so we don't get a loop.
@@ -4512,7 +4512,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
-                        var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                        var buyCtrl = new NBrightBuyController();
                         var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
 
                         //remove templName from template, so we don't get a loop.
@@ -4574,7 +4574,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
-                        var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                        var buyCtrl = new NBrightBuyController();
                         var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
 
                         //remove templName from template, so we don't get a loop.
@@ -4643,7 +4643,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = lc.Text;
                     if (Utils.IsNumeric(id) && (templName != ""))
                     {
-                        var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                        var buyCtrl = new NBrightBuyController();
                         var rpTempl = buyCtrl.GetTemplateData(-1, templName, lang, _settings, StoreSettings.Current.DebugMode);
 
                         //remove templName from template, so we don't get a loop.
@@ -4847,7 +4847,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         if (_settings.ContainsKey(arg)) argsList.AddParam(arg, "", _settings[arg]);
                     }
-                    var buyCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                    var buyCtrl = new NBrightBuyController();
                     var xslTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);
                     var nbi = (NBrightInfo) container.DataItem;
                     var strOut = XslUtils.XslTransInMemory(nbi.XMLData, xslTempl, argsList);

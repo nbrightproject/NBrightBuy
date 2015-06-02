@@ -234,7 +234,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (qryguidkey == "") qryguidkey = Utils.RequestQueryStringParam(request, "ref");
                     if (qryguidkey != "")
                     {
-                        var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                        var objCtrl = new NBrightBuyController();
                         var guidData = objCtrl.GetByGuidKey(portalId, -1, "PRD", qryguidkey);
                         if (guidData != null) entryId = guidData.ItemID;
                     }
@@ -266,7 +266,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
 
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             return objCtrl.GetData(defcatid,"CATEGORYLANG");
         }
 
@@ -316,7 +316,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public List<GroupCategoryData> GetProductCategories(int productid, String groupref = "", Boolean cascade = false)
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var catxrefList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.[ParentItemId] = " + productid);
 
             if (cascade)
@@ -438,7 +438,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void Load(String lang, Boolean debugMode = false)
         {
-            _objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            _objCtrl = new NBrightBuyController();
             _lang = lang;
 
             // get groups
@@ -512,7 +512,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private List<GroupCategoryData> GetGrpCatListFromDatabase(String lang = "")
         {
 
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
             var grpcatList = new List<GroupCategoryData>();
 

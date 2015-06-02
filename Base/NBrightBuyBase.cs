@@ -37,7 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 		protected override void OnInit(EventArgs e)
 		{
 
-            ModCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            ModCtrl = new NBrightBuyController();
             DebugMode = StoreSettings.Current.DebugMode;
 
 		    base.OnInit(e);

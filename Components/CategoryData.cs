@@ -153,7 +153,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
             
@@ -221,7 +221,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (resetToLang != DataLangRecord.Lang)
             {
                 var resetToLangData = CategoryUtils.GetCategoryData(DataRecord.ItemID, resetToLang);
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
                 DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
                 objCtrl.Update(DataLangRecord);
             }
@@ -229,7 +229,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> GetDirectChildren()
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var l = objCtrl.GetList(_portalId, -1, "CATEGORY", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             return l;
         }
@@ -237,7 +237,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Validate()
         {
             var errorcount = 0;
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
 
             // default any undefined group type as category (I think quickcategory v1.0.0 plugin causes this)
             if (DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype") == "")
@@ -380,7 +380,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             Exists = false;
             if (categoryId == -1) categoryId = AddNew(); // add new record if -1 is used as id.
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             if (_lang == "") _lang = Utils.GetCurrentCulture();
             Info = objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
             if (Info != null)
@@ -411,7 +411,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
             nbi.SetXmlPropertyDouble("genxml/hidden/recordsortorder", 99999);
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var itemId = objCtrl.Update(nbi);
 
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))

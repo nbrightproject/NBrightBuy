@@ -126,7 +126,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void Update()
         {
-            var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var modCtrl = new NBrightBuyController();
             var strXml = GenXmlFunctions.GetGenXml(rpDataH);
             _info.XMLData = strXml;
             modCtrl.Update(_info);

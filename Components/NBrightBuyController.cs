@@ -192,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey;
             var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
-            if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+            if (obj != null) return obj;
             
             var strFilter = " and GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")

@@ -149,7 +149,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
             {
                 var done = false;
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
                 var stmt = "";
@@ -223,7 +223,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void PurgeCarts()
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             if (Utils.IsNumeric(GenXmlFunctions.GetField(rpData, "purgecartsdays")))
@@ -247,7 +247,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var languageresetto = GenXmlFunctions.GetField(rpData, "languageresetto");
                 if (languagetoreset != "" && languageresetto != languagetoreset)
                 {
-                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                    var objCtrl = new NBrightBuyController();
 
                     var l = objCtrl.GetDataList(PortalId, -1, "PRD", "", Utils.GetCurrentCulture(), "", "");
                     foreach (var i in l)

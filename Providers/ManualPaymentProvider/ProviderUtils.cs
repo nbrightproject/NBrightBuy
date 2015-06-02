@@ -41,7 +41,7 @@ namespace ManualPaymentProvider
             var info = (NBrightInfo)Utils.GetCache("ManualPaymentProvider" + PortalSettings.Current.PortalId.ToString(""));
             if (info == null)
             {
-                var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var modCtrl = new NBrightBuyController();
 
                 info = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "MANUALPAYMENT", ctrlkey);
 

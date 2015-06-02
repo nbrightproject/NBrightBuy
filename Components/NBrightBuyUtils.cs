@@ -72,7 +72,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (obj == null | !useCache)
             {
                 // single record for EntityTypeCode settings, so get record directly.
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
                 obj = objCtrl.GetByType(portalId, moduleId, "SETTINGS");
                 if (obj == null)
                 {
@@ -342,7 +342,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string GetCurrentPageName(int catid)
         {
             var newBaseName = PortalSettings.Current.ActiveTab.TabName;
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var catInfo = objCtrl.GetData(catid, "CATEGORYLANG");
             if (catInfo != null)
             {
@@ -404,7 +404,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void RemoveModCachePortalWide(int portalid)
         {
-            var mCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var mCtrl = new NBrightBuyController();
             var l = mCtrl.GetList(portalid, -1, "SETTINGS");
             foreach (var obj in l)
             {
@@ -632,7 +632,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
 
                     // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
-                    var modCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                    var modCtrl = new NBrightBuyController();
                     var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
 
                     var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
@@ -660,7 +660,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static List<NBrightInfo> GetCategoryGroups(String lang, Boolean debugMode = false)
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "GROUP", "GROUPLANG", lang, "", " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", debugMode);
             return levelList;
         }
@@ -990,7 +990,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static int ValidateStore()
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var errcount = 0;
 
             // Validate Products
@@ -1157,7 +1157,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
             }
 
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", lang, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
 
             var grpCtrl = new GrpCatController(lang);
@@ -1173,7 +1173,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static NBrightInfo ModuleSettingsResetCatIdFromRef(NBrightInfo objInfo)
         {
-            var ModCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var ModCtrl = new NBrightBuyController();
             var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
             var nbi = ModCtrl.Get(catid);
             if (nbi == null)
@@ -1199,20 +1199,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static int ModuleSettingsGetCatIdFromRef(NBrightInfo settingsInfo)
         {
-            var ModCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var ModCtrl = new NBrightBuyController();
             // categoryid no longer exists, see if we can get it back with the catref (might be lost due to cleardown and import)
             var catref = settingsInfo.GetXmlProperty("genxml/catref");
             var nbi = ModCtrl.GetByGuidKey(settingsInfo.PortalId, -1, "CATEGORY", catref);
             if (nbi != null) return nbi.ItemID;
             return -1;
-        }
-
-        public static NBrightBuyController GetNBrightBuyController()
-        {
-            var cacheKey = "NBrightBuyController";
-            var objCtrl = (NBrightBuyController)Utils.GetCache(cacheKey);
-            if (objCtrl == null) objCtrl = new NBrightBuyController();                
-            return objCtrl;
         }
 
     }

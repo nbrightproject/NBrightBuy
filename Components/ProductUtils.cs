@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(parentItemId))
             {
 
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
 
                 var templCtrl = new TemplateController(controlMapPath);
 
@@ -232,7 +232,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 foreach (var xrefName in xrefList)
                 {
-                    var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                    var objCtrl = new NBrightBuyController();
                     var objPInfo = objCtrl.Get(Convert.ToInt32(itemId));
                     if (objPInfo != null)
                     {
@@ -271,7 +271,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     NBrightBuyUtils.RemoveModCache(-1);
                 }
 
-                var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+                var objCtrl = new NBrightBuyController();
 
                 var templCtrl = new TemplateController(controlMapPath);
 
@@ -324,7 +324,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static NBrightInfo CalculateModels(NBrightInfo objInfo,String controlMapPath)
         {
-            var objCtrl = NBrightBuyUtils.GetNBrightBuyController();
+            var objCtrl = new NBrightBuyController();
             var optList = new List<NBrightInfo>();
 
             // get list of active options for product models
