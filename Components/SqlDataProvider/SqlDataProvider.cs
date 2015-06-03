@@ -165,30 +165,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             // becuase we're compiling against DNN6 we can't use PetaPocoHelper class.  So create a new connection and command with timeout.
 
             //Create a new connection
-            var connection = new SqlConnection(ConnectionString);
             var rtnData = "Error data reader fail";
-            try
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                //Create a new command (with no timeout)
-                var command = new SqlCommand(commandText, connection) {CommandTimeout = 200};
-
                 connection.Open();
-
-                XmlReader dr = command.ExecuteXmlReader();
-                if (dr.Read())
+                //Create a new command (with no timeout)
+                var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
+                try
                 {
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(dr);
-                    rtnData = doc.OuterXml;
+                    XmlReader dr = command.ExecuteXmlReader();
+                    if (dr.Read())
+                    {
+                        XmlDocument doc = new XmlDocument();
+                        doc.Load(dr);
+                        rtnData = doc.OuterXml;
+                    }
                 }
-
+                finally
+                {
+                    // make sure we always close.
+                    connection.Close();
+                }
             }
-            finally
-            {
-                // make sure we always close.
-                connection.Close();
-            }
-            return rtnData;
+           return rtnData;
         }
 
         public override IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
