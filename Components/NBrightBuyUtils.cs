@@ -372,7 +372,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleid">Moduleid use to store in the cache list, (not added to the cachekey)</param>
         /// <param name="CacheKey"></param>
         /// <param name="objObject"></param>
-        public static void SetModCache(int moduleid, string CacheKey, object objObject)
+        public static void SetModCache(int moduleid, string CacheKey, object objObject, DateTime AbsoluteExpiration)
         {
             var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
             if (cList == null) cList = new List<String>();
@@ -380,8 +380,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 cList.Add(CacheKey);
                 NBrightCore.common.Utils.SetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture), cList);
-                NBrightCore.common.Utils.SetCache(CacheKey, objObject);
+                NBrightCore.common.Utils.SetCache(CacheKey, objObject, AbsoluteExpiration);
             }
+        }
+
+        public static void SetModCache(int moduleid, string CacheKey, object objObject)
+        {
+            SetModCache(moduleid, CacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
         }
 
         public static void RemoveCache(String cacheKey)

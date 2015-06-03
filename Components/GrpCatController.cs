@@ -511,6 +511,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private List<GroupCategoryData> GetGrpCatListFromDatabase(String lang = "")
         {
+            // this process seems to be creating an error on DB connection after the cache is release.
+            //[TODO: re-write this code to stop DB conection failure. For now Module level caching has been increased to 2 days to stop this processing re-running]
 
             var objCtrl = new NBrightBuyController();
             const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
