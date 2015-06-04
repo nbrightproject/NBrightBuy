@@ -166,8 +166,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 var objCtrl = new NBrightBuyController();
                 statsInfo = new NBrightInfo(true);
+                
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
 
-                var statsXml = objCtrl.GetSqlxml("exec NBrightBuy_DashboardStats " + portalId);
+                var statsXml = objCtrl.GetSqlxml("exec " + dbOwner + "[" + objQual + "NBrightBuy_DashboardStats " + portalId);
                 statsInfo.XMLData = statsXml;
                 Utils.SetCache(cachekey, statsInfo);
             }
