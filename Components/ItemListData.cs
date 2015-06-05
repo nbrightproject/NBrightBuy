@@ -18,20 +18,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private readonly HttpRequest _request;
         private readonly HttpResponse _response;
         private HttpCookie _cookie;
-        private DataStorageType _storageType;
 
         /// <summary>
         /// Populate class with cookie data
         /// </summary>
-        /// <param name="moduleid"> </param>
-        /// <param name="storageType">"cookie" or "sessionmemory"</param>
         /// <param name="listName"></param>
-        public ItemListData(int moduleid, DataStorageType storageType = DataStorageType.Cookie, String listName = "ItemList")
+        public ItemListData(String listName = "ItemList")
         {
-            _storageType = storageType;
 
             Exists = false;
-            CookieName = "NBrightBuy_" + moduleid.ToString("") + "_" + listName;
+            CookieName = listName;
             _request = HttpContext.Current.Request;
             _response = HttpContext.Current.Response;
             Get();
@@ -40,21 +36,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Save cookie to client
         /// </summary>
-        public void Save()
+        public void Save(List<String> itemIdList)
         {
-            if (_storageType == DataStorageType.SessionMemory)
+            ItemList = "";
+            foreach (var i in itemIdList)
             {
-                // save data to cache
-                HttpContext.Current.Session[CookieName + "ItemList"] = ItemList;
-                HttpContext.Current.Session[CookieName + "ItemCount"] = ItemCount;
+                ItemList += i + "*";
             }
-            else
-            {
-                if (ItemList != "") _cookie["ItemList"] = ItemList;
-                if (ItemCount != "") _cookie["ItemCount"] = ItemCount;
-                _cookie.Expires = DateTime.Now.AddDays(1d);
-                _response.Cookies.Add(_cookie);
-            }
+            ItemCount = itemIdList.Count;
+            if (ItemList != "") _cookie["ItemList"] = ItemList;
+            _cookie.Expires = DateTime.Now.AddDays(1d);
+            _response.Cookies.Add(_cookie);
             Exists = true;
         }
 
@@ -65,14 +57,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public ItemListData Get()
         {
             ItemList = "";
-            ItemCount = "";
-            if (_storageType == DataStorageType.SessionMemory)
-            {
-                if (HttpContext.Current.Session[CookieName + "CategoryId"] != null) ItemList = (String)HttpContext.Current.Session[CookieName + "CategoryId"];
-                if (HttpContext.Current.Session[CookieName + "RecordCount"] != null) ItemCount = (String)HttpContext.Current.Session[CookieName + "RecordCount"];
-            }
-            else
-            {
                 _cookie = _request.Cookies[CookieName];
                 if (_cookie == null)
                 {
@@ -80,15 +64,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 else
                 {
-                    if (_cookie["ItemList"] != null) ItemList = _cookie["ItemList"];
-                    if (_cookie["ItemCount"] != null) ItemCount = _cookie["ItemCount"];
+                    ItemList = _cookie.Value;
                 }
-            }
 
-            if (ItemList == "" && ItemCount == "") // "Exist" property not used for paging data
+            if (ItemList == "") // "Exist" property not used for paging data
                 Exists = false;
             else
+            {
                 Exists = true;
+                var l = GetItemList();
+                ItemCount = l.Count;
+            }
 
             return this;
         }
@@ -98,22 +84,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Delete()
         {
-            if (_storageType == DataStorageType.SessionMemory)
-            {
-                if (HttpContext.Current.Session[CookieName + "ItemList"] != null) HttpContext.Current.Session.Remove(CookieName + "ItemList");
-                if (HttpContext.Current.Session[CookieName + "ItemCount"] != null) HttpContext.Current.Session.Remove(CookieName + "ItemCount");
-            }
-            else
-            {
                 if (_cookie != null)
                 {
                     _cookie.Expires = DateTime.Now.AddDays(-1d);
                     _response.Cookies.Add(_cookie);
-                    ItemCount = "";
+                    ItemCount = 0;
                     ItemList = "";
                     Exists = false;
                 }
-            }
         }
         /// <summary>
         /// Add Item to wishlist
@@ -122,12 +100,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Add(String itemId)
         {
             //set search cookie for the ref module
-            if (ItemList == "") ItemList = ","; // start with a delimeter, so we can make sure we can search for the full itemid
-            if (!ItemList.Contains("," + itemId + ","))
+            var l = GetItemList();
+            if (!l.Contains(itemId))
             {
-                ItemList = ItemList + itemId + ",";
-                ItemCount = (ItemList.Split(',').Length - 2).ToString("");
-                Save();
+                l.Add(itemId);
+                Save(l);
             }
         }
 
@@ -137,12 +114,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="itemId"></param>
         public void Remove(String itemId)
         {
-            //set search cookie for the ref module
-            if (ItemList.Contains("," + itemId + ","))
+            var l = GetItemList();
+            if (l.Contains(itemId))
             {
-                ItemList = ItemList.Replace("," + itemId + ",", ",");
-                ItemCount = (ItemList.Split(',').Length - 2).ToString("");
-                Save();
+                l.Remove(itemId);
+                Save(l);
             }
         }
 
@@ -153,7 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<String> GetItemList()
         {
             if (ItemList == "") return null;
-            var l = ItemList.Split(',');
+            var l = ItemList.Split('*');
             var gl = new List<String>();
             foreach (var s in l)
             {
@@ -187,7 +163,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Count of itemids to be included in the list
         /// </summary>
-        public string ItemCount { get; set; }
+        public int ItemCount { get; private set; }
         /// <summary>
         /// list is active for bi-view modules
         /// </summary>

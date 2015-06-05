@@ -509,11 +509,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
                     if (itemListAction == "wishlist" || itemListAction == "both")
                     {
-                        var cw = new ItemListData(-1,StoreSettings.Current.StorageTypeClient, _itemListName);
+                        var cw = new ItemListData(_itemListName);
                         var showList = !(itemListAction == "both" && !cw.Active);
                         if (showList)
                         {
-                            if (cw.Exists && cw.ItemCount != "0")
+                            if (cw.Exists && cw.ItemCount > 0)
                             {
                                 strFilter = " and (";
                                 foreach (var i in cw.GetItemList())
@@ -619,22 +619,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
             switch (e.CommandName.ToLower())
             {
-                case "wishlistadd":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var wl = new ItemListData(-1, StoreSettings.Current.StorageTypeClient, _itemListName);
-                        wl.Add(cArg);                        
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "wishlistremove":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var wl = new ItemListData(-1, StoreSettings.Current.StorageTypeClient, _itemListName);
-                        wl.Remove(cArg);
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
                 case "addtobasket":
                     var currentcart = new CartData(PortalId);
                     currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);

@@ -9,10 +9,13 @@
   <div class="productimg" style="width:294px;height:[Settings:classicitemimagecontainerheight]">
 
   <div class="productimg-overlay">
-  [<tag type="if" function="settings" key="enablefavorites" testvalue="True" display="{ON}" />]
-	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
-  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
-  [<tag type="endif" />]
+
+  <!-- Add to favorites buttons -->
+  <span [<tag type="if" function="settings" key="enablefavorites" testvalue="True" displayelse="style='display:none;'" />]>
+	<a class="wishlistadd" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId" />]">[<tag type="htmlof" resourcekey="ProductView.wishlistaddicon-lg" />]</a>
+  	<a class="wishlistremove" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId" />]" style="display:none;">[<tag type="htmlof" resourcekey="ProductView.wishlistremoveicon-lg" />]</a>
+  </span>
+
   [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
   [<tag type="if" function="hasmodelsoroptions" display="{OFF}" />]
   [<tag type="linkbutton" resourcekey="ProductView.addtobasketicon-lg" commandname="addtobasket" commandargument="ItemID" />]

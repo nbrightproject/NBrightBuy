@@ -9,15 +9,27 @@ function nbxajaxaction(selector)
 		 {
 			$(nbxajaxrtn).val('ERROR - cannot find cmd attribute in button: ' + selector);
 		 }
-		 else
-		 {
-			 $.get(cmd, function (data) {
-				$.ajaxSetup({ cache: false }); 
-				if (data != 'noaction')
-				{
-					$(nbxajaxrtn).val(data).trigger('change');
-				}				
-			 });
+		 else {
+
+		     alert(cmd);
+
+		     var request = $.ajax({
+		         type: "POST",
+		         url: cmd,
+		         cache: false
+		     });
+
+		     request.done(function (data) {
+		         if (data != 'noaction') {
+		             $(nbxajaxrtn).val(data).trigger('change');
+		         }
+
+		     });
+
+		     request.fail(function (jqXHR, textStatus) {
+		         alert("Request failed: " + textStatus);
+		     });
+
 		 }		
 		 
 	});
