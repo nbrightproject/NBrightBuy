@@ -164,10 +164,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Count of itemids to be included in the list
         /// </summary>
         public int ItemCount { get; private set; }
-        /// <summary>
-        /// list is active for bi-view modules
-        /// </summary>
-        public bool Active { get; set; }
     }
 
 

@@ -504,15 +504,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "itemlists (wishlist)"
 
                     // if we have a itemListName field then get the itemlist cookie.
-                    var itemListAction = "";
                     if (_templateHeader != null) _itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
-                    if (_templateHeader != null) itemListAction = _templateHeader.GetHiddenFieldValue("itemlistaction");
-                    if (itemListAction == "wishlist" || itemListAction == "both")
+                    if (_itemListName != "")
                     {
                         var cw = new ItemListData(_itemListName);
-                        var showList = !(itemListAction == "both" && !cw.Active);
-                        if (showList)
-                        {
                             if (cw.Exists && cw.ItemCount > 0)
                             {
                                 strFilter = " and (";
@@ -527,7 +522,6 @@ namespace Nevoweb.DNN.NBrightBuy
                                 //no data in list so select false itemid to stop anything displaying
                                 strFilter += " and (NB1.itemid = '-1') ";
                             }
-                        }
                     }
 
                     #endregion

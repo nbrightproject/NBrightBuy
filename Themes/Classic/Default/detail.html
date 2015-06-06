@@ -7,12 +7,13 @@
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" />]
 	<div class="images">
 	<div class="image">
-  [<tag type="if" function="settings" key="enablefavorites" testvalue="True" display="{ON}" />]
-  <div class="favorite-flag">
-	[<tag type="itemlistadd" cssclass="wishlistadd" resourcekey="ProductView.wishlistaddicon-lg" listname="wishlist" />]
-  [<tag type="itemlistremove" CssClass="wishlistremove" resourcekey="ProductView.wishlistremoveicon-lg" listname="wishlist" />]
+	
+	  <!-- Add to favorites buttons -->
+  <div class="favorite-flag" [<tag type="if" function="settings" key="enablefavorites" testvalue="True" displayelse="style='display:none;'" />]>
+	<a class="wishlistadd" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId" />]">[<tag type="htmlof" resourcekey="ProductView.wishlistaddicon-lg" />]</a>
+  	<a class="wishlistremove" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId" />]" style="display:none;">[<tag type="htmlof" resourcekey="ProductView.wishlistremoveicon-lg" />]</a>
   </div>
-  [<tag type="endif" />]
+
   <a href="[<tag type='valueof' xpath='genxml/imgs/genxml[[1]]/hidden/imageurl' />]" data-imagelightbox="nbb"><img src="[<tag type='thumbnail' w='{Settings:classicimagewidth}' h='{Settings:classicimageheight}' image='1' />]" alt="[<tag type='productimgdesc' index='1'  />]" title="[<tag type='productimgdesc' index='1'  />]" /></a>
   	[<tag type="if" function="isonsale" display="{ON}" displayelse="{OFF}" />]<!-- Sale flag -->
 		<div class="onsaleflag">[<tag type="label" resourcekey="ProductView.onsaleflag" />]</div>
