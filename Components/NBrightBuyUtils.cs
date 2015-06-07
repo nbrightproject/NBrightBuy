@@ -28,7 +28,9 @@ using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using RazorEngine;
 using MailPriority = DotNetNuke.Services.Mail.MailPriority;
+using RazorEngine.Templating;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -1212,6 +1214,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return -1;
         }
 
+        public static String RenderRazor(NBrightInfo info,String razorTempl,String templateKey)
+        {
+            // do razor test
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            return result;
+        }
+
+        public static String RenderRazor(List<NBrightInfo> infoList, String razorTempl, String templateKey)
+        {
+            // do razor test
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
+            return result;
+        }
     }
 }
 
