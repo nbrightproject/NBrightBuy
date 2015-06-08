@@ -4697,7 +4697,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var templName = param[0];
                     foreach (var arg in param[1].Split(','))
                     {
-                        if (_settings.ContainsKey(arg)) argsList.AddParam(arg, "", _settings[arg]);
+                        if (_settings != null && _settings.ContainsKey(arg)) argsList.AddParam(arg, "", _settings[arg]);
                     }
                     var buyCtrl = new NBrightBuyController();
                     var xslTempl = buyCtrl.GetTemplateData(-1, templName, Utils.GetCurrentCulture(), _settings, StoreSettings.Current.DebugMode);

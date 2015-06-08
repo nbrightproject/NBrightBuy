@@ -570,7 +570,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // do razor test
                     var lit = new Literal();
-                    lit.Text = NBrightBuyUtils.RenderRazor(l);
+                    lit.Text = NBrightBuyUtils.RenderRazor(l,"","");
                     phData.Controls.Add(lit);
 
 
@@ -712,6 +712,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (productData.Exists)
             {
+
                 if (PortalSettings.HomeTabId == TabId)
                     PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
                 else
@@ -730,25 +731,37 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
+
+                // time test [TODO:REMOVE]
+                var litTime1 = new Literal();
+                litTime1.Text = " <b>START NBRIGHT: " + DateTime.Now.Second + ":" + DateTime.Now.Millisecond + "</b>";
+                phData.Controls.Add(litTime1);
+
                 //render the detail page
                 base.DoDetail(rpData, productData.Info);
 
                 DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
 
+                // time test [TODO:REMOVE]
+                var litTime2 = new Literal();
+                litTime2.Text = "  <b>  START RAZOR:" + DateTime.Now.Second + ":" + DateTime.Now.Millisecond + "</b>";
+                phData.Controls.Add(litTime2);
+
                 // do razor template
-                var razorTemplName = "";
+                var razorTemplName = "detail.cshtml";
                 var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
                 var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
                 var lit = new Literal();
                 if (razorTempl == null || StoreSettings.Current.DebugMode)
                 {
                     razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
-                    razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl);
+                    razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
                     var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
-                    razorTempl = NBrightBuyUtils.RenderRazor(productData.Info, razorTempl, razorTemplateKey);
+                    razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
+                    productData.Info.GetXmlPropertyInt("");
                     NBrightBuyUtils.SetModCache(ModuleId,cachekey, razorTempl);
                 }
-                lit.Text = razorTempl;
+                lit.Text = razorTempl + " <b> END RAZOR" + DateTime.Now.Second + ":" + DateTime.Now.Millisecond + "</b>";
                 phData.Controls.Add(lit);
             }
 
