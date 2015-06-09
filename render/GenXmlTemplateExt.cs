@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
@@ -35,14 +36,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private string _rootname = "genxml";
         private string _databindColumn = "XMLData";
         private Dictionary<string, string> _settings = null;
-        private List<Boolean> visibleStatus;
+        private ConcurrentStack<Boolean> visibleStatus;
 
         #region "Override methods"
 
         // This section overrides the interface methods for the GenX provider.
         // It allows providers to create controls/Literals in the NBright template system.
 
-        public override bool CreateGenControl(string ctrltype, Control container, XmlNode xmlNod, string rootname = "genxml", string databindColum = "XMLData", string cultureCode = "", Dictionary<string, string> settings = null, List<Boolean> visibleStatusIn = null)
+        public override bool CreateGenControl(string ctrltype, Control container, XmlNode xmlNod, string rootname = "genxml", string databindColum = "XMLData", string cultureCode = "", Dictionary<string, string> settings = null, ConcurrentStack<Boolean> visibleStatusIn = null)
         {
             visibleStatus = visibleStatusIn;
 
@@ -767,7 +768,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -790,7 +791,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -813,7 +814,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
                 if ((nod != null))
                 {
@@ -872,7 +873,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var imagesrc = "0";
                 var imageparams = l.Text.Split(':');
 
@@ -916,7 +917,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 			{
 				//set a default url
 
-                lk.Visible = visibleStatus.Last();
+                lk.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
 				var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
 
@@ -978,7 +979,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //set a default url
 
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 var dataIn = l.Text.Split('*'); 
@@ -1039,7 +1040,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lk.NamingContainer;
             try
             {
-                lk.Visible = visibleStatus.Last();
+                lk.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var t = "";
                 if (lk.Attributes["tabid"] != null && Utils.IsNumeric(lk.Attributes["tabid"]))
@@ -1078,7 +1079,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var catparam = "";
                 var pagename = PortalSettings.Current.ActiveTab.TabName + ".aspx";
                 var catid = Utils.RequestParam(HttpContext.Current, "catid");
@@ -1114,7 +1115,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 //set a default url
                 var url = DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.FullUrl;
                 l.Text = url;
@@ -1163,7 +1164,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (Utils.IsNumeric(a[1])) param[0] = "catid=" + a[1];
                     if (a[2] != "") param[1] = "catref=" + a[2];
 
-                    l.Visible = visibleStatus.Last();
+                    l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                     //set a default url                    
                 }
                 var url = Globals.NavigateURL(Convert.ToInt32(tabid),"",param);
@@ -1222,7 +1223,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)chk.NamingContainer;
             try
             {
-                chk.Visible = visibleStatus.Last();
+                chk.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var xmlNod = GenXmlFunctions.GetGenXmLnode(chk.ID, "checkboxlist", (string)DataBinder.Eval(container.DataItem, _databindColumn));
                 var xmlNodeList = xmlNod.SelectNodes("./chk");
                 if (xmlNodeList != null)
@@ -1360,7 +1361,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
 
@@ -1459,7 +1460,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var strValue = GenXmlFunctions.GetGenXmlValue(ddl.ID, "dropdownlist", Convert.ToString(DataBinder.Eval(container.DataItem, _databindColumn)));
 
@@ -1509,7 +1510,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 l.Text = "";
                  var strValue = Convert.ToString(DataBinder.Eval(container.DataItem, "ParentItemId"));
                 if (Utils.IsNumeric(strValue))
@@ -1852,9 +1853,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
 
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
-                if (visibleStatus.Last())
+                if (visibleStatus.DefaultIfEmpty(true).First())
                 {
 
                     var xmlDoc = new XmlDocument();
@@ -1965,7 +1966,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
                 var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                 var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
@@ -2007,7 +2008,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var moduleId = DataBinder.Eval(container.DataItem, "ModuleId");
                 var id = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemId"));
                 var lang = Convert.ToString(DataBinder.Eval(container.DataItem, "lang"));
@@ -2143,7 +2144,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var id = 0;
                 try
@@ -2192,7 +2193,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var id = 0;
                 try
                 {
@@ -2242,7 +2243,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lc.NamingContainer;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var id = 0;
                 try
                 {
@@ -2404,7 +2405,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             #endregion
 
-            if (visibleStatus.Last())
+            if (visibleStatus.DefaultIfEmpty(true).First())
             {
                 // hide all the controls
                 if (ddl != null) ddl.Visible = false;
@@ -2565,7 +2566,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (lc.Visible)
                 {
 
@@ -2671,7 +2672,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var rpt = (Repeater)sender;
             var container = (IDataItemContainer)rpt.NamingContainer;
-            rpt.Visible = visibleStatus.Last();
+            rpt.Visible = visibleStatus.DefaultIfEmpty(true).First();
             if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
             {
                 //build models list
@@ -2710,7 +2711,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)rbl.NamingContainer;
             try
             {
-                rbl.Visible = visibleStatus.Last();
+                rbl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (rbl.Visible)
                 {
                     var templ = "{name} {price}";
@@ -2785,7 +2786,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
                     var templ = "{name} {price}";
@@ -2856,7 +2857,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)hf.NamingContainer;
             try
             {
-                hf.Visible = visibleStatus.Last();
+                hf.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var obj = (NBrightInfo)container.DataItem;
                 if (obj != null) hf.Value = obj.GetXmlProperty("genxml/models/genxml[1]/hidden/modelid");
             }
@@ -2942,7 +2943,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -3069,7 +3070,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -3138,7 +3139,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 var navdata = new NavigationData(PortalSettings.Current.PortalId, l.Text);
                 l.Text = navdata.RecordCount;
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
             }
             catch (Exception ex)
             {
@@ -3172,7 +3173,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)cmd.NamingContainer;
             try
             {
-                cmd.Visible = visibleStatus.Last();
+                cmd.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (cmd.Visible)
                 {
                     var index = cmd.Attributes["index"];
@@ -3238,7 +3239,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (lc.Visible)
                 {
 
@@ -3301,7 +3302,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void QtyFieldDataBind(object sender, EventArgs e)
         {
             var txt = (TextBox)sender;
-            txt.Visible = visibleStatus.Last();
+            txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
         }
 
         #endregion
@@ -3330,7 +3331,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var nbi = new NBrightInfo();
             nbi.XMLData = strXml;
             txt.Value = nbi.GetXmlProperty("genxml/hidden/modelid");
-            txt.Visible = visibleStatus.Last();
+            txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
         }
 
         private void ModelQtyFieldDataBind(object sender, EventArgs e)
@@ -3342,7 +3343,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             nbi.XMLData = strXml;
             if (nbi.GetXmlProperty("genxml/hidden/modelid") == "") txt.Text = "ERR! - MODELQTY can only be used on modellist template";
             txt.Attributes.Add("modelid", nbi.GetXmlProperty("genxml/hidden/modelid"));
-            txt.Visible = visibleStatus.Last();
+            txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
         }
 
         #endregion
@@ -3374,7 +3375,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)lk.NamingContainer;
             try
             {
-                lk.Visible = visibleStatus.Last();
+                lk.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
                 var entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
 
@@ -3432,7 +3433,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //set a default url
 
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var entryid = l.Text;
                 if (entryid == "") entryid = Convert.ToString(DataBinder.Eval(container.DataItem, "ItemID"));
                 var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
@@ -3487,7 +3488,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var sp = GetSalePrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3525,7 +3526,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var sp = GetDealerPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3563,7 +3564,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 l.Text = NBrightBuyUtils.GetCurrencyIsoCode();
             }
             catch (Exception ex)
@@ -3592,7 +3593,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var sp = GetFromPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3630,7 +3631,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 l.Text = "";
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var sp = GetBestPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
@@ -3675,7 +3676,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                txt.Visible = visibleStatus.Last();
+                txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
                 else
                 {
@@ -3729,7 +3730,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             try
             {
-                txt.Visible = visibleStatus.Last();
+                txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (txt.Width == 0) txt.Visible = false; // always hide if we have a width of zero.
                 else
                 {
@@ -3782,7 +3783,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -3851,7 +3852,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)img.NamingContainer;
             try
             {
-                img.Visible = visibleStatus.Last();
+                img.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 var src = "";
 
                 XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), img.ImageUrl);
@@ -3917,7 +3918,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -3979,7 +3980,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -4032,7 +4033,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)l.NamingContainer;
             try
             {
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (l.Visible)
                 {
                     l.Text = "<ul id='" + l.ID + "'>";
@@ -4066,7 +4067,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void EditFlagDataBind(object sender, EventArgs e)
         {
             var lc = (Literal)sender;
-            lc.Visible = visibleStatus.Last();
+            lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
         }
 
         private void CreateSelectLangaugeButton(Control container, XmlNode xmlNod)
@@ -4092,7 +4093,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         private void SelectLangaugeDataBind(object sender, EventArgs e)
         {
             var lc = (EditLanguage)sender;
-            lc.Visible = visibleStatus.Last();
+            lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
         }
 
         private void CreateRegionControl(Control container, XmlNode xmlNod)
@@ -4125,7 +4126,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var container = (IDataItemContainer)ddl.NamingContainer;
                 try
                 {
-                    ddl.Visible = visibleStatus.Last();
+                    ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                     if (ddl.Visible)
                     {
 
@@ -4178,7 +4179,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var container = (IDataItemContainer)txt.NamingContainer;
                 try
                 {
-                    txt.Visible = visibleStatus.Last();
+                    txt.Visible = visibleStatus.DefaultIfEmpty(true).First();
                     if (txt.Visible)
                     {
                         var show = true;
@@ -4260,7 +4261,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)ddl.NamingContainer;
             try
             {
-                ddl.Visible = visibleStatus.Last();
+                ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
 
@@ -4348,7 +4349,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (lc.Visible)
                 {
 
@@ -4416,7 +4417,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (lc.Visible)
                 {
 
@@ -4479,7 +4480,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             try
             {
                 var strOut = "";
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (lc.Visible)
                 {
 
@@ -4564,7 +4565,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     if (s != "" && !l.Text.Contains(nbi.GetXmlProperty(s))) l.Text += " " + nbi.GetXmlProperty(s);
                 }
-                l.Visible = visibleStatus.Last();
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
 
             }
             catch (Exception ex)
@@ -4593,7 +4594,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var container = (IDataItemContainer)rbl.NamingContainer;
             try
             {
-                rbl.Visible = visibleStatus.Last();
+                rbl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (rbl.Visible)
                 {
                     var strXML = Convert.ToString(DataBinder.Eval(container.DataItem, "XMLData"));
@@ -4657,7 +4658,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var nbi = (NBrightInfo) container.DataItem;
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 lc.Text = NBrightBuyUtils.FormatToStoreCurrency(nbi.GetXmlPropertyDouble(lc.Text));
             }
             catch (Exception)
@@ -4687,7 +4688,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var lc = (Literal)sender;
             var container = (IDataItemContainer)lc.NamingContainer;
-            lc.Visible = visibleStatus.Last();
+            lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
             if (lc.Visible && container.DataItem != null)
             {
                 var param = lc.Text.Split('*');
@@ -4725,7 +4726,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             var lc = (Literal) sender;
             var container = (IDataItemContainer) lc.NamingContainer;
-            lc.Visible = visibleStatus.Last();
+            lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
             if (lc.Visible && container.DataItem != null)
             {
                 var nbi1 = (NBrightInfo) container.DataItem;
@@ -4773,10 +4774,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
         {
             // NOTE: Do not set Text = "", If we've assign a Text value in the template (or resourcekey) then use it as default. (unless Error)
             var lc = (Label)sender;
-            lc.Visible = visibleStatus.Last();
+            lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
             try
             {
-                lc.Visible = visibleStatus.Last();
+                lc.Visible = visibleStatus.DefaultIfEmpty(true).First();
             }
             catch (Exception)
             {
