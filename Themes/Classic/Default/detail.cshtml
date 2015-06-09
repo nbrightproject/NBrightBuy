@@ -24,7 +24,7 @@
     {
 		<div class="onsaleflag">[<tag type="label" resourcekey="ProductView.onsaleflag" />]</div>
     }
-    @if (@Model.IsInStock)
+    @if (!@Model.IsInStock)
     {
 		<div class="outofstockflag">[<tag type="label" resourcekey="ProductView.outofstockflag" />]</div>
     }
@@ -73,43 +73,51 @@
 			</div>
 		}
 		
-		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-    <div class="options">
-    [<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
-		<div class="option option1"><span class="optionname optionname1">[<tag type="productoptionname" index="1" />]</span><span class="optionvalue optionvalue1">[<tag type="productoption" index="1" />]</span></div>
-		[<tag type="endif"  />]
-		[<tag type="if" function="optionexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<div class="option option2"><span class="optionname optionname2">[<tag type="productoptionname" index="2" />]</span><span class="optionvalue optionvalue2">[<tag type="productoption" index="2" />]</span></div>
-		[<tag type="endif"  />]
-		[<tag type="if" function="optionexists" testvalue="3" display="{ON}" displayelse="{OFF}" />]
-		<div class="option option3"><span class="optionname optionname3">[<tag type="productoptionname" index="3" />]</span><span class="optionvalue optionvalue3">[<tag type="productoption" index="3" />]</span></div>
-		[<tag type="endif"  />]
-		[<tag type="if" function="optionexists" testvalue="4" display="{ON}" displayelse="{OFF}" />]
-		<div class="option option4"><span class="optionname optionname4">[<tag type="productoptionname" index="4" />]</span><span class="optionvalue optionvalue4">[<tag type="productoption" index="4" />]</span></div>
-		[<tag type="endif"  />]
-		</div>
-    [<tag type="endif"  />]
+		@if (@Model.Options.Count >= 1) 
+		{
+			<div class="options">
+			<div class="option option1"><span class="optionname optionname1">[<tag type="productoptionname" index="1" />]</span><span class="optionvalue optionvalue1">[<tag type="productoption" index="1" />]</span></div>
+			@if (@Model.Options.Count >= 2) 
+			{
+				<div class="option option2"><span class="optionname optionname2">[<tag type="productoptionname" index="2" />]</span><span class="optionvalue optionvalue2">[<tag type="productoption" index="2" />]</span></div>
+			}
+			@if (@Model.Options.Count >= 3) 
+			{
+				<div class="option option3"><span class="optionname optionname3">[<tag type="productoptionname" index="3" />]</span><span class="optionvalue optionvalue3">[<tag type="productoption" index="3" />]</span></div>
+			}
+			@if (@Model.Options.Count >= 4) 
+			{
+				<div class="option option4"><span class="optionname optionname4">[<tag type="productoptionname" index="4" />]</span><span class="optionvalue optionvalue4">[<tag type="productoption" index="4" />]</span></div>
+			}
+			@if (@Model.Options.Count >= 5) 
+			{
+				<div class="option option5"><span class="optionname optionname5">[<tag type="productoptionname" index="5" />]</span><span class="optionvalue optionvalue5">[<tag type="productoption" index="5" />]</span></div>
+			}
+			</div>
+		}
 	
-    [<tag type="if" function="settings" key="cataloguemode" testvalue="True" display="{OFF}" />]<!-- Catalogue mode -->
-    <div class="buy">
+	    @if ("[Settings:cataloguemode]"!="True")
+		{
+			<div class="buy">
 
-    [<tag type="if" function="isinstock" testvalue="0" display="{ON}"/>]
-    <div class="quantityoptions">
-      <a class="qtyminus" href="javascript:void(0)">-</a>
-      [<tag type="addqty" text="1" width="21" cssclass="quantity" />]
-      <a class="qtyplus" href="javascript:void(0)">+</a>
-    </div>
-    [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton" commandname="addtobasket" commandargument="ItemID" />]
-    [<tag type="endif"  />]
+		    @if (@Model.IsInStock)
+			{
+				<div class="quantityoptions">
+				  <a class="qtyminus" href="javascript:void(0)">-</a>
+				  [<tag type="addqty" text="1" width="21" cssclass="quantity" />]
+				  <a class="qtyplus" href="javascript:void(0)">+</a>
+				</div>
+				[<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton" commandname="addtobasket" commandargument="ItemID" />]
+			}
+			else
+			{
+				<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>			
+			}
 
-		[<tag type="if" function="isinstock" testvalue="0" display="{OFF}"/>]
-		<span class="outofstock">[<tag type="label" resourcekey="ProductView.outofstock" />]</span>
-		[<tag type="endif"  />]
+			<span class="return">[<tag type="returnlink" resourcekey="ProductView.return" cssclass="classicbutton" />]</span>
 
-		<span class="return">[<tag type="returnlink" resourcekey="ProductView.return" cssclass="classicbutton" />]</span>
-
-		</div>
-    [<tag type="endif"  />]<!-- End Catalogue mode -->
+			</div>
+		}
 
 </div>
 
@@ -117,74 +125,82 @@
 <div class="details">
 
         <ul class="nav-tabs">
-            [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" />]
-            <li class="tab-active"><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li><!-- Product description -->
-            [<tag type="endif" />]
-            [<tag type="if" function="optionexists" testvalue="1" display="{ON}" />]
-            <li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li><!-- Show Options table -->
-            [<tag type="endif" />]
-            [<tag type="if" function="hasdocuments" display="{ON}" />]
-            <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
-            [<tag type="endif" />]
+			@if (@Model.Info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
+			{
+				<li class="tab-active"><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li><!-- Product description -->
+			}			
+			@if (@Model.Models.Count >= 1 && @Model.Options.Count >= 1) // has models or options
+			{
+				<li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li><!-- Show Options table -->
+			}
+			@if (@Model.Docs.Count >= 1)
+			{
+				<li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
+			}
         </ul>
         <!--<div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_sharing_toolbox"></div></div> Sharing widget -->
         <div class="sharingwidget"><div class="share">[<tag type="valueof" resourcekey="ProductView.share" />] :</div><div class="addthis_fake"><img src="/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/addthis.png" /></div></div><!-- Only for Demo Website -->
 
-        [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- Product description -->
-        <div id="tab-1" class="tab-content tab-active">
-          <h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
-          [<tag type="description" />]
-        </div>
-        [<tag type="endif" />]
-
-        [<tag type="if" function="optionexists" testvalue="1" display="{ON}" />]<!-- Show Options table -->
-        <div id="tab-2" class="tab-content tab-hide">
-          <h3>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
-          <div class="models">
-          <table>
-			    <tbody>
-				  [<tag type="modelslist" template="modellist.html" />]
-			    </tbody>
-		      </table>
-          </div>
-        </div>
-        [<tag type="endif"  />]
-
-        [<tag type="if" function="hasdocuments" display="{ON}" />]
+		@if (@Model.Info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
+		{
+			<div id="tab-1" class="tab-content tab-active">
+			  <h3>[<tag type="valueof" resourcekey="ProductView.description" />]</h3>
+			  [<tag type="description" />]
+			</div>
+		}
+		@if (@Model.Models.Count >= 1 && @Model.Options.Count >= 1) // has models or options
+		{
+			<div id="tab-2" class="tab-content tab-hide">
+			  <h3>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
+			  <div class="models">
+			  <table>
+					<tbody>
+					  [<tag type="modelslist" template="modellist.html" />]
+					</tbody>
+				  </table>
+			  </div>
+			</div>
+		}
+		@if (@Model.Docs.Count >= 1)
+		{
         <div id="tab-3" class="tab-content tab-hide">
         <h3>[<tag type="valueof" resourcekey="ProductView.documentation" />]</h3>
             <ul class="documents">
-	            [<tag type="if" xpath="genxml/docs/genxml[[1]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="1" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="1" />]</span>
-	            [<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="1" />]
-	            </li>
-	            [<tag type="endif" />]
+				@if (@Model.Info.GetXmlProperty("genxml/docs/genxml[[1]]/textbox/txtfilename") != "")
+				{
+					<li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="1" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="1" />]</span>
+					[<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="1" />]
+					</li>
+				}
 
-	            [<tag type="if" xpath="genxml/docs/genxml[[2]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="2" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="2" />]</span>
-	            [<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="2" />]
-	            </li>
-	            [<tag type="endif" />]
+				@if (@Model.Info.GetXmlProperty("genxml/docs/genxml[[2]]/textbox/txtfilename") != "")
+				{
+					<li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="2" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="2" />]</span>
+					[<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="2" />]
+					</li>
+				}
 
-	            [<tag type="if" xpath="genxml/docs/genxml[[3]]/textbox/txtfilename" testvalue="" display="{OFF}"  />]
-	            <li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="3" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="3" />]</span>
-	            [<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="3" />]
-	            </li>
-	            [<tag type="endif" />]
+				@if (@Model.Info.GetXmlProperty("genxml/docs/genxml[[3]]/textbox/txtfilename") != "")
+				{
+					<li><i class='fa fa-file-text fa-2x'></i>[<tag type="label" resourcekey="ProductView.filebullets" />]<span class="documentname">[<tag type="productdoctitle" index="3" />]</span><span class="documentdescription">[<tag type="productdocdesc" index="3" />]</span>
+					[<tag cssclass="documentlink classicbutton" resourcekey="ProductView.download" type="productdoclink" index="3" />]
+					</li>
+				}
             </ul>
         </div>
-        [<tag type="endif" />]
+		}
 
 </div>
 <!-- End Details -->
 
 <!-- Related Items -->
-[<tag type="if" function="hasrelateditems" display="{ON}" />]
-<h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
-<div id="relatedwrapper" class="productlist">
-[<tag type="relatedproducts" template="relatedlist.html" />]
-</div>
-[<tag type="endif"  />]
+@if (@Model.GetRelatedProducts().Count >= 1)
+{
+	<h3>[<tag type="valueof" resourcekey="ProductView.related" />]</h3>
+	<div id="relatedwrapper" class="productlist">
+	[<tag type="relatedproducts" template="relatedlist.html" />]
+	</div>
+}
 
 </div>
 

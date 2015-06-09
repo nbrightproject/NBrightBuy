@@ -476,6 +476,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UpdateImages(info);
             // update docs
             UpdateDocs(info);
+
+            IsOnSale = CheckIsOnSale();
+            IsInStock = CheckIsInStock();
+
         }
 
         public void UpdateDocs(NBrightInfo info)
@@ -1233,9 +1237,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord = objCtrl.GetDataLang(productId, _lang);
                 }
 
-                var saleprice = GetSalePriceDouble();
-                if (saleprice > 0) IsOnSale = true;
-                IsOnSale = false;
+                IsOnSale = CheckIsOnSale();
+                IsInStock = CheckIsInStock();
 
             }
         }
@@ -1303,7 +1306,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
-        private Boolean IsModelInStock(NBrightInfo dataItem)
+        private Boolean CheckIsInStock()
+        {
+            foreach (var obj in Models)
+            {
+                if (IsModelInStock(obj)) return true;
+            }
+            return false;
+        }
+
+        public Boolean IsModelInStock(NBrightInfo dataItem)
         {
             var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
             if (stockOn)
@@ -1315,6 +1327,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 return true;
             }
+            return false;
+        }
+
+        private Boolean CheckIsOnSale()
+        {
+            var saleprice = GetSalePriceDouble();
+            if (saleprice > 0) return true;
             return false;
         }
 

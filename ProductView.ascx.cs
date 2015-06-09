@@ -568,12 +568,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         DoDetail(rpDataH, objCat);
                     }
 
-                    // do razor test
-                    var lit = new Literal();
-                    lit.Text = NBrightBuyUtils.RenderRazor(l,"","");
-                    phData.Controls.Add(lit);
-
-
                 }
             }
 
@@ -738,24 +732,24 @@ namespace Nevoweb.DNN.NBrightBuy
                 DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
 
                 // do razor template
-                var razorTemplName = System.IO.Path.GetFileNameWithoutExtension(_templD) + ".cshtml";
-                var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
-                var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
-                var lit = new Literal();
-                if (razorTempl == null || StoreSettings.Current.DebugMode)
-                {
-                    razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
-                    if (razorTempl != "")
-                    {
-                        razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
-                        var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
-                        razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
-                        productData.Info.GetXmlPropertyInt("");
-                        NBrightBuyUtils.SetModCache(ModuleId, cachekey, razorTempl);                        
-                    }
-                }
-                lit.Text = razorTempl;
-                phData.Controls.Add(lit);
+                //var razorTemplName = System.IO.Path.GetFileNameWithoutExtension(_templD) + ".cshtml";
+                //var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
+                //var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
+                //var lit = new Literal();
+                //if (razorTempl == null || StoreSettings.Current.DebugMode)
+                //{
+                //    razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
+                //    if (razorTempl != "")
+                //    {
+                //        razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
+                //        var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
+                //        razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
+                //        productData.Info.GetXmlPropertyInt("");
+                //        NBrightBuyUtils.SetModCache(ModuleId, cachekey, razorTempl);                        
+                //    }
+                //}
+                //lit.Text = razorTempl;
+                //phData.Controls.Add(lit);
             }
 
         }
