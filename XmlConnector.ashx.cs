@@ -1091,6 +1091,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     prodData.Save();
                     ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    prodData = ProductUtils.GetProductData(productitemid, _lang);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
                     {
@@ -1143,6 +1144,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     prodData.Save();
                     ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    prodData = ProductUtils.GetProductData(productitemid, _lang);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
                     {
@@ -1198,6 +1200,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     prodData.Save();
                     ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    prodData = ProductUtils.GetProductData(productitemid, _lang);
 
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)

@@ -1219,10 +1219,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RenderRazor(Object info,String razorTempl,String templateKey)
         {
             // do razor test
-            var config = new TemplateServiceConfiguration();
-            config.Debug = true;
-            var service = RazorEngineService.Create(config);
-            Engine.Razor = service;
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
 
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
             return result;
@@ -1231,6 +1234,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RenderRazor(List<Object> infoList, String razorTempl, String templateKey)
         {
             // do razor test
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
             return result;
         }

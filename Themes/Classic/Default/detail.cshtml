@@ -1,3 +1,4 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/"/>]
 
 <!-- detail.html - The product details view template. It has 3 divs (images, purchasing, details) contained within 1 div (productdetail)  -->
 
@@ -40,28 +41,38 @@
 
 		<div class="price">
 
-    [<tag type="if" function="isonsale" display="{ON}" />]
-    [<tag type="valueof" resourcekey="ProductView.onsale" />] : <!-- Sale Label -->
-		[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.from" />] [<tag type="endif" />]<span class="old">[<tag type="price" />]</span><!-- From Label -->
-		<span class="sale">[<tag type="bestprice" />]</span><!-- Always show best price -->
-    [<tag type="endif" />]
-
-    [<tag type="if" function="isonsale" display="{OFF}" />]
-		[<tag type="if" function="hasmodelsoroptions" display="{ON}" />][<tag type="valueof" resourcekey="ProductView.from" />] [<tag type="endif" />][<tag type="price" />]<!-- From Label -->
-    [<tag type="endif" />]
+	@if (@Model.IsOnSale)
+    {
+        <span>[<tag type="valueof" resourcekey="ProductView.onsale" />] : </span>
+		if (@Model.Models.Count >= 1 && @Model.Options.Count >= 1)
+		{
+			<span>[<tag type="valueof" resourcekey="ProductView.from" />] </span>
+		}
+		<span class="old">[<tag type="price" />]</span>
+		<span class="sale">[<tag type="bestprice" />]</span>
+	}
+	else
+	{
+		if (@Model.Models.Count >= 1 && @Model.Options.Count >= 1) // has models or options
+		{
+			<span>[<tag type="valueof" resourcekey="ProductView.from" />] </span>
+		}
+		<span>[<tag type="price" />]</span>
+	}
 
     </div>
 
-		[<tag type="if" xpath="genxml/lang/genxml/textbox/txtsummary" testvalue="" display="{OFF}" displayelse="{ON}" />]
+	@if (@Model.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary") != "")
+    {
 		<div itemprop="description" class="summary">[<tag type="breakof" xpath="genxml/lang/genxml/textbox/txtsummary" />]</div>
-		[<tag type="endif"  />]
-
-		[<tag type="if" function="modelexists" testvalue="2" display="{ON}" displayelse="{OFF}" />]
-		<div class="models">
-      [<tag type="modelsradio" template="{name} ({bestprice})" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]
-    </div>
-		[<tag type="endif"  />]
-
+	}
+		@if (@Model.Models.Count >= 2) 
+		{
+			<div class="models">
+			[<tag type="modelsradio" template="{name} ({bestprice})" RepeatDirection="Vertical" RepeatColumns="1" SelectedIndex="" cssclass="modelsradio" />]
+			</div>
+		}
+		
 		[<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
     <div class="options">
     [<tag type="if" function="optionexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]
