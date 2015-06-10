@@ -7,6 +7,7 @@ using NBrightCore.TemplateEngine;
 using NBrightCore.render;
 using NBrightDNN;
 using NBrightCore.common;
+using NBrightCore.providers;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -488,5 +489,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
 	        Utils.RemoveCache(cacheKey);
 	    }
+
+
+
 	}
 }

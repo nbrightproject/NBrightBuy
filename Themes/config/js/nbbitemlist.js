@@ -1,3 +1,6 @@
+/// LEGACY CODE - WILL BE REMOVED IN FUTURE
+/// -------------------------------------------------------------------------
+
 var nbxajaxrtn = 'input[id*="nbxajaxrtn"]';
 
 function nbxajaxaction(selector)

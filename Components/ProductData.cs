@@ -85,6 +85,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Set to true if product exists
         /// </summary>
         public bool Exists { get; private set; }
+        public bool IsInStock { get; private set; }
+        public bool IsOnSale { get; private set; }
+
 
         public Boolean Disabled
         {
@@ -473,6 +476,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UpdateImages(info);
             // update docs
             UpdateDocs(info);
+
+            IsOnSale = CheckIsOnSale();
+            IsInStock = CheckIsInStock();
+
         }
 
         public void UpdateDocs(NBrightInfo info)
@@ -1146,6 +1153,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Info.XMLDoc.Save(filePathName);
         }
 
+
+
+
         #endregion
 
         #region " private functions"
@@ -1227,6 +1237,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord = objCtrl.GetDataLang(productId, _lang);
                 }
 
+                IsOnSale = CheckIsOnSale();
+                IsInStock = CheckIsInStock();
+
             }
         }
 
@@ -1291,6 +1304,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             return l;
+        }
+
+        private Boolean CheckIsInStock()
+        {
+            foreach (var obj in Models)
+            {
+                if (IsModelInStock(obj)) return true;
+            }
+            return false;
+        }
+
+        public Boolean IsModelInStock(NBrightInfo dataItem)
+        {
+            var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            if (stockOn)
+            {
+                var modelstatus = dataItem.GetXmlProperty("genxml/dropdownlist/modelstatus");
+                if (modelstatus == "010") return true;
+            }
+            else
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Boolean CheckIsOnSale()
+        {
+            var saleprice = GetSalePriceDouble();
+            if (saleprice > 0) return true;
+            return false;
+        }
+
+        public Double GetSalePriceDouble()
+        {
+            Double price = -1;
+            foreach (var m in Models)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
+            return price;
         }
 
         #endregion

@@ -27,6 +27,7 @@ using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using RazorEngine;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -263,7 +264,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     DisplayDataEntryRepeater(_eid);
-
+                    
                 }
                 else
                 {
@@ -544,7 +545,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
 
-                    rpData.DataSource = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    var l = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    rpData.DataSource = l;
                     rpData.DataBind();
 
                     if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
@@ -704,6 +706,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (productData.Exists)
             {
+
                 if (PortalSettings.HomeTabId == TabId)
                     PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
                 else
@@ -722,10 +725,31 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
+
                 //render the detail page
                 base.DoDetail(rpData, productData.Info);
 
                 DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
+
+                // do razor template
+                //var razorTemplName = System.IO.Path.GetFileNameWithoutExtension(_templD) + ".cshtml";
+                //var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
+                //var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
+                //var lit = new Literal();
+                //if (razorTempl == null || StoreSettings.Current.DebugMode)
+                //{
+                //    razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
+                //    if (razorTempl != "")
+                //    {
+                //        razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
+                //        var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
+                //        razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
+                //        productData.Info.GetXmlPropertyInt("");
+                //        NBrightBuyUtils.SetModCache(ModuleId, cachekey, razorTempl);                        
+                //    }
+                //}
+                //lit.Text = razorTempl;
+                //phData.Controls.Add(lit);
             }
 
         }

@@ -10,7 +10,7 @@ function AddToFavCookie(itemid, name) {
     var a = favarray.indexOf(itemid);
     if (a == -1) {
         favlist += itemid + "*";
-        Cookies.set(name, favlist, { expires: 1, path: '/' });
+        Cookies.set(name, favlist, { expires: 365, path: '/' });
     }
 };
 
@@ -25,7 +25,7 @@ function AddToFavCookie(itemid, name) {
                 for (var i = 0; i < favarray.length; i++) {
                     if (favarray[i] != '') favlist += favarray[i] + '*';
                 }
-                Cookies.set(name, favlist, { expires: 1, path: '/' });
+                Cookies.set(name, favlist, { expires: 365, path: '/' });
             }
         }
     };

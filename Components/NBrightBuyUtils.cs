@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -28,7 +29,10 @@ using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using RazorEngine;
+using RazorEngine.Configuration;
 using MailPriority = DotNetNuke.Services.Mail.MailPriority;
+using RazorEngine.Templating;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -491,7 +495,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="portalHomeDirectory"></param>
         /// <param name="visibleStatusIn">List of the visible staus used for nested if</param>
         /// <returns></returns>
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, List<Boolean> visibleStatusIn)
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, ConcurrentStack<Boolean> visibleStatusIn)
         {
             if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
 
@@ -1212,6 +1216,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return -1;
         }
 
+        public static String RenderRazor(Object info,String razorTempl,String templateKey)
+        {
+            // do razor test
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            return result;
+        }
+
+        public static String RenderRazor(List<Object> infoList, String razorTempl, String templateKey)
+        {
+            // do razor test
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
+            return result;
+        }
     }
 }
 
