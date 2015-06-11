@@ -22,12 +22,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
 
         private int _eid = 0;
+        private String _page = "";
 
         #region Load Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
 
+            _page = Utils.RequestParam(Context, "page");
             if (Utils.IsNumeric(Utils.RequestParam(Context, "eid"))) _eid = Convert.ToInt32(Utils.RequestParam(Context, "eid"));
 
             base.OnInit(e);
@@ -103,9 +105,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "edit":
                     param[0] = "eid=" + cArg;
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":
@@ -122,8 +126,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String AddNew()
         {
-            var prodData = new ProductData(-1, StoreSettings.Current.EditLanguage);
-            if (!prodData.Exists) return prodData.CreateNew().ToString("");
+            var prodData = ProductUtils.GetProductData(-1, StoreSettings.Current.EditLanguage);
             return prodData.Info.ItemID.ToString("");
         }
 
@@ -136,25 +139,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var updInfo = new NBrightInfo(true);
                 updInfo.XMLData = strXml;
 
-                GenXmlFunctions.UploadImgFile(rpData, "image", StoreSettings.Current.FolderImagesMapPath);
-                var fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hidimage")).Attributes["value"];
-                updInfo.SetXmlProperty("genxml/hidden/hidimage",fName);
-
                 GenXmlFunctions.UploadFile(rpData, "document", StoreSettings.Current.FolderDocumentsMapPath);
-                fName = ((HtmlGenericControl)rpData.Items[0].FindControl("hiddocument")).Attributes["value"];
-                updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
-                
-                var imgCtrl = (FileUpload)rpData.Items[0].FindControl("image");
-                updInfo.SetXmlProperty("genxml/hidden/postedimagename", imgCtrl.PostedFile.FileName);
-                var docCtrl = (FileUpload)rpData.Items[0].FindControl("document");
-                updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
+                var ctrl = ((HtmlGenericControl) rpData.Items[0].FindControl("hiddocument"));
+                if (ctrl != null)
+                {
+                    var fName = ctrl.Attributes["value"];
+                    updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
+
+                    var docCtrl = (FileUpload) rpData.Items[0].FindControl("document");
+                    updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
+                }
 
                 prodData.Update(updInfo.XMLData);
                 prodData.Save();
 
-                if (StoreSettings.Current.DebugMode) prodData.OutputDebugFile("debug_productupdate.xml");
+                if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
 
                 NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                ProductUtils.RemoveProductDataCache(productid, StoreSettings.Current.EditLanguage);
 
                 
             }
@@ -167,6 +169,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
                 prodData.Delete();
                 NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                ProductUtils.RemoveProductDataCache(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
             }
         }
 
@@ -190,6 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                 }
                 prodData.Save();
+                ProductUtils.RemoveProductDataCache(newid, StoreSettings.Current.EditLanguage);
                 return newid.ToString("");
             }
             return "";

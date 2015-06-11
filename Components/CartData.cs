@@ -45,9 +45,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ValidateCart();
             //save cart after validation so calculated costs are saved.
             _cartId = base.SavePurchaseData();
-            if (debugMode) OutputDebugFile("debug_currentcart.xml");
+            if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_currentcart.xml");
             SaveCartId();
             Exists = true;
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterCartSave, PurchaseInfo);
 
         }
 
@@ -57,21 +59,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (IsValidated() && itemList.Count > 0)
             {
                 PurchaseTypeCode = "ORDER";
-                base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
-                base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
+                if (base.PurchaseInfo.GetXmlProperty("genxml/createddate") == "") base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
+                if (base.PurchaseInfo.GetXmlProperty("genxml/ordernumber") == "") base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
 
                 Save();
                 var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
-                
-                // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
-                var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
-                if (objUser != null && objUser.Email != ordData.EmailAddress)
+                ordData.OrderStatus = "010";
+                if (ordData.EditMode == "") // don't update if we are in edit mode, we dont; want manager email to be altered.
                 {
-                    var clientData = new ClientData(PortalId, ordData.UserId);
-                    clientData.UpdateEmail(ordData.EmailAddress);
+                    // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
+                    var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
+                    if (objUser != null && objUser.Email != ordData.EmailAddress)
+                    {
+                        var clientData = new ClientData(PortalId, ordData.UserId);
+                        clientData.UpdateEmail(ordData.EmailAddress);
+                    }                    
                 }
+                ordData.Save();
 
-                if (debugMode) OutputDebugFile("debug_convertedcart.xml");
+                if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedcart.xml");
                 Exists = false;
                 return true;
             }
@@ -214,6 +220,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ValidateCart()
         {
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartBefore, PurchaseInfo);
+
             var itemList = GetCartItemList();
             Double subtotalcost = 0;
             Double subtotaldealercost = 0;
@@ -222,14 +230,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double totaldealerdiscount = 0;
             Double totalqty = 0;
             Double totalweight = 0;
-            
+            Double totalunitcost = 0;
+
             var strXml = "<items>";
             foreach (var info in itemList)
             {
+                // check product still exists and remove if deleted, altered or disabled.
+
                 var cartItem = ValidateCartItem(PortalId, UserId, info);
                 if (cartItem != null)
                 {
                     strXml += cartItem.XMLData;
+                    totalunitcost += info.GetXmlPropertyDouble("genxml/unitcost");
                     subtotalcost += info.GetXmlPropertyDouble("genxml/totalcost");
                     subtotaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
                     totaldealerbonus += info.GetXmlPropertyDouble("genxml/totaldealerbonus");
@@ -247,13 +259,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // calculate totals
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalqty", totalqty);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totalunitcost", totalunitcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount));
+            var applieddiscount = AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", applieddiscount);
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", totaldealerbonus);
 
@@ -343,17 +357,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (!UserController.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
             }
 
+            PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartAfter, PurchaseInfo);
+
             SavePurchaseData();
         }
 
         private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
         {
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemBefore, cartItemInfo);
+
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
 
-            var prd = new ProductData(prdid, Utils.GetCurrentCulture());
-            if (!prd.Exists) return null; //Invalid product remove from cart
+            var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
+            if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)
@@ -407,18 +425,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
                 if (optNods != null)
                 {
-                    var lp = 0;
+                    var lp = 1;
                     foreach (XmlNode nod in optNods)
                     {
-                        var optvalcostnod = nod.SelectSingleNode("optvalcost");
-                        if (optvalcostnod != null)
+                        var optid = nod.SelectSingleNode("optid");
+                        if (optid != null)
                         {
-                            var optvalcost = optvalcostnod.InnerText;
-                            if (Utils.IsNumeric(optvalcost))
+                            var optvalueid = nod.SelectSingleNode("optvalueid");
+                            if (optvalueid != null && optvalueid.InnerText != "False")
                             {
-                                var optvaltotal = Convert.ToDouble(optvalcost, CultureInfo.GetCultureInfo("en-US")) * qty;
-                                cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
-                                additionalCosts += optvaltotal;
+                                XmlNode  optvalcostnod;
+                                if (optvalueid.InnerText == "True")
+                                    optvalcostnod = cartItemInfo.XMLDoc.SelectSingleNode("genxml/productxml/genxml/optionvalues[@optionid='" + optid.InnerText + "']/genxml/textbox/txtaddedcost");
+                                else
+                                    optvalcostnod = cartItemInfo.XMLDoc.SelectSingleNode("genxml/productxml/genxml/optionvalues/genxml[./hidden/optionvalueid='" + optvalueid.InnerText + "']/textbox/txtaddedcost");
+
+                                if (optvalcostnod != null)
+                                {
+                                    var optvalcost = optvalcostnod.InnerText;
+                                    if (Utils.IsNumeric(optvalcost))
+                                    {
+                                        cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvalcost", optvalcost);
+                                        var optvaltotal = Convert.ToDouble(optvalcost, CultureInfo.GetCultureInfo("en-US"))*qty;
+                                        cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", optvaltotal);
+                                        additionalCosts += optvaltotal;
+                                    }
+                                }
+                                else
+                                {
+                                    cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvalcost", "0");
+                                    cartItemInfo.SetXmlPropertyDouble("genxml/options/option[" + lp + "]/optvaltotal", "0");
+                                }
                             }
                         }
                         lp += 1;
@@ -428,8 +465,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (qty > 0)  // can't devide by zero
                 {                   
                     unitcost += (additionalCosts / qty);
-                    dealercost += (additionalCosts / qty);
-                    saleprice += (additionalCosts / qty);
+                    if (dealercost > 0) dealercost += (additionalCosts / qty); // zero turns off
+                    if (saleprice > 0) saleprice += (additionalCosts / qty); // zero turns off
                     sellcost += (additionalCosts / qty);
                 }
 
@@ -495,11 +532,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             }
 
+            cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemAfter, cartItemInfo);
+
             return cartItemInfo;
         }
 
         private Double AppliedCost(int portalId, int userId, Double cost, Double dealercost)
         {
+            if (cost < 0) cost = 0;
+            if (dealercost < 0) dealercost = 0;
             //always return nortmal price for non-registered users
             if (UserController.GetCurrentUserInfo().UserID == -1) return cost;
 

@@ -234,4 +234,13 @@
   <data name="addnotes.Text" xml:space="preserve">
     <value>Add a note to the order history</value>
   </data>
+  <data name="emailmsg.Text" xml:space="preserve">
+    <value>Email message for client </value>
+  </data>
+  <data name="cmdEditOrder.confirm" xml:space="preserve">
+    <value>Edit Order?</value>
+  </data>
+  <data name="cmdEditOrder.Text" xml:space="preserve">
+    <value>&lt;i  title="View and Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Edit</value>
+  </data>
 </root>

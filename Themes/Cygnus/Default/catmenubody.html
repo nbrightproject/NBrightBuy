@@ -1,4 +1,4 @@
-﻿[<tag type="if" function="productcount" modulekey="ProductView" testvalue="0" display="{ON}" />]<!-- Show drilldown menu when current category has zero items -->
+﻿[<tag type="if" function="productcount" modulekey="{Settings:targetmodulekey}" testvalue="0" display="{ON}" />]<!-- Show drilldown menu when current category has zero items -->
 <!-- Drilldown Menu body -->
 <a class="categoryurl" href="[<tag type='valueof' databind='url' />]">
 <ul class="drilldownitem" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px">

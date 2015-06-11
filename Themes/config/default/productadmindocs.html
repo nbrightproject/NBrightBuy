@@ -6,7 +6,7 @@
     
     [<tag id="fileext" type="hidden" value="" />]
     [<tag id="filepath" type="hidden" value="" />]
-    [<tag id="fields" type="hidden" value="genxml/checkbox/chkhidden,genxml/checkbox/chkpurchase,genxml/hidden/fileext,genxml/hidden/filepath,genxml/textbox/txtfilename" />]
+    [<tag id="fields" type="hidden" value="genxml/checkbox/chkishidden,genxml/checkbox/chkpurchase,genxml/hidden/fileext,genxml/hidden/filepath,genxml/textbox/txtfilename" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtdocdesc,genxml/textbox/txttitle" />]
 
 	<div class="col-xs-12 form-horizontal">
@@ -19,8 +19,8 @@
 	        <div class="col-sm-2"><label class="control-label">&nbsp;</label><br><a class="removedoc btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
 		</div>
 		<div class="row form-group">
-			<div class="col-sm-2 nowrap">[<tag id="chkishidden" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label></div>
-			<div class="col-sm-2 nowrap">[<tag id="chkpurchase" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Purchase" />]</label></div>
+			<div class="col-sm-2 nowrap">[<tag id="chkishidden" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label></div>
+			<div class="col-sm-2 nowrap">[<tag id="chkpurchase" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Purchase" />]</label></div>
 		</div>
 	</div>
 </li>

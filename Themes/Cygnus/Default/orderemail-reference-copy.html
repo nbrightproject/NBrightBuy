@@ -52,7 +52,7 @@ a:active, a:hover{color:#6D94B9}
 				<div>[Settings:storename]</div>
 				<div><a href="mailto:[Settings:supportemail]">[Settings:supportemail]</a></div>
 				<div>[Settings:storephone]</div>
-				<div><a href="http://[<tag type='websiteurl' />]" target="_blank">[<tag type="websiteurl" />]</a></div>
+				<div><a href="http://[<tag type='websiteurl' />]" target="_blank">[<tag type="dnn:websiteurl" />]</a></div>
 			</td>
 		</tr>
 	</table>
@@ -143,7 +143,7 @@ a:active, a:hover{color:#6D94B9}
 		<tr>
 			<td style="line-height:100%">
 			<h4>[<tag type="valueof" resourcekey="Notification.ManualPayment" />]</h4>
-			<div>[<tag type="valueof" resourcekey="Notification.bankinginstructions" />]</div>
+			<div>[<tag type="breakof" resourcekey="Notification.bankinginstructions" />]</div>
 			<div><b>[<tag type="valueof" resourcekey="Notification.Bank" />]: </b>[Settings:bankname], <b>[<tag type="valueof" resourcekey="Notification.AccountName" />]: </b>[Settings:bankaccountname]</div>
 			<div><b>[<tag type="valueof" resourcekey="Notification.AccountNumber" />]: </b>[Settings:bankaccountnumber], <b>[<tag type="valueof" resourcekey="Notification.InsertReference" />]: </b>[<tag type="valueof" xpath="genxml/ordernumber" />]</div>
 			</td>
@@ -246,7 +246,7 @@ a:active, a:hover{color:#6D94B9}
 			                </div>
 			                <div><a href="#" style="text-decoration: none; color: #848484; font-weight: normal;">[Settings:storephone]</a></div>
 			                <div><a href="#" style="text-decoration: none; color: #848484; font-weight: normal;">[Settings:supportemail]</a></div>
-			                <div><a href="http://[<tag type='websiteurl' />]" style="text-decoration: none; color: #848484; font-weight: normal;">[<tag type="websiteurl" />]</a></div>
+			                <div><a href="http://[<tag type='websiteurl' />]" style="text-decoration: none; color: #848484; font-weight: normal;">[<tag type="dnn:websiteurl" />]</a></div>
 						</td>
 					</tr>
 				</table>

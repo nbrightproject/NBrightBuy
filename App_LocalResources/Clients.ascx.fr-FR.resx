@@ -228,4 +228,19 @@
   <data name="userlockedout.Text" xml:space="preserve">
     <value>Utilisateur verrouillé</value>
   </data>
+  <data name="ClientmenuTitle.Text" xml:space="preserve">
+    <value>Mon compte</value>
+  </data>
+  <data name="ClientmenuManage.Text" xml:space="preserve">
+    <value>Gestion du compte</value>
+  </data>
+  <data name="ClientmenuProfile.Text" xml:space="preserve">
+    <value>Mon profil</value>
+  </data>
+  <data name="ClientmenuAddresses.Text" xml:space="preserve">
+    <value>Mes adresses</value>
+  </data>
+  <data name="ClientmenuOrders.Text" xml:space="preserve">
+    <value>Mes commandes</value>
+  </data>
 </root>

@@ -12,9 +12,11 @@
 // --- End copyright notice --- 
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.UI.Skins;
 using NBrightCore.common;
@@ -38,6 +40,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String _entryid = "";
         private Boolean _displayentrypage = false;
         private String _uid = "";
+        private String _page = "";
         private String _print = "";
         private String _printtemplate = "";
         
@@ -52,6 +55,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             _uid = Utils.RequestParam(Context, "uid");
             _print = Utils.RequestParam(Context, "print");
             _printtemplate = Utils.RequestParam(Context, "template");
+            _page = Utils.RequestParam(Context, "page");
             EnablePaging = true;
 
             base.OnInit(e);
@@ -233,11 +237,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (_uid != "") param[0] = "uid=" + _uid;
             var navigationData = new NavigationData(PortalId, "AdminOrders");
             var cmd = e.CommandName.ToLower();
+            var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
+            var emailoption = "";
 
             switch (cmd)
             {
                 case "entrydetail":
                     param[0] = "eid=" + cArg;
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "reorder":
@@ -264,6 +271,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "return":
                     param[0] = "";
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
@@ -272,10 +280,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpSearch);
                     navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch);
                     navigationData.Save();
-                    if (DebugMode)
+                    if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
+                        var xmlDoc = new System.Xml.XmlDocument();
                         xmlDoc.LoadXml(strXml);
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                     }
@@ -325,24 +333,32 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "emailamended":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("orderamended_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderamendedemail.html", "orderamended_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailreceipt":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("orderreceipt_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "orderreceiptemail.html", "orderreceipt_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailshipped":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("ordershipped_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordershippedemail.html", "ordershipped_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "emailvalidated":
                     param[0] = "eid=" + _entryid;
+                    emailoption = DnnUtils.GetLocalizedString("ordervalidated_emailsubject.Text", resxpath, Utils.GetCurrentCulture());
+                    Update(emailoption);
                     SendOrderEmail(Convert.ToInt32(_entryid), "ordervalidatedemail.html", "ordervalidated_emailsubject.Text");
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef + cmd, NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -355,19 +371,26 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "eid=" + _entryid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "export":
+                    DoExport();
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
             }
 
         }
 
         #endregion
 
-        private NotifyCode Update()
+        private NotifyCode Update(String emailoption = "")
         {
             // we don;t have the full field set on this form, so only update the fields we know are there.
             var trackingcode = GenXmlFunctions.GetField(rpDataF, "trackingcode");
             var shippingdate = GenXmlFunctions.GetField(rpDataF, "shippingdate");
             var orderstatus = GenXmlFunctions.GetField(rpDataF, "orderstatus");
+            var showtouser = GenXmlFunctions.GetField(rpDataF, "showtouser");
             var notes = GenXmlFunctions.GetField(rpDataF, "notes");
+            var emailmsg = GenXmlFunctions.GetField(rpDataF, "emailmsg");
+            
             var strUpd = GenXmlFunctions.GetGenXml(rpDataF, "", StoreSettings.Current.FolderUploadsMapPath);
             var nbi = new NBrightInfo(true);
             nbi.XMLData = strUpd;
@@ -382,14 +405,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             ordData.InvoiceFileName = nbi.GetXmlProperty("genxml/hidden/hidinvoicedoc");
             ordData.InvoiceFileExt = Path.GetExtension(ordData.InvoiceFileName);
             ordData.InvoiceFilePath = StoreSettings.Current.FolderUploadsMapPath + "\\" + ordData.InvoiceFileName;
-            ordData.AddAuditMessage(notes);
+            ordData.AddAuditMessage(notes,"msg",UserInfo.Username,showtouser);
+            if (emailoption != "")
+            {
+                ordData.AddAuditMessage(emailmsg, "email", UserInfo.Username, showtouser, emailoption); 
+            }
 
             if (ordData.OrderNumber == "") ordData.OrderNumber = StoreSettings.Current.Get("orderprefix") + ordData.PurchaseInfo.ModifiedDate.Year.ToString("").Substring(2, 2) + ordData.PurchaseInfo.ModifiedDate.Month.ToString("00") + ordData.PurchaseInfo.ModifiedDate.Day.ToString("00") + _entryid;
 
             ordData.InvoiceDownloadName = ordData.OrderNumber + ordData.InvoiceFileExt;
 
-            ordData.EditMode = "E";  // set to edit mode, so we don;t update the userid to the manager.
-            ordData.SavePurchaseData();
+            ordData.Save();
             return NotifyCode.ok;
         }
 
@@ -420,7 +446,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 base.DoDetail(rpData, orderData.GetInfo());
 
                 base.DoDetail(rpItemH, orderData.GetInfo());
-                rpItem.DataSource = orderData.GetCartItemList();
+                rpItem.DataSource = orderData.GetCartItemList(StoreSettings.Current.Get("chkgroupresults") == "True");
                 rpItem.DataBind();
                 base.DoDetail(rpItemF, orderData.GetInfo());
 
@@ -435,9 +461,39 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void SendOrderEmail(int orderid, String emailtemplate,String emailsubjectresxkey)
         {
-            var ordData = new OrderData(PortalId, orderid);
-            NBrightBuyUtils.SendEmailOrderToClient(emailtemplate,orderid, emailsubjectresxkey);
+            var emailmsg = GenXmlFunctions.GetField(rpDataF, "emailmsg");
+            NBrightBuyUtils.SendEmailOrderToClient(emailtemplate, orderid, emailsubjectresxkey,"", emailmsg);
         }
+
+        private void DoExport()
+        {
+            var navigationData = new NavigationData(PortalId, "AdminOrders");
+            var strFilter = navigationData.Criteria;
+            var l2 = new List<NBrightInfo>();
+
+            const string strOrder = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+            var l1 = ModCtrl.GetList(PortalId, -1, "ORDER", strFilter, strOrder, 1000);
+            foreach (var i in l1)
+            {
+                var nodList = i.XMLDoc.SelectNodes("genxml/items/*");
+                foreach (XmlNode nod in nodList)
+                {
+                    var itemline = (NBrightInfo)i.Clone();
+                    itemline.RemoveXmlNode("genxml/items");
+                    itemline.AddXmlNode("<item>" + nod.OuterXml + "</item>", "item", "genxml");
+                    l2.Add(itemline);
+                }
+            }
+
+            var rp = new Repeater();
+            var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "ordersexport.html", Utils.GetCurrentCulture(), DebugMode);
+            rp.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+            rp.DataSource = l2;
+            var strOut = GenXmlFunctions.RenderRepeater(rp);
+            Utils.ForceStringDownload(Response,"ordersexport.csv",strOut);
+        }
+
+
 
     }
 

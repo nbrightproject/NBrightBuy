@@ -177,4 +177,10 @@
   <data name="lblPaymentTab.Text" xml:space="preserve">
     <value>Redirect Page : </value>
   </data>
+  <data name="lblgroupresults.Help" xml:space="preserve">
+    <value>Cart items will be grouped by product&gt;model</value>
+  </data>
+  <data name="lblgroupresults.Text" xml:space="preserve">
+    <value>Group Cart Items :</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ using NBrightCore.TemplateEngine;
 using NBrightCore.render;
 using NBrightDNN;
 using NBrightCore.common;
+using NBrightCore.providers;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -106,7 +107,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 			var strModelXml = "<" + entityName + ">";
             foreach (RepeaterItem i in rpEntity.Items)
 			{
-                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) == "False")
+                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) != "True")
                 {
                     GenXmlFunctions.SetField(rpEntity, "entityindex", i.ItemIndex.ToString(CultureInfo.InvariantCulture), i.ItemIndex);
 					strModelXml += GenXmlFunctions.GetGenXml(i, "", folderMapPath);
@@ -130,7 +131,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strModelXML = "<" + entityName + ">";
             foreach (RepeaterItem i in rpEntityLang.Items)
 			{
-                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) == "False")
+                if (GenXmlFunctions.GetField(rpEntity, "chkDelete", i.ItemIndex) != "True")
                 {
                     GenXmlFunctions.SetField(rpEntityLang, "entityindex", i.ItemIndex.ToString(CultureInfo.InvariantCulture), i.ItemIndex);
                     strModelXML += GenXmlFunctions.GetGenXml(i, "", folderMapPath);
@@ -449,19 +450,47 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return mcList;
         }
 
-        public static ProductData GetProductData(String productid, String lang, Boolean debugMode = false)
+        /// <summary>
+        /// Get ProductData class with cacheing
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="lang"></param>
+        /// <param name="hydrateLists"></param>
+        /// <returns></returns>
+        public static ProductData GetProductData(int productId, String lang, Boolean hydrateLists = true)
         {
-            if (Utils.IsNumeric(productid)) return GetProductData(Convert.ToInt32(productid), lang, debugMode);
-            return null;
+            ProductData prdData;
+            var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
+            prdData = (ProductData)Utils.GetCache(cacheKey);
+            if (prdData == null)
+            {
+                prdData = new ProductData(productId, lang, hydrateLists);
+                Utils.SetCache(cacheKey, prdData);
+            }
+            return prdData;
         }
 
-	    public static ProductData GetProductData(int productid, String lang, Boolean debugMode = false)
+	    public static ProductData GetProductData(String productId, String lang, Boolean hydrateLists = true)
 	    {
-	        if (debugMode) return new ProductData(productid, lang, true);
-	        var cacheKey = "NBSProductData*" + productid.ToString("") + "*" + lang;
-	        var prodData = (ProductData)Utils.GetCache(cacheKey);
-	        if (prodData == null) prodData = new ProductData(productid, lang, true);
-	        return prodData;
+	        if (Utils.IsNumeric(productId))
+	        {
+	            return GetProductData(Convert.ToInt32(productId),lang,hydrateLists);
+	        }
+	        return null;
 	    }
+
+        public static void RemoveProductDataCache(String productId, String lang)
+        {
+            if (Utils.IsNumeric(productId)) RemoveProductDataCache(Convert.ToInt32(productId), lang);
+        }
+
+	    public static void RemoveProductDataCache(int productId, String lang)
+	    {
+            var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
+	        Utils.RemoveCache(cacheKey);
+	    }
+
+
+
 	}
 }

@@ -23,6 +23,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public StoreSettings(int portalId)
         {
             DebugMode = false;
+            DebugModeFileOut = false;
 
             _settingDic = new Dictionary<string, string>();
 
@@ -42,15 +43,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //add DNN Portalsettings
             if (!_settingDic.ContainsKey("portalid")) _settingDic.Add("portalid", portalId.ToString(""));
-            if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
-            if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
-            if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);
+            if (PortalSettings.Current == null)
+            {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(portalId);
+                if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", portalsettings.PortalName);
+                if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", portalsettings.HomeDirectory);
+                if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", portalsettings.HomeDirectoryMapPath);                
+            }
+            else
+            {
+                if (!_settingDic.ContainsKey("portalname")) _settingDic.Add("portalname", PortalSettings.Current.PortalName);
+                if (!_settingDic.ContainsKey("homedirectory")) _settingDic.Add("homedirectory", PortalSettings.Current.HomeDirectory);
+                if (!_settingDic.ContainsKey("homedirectorymappath")) _settingDic.Add("homedirectorymappath", PortalSettings.Current.HomeDirectoryMapPath);                
+            }
             if (!_settingDic.ContainsKey("culturecode")) _settingDic.Add("culturecode", Utils.GetCurrentCulture());
 
 
             ThemeFolder = Get("themefolder");
 
             if (_settingDic.ContainsKey("debug.mode") && _settingDic["debug.mode"] == "True") DebugMode = true;  // set debug mmode
+            if (_settingDic.ContainsKey("debugfileout") && _settingDic["debugfileout"] == "True") DebugModeFileOut = true;  // set debug mmode
             StorageTypeClient = DataStorageType.Cookie;
             if (Get("storagetypeclient") == "SessionMemory") StorageTypeClient = DataStorageType.SessionMemory;
             
@@ -59,10 +71,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderDocumentsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderdocs");
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
+            FolderTempMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\NBSTemp";
 
             FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
             FolderImages =  Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
             FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
+            FolderTemp = Get("homedirectory").TrimEnd('/') + "/NBSTemp";
 
             if (!_settingDic.ContainsKey("FolderDocumentsMapPath")) _settingDic.Add("FolderDocumentsMapPath",FolderDocumentsMapPath );
             if (!_settingDic.ContainsKey("FolderImagesMapPath")) _settingDic.Add("FolderImagesMapPath",FolderImagesMapPath );
@@ -78,12 +92,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         /// <summary>
-        /// get relitive patyh of NBrightBuy Module (For compatiblity with DNN running in a virtual directory)
+        /// get relitive patyh of NBrightBuy Module (NBS is NOT compatiblity with DNN running in a virtual directory)
         /// </summary>
         /// <returns></returns>
         public static String NBrightBuyPath()
         {
-            if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
+            //if (HttpContext.Current.Request.ApplicationPath != null) return HttpContext.Current.Request.ApplicationPath.TrimEnd('/') + "/DesktopModules/NBright/NBrightBuy";
             return "/DesktopModules/NBright/NBrightBuy";
         }
 
@@ -110,8 +124,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             get
             {
                 var editlang = "";
-                // need to test if HttpContext.Current.Session is null, because webservice calling storesettings will raise exception. 
-                if (HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
+                // need to test if HttpContext.Current is null, because webservice calling storesettings will raise exception. 
+                if (HttpContext.Current != null && HttpContext.Current.Session != null && HttpContext.Current.Session["NBrightBuy_EditLanguage"] != null) editlang = (String)HttpContext.Current.Session["NBrightBuy_EditLanguage"];
                 if (editlang == "") return Utils.GetCurrentCulture();
                 return editlang;
             }
@@ -126,12 +140,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string Get(string key)
+        public string Get(String key)
         {
             return _settingDic.ContainsKey(key) ? _settingDic[key] : "";
         }
 
-        public int GetInt(string key)
+        public int GetInt(String key)
         {
             if (_settingDic.ContainsKey(key))
             {
@@ -141,6 +155,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             return 0;
+        }
+
+        public Boolean GetBool(String key)
+        {
+            if (_settingDic.ContainsKey(key))
+            {
+                if (_settingDic[key] == "True") return true;
+            }
+            return false;
         }
 
         //get properties
@@ -164,9 +187,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public int ProductListTabId
+        {
+            get
+            {
+                var i = Get("productlisttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+        public int ProductDetailTabId
+        {
+            get
+            {
+                var i = Get("ddldetailtabid");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
+
         // this section contain a set of properties that are assign commanly used setting.
 
         public bool DebugMode { get; private set; }
+        public bool DebugModeFileOut { get; private set; }
         /// <summary>
         /// Get Client StorageType type Cookie,SessionMemory
         /// </summary>
@@ -183,6 +226,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String FolderImages { get; private set; }
         public String FolderDocuments { get; private set; }
         public String FolderUploads { get; private set; }
+        public String FolderTemp { get; private set; }
+        public String FolderTempMapPath { get; private set; }
 
         #endregion
 

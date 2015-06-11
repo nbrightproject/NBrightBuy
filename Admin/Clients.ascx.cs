@@ -34,12 +34,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch; 
         private String _entryid = "";
         private Boolean _displayentrypage = false;
+        private String _page = "";
 
         #region Event Handlers
 
 
         override protected void OnInit(EventArgs e)
         {
+            _page = Utils.RequestParam(Context, "page");
             EnablePaging = true; 
 
             base.OnInit(e);
@@ -200,10 +202,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "entrydetail":
                     param[0] = "uid=" + cArg;
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
                     param[0] = "";
+                    if (_page != "") param[1] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":

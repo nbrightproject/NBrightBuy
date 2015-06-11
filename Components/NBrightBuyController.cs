@@ -62,6 +62,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentItemId, lang));
         }
 
+
+        public override List<NBrightInfo> GetListCustom(int portalId, int moduleId, string SPROCname, int pageNumber = 0, string lang = "", string extraParam = "")
+        {
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetListCustom(portalId, moduleId, SPROCname, pageNumber, lang, extraParam));
+        }
+
         /// <summary>
         /// override for Database Function
         /// </summary>
@@ -130,6 +136,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public override int Update(NBrightInfo objInfo)
         {
+            // clear any cache data that might be there
+            var strCacheKey = "GetByGudKey*" + objInfo.ModuleId.ToString("") + "*" + objInfo.PortalId.ToString("") + "*" + objInfo.TypeCode + "*" + objInfo.UserId + "*" + objInfo.GUIDKey;
+            Utils.RemoveCache(strCacheKey);
+            strCacheKey = "GetByType*" + objInfo.ModuleId.ToString("") + "*" + objInfo.PortalId.ToString("") + "*" + objInfo.TypeCode + "*" + objInfo.UserId + "*" + objInfo.Lang;
+            Utils.RemoveCache(strCacheKey);
+
+            // do update
             objInfo.ModifiedDate = DateTime.Now;
             return DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
         }
@@ -146,6 +159,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public NBrightInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string entityTypeCodeLang = "", string lang = "")
         {
+            var strCacheKey = "GetByType*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + lang;
+            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
+            if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+
             var strFilter = "";
             if (selUserId != "")
             {
@@ -155,6 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1, 1, 1, 1, entityTypeCodeLang, lang));
             if (l.Count >= 1)
             {
+                Utils.SetCache(strCacheKey, l[0]);
                 return l[0];
             }
             return null;
@@ -171,6 +189,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
         {
+
+            var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey;
+            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
+            if (obj != null) return obj;
+            
             var strFilter = " and GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
             {
@@ -187,6 +210,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     Delete(l[i].ItemID);
                 }
             }
+            Utils.SetCache(strCacheKey, l[0]);
             return l[0];
         }
 
@@ -219,6 +243,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string GetSqlxml(string commandText)
         {
             return DataProvider.Instance().GetSqlxml(commandText);
+        }
+
+        /// <summary>
+        /// exec sql
+        /// </summary>
+        /// <param name="commandText"></param>
+        /// <returns></returns>
+        public string ExecSql(string commandText)
+        {
+            return DataProvider.Instance().ExecSql(commandText);
         }
 
 
@@ -348,7 +382,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (templ == null)
             {
                 var themeFolder = "";
-                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                if (settings != null && settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, settings);
 
@@ -362,7 +396,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templ;
         }
 
-        public string GetTemplate(string templatename, string lang, bool debugMode = false)
+        public string GetTemplate(string templatename, string lang, string themeFolder, bool debugMode = false)
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
             string templ = null;
@@ -372,7 +406,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (templ == null)
             {
-                var templCtrl = NBrightBuyUtils.GetTemplateGetter(StoreSettings.Current.ThemeFolder);
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                 templ = templCtrl.GetTemplateData(templatename, lang, true, true, true, StoreSettings.Current.Settings());
 
                 if (debugMode == false) NBrightBuyUtils.SetModCache(-1, strCacheKey, templ);
@@ -551,7 +585,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 		public void ImportModule(int ModuleID, string Content, string Version, int UserId)
 		{
-			var xmlDoc = new XmlDataDocument();
+			var xmlDoc = new XmlDocument();
 			var objModCtrl = new ModuleController();
 			var objModInfo = objModCtrl.GetModule(ModuleID);
 			if (objModInfo != null)

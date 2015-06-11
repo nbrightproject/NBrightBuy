@@ -1,4 +1,6 @@
 ﻿
+using System.Linq;
+using DotNetNuke.Entities.Portals;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -17,48 +19,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 	public abstract class EventInterface
 	{
 
-		#region "Shared/Static Methods"
-
-		// singleton reference to the instantiated object 
-
-        private static EventInterface objProvider = null;
-        // constructor
-        static EventInterface()
-		{
-			CreateProvider();
-		}
-
-		// dynamically create provider
-		private static void CreateProvider()
-		{
-			ObjectHandle handle = null;
-			string[] Prov = null;
-			string ProviderName = null;
-
-            ProviderName = StoreSettings.Current.Get("event.provider");
-            if (String.IsNullOrEmpty(ProviderName)) ProviderName = "NBrightBuy.EventProvider,Nevoweb.DNN.NBrightBuy.Providers.EventProvider";
-            if (!string.IsNullOrEmpty(ProviderName))
-			{
-			    Prov = ProviderName.Split(',');
-				handle = Activator.CreateInstance(Prov[0], Prov[1]);
-                objProvider = (EventInterface)handle.Unwrap();
-			}
-        }
-
-		// return the provider
-        public static new EventInterface Instance()
-		{
-            return objProvider;
-		}
-
-		#endregion
-        
         public abstract NBrightInfo ValidateCartBefore(NBrightInfo cartInfo);
         public abstract NBrightInfo ValidateCartAfter(NBrightInfo cartInfo);
-
         public abstract NBrightInfo ValidateCartItemBefore(NBrightInfo cartItemInfo);
         public abstract NBrightInfo ValidateCartItemAfter(NBrightInfo cartItemInfo);
 
+        public abstract NBrightInfo AfterCartSave(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterCategorySave(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterProductSave(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterSavePurchaseData(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo BeforeOrderStatusChange(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterOrderStatusChange(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo BeforePaymentOK(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterPaymentOK(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo BeforePaymentFail(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo AfterPaymentFail(NBrightInfo nbrightInfo);
+        public abstract NBrightInfo BeforeSendEmail(NBrightInfo nbrightInfo, String emailsubjectrexkey);
+        public abstract NBrightInfo AfterSendEmail(NBrightInfo nbrightInfo, String emailsubjectrexkey);
 
 	}
 

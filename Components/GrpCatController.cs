@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -57,7 +58,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var lenum = from i in CategoryList where i.categoryid == categoryid select i;
             var l = lenum.ToList();
+            
             return l.Any() ? l[0] : null;
+        }
+
+        public GroupCategoryData GetCategoryByRef(int portalId, String catref)
+        {
+            // the catref might not be in the CategoryList because the language has changed but the url is still displaying the old catref langauge
+            // try and find it. NASTY!!!! incorrect langyage url left after langauge change!!
+            var catLang = _objCtrl.GetByGuidKey(portalId, -1, "CATEGORYLANG", catref);
+            if (catLang != null)
+            {
+                return GetCategory(catLang.ParentItemId);
+            }
+            return null;
         }
 
         public List<GroupCategoryData> GetGrpCategories(int parentcategoryid, string groupref = "")
@@ -125,22 +139,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (groupCategoryInfo.disabled) return "javascript:void(0)";
 
             //set a default url
-            var url = "?catid=" + groupCategoryInfo.categoryid.ToString("");
+            var url = "";
 
             // get friendly url if possible
                 if (groupCategoryInfo.categoryname != "")
                 {
-                    var newBaseName = groupCategoryInfo.seoname;
-                    if (newBaseName == "") newBaseName = groupCategoryInfo.categoryname;
                     var tab = CBO.FillObject<DotNetNuke.Entities.Tabs.TabInfo>(DotNetNuke.Data.DataProvider.Instance().GetTab(tabid));
                     if (tab != null)
                     {
-                        // check if we are calling from BO with a ctrl param
+                        var newBaseName = groupCategoryInfo.seoname;
+                        newBaseName = Utils.UrlFriendly(newBaseName);
                         var ctrl = Utils.RequestParam(HttpContext.Current, "ctrl");
                         if (ctrl != "") ctrl = "&ctrl=" + ctrl;
-                        newBaseName = Utils.CleanInput(newBaseName);
-                        url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName.Replace(" ", "-").Replace(".","") + ".aspx");
+                        if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+                        {
+                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catref=" + Utils.UrlFriendly(groupCategoryInfo.categoryrefGUIDKey) + ctrl + "&language=" + Utils.GetCurrentCulture());
+                        }
+                        else
+                        {
+                            // check if we are calling from BO with a ctrl param
+                            url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tab, "~/Default.aspx?TabId=" + tab.TabID.ToString("") + "&catid=" + groupCategoryInfo.categoryid.ToString("") + ctrl + "&language=" + Utils.GetCurrentCulture(), newBaseName + ".aspx");
+                        }
+
                         url = url.Replace("[catid]/", ""); // remove the injection token from the url, if still there. (Should be removed redirected to new page)
+            
                     }
                 }
             return url;
@@ -150,74 +172,79 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get the default category for the product 
         /// </summary>
         /// <param name="productid"></param>
+        /// <param name="lang">default is current culture</param>
         /// <returns></returns>
-        public int GetDefaultCatId(int productid)
+        public int GetDefaultCatId(int productid,String lang = "")
         {
-            var defId = 0;
-            var objCtrl = new NBrightBuyController();
-            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
-            var strFilter = " and NB1.parentitemid = " + productid.ToString("") + " ";
-            var objInfo = objCtrl.Get(productid);
+            var dcat = GetDefaultCategory(productid,lang);
+            if (dcat == null) return 0;
+            return dcat.categoryid;
+        }
 
-            if (objInfo != null)
-            {
-
-                var l = objCtrl.GetList(objInfo.PortalId, objInfo.ModuleId, "CATXREF", strFilter);
-
-                var catIds = new HashSet<int>(CategoryList.Select(x => x.categoryid));
-                l.RemoveAll(x => !catIds.Contains(x.XrefItemId));
-
-
-                foreach (var e in l)
-                {
-                    if (e.GetXmlProperty("genxml/hidden/defaultcat").ToLower() == "true")
-                    {
-                        defId = e.XrefItemId;
-                        break;
-                    }
-                }
-
-                if (defId == 0)
-                {
-                    foreach (var e in l)
-                    {
-                        if ((e.GetXmlProperty("genxml/checkbox/chkishidden").ToLower() == "false") && (e.GetXmlProperty("genxml/checkbox/chkarchived").ToLower() == "false"))
-                        {
-                            defId = e.XrefItemId;
-                            break;
-                        }
-                    }
-                }
-
-
-                if (defId == 0)
-                {
-                    if (l.Count > 0)
-                    {
-                        defId = l[0].XrefItemId;
-                    }
-                }
-            }
-
-            return defId;
+        /// <summary>
+        /// Get default category data from product
+        /// </summary>
+        /// <param name="productid"></param>
+        /// <param name="lang">default is current culture</param>
+        /// <returns></returns>
+        public GroupCategoryData GetDefaultCategory(int productid, String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var prodData = ProductUtils.GetProductData(productid, lang);
+            return prodData.GetDefaultCategory();
         }
 
         public GroupCategoryData GetCurrentCategoryData(int portalId, System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null, String targetModuleKey = "")
         {
-
             var defcatid = 0;
             var qrycatid = Utils.RequestQueryStringParam(request, "catid");
-            if (Utils.IsNumeric(entryId) && entryId > 0) defcatid = GetDefaultCatId(entryId);
+            if (qrycatid == "")
+            {
+                var qrycatref = Utils.RequestQueryStringParam(request, "catref");
+                if (qrycatref != "")
+                {
+                    var catrefData = GetCategoryByRef(portalId, qrycatref);
+                    if (catrefData != null) qrycatid = catrefData.categoryid.ToString("");
+                }                
+            }
 
-            if (defcatid == 0 && Utils.IsNumeric(qrycatid)) defcatid = Convert.ToInt32(qrycatid);
+
+            // always use the catid in url if we have no target module
+            if (Utils.IsNumeric(qrycatid) && targetModuleKey == "") return GetCategory(Convert.ToInt32(qrycatid));
 
             if (targetModuleKey != "")
             {
                 var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
+                // always use the catid in url if we have no navigation categoryid for the target module.
+                if (Utils.IsNumeric(qrycatid) && defcatid == 0) return GetCategory(Convert.ToInt32(qrycatid));
             }
 
+            // if we have no catid in url, make sure we have any possible entryid
+            if (entryId == 0)
+            {
+                var qryitemid = Utils.RequestQueryStringParam(request, "eid");
+                if (Utils.IsNumeric(qryitemid))
+                {
+                    entryId = Convert.ToInt32(qryitemid);
+                }
+                else
+                {
+                    var qryguidkey = Utils.RequestQueryStringParam(request, "guidkey");
+                    if (qryguidkey == "") qryguidkey = Utils.RequestQueryStringParam(request, "ref");
+                    if (qryguidkey != "")
+                    {
+                        var objCtrl = new NBrightBuyController();
+                        var guidData = objCtrl.GetByGuidKey(portalId, -1, "PRD", qryguidkey);
+                        if (guidData != null) entryId = guidData.ItemID;
+                    }
+                }
+            }
+
+            // use the first/default category the proiduct has
+            if (Utils.IsNumeric(entryId) && entryId > 0) return GetDefaultCategory(entryId);
+
+            // get any default set in the settings
             if (defcatid == 0)
             {
                 if (settings != null && settings["defaultcatid"] != null)
@@ -319,7 +346,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         #region "breadcrumbs"
-
+        /// <summary>
+        /// Get category breadcrumb, using controller langauge
+        /// </summary>
+        /// <param name="categoryid"></param>
+        /// <param name="shortLength">0 = unlimited</param>
+        /// <param name="separator"></param>
+        /// <param name="aslist">if true brings html list as return string</param>
+        /// <returns></returns>
         public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
         {
             var breadCrumb = "";
@@ -477,6 +511,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private List<GroupCategoryData> GetGrpCatListFromDatabase(String lang = "")
         {
+            // this process seems to be creating an error on DB connection after the cache is release.
+            //[TODO: re-write this code to stop DB conection failure. For now Module level caching has been increased to 2 days to stop this processing re-running]
 
             var objCtrl = new NBrightBuyController();
             const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
@@ -494,6 +530,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.recordsortorder = i.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                 grpcat.imageurl = i.GetXmlProperty("genxml/hidden/imageurl");
                 grpcat.categoryref = i.GetXmlProperty("genxml/textbox/txtcategoryref");
+                grpcat.propertyref = i.GetXmlProperty("genxml/textbox/propertyref");
                 grpcat.archived = i.GetXmlPropertyBool("genxml/checkbox/chkarchived");
                 grpcat.ishidden = i.GetXmlPropertyBool("genxml/checkbox/chkishidden");
                 grpcat.disabled = i.GetXmlPropertyBool("genxml/checkbox/chkdisable");
@@ -509,10 +546,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     grpcat.categoryname = langItem.GetXmlProperty("genxml/textbox/txtcategoryname");
                     grpcat.categorydesc = langItem.GetXmlProperty("genxml/textbox/txtcategorydesc");
                     grpcat.seoname = langItem.GetXmlProperty("genxml/textbox/txtseoname");
+                    if (grpcat.seoname == "") grpcat.seoname = langItem.GetXmlProperty("genxml/textbox/txtcategoryname");
                     grpcat.metadescription = langItem.GetXmlProperty("genxml/textbox/txtmetadescription");
                     grpcat.metakeywords = langItem.GetXmlProperty("genxml/textbox/txtmetakeywords");
                     grpcat.seopagetitle = langItem.GetXmlProperty("genxml/textbox/txtseopagetitle");
                     grpcat.message = langItem.GetXmlProperty("genxml/edt/message");
+                    grpcat.categoryrefGUIDKey = langItem.GUIDKey;
                 }
 
                 //get parents
@@ -523,8 +562,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcatList.Add(grpcat);
             }
 
+            // we don;t have the depth number at this point, so use recussive call to calc it.
+            CalcCategoryDepthList(grpcatList, 0, 0);
+
             return grpcatList;
 
+        }
+
+        private void CalcCategoryDepthList(List<GroupCategoryData> grpCatList, int level, int parentid)
+        {
+            if (level < 50) // stop any possiblity of infinite loop
+            {
+                var lenum = from i in grpCatList where i.parentcatid == parentid select i;
+                foreach (GroupCategoryData tInfo in lenum)
+                {
+                    tInfo.depth = level;
+                    CalcCategoryDepthList(grpCatList, level + 1, tInfo.categoryid);
+                }
+            }
         }
 
         private void AddCatCascadeRecord(int categoryid,int productid)

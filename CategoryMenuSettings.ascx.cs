@@ -1,5 +1,7 @@
 using System;
+using System.Web.UI.WebControls;
 using DotNetNuke.Services.Exceptions;
+using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -26,6 +28,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 base.UpdateSettings();
+                NBrightBuyUtils.RemoveModCache(ModuleId);
                 UpdateData();
             }
             catch (Exception exc)
@@ -34,7 +37,15 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        public override NBrightInfo EventBeforeRender(NBrightInfo objInfo)
+        {
+            return NBrightBuyUtils.ModuleSettingsResetCatIdFromRef(objInfo);
+        }
 
+        public override NBrightInfo EventBeforeUpdate(Repeater rpData, NBrightInfo objInfo)
+        {
+            return NBrightBuyUtils.ModuleSettingsSaveCatRefFromId(objInfo);
+        }
     }
 
 }

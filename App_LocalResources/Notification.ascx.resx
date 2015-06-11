@@ -306,4 +306,13 @@
   <data name="removeuser_fail.Text" xml:space="preserve">
     <value>Client has existing orders, cannot remove user</value>
   </data>
+  <data name="completed_ok.Text" xml:space="preserve">
+    <value>Operation Completed.</value>
+  </data>
+  <data name="noproviderdata_warning.Text" xml:space="preserve">
+    <value>No provider data can be found. Make sure you have saved the provider data in the Back Office.</value>
+  </data>
+  <data name="nopin_fail.Text" xml:space="preserve">
+    <value>Invalid Admin PIN</value>
+  </data>
 </root>

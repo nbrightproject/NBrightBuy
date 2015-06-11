@@ -1,0 +1,26 @@
+/* Advanced Search */
+.advancedsearch{max-width:240px;list-style:none;padding:10px;margin:0;box-sizing:border-box;background:#FFFFFF;}
+.advancedsearch input[type=text]{margin-bottom:0;box-sizing:border-box;}
+.advancedsearch select{margin-bottom:0;box-sizing:border-box;}
+.advancedsearch li{margin-bottom:18px;}
+.advancedsearch h5{margin-bottom:18px;}
+.advancedsearch h6{margin-bottom:6px;}
+.advancedsearch .filterlabel{color:#777777;font-size:12px;display:block;margin:6px 0 18px;}
+.advancedsearch .searchtext{}
+.advancedsearch .searchtext input[type=text]{width:100%;}
+.advancedsearch .pricerange{}
+.advancedsearch .pricerange input[type=text]{width:50px;}
+.advancedsearch .pricerange .rangemin{text-align:right;}
+.advancedsearch .pricerange .rangemax{}
+.advancedsearch .pricerange .rangeseperator{display:inline-block;margin:0 7px;}
+.advancedsearch .pricerange #pricerangeslider{box-sizing:border-box;margin:12px 7px 0;}
+.advancedsearch .orderby{}
+.advancedsearch .orderby select{width:100%;}
+.advancedsearch .stock{padding-left:3px;}
+.advancedsearch .manufacturer{}
+.advancedsearch .attributes{}
+.advancedsearch .promotions{}
+.advancedsearch .buttons{}
+.advancedsearch .buttons a:link{margin-right:6px;}
+.advancedsearch .processing{}
+.advancedsearch .processing .fa{color:#68ABE1;vertical-align:middle;}

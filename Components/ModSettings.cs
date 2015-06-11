@@ -37,6 +37,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return value;
         }
 
+        public void Set(string key,string value)
+        {
+            if (!_settingsDic.ContainsKey(key))
+                _settingsDic.Add(key, value);
+            else
+                _settingsDic[key] = value;
+        }
+
         public Dictionary<string, string> Settings()
         {
             return _settingsDic;
@@ -67,7 +75,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // add stores ettings (we keep store settings at module level, because these can be overwritten by the module)
                 foreach (var item in StoreSettings.Current.Settings())
                 {
-                    _settingsDic[item.Key] = item.Value;
+                    if (_settingsDic.ContainsKey(item.Key))
+                        _settingsDic[item.Key] = item.Value;
+                    else
+                        _settingsDic.Add(item.Key,item.Value);                        
                 }
 
 

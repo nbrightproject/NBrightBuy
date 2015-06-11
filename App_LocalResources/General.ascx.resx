@@ -511,7 +511,7 @@
     <value>Are you sure?</value>
   </data>
   <data name="ProcessingDiv.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog fa-spin fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="Upload.Text" xml:space="preserve">
     <value>Upload </value>
@@ -901,10 +901,13 @@
     <value>Credit card</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Manual</value>
+    <value>Cheque or Transfer</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="hello.Text" xml:space="preserve">
+    <value>Hi there</value>
   </data>
   <data name="cmdFolder.Text" xml:space="preserve">
     <value>Folder</value>
@@ -914,5 +917,101 @@
   </data>
   <data name="ExtraCost.Text" xml:space="preserve">
     <value>Extra cost</value>
+  </data>
+  <data name="cmdEditIconSmall.Text" xml:space="preserve">
+    <value>&lt;i title="Edit product in store" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdExtLinkSmall.Text" xml:space="preserve">
+    <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="Cart.Text" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="orderstatus010.Text" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="orderstatus020.Text" xml:space="preserve">
+    <value>Waiting for Bank</value>
+  </data>
+  <data name="orderstatus030.Text" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="orderstatus040.Text" xml:space="preserve">
+    <value>Payment OK</value>
+  </data>
+  <data name="orderstatus050.Text" xml:space="preserve">
+    <value>Payment Not Verified</value>
+  </data>
+  <data name="orderstatus060.Text" xml:space="preserve">
+    <value>Waiting for Payment</value>
+  </data>
+  <data name="orderstatus070.Text" xml:space="preserve">
+    <value>Waiting for Stock</value>
+  </data>
+  <data name="orderstatus080.Text" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="orderstatus090.Text" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="orderstatus100.Text" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="orderstatus110.Text" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="orderstatus120.Text" xml:space="preserve">
+    <value>Being Manufactured</value>
+  </data>
+  <data name="cmdSaveExitButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
+  </data>
+  <data name="OrderCount.Text" xml:space="preserve">
+    <value>Order Count</value>
+  </data>
+  <data name="CustomerCount.Text" xml:space="preserve">
+    <value>Customer Count</value>
+  </data>
+  <data name="TotalRevenue.Text" xml:space="preserve">
+    <value>Total Revenue</value>
+  </data>
+  <data name="AverageRevenue.Text" xml:space="preserve">
+    <value>Average Revenue</value>
+  </data>
+  <data name="TotalDiscounts.Text" xml:space="preserve">
+    <value>Total Discounts</value>
+  </data>
+  <data name="TotalShipping.Text" xml:space="preserve">
+    <value>Total Shipping</value>
+  </data>
+  <data name="StatusofOrders.Text" xml:space="preserve">
+    <value>Status of Orders</value>
+  </data>
+  <data name="TotalProducts.Text" xml:space="preserve">
+    <value>Total Products</value>
+  </data>
+  <data name="HiddenProducts.Text" xml:space="preserve">
+    <value>Hidden Products</value>
+  </data>
+  <data name="ActiveProducts.Text" xml:space="preserve">
+    <value>Active Products</value>
+  </data>
+  <data name="MontlyRevenue.Text" xml:space="preserve">
+    <value>Montly Revenue</value>
+  </data>
+  <data name="manualpayment.Text" xml:space="preserve">
+    <value>Manual Payment</value>
+  </data>
+  <data name="dashsummary.Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="basket.Text" xml:space="preserve">
+    <value>Basket</value>
+  </data>
+  <data name="favorites.Text" xml:space="preserve">
+    <value>Favorites</value>
   </data>
 </root>

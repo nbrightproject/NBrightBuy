@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -135,62 +136,63 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void DoExport()
         {
-            var strXml = "<root>";
+            
+            var strXml = new StringBuilder("<root>");
 
             if (GenXmlFunctions.GetField(rpData,"exportproducts") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "PRD");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
 
                 l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             
                 l = ModCtrl.GetList(PortalId, -1, "PRDXREF");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
 
                 l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True" && GenXmlFunctions.GetField(rpData, "exportproducts") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "CATCASCADE");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
                 l = ModCtrl.GetList(PortalId, -1, "CATXREF");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportproperties") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "GROUP");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
 
                 l = ModCtrl.GetList(PortalId, -1, "GROUPLANG");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportsettings") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, 0, "SETTINGS");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportorders") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "ORDER");
-                foreach (var i in l) { strXml += i.ToXmlItem(); }
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
             }
 
-            strXml += "</root>";
+            strXml.Append("</root>");
 
-            var doc = new XmlDataDocument();
-            doc.LoadXml(strXml);
+            var doc = new XmlDocument();
+            doc.LoadXml(strXml.ToString());
             doc.Save(StoreSettings.Current.FolderUploadsMapPath + "\\export.xml");
 
             Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\export.xml", PortalSettings.PortalAlias.HTTPAlias + "_export.xml", Response);

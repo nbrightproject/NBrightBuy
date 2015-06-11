@@ -123,4 +123,13 @@
   <data name="VATincluded.Text">
     <value xml:space="preserve">* BTW inbegrepen</value>
   </data>
+    <data name="OrderHistory.Text" xml:space="preserve">
+    <value>Bestelgeschiedenis</value>
+  </data>
+  <data name="addnotes.Text" xml:space="preserve">
+    <value>Een notitie toevoegen aan de ordergeschiedenis</value>
+  </data>
+  <data name="emailmsg.Text" xml:space="preserve">
+    <value>E-mailbericht voor client</value>
+  </data>
 </root>

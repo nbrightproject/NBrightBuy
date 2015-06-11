@@ -1,12 +1,61 @@
 [<tag id="backofficetabid" type="hidden" value="" />]<!-- hidden fields to store auto populated data -->
 [<tag id="ImageResize" const="true" type="hidden" value="700" />]<!-- This resize token affects all images uploaded on this page -->
+[<tag id="countrysortorder" type="postback" value="" persistance="True"/>]
+
+<style>
+  #countrylist { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+  #countrylist li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+  html>body #countrylist li { height: 1.5em; line-height: 1.2em; }
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+  </style>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
         $('.merchantdetails div.box-content').toggle(); // Then open specific ones
         $('.pageactions div.box-content').toggle();
+
+        // move common countries
+        var countries = [["AT", "BE", "BG", "BY", "CH", "CY", "CZ", "DE", "DK", "ES", "FI", "FR", "GI", "GR", "HU", "IE", "IT", "LU", "NL", "NO", "PL", "PT", "RO", "SE", "TR", "GB", "YU", "US", "CA"]];
+        for (i = 0; i < countries.length; i++) {
+            $('.eurocountries').append($('input[[value="Country:' + countries[[i]] + '"]]'));
+            var labselector = 'label[[for="' + $('input[[value="Country:' + countries[[i]] + '"]]').attr('id') + '"]]';
+            $('.eurocountries').append($(labselector));
+            $('.eurocountries').append('<br/>');
+        }
+
+        $('.checkAll').click(function() {
+            if ($(this).is(":checked")) {
+                $('input[[value*="Country:"]]:checkbox').prop('checked', true);
+            } else {
+                $('input[[value*="Country:"]]:checkbox').prop('checked', false);
+            }
+        });
+
     });
+
+    $(function () {
+        $("#countrylist").sortable({ placeholder: "ui-state-highlight", update: function(event, ui) {
+            savecountrysortorder();
+        } });
+        $("#countrylist").disableSelection();
+        $("#countrylist").on("sortupdate", function (event, ui) { });
+    });
+
+    function savecountrysortorder() {
+        var l = '';
+        var listItems = $("#countrylist li");
+        listItems.each(function (idx) {
+            l += $(this).attr('value') + ';';
+        });
+        $('input[[id*="_countrysortorder_"]]').val(l);
+    };
+
+
+
+
+
 </script>
 
 <br />
@@ -44,7 +93,7 @@
 				<div class="form-horizontal dnnForm">
 					<p class="page-header">Email Addresses</p>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.adminemail" />]</label>
+						<label class="col-sm-3 control-label">[<tag type="labelof" resourcekey="Settings.adminemail" />]</label>
 						<div class="col-sm-5">
 							[<tag id="adminemail" cssclass="form-control" type="textbox" maxlength="150" Text="" />]
 						</div>
@@ -265,35 +314,6 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
-	    <div class="box">
-	        <div class="box-header">
-	            <div class="box-name">
-            <i class="fa fa-search"></i><span>Client Accounts</span>
- 	            </div>
-	            <div class="box-icons">
-	                <a class="collapse-link"><i class="fa fa-chevron-down"></i>
-	                </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-	                <a class="close-link"><i class="fa fa-times"></i></a></div>
-	            <div class="no-move">
-	            </div>
-	        </div>
-
-	        <div class="box-content">
-	            <div class="form-horizontal dnnForm">
-	                <div class="form-group">
-	                    <div class="col-sm-5">[<tag id="resetpasswordonclientvalidate" type="checkbox" Text="" resourcekey="Settings.resetpasswordonclientvalidate" />]</div>
-	                </div>
-	                <div class="form-group">
-	                    <div class="col-sm-5">[<tag id="sendclientroleemail" type="checkbox" Text="" resourcekey="Settings.sendclientroleemail" />]</div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-xs-12 col-sm-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
@@ -321,9 +341,26 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productdetailtab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="ddldetailtabid" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.carttab" />]</label>
 						<div class="col-sm-5">
 							[<tag id="carttab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.favoritestab" />]</label>
+						<div class="col-sm-5">
+							[<tag id="favoritestab" cssclass="form-control" type="dropdownlist" datatabs="1" />]
+						</div>
+						<div class="col-sm-2" style="padding:0px">
+				            <div class="dnnFormItem">
+								[<tag id="enablefavorites" type="checkbox" checked="False" />] [<tag type="valueof" resourcekey="Settings.Enabled" />]
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -383,7 +420,19 @@
                     		[<tag id="themefolder" cssclass="form-control" type="textbox" Text="Cygnus" />]                    	        
                     	</div>
 				    </div>
-	                <div class="form-group">
+				<div class="form-group">
+				    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.emailthemefolder"/>]</label>
+				    <div class="col-sm-5">
+				        [<tag id="emailthemefolder" cssclass="form-control" type="textbox" Text="Cygnus"/>]
+				    </div>
+				</div>
+				<div class="form-group">
+				    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.startupctrl"/>]</label>
+				    <div class="col-sm-5">
+				        [<tag id="startupctrl" cssclass="form-control" type="textbox" Text="dashsummary"/>]
+				    </div>
+				</div>                    
+				<div class="form-group">
 	                    <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.cataloguemode" />]</label>
                     	<div class="col-sm-5">
 				    <div class="dnnFormItem">
@@ -416,6 +465,14 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.debugfileout' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="debugfileout" type="checkbox" resourcekey='Settings.debugfileoutmsg' />]
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.storagetypeclient" />]</label>
 						<div class="col-sm-5">
 							[<tag id="storagetypeclient" cssclass="form-control" type="dropdownlist" data="Cookie;SessionMemory" />]
@@ -438,7 +495,7 @@
     			    <div class="form-group">                
                     	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.orderprefix" />]</label>
                     	<div class="col-sm-2">
-                    	    [<tag id="orderprefix" cssclass="form-control" type="textbox" maxlength="4" Text="1234" />]
+                    	    [<tag id="orderprefix" cssclass="form-control" type="textbox" maxlength="4" Text="" />]
                     	</div>
 				    </div>                    
 					<div class="form-group">
@@ -497,6 +554,72 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.carttitle' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="carttitle" type="checkbox" checked="True" />]
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.cartsteps' />]</label>
+						<div class="col-sm-5">
+							<div class="dnnFormItem">
+								[<tag id="cartsteps" type="checkbox" checked="True" />]
+							</div>
+						</div>
+					</div>
+    			    <div class="form-group">                
+                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.productimageresize" />]</label>
+                    	<div class="col-sm-2">
+                    	    [<tag id="productimageresize" cssclass="form-control" type="textbox" maxlength="4" Text="800" />]
+                    	</div>
+				    </div>
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.groupresults' />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="chkgroupresults" type="checkbox" Text="" checked="False" />]
+				            </div>
+				        </div>
+				    </div>
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.shareproducts' />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="shareproducts" type="checkbox" Text="" checked="False" />]
+                                [<tag type='valueof' resourcekey='Settings.shareproductsmsg' />]
+				            </div>
+				        </div>
+				    </div>
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.alloweditorder' />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="alloweditorder" type="checkbox" Text="" checked="False" />]
+				            </div>
+				        </div>
+				    </div>
+				    <div class="form-group">
+				        <label class="col-sm-3 control-label">[<tag type='valueof' resourcekey='Settings.friendlyurlids' />]</label>
+				        <div class="col-sm-5">
+				            <div class="dnnFormItem">
+				                [<tag id="friendlyurlids" type="checkbox" Text="" checked="False" />]
+				            </div>
+				        </div>
+				    </div>
+    			    <div class="form-group">                
+                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.bonoimageicon" />]</label>
+                    	<div class="col-sm-3">
+                    	    [<tag id="bonoimageicon" cssclass="form-control" type="textbox" maxlength="40" Text="" />]
+                    	    <script type="text/javascript">
+							$(document).ready(function() {
+							                if ($('input[[id*="bonoimageicon"]]').val() == '') $('input[[id*="bonoimageicon"]]').val('<i class="fa fa-picture-o fa-5x"></i>');
+							});
+							</script>
+                    	</div>
+				    </div>
 				</div>
 			</div>
 		</div>
@@ -505,7 +628,7 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
-		<div class="box culturesettings">
+		<div class="box culturesettings no-drop">
 		    <div class="box-header">
 		        <div class="box-name">
 		            <i class="fa fa-search"></i><span>Country Details</span>
@@ -522,22 +645,35 @@
 		        <div class="form-horizontal dnnForm">
 		            <div class="form-group">
 		                <label class="col-sm-3 control-label">Merchant Culture</label>
-		                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		                <div class="col-sm-5">[<tag id="merchantculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown"/>]
+		                </div>
 		            </div>
 		            <div class="form-group">
 		                <label class="col-sm-3 control-label">Currency Code</label>
-		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown" />]</div>
+		                <div class="col-sm-5">[<tag id="currencyculturecode" cssclass="s2_with_tag populate placeholder" type="culturecodedropdown"/>]
+		                </div>
 		            </div>
-    			    <div class="form-group">                
-                    	<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol" />]</label>
-                    	<div class="col-sm-2">
-                    	    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$" />]
-                    	</div>
-				    </div>                    
+		            <div class="form-group">
+		                <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.currencysymbol"/>]</label>
+		                <div class="col-sm-2">
+		                    [<tag id="currencysymbol" cssclass="form-control" type="textbox" maxlength="4" Text="$"/>]
+		                </div>
+		            </div>
+		        </div>
+		        <div class="form-horizontal dnnForm countrylist">
+		            <div class="form-group">
+		                <div class="col-sm-3 eurocountries">
+		                    <p class="page-header">Common Countries</p>
+		                </div>
+		                <div class="col-sm-3">
+		                    <p class="page-header">Selected countries (Drag to sort)</p>[<tag type="countrylist" id="countrylist"/>]
+		                </div>
+		            </div>
+
 		        </div>
 		        <div class="form-horizontal dnnForm countryselection">
-		            <p class="page-header">Valid countries for the store</p>
-		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4" />] 
+		            <p class="page-header">Other Countries &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="checkAll" /> Check ALL</p>
+		            [<tag id="countrycodelist" type="dnn:countrycheckboxlist" RepeatColumns="4"/>]
 		        </div>
 		    </div>
 		</div>

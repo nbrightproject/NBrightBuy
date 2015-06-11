@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication.ExtendedProtection.Configuration;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
@@ -91,6 +92,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            var defaultname = Name;
+            if (defaultname == "")
+            {
+                // find a valid default name
+                foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                {
+                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                    if (l.Count == 1)
+                    {
+                        var nbi2 = (NBrightInfo) l[0];
+                        if (nbi2.GetXmlProperty("genxml/textbox/groupname") != "")
+                        {
+                            defaultname = nbi2.GetXmlProperty("genxml/textbox/groupname");
+                            Name = defaultname;
+                            Save();
+                            break;
+                        }
+                    }
+                }
+            }
 
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
@@ -104,9 +125,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     objCtrl.Update(nbi);
                     errorcount += 1;
                 }
+
+                if (l.Count == 1)
+                {
+                    var nbi2 = (NBrightInfo) l[0];
+                    if (nbi2.GetXmlProperty("genxml/textbox/groupname") == "")
+                    {
+                        // if we have no name, use the default name we found early to update.
+                        nbi2.SetXmlProperty("genxml/textbox/groupname", defaultname);
+                        objCtrl.Update(nbi2);
+                    }
+                }
+
                 if (l.Count > 1)
                 {
-                    // we have more records than shoudl exists, remove any old ones.
+                    // we have more records than should exists, remove any old ones.
                     var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
                     var lp = 1;
                     foreach (var i in l2)

@@ -240,4 +240,25 @@
   <data name="PlaceOrder.Text" xml:space="preserve">
     <value>Order</value>
   </data>
+  <data name="YourBasket.Text" xml:space="preserve">
+    <value>Your shopping basket</value>
+  </data>
+  <data name="CartstepsProcess.Text" xml:space="preserve">
+    <value>Order process</value>
+  </data>
+  <data name="CartstepsRecap.Text" xml:space="preserve">
+    <value>Basket</value>
+  </data>
+  <data name="CartstepsAddresses.Text" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="CartstepsShipping.Text" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="CartstepsPayment.Text" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="CartstepsConfirm.Text" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
 </root>

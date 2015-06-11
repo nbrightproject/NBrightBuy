@@ -26,14 +26,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo Info;
         private NBrightCore.TemplateEngine.TemplateGetter _templCtrl;
         private Boolean portallevel;
-
+        private StoreSettings storeSettings;
+ 
         public PluginData(int portalId, Boolean systemlevel = false)
         {
-            _templCtrl = NBrightBuyUtils.GetTemplateGetter("config");
+            _templCtrl = NBrightBuyUtils.GetTemplateGetter(portalId,"config");
 
             portallevel = !systemlevel;
 
-            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, StoreSettings.Current.Settings());
+            if (StoreSettings.Current == null)
+            {
+                storeSettings = new StoreSettings(portalId);   
+            }
+            else
+            {
+                storeSettings = StoreSettings.Current;
+            }
+
+            var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, storeSettings.Settings());
             if (menuplugin != "")
             {
                 Info = new NBrightInfo();
@@ -52,7 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Themes/config/default");
                     xmlDoc.Save(pluginfoldermappath + "\\menuplugin.xml");
                     //load new config
-                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, StoreSettings.Current.Settings());
+                    menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, storeSettings.Settings());
                     if (menuplugin != "")
                     {
                         Info = new NBrightInfo();

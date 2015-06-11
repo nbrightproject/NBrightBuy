@@ -186,7 +186,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             
             ModCtrl.Update(settings);
 
-            if (StoreSettings.Current.DebugMode) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
+            if (StoreSettings.Current.DebugModeFileOut) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");
 
 
             // create upload folders
@@ -195,6 +195,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             folder = StoreSettings.Current.FolderDocumentsMapPath;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             folder = StoreSettings.Current.FolderUploadsMapPath ;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            folder = StoreSettings.Current.FolderTempMapPath;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
             //Create default category grouptype

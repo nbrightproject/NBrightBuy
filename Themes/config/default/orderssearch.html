@@ -3,21 +3,6 @@
 
 <br />
 
-	<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
-		<div class="col-xs-9 col-sm-9">
-			<a href="#" class="show-sidebar">
-			  <i class="fa fa-bars"></i>
-			</a>
-			<div class="actionbuttonwrapper">
-			[<tag id="cmdSave1" type="linkbutton" resourcekey="General.cmdSaveButton" cssclass="btn btn-primary" commandname="save" commandargument="ItemID" />]
-			[<tag id="cmdReturn1" type="linkbutton" resourcekey="General.cmdReturnButton" cssclass="btn btn-default" commandname="return" />]
-		    </div>
-		</div>
-		<div class="col-xs-3 col-sm-3 top-panel-right">
-			<!-- No language in this page -->
-		</div>
-	</div>
-
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
@@ -81,7 +66,7 @@
 [<tag id="search16" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/email" sqloperator="or" />]
 [<tag id="search17" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/ordernumber" sqloperator="or" />]
 [<tag id="search18" type="meta" action="close" />]
-[<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlcol="ModifiedDate" sqltype="datetime" sqloperator="and"  />]
+[<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlfield="genxml/createddate" sqltype="datetime" sqloperator="and"  />]
 
 [<tag id="search30" type="meta" action="like" search="genxml/dropdownlist/orderstatus" static="%" sqlcol="GUIDKey" sqloperator="and" />]
 

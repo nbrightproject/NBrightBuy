@@ -93,6 +93,7 @@ namespace Nevoweb.DNN.NBrightBuy
             //{
             //    settings[item.Key] = item.Value;
             //}
+            if (_theme == "") _theme = StoreSettings.Current.Get("emailthemefolder");
             if (_theme == "") _theme = "Cygnus";
             //settings.Add("themefolder",_theme);
 
@@ -103,6 +104,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "printorder":
                         {
                             DisplayOrderData(portalId, objUserInfo, _itemid);
+                            break;
+                        }
+                    case "printproduct":
+                        {
+                            DisplayProductData(portalId, _itemid);
                             break;
                         }
                 }           
@@ -148,12 +154,32 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
 
                         // not provider label, so print template
-                        var modCtrl = new NBrightBuyController();
-                        var strTempl = modCtrl.GetTemplateData(-1, _template, Utils.GetCurrentCulture(), StoreSettings.Current.Settings(), StoreSettings.Current.DebugMode);
+                        var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);
+                        var strTempl = templCtrl.GetTemplateData(_template, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
 
                         strOut = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                         if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, strOut);                       
                     }
+                }
+            }
+            var l = new Literal();
+            l.Text = strOut;
+            phData.Controls.Add(l);
+        }
+
+        private void DisplayProductData(int portalId, String entryId)
+        {
+            var strOut = "***ERROR***  Invalid Data";
+            if (Utils.IsNumeric(entryId) && entryId != "0")
+            {
+                var prodData = ProductUtils.GetProductData(Convert.ToInt32(entryId),Utils.GetCurrentCulture());
+                if (prodData.Exists)
+                {
+                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);
+                    var strTempl = templCtrl.GetTemplateData(_template, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
+
+                    strOut = GenXmlFunctions.RenderRepeater(prodData.Info, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                    if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(prodData.Info.XMLData, strOut);
                 }
             }
             var l = new Literal();

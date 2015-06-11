@@ -75,7 +75,7 @@
 				var isAnchor = false;
 				if (isLink) {
 					var href = $(this).attr('href');
-					isAnchor = href === undefined || href === '' || href === '#';
+					isAnchor = href === undefined || href === '' || href === '#' || href === 'javascript:void(0)';
 				}
 				sub = sub.length > 0 ? sub : false;
 				self.options.onClickBefore.call(this, event, sub);

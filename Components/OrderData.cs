@@ -29,6 +29,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Save order and turn off edit mode.
+        /// </summary>
+        /// <returns></returns>
+        public int Save()
+        {
+            base.EditMode = "E"; // set edit mode so user id is not 
+            var i = SavePurchaseData();
+            TurnOffEditMode();
+            return i;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="portalId">Left to ensure backward compatiblity</param>
@@ -47,13 +59,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
                 UserController.GetCurrentUserInfo().IsInRole("Administrators")) 
             {
-                AddAuditMessage("EDIT ORDER");
+                AddAuditMessage("EDIT ORDER","sys",UserController.GetCurrentUserInfo().Username,"False");
                 PurchaseTypeCode = "CART";
                 EditMode = "E";
                 var cartId = base.SavePurchaseData();
                 var cartData = new CartData(PortalId, "", cartId.ToString("")); //create the client record (cookie)
                 cartData.Save();
-                if (debugMode) OutputDebugFile("debug_convertedorder.xml");
+                if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedorder.xml");
             }
         }
 
@@ -75,7 +87,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
 
             cartData.Save();
-            if (debugMode) OutputDebugFile("debug_copytocart.xml");
+            if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_copytocart.xml");
         }
 
         /// <summary>
@@ -90,9 +102,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             } 
             set
             {
-                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value);
+                NBrightBuyUtils.ProcessEventProvider(EventActions.BeforeOrderStatusChange, PurchaseInfo);
+
+                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value, UserController.GetCurrentUserInfo().Username);
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
+
+                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterOrderStatusChange, PurchaseInfo);
+
             }  
         }
 
@@ -231,36 +248,51 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
-            if (OrderStatus == "020") // only process this on waiting for bank.  On return to cart this could be triggered more than once, by IPN and return.
+            NBrightBuyUtils.ProcessEventProvider(EventActions.BeforePaymentOK, PurchaseInfo);
+
+            if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
             {
-                var discountprov = DiscountCodeInterface.Instance();
-                if (discountprov != null)
+
+                // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
+                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030")
                 {
-                    PurchaseInfo = discountprov.UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
-                    PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);                    
+                    var discountprov = DiscountCodeInterface.Instance();
+                    if (discountprov != null)
+                    {
+                        PurchaseInfo = discountprov.UpdatePercentUsage(PortalId, UserId, PurchaseInfo);
+                        PurchaseInfo = discountprov.UpdateVoucherAmount(PortalId, UserId, PurchaseInfo);
+                    }
+
+                    PurchaseTypeCode = "ORDER";
+                    CreatedDate = DateTime.Now.ToString("O");
+                    ApplyModelTransQty();
+                    OrderStatus = orderStatus;
+                    SavePurchaseData();
+
+                    // Send emails
+                    if (sendEmails)
+                    {
+                        NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
+                        NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo, "ordercreatedemailsubject");
+                    }
                 }
-
-                CreatedDate = DateTime.Now.ToString("O");
-                ApplyModelTransQty();
-                OrderStatus = orderStatus;
-                SavePurchaseData();
-
-                // Send emails
-                if (sendEmails)
-                {
-                    NBrightBuyUtils.SendEmailOrderToClient("ordercreatedclientemail.html", PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                    NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo, "ordercreatedemailsubject");
-                }                
             }
-
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentOK, PurchaseInfo);
         }
 
         public void PaymentFail(String orderStatus = "010")
         {
-            ReleaseModelTransQty();
-            OrderStatus = orderStatus;
-            PurchaseTypeCode = "CART";
-            SavePurchaseData();
+            NBrightBuyUtils.ProcessEventProvider(EventActions.BeforePaymentFail, PurchaseInfo);
+
+            if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
+            {
+                ReleaseModelTransQty();
+                OrderStatus = orderStatus;
+                PurchaseTypeCode = "CART";
+                SavePurchaseData();                
+            }
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentFail, PurchaseInfo);
         }
 
     }

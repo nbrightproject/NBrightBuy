@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.UI.Modules;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -16,8 +18,11 @@ namespace Nevoweb.DNN.NBrightBuy
     {
 
         protected override void OnInit(EventArgs e)
-        {          
-            base.CtrlTypeCode = "CartView";
+        {
+            base.CtrlTypeCode = ModuleConfiguration.DesktopModule.ModuleName.Replace("NBS_", "");
+
+            if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_Cart") base.CtrlTypeCode = "CartView"; // backward compatiblity
+
             base.OnInit(e);
         }
 

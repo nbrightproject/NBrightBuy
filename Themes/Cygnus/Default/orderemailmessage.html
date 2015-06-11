@@ -3,14 +3,15 @@
 		<tr>
 			<td width="67%" align="left" valign="top" style="line-height:150%">
 				<h2>[<tag type="valueof" resourcekey="Notification.{$emailtype}" />]</h2>
-				[<tag type="valueof" resourcekey="Notification.emailmessage" />]
+			    <p>[<tag type="breakof" resourcekey="Notification.emailmessage" />]</p>
+				<b>[<tag type='breakof' xpath="genxml/emailmsg" />]</b>
 				</td>
 			<td width="33%" align="left" valign="top" style="line-height:150%">
 				<p><b>[<tag type='valueof' resourcekey='Notification.Contactus' />]</b></p>
 				<div>[Settings:storename]</div>
 				<div><a href="mailto:[Settings:supportemail]">[Settings:supportemail]</a></div>
 				<div>[Settings:storephone]</div>
-				<div><a href="http://[<tag type='websiteurl' />]" target="_blank">[<tag type="websiteurl" />]</a></div>
+				<div><a href="http://[<tag type='websiteurl' />]" target="_blank">[<tag type="dnn:websiteurl" />]</a></div>
 			</td>
 		</tr>
 	</table>

@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
@@ -46,25 +47,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             try
             {
-
-                #region "load templates"
-
-                var t1 = "dashboardheader.html";
-                var t2 = "dashboardbody.html";
-                var t3 = "dashboardfooter.html";
-
                 // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
+                var rpDashTempl = ModCtrl.GetTemplateData(ModSettings, "dashboard.html", Utils.GetCurrentCulture(), DebugMode);
+                rpDash.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDashTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
+                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, "dashordersheader.html", Utils.GetCurrentCulture(), DebugMode);
                 rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
+
+                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, "dashordersbody.html", Utils.GetCurrentCulture(), DebugMode);
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
+
+                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, "dashordersfooter.html", Utils.GetCurrentCulture(), DebugMode);
                 rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                #endregion
-
 
             }
             catch (Exception exc)
@@ -98,21 +92,42 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void PageLoad()
         {
+            #region "get Dashboard"
 
-            #region "Data Repeater"
-            if (UserId > 0) // only logged in users can see data on this module.
+            bool forceRefresh = Utils.RequestParam(Context, "refresh") == "1";
+            var statsInfo = GetStats(PortalId, forceRefresh);
+            var statsData = new NBrightInfo(true);
+
+            #endregion
+
+            #region "get order list"
+
+            var orderList = new List<NBrightInfo>();
+            var nodList = statsInfo.XMLDoc.SelectNodes("root/orders/*");
+            if (nodList != null)
             {
-
-                DisplayDataEntryRepeater();
+                foreach (XmlNode nod in nodList)
+                {
+                    var nbi = new NBrightInfo();
+                    nbi.FromXmlItem(nod.OuterXml);
+                    var xmlData = nod.SelectSingleNode("genxml/genxml");
+                    if (xmlData != null) nbi.XMLData = xmlData.OuterXml;
+                    orderList.Add(nbi);
+                }
             }
 
             #endregion
 
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
+            DoDetail(rpDash, statsInfo); // dashboard
 
-            // display footer
-            base.DoDetail(rpDataF);
+            DoDetail(rpDataH, statsInfo); // orders header
+
+            rpData.DataSource = orderList; // orders body
+            rpData.DataBind();
+
+            DoDetail(rpDataF, statsInfo); // orders footer
+
+
 
         }
 
@@ -127,11 +142,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             switch (e.CommandName.ToLower())
             {
-                case "save":
-                    param[0] = "";
+                case "refresh":
+                    param[0] = "refresh=1";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
-                case "cancel":
+                case "editorder":
                     param[0] = "";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -142,10 +157,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         #endregion
 
 
-        private void DisplayDataEntryRepeater()
+        private NBrightInfo GetStats(int portalId, bool forceRefresh = false)
         {
-                //render the detail page
-                base.DoDetail(rpData);
+            var cachekey = "nbrightbuydashboard*" + PortalId.ToString("");
+            var statsInfo = (NBrightInfo)Utils.GetCache(cachekey);
+
+            if (statsInfo == null || StoreSettings.Current.DebugMode || forceRefresh)
+            {
+                var objCtrl = new NBrightBuyController();
+                statsInfo = new NBrightInfo(true);
+                
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+
+                var statsXml = objCtrl.GetSqlxml("exec " + dbOwner + objQual + "NBrightBuy_DashboardStats " + portalId);
+                statsInfo.XMLData = statsXml;
+                Utils.SetCache(cachekey, statsInfo);
+            }
+            return statsInfo;
         }
 
 

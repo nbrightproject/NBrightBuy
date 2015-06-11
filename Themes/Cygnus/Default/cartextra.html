@@ -6,7 +6,7 @@
 
 <!-- Shipping options radio buttons -->
 <div id="shippingoptions">
-    <div class="formrow dnnForm">
+    <div class="formrow">
     <h3>[<tag type='valueof' resourcekey='General.lblshippingoptions' />]</h3>
 	    [<tag id="rblshippingoptions" cssclass="radiobuttonlist" type="radiobuttonlist" resourcekey='CartView.shippingoption2' RepeatDirection="Vertical" RepeatColumns="1" RepeatLayout="Flow" SelectedValue="1" />]        
 	</div>
@@ -14,7 +14,7 @@
 
 <!-- Shipping methods  -->
 <div id="shippingmethods">
-    <div class="formrow dnnForm">
+    <div class="formrow">
         <h3>[<tag type='valueof' resourcekey='General.shippingmethods' />]</h3>
 	    <div id="providerselection">
 	        [<tag cssclass="radiobuttonlist" type="shippingproviders" RepeatDirection="Horizontal" RepeatColumns="0" RepeatLayout="Flow" />]
@@ -34,34 +34,34 @@
 <div class="summaryleft">
    
     <div class="formrow">
-        <h6>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblspecialinstructions' />]</label>
         [<tag id='extramessage' type='textbox' textmode="MultiLine" height="60" />]
     </div>
 
 	[<tag type="if" function="settings" key="checkoutpromocode" testvalue="True" display="{ON}" />]
     <div class="formrow">
-        <h6>[<tag type='valueof' resourcekey='General.PromotionalCode' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.PromotionalCode' />]</label>
         [<tag id='promocode' type='textbox' />]
     </div>
 	[<tag type="endtestof"  />]
 
 	[<tag type="if" function="settings" key="checkouttaxcode" testvalue="True" display="{ON}" />]
     <div class="formrow">
-        <h6>[<tag type='valueof' resourcekey='General.TaxNumber' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.TaxNumber' />]</label>
         [<tag id='taxnumber' type='textbox' />]
     </div>
 	[<tag type="endtestof"  />]
 
 	[<tag type="if" function="settings" key="copyorderto" testvalue="True" display="{ON}" />]
     <div class="formrow">
-	    <h6>[<tag type='valueof' resourcekey='General.copyorderto' />]</h6>
+	    <label>[<tag type='valueof' resourcekey='General.copyorderto' />]</label>
 	    [<tag type='cartemailaddress' datatype="email"/>] 
     </div>
 	[<tag type="endtestof"  />]
 
     <div class="formrow">            
         <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
-        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />][<tag id="cmdDelete" type="button" cssclass="secondarybutton clearcart" resourcekey="CartView.cmdClearCart" commandname="deletecart" />]
+        [<tag id="cmdUpdate" type="button" cssclass="primarybutton updatecart" resourcekey="CartView.UpdateCart" commandname="updatecart" />]
     </div>
 
 </div>
@@ -75,9 +75,9 @@
 		<li class="large"><div>[<tag type='valueof' resourcekey='General.Tax' />]</div>[<tag type="currencyof" xpath="genxml/taxcost" />]</li>
 		<li class="total larger"><div>[<tag type='valueof' resourcekey='General.Total' />]</div>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</li>
 		[<tag type="if" function="settings" key="subscribenewsletter" testvalue="True" display="{ON}" />]
-		<li class="dnnForm">[<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews" />]</li>
+		<li class="formrow submissioncheck">[<tag id="chknews" type="checkbox" checked="True" resourcekey="CartView.chknews" />]</li>
 		[<tag type="endtestof"  />]
-		<li class="dnnForm">[<tag id="chkterms" type="checkbox" cssclass="acceptterms" resourcekey="CartView.chkterms" />]</li>
+		<li class="formrow submissioncheck">[<tag id="chkterms" type="checkbox" cssclass="acceptterms" resourcekey="CartView.chkterms" />]</li>
 		<li class="submission">[<tag id="cmdOrder" type="button" cssclass="primarybutton" resourcekey="CartView.Order" commandname="order" />]</li>
 	</ul>
 

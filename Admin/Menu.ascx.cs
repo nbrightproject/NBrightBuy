@@ -189,7 +189,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 NBrightBuyUtils.SetModCache(0, strCacheKey, strOut);
 
-                if (StoreSettings.Current.DebugMode) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "\\debug_menu.html",strOut);
+                if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.HomeDirectoryMapPath + "\\debug_menu.html", strOut);
             }
 
             return strOut;

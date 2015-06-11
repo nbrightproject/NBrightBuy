@@ -2,19 +2,15 @@
 
 <div>
 
-[<tag type="if" function="settings" key="manualpaymenttitle" testvalue="" display="{OFF}" />]
-	<h4>[Settings:manualpaymenttitle]</h4>
-[<tag type="endif"  />]
+    <h3>[<tag type="valueof" resourcekey="ManualPayment.ManualPayment" />]</h3>
 
-[<tag type="if"  function="static" staticvalue="{Settings:hidmanualpaymentlogo}" testvalue="" display="{OFF}" />]
-	<img class="paymentlogo" alt="[Settings:manualpaymenttitle]" border="0" src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=120&h=0&src=[Settings:FolderImages]/[Settings:hidmanualpaymentlogo]">
-[<tag type="endif" />]
+    <div class="defaultmessage">[<tag type="breakof" resourcekey="ManualPayment.DefaultMessage" />]</div>
 
-<div class="defaultmessage">[<tag type="valueof" resourcekey="ManualPayment.DefaultMessage" />]</div>
+    <div class="clearfix"></div>
 
-<div class="clearfix"></div>
-
-<!-- commandname must be "pay" and the commandargument must be the provider control key -->
-[<tag id='cmdManualPay' type='button' cssclass="primarybutton" resourcekey="ManualPayment.Continue" commandname='pay' commandargument='manualpayment' />]
+    <!-- commandname must be "pay" and the commandargument must be the provider control key -->
+    [<tag id='cmdManualPay' type='button' cssclass="primarybutton" resourcekey="ManualPayment.Continue" commandname='pay' commandargument='manualpayment' />]
 
 </div>
+
+<hr />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Resources;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
@@ -26,6 +28,11 @@ using NBrightCore.TemplateEngine;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using RazorEngine;
+using RazorEngine.Configuration;
+using MailPriority = DotNetNuke.Services.Mail.MailPriority;
+using RazorEngine.Templating;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -33,15 +40,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
 
         /// <summary>
-        /// Use the setting to get the template system getter control.
+        /// Used to get the template system getter control.
         /// </summary>
         /// <returns></returns>
+        public static TemplateGetter GetTemplateGetter(int portalId, string themeFolder)
+        {
+            var controlMapPath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath());
+            themeFolder = "Themes\\" + themeFolder;
+            var map = "";
+            var storeThemeFolder = "";
+            if (PortalSettings.Current == null) // might be ran from scheduler
+            {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(portalId);
+                map = portalsettings.HomeDirectoryMapPath;
+                var storeset = new StoreSettings(portalId);
+                storeThemeFolder = storeset.ThemeFolder;
+            }
+            else
+            {
+                map = PortalSettings.Current.HomeDirectoryMapPath;
+                storeThemeFolder = StoreSettings.Current.ThemeFolder;
+            }
+            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(map, controlMapPath, "Themes\\config", themeFolder, "Themes\\" + storeThemeFolder);
+            return templCtrl;
+        }
+
         public static TemplateGetter GetTemplateGetter(string themeFolder)
         {
-            var controlMapPath = HttpContext.Current.Server.MapPath(StoreSettings.NBrightBuyPath());
-            themeFolder = "Themes\\" + themeFolder;
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", themeFolder);
-            return templCtrl;
+            return GetTemplateGetter(PortalSettings.Current.PortalId, themeFolder);
         }
 
         public static NBrightInfo GetSettings(int portalId, int moduleId, String ctrlTypeCode = "", bool useCache = true)
@@ -128,18 +154,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Build Urls"
 
-        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string guidkey, string tabid)
+        public static string GetEntryUrl(int portalId, string entryid, string modulekey, string seoname, string tabid, string catid = "", string catref = "")
         {
+
             var rdTabid = -1;
             var objTabInfo = new TabInfo();
 
-            if (PortalSettings.Current != null)
+            if (Utils.IsNumeric(tabid) && Convert.ToInt32(tabid) > 0) rdTabid = Convert.ToInt32(tabid);
+            if (!Utils.IsNumeric(tabid)) rdTabid = StoreSettings.Current.ProductDetailTabId;
+            if ((!Utils.IsNumeric(rdTabid) || rdTabid == -1) && PortalSettings.Current != null)
             {
                 objTabInfo = PortalSettings.Current.ActiveTab;
                 rdTabid = objTabInfo.TabID;
             }
 
-            if (Utils.IsNumeric(tabid) && Convert.ToInt32(tabid) > 0) rdTabid = Convert.ToInt32(tabid);
+            var cachekey = "entryurl*" + entryid + "*" + catid + "*" + catref + "*" + modulekey + "*" + rdTabid + "*" + Utils.GetCurrentCulture();
+            var urldata = "";
+            var chacheData = Utils.GetCache(cachekey);
+            if (chacheData != null) return (String)chacheData;
+
 
             if (objTabInfo.TabID != rdTabid)
             {
@@ -154,11 +187,70 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rdModId = "";
             if (modulekey != "") rdModId = "&modkey=" + modulekey;
 
-            guidkey = Utils.CleanInput(guidkey);
-            guidkey = guidkey.Replace(".", "-").Replace("@", "").Trim('-'); // remove chars not dealt with by cleaninput.
-            var strurl = "~/Default.aspx?TabId=" + rdTabid.ToString("") + "&eid=" + entryid + rdModId;
-            return DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, guidkey.Replace(entryid + "-", "") + ".aspx");
+            var strurl = "~/Default.aspx?tabid=" + rdTabid + rdModId;
 
+            if (StoreSettings.Current.GetBool(StoreSettingKeys.friendlyurlids))
+            {
+                if (Utils.IsNumeric(catid))
+                {
+                    var catData = CategoryUtils.GetCategoryData(catid, Utils.GetCurrentCulture());
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catref=" + catData.DataLangRecord.GUIDKey;
+                }
+                if (catref != "")
+                {
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catref=" + catref;
+                }
+                if (Utils.IsNumeric(entryid))
+                {
+                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                    if (!strurl.Contains("catref="))
+                    {
+                        var defcat = prdData.GetDefaultCategory();
+                        if (defcat != null && defcat.categoryref != "" && !strurl.EndsWith("?"))
+                        {
+                            strurl += "&";
+                            strurl += "catref=" + defcat.categoryref;
+                        }
+                    }
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "ref=" + prdData.DataRecord.GUIDKey;
+                    seoname = prdData.SEOName;
+                    seoname = Utils.UrlFriendly(seoname);
+                }
+            }
+            else
+            {
+                if (Utils.IsNumeric(catid))
+                {
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "catid=" + catid;
+                }
+
+                if (Utils.IsNumeric(entryid))
+                {
+                    if (!strurl.Contains("catid="))
+                    {
+                        var prdData = ProductUtils.GetProductData(Convert.ToInt32(entryid), Utils.GetCurrentCulture());
+                        var defcat = prdData.GetDefaultCategory();
+                        if (defcat != null && defcat.categoryid > 0 && !strurl.EndsWith("?"))
+                        {
+                            strurl += "&";
+                            strurl += "catid=" + defcat.categoryid;
+                        }
+                    }
+                    if (!strurl.EndsWith("?")) strurl += "&";
+                    strurl += "eid=" + entryid;
+                }
+                seoname = Utils.UrlFriendly(seoname);
+            }
+            
+            urldata = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(objTabInfo, strurl, seoname);
+            
+            Utils.SetCache(cachekey, urldata);
+
+            return urldata;
         }
 
 
@@ -284,7 +376,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleid">Moduleid use to store in the cache list, (not added to the cachekey)</param>
         /// <param name="CacheKey"></param>
         /// <param name="objObject"></param>
-        public static void SetModCache(int moduleid, string CacheKey, object objObject)
+        public static void SetModCache(int moduleid, string CacheKey, object objObject, DateTime AbsoluteExpiration)
         {
             var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
             if (cList == null) cList = new List<String>();
@@ -292,8 +384,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 cList.Add(CacheKey);
                 NBrightCore.common.Utils.SetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture), cList);
-                NBrightCore.common.Utils.SetCache(CacheKey, objObject);
+                NBrightCore.common.Utils.SetCache(CacheKey, objObject, AbsoluteExpiration);
             }
+        }
+
+        public static void SetModCache(int moduleid, string CacheKey, object objObject)
+        {
+            SetModCache(moduleid, CacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
         }
 
         public static void RemoveCache(String cacheKey)
@@ -367,13 +464,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, bool debugMode = false)
+        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, String themeFolder, bool debugMode = false)
         {
 
             if (!page.Items.Contains("nbrightbuyinject")) page.Items.Add("nbrightbuyinject", "");
             if (templatename != "" && !page.Items["nbrightbuyinject"].ToString().Contains(templatename + ","))
             {
-                var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(), debugMode);
+                var includetext = modCtrl.GetTemplate(templatename,Utils.GetCurrentCulture(),themeFolder, debugMode);
                 var objInfo = new NBrightInfo(); //create a object so we process the tag values (resourcekey)
                 includetext = GenXmlFunctions.RenderRepeater(objInfo, includetext,"","XMLData","",StoreSettings.Current.Settings());
                 if (includetext != "")
@@ -385,18 +482,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory)
+        {
+            return GetGenXmlTemplate(templateData, settingsDic, portalHomeDirectory,null);
+        }
+
         /// <summary>
         /// Get the GenXmltemplate class and assign required resx files.
         /// </summary>
         /// <param name="templateData"></param>
         /// <param name="settingsDic"></param>
         /// <param name="portalHomeDirectory"></param>
+        /// <param name="visibleStatusIn">List of the visible staus used for nested if</param>
         /// <returns></returns>
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory)
+        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, ConcurrentStack<Boolean> visibleStatusIn)
         {
             if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
 
-            var itemTempl = new GenXmlTemplate(templateData, settingsDic);
+            var itemTempl = new GenXmlTemplate(templateData, settingsDic,visibleStatusIn);
             // add default resx folder to template
             itemTempl.AddResxFolder(StoreSettings.NBrightBuyPath() + "/App_LocalResources/");
             if (settingsDic.ContainsKey("themefolder") && settingsDic["themefolder"] != "")
@@ -491,7 +594,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
-        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "")
+        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "", String emailmsg = "")
         {
             var ordData = new OrderData(orderId);
             var lang = ordData.Lang;
@@ -514,42 +617,53 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var emailList = ordData.EmailAddress;
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
+            ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
             SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 
         public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey, String fromEmail,String lang)
         {
-            if (lang == "") lang = Utils.GetCurrentCulture();
-            var emaillist = toEmail;
-            if (emaillist != "")
+            dataObj = ProcessEventProvider(EventActions.BeforeSendEmail, dataObj, templateName);
+
+            if (!dataObj.GetXmlPropertyBool("genxml/stopprocess"))
             {
-                var emailsubject = "";
-                if (emailsubjectresxkey != "")
+
+                if (lang == "") lang = Utils.GetCurrentCulture();
+                var emaillist = toEmail;
+                if (emaillist != "")
                 {
-                    var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
-                    emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
-                    if (emailsubject == null) emailsubject = emailsubjectresxkey;
-                }
-
-                // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
-                var modCtrl = new NBrightBuyController();
-                var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
-
-                var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
-
-                var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, storeSettings.Settings());
-                if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
-                if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
-                var emailarray = emaillist.Split(',');
-                emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
-                foreach (var email in emailarray)
-                {
-                    if (!string.IsNullOrEmpty(email) && Utils.IsEmail(fromEmail) && Utils.IsEmail(email))
+                    var emailsubject = "";
+                    if (emailsubjectresxkey != "")
                     {
-                        DotNetNuke.Services.Mail.Mail.SendMail(fromEmail, email, "", emailsubject, emailbody, "", "HTML", "", "", "", "");
+                        var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
+                        emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
+                        if (emailsubject == null) emailsubject = emailsubjectresxkey;
+                    }
+
+                    // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
+                    var modCtrl = new NBrightBuyController();
+                    var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
+
+                    var strTempl = modCtrl.GetTemplateData(-1, templateName, lang, storeSettings.Settings(), storeSettings.DebugMode);
+
+                    var emailbody = GenXmlFunctions.RenderRepeater(dataObj, strTempl, "", "XMLData", lang, storeSettings.Settings());
+                    if (templateName.EndsWith(".xsl")) emailbody = XslUtils.XslTransInMemory(dataObj.XMLData, emailbody);
+                    if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
+                    var emailarray = emaillist.Split(',');
+                    emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
+                    foreach (var email in emailarray)
+                    {
+                        if (!string.IsNullOrEmpty(email.Trim()) && Utils.IsEmail(fromEmail.Trim()) && Utils.IsEmail(email.Trim()))
+                        {
+                            // multiple attachments as csv with "|" seperator
+                            DotNetNuke.Services.Mail.Mail.SendMail(fromEmail.Trim(), email.Trim(), "", emailsubject, emailbody, dataObj.GetXmlProperty("genxml/emailattachment"), "HTML", "", "", "", "");
+                        }
                     }
                 }
             }
+
+            ProcessEventProvider(EventActions.AfterSendEmail, dataObj, templateName);
+
 
         }
 
@@ -565,7 +679,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnList = new List<NBrightInfo>();
             if (!String.IsNullOrEmpty(xmlAjaxData))
             {
-                var xmlDoc = new XmlDataDocument();
+                var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(xmlAjaxData);
                 var nodList = xmlDoc.SelectNodes("root/root");
                 if (nodList != null)
@@ -650,7 +764,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
             }
-            return rtnDic;
+            var sortlist = StoreSettings.Current.Get("countrysortorder");
+            if (sortlist == "") return rtnDic;
+            
+            var rtnSort = new Dictionary<String, String>();
+            var s = sortlist.Split(';');
+            foreach (var c in s)
+            {
+                if (c != "")
+                {
+                    if (rtnDic.ContainsKey(c))
+                    {
+                        var d = rtnDic[c];
+                        rtnSort.Add(c,d);
+                        rtnDic.Remove(c);
+                    }
+                }
+            }
+            foreach (var c in rtnDic)
+            {
+                rtnSort.Add(c.Key,c.Value);    
+            }
+
+            return rtnSort;
         }
 
         public static Dictionary<String, String> GetRegionList(String countrycode, String dnnlistname = "Region")
@@ -870,7 +1006,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prodList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");
             foreach (var p in prodList)
             {
-                var prodData = new ProductData(p.ItemID, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(p.ItemID, StoreSettings.Current.EditLanguage);
                 errcount += prodData.Validate();
             }
 
@@ -878,7 +1014,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var catList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "CATEGORY");
             foreach (var c in catList)
             {
-                var catData = new CategoryData(c.ItemID, StoreSettings.Current.EditLanguage);
+                var catData = CategoryUtils.GetCategoryData(c.ItemID, StoreSettings.Current.EditLanguage);
                 errcount += catData.Validate();
             }
 
@@ -890,9 +1026,225 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 errcount += grpData.Validate();
             }
 
+            // reset catid from catref
+            var l = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "SETTINGS", "", Utils.GetCurrentCulture(), " and [XMLdata].value('(genxml/catref)[1]','nvarchar(max)') != ''","");
+            foreach (var s in l)
+            {
+                var info = ModuleSettingsResetCatIdFromRef(s);
+                objCtrl.Update(info);
+            }
+
+
             return errcount;
         }
 
+        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo)
+        {
+            return ProcessEventProvider(eventaction, nbrightInfo, "");
+        }
+
+        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, String eventinfo)
+        {
+            var rtnInfo = nbrightInfo;
+            var pluginData = new PluginData(nbrightInfo.PortalId);
+            var provList = pluginData.GetEventsProviders();
+
+            foreach (var d in provList)
+            {
+                var prov = d.Value;
+                ObjectHandle handle = null;
+                var cachekey = prov.PortalId + "*" + prov.GetXmlProperty("genxml/textbox/assembly") + "*" + prov.GetXmlProperty("genxml/textbox/namespaceclass");
+                handle = (ObjectHandle)Utils.GetCache(cachekey);
+                if (handle == null) handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                if (handle != null)
+                {
+                    var eventprov = (EventInterface) handle.Unwrap();
+                    if (eventprov != null)
+                    {
+                        if (eventaction == EventActions.ValidateCartBefore)
+                        {
+                            rtnInfo = eventprov.ValidateCartBefore(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartAfter)
+                        {
+                            rtnInfo = eventprov.ValidateCartAfter(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartItemBefore)
+                        {
+                            rtnInfo = eventprov.ValidateCartItemBefore(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.ValidateCartItemAfter)
+                        {
+                            rtnInfo = eventprov.ValidateCartItemAfter(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterCartSave)
+                        {
+                            rtnInfo = eventprov.AfterCartSave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterCategorySave)
+                        {
+                            rtnInfo = eventprov.AfterCategorySave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterProductSave)
+                        {
+                            rtnInfo = eventprov.AfterProductSave(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterSavePurchaseData)
+                        {
+                            rtnInfo = eventprov.AfterSavePurchaseData(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforeOrderStatusChange)
+                        {
+                            rtnInfo = eventprov.BeforeOrderStatusChange(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterOrderStatusChange)
+                        {
+                            rtnInfo = eventprov.AfterOrderStatusChange(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforePaymentOK)
+                        {
+                            rtnInfo = eventprov.BeforePaymentOK(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterPaymentOK)
+                        {
+                            rtnInfo = eventprov.AfterPaymentOK(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforePaymentFail)
+                        {
+                            rtnInfo = eventprov.BeforePaymentFail(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.AfterPaymentFail)
+                        {
+                            rtnInfo = eventprov.AfterPaymentFail(nbrightInfo);
+                        }
+                        else if (eventaction == EventActions.BeforeSendEmail)
+                        {
+                            rtnInfo = eventprov.BeforeSendEmail(nbrightInfo,eventinfo);
+                        }
+                        else if (eventaction == EventActions.AfterSendEmail)
+                        {
+                            rtnInfo = eventprov.AfterSendEmail(nbrightInfo,eventinfo);
+                        }
+
+                    }
+                }
+            }
+            return rtnInfo;
+        }
+
+        /// <summary>
+        /// Helper function to help plugins get a theme template from their local theme folder.
+        /// This function will get the template, replace settings tokens, replace url tokens
+        /// </summary>
+        /// <param name="templatename">name of template</param>
+        /// <param name="templateControlPath">Relative Control path of plugin e.g."/DesktopModules/NBright/NBrightBuyPluginTempl"</param>
+        /// <param name="themeFolder">Theme folder to use e.g. "config"</param>
+        /// <param name="settings">Settings to use, default to storesettings</param>
+        /// <returns></returns>
+        public static String GetTemplateData(String templatename, String templateControlPath, String themeFolder = "config", Dictionary<String, String> settings = null)
+        {
+            themeFolder = "Themes\\" + themeFolder;
+            if (settings == null) settings = StoreSettings.Current.Settings();
+            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
+            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, themeFolder, StoreSettings.Current.ThemeFolder);
+            var templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
+            templ = Utils.ReplaceSettingTokens(templ, settings);
+            templ = Utils.ReplaceUrlTokens(templ);
+            return templ;
+        }
+
+        public static List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "", String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var strFilter = "";
+            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
+            else
+            {
+                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
+                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+            }
+
+            var objCtrl = new NBrightBuyController();
+            var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", lang, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+
+            var grpCtrl = new GrpCatController(lang);
+
+            foreach (var c in levelList)
+            {
+                var g = grpCtrl.GetCategory(c.ItemID);
+                if (g != null) c.SetXmlProperty("genxml/entrycount", g.entrycount.ToString(""));
+            }
+
+            return levelList;
+        }
+
+        public static NBrightInfo ModuleSettingsResetCatIdFromRef(NBrightInfo objInfo)
+        {
+            var ModCtrl = new NBrightBuyController();
+            var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
+            var nbi = ModCtrl.Get(catid);
+            if (nbi == null)
+            {
+                // categoryid no longer exists, see if we can get it back with the catref (might be lost due to cleardown and import)
+                var catref = objInfo.GetXmlProperty("genxml/catref");
+                nbi = ModCtrl.GetByGuidKey(objInfo.PortalId, -1, "CATEGORY", catref);
+                if (nbi != null)
+                {
+                    objInfo.SetXmlProperty("genxml/dropdownlist/defaultcatid", nbi.ItemID.ToString(""));
+                }
+            }
+            return objInfo;
+        }
+
+        public static NBrightInfo ModuleSettingsSaveCatRefFromId(NBrightInfo objInfo)
+        {
+            var catid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/defaultcatid");
+            var catData = CategoryUtils.GetCategoryData(catid, Utils.GetCurrentCulture());
+            if (catData.Exists) objInfo.SetXmlProperty("genxml/catref", catData.CategoryRef);
+            return objInfo;
+        }
+
+        public static int ModuleSettingsGetCatIdFromRef(NBrightInfo settingsInfo)
+        {
+            var ModCtrl = new NBrightBuyController();
+            // categoryid no longer exists, see if we can get it back with the catref (might be lost due to cleardown and import)
+            var catref = settingsInfo.GetXmlProperty("genxml/catref");
+            var nbi = ModCtrl.GetByGuidKey(settingsInfo.PortalId, -1, "CATEGORY", catref);
+            if (nbi != null) return nbi.ItemID;
+            return -1;
+        }
+
+        public static String RenderRazor(Object info,String razorTempl,String templateKey)
+        {
+            // do razor test
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            return result;
+        }
+
+        public static String RenderRazor(List<Object> infoList, String razorTempl, String templateKey)
+        {
+            // do razor test
+            if (StoreSettings.Current.DebugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
+            return result;
+        }
     }
 }
 

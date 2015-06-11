@@ -106,7 +106,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 if (Utils.IsNumeric(_entryid) && _entryid != "0")
                 {
-                    var categoryData = new CategoryData(Convert.ToInt32(_entryid), EditLanguage);
+                    var categoryData = CategoryUtils.GetCategoryData(Convert.ToInt32(_entryid), EditLanguage);
                     base.DoDetail(rpData, categoryData.Info);
                 }
                 else
@@ -126,10 +126,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var selgroup = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
                         if (selgroup == "") selgroup = GenXmlFunctions.GetField(rpSearch, "groupsel");
-                        grpCats = GetCatList(_openid, selgroup);
+                        grpCats = NBrightBuyUtils.GetCatList(_openid, selgroup,EditLanguage);
                     }
                     else
-                        grpCats = GetCatList(_openid, "cat");
+                        grpCats = NBrightBuyUtils.GetCatList(_openid, "cat", EditLanguage);
 
                     rpData.DataSource = grpCats;
                     rpData.DataBind();
@@ -167,15 +167,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "return":
                     param[1] = "";
+                    param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "search":
                     var strXml = GenXmlFunctions.GetGenXml(rpSearch, "", "");
                     navigationData.XmlData = strXml;
-                    if (DebugMode)
+                    if (StoreSettings.Current.DebugModeFileOut)
                     {
                         strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
+                        var xmlDoc = new System.Xml.XmlDocument();
                         xmlDoc.LoadXml(strXml);
                         xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                     }   
@@ -192,7 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var strXml2 = GenXmlFunctions.GetGenXml(rpSearch, "", "");
                     navigationData.XmlData = strXml2;
                     navigationData.Save();
-                    var categoryData = new CategoryData(-1, EditLanguage);
+                    var categoryData = CategoryUtils.GetCategoryData(-1, EditLanguage);
                     if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                     {
                         categoryData.GroupType = GenXmlFunctions.GetGenXmlValue(navigationData.XmlData, "genxml/dropdownlist/groupsel");
@@ -204,6 +205,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     categoryData.ParentItemId = _openid; 
                     categoryData.Save();
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                    
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -235,7 +238,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "close":
-                    var catData = new CategoryData(_openid, EditLanguage);
+                    var catData = CategoryUtils.GetCategoryData(_openid, EditLanguage);
                     if (catData.DataRecord == null)
                         param[1] = "catid=0";
                     else
@@ -243,6 +246,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "save":
+                    UpdateRecord();
+                    param[1] = "eid=" + cArg;
+                   param[2] = "catid=" + _openid;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "saveexit":
                     UpdateRecord();
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -263,30 +272,44 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var itemid = GenXmlFunctions.GetField(rtnItem, "itemid");
                 if (isdirty == "true" && Utils.IsNumeric(itemid))
                 {
-                    var catData = new CategoryData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
+                    var catData = CategoryUtils.GetCategoryData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
                     if (catData.Exists)
                     {
                         var chkishidden = GenXmlFunctions.GetField(rtnItem, "chkishidden");
                         var catname = GenXmlFunctions.GetField(rtnItem, "txtcategoryname");
                         catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", chkishidden);
-                        catData.SetCategoryRef(); // set to uniquekey
 
                         if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                         {
                             var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
                             var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
-                            if (grp != null) catData.ParentItemId = grp.ItemID;
+                            if (grp != null)
+                            {
+                                catData.ParentItemId = grp.ItemID;
+                                ModCtrl.Update(catData.DataRecord);
+                            }
+                        }
+                        else
+                        {
+                            // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                            var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                            if (catref == "")
+                            {
+                                catref = Utils.GetUniqueKey().ToLower();
+                                catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                                catData.DataRecord.GUIDKey = catref;
+                            }
+                            ModCtrl.Update(catData.DataRecord);
                         }
 
-                        ModCtrl.Update(catData.DataRecord);
                         catData.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
                         ModCtrl.Update(catData.DataLangRecord);
                         if (catname != "")
                         {
-                            // update all lanaguge records that have no name
+                            // update all language records that have no name
                             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                             {
-                                var catLangUpd = new CategoryData(Convert.ToInt32(itemid), lang);
+                                var catLangUpd = CategoryUtils.GetCategoryData(Convert.ToInt32(itemid), lang);
                                 if (catLangUpd.DataLangRecord != null && catLangUpd.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname") == "")
                                 {
                                     catLangUpd.DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", catname);
@@ -294,6 +317,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 }
                             }
                         }
+
+                        catData.Save();
+                        CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(itemid)); // do validate so we update all refs and children refs
+                        NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
                     }
                 }
             }
@@ -311,7 +338,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var strOut = "No Category ID ('itemid' hidden fields needed on input form)";
             if (settings.ContainsKey("itemid"))
             {
-                var catData = new CategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
+                var catData = CategoryUtils.GetCategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
 
                 catData.Update(objInfo);
 
@@ -321,13 +348,38 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
                     if (grp != null)
                     {
-                        catData.DataRecord.GUIDKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                        if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, Utils.UrlFriendly(newGuidKey));
+                        catData.DataRecord.GUIDKey = newGuidKey;
+                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
                         catData.DataRecord.ParentItemId = grp.ItemID;
                         // list done using ddlgrouptype, in  GetCatList 
-                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype); 
+                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype);
+                        catData.Save();
+                        NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
                     }
                 }
-                catData.Save();
+                else
+                {
+                    // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                    var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                    if (catref == "")
+                    {
+                        if (catData.DataRecord.GUIDKey == "")
+                        {
+                            catref = Utils.GetUniqueKey().ToLower();
+                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                            catData.DataRecord.GUIDKey = catref;                            
+                        }
+                        else
+                        {
+                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catData.DataRecord.GUIDKey);
+                        }
+                    }
+                    catData.Save();
+                    CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(settings["itemid"])); // do validate so we update all refs and children refs
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                }
             }
             else
             {
@@ -342,8 +394,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var selecteditemid = GenXmlFunctions.GetField(rpDataH, "selecteditemid");
             if (Utils.IsNumeric(selecteditemid))
             {
-                var movData = new CategoryData(itemId, StoreSettings.Current.EditLanguage);
-                var selData = new CategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
+                var movData = CategoryUtils.GetCategoryData(itemId, StoreSettings.Current.EditLanguage);
+                var selData = CategoryUtils.GetCategoryData(Convert.ToInt32(selecteditemid), StoreSettings.Current.EditLanguage);
                 var fromParentItemid = selData.DataRecord.ParentItemId;
                 var toParentItemid = movData.DataRecord.ParentItemId;
                 var reindex = toParentItemid != fromParentItemid;
@@ -390,7 +442,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 foreach (NBrightInfo catinfo in levelList)
                 {
                     var grouptype = catinfo.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
-                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    var catData = CategoryUtils.GetCategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
                     if (grouptype != groupType)
                     {
                         catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", groupType);
@@ -413,7 +465,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
                 if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder, CultureInfo.GetCultureInfo("en-US")) != lp)
                 {
-                    var catData = new CategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    var catData = CategoryUtils.GetCategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
                     catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
                     ModCtrl.Update(catData.DataRecord);
                 }
@@ -451,30 +503,29 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             return rtnList;
         }
 
-        private List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "")
+
+        private string GetUniqueGuidKey(int categoryId, string newGUIDKey)
         {
-
-            var strFilter = "";
-            if (groupref == "" || groupref == "0") // Because we've introduced Properties (for non-category groups) we will only display these if cat is not selected.
-                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') != 'cat' ";
-            else
+            // make sure we have a unique guidkey
+            var doloop = true;
+            var lp = 1;
+            var testGUIDKey = newGUIDKey.ToLower();
+            while (doloop)
             {
-                if (groupref == "cat") strFilter = " and NB1.ParentItemId = " + parentid + " "; // only category have multipel levels.
-                strFilter += " and [XMLData].value('(genxml/dropdownlist/ddlgrouptype)[1]','nvarchar(max)') = '" + groupref + "' ";
+                var obj = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "CATEGORY", testGUIDKey);
+                if (obj != null && obj.ItemID != categoryId)
+                {
+                    testGUIDKey = newGUIDKey + lp.ToString();
+                }
+                else
+                    doloop = false;
+
+                lp += 1;
+                if (lp > 999) doloop = false; // make sure we never get a infinate loop
             }
-
-            var levelList = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLanguage, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
-
-            var grpCtrl = new GrpCatController(EditLanguage);
-
-            foreach (var c in levelList)
-            {
-                var g = grpCtrl.GetCategory(c.ItemID);
-                if (g != null) c.SetXmlProperty("genxml/entrycount",g.entrycount.ToString(""));
-            }
-
-            return levelList;
+            return testGUIDKey;
         }
+
 
     }
 

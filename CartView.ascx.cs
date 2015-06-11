@@ -41,6 +41,13 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class CartView : NBrightBuyFrontOfficeBase
     {
 
+        public String DisplayHeader { get; set; }
+        public String DisplayBody { get; set; }
+        public String DisplayFooter { get; set; }
+        public String PaymentTab { get; set; }
+        public String Themefolder { get; set; }
+
+
         private String _catid = "";
         private String _catname = "";
         private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
@@ -52,6 +59,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _tabid = "";
         private CartData _cartInfo;
         private AddressData _addressData;
+        private String carttype = "";
 
         #region Event Handlers
 
@@ -60,6 +68,16 @@ namespace Nevoweb.DNN.NBrightBuy
         {
 
             base.OnInit(e);
+
+            // get setting via control params
+            if (DisplayHeader != null && DisplayHeader == "") DisplayHeader = "minicartheader.html";
+            if (DisplayBody != null && DisplayHeader == "") DisplayBody = "minicartbody.html";
+            if (DisplayFooter != null && DisplayHeader == "") DisplayFooter = "minicartfooter.html";
+            if (!String.IsNullOrEmpty(DisplayHeader) && !ModSettings.Settings().ContainsKey("txtdisplayheader")) ModSettings.Settings().Add("txtdisplayheader", DisplayHeader);
+            if (!String.IsNullOrEmpty(DisplayBody) && !ModSettings.Settings().ContainsKey("txtdisplaybody")) ModSettings.Settings().Add("txtdisplaybody", DisplayBody);
+            if (!String.IsNullOrEmpty(DisplayFooter) && !ModSettings.Settings().ContainsKey("txtdisplayfooter")) ModSettings.Settings().Add("txtdisplayfooter", DisplayFooter);
+            if (!String.IsNullOrEmpty(PaymentTab) && !ModSettings.Settings().ContainsKey("PaymentTab")) ModSettings.Settings().Add("PaymentTab",PaymentTab );
+            if (!String.IsNullOrEmpty(Themefolder) && !ModSettings.Settings().ContainsKey("themefolder")) ModSettings.Settings().Add("themefolder", Themefolder);
 
             _cartInfo = new CartData(PortalId);
 
@@ -84,8 +102,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 const string templE = "cartextra.html";
                 const string templD = "cartdetails.html";
 
+                carttype = ModSettings.Get("ddlcarttype");  // This is left for backward compatiblity with NBS_Cart module (now removed from install).
 
-                var carttype = ModSettings.Get("ddlcarttype");
+                if (carttype == "")
+                {
+                    // cart type is not a setting, so use the controlanme
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_MiniCart") carttype = "1";
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_FullCart") carttype = "3";
+                    if (ModuleConfiguration.DesktopModule.ModuleName == "NBS_Checkout") carttype = "2";
+                }
+
                 if (carttype == "3" || carttype == "2") // check if we need to add cookie items
                 {
                     _cartInfo.AddCookieToCart();
@@ -151,7 +177,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Page.IsPostBack == false)
                 {
                     // check for empty cart 
-                    if (!_cartInfo.GetCartItemList().Any() && (ModSettings.Get("ddlcarttype") == "2" || ModSettings.Get("ddlcarttype") == "3"))
+                    if (!_cartInfo.GetCartItemList().Any() && (carttype == "2" || carttype == "3"))
                     {
                         var cartL = new List<NBrightInfo>();
                         cartL.Add(_cartInfo.GetInfo());
@@ -183,7 +209,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (_templD.Trim() != "") // if we don;t have a template, don't do anything
             {
-                var l = _cartInfo.GetCartItemList();
+                var groupresults = ModSettings.Get("chkgroupresults") == "True";
+                var l = _cartInfo.GetCartItemList(groupresults);
                 rpData.DataSource = l;
                 rpData.DataBind();
             }
@@ -201,7 +228,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
-            var carttype =  ModSettings.Get("ddlcarttype");
             if (carttype == "3") // full cart list
             {
                 // display footer
@@ -268,6 +294,16 @@ namespace Nevoweb.DNN.NBrightBuy
 
             switch (e.CommandName.ToLower())
             {
+                case "additems":
+                    // save before add
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
+                    SaveCart();
+                    // add item
+                    _cartInfo.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    _cartInfo.Save();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "addqty":
                     if (!Utils.IsNumeric(cArg)) cArg = "1";
                     if (Utils.IsNumeric(cArg))
@@ -287,7 +323,13 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "deletecartitem":
-                    _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    UpdateCartAddresses();
+                    UpdateCartInfo();
+                    SaveCart();
+                    if (cArg == "")
+                        _cartInfo.RemoveItem(e.Item.ItemIndex);
+                    else
+                        _cartInfo.RemoveItem(cArg);
                     _cartInfo.Save();
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -402,7 +444,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strXml = GenXmlFunctions.GetGenXml(i);
                 var cInfo = new NBrightInfo();
                 cInfo.XMLData = strXml;
-                _cartInfo.MergeCartInputData(i.ItemIndex, cInfo);
+                _cartInfo.MergeCartInputData(cInfo.GetXmlProperty("genxml/hidden/itemcode"), cInfo);
             }
             //update data
             _cartInfo.AddExtraInfo(rpExtra);

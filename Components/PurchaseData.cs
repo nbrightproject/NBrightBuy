@@ -10,6 +10,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -28,10 +29,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String PurchaseTypeCode;
         public int PortalId;
 
-        /// <summary>
-        /// EditMode is a flag to indicate the update process of the cart/order R=Re-order, C=Create New Order for CLient, E=Edit order for client, {Empty}=Normal front office cart
-        /// </summary>
-        public String EditMode;
 
         /// <summary>
         /// Save Purchase record
@@ -49,7 +46,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = "<items>";
             foreach (var info in _itemList)
             {
-                strXml += info.XMLData;
+                // remove injected group header record for the product
+                if (!info.GetXmlPropertyBool("genxml/groupheader")) strXml += info.XMLData;
             }
             strXml += "</items>";
             PurchaseInfo.RemoveXmlNode("genxml/items");
@@ -60,11 +58,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.PortalId = PortalId;
             PurchaseInfo.ModuleId = -1;
             PurchaseInfo.TypeCode = PurchaseTypeCode;
-            PurchaseInfo.SetXmlProperty("genxml/carteditmode",EditMode);
-            if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
-            PurchaseInfo.UserId = UserId;
+            if (UserController.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
+            {
+                if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
+                PurchaseInfo.UserId = UserId;                
+            }
             _entryId = modCtrl.Update(PurchaseInfo);
+
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);
+
             return _entryId;
+        }
+
+        public void TurnOffEditMode()
+        {
+            var modCtrl = new NBrightBuyController();
+            EditMode = "";
+            _entryId = modCtrl.Update(PurchaseInfo);
+        }
+
+        /// <summary>
+        /// EditMode is a flag to indicate the update process of the cart/order R=Re-order, C=Create New Order for CLient, E=Edit order for client, {Empty}=Normal front office cart
+        /// </summary>
+        public String EditMode
+        {
+            get
+            {
+                return PurchaseInfo.GetXmlProperty("genxml/carteditmode");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/carteditmode", value);
+            }
         }
 
         public String Lang
@@ -99,23 +124,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Audit data"
 
-        public void AddAuditMessage(String msg)
+        public void AddAuditMessage(String msg,String type, String username,String showtouser,String emailsubject = "")
         {
-            if (msg != "")
+            if (msg != "" || emailsubject != "")
             {
                 if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
-                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><msg>" + msg + "</msg></genxml>";
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date>";
+                strXml += "<showtouser>" + showtouser + "</showtouser>";
+                strXml += "<type>" + type + "</type>";
+                if (type == "email")
+                {
+                    strXml += "<emailsubject>" + emailsubject + "</emailsubject>";                    
+                }
+                strXml += "<username>" + username + "</username>";
+                strXml += "<msg><![CDATA[" + msg + "]]></msg></genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
             }
 
         }
 
-        public void AddAuditStatusChange(String newstatuscode)
+        public void AddAuditStatusChange(String newstatuscode, String username)
         {
             if (newstatuscode != "")
             {
                 if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/audit") == null) PurchaseInfo.AddSingleNode("audit", "", "genxml");
-                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><status>" + newstatuscode + "</status></genxml>";
+                var strXml = "<genxml><date>" + DateTime.Now.ToString("s") + "</date><status>" + newstatuscode + "</status>";
+                strXml += "<username>" + username + "</username>";
+                strXml += "<showtouser>True</showtouser>";
+                strXml += "</genxml>";
                 PurchaseInfo.AddXmlNode(strXml, "genxml", "genxml/audit");
             }
         }
@@ -135,7 +171,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
@@ -157,7 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
 
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
@@ -178,7 +214,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
                 var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
 
-                var prd = new ProductData(prdid, Utils.GetCurrentCulture());
+                var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
                 if (prd.Exists)
                 {
                     var model = prd.GetModel(modelid);
@@ -233,24 +269,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
                 if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
                 if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
+
                 modelidlist.Add(strmodelId);
                 var strqtyId = objInfoIn.GetXmlProperty("genxml/textbox/selectedaddqty");
-                qtylist.Add(strmodelId,strqtyId);
+                if (!Utils.IsNumeric(strqtyId)) strqtyId = "1";
+                qtylist.Add(strmodelId, strqtyId);
             }
 
             var strRtn = "";
             foreach (var m in modelidlist)
             {
-                strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
+                var numberofmodels = 0; // use additemqty field to add multiple items
+                var additemqty = objInfoIn.GetXmlProperty("genxml/textbox/additemqty");
+                if (Utils.IsNumeric(additemqty))
+                    numberofmodels = Convert.ToInt32(additemqty); // zero should be allowed on add all to basket option.
+                else
+                    numberofmodels = 1; // if we have no numeric, assume we need to add it
+
+                for (var i = 1; i <= numberofmodels; i++)
+                {
+                    strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
+                }
             }
             return strRtn;
         }
 
-        public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false)
+        public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false, int replaceIndex = -1)
         {
             if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
 
-            if (debugMode) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
+            if (StoreSettings.Current.DebugModeFileOut) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
 
             var objInfo = new NBrightInfo();
             objInfo.XMLData = "<genxml></genxml>";
@@ -286,6 +334,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("dealercost", modelInfo.GetXmlProperty("genxml/textbox/txtdealercost"), "genxml");
                 objInfo.AddSingleNode("taxratecode", modelInfo.GetXmlProperty("genxml/dropdownlist/taxrate"), "genxml");
                 objInfo.AddSingleNode("saleprice", modelInfo.GetXmlProperty("genxml/textbox/txtsaleprice"), "genxml");
+                objInfo.AddSingleNode("basecost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
 
                 // flag if dealer
                 var userInfo = UserController.GetCurrentUserInfo();
@@ -305,32 +354,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 //build option data for cart
                 Double additionalCosts = 0;
-                var strXmlIn = "<options>";
+                var strXmlIn = "";
+                var optionDataList = new Dictionary<String, String>();
                 if (objInfoIn.XMLDoc != null)
                 {
-
                     var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/textbox/*[starts-with(name(), 'optiontxt')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            strXmlIn += "<option>";
+                            strXmlIn = "<option>";
                             var idx = nod.Name.Replace("optiontxt", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionInfo = productData.GetOption(optionid);
                             var optvaltext = nod.InnerText;
                             strXmlIn += "<optid>" + optionid + "</optid>";
                             strXmlIn += "<optvaltext>" + optvaltext + "</optvaltext>";
-                            var itemcodeText = "";
-                            if (optvaltext.Length > 0) itemcodeText = optvaltext.Replace(" ", "").Substring(0, optvaltext.Replace(" ", "").Length - 1);
-                            itemcode += optionid + itemcodeText + "-";
+                            itemcode += optionid + "-" + Utils.GetUniqueKey() + "-";
                             strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
                             strXmlIn += "</option>";
+                            if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                     nodList = objInfoIn.XMLDoc.SelectNodes("genxml/dropdownlist/*[starts-with(name(), 'optionddl')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            strXmlIn += "<option>";
+                            strXmlIn = "<option>";
                             var idx = nod.Name.Replace("optionddl", "");
                             var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                             var optionvalueid = nod.InnerText;
@@ -344,14 +392,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                             strXmlIn += "</option>";
                             additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                            if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                     nodList = objInfoIn.XMLDoc.SelectNodes("genxml/checkbox/*[starts-with(name(), 'optionchk')]");
                     if (nodList != null)
                         foreach (XmlNode nod in nodList)
                         {
-                            if (nod.InnerText.ToLower() == "true")
-                            {
-                                strXmlIn += "<option>";
+                                strXmlIn = "<option>";
                                 var idx = nod.Name.Replace("optionchk", "");
                                 var optionid = objInfoIn.GetXmlProperty("genxml/hidden/optionid" + idx);
                                 var optionvalueid = nod.InnerText;
@@ -364,12 +411,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
                                 strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                                 strXmlIn += "</option>";
-                                additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
-                            }
+                                if (nod.InnerText.ToLower() == "true") additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                                if (!optionDataList.ContainsKey(idx)) optionDataList.Add(idx, strXmlIn);
                         }
                 }
-                strXmlIn += "</options>";
-                objInfo.AddXmlNode(strXmlIn, "options", "genxml");
+
+                // we need to save the options in the same order as in product, so index works correct on the template tokens.
+                var strXmlOpt = "<options>";
+                for (int i = 1; i <= optionDataList.Count; i++)
+			    {
+			        if (optionDataList.ContainsKey(i.ToString("")))
+			        {
+			            strXmlOpt += optionDataList[i.ToString("")];
+			        }
+			    }
+                strXmlOpt += "</options>";
+
+                objInfo.AddXmlNode(strXmlOpt, "options", "genxml");
 
                 #endregion
 
@@ -380,7 +438,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var uc = objInfo.GetXmlPropertyDouble("genxml/unitcost");
                     var dc = objInfo.GetXmlPropertyDouble("genxml/dealercost");
                     uc += additionalCosts;
-                    dc += additionalCosts;
+                    if (dc > 0) dc += additionalCosts; // only calc dealer cost if it's > zero (active)
                     objInfo.SetXmlPropertyDouble("genxml/unitcost", uc);
                     objInfo.SetXmlPropertyDouble("genxml/dealercost", dc);
                 }
@@ -391,13 +449,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null)
-                    _itemList.Add(objInfo); //add as new item
+                    if (replaceIndex >= 0 && replaceIndex < _itemList.Count)
+                        _itemList[replaceIndex] = objInfo; //replace
+                    else
+                        _itemList.Add(objInfo); //add as new item
                 else
                 {
                     //replace item
                     var qty = nodItem.SelectSingleNode("qty");
                     if (qty != null && Utils.IsNumeric(qty.InnerText) && Utils.IsNumeric(strqtyId))
                     {
+                        var userqtylimit = objInfoIn.GetXmlPropertyInt("genxml/hidden/userqtylimit");
+                        if (userqtylimit > 0 && Convert.ToInt32(qty.InnerText) >= userqtylimit) return "";
+
                         //add new qty and replace item
                         PurchaseInfo.RemoveXmlNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                         _itemList = GetCartItemList();
@@ -459,7 +523,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get Current Cart Item List
         /// </summary>
         /// <returns></returns>
-        public List<NBrightInfo> GetCartItemList()
+        public List<NBrightInfo> GetCartItemList(Boolean groupByProduct = false)
         {
             var rtnList = new List<NBrightInfo>();
             var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
@@ -468,10 +532,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (XmlNode carNod in xmlNodeList)
                 {
                     var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/itemcode");
                     newInfo.PortalId = PortalId;
+                    newInfo.ItemID = newInfo.GetXmlPropertyInt("genxml/productid");
                     rtnList.Add(newInfo);
                 }
             }
+
+            if (groupByProduct)
+            {
+
+                var grouped = from p in rtnList group p by p.GetXmlProperty("genxml/productid") into g select new {g.Key,Value = g};
+                rtnList = new List<NBrightInfo>();
+                foreach (var group in grouped)
+                {
+                    // inject header record for the product
+                    var itemheader = (NBrightInfo)group.Value.First().Clone();
+                    itemheader.SetXmlProperty("genxml/groupheader","True");
+                    itemheader.SetXmlProperty("genxml/groupcount", group.Value.Count().ToString(""));
+                    itemheader.SetXmlProperty("genxml/seeditemcode", itemheader.GUIDKey);
+                    itemheader.GUIDKey = "";
+                    // remove option data, so we get a clear item 
+                    itemheader.RemoveXmlNode("genxml/options");
+                    rtnList.Add(itemheader);
+
+                    foreach (var item in group.Value)
+                    {
+                        rtnList.Add(item);
+                    }
+                }
+            }
+
             return rtnList;
         }
 
@@ -494,20 +585,73 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnList;
         }
+        /// <summary>
+        /// Get Current Cart Item List
+        /// </summary>
+        /// <returns></returns>
+        public void RemoveItem(String itemCode)
+        {
+            var removeindex = GetItemIndex(itemCode);
+            if (removeindex >= 0) RemoveItem(removeindex);
+        }
 
+        public void MergeCartInputData(String itemCode, NBrightInfo inputInfo)
+        {
+            var index = GetItemIndex(itemCode);
+            if (index >= 0) MergeCartInputData(index,inputInfo);
+        }
 
         /// <summary>
         /// Merges data entered in the cartview into the cart item
         /// </summary>
         /// <param name="index">index of cart item</param>
         /// <param name="inputInfo">genxml data of cartview item</param>
-        /// <param name="debugMode">Debug mode</param>
         public void MergeCartInputData(int index, NBrightInfo inputInfo)
         {
             //get cart item
             //_itemList = GetCartItemList();  // Don;t get get here, it resets previous altered itemlist records.
             if (_itemList[index] != null)
             {
+
+                #region "merge option data"
+                var nodList = inputInfo.XMLDoc.SelectNodes("genxml/hidden/*[starts-with(name(), 'optionid')]");
+                if (nodList != null)
+                    foreach (XmlNode nod in nodList)
+                    {
+                        var idx = nod.Name.Replace("optionid", "");
+                        var optid = nod.InnerText;
+                        var oldoptvalue = _itemList[index].GetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid");
+                        var newoptvalue = "";
+                        if (inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx) != "")
+                        {
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/textbox/optiontxt" + idx));   
+                        }
+                        if (inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx) != "")
+                        {
+                            newoptvalue = inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx);
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx));
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvaltext", inputInfo.GetXmlProperty("genxml/dropdownlist/optionddl" + idx + "/@selectedtext"));
+                            if (oldoptvalue != newoptvalue) //rebuild itemcode
+                            {
+                                var icode = _itemList[index].GetXmlProperty("genxml/itemcode");
+                                _itemList[index].SetXmlProperty("genxml/itemcode", icode.Replace(optid + ":" + oldoptvalue, optid + ":" + newoptvalue));
+                            }
+                        }
+                        if (inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx) != "")
+                        {
+                            newoptvalue = inputInfo.GetXmlProperty("genxml/checkbox/optionchk" + idx);
+                            _itemList[index].SetXmlProperty("genxml/options/option[optid='" + optid + "']/optvalueid", newoptvalue);
+                            if (oldoptvalue != newoptvalue) //rebuild itemcode
+                            {
+                                var icode = _itemList[index].GetXmlProperty("genxml/itemcode");
+                                _itemList[index].SetXmlProperty("genxml/itemcode", icode.Replace(optid + ":" + oldoptvalue, optid + ":" + newoptvalue));
+                            }
+                        }
+
+                    }
+
+                #endregion
+
                 var nods = inputInfo.XMLDoc.SelectNodes("genxml/textbox/*");
                 if (nods != null)
                 {
@@ -517,20 +661,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
                         else
                             _itemList[index].SetXmlProperty("genxml/textbox/" + nod.Name.ToLower(), nod.InnerText);
-                    }
-                }
-                nods = inputInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
-                if (nods != null)
-                {
-                    foreach (XmlNode nod in nods)
-                    {
-                        if (nod.Name.ToLower() == "qty")
-                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
-                        else
-                        {
-                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name.ToLower(), nod.InnerText);
-                            if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
-                        }
                     }
                 }
                 nods = inputInfo.XMLDoc.SelectNodes("genxml/radiobuttonlist/*");
@@ -553,6 +683,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     foreach (XmlNode nod in nods)
                     {
                         _itemList[index].SetXmlProperty("genxml/checkbox/" + nod.Name.ToLower(), nod.InnerText);
+                    }
+                }
+
+                nods = inputInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (nod.Name.ToLower() == "qty")
+                            _itemList[index].SetXmlProperty("genxml/" + nod.Name.ToLower(), nod.InnerText, TypeCode.String, false); //don't want cdata on qty field
+                        else
+                        {
+                            _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name.ToLower(), nod.InnerText);
+                            if (nod.Attributes != null && nod.Attributes["selectedtext"] != null) _itemList[index].SetXmlProperty("genxml/dropdownlist/" + nod.Name + "text", nod.Attributes["selectedtext"].Value);
+
+                            // see if we've changed the model, if so update required fields
+                            if (nod.Name.ToLower() == "ddlmodelsel")
+                            {
+                                var oldmodelid = _itemList[index].GetXmlProperty("genxml/modelid");
+                                var newmodelid = nod.InnerText;
+                                if (oldmodelid != newmodelid)
+                                {
+                                    AddSingleItem(_itemList[index].GetXmlProperty("genxml/productid"), newmodelid, _itemList[index].GetXmlProperty("genxml/qty"), inputInfo,false,index);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -746,6 +902,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/isvalidated", "False", TypeCode.String, false);
         }
 
+        public String GetClientEmail()
+        {
+            if (Utils.IsEmail(EmailBillingAddress)) return EmailBillingAddress;
+            if (Utils.IsEmail(EmailAddress)) return EmailAddress;
+            if (Utils.IsEmail(EmailShippingAddress)) return EmailShippingAddress;
+            return "";
+        }
 
         public String EmailAddress
         {
@@ -817,7 +980,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             PurchaseTypeCode = PurchaseInfo.TypeCode;
-            EditMode = PurchaseInfo.GetXmlProperty("genxml/carteditmode");
             UserId = PurchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
             var currentuserInfo = UserController.GetCurrentUserInfo();
             if (UserId > 0 && EditMode != "") // 0 is default userid for new cart
@@ -842,6 +1004,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void PopulateItemList()
         {
             _itemList = GetCartItemList();
+        }
+
+        public int GetItemIndex(String itemCode)
+        {
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (xmlNodeList != null)
+            {
+                var lp = 0;
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                    if (newInfo.GetXmlProperty("genxml/itemcode") == itemCode)
+                    {
+                        return lp;
+                        break;
+                    }
+                    lp += 1;
+                }
+            }
+            return -1;
         }
 
         #endregion

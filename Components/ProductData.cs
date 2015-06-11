@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
@@ -26,17 +27,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> Docs;
 
         private String _lang = ""; // needed for webservice
+        private int _portalId = -1; // so we don;t need to use Portalsettings.Current (If called from scheduler)
+        private StoreSettings _storeSettings = null;
 
-        /// <summary>
-        /// Populate the ProductData in this class
-        /// </summary>
-        /// <param name="productId">productid</param>
-        /// <param name="lang">langauge to populate</param>
-        /// <param name="hydrateLists">populate the sub data into lists</param>
-        public ProductData(int productId, String lang, Boolean hydrateLists = true)
+
+        // used to reset the data, so we don;t have to create new object in import loops for memory management.
+        public void ResetData(int productId, String lang, Boolean hydrateLists = true)
         {
             _lang = lang;
-            if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
 
             #region "Init data objects to prevent possible errors"
 
@@ -56,6 +54,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             #endregion
 
             LoadData(productId, hydrateLists);
+
+            if (_lang == "")
+            {
+                _lang = _storeSettings.EditLanguage;
+                DataLangRecord.Lang = _lang;
+            }
+            
+        }
+
+        public ProductData()
+        {
+            // do nothing assume, resetdata will be used later in calling code.
+        }
+
+        /// <summary>
+        /// Populate the ProductData in this class
+        /// </summary>
+        /// <param name="productId">productid</param>
+        /// <param name="lang">langauge to populate</param>
+        /// <param name="hydrateLists">populate the sub data into lists</param>
+        public ProductData(int productId, String lang, Boolean hydrateLists = true)
+        {
+            ResetData(productId,lang,hydrateLists);
         }
 
         #region "public functions/interface"
@@ -64,6 +85,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Set to true if product exists
         /// </summary>
         public bool Exists { get; private set; }
+        public bool IsInStock { get; private set; }
+        public bool IsOnSale { get; private set; }
+
+
+        public Boolean Disabled
+        {
+            get
+            {
+                return Info.GetXmlPropertyBool("genxml/checkbox/chkdisable");
+            }
+        }
 
         public String SEOName
         {
@@ -159,7 +191,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var model = GetModel(modelid);
             var newqty = DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining");
             newqty = newqty - qty;
-            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining", newqty);
+            DataRecord.SetXmlPropertyDouble("genxml/models/genxml[" + model.ItemID.ToString("") + "]/textbox/txtqtyremaining", newqty);            
         }
 
         /// <summary>
@@ -172,7 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="addqty"></param>
         public void UpdateModelTransQty(String modelid,int orderid, Double addqty)
         {
-            var key = "modeltrans*" + modelid + "*" + PortalSettings.Current.PortalId.ToString("");
+            var key = "modeltrans*" + modelid + "*" + _portalId.ToString("");
             var l = (List<ModelTransData>)Utils.GetCache(key);
             if (l == null) l = new List<ModelTransData>();
 
@@ -243,29 +275,62 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<GroupCategoryData> GetCategories(String groupref = "",Boolean cascade = false)
         {
             var objGrpCtrl = new GrpCatController(_lang);
-            return objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
+            var catl = objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && catl.Count > 0)
+            {
+                var objl = catl.Where(i => i.isdefault == true);
+                foreach (var i in objl)
+                {
+                    i.isdefault = false;
+                }
+                var dcatid = Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid"));
+                var obj = catl.Where(i => i.categoryid == dcatid);
+                var groupCategoryDatas = obj as GroupCategoryData[] ?? obj.ToArray();
+                if (groupCategoryDatas.Any()) groupCategoryDatas.First().isdefault = true;
+            }
+            return catl;
         }
 
         public GroupCategoryData GetDefaultCategory()
         {
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            {
+                var objGrpCtrl = new GrpCatController(_lang);
+                var obj = objGrpCtrl.GetCategory(Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid")));
+                if (obj != null) return obj;
+            }
             var catl = GetCategories();
             if (catl.Any()) return catl[0];
             return null;
         }
 
+        public void SetDefaultCategory(int categoryid)
+        {
+            var objCtrl = new NBrightBuyController();
+            DataRecord.SetXmlProperty("genxml/defaultcatid", categoryid.ToString());
+            objCtrl.Update(DataRecord);
+        }
+
+
         public Boolean HasProperty(String propertyref)
         {
             var objGrpCtrl = new GrpCatController(_lang);
             var l = objGrpCtrl.GetProductCategories(Info.ItemID, "!cat");
-            var rtnl = l.Select(i => i.categoryref == propertyref);
-            return rtnl.Any();
+            return l.Any(i => (i.categoryref == propertyref || i.propertyref == propertyref));
+        }
+
+        public Boolean IsInCategory(String categoryref)
+        {
+            var objGrpCtrl = new GrpCatController(_lang);
+            var l = objGrpCtrl.GetProductCategories(Info.ItemID, "cat",true);
+            return l.Any(i => i.categoryref == categoryref);
         }
 
         public List<NBrightInfo> GetRelatedProducts()
         {
             var objCtrl = new NBrightBuyController();
             var strSelectedIds = "";
-            var arylist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
+            var arylist = objCtrl.GetList(_portalId, -1, "PRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
             {
                 strSelectedIds += obj.XrefItemId.ToString("") + ",";
@@ -274,7 +339,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (strSelectedIds.TrimEnd(',') != "")
             {
                 var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
-                relList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
+                relList = objCtrl.GetDataList(_portalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
             }
             return relList;
         }
@@ -302,9 +367,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (DataRecord.GetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid") == "") DataRecord.SetXmlProperty("genxml/models/genxml[" + model.ItemID.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
             }
 
-            if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10));
-            DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
-            
+            // calcs what the import and guidkey should be.
+            SetGuidKey();
+
             DataRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
             DataLangRecord.ModuleId = -1; // moduleid of product always set to -1 (Portal Wide)
 
@@ -317,33 +382,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord = objCtrl.Get(productid); 
             DataLangRecord = objCtrl.Get(plangid); 
             
-            ResetCache();
+            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
         }
 
         public void Delete()
         {
+            // remove any cache
+            ProductUtils.RemoveProductDataCache(DataRecord.ItemID, _lang);
+            //delete and allow DB to cascade delete
             var objCtrl = new NBrightBuyController();
             objCtrl.Delete(DataRecord.ItemID);
-            ResetCache();
-        }
-
-        public void ClearCache()
-        {
-            var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-            Utils.RemoveCache(cacheKey);
-        }
-
-        public void ResetCache()
-        {
-            if (Info != null)
-            {
-                LoadData(Info.ItemID);
-                if (Info != null)
-                {
-                    var cacheKey = "NBSProductData*" + Info.ItemID.ToString("") + "*" + _lang;
-                    Utils.SetCache(cacheKey, this);
-                }
-            }
         }
 
         public void Update(String xmlData)
@@ -357,9 +405,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ValidateXmlFormat();
             DataLangRecord.ValidateXmlFormat();
 
-
+            var updatefields = new List<String>();
             var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-            foreach (var f in localfields)
+            foreach (var f in localfields) { updatefields.Add(f); }
+            // merge custom field into update
+            var localproductfields = info.GetXmlProperty("genxml/hidden/localizedproductfields").Split(',');
+            foreach (var f in localproductfields){updatefields.Add(f);}
+
+            foreach (var f in updatefields)
             {
                 if (f != "")
                 {
@@ -384,8 +437,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            updatefields = new List<String>();
             var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
-            foreach (var f in fields)
+            foreach (var f in fields) { updatefields.Add(f); }
+            // merge custom field into update
+            var productfields = info.GetXmlProperty("genxml/hidden/productfields").Split(',');
+            foreach (var f in productfields) { updatefields.Add(f); }
+
+            foreach (var f in updatefields)
             {
                 if (f != "")
                 {
@@ -395,7 +454,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                     // if we have a image field then we need to create the imageurl field
                     if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
-                        DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", StoreSettings.Current.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+                        DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", _storeSettings.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
 
                     DataLangRecord.RemoveXmlNode(f);
                 }
@@ -417,6 +476,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UpdateImages(info);
             // update docs
             UpdateDocs(info);
+
+            IsOnSale = CheckIsOnSale();
+            IsInStock = CheckIsInStock();
+
         }
 
         public void UpdateDocs(NBrightInfo info)
@@ -431,7 +494,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (docFile != "")
             {
                 var postedFile = info.GetXmlProperty("genxml/hidden/posteddocumentname");
-                AddNewDoc(StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + docFile, postedFile);
+                AddNewDoc(_storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + docFile, postedFile);
             }
 
         }
@@ -457,6 +520,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (var f in fields.Where(f => f != ""))
                 {
                     objInfo.SetXmlProperty(f, docInfo.GetXmlProperty(f));
+                    if (f == "genxml/hidden/filepath")
+                    {
+                        // save relitive path also
+                        var fname = Path.GetFileName(docInfo.GetXmlProperty(f));
+                        objInfo.SetXmlProperty("genxml/hidden/filename", fname);
+                        objInfo.SetXmlProperty("genxml/hidden/filerelpath", StoreSettings.Current.FolderDocuments + "/" + fname);
+                    }
                 }
                 strXml += objInfo.XMLData;
             }
@@ -480,7 +550,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var imgFile = info.GetXmlProperty("genxml/hidden/hidimage");
             if (imgFile != "")
             {
-                AddNewImage(StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imgFile, StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imgFile);
+                AddNewImage(_storeSettings.FolderImages.TrimEnd('/') + "/" + imgFile, _storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + imgFile);
             }
 
         }
@@ -768,55 +838,89 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void AddProperty(String propertyref)
+        {
+            var objCtrl = new NBrightBuyController();
+            var pinfo = objCtrl.GetByGuidKey(_portalId, -1,"CATEGORY",propertyref);
+            if (pinfo == null)
+            {
+                // not using the unique ref, look for the friendly propertyref name.
+                var l = objCtrl.GetList(_portalId, -1, "CATEGORY", " and [XMLData].value('(genxml/textbox/propertyref)[1]','nvarchar(max)') = '" + propertyref + "' ", "", 1);
+                if (l.Any()) pinfo = l[0];
+            }
+            if (pinfo != null && Utils.IsNumeric(pinfo.ItemID) && pinfo.ItemID > 0) AddCategory(pinfo.ItemID);
+        }
+
         public void AddCategory(int categoryid)
         {
-            var strGuid = categoryid.ToString("") + "x" + Info.ItemID.ToString("");
-            var objCtrl = new NBrightBuyController();
-            var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
-            if (nbi == null)
+            if (Info != null)
             {
-                nbi = new NBrightInfo();
-                nbi.ItemID = -1;
-                nbi.PortalId = PortalSettings.Current.PortalId;
-                nbi.ModuleId = -1;
-                nbi.TypeCode = "CATXREF";
-                nbi.XrefItemId = categoryid;
-                nbi.ParentItemId = Info.ItemID;
-                nbi.XMLData = null;
-                nbi.TextData = null;
-                nbi.Lang = null;
-                nbi.GUIDKey = strGuid;
-                objCtrl.Update(nbi);
-                //add all cascade xref 
-                var objGrpCtrl = new GrpCatController(_lang, true);
-                var parentcats = objGrpCtrl.GetCategory(categoryid);
-                if (parentcats != null)
+                var strGuid = categoryid.ToString("") + "x" + Info.ItemID.ToString("");
+                var objCtrl = new NBrightBuyController();
+                var nbi = objCtrl.GetByGuidKey(_portalId, -1, "CATXREF", strGuid);
+                if (nbi == null)
                 {
-                    foreach (var p in parentcats.Parents)
+                    nbi = new NBrightInfo();
+                    nbi.ItemID = -1;
+                    nbi.PortalId = _portalId;
+                    nbi.ModuleId = -1;
+                    nbi.TypeCode = "CATXREF";
+                    nbi.XrefItemId = categoryid;
+                    nbi.ParentItemId = Info.ItemID;
+                    nbi.XMLData = null;
+                    nbi.TextData = null;
+                    nbi.Lang = null;
+                    nbi.GUIDKey = strGuid;
+                    var newitemid = objCtrl.Update(nbi);
+                    nbi = objCtrl.Get(newitemid);
+                    nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort></genxml>";
+                    objCtrl.Update(nbi);
+
+                    //add all cascade xref 
+                    var objGrpCtrl = new GrpCatController(_lang, true);
+                    var parentcats = objGrpCtrl.GetCategory(categoryid);
+                    if (parentcats != null)
                     {
-                        strGuid = p.ToString("") + "x" + Info.ItemID.ToString("");
-                        var obj = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                        if (obj == null)
+                        foreach (var p in parentcats.Parents)
                         {
-                            nbi.XrefItemId = p;
-                            nbi.TypeCode = "CATCASCADE";
-                            nbi.GUIDKey = strGuid;
-                            objCtrl.Update(nbi);
+                            strGuid = p.ToString("") + "x" + Info.ItemID.ToString("");
+                            var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid);
+                            if (obj == null)
+                            {
+                                nbi = new NBrightInfo();
+                                nbi.ItemID = -1;
+                                nbi.PortalId = _portalId;
+                                nbi.ModuleId = -1;
+                                nbi.XrefItemId = p;
+                                nbi.ParentItemId = Info.ItemID;
+                                nbi.TypeCode = "CATCASCADE";
+                                nbi.GUIDKey = strGuid;
+                                newitemid = objCtrl.Update(nbi);
+                                nbi = objCtrl.Get(newitemid);
+                                nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort></genxml>";
+                                objCtrl.Update(nbi);
+                            }
                         }
                     }
-                }
+                }                
             }
         }
 
         public void RemoveCategory(int categoryid)
         {
+            var objCtrl = new NBrightBuyController();
+            if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && categoryid == Convert.ToInt32(DataRecord.GetXmlProperty("genxml/defaultcatid")))
+            {
+                DataRecord.SetXmlProperty("genxml/defaultcatid", "");
+                objCtrl.Update(DataRecord);
+            }
+
             var parentitemid = Info.ItemID.ToString("");
             var xrefitemid = categoryid.ToString("");
-            var objCtrl = new NBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-            objCtrl.GetSqlxml(stmt);
+            objCtrl.ExecSql(stmt);
             //remove all cascade xref 
             var objGrpCtrl = new GrpCatController(_lang, true);
             var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(xrefitemid));
@@ -824,7 +928,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 foreach (var p in parentcats.Parents)
                 {
-                    var xreflist = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.parentitemid = " + parentitemid);
+                    var xreflist = objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.parentitemid = " + parentitemid);
                     if (xreflist != null)
                     {
                         var deleterecord = true;
@@ -841,7 +945,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (deleterecord)
                         {
                             stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATCASCADE' and XrefItemId = " + p.ToString("") + " and parentitemid = " + parentitemid;
-                            objCtrl.GetSqlxml(stmt);
+                            objCtrl.ExecSql(stmt);
                         }
 
                     }
@@ -856,12 +960,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var strGuid = productid.ToString("") + "x" + Info.ItemID.ToString("");
                 var objCtrl = new NBrightBuyController();
-                var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PRDXREF", strGuid);
+                var nbi = objCtrl.GetByGuidKey(_portalId, -1, "PRDXREF", strGuid);
                 if (nbi == null)
                 {
                     nbi = new NBrightInfo();
                     nbi.ItemID = -1;
-                    nbi.PortalId = PortalSettings.Current.PortalId;
+                    nbi.PortalId = _portalId;
                     nbi.ModuleId = -1;
                     nbi.TypeCode = "PRDXREF";
                     nbi.XrefItemId = productid;
@@ -883,37 +987,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
-            objCtrl.GetSqlxml(stmt);
+            objCtrl.ExecSql(stmt);
         }
 
 
-        public int CreateNew()
+        public void ResetLanguage(String resetToLang)
         {
-
-            var nbi = new NBrightInfo(true);
-            nbi.PortalId = PortalSettings.Current.PortalId;
-            nbi.TypeCode = "PRD";
-            nbi.ModuleId = -1;
-            nbi.ItemID = -1;
-            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
-            nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
-            var objCtrl = new NBrightBuyController();
-            var itemId = objCtrl.Update(nbi);
-
-            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            if (resetToLang != DataLangRecord.Lang)
             {
-                nbi = new NBrightInfo(true);
-                nbi.PortalId = PortalSettings.Current.PortalId;
-                nbi.TypeCode = "PRDLANG";
-                nbi.ModuleId = -1;
-                nbi.ItemID = -1;
-                nbi.Lang = lang;
-                nbi.ParentItemId = itemId;
-                objCtrl.Update(nbi);
+                var resetToLangData = ProductUtils.GetProductData(DataRecord.ItemID, resetToLang);
+                var objCtrl = new NBrightBuyController();
+                DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
+                objCtrl.Update(DataLangRecord);                
             }
-
-            LoadData(itemId);
-            return itemId;
         }
 
         public int Validate()
@@ -922,11 +1008,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var objCtrl = new NBrightBuyController();
 
+            SetGuidKey();
+            objCtrl.Update(DataRecord);
+
+
             DataRecord.ValidateXmlFormat();
             if (DataLangRecord == null)
             {
                 // we have no datalang record for this language, so get an existing one and save it.
-                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
                 if (l.Count > 0)
                     DataLangRecord = (NBrightInfo) l[0].Clone();
                 else
@@ -944,16 +1034,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var lp = 1;
             foreach (var i in Imgs)
             {
-                if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(StoreSettings.Current.FolderImages))
+                if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(_storeSettings.FolderImages))
                 {
                     var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + iname);
+                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageurl", _storeSettings.FolderImages.TrimEnd('/') + "/" + iname);
                     errorcount += 1;
                 }
-                if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(StoreSettings.Current.FolderImagesMapPath))
+                if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(_storeSettings.FolderImagesMapPath))
                 {
                     var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
+                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imagepath", _storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
                     errorcount += 1;
                 }
                 lp += 1;
@@ -962,9 +1052,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             lp = 1;
             foreach (var d in Docs)
             {
-                if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(StoreSettings.Current.FolderDocumentsMapPath))
+                if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(_storeSettings.FolderDocumentsMapPath))
                 {
-                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", StoreSettings.Current.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
+                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", _storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
                     errorcount += 1;
                 }
                 lp += 1;
@@ -973,9 +1063,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (errorcount > 0) objCtrl.Update(DataRecord); // update if we find a error
 
             // fix langauge records
-            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
                     var nbi = (NBrightInfo)DataLangRecord.Clone();
@@ -987,7 +1077,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (l.Count > 1)
                 {
                     // we have more records than shoudl exists, remove any old ones.
-                    var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var l2 = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
                     var lp2 = 1;
                     foreach (var i in l2)
                     {
@@ -1014,7 +1104,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var newid = objCtrl.Update(dr);
             
             // copy all language records
-            var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dlr in l)
             {
                 dlr.ParentItemId = newid;
@@ -1023,7 +1113,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // copy CATXREF records
-            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            l = objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dr1 in l)
             {
                 dr1.ParentItemId = newid;
@@ -1033,7 +1123,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // copy CATCASCADE records
-            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            l = objCtrl.GetList(_portalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dr2 in l)
             {
                 dr2.ParentItemId = newid;
@@ -1043,7 +1133,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // copy PRDXREF records
-            l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PRDXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            l = objCtrl.GetList(_portalId, -1, "PRDXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dr3 in l)
             {
                 dr3.ParentItemId = newid;
@@ -1058,22 +1148,70 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
 
-        public void OutputDebugFile(String fileName)
+        public void OutputDebugFile(String filePathName)
         {
-            Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + fileName);
+            Info.XMLDoc.Save(filePathName);
         }
+
+
+
 
         #endregion
 
         #region " private functions"
 
+        private void SetGuidKey()
+        {
+            if (DataRecord.GetXmlProperty("genxml/importref") == "") DataRecord.SetXmlProperty("genxml/importref", Utils.GetUniqueKey(10).ToLower());
+
+            if (_storeSettings.GetBool(StoreSettingKeys.friendlyurlids))
+            {
+                var refcode = DataRecord.GetXmlProperty("genxml/textbox/txtproductref").Trim();
+                if (refcode != "")
+                    DataRecord.GUIDKey = GetUniqueGuidKey(DataRecord.ItemID, Utils.UrlFriendly(refcode)).ToLower();
+                else
+                    DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
+            }
+            else
+            {
+                DataRecord.GUIDKey = DataRecord.GetXmlProperty("genxml/importref");
+            }
+        }
+
+        private string GetUniqueGuidKey(int productId, string newGUIDKey)
+        {
+            // make sure we have a unique guidkey
+            var objCtrl = new NBrightBuyController();
+            var doloop = true;
+            var lp = 1;
+            var testGUIDKey = newGUIDKey.ToLower();
+            while (doloop)
+            {
+                var obj = objCtrl.GetByGuidKey(_portalId, -1, "PRD", testGUIDKey);
+                if (obj != null && obj.ItemID != productId)
+                {
+                    testGUIDKey = newGUIDKey + lp;
+                }
+                else
+                    doloop = false;
+
+                lp += 1;
+                if (lp > 999) doloop = false; // make sure we never get a infinate loop
+            }
+            return testGUIDKey;
+        }
+
+
         private void LoadData(int productId, Boolean hydrateLists = true)
         {
             Exists = false;
             var objCtrl = new NBrightBuyController();
-            Info = objCtrl.Get(productId,"PRDLANG",_lang);
+            if (productId == -1) productId = AddNew(); // add new record if -1 is used as id.
+            Info = objCtrl.Get(productId, "PRDLANG", _lang);
             if (Info != null)
             {
+                _portalId = Info.PortalId;
+                _storeSettings = new StoreSettings(_portalId);
                 Exists = true;
                 if (hydrateLists)
                 {
@@ -1099,7 +1237,42 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord = objCtrl.GetDataLang(productId, _lang);
                 }
 
+                IsOnSale = CheckIsOnSale();
+                IsInStock = CheckIsInStock();
+
             }
+        }
+
+        private int AddNew()
+        {
+
+            var nbi = new NBrightInfo(true);
+            if (StoreSettings.Current.Get("shareproducts") == "True") // option in storesetting to share products created here across all portals.
+                _portalId = -1;
+            else
+                _portalId = PortalSettings.Current.PortalId;
+            nbi.PortalId = _portalId;
+            nbi.TypeCode = "PRD";
+            nbi.ModuleId = -1;
+            nbi.ItemID = -1;
+            nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+            nbi.AddSingleNode("models", "<genxml><hidden><modelid>" + Utils.GetUniqueKey() + "</modelid></hidden></genxml>", "genxml");
+            var objCtrl = new NBrightBuyController();
+            var itemId = objCtrl.Update(nbi);
+
+            foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
+            {
+                nbi = new NBrightInfo(true);
+                nbi.PortalId = _portalId;
+                nbi.TypeCode = "PRDLANG";
+                nbi.ModuleId = -1;
+                nbi.ItemID = -1;
+                nbi.Lang = lang;
+                nbi.ParentItemId = itemId;
+                objCtrl.Update(nbi);
+            }
+
+            return itemId;
         }
 
         private List<NBrightInfo> GetEntityList(String entityName)
@@ -1131,6 +1304,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
             return l;
+        }
+
+        private Boolean CheckIsInStock()
+        {
+            foreach (var obj in Models)
+            {
+                if (IsModelInStock(obj)) return true;
+            }
+            return false;
+        }
+
+        public Boolean IsModelInStock(NBrightInfo dataItem)
+        {
+            var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            if (stockOn)
+            {
+                var modelstatus = dataItem.GetXmlProperty("genxml/dropdownlist/modelstatus");
+                if (modelstatus == "010") return true;
+            }
+            else
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Boolean CheckIsOnSale()
+        {
+            var saleprice = GetSalePriceDouble();
+            if (saleprice > 0) return true;
+            return false;
+        }
+
+        public Double GetSalePriceDouble()
+        {
+            Double price = -1;
+            foreach (var m in Models)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
+            return price;
         }
 
         #endregion

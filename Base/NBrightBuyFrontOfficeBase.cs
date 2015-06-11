@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
@@ -20,7 +21,23 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         {
             base.OnInit(e);
 
-            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "frontofficepageheader.html", DebugMode);
+            var themefolder = "";
+            if (ModSettings.Settings().ContainsKey("themefolder") && ModSettings.Settings()["themefolder"] != "")
+            {
+                themefolder = ModSettings.Settings()["themefolder"];
+            }
+
+            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "frontofficepageheader.html", themefolder, DebugMode);
+            if (ModuleContext.Configuration != null)
+            {
+                NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "pageheader" + ModuleContext.Configuration.DesktopModule.ModuleName + ".html", themefolder, DebugMode);                
+            }
+
+            if (themefolder == "") themefolder = StoreSettings.Current.ThemeFolder;
+            Controls.AddAt(0, new LiteralControl("<div class='" + themefolder + "'><!-- " + themefolder + " Start -->"));
+            Controls.AddAt(Controls.Count, new LiteralControl("</div><!-- " + themefolder + " End -->"));
+
         }
+
 	}
 }

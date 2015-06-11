@@ -51,6 +51,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 var headerTempl = NBrightBuyUtils.GetGenXmlTemplate(dataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
                 NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, headerTempl, ModSettings.Settings(), null, DebugMode);
 
+                // remove any DNN modules from the BO page
+                var tabInfo = PortalSettings.Current.ActiveTab;
+                var modCount = tabInfo.Modules.Count;
+                for (int i = 0; i < modCount; i++)
+                {
+                    tabInfo.Modules.RemoveAt(0);                    
+                }
+
+
                 var aryTempl = Utils.ParseTemplateText(dataTempl);
 
                 foreach (var s in aryTempl)

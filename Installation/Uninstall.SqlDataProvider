@@ -102,6 +102,10 @@ if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{datab
 DROP TRIGGER {databaseOwner}[{objectQualifier}Trigger_NBrightBuyIdx]
 GO
 
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]
+GO
+
 
 
 

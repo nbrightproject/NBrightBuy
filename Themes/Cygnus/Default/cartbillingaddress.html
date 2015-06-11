@@ -3,9 +3,9 @@
 <div class="checkoutbillform">
     <h3>[<tag type="valueof" resourcekey="CartView.BillingAddress" />]</h3> 
     
-    [<tag type="if" function="isuser" />] 
+    [<tag type="if" function="isuser" display="{ON}" />] 
     <div class="formrow">
-	    <h6>[<tag type='valueof' resourcekey='General.ChooseAddress' />]</h6>
+	    <label>[<tag type='valueof' resourcekey='General.ChooseAddress' />]</label>
 		    [<tag id="selectaddress" cssclass="chooseaddress" formselector=".checkoutbillform" type="addressdropdown" blank=""
     template="genxml/textbox/firstname,genxml/textbox/lastname,genxml/textbox/company,genxml/textbox/unit,genxml/textbox/street,genxml/textbox/postalcode" 
     datavalue="FirstName,LastName,Company,Unit,Street,PostalCode,City,Country,Telephone,Email" 
@@ -16,59 +16,59 @@
 
     <div class="formrow">
         <div class="leftside">
-        <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblFirstName' />]</label>
         [<tag id='FirstName' type='textbox' />]
         </div>
         <div class="rightside">
-        <h6>[<tag type='valueof' resourcekey='General.lblLastName' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblLastName' />]</label>
         [<tag id='LastName' type='textbox' />]
         </div>
     </div>
     
     <div class="formrow">
         <div class="leftside">
-        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblPhone' />]</label>
         [<tag id='Telephone' type='textbox' required="" />]
         </div>
         <div class="rightside">
-        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.Email' />]</label>
         [<tag id='Email' type='textbox' datatype="email" required="" />]
         </div>
     </div>
     
     <div class="formrow">
-    <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
+    <label>[<tag type='valueof' resourcekey='General.lblCompany' />]</label>
     [<tag id='Company' type='textbox' />]
     </div>
 
     <div class="formrow">
-    <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
+    <label>[<tag type='valueof' resourcekey='General.lblAddress1' />]</label>
     [<tag id='Unit' type='textbox' />]
     </div>
     
     <div class="formrow">
-    <h6>[<tag type='valueof' resourcekey='General.lblAddress2' />]</h6>
+    <label>[<tag type='valueof' resourcekey='General.lblAddress2' />]</label>
     [<tag id='Street' type='textbox' />]
     </div>
     
     <div class="formrow">
         <div class="leftside">
-        <h6>[<tag type='valueof' resourcekey='General.lblCity' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblCity' />]</label>
         [<tag id='City' type='textbox' />]
         </div>
         <div class="rightside">
-        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblPostCode' />]</label>
         [<tag id='PostalCode' type='textbox' required=""/>]
         </div>
     </div>
 
     <div class="formrow">
         <div class="leftside">
-        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblCountry' />]</label>
         [<tag id="Country" type="countrydropdown" />]
     </div>
         <div class="rightside">
-        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
+        <label>[<tag type='valueof' resourcekey='General.lblRegion' />]</label>
         [<tag id='Region' type='regioncontrol' blank="" />]
     </div>
     </div>

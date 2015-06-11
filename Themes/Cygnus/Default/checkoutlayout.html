@@ -3,6 +3,23 @@
 
 [<tag id="currentcartstage" type="postback" value="" persistance="True"  />]
 
+[<tag type="if" function="settings" key="carttitle" testvalue="True" display="{ON}" />]<!-- Cart Title -->
+<h1>[<tag type="valueof" resourcekey="CartView.YourBasket" />]</h1>
+[<tag type="endif"  />]
+
+[<tag type="if" function="settings" key="cartsteps" testvalue="True" display="{ON}" />]<!-- Cart Steps -->
+<div class="checkoutsteps">
+<div class="checkoutstepsheader">[<tag type="valueof" resourcekey="CartView.CartstepsProcess" />]</div>
+<ol>
+<li class="step1 activestep">[<tag type="valueof" resourcekey="CartView.CartstepsRecap" />]</li>
+<li class="step2">[<tag type="valueof" resourcekey="CartView.CartstepsAddresses" />]</li>
+<li class="step3">[<tag type="valueof" resourcekey="CartView.CartstepsShipping" />]</li>
+<li class="step4">[<tag type="valueof" resourcekey="CartView.CartstepsPayment" />]</li>
+<li class="step5">[<tag type="valueof" resourcekey="CartView.CartstepsConfirm" />]</li>
+</ol>
+</div>
+[<tag type="endif"  />]
+
 <!-- Layout template -->
 <div id="cartdetails" class="nbs dnnform"  style="display:none;" >
 <div id="cartlist" style="display:none;"></div>
@@ -14,7 +31,7 @@
     <div style="clear:both;">
     <a id="cartlistprevious" href="javascript:void(0)" class="secondarybutton cartlistprevclick" >[<tag type="valueof" resourcekey="Cartview.Previous" />]</a>
     <a id="cartlistclear" href="javascript:void(0)" class="secondarybutton cartlistclear" >[<tag type="valueof" resourcekey="CartView.cmdClearCart" />]</a>        
-    <a id="cartlistupdate" href="javascript:void(0)" class="secondarybutton cartlistupdate" >[<tag type="valueof" resourcekey="CartView.UpdateCart" />]</a>        
+    <a id="cartlistupdate" href="javascript:void(0)" class="secondarybutton cartlistupdate" >[<tag type="valueof" resourcekey="CartView.UpdateCart" />]</a>
     <a id="cartlistnext" href="javascript:void(0)" class="primarybutton cartlistnextclick" >[<tag type="valueof" resourcekey="Cartview.Next" />]</a>        
     </div>
 
@@ -122,6 +139,8 @@
                 $(".cartlistprevclick").hide();
                 $(".cartlistupdate").show();
                 $(".cartlistclear").show();
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step1").addClass("activestep");
             }
             if ($("input[[id*='currentcartstage']]").val() == "cartaddress") {
                 $('#cartbilladdress').show();
@@ -129,8 +148,10 @@
                 $('#cartshippingmethods').show();
                 $(".cartlistnextclick").show();
                 $(".cartlistprevclick").show();
-                $(".cartlistupdate").show();
-                $(".cartlistclear").hide();                
+                $(".cartlistupdate").hide();
+                $(".cartlistclear").hide(); 
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step2").addClass("activestep");
             }
             if ($("input[[id*='currentcartstage']]").val() == "cartsummary") {
                 $('#cartextra').show();
@@ -138,6 +159,8 @@
                 $(".cartlistprevclick").show();
                 $(".cartlistupdate").hide();
                 $(".cartlistclear").hide();
+				$(".checkoutsteps ol li").removeClass("activestep");
+				$(".step3").addClass("activestep");
             }
             $('#cartdetails').show();
             // disable validation on hidden controls

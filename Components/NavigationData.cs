@@ -138,6 +138,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             _criteria += " " + sqloperator + " " +
                                          GenXmlFunctions.GetSqlFilterText(sqlfield, sqltype, searchVal, sqlcol);
                             break;
+                        case "not":
+                            _criteria += " " + sqloperator + " " +
+                                         GenXmlFunctions.GetSqlFilterText(sqlfield, sqltype, searchVal, sqlcol,"!=");
+                            break;
                         case "like":
                             if (searchVal == "") searchVal = "NORESULTSnbright";
                             // for "like", build the sql so we have valid value, but add a fake search so the result is nothing for no selection values

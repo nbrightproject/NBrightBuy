@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
@@ -117,6 +119,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
         
         #region Public Methods
 
+        public override IDataReader GetListCustom(int portalId, int moduleId, string SPROCname, int pageNumber = 0, string lang = "", string extraParam = "")
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + SPROCname, portalId, moduleId, pageNumber, lang, extraParam);
+        }
+
         public override IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string typeCodeLang = "", string lang = "")
         {
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetList", portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, typeCodeLang, lang);
@@ -147,9 +154,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_CleanData");
         }
 
+        public override String ExecSql(string commandText)
+        {
+            return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
+        }
+
         public override String GetSqlxml(string commandText)
         {
-            return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text ,commandText));
+            // With the XML return we often want a large data return, so we need to increase the default command timout.
+            // becuase we're compiling against DNN6 we can't use PetaPocoHelper class.  So create a new connection and command with timeout.
+
+            //Create a new connection
+            var rtnData = "Error data reader fail";
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                //Create a new command (with no timeout)
+                var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
+                try
+                {
+                    XmlReader dr = command.ExecuteXmlReader();
+                    if (dr.Read())
+                    {
+                        XmlDocument doc = new XmlDocument();
+                        doc.Load(dr);
+                        rtnData = doc.OuterXml;
+                    }
+                }
+                finally
+                {
+                    // make sure we always close.
+                    connection.Close();
+                }
+            }
+           return rtnData;
         }
 
         public override IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)

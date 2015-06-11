@@ -31,15 +31,29 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class ProductSearch : NBrightBuyFrontOfficeBase
     {
 
+        public String RedirectTabId { get; set; }
+        public String TargetModulekey { get; set; }
+        public String Themefolder { get; set; }
+        public String Searchtemplate { get; set; }
+
+
         private GenXmlTemplate _templD;
         private int _redirecttabid;
         private string _targetModuleKey;
+        private bool _isSkinControl;
         #region Event Handlers
 
         override protected void OnInit(EventArgs e)
         {
-            
             base.OnInit(e);
+
+            _isSkinControl = false;
+            // get setting via control params
+            if (!String.IsNullOrEmpty(RedirectTabId))  ModSettings.Set("redirecttabid", RedirectTabId);
+            if (!String.IsNullOrEmpty(TargetModulekey)) ModSettings.Set("targetmodulekey", TargetModulekey);
+            if (!String.IsNullOrEmpty(Themefolder)) ModSettings.Set("themefolder", Themefolder);
+            if (!String.IsNullOrEmpty(Searchtemplate)) ModSettings.Set("txtsearchtemplate", Searchtemplate);
+            if (!String.IsNullOrEmpty(Searchtemplate)) _isSkinControl = true;
 
             if (ModSettings.Get("txtsearchtemplate") == "")  // if we don't have module setting jump out
             {
@@ -66,16 +80,20 @@ namespace Nevoweb.DNN.NBrightBuy
 
             // must assign a redirect tab, so postback cookie works.
             _redirecttabid = TabId;
-            if (Utils.IsNumeric(ModSettings.Get("redirecttabid"))) _redirecttabid = Convert.ToInt32(ModSettings.Get("redirecttabid"));
+            if (Utils.IsNumeric(RedirectTabId)) 
+                _redirecttabid = Convert.ToInt32(RedirectTabId); // use passed in value over module setting (This stops clashbetween skin object and module)
+            else
+                if (Utils.IsNumeric(ModSettings.Get("redirecttabid"))) _redirecttabid = Convert.ToInt32(ModSettings.Get("redirecttabid"));                
             
             _targetModuleKey = "";
             _targetModuleKey = ModSettings.Get("targetmodulekey");
 
-            if (Page.IsPostBack == false)
+            if (Page.IsPostBack == false || _isSkinControl)
             {
                 var obj = new NBrightInfo();
-                
-                var searchcookie = new NavigationData(PortalId, _targetModuleKey);
+
+                var targ = _targetModuleKey.Split(',');
+                var searchcookie = new NavigationData(PortalId, targ[0]);
                 if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
                 DoDetail(rpData, obj);
             }
@@ -91,37 +109,50 @@ namespace Nevoweb.DNN.NBrightBuy
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var param = new string[2];
-            var navigationData = new NavigationData(PortalId, _targetModuleKey);
-            switch (e.CommandName.ToLower())
-            {
-                case "search":
-                    //strXml = GenXmlFunctions.GetField(rpDataH, "sqladvsearch");
-                    var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
-                    navigationData.Build(strXml,_templD);
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
-                    navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
-                    navigationData.Save();
-                    if (DebugMode)
-                    {
-                        strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                        var xmlDoc = new System.Xml.XmlDataDocument();
-                        xmlDoc.LoadXml(strXml);
-                        xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
-                    }                    
-                    Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
-                    break;
-                case "resetsearch":
-                    // clear cookie info
-                    navigationData.Delete();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "orderby":
-                    navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                    navigationData.Save();
-                    break;
-            }
+            var targlist = _targetModuleKey.Split(',');
+                switch (e.CommandName.ToLower())
+                {
+                    case "search":
+                        foreach (var targ in targlist)
+                        {
+                            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
+                            var navigationData = new NavigationData(PortalId, targ);
+                            navigationData.Build(strXml, _templD);
+                            navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
+                            navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
+                            navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
+                            navigationData.Save();
 
+                            if (StoreSettings.Current.DebugModeFileOut)
+                            {
+                                strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
+                                var xmlDoc = new System.Xml.XmlDocument();
+                                xmlDoc.LoadXml(strXml);
+                                xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
+                            }
+
+                        }
+
+                        Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
+                        break;
+                    case "resetsearch":
+                        // clear cookie info
+                        foreach (var targ in targlist)
+                        {
+                            var navigationData = new NavigationData(PortalId, targ);
+                            navigationData.Delete();
+                        }
+                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                        break;
+                    case "orderby":
+                        foreach (var targ in targlist)
+                        {
+                            var navigationData = new NavigationData(PortalId, targ);
+                            navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
+                            navigationData.Save();
+                        }
+                        break;
+                }
         }
 
         #endregion

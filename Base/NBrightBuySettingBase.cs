@@ -17,6 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
 		public NBrightBuyController ModCtrl;
         public string CtrlTypeCode;
+        public string CtrlPluginPath;
         public ModSettings ModSettings;
 
 		protected Repeater RpData;
@@ -43,10 +44,18 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
             #endregion
 
-            // add themefolder to settings, incase module has independant theme.
-
-            var strTemplate = ModCtrl.GetTemplateData(ModSettings, CtrlTypeCode + "_Settings.html", Utils.GetCurrentCulture(), StoreSettings.Current.DebugMode);
-            if (strTemplate != "") RpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(strTemplate, ModSettings.Settings(), PortalSettings.HomeDirectory);
+		    var strTemplate = "";
+            if (!String.IsNullOrEmpty(CtrlPluginPath))
+		    {
+                //search plugin path for template
+                strTemplate = NBrightBuyUtils.GetTemplateData(CtrlTypeCode + "_Settings.html", CtrlPluginPath, "config", ModSettings.Settings());
+		    }
+            if (strTemplate == "")
+		    {
+                // add themefolder to settings, incase module has independant theme.
+                strTemplate = ModCtrl.GetTemplateData(ModSettings, CtrlTypeCode + "_Settings.html", Utils.GetCurrentCulture(), StoreSettings.Current.DebugMode);
+		    }
+            if (strTemplate != "") RpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(strTemplate, ModSettings.Settings(), PortalSettings.HomeDirectory);		        
 
             //add template provider to NBright Templating
             NBrightCore.providers.GenXProviderManager.AddProvider("NBrightBuy,Nevoweb.DNN.NBrightBuy.render.GenXmlTemplateExt");

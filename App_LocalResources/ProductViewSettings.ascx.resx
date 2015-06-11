@@ -138,12 +138,7 @@
 	<data name="lbldefaultcatid.Text" xml:space="preserve">
     <value>Default Category : </value>
   </data>
-	<data name="lbldefaultlistmodule.Help" xml:space="preserve">
-    <value>Set this module to be the default return module for the product list.  This tell the DDRMenu which page to redirect to when multiple pages are used with the DDRMenu.  If no default is set the DDRMenu will return to the current page.</value>
-  </data>
-	<data name="lbldefaultlistmodule.Text" xml:space="preserve">
-    <value>Default List Module : </value>
-  </data>
+
 	<data name="lbldetailbody.Help" xml:space="preserve">
     <value>Template to be used as product detail body.</value>
   </data>
@@ -220,7 +215,7 @@
     <value>The page the user is returned to when the "Return to List" button is clicked.  If blank the current page is used.  This is activated by using the settings token on the tabid attribute of the "nbs:returnlink" token in the detail template.</value>
   </data>
 	<data name="lblreturntab.Text" xml:space="preserve">
-    <value>List Page : </value>
+    <value>Detail Return Page : </value>
   </data>
 	<data name="lblstaticlist.Help" xml:space="preserve">
     <value>Static Lists will always use the default categories, regardless of any category selected.  These are used to display featured products or products on promotion.</value>
