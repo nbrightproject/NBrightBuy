@@ -31,9 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=6.1.0.1171, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Support\DNN6x\bin\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="NBrightCore">
       <HintPath>..\..\..\..\..\..\..\..\Support\NBright\NBrightCore.dll</HintPath>

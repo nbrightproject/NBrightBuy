@@ -3,7 +3,7 @@
 		<package name="NBS_ProductView" type="Module" version="3.0.0">
 			<friendlyName>NBS_ProductView</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
-  Front office product list and detail.
+  Front office product list and detail. (supports DNN7+)
 			</description>
 			<iconFile />
 			<owner>
@@ -30,15 +30,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</license>
 			<releaseNotes>
 
-			v3.0.0.DEV54
+			v3.0.0.
 			
-Assemblies:
-
-NBrightBuy 
-NBrightCore 
-NBrightDNN 
-
-
+			NBSv3 required the NBrightTemplate system to be installed.
+			https://nbrightdnn.codeplex.com/releases/view/612359
+			
 NOTES:
 
 GIT Branch:  https://nbrightbuy.codeplex.com/SourceControl/latest   (master) 
@@ -76,16 +72,6 @@ GIT Branch:  https://nbrightbuy.codeplex.com/SourceControl/latest   (master)
 							<path>bin</path>
 							<name>NBrightBuy.dll</name>
 							<sourceFileName>NBrightBuy.dll</sourceFileName>
-						</assembly>
-						<assembly>
-							<path>bin</path>
-							<name>NBrightCore.dll</name>
-							<sourceFileName>NBrightCore.dll</sourceFileName>
-						</assembly>
-						<assembly>
-							<path>bin</path>
-							<name>NBrightDNN.dll</name>
-							<sourceFileName>NBrightDNN.dll</sourceFileName>
 						</assembly>
 						<assembly>
 							<path>bin</path>
