@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.DDRMenu;
@@ -16,6 +17,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<MenuNode> ManipulateNodes(List<MenuNode> nodes, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
+            // jump out if we don't have [CAT] token in nodes
+            if (nodes.Count(x => x.Text.ToUpper() == "[CAT]") == 0) return nodes;
 
             var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.Url.Query);
             _catid = nameValueCollection["catid"];
@@ -73,11 +76,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                     insidx += 1;
                 }                
-            }
-            else
-            {
-                // no marker for page insert so replace all.
-                nodes = catNodeList;
             }
 
             return nodes;
