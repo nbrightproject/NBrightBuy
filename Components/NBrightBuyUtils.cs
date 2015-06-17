@@ -756,7 +756,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             //use the data attribute if there
                             if (tList.ContainsKey(datavalue))
                             {
-                                var countryname = DnnUtils.GetLocalizedString(tList[datavalue].Text, resxpath, Utils.GetCurrentCulture());
+                                var countryname = DnnUtils.GetLocalizedString(datavalue, resxpath, Utils.GetCurrentCulture());
                                 if (String.IsNullOrEmpty(countryname)) countryname = tList[datavalue].Text;
                                 rtnDic.Add(datavalue.Replace(dnnlistname + ":", ""),countryname);
                             }
