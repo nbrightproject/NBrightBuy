@@ -225,12 +225,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var resxfolders = genTempl.GetResxFolders();  // ideally we'd create the settings resx at the portal level, but can't easily get that to work.
             var resxUpdate = NBrightBuyUtils.UpdateResxFields(resxDic, resxfolders, StoreSettings.Current.EditLanguage,true);
 
-            //remove current setting from cache for reload
-            HttpContext.Current.Items.Remove("NBBStoreSettings");
-            Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
-            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
-
-            if (resxUpdate) DataCache.ClearCache();
+            //remove all cahce setting from cache for reload
+            //DNN is sticky with some stuff (had some issues with email addresses not updating), so to be sure clear it all. 
+            DataCache.ClearCache();
 
         }
 

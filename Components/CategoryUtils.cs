@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightDNN;
 
@@ -11,6 +12,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class CategoryUtils
     {
 
+        public static String GetCatIdFromName(String catname)
+        {
+            var catid = "";
+            if (catname != "")
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var objCat = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", catname);
+                    if (objCat == null)
+                    {
+                        // check it's not just a single language
+                        objCat = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATEGORY", catname);
+                        if (objCat != null) catid = objCat.ItemID.ToString("");
+                    }
+                    else
+                    {
+                        catid = objCat.ParentItemId.ToString("");
+                    }
+                }
+
+
+            return catid;
+        }
 
         #region "Cacheing"
 

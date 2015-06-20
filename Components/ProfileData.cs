@@ -55,7 +55,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var xmlNode = _uData.Info.XMLDoc.SelectSingleNode("genxml/profile/genxml");
                 if (xmlNode != null)
                 {
-                    pInfo = new NBrightInfo {XMLData = xmlNode.OuterXml};
+                    pInfo.PortalId = _uData.Info.PortalId;
+                    pInfo.Lang = _uData.Info.Lang;
+                    pInfo.XMLData = xmlNode.OuterXml;
                 }
             }
             return pInfo;

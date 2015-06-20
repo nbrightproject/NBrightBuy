@@ -73,20 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 _entryid = Utils.RequestQueryStringParam(Context, "eid");
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _catname = Utils.RequestQueryStringParam(Context, "catref");
-                if (_catid == "" && _catname != "")
-                {
-                    var objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
-                    if (objCat == null)
-                    {
-                        // check it's not just a single language
-                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
-                        if (objCat != null) _catid = objCat.ItemID.ToString("");
-                    }
-                    else
-                    {
-                        _catid = objCat.ParentItemId.ToString("");
-                    }
-                }
+                if (_catid == "" && _catname != "") _catid = CategoryUtils.GetCatIdFromName(_catname);
 
                 var navigationdata = new NavigationData(PortalId, _targetModuleKey);
                 if (Utils.IsNumeric(_catid)) navigationdata.Delete(); // if a category button has been clicked (in url) then clear search;
