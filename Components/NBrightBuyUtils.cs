@@ -999,6 +999,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static int ValidateStore()
         {
+            // clear all cache to start.
+            DataCache.ClearCache();
+
             var objCtrl = new NBrightBuyController();
             var errcount = 0;
 

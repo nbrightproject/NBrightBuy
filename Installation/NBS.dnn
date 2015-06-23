@@ -35,12 +35,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			NBSv3 required the NBrightTemplate system to be installed.
 			https://nbrightdnn.codeplex.com/releases/view/612359
 			
-NOTES:
-
-GIT Branch:  https://nbrightbuy.codeplex.com/SourceControl/latest   (master) 
-
 			</releaseNotes>
-			<components>
+  <dependencies>
+    <dependency type="CoreVersion">07.00.00</dependency>
+	<dependency type="managedPackage" version="3.2.1">NBrightTemplateSys</dependency> 
+  </dependencies>
+  <components>
         <component type="Script">
           <scripts>
             <basePath>DesktopModules\NBright\NBrightBuy</basePath>

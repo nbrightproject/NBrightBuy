@@ -640,7 +640,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
                 {
                     var l = new Literal();
-                    l.DataBinding += ShortcutDataBinding;
+                    l.DataBinding += ShortcutDataBindingUrlDecode;
                     l.Text = xmlNod.Attributes["index"].Value;
                     l.Text = "genxml/lang/genxml/imgs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtimagedesc";
                     container.Controls.Add(l);
@@ -655,7 +655,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
                 {
                     var l = new Literal();
-                    l.DataBinding += ShortcutDataBinding;
+                    l.DataBinding += ShortcutDataBindingUrlDecode;
                     l.Text = xmlNod.Attributes["index"].Value;
                     l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtdocdesc";
                     container.Controls.Add(l);
@@ -669,7 +669,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
                 {
                     var l = new Literal();
-                    l.DataBinding += ShortcutDataBinding;
+                    l.DataBinding += ShortcutDataBindingUrlDecode;
                     l.Text = xmlNod.Attributes["index"].Value;
                     l.Text = "genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txtfilename";
                     container.Controls.Add(l);
@@ -683,7 +683,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (Utils.IsNumeric(xmlNod.Attributes["index"].Value)) // must have a index
                 {
                     var l = new Literal();
-                    l.DataBinding += ShortcutDataBinding;
+                    l.DataBinding += ShortcutDataBindingUrlDecode;
                     l.Text = xmlNod.Attributes["index"].Value;
                     l.Text = "genxml/lang/genxml/docs/genxml[" + xmlNod.Attributes["index"].Value + "]/textbox/txttitle";
                     container.Controls.Add(l);
@@ -763,6 +763,29 @@ namespace Nevoweb.DNN.NBrightBuy.render
             container.Controls.Add(l);
         }
         private void ShortcutDataBinding(object sender, EventArgs e)
+        {
+            var l = (Literal)sender;
+            var container = (IDataItemContainer)l.NamingContainer;
+            try
+            {
+                l.Visible = visibleStatus.DefaultIfEmpty(true).First();
+                XmlNode nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), l.Text);
+                if ((nod != null))
+                {
+                    l.Text = XmlConvert.DecodeName(nod.InnerText);  
+                }
+                else
+                {
+                    l.Text = "";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                l.Text = ex.ToString();
+            }
+        }
+        private void ShortcutDataBindingUrlDecode(object sender, EventArgs e)
         {
             var l = (Literal)sender;
             var container = (IDataItemContainer)l.NamingContainer;

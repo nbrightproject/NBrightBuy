@@ -204,14 +204,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (menutype == "drilldown")
                     {
 
-                        var l = _catGrpCtrl.GetCategoriesWithUrl(catid, TabId);
+                        var l = _catGrpCtrl.GetVisibleCategoriesWithUrl(catid, TabId);
                         if (l.Count == 0 && (ModSettings.Get("alwaysshow") == "True"))
                         {
                             // if we have no categories, it could be the end of branch or product view, so load the root menu
                             var catid2 = 0;
                             _catid = ModSettings.Get("defaultcatid");
                             if (Utils.IsNumeric(_catid)) catid2 = Convert.ToInt32(_catid);
-                            l = _catGrpCtrl.GetCategoriesWithUrl(catid2, TabId);
+                            l = _catGrpCtrl.GetVisibleCategoriesWithUrl(catid2, TabId);
                         }
                         rpData.DataSource = l;
                         rpData.DataBind();

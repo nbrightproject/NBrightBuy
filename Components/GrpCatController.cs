@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Windows.Forms.VisualStyles;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Portals;
@@ -94,6 +95,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var lenum = from i in CategoryList where i.parentcatid == parentcategoryid select i;
             var l = lenum.ToList();
+            return l;
+        }
+
+        public List<GroupCategoryData> GetVisibleCategories(int parentcategoryid)
+        {
+            var lenum = from i in CategoryList where i.parentcatid == parentcategoryid & i.ishidden == false select i;
+            var l = lenum.ToList();
+            return l;
+        }
+
+        public List<GroupCategoryData> GetVisibleCategoriesWithUrl(int parentcategoryid, int tabid)
+        {
+            var l = GetVisibleCategories(parentcategoryid);
+            foreach (var c in l)
+            {
+                c.url = GetCategoryUrl(c, tabid);
+            }
             return l;
         }
 
