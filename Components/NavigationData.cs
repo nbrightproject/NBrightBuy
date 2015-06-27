@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Web;
 using System.Xml;
 using NBrightCore.common;
@@ -16,8 +18,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private int _portalId;
         private string _cookieName;
-        private string _cookieNameXml;
-        private string _encryptkey;
         private DataStorageType _storageType;
         private string _criteria;
 
@@ -33,9 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _storageType = StoreSettings.Current.StorageTypeClient;
             Exists = false;
             _portalId = portalId;
-            _cookieName = "NBrightBuyNav" + "*" + moduleKey + nameAppendix;
-            _cookieNameXml = "NBrightBuyNavXml" + "*" + moduleKey + nameAppendix;
-            _encryptkey = "NBrightBuyNav";
+            _cookieName = "NBrightBuyNav" + "_" + moduleKey + nameAppendix;
             Get();
         }
 
@@ -270,39 +268,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save()
         {
+            #region "Get temp filename"
+            var tempfilename = "";
+
             if (_storageType == DataStorageType.SessionMemory)
             {
-                // save data to cache
-                HttpContext.Current.Session[_cookieName + "Criteria"] = _criteria;
-                HttpContext.Current.Session[_cookieName + "PageModuleId"] = PageModuleId;
-                HttpContext.Current.Session[_cookieName + "PageNumber"] = PageNumber;
-                HttpContext.Current.Session[_cookieName + "PageName"] = PageName;
-                HttpContext.Current.Session[_cookieName + "PageSize"] = PageSize;
-                HttpContext.Current.Session[_cookieName + "OrderBy"] = OrderBy;
-                HttpContext.Current.Session[_cookieName + "CategoryId"] = CategoryId;
-                HttpContext.Current.Session[_cookieName + "RecordCount"] = RecordCount;
-                HttpContext.Current.Session[_cookieName + "Mode"] = Mode;
-                
-                // could be large, use with care.           
-                HttpContext.Current.Session[_cookieNameXml + "XmlData"] =  XmlData;                
-                
+                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String) HttpContext.Current.Session[_cookieName + "tempname"];
             }
             else
             {
-                // save data to cache
-                Cookie.SetCookieValue(_portalId, _cookieName, "Criteria", _criteria, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "PageModuleId", PageModuleId, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "PageNumber", PageNumber, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "PageName", PageName, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "PageSize", PageSize, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "OrderBy", OrderBy, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "CategoryId", CategoryId, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "RecordCount", RecordCount, 1, _encryptkey);
-                Cookie.SetCookieValue(_portalId, _cookieName, "Mode", Mode, 1, _encryptkey);
-                
-                // could make a large cookie, use with care.           
-                Cookie.SetCookieValue(_portalId, _cookieNameXml, "XmlData", XmlData, 1, _encryptkey);                
+                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");                
             }
+
+            if (tempfilename == "") tempfilename = Utils.GetUniqueKey(12);
+
+            if (_storageType == DataStorageType.SessionMemory)
+            {
+                HttpContext.Current.Session[_cookieName + "tempname"] = tempfilename;
+            }
+            else
+            {
+                Cookie.SetCookieValue(_portalId, _cookieName, "tempname", tempfilename, 1, "");
+            }
+            #endregion
+
+            if (XmlData != "")
+            {
+                var nbi = new NBrightInfo();
+                nbi.XMLData = XmlData;
+
+                nbi.SetXmlProperty("genxml/Criteria", _criteria);
+                nbi.SetXmlProperty("genxml/PageModuleId", PageModuleId);
+                nbi.SetXmlProperty("genxml/PageNumber", PageNumber);
+                nbi.SetXmlProperty("genxml/PageName", PageName);
+                nbi.SetXmlProperty("genxml/PageSize", PageSize);
+                nbi.SetXmlProperty("genxml/OrderBy", OrderBy);
+                nbi.SetXmlProperty("genxml/CategoryId", CategoryId);
+                nbi.SetXmlProperty("genxml/RecordCount", RecordCount);
+                nbi.SetXmlProperty("genxml/Mode", Mode);
+
+                var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
+                Utils.SaveFile(filePath, nbi.XMLData);                
+            }
+
 
             Exists = true;
         }
@@ -315,31 +323,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             ClearData();
 
+            var tempfilename = "";
+
             if (_storageType == DataStorageType.SessionMemory)
             {
-                if (HttpContext.Current.Session[_cookieName + "Criteria"] != null) _criteria = (String)HttpContext.Current.Session[_cookieName + "Criteria"];
-                if (HttpContext.Current.Session[_cookieName + "PageModuleId"] != null) PageModuleId = (String)HttpContext.Current.Session[_cookieName + "PageModuleId"];
-                if (HttpContext.Current.Session[_cookieName + "PageNumber"] != null) PageNumber = (String)HttpContext.Current.Session[_cookieName + "PageNumber"];
-                if (HttpContext.Current.Session[_cookieName + "PageName"] != null) PageName = (String)HttpContext.Current.Session[_cookieName + "PageName"];
-                if (HttpContext.Current.Session[_cookieName + "PageSize"] != null) PageSize = (String)HttpContext.Current.Session[_cookieName + "PageSize"];
-                if (HttpContext.Current.Session[_cookieName + "OrderBy"] != null) OrderBy = (String)HttpContext.Current.Session[_cookieName + "OrderBy"];
-                if (HttpContext.Current.Session[_cookieName + "CategoryId"] != null) CategoryId = (String)HttpContext.Current.Session[_cookieName + "CategoryId"];
-                if (HttpContext.Current.Session[_cookieNameXml + "XmlData"] != null) XmlData = (String)HttpContext.Current.Session[_cookieNameXml + "XmlData"];
-                if (HttpContext.Current.Session[_cookieName + "RecordCount"] != null) RecordCount = (String)HttpContext.Current.Session[_cookieName + "RecordCount"];
-                if (HttpContext.Current.Session[_cookieName + "Mode"] != null) Mode = (String)HttpContext.Current.Session[_cookieName + "Mode"];
+                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String)HttpContext.Current.Session[_cookieName + "tempname"];
             }
             else
             {
-                _criteria = Cookie.GetCookieValue(_portalId, _cookieName, "Criteria", _encryptkey);
-                PageModuleId = Cookie.GetCookieValue(_portalId, _cookieName, "PageModuleId", _encryptkey);
-                PageNumber = Cookie.GetCookieValue(_portalId, _cookieName, "PageNumber", _encryptkey);
-                PageName = Cookie.GetCookieValue(_portalId, _cookieName, "PageName", _encryptkey);
-                PageSize = Cookie.GetCookieValue(_portalId, _cookieName, "PageSize", _encryptkey);
-                OrderBy = Cookie.GetCookieValue(_portalId, _cookieName, "OrderBy", _encryptkey);
-                CategoryId = Cookie.GetCookieValue(_portalId, _cookieName, "CategoryId", _encryptkey);
-                XmlData = Cookie.GetCookieValue(_portalId, _cookieNameXml, "XmlData", _encryptkey);
-                RecordCount = Cookie.GetCookieValue(_portalId, _cookieName, "RecordCount", _encryptkey);
-                Mode = Cookie.GetCookieValue(_portalId, _cookieName, "Mode", _encryptkey);
+                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
+            }
+
+            XmlData = "";
+
+            if (tempfilename != "")
+            {
+                var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
+                if (File.Exists(filePath)) XmlData = Utils.ReadFile(filePath);
+                var nbi = new NBrightInfo();
+                nbi.XMLData = XmlData;
+
+                _criteria = nbi.GetXmlProperty("genxml/Criteria");
+                PageModuleId = nbi.GetXmlProperty("genxml/PageModuleId");
+                PageNumber = nbi.GetXmlProperty("genxml/PageNumber");
+                PageName = nbi.GetXmlProperty("genxml/PageName");
+                PageSize = nbi.GetXmlProperty("genxml/PageSize");
+                OrderBy = nbi.GetXmlProperty("genxml/OrderBy");
+                CategoryId = nbi.GetXmlProperty("genxml/CategoryId");
+                RecordCount = nbi.GetXmlProperty("genxml/RecordCount");
+                Mode = nbi.GetXmlProperty("genxml/Mode");
+
             }
 
             if (_criteria == "" && XmlData == "") // "Exist" property not used for paging data
@@ -357,24 +370,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             ClearData();
 
+            var tempfilename = "";
+
             if (_storageType == DataStorageType.SessionMemory)
             {
-                if (HttpContext.Current.Session[_cookieName + "Criteria"] != null) HttpContext.Current.Session.Remove(_cookieName + "Criteria");
-                if (HttpContext.Current.Session[_cookieName + "PageModuleId"] != null) HttpContext.Current.Session.Remove(_cookieName + "PageModuleId");
-                if (HttpContext.Current.Session[_cookieName + "PageNumber"] != null) HttpContext.Current.Session.Remove(_cookieName + "PageNumber");
-                if (HttpContext.Current.Session[_cookieName + "PageSize"] != null) HttpContext.Current.Session.Remove(_cookieName + "PageSize");
-                if (HttpContext.Current.Session[_cookieName + "PageName"] != null) HttpContext.Current.Session.Remove(_cookieName + "PageName");
-                if (HttpContext.Current.Session[_cookieName + "OrderBy"] != null) HttpContext.Current.Session.Remove(_cookieName + "OrderBy");
-                if (HttpContext.Current.Session[_cookieName + "CategoryId"] != null) HttpContext.Current.Session.Remove(_cookieName + "CategoryId");
-                if (HttpContext.Current.Session[_cookieNameXml + "XmlData"] != null) HttpContext.Current.Session.Remove(_cookieNameXml + "XmlData");
-                if (HttpContext.Current.Session[_cookieName + "RecordCount"] != null) HttpContext.Current.Session.Remove(_cookieName + "RecordCount");
-                if (HttpContext.Current.Session[_cookieName + "Mode"] != null) HttpContext.Current.Session.Remove(_cookieName + "Mode");
+                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String) HttpContext.Current.Session[_cookieName + "tempname"];
+                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) HttpContext.Current.Session.Remove(_cookieName + "Criteria");
             }
             else
             {
+                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
                 Cookie.RemoveCookie(_portalId, _cookieName);
-                Cookie.RemoveCookie(_portalId, _cookieNameXml);
             }
+
+            Utils.DeleteSysFile(StoreSettings.Current.FolderTempMapPath + tempfilename);
             Exists = false;
         }
 
