@@ -129,6 +129,9 @@
   <data name="cmdAddButton.Text" xml:space="preserve">
     <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
   </data>
+  <data name="cmdAddFiles.Text" xml:space="preserve">
+    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+  </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -318,11 +321,17 @@
   <data name="Name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="seoname.Text" xml:space="preserve">
+    <value>SEO Name</value>
+  </data>
   <data name="Ref.Text" xml:space="preserve">
     <value>Ref</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="seotitle.Text" xml:space="preserve">
+    <value>SEO Title</value>
   </data>
   <data name="Archived.Text" xml:space="preserve">
     <value>Archived</value>
@@ -341,6 +350,9 @@
   </data>
   <data name="Order.Text" xml:space="preserve">
     <value>Order</value>
+  </data>
+  <data name="findanorder.Text" xml:space="preserve">
+    <value>Find an order</value>
   </data>
   <data name="Parent.Text" xml:space="preserve">
     <value>Parent</value>
@@ -699,6 +711,9 @@
   <data name="Find.Text" xml:space="preserve">
     <value>Find</value>
   </data>
+  <data name="findaproduct.Text" xml:space="preserve">
+    <value>Find a product</value>
+  </data>
   <data name="Images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
@@ -913,7 +928,7 @@
     <value>Folder</value>
   </data>
   <data name="cmdFolderIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Open" class="fa fa-folder fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Open" class="fa fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ExtraCost.Text" xml:space="preserve">
     <value>Extra cost</value>
@@ -1013,5 +1028,20 @@
   </data>
   <data name="favorites.Text" xml:space="preserve">
     <value>Favorites</value>
+  </data>
+  <data name="nbsref.Text" xml:space="preserve">
+    <value>NBS Ref.</value>
+  </data>
+  <data name="nbsid.Text" xml:space="preserve">
+    <value>NBS ID</value>
+  </data>
+  <data name="relatedproducts.Text" xml:space="preserve">
+    <value>Related products</value>
+  </data>
+  <data name="propertytypes.Text" xml:space="preserve">
+    <value>Property types</value>
+  </data>
+  <data name="productswithprop.Text" xml:space="preserve">
+    <value>Products with this property</value>
   </data>
 </root>

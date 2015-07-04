@@ -151,7 +151,7 @@
     <value>Favorites</value>
   </data>
   <data name="manageremail.Help" xml:space="preserve">
-    <value>CSV list of manager emails.</value>
+    <value>Email address(es) of the manager(s) of the store (separed by comas).</value>
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager</value>
@@ -293,5 +293,110 @@
   </data>
   <data name="startupctrl.Text" xml:space="preserve">
     <value>Default BO control</value>
+  </data>
+  <data name="merchantdetails.Text" xml:space="preserve">
+    <value>Merchant details</value>
+  </data>
+  <data name="emailaddresses.Text" xml:space="preserve">
+    <value>Email addresses</value>
+  </data>
+  <data name="supportemail.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="supportemail.Help" xml:space="preserve">
+    <value>Display with the merchant details inside the notifications emails from the store.</value>
+  </data>
+  <data name="salesemail.Text" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="salesemail.Help" xml:space="preserve">
+    <value>Display with the merchant details inside the notifications emails from the store.</value>
+  </data>
+  <data name="merchantaddress.Text" xml:space="preserve">
+    <value>Merchant address</value>
+  </data>
+  <data name="merchantattention.Text" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="merchantpostbox.Text" xml:space="preserve">
+    <value>Post box</value>
+  </data>
+  <data name="bankingdetails.Text" xml:space="preserve">
+    <value>Banking details</value>
+  </data>
+  <data name="bank.Text" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="accountname.Text" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="accountnumber.Text" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="bankinginstructions.Text" xml:space="preserve">
+    <value>Banking instructions</value>
+  </data>
+  <data name="emailbranding.Text" xml:space="preserve">
+    <value>Email branding</value>
+  </data>
+  <data name="storename.Text" xml:space="preserve">
+    <value>Store name</value>
+  </data>
+  <data name="logoimage.Text" xml:space="preserve">
+    <value>Logo image</value>
+  </data>
+  <data name="emailmessage.Text" xml:space="preserve">
+    <value>Email message</value>
+  </data>
+  <data name="socialnetworking.Text" xml:space="preserve">
+    <value>Social networking</value>
+  </data>
+  <data name="twitterpage.Text" xml:space="preserve">
+    <value>Twitter page</value>
+  </data>
+  <data name="facebookpage.Text" xml:space="preserve">
+    <value>Facebook page</value>
+  </data>
+  <data name="sharingwidget.Text" xml:space="preserve">
+    <value>Sharing widget</value>
+  </data>
+  <data name="checkout.Text" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
+  <data name="storepickupmessage.Text" xml:space="preserve">
+    <value>Store pickup message</value>
+  </data>
+  <data name="successfulcheckoutmessage.Text" xml:space="preserve">
+    <value>Successful checkout message</value>
+  </data>
+  <data name="failedcheckoutmessage.Text" xml:space="preserve">
+    <value>Failed checkout message</value>
+  </data>
+  <data name="folders.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="storeconfiguration.Text" xml:space="preserve">
+    <value>Store configuration</value>
+  </data>
+  <data name="countrydetails.Text" xml:space="preserve">
+    <value>Country details</value>
+  </data>
+  <data name="merchantculture.Text" xml:space="preserve">
+    <value>Merchant Culture</value>
+  </data>
+  <data name="currencycode.Text" xml:space="preserve">
+    <value>Currency Code</value>
+  </data>
+  <data name="commoncountries.Text" xml:space="preserve">
+    <value>Common Countries</value>
+  </data>
+  <data name="selectedcountries.Text" xml:space="preserve">
+    <value>Selected countries (Drag to sort)</value>
+  </data>
+  <data name="othercountries.Text" xml:space="preserve">
+    <value>Other countries</value>
+  </data>
+  <data name="checkall.Text" xml:space="preserve">
+    <value>Check all</value>
   </data>
 </root>

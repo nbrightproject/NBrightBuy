@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="admin.Text" xml:space="preserve">
     <value>Admin</value>
@@ -187,7 +187,7 @@
     <value>View</value>
   </data>
   <data name="dashsummary.Text" xml:space="preserve">
-    <value>Dashboard</value>
+    <value>Overview</value>
   </data>
   <data name="plugins.Text" xml:space="preserve">
     <value>Plugins</value>
@@ -229,19 +229,19 @@
     <value>Icon html</value>
   </data>
   <data name="admin_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="catalog_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="sales_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="utilities_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-wrench fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="exit_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>

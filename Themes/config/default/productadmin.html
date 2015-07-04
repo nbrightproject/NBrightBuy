@@ -150,7 +150,7 @@
 	<div class="col-xs-12 col-sm-12">
 			<div class="box" id="accordion">
 			
-				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />] </h3>
+				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />]</h3>
 				<div class="box-content editdetails">
 				<div class="form-horizontal dnnForm">
 					<div class="col-sm-6">
@@ -174,11 +174,11 @@
 				    <div class="col-sm-6">
 				        <div class="form-group">
 				            <div class="col-sm-6">
-				                <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />]
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.seoname" />]</label>[<tag type="editflag" />]
 				                [<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
 				            </div>
 				            <div class="col-sm-6">
-				                <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Title" />]</label>[<tag type="editflag" />]
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.seotitle" />]</label>[<tag type="editflag" />]
 				                [<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
 				            </div>
 				        </div>
@@ -196,14 +196,14 @@
 				    </div>
 				    <div class="col-sm-12">
 				        <div class="form-group">
-				            <div class="col-sm-10">
+				            <div class="col-sm-6">
 				                [<tag id="chkishidden" type="checkbox" Text="" />]
 				                <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
 				                &nbsp;[<tag id="chkdisable" type="checkbox" Text=""  />]
 				                <label class="control-label">[<tag type="valueof" resourcekey="General.Disable" />]</label>
 				            </div>
-				            <div class="col-sm-2">
-                				Ref: [<tag type="valueof" xpath="genxml/importref" />] ID: [<tag type="valueof" databind="ItemId" />]
+				            <div class="col-sm-6" style="text-align:right;">
+                				<label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" xpath="genxml/importref" />] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
 				            </div>
 				        </div>
 				    </div>
@@ -274,15 +274,15 @@
 					<div class="form-group">
 					    <div class="col-sm-12">
 
-                            					                <span class="btn btn-success fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Add files...</span>
+    <a class="btn btn-success fileinput-button">
+        [<tag type="htmlof" resourcekey="General.cmdAddFiles" />]
         <!-- The file input field used as target for the file upload widget -->
         <input id="fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
-    </span>
-					        <a class="btn btn-warning" id="undoimage" style="display: none;">[<tag type="htmlof" resourcekey="General.UndoButton"/>]</a>
-					                <br>
-					                <br>
+    </a>
+
+<br /><br />
+
+		<a class="btn btn-warning" id="undoimage" style="display: none;">[<tag type="htmlof" resourcekey="General.UndoButton"/>]</a>
 					                <!-- The global progress bar -->
     <div id="progress" class="progress">
         <div class="progress-bar progress-bar-success"></div>
@@ -374,7 +374,7 @@
 				<div class="clearfix"></div>
 				</div>
 				
-				<h3>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Products" />]</h3>
+				<h3>[<tag type="valueof" resourcekey="General.relatedproducts" />]</h3>
 				<div class="box-content editrelated">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">

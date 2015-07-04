@@ -68,7 +68,7 @@
                 <div class="box">
                     <div class="box-header">
                         <div class="box-name">
-                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Property" />] ID: [<tag type="valueof" databind="ItemId" />]</span>
+                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Property" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtcategoryname" />]</span>
                         </div>
                         <div class="box-icons">
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -102,6 +102,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                                    <div class="col-md-12" style="text-align:right;">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" databind="GUIDKey"/>] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
+                                    </div>
+                        </div>
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -116,7 +121,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>Products with this Property</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.productswithprop" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -293,8 +298,4 @@
         </div>
     </div>
 
-</div>
-
-<div >
-Ref:   [<tag type="valueof" databind="GUIDKey" />]
 </div>

@@ -178,13 +178,13 @@
     <value>Carnet d'adresses</value>
   </data>
   <data name="cmdViewClient.Text" xml:space="preserve">
-    <value>Voir détails client</value>
+    <value>Fiche client</value>
   </data>
   <data name="cmdViewClientIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Fiche client" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdViewClientButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Voir Client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; Voir Client</value>
+    <value>&lt;i  title="Fiche client" class="fa fa-user fa-fw fa-lg"&gt;&lt;/i&gt; Fiche client</value>
   </data>
   <data name="usageleft.Text" xml:space="preserve">
     <value>Utilisation</value>
@@ -199,7 +199,7 @@
     <value>Catégorie valide</value>
   </data>
   <data name="FindaClient.Text" xml:space="preserve">
-    <value>Chercher un client</value>
+    <value>Trouver un client</value>
   </data>
   <data name="Actions.Text" xml:space="preserve">
     <value>Actions</value>
@@ -242,5 +242,8 @@
   </data>
   <data name="ClientmenuOrders.Text" xml:space="preserve">
     <value>Mes commandes</value>
+  </data>
+  <data name="customerinfos.Text" xml:space="preserve">
+    <value>Informations client</value>
   </data>
 </root>

@@ -1104,6 +1104,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                     var bodyTempl = templCtrl.GetTemplateData("productadminmodels.html", _lang, true, true, true, StoreSettings.Current.Settings());
 
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
@@ -1156,6 +1158,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                     var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", _lang, true, true, true, StoreSettings.Current.Settings());
+
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
 
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
@@ -1214,6 +1218,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                     var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", _lang, true, true, true, StoreSettings.Current.Settings());
 
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+
                     //get data
                     strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
@@ -1239,6 +1245,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
@@ -1262,6 +1269,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductGroupCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
@@ -1285,6 +1293,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.SetDefaultCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
@@ -1308,6 +1317,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
@@ -1331,6 +1341,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
                     prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductGroupCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
@@ -1354,6 +1365,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
                     prodData.RemoveRelatedProduct(Convert.ToInt32(selectedrelatedid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductRelated(context);
                 }
                 return "Invalid itemid or selectedrelatedid";
@@ -1382,6 +1394,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var prodData2 = ProductUtils.GetProductData(Convert.ToInt32(selectedrelatedid), _lang, false);
                     if (prodData2.Exists) prodData2.AddRelatedProduct(Convert.ToInt32(productid));
 
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductRelated(context);
                 }
                 return "Invalid itemid or selectedrelatedid";

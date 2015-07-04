@@ -68,7 +68,7 @@
                 <div class="box">
                     <div class="box-header">
                         <div class="box-name">
-                            <i class="fa fa-search"></i><span>ID: [<tag type="valueof" databind="ItemId" />]</span>
+                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Category" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtcategoryname" />]</span>
                         </div>
                         <div class="box-icons">
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i>
@@ -115,11 +115,11 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <div class="col-sm-6">
-                                        <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />]
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.seoname" />]</label>[<tag type="editflag" />]
                                         [<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
                                     </div>
                                     <div class="col-sm-6">
-                                        <label class="control-label">SEO [<tag type="valueof" resourcekey="General.Title" />]</label>[<tag type="editflag" />]
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.seotitle" />]</label>[<tag type="editflag" />]
                                         [<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
                                     </div>
                                 </div>
@@ -144,9 +144,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label class="control-label">Ref:</label>
-                                        [<tag type="valueof" databind="GUIDKey"/>]
+                                    <div class="col-md-12" style="text-align:right;">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" databind="GUIDKey"/>] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
                                     </div>
                                 </div>                                
                             </div>

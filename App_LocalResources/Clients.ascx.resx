@@ -243,4 +243,7 @@
   <data name="ClientmenuOrders.Text" xml:space="preserve">
     <value>My orders</value>
   </data>
+  <data name="customerinfos.Text" xml:space="preserve">
+    <value>Customer informations</value>
+  </data>
 </root>

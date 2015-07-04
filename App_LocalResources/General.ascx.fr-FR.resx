@@ -91,13 +91,16 @@
     <value xml:space="preserve">Ajouter</value>
   </data>
   <data name="cmdAdd.ToolTip">
-    <value xml:space="preserve">Ajouter nouveau</value>
+    <value xml:space="preserve">Ajouter</value>
   </data>
   <data name="cmdAddButton.Text">
-    <value xml:space="preserve">&lt;i title="Ajouter nouveau" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter nouveau</value>
+    <value xml:space="preserve">&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
+  </data>
+  <data name="cmdAddFiles.Text" xml:space="preserve">
+    <value>&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
   </data>
   <data name="cmdAddIcon.Text">
-    <value xml:space="preserve">&lt;i title="Ajouter nouveau" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value xml:space="preserve">&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdAddProducts.Text">
     <value xml:space="preserve">Ajouter produits</value>
@@ -121,7 +124,7 @@
     <value xml:space="preserve">Effacer données</value>
   </data>
   <data name="cmdDelete.confirm">
-    <value xml:space="preserve">Supprimer article?</value>
+    <value xml:space="preserve">Supprimer l'entrée ?</value>
   </data>
   <data name="cmdDelete.Text">
     <value xml:space="preserve">Supprimer</value>
@@ -130,34 +133,34 @@
     <value xml:space="preserve">Supprimer</value>
   </data>
   <data name="cmdDeleteButton.confirm">
-    <value xml:space="preserve">Supprimer un enregistrement ?</value>
+    <value xml:space="preserve">Supprimer l'entrée ?</value>
   </data>
   <data name="cmdDeleteButton.Text">
     <value xml:space="preserve">&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
   </data>
   <data name="cmdDeleteFile.commandname">
-    <value xml:space="preserve">Supprimer fichier</value>
+    <value xml:space="preserve">Supprimer le fichier</value>
   </data>
   <data name="cmdDeleteFile.confirm">
-    <value xml:space="preserve">Supprimer fichier ?</value>
+    <value xml:space="preserve">Supprimer le fichier ?</value>
   </data>
   <data name="cmdDeleteFile.ToolTip">
-    <value xml:space="preserve">Supprimer fichier</value>
+    <value xml:space="preserve">Supprimer le fichier</value>
   </data>
   <data name="cmdDeleteIcon.confirm">
-    <value xml:space="preserve">Supprimer article?</value>
+    <value xml:space="preserve">Supprimer l'entrée ?</value>
   </data>
   <data name="cmdDeleteIcon.Text">
     <value xml:space="preserve">&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDeleteLang.confirm">
-    <value xml:space="preserve">Supprimer l'article d'entrée langue ?</value>
+    <value xml:space="preserve">Supprimer l'entrée multilingue ?</value>
   </data>
   <data name="cmdDeleteLang.Text">
-    <value xml:space="preserve">Supprimer langue</value>
+    <value xml:space="preserve">Supprimer l'entrée multilingue</value>
   </data>
   <data name="cmdDeleteLang.ToolTip">
-    <value xml:space="preserve">Supprimer entrée langue</value>
+    <value xml:space="preserve">Supprimer l'entrée multilingue</value>
   </data>
   <data name="cmdDownloadButton.Text">
     <value xml:space="preserve">&lt;i title="Télécharger" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Télécharger</value>
@@ -199,7 +202,7 @@
     <value xml:space="preserve">Dossier</value>
   </data>
   <data name="cmdFolderIcon.Text">
-    <value xml:space="preserve">&lt;i title="Ouvrir" class="fa fa-folder fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value xml:space="preserve">&lt;i title="Ouvrir" class="fa fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdMove.Text">
     <value xml:space="preserve">Déplacer</value>
@@ -265,7 +268,7 @@
     <value xml:space="preserve">Enregistrer</value>
   </data>
   <data name="cmdSaveAsButton.confirm">
-    <value xml:space="preserve">Enregistrer comme nouvel enregistrement ?</value>
+    <value xml:space="preserve">Enregistrer comme une nouvelle entrée ?</value>
   </data>
   <data name="cmdSaveAsButton.Text">
     <value xml:space="preserve">&lt;i title="Enregistrer sous" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer sous</value>
@@ -328,13 +331,13 @@
     <value xml:space="preserve">Télécharger fichier</value>
   </data>
   <data name="cmdUploadFileButton.Text">
-    <value xml:space="preserve">&lt;i title="Télécharger" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Télécharger</value>
+    <value xml:space="preserve">&lt;i title="Télécharger" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Charger</value>
   </data>
   <data name="Code.Text">
-    <value xml:space="preserve">Code</value>
+    <value xml:space="preserve">Référence</value>
   </data>
   <data name="Confirm.Text">
-    <value xml:space="preserve">Etes-vous sûr?</value>
+    <value xml:space="preserve">Confirmer ?</value>
   </data>
   <data name="Copy.Text">
     <value xml:space="preserve">Copier</value>
@@ -385,7 +388,7 @@
     <value xml:space="preserve">Supprimer</value>
   </data>
   <data name="Deleted.Text">
-    <value xml:space="preserve">Supprimé</value>
+    <value xml:space="preserve">Archiver</value>
   </data>
   <data name="Depth.Text">
     <value xml:space="preserve">Profondeur</value>
@@ -400,7 +403,7 @@
     <value xml:space="preserve">Détails</value>
   </data>
   <data name="Disable.Text">
-    <value xml:space="preserve">Désactivée</value>
+    <value xml:space="preserve">Archiver</value>
   </data>
   <data name="Discount.Text">
     <value xml:space="preserve">Remise</value>
@@ -445,7 +448,7 @@
     <value xml:space="preserve">Exporter les images</value>
   </data>
   <data name="Extra.Text">
-    <value xml:space="preserve">Extra</value>
+    <value xml:space="preserve">Complément</value>
   </data>
   <data name="ExtraCost.Text">
     <value xml:space="preserve">Supplément</value>
@@ -454,7 +457,10 @@
     <value xml:space="preserve">Nom du fichier</value>
   </data>
   <data name="Find.Text">
-    <value xml:space="preserve">Recherche</value>
+    <value xml:space="preserve">Rechercher</value>
+  </data>
+  <data name="findaproduct.Text" xml:space="preserve">
+    <value>Trouver un produit</value>
   </data>
   <data name="From.Text">
     <value xml:space="preserve">De</value>
@@ -591,6 +597,9 @@
   <data name="Name.Text">
     <value xml:space="preserve">Nom</value>
   </data>
+  <data name="seoname.Text" xml:space="preserve">
+    <value>Nom SEO</value>
+  </data>
   <data name="New.Text">
     <value xml:space="preserve">Nouveau</value>
   </data>
@@ -605,6 +614,9 @@
   </data>
   <data name="Order.Text">
     <value xml:space="preserve">Commande</value>
+  </data>
+  <data name="findanorder.Text" xml:space="preserve">
+    <value>Trouver une commande</value>
   </data>
   <data name="OrderBy.Text">
     <value xml:space="preserve">Organiser par</value>
@@ -664,7 +676,7 @@
     <value xml:space="preserve">En cours de fabrication</value>
   </data>
   <data name="Parent.Text">
-    <value xml:space="preserve">Parent</value>
+    <value xml:space="preserve">Parente</value>
   </data>
   <data name="Password.Text">
     <value xml:space="preserve">Mot de Passe</value>
@@ -721,7 +733,7 @@
     <value xml:space="preserve">Quantité</value>
   </data>
   <data name="Ref.Text">
-    <value xml:space="preserve">Réf</value>
+    <value xml:space="preserve">Réf.</value>
   </data>
   <data name="Refresh.Text">
     <value xml:space="preserve">Actualiser</value>
@@ -831,6 +843,9 @@
   <data name="Title.Text">
     <value xml:space="preserve">Titre</value>
   </data>
+  <data name="seotitle.Text" xml:space="preserve">
+    <value>Titre SEO</value>
+  </data>
   <data name="To.Text">
     <value xml:space="preserve">A</value>
   </data>
@@ -898,7 +913,7 @@
     <value xml:space="preserve">Largeur</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value xml:space="preserve">Paiement manuel</value>
+    <value xml:space="preserve">Classique</value>
   </data>
   <data name="dashsummary.Text" xml:space="preserve">
     <value xml:space="preserve">Tableau de bord</value>
@@ -908,5 +923,20 @@
   </data>
   <data name="favorites.Text" xml:space="preserve">
     <value>Favoris</value>
+  </data>
+  <data name="nbsref.Text" xml:space="preserve">
+    <value>Réf. NBS</value>
+  </data>
+  <data name="nbsid.Text" xml:space="preserve">
+    <value>ID NBS</value>
+  </data>
+  <data name="relatedproducts.Text" xml:space="preserve">
+    <value>Produits associés</value>
+  </data>
+  <data name="propertytypes.Text" xml:space="preserve">
+    <value>Types de propriétés</value>
+  </data>
+  <data name="productswithprop.Text" xml:space="preserve">
+    <value>Produits avec cette propriété</value>
   </data>
 </root>

@@ -166,7 +166,7 @@
     <value>Supprimer reçu</value>
   </data>
   <data name="ProcessOrder.Text" xml:space="preserve">
-    <value>Suivi de la commande</value>
+    <value>Suivi de commande</value>
   </data>
   <data name="VATincluded.Text" xml:space="preserve">
     <value>* TVA incluse</value>
@@ -217,24 +217,24 @@
     <value>&lt;i  title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
   </data>
   <data name="EmailOrder.Text" xml:space="preserve">
-    <value>Envoi emails</value>
+    <value>Notifications mail</value>
   </data>
   <data name="PrintOrder.Text" xml:space="preserve">
-    <value>Imprimer commande</value>
+    <value>Imprimer</value>
   </data>
   <data name="ToggleDropdown.Text" xml:space="preserve">
-    <value>Impression</value>
+    <value>Imprimer</value>
   </data>
   <data name="PaymentStatus.Text" xml:space="preserve">
     <value>Statut de paiement</value>
   </data>
   <data name="addnotes.Text" xml:space="preserve">
-    <value>Ajouter une note à l'historique de commande</value>
+    <value>Ajouter un commentaire à l'historique de commande</value>
   </data>
   <data name="OrderHistory.Text" xml:space="preserve">
     <value>Historique de commande</value>
   </data>
   <data name="emailmsg.Text" xml:space="preserve">
-    <value>Message de Email pour le client</value>
+    <value>Message pour le client (e-mail)</value>
   </data>
 </root>

@@ -136,7 +136,7 @@
     <value>Liste produits</value>
   </data>
 	<data name="adminemail.Help" xml:space="preserve">
-    <value>Adresse email de l'administrateur de la boutique, cette adresse étant l'adresse expéditeur par défaut de la boutique.</value>
+    <value>Adresse e-mail de l'administrateur de la boutique, cette adresse étant l'adresse expéditeur par défaut de la boutique.</value>
   </data>
 	<data name="adminemail.Text" xml:space="preserve">
     <value>Administrateur</value>
@@ -151,7 +151,7 @@
     <value>Favoris</value>
   </data>
 	<data name="manageremail.Help" xml:space="preserve">
-    <value>Liste CSV des e-mails manager.</value>
+    <value>Adresse(s) e-mail du/des manager(s) de la boutique (séparées par des virgules).</value>
   </data>
 	<data name="manageremail.Text" xml:space="preserve">
     <value>Manager</value>
@@ -248,5 +248,110 @@
   </data>
   <data name="cartsteps.Text" xml:space="preserve">
     <value>Afficher les étapes du panier</value>
+  </data>
+  <data name="merchantdetails.Text" xml:space="preserve">
+    <value>Détails du marchand</value>
+  </data>
+  <data name="emailaddresses.Text" xml:space="preserve">
+    <value>E-mails de la boutique</value>
+  </data>
+  <data name="supportemail.Text" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="supportemail.Help" xml:space="preserve">
+    <value>S'affiche avec les détails du marchand dans les e-mails de notifications de la boutique.</value>
+  </data>
+  <data name="salesemail.Text" xml:space="preserve">
+    <value>Ventes</value>
+  </data>
+  <data name="salesemail.Help" xml:space="preserve">
+    <value>S'affiche avec les détails du marchand dans les e-mails de notifications de la boutique.</value>
+  </data>
+  <data name="merchantaddress.Text" xml:space="preserve">
+    <value>Adresse du marchand</value>
+  </data>
+  <data name="merchantattention.Text" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="merchantpostbox.Text" xml:space="preserve">
+    <value>Boite postale</value>
+  </data>
+  <data name="bankingdetails.Text" xml:space="preserve">
+    <value>Informations bancaires</value>
+  </data>
+  <data name="bank.Text" xml:space="preserve">
+    <value>Nom de la banque</value>
+  </data>
+  <data name="accountname.Text" xml:space="preserve">
+    <value>Nom du compte</value>
+  </data>
+  <data name="accountnumber.Text" xml:space="preserve">
+    <value>Numéro de compte</value>
+  </data>
+  <data name="bankinginstructions.Text" xml:space="preserve">
+    <value>Instructions de paiement</value>
+  </data>
+  <data name="emailbranding.Text" xml:space="preserve">
+    <value>Personnalisation de l'e-mail</value>
+  </data>
+  <data name="storename.Text" xml:space="preserve">
+    <value>Nom de la boutique</value>
+  </data>
+  <data name="logoimage.Text" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="emailmessage.Text" xml:space="preserve">
+    <value>Message de confirmation</value>
+  </data>
+  <data name="socialnetworking.Text" xml:space="preserve">
+    <value>Réseaux sociaux</value>
+  </data>
+  <data name="twitterpage.Text" xml:space="preserve">
+    <value>Page Twitter</value>
+  </data>
+  <data name="facebookpage.Text" xml:space="preserve">
+    <value>Page Facebook</value>
+  </data>
+  <data name="sharingwidget.Text" xml:space="preserve">
+    <value>Widget de partage</value>
+  </data>
+  <data name="checkout.Text" xml:space="preserve">
+    <value>Messages du panier</value>
+  </data>
+  <data name="storepickupmessage.Text" xml:space="preserve">
+    <value>Retrait en magasin</value>
+  </data>
+  <data name="successfulcheckoutmessage.Text" xml:space="preserve">
+    <value>Commande confirmée</value>
+  </data>
+  <data name="failedcheckoutmessage.Text" xml:space="preserve">
+    <value>Commande échouée</value>
+  </data>
+  <data name="folders.Text" xml:space="preserve">
+    <value>Dossiers</value>
+  </data>
+  <data name="storeconfiguration.Text" xml:space="preserve">
+    <value>Configuration de la boutique</value>
+  </data>
+  <data name="countrydetails.Text" xml:space="preserve">
+    <value>Informations monétaires et géographiques</value>
+  </data>
+  <data name="merchantculture.Text" xml:space="preserve">
+    <value>Code pays du marchand</value>
+  </data>
+  <data name="currencycode.Text" xml:space="preserve">
+    <value>Code pays monétaire</value>
+  </data>
+  <data name="commoncountries.Text" xml:space="preserve">
+    <value>Pays communs</value>
+  </data>
+  <data name="selectedcountries.Text" xml:space="preserve">
+    <value>Ordre d'affichage (glisser/déposer pour changer l'ordre)</value>
+  </data>
+  <data name="othercountries.Text" xml:space="preserve">
+    <value>Autres pays</value>
+  </data>
+  <data name="checkall.Text" xml:space="preserve">
+    <value>Tout cocher</value>
   </data>
 </root>
