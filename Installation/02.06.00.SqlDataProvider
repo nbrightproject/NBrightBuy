@@ -16,12 +16,12 @@
 -------------------------------------------------------------------------------
 
 -- CREATE NBrightBuy
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
 	DROP TABLE {databaseOwner}[{objectQualifier}NBrightBuy]
 END
 
-if NOT exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
 
 
@@ -69,13 +69,13 @@ GO
 -- NOTE: if extra fields need orderby, they will need to be added + the trigger --
 -------------------------------------------------------------------------------
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
 	DROP TABLE {databaseOwner}[{objectQualifier}NBrightBuyIdx]
 END
 
 
-if NOT exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 BEGIN
 
 CREATE TABLE {databaseOwner}[{objectQualifier}NBrightBuyIdx](
@@ -119,7 +119,7 @@ GO
 -- merge XML structure in this table so we can return the data quick.          --
 ---------------------------------------------------------------------------------
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyLang]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyLang]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 DROP TABLE {databaseOwner}[{objectQualifier}NBrightBuyLang]
 GO
 
@@ -147,7 +147,7 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
 drop function {databaseOwner}[{objectQualifier}NBrightBuyLangMerge]
 GO
 
@@ -189,7 +189,7 @@ GO
 -------------------------------------------------------------------------------
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_CleanData]
 GO
 
@@ -215,7 +215,7 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Delete]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Delete]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_Delete]
 GO
 
@@ -256,7 +256,7 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_Update]
 GO
 
@@ -352,7 +352,7 @@ GO
 SET ANSI_NULLS ON 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_Get]
 GO
 
@@ -383,7 +383,7 @@ end
 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListCount]
 GO
 
@@ -445,7 +445,7 @@ GO
 
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]
 GO
 
@@ -536,7 +536,7 @@ GO
 
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]
 GO
 
@@ -659,7 +659,7 @@ end
 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetList]
 GO
 
@@ -704,7 +704,7 @@ SET ANSI_NULLS ON
 GO
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsers]
 GO
 
@@ -772,7 +772,7 @@ end
 GO
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsersCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsersCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUsersCount]
 GO
 
@@ -796,7 +796,7 @@ end
 
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetData]
 GO
 
@@ -822,7 +822,7 @@ begin
 end
 GO
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDataLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDataLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}[{objectQualifier}NBrightBuy_GetDataLang]
 GO
 
@@ -853,7 +853,7 @@ GO
 ----------         Triggers for the index table                    ------------
 -------------------------------------------------------------------------------
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Trigger_NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsTrigger') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Trigger_NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsTrigger') = 1)
 DROP TRIGGER {databaseOwner}[{objectQualifier}Trigger_NBrightBuyIdx]
 GO
 

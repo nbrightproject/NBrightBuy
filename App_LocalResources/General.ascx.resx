@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add</value>
@@ -916,7 +916,7 @@
     <value>Credit card</value>
   </data>
   <data name="manualpayment.Text" xml:space="preserve">
-    <value>Cheque or Transfer</value>
+    <value>Manual Payment</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
@@ -1017,9 +1017,6 @@
   <data name="MontlyRevenue.Text" xml:space="preserve">
     <value>Montly Revenue</value>
   </data>
-  <data name="manualpayment.Text" xml:space="preserve">
-    <value>Manual Payment</value>
-  </data>
   <data name="dashsummary.Text" xml:space="preserve">
     <value>Dashboard</value>
   </data>
@@ -1043,5 +1040,11 @@
   </data>
   <data name="productswithprop.Text" xml:space="preserve">
     <value>Products with this property</value>
+  </data>
+  <data name="cmdDelete.noText" xml:space="preserve">
+    <value>NOPP</value>
+  </data>
+  <data name="cmdDelete.yesText" xml:space="preserve">
+    <value>YEPPPP</value>
   </data>
 </root>

@@ -26,7 +26,7 @@
 -------------------------------------------------------------------------------
 
 
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]
 GO
 
@@ -127,7 +127,7 @@ GO
 
 
 /****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]    Script Date: 27/03/2015 11:31:23 ******/
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_MoveProductinCateogry]
 GO
 
@@ -201,7 +201,7 @@ END
 GO
 
 /****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]    Script Date: 27/03/2015 11:32:36 ******/
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangNoPage]
 GO
 
@@ -302,7 +302,7 @@ GO
 
 
 /****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]    Script Date: 27/03/2015 11:33:39 ******/
-if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetListLangPage]
 GO
 
