@@ -13,6 +13,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Mail;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -69,10 +70,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (_userInfo != null)
             {
-                UserController.ResetPassword(_userInfo, "");
+                _userInfo.PasswordResetExpiration = DateTime.Now.AddMinutes(1200);
+                _userInfo.PasswordResetToken = Guid.NewGuid();
                 _userInfo.Membership.UpdatePassword = true;
-                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
-                DotNetNuke.Services.Mail.Mail.SendMail(_userInfo, DotNetNuke.Services.Mail.MessageType.PasswordReminder, (PortalSettings)HttpContext.Current.Items["PortalSettings"]);
+                UserController.UpdateUser(_userInfo.PortalID, _userInfo);
+                var portalSettings = PortalController.GetCurrentPortalSettings();
+                Mail.SendMail(_userInfo, MessageType.PasswordReminder, portalSettings);               
             }
         }
 
