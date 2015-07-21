@@ -59,6 +59,9 @@
     </Compile>
     <Compile Include="DiscountCodesData.cs" />
     <Compile Include="PromoProvider.cs" />
+    <Compile Include="PromoXmlConnector.ashx.cs">
+      <DependentUpon>PromoXmlConnector.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +78,9 @@
     <Content Include="Themes\config\default\discountcodesbody.html" />
     <Content Include="Themes\config\default\discountcodesfooter.html" />
     <Content Include="Themes\config\default\discountcodesheader.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PromoXmlConnector.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
