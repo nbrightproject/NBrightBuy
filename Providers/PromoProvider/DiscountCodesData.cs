@@ -15,7 +15,7 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
 
-namespace Nevoweb.DNN.NBrightBuy.Providers
+namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 {
     public class DiscountCodesData
     {

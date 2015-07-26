@@ -1,0 +1,102 @@
+﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightRazorTemplate/App_LocalResources/" />]
+
+    <input id="itemid" type="hidden" value="@Model.ItemID" ></input>
+    <input id="moduleid" type="hidden" value="@Model.ModuleId" ></input>
+    <input id="lang" type="hidden" value="@Model.Lang" ></input>
+    <input id="xmlupdateimages" type="hidden" value=""></input>
+    <input id="xmlupdatedocs" type="hidden" value=""></input>
+
+[<tag id="editlangauge" type="cultureselect" cssclass="flag-list" cssclassli="selecteditlanguage"/>]
+    <div class="buttons editdata">
+        <button id="return" type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-triangle-left"></span> [<tag type="valueof" resourcekey="View.return"/>]</button>
+        <button id="delete" type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span> [<tag type="valueof" resourcekey="View.delete"/>]</button>
+        <button id="savedata" type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-floppy-save"></span> [<tag type="valueof" resourcekey="View.save"/>]</button>
+    </div>
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box">
+
+            <div class="formrow">
+                <label>[<tag type="valueof" resourcekey="View.heading"/>]</label><img src='/Images/Flags/[<tag type='valueof' databind="lang" value=""/>].gif' width='16px' />
+                <div>@TextBox(Model,"genxml/lang/genxml/textbox/heading","class='form-control' maxlength='250' ")</div>
+            </div>
+            <div class="formrow">
+                <label>[<tag type="valueof" resourcekey="View.heading"/>]</label>
+                <div>@TextBox(Model,"genxml/textbox/heading2","class='form-control'") 
+            </div>
+            </div>
+            <div class="formrow">
+                <label>[<tag type="valueof" resourcekey="View.langtext"/>]</label><img src='/Images/Flags/[<tag type='valueof' databind="lang" value=""/>].gif' width='16px' />
+                <div><textarea rows="2" cols="20" id="textlangdata" class="form-control" update="lang" type="text" style="height:100px;">@Model.GetXmlProperty("genxml/lang/genxml/textbox/textlangdata")</textarea>
+                </div>
+            </div>
+            <div class="formrow">
+                <label>[<tag type="valueof" resourcekey="View.langtext"/>]</label>
+                <div><textarea rows="2" cols="20" id="textdata" class="form-control" update="save" type="text" style="height:100px;">@Model.GetXmlProperty("genxml/textbox/textdata")</textarea>
+                </div>
+            </div>
+            <div class="formrow">
+                @RichTextBox(Model,"genxml/textbox/ckeditor1","")
+            </div>
+            <div class="formrow">
+                
+
+            </div>
+            <div class="formrow">
+                @CheckBox(Model,"genxml/checkbox/lock","[<tag type='valueof' resourcekey='View.langtext'/>]","")
+            </div>
+            <div class="formrow">
+                @CheckBoxList(Model,"genxml/checkboxlist/countrycodelist2","1,2,3","AAA,BB,CCCC","")
+            </div>
+
+            <div class="formrow">
+                @DropDownList(Model,"genxml/dropdownlist/ddltest","1,2,3","AAA,BB,CCCC","")
+            </div>
+            <div class="formrow">
+                @RadioButtonList(Model,"genxml/radiobuttonlist/rbltest","1,2,3","AAA,BB,CCCC","")
+            </div>
+            
+            
+                        <div class="form-group">
+					    <div class="col-sm-12">
+
+					        <span class="btn btn-success imageupload-button">
+					            <i class="glyphicon glyphicon-plus"></i>
+					            <span>[<tag type="htmlof" resourcekey="View.addimages"/>]</span>
+					        </span>
+					        <div class="hiddenfile" style="display: none;">
+					            <input type="file" id="imageupload" name="images[[]]" multiple/>
+					        </div>
+                            <a class="btn btn-warning" id="undoimage" style="display: none;">[<tag type="htmlof" resourcekey="View.UndoButton"/>]</a>
+					    </div>
+					</div>
+					<div class="form-group">
+				        <div id="imagelist" class="col-sm-12">
+				        </div>
+					</div>
+
+                    <div class="form-group">
+					    <div class="col-sm-12">
+
+					        <span class="btn btn-success docupload-button">
+					            <i class="glyphicon glyphicon-plus"></i>
+					            <span>[<tag type="htmlof" resourcekey="View.adddocs"/>]</span>
+					        </span>
+					        <div class="hiddenfile" style="display: none;">
+					            <input type="file" id="docupload" name="docs[[]]" multiple/>
+					        </div>
+                            <a class="btn btn-warning" id="undodoc" style="display: none;">[<tag type="htmlof" resourcekey="View.UndoButton"/>]</a>
+					    </div>
+					</div>
+					<div class="form-group">
+				        <div id="doclist" class="col-sm-12">
+				        </div>
+					</div>
+
+
+
+        </div>
+    </div>
+</div>

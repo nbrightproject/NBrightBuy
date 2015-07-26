@@ -34,12 +34,6 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightCore">
-      <HintPath>..\..\..\..\..\..\..\..\Support\NBright\NBrightCore.dll</HintPath>
-    </Reference>
-    <Reference Include="NBrightDNN">
-      <HintPath>..\..\..\..\..\..\..\..\Support\NBright\NBrightDNN.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -65,22 +59,33 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NBrightBuy.csproj">
-      <Project>{8F850303-BEC5-4247-9126-1E58F1402205}</Project>
-      <Name>NBrightBuy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\DiscountCodes.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DiscountCodes.ascx" />
+    <Content Include="DiscountCodes.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Themes\config\default\discountcodesbody.html" />
-    <Content Include="Themes\config\default\discountcodesfooter.html" />
-    <Content Include="Themes\config\default\discountcodesheader.html" />
+    <Content Include="Themes\config\js\DiscountCodes.js" />
+    <None Include="Themes\config\default\discountcodefields.cshtml" />
+    <None Include="Themes\config\default\discountcodelist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PromoXmlConnector.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj">
+      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
+      <Name>NBrightCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj">
+      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
+      <Name>NBrightDNN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NBrightBuy.csproj">
+      <Project>{8f850303-bec5-4247-9126-1e58f1402205}</Project>
+      <Name>NBrightBuy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

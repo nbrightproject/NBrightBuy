@@ -28,7 +28,7 @@ using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
 
-namespace Nevoweb.DNN.NBrightBuy.Providers
+namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 {
 
     /// -----------------------------------------------------------------------------
@@ -54,20 +54,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
                 #region "load templates"
 
-                var t1 = "discountcodesheader.html";
                 var t2 = "discountcodesbody.html";
-                var t3 = "discountcodesfooter.html";
 
-
-                // Get Display Header
-                var rpDataHTempl = GetTemplateData(t1);
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
                 // Get Display Body
                 var rpDataTempl = GetTemplateData(t2);
                 rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Footer
-                var rpDataFTempl = GetTemplateData(t3);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
 
                 #endregion
 
@@ -104,18 +95,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         private void PageLoad()
         {
-            if (UserId > 0) // only logged in users can see data on this module.
-            {
-                var discountcodes = new DiscountCodesData(_ctrlkey);
-                rpData.DataSource = discountcodes.GetRuleList();
-                rpData.DataBind();
-                
-                // display header
-                base.DoDetail(rpDataH, discountcodes.Info);
-
-                // display footer
-                base.DoDetail(rpDataF);
-            }
+                base.DoDetail(rpData);
         }
 
         #endregion
@@ -129,25 +109,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
             switch (e.CommandName.ToLower())
             {
-                case "addnew":
-                    var discountcodes = new DiscountCodesData(_ctrlkey);
-                    discountcodes.AddNewRule();
-                    discountcodes.Save();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "delete":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var discountcodes2 = new DiscountCodesData(_ctrlkey);
-                        discountcodes2.RemoveRule(Convert.ToInt32(cArg));
-                        discountcodes2.Save();                        
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "saveall":
-                    Update();
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
                 case "cancel":
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -166,22 +127,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             templ = Utils.ReplaceUrlTokens(templ);
             return templ;
         }
-
-        private void Update()
-        {
-            var discountCodes = new DiscountCodesData(_ctrlkey);
-
-            discountCodes.Update(rpDataH);
-            discountCodes.UpdateRule(rpData);
-            discountCodes.Save();
-
-            if (StoreSettings.Current.DebugMode) discountCodes.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_discountcodes.xml");
-
-            //remove current setting from cache for reload
-            Utils.RemoveCache("NBrightBuyDiscountCodes" + PortalSettings.Current.PortalId.ToString(""));
-
-        }
-
 
 
 

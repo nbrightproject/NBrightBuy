@@ -1,10 +1,73 @@
-<tr>
-    <td width="200px">
-        [<tag id="index" type="hidden" value="" />] <!-- index in list for update: MUST BE INCLUDED FOR UPDATE-->
-        [<tag id="coderef" cssclass="form-control" type="textbox" Text="" />]
-    </td>
-    <td>[<tag id="description" cssclass="form-control" type="textbox" Text="" />]</td>
-    <td width="150px">[<tag id="amount" cssclass="form-control" type="textbox" Text="" />]</td>
-    <td width="150px">[<tag id="validuntil" cssclass="form-control" type="textbox" Text="" datatype="date" />]</td>
-    <td>[<tag id="cmdDelete" type="linkbutton" resourcekey="General.cmdDeleteIcon" commandname="delete" commandargument="ItemID" />]</td>
-</tr>
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/App_LocalResources/" />]
+
+<!-- Load these scripts to use nbrightajax functions -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/Themes/config/js/DiscountCodes.js"></script>
+
+<!-- div section to pass param data to the server side ajax functions -->
+<div id="selectparams">
+    [<tag type="currentculture"/>] <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
+    <input id="editlang" type="hidden" value="" ></input> <!-- culture code being edited -->
+    <input id="selecteditemid" type="hidden" value="" ></input> <!-- used as selected edit itemid -->
+    <input id="newitem" type="hidden" value="" ></input> <!-- used to hold "new" token to create new record -->
+    <input id="typecode" type="hidden" value="DISCOUNTCODE" ></input> <!-- used as selected edit itemid -->
+</div>
+
+<div id="nbsnotify"></div>
+<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+
+
+<div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
+	<div class="col-xs-9 col-sm-9">
+		<a href="#" class="show-sidebar">
+		  <i class="fa fa-bars"></i>
+		</a>
+		<div class="actionbuttonwrapper">
+        <button id="cmdsave" type="button" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdSaveButton"/>]</button>
+        <button id="addnew" type="button" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</button>
+	    </div>
+	</div>
+	<div class="col-xs-3 col-sm-3 top-panel-right">
+		[<tag type="selectlocalebutton" size="32"/>]
+	</div>
+</div>
+
+<br />
+
+<!-- div section to display ajax return -->
+<div class="row selectrelated">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span></span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
+						<div class="col-sm-3">
+							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
+						</div>
+						<div class="col-md-4">
+							<a class="btn btn-primary" href="#" id="selectsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
+						</div>
+					</div>
+					</div>
+						<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="editdata"></div>

@@ -19,7 +19,7 @@ using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Entities.Tabs;
 using Nevoweb.DNN.NBrightBuy.Components;
 
-namespace Nevoweb.DNN.NBrightBuy.Providers
+namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 {
     /// <summary>
     /// Summary description for XMLconnector
@@ -127,6 +127,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
 
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+                var typeCode = ajaxInfo.GetXmlProperty("genxml/hidden/typecode");
                 var newitem = ajaxInfo.GetXmlProperty("genxml/hidden/newitem");                
                 var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
@@ -141,22 +142,22 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (newitem == "new")
                 {
                     selecteditemid = "new"; // return list on new record
-                    AddNew(moduleid);
+                    AddNew(moduleid, typeCode);
                 }
 
-                var templateControlPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider");
+                var templateControl = "/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider";
 
                 if (Utils.IsNumeric(selecteditemid))
                 {
                     // do edit field data if a itemid has been selected
                     var obj = objCtrl.Get(Convert.ToInt32(selecteditemid), editlang);
-                    strOut = NBrightBuyUtils.RazorTemplRender("editfields.cshtml", Convert.ToInt32(moduleid), _lang + itemid + editlang + selecteditemid, obj, templateControlPath, _lang);
+                    strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "fields.cshtml", Convert.ToInt32(moduleid), _lang + itemid + editlang + selecteditemid, obj, templateControl, _lang);
                 }
                 else
                 {
                     // Return list of items
-                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), "PROMO", "", "", 0, 0, 0, 0, editlang);
-                    strOut = NBrightBuyUtils.RazorTemplRender("editlist.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControlPath, _lang);
+                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", "", 0, 0, 0, 0, editlang);
+                    strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "list.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControl, _lang);
                 }
 
                 return strOut;
@@ -169,14 +170,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         }
 
-        private String AddNew(String moduleid)
+        private String AddNew(String moduleid,String typeCode)
         {
             if (!Utils.IsNumeric(moduleid)) moduleid = "-2"; // -2 for razor
 
             var objCtrl = new NBrightBuyController();
             var nbi = new NBrightInfo(true);
             nbi.PortalId = PortalSettings.Current.PortalId;
-            nbi.TypeCode = "PROMO";
+            nbi.TypeCode = typeCode;
             nbi.ModuleId = Convert.ToInt32(moduleid);
             nbi.ItemID = -1;
             nbi.GUIDKey = "";
@@ -187,7 +188,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             {
                 var nbi2 = new NBrightInfo(true);
                 nbi2.PortalId = PortalSettings.Current.PortalId;
-                nbi2.TypeCode = "PROMOLANG";
+                nbi2.TypeCode = typeCode + "LANG";
                 nbi2.ModuleId = Convert.ToInt32(moduleid);
                 nbi2.ItemID = -1;
                 nbi2.Lang = lang;
