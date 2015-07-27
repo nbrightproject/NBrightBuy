@@ -85,9 +85,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     case "savedata":
                         strOut = SaveData(context);
                         break;
-                    case "selectlang":
-                        strOut = SaveData(context);
-                        break;
                 }
             }
 
@@ -138,25 +135,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
                 if (clearCache) NBrightBuyUtils.RemoveModCache(Convert.ToInt32(moduleid));
 
-
-                if (newitem == "new")
-                {
-                    selecteditemid = "new"; // return list on new record
-                    AddNew(moduleid, typeCode);
-                }
+                if (newitem == "new") selecteditemid = AddNew(moduleid, typeCode);
 
                 var templateControl = "/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider";
 
                 if (Utils.IsNumeric(selecteditemid))
                 {
                     // do edit field data if a itemid has been selected
-                    var obj = objCtrl.Get(Convert.ToInt32(selecteditemid), editlang);
+                    var obj = objCtrl.Get(Convert.ToInt32(selecteditemid), "",editlang);
                     strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "fields.cshtml", Convert.ToInt32(moduleid), _lang + itemid + editlang + selecteditemid, obj, templateControl, _lang);
                 }
                 else
                 {
                     // Return list of items
-                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", "", 0, 0, 0, 0, editlang);
+                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", " order by ModifiedDate desc", 0, 0, 0, 0, editlang);
                     strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "list.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControl, _lang);
                 }
 
@@ -213,11 +205,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
 
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
-                var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
-                var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
                 if (lang == "") lang = _lang;
-                if (!Utils.IsNumeric(moduleid)) moduleid = "-2"; // -2 for razor
 
                 if (Utils.IsNumeric(itemid))
                 {
@@ -236,7 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         nbi.UpdateAjax(strIn);
                         objCtrl.Update(nbi);
 
-                        NBrightBuyUtils.RemoveModCache(Convert.ToInt32(moduleid));
+                        NBrightBuyUtils.RemoveModCache(-2);
                         
                     }
                 }
@@ -258,20 +247,13 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
                 //get uploaded params
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
-                var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
-                var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
-                var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-                if (editlang == "") editlang = _lang;
-                if (!Utils.IsNumeric(moduleid)) moduleid = "-2"; // -2 for razor
-
                 if (Utils.IsNumeric(itemid))
                 {
                     // delete DB record
                     objCtrl.Delete(Convert.ToInt32(itemid));
 
-                    NBrightBuyUtils.RemoveModCache(Convert.ToInt32(moduleid));
+                    NBrightBuyUtils.RemoveModCache(-2);
 
                 }
                 return "";

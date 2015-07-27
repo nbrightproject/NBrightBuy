@@ -5,16 +5,16 @@
 			</hidden>
 			<textbox>
 				<ctrl>
-					<![CDATA[discountcodes]]>
+					<![CDATA[vouchers]]>
 				</ctrl>
 				<name>
-					<![CDATA[Discount Codes]]>
+					<![CDATA[Vouchers]]>
 				</name>
 				<icon>
 					<![CDATA[]]>
 				</icon>
 				<group>
-					<![CDATA[Admin]]>
+					<![CDATA[Promotions]]>
 				</group>
 				<path>
 					<![CDATA[/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/DiscountCodes.ascx]]>

@@ -126,6 +126,21 @@
   <data name="description.Text" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="percentage.Text" xml:space="preserve">
+    <value>Percentage (%)</value>
+  </data>
+  <data name="usage.Text" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="usagelimit.Text" xml:space="preserve">
+    <value>Usage Limit</value>
+  </data>
   <data name="validuntil.Text" xml:space="preserve">
     <value>Valid Until</value>
   </data>

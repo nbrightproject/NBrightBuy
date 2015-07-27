@@ -42,10 +42,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
-        /// override for Database Function
+        /// This method return the data item with the lang node merged id the lang param is past.  NOTE: The typecodeLang Param is redundant
         /// </summary>
         /// <param name="itemId"></param>
-        /// <param name="typeCodeLang"></param>
+        /// <param name="typeCodeLang">Redundant, set to ""</param>
         /// <param name="lang"></param>
         /// <returns></returns>
         public override NBrightInfo Get(int itemId, string typeCodeLang = "", string lang = "")

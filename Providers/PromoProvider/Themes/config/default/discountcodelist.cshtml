@@ -7,8 +7,15 @@
 			<div class="box-content">
 				<table class="table table-striped table-hover table-responsive">
 					<thead>
-						<tr>
-							<th style="width:100%"></th>
+						<tr style="width:100%">
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.code"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.name"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.amount"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.percentage"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.validuntil"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.usagelimit"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.usage"/>]</th>
+							<th>[<tag type="valueof" resourcekey="DiscountCodes.disabled"/>]</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -19,7 +26,14 @@
                         if (@x.ItemID > 0 )
                         {
                              <tr>
-                                 <td>@x.GetXmlProperty("genxml/lang/genxml/textbox/heading")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/code")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/name")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/amount")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/percentage")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/validuntil")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/usagelimit")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/usage")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/disabled")</td>
                                  <td><span class="edititem" itemid="@x.ItemID">[<tag type="htmlof" resourcekey="General.cmdEditIcon" />]</span></td>
                              </tr>
                          }
