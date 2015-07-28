@@ -1,42 +1,47 @@
-﻿[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/App_LocalResources/" />]
+﻿@using System.Web.UI.WebControls
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/App_LocalResources/" />]
 
     <input id="itemid" type="hidden" value="@Model.ItemID" ></input>
-    <input id="lang" type="hidden" value="@Model.Lang" ></input>
+    <input id="editlang" type="hidden" value="@Model.Lang" ></input>
+    [<tag type="currentculture"/>] <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
 
 <div class="col-xs-12 col-sm-12">
-        <div class="form-group">
-            <div class="col-sm-12">
-                <div class="col-sm-5">
-                    <label>[<tag type="valueof" resourcekey="DiscountCodes.code"/>]</label>
-                    @TextBox(Model, "genxml/textbox/code", "class='form-control'")
-                </div>
-                <div class="col-sm-7">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+                <label>[<tag type="valueof" resourcekey="DiscountCodes.code"/>]</label>
+                @TextBox(Model, "genxml/textbox/code", "class='form-control'")
+            </div>
+            <div class="col-sm-7">
                 <label>[<tag type="valueof" resourcekey="DiscountCodes.name"/>]</label>
                 @TextBox(Model, "genxml/textbox/name", "class='form-control'")
-                </div>
-                <div class="col-sm-12">
+            </div>
+            <div class="col-sm-12">
                 <label>[<tag type="valueof" resourcekey="DiscountCodes.description"/>]</label><img src='/Images/Flags/[<tag type='valueof' databind="lang" value=""/>].gif' width='16px' />
                 @TextBox(Model, "genxml/lang/genxml/textbox/description", "class='form-control' maxlength='250' ")
-                </div>
-                <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
                 <label>[<tag type="valueof" resourcekey="DiscountCodes.validuntil"/>]</label>
                 @TextBox(Model, "genxml/textbox/validuntil", "class='form-control' datatype='date'")
-                </div>
-                <div class="col-sm-2">
-                <label>[<tag type="valueof" resourcekey="DiscountCodes.amount"/>]</label>
-                @TextBox(Model, "genxml/textbox/amount", "class='form-control'")
-                </div>
-                <div class="col-sm-2">
-                <label>[<tag type="valueof" resourcekey="DiscountCodes.percentage"/>]</label>
-                @TextBox(Model, "genxml/textbox/percentage", "class='form-control'")
-                </div>
-                <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
                 <label>[<tag type="valueof" resourcekey="DiscountCodes.usagelimit"/>]</label>
                 @TextBox(Model, "genxml/textbox/usagelimit", "class='form-control'")
-                </div>
-                <div class="col-sm-12">
-                @CheckBox(Model, "genxml/checkbox/disabled", "[<tag type='valueof' resourcekey='DiscountCodes.disabled'/>]", "")
-                </div>
             </div>
         </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-12">
+            <div class="col-sm-2">
+                <label>@RadioButtonList(Model, "genxml/radiobuttonlist/amounttype", "[<tag type='valueof' resourcekey='DiscountCodes.typevalue'/>]", "[<tag type='valueof' resourcekey='DiscountCodes.typedata'/>]", "", "1")</label>
+                @TextBox(Model, "genxml/textbox/amount", "class='form-control' datatype='double'")
+            </div>
+            <div class="col-sm-2">
+                <br/>
+                @CheckBox(Model, "genxml/checkbox/disabled", "[<tag type='valueof' resourcekey='DiscountCodes.disabled'/>]", "")
+            </div>
+        </div>
+    </div>
+
 </div>

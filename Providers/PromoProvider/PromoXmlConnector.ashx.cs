@@ -70,12 +70,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     case "getdata":
                         strOut = GetData(context);
                         break;
-                    case "getselectlangdata":
-                        strOut = GetData(context);
-                        break;
-                    case "getlist":
-                        strOut = GetData(context);
-                        break;
                     case "addnew":
                         strOut = GetData(context, true);
                         break;
@@ -83,6 +77,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         strOut = DeleteData(context);
                         break;
                     case "savedata":
+                        strOut = SaveData(context);
+                        break;
+                    case "selectlang":
                         strOut = SaveData(context);
                         break;
                 }
@@ -148,7 +145,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 else
                 {
                     // Return list of items
-                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", " order by ModifiedDate desc", 0, 0, 0, 0, editlang);
+                    var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", " order by [XMLData].value('(genxml/textbox/validuntil)[1]','nvarchar(50)'), ModifiedDate desc", 0, 0, 0, 0, editlang);
                     strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "list.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControl, _lang);
                 }
 
@@ -172,7 +169,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             nbi.TypeCode = typeCode;
             nbi.ModuleId = Convert.ToInt32(moduleid);
             nbi.ItemID = -1;
-            nbi.GUIDKey = "";
+            nbi.SetXmlProperty("genxml/textbox/code", Utils.GetUniqueKey().ToUpper());
+            nbi.GUIDKey = nbi.GetXmlProperty("genxml/textbox/code");
             var itemId = objCtrl.Update(nbi);
             nbi.ItemID = itemId;
 
@@ -205,7 +203,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
 
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
-                var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+                var lang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
+                if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
                 if (lang == "") lang = _lang;
 
                 if (Utils.IsNumeric(itemid))
@@ -218,6 +217,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
                         // update record with ajax data
                         nbi.UpdateAjax(strIn);
+                        nbi.GUIDKey = nbi.GetXmlProperty("genxml/textbox/code");
                         objCtrl.Update(nbi);
 
                         // do langauge record

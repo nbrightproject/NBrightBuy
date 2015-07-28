@@ -123,6 +123,9 @@
   <data name="code.Text" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="deletemsg.Text" xml:space="preserve">
+    <value>Delete Record?</value>
+  </data>
   <data name="description.Text" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -134,6 +137,12 @@
   </data>
   <data name="percentage.Text" xml:space="preserve">
     <value>Percentage (%)</value>
+  </data>
+  <data name="typedata.Text" xml:space="preserve">
+    <value>Amount,Percentage (%)</value>
+  </data>
+  <data name="typevalue.Text" xml:space="preserve">
+    <value>1,2</value>
   </data>
   <data name="usage.Text" xml:space="preserve">
     <value>Usage</value>

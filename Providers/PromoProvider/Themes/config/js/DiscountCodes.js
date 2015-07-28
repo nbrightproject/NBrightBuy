@@ -5,7 +5,7 @@ $(document).ready(function () {
     $('#editlang').val($('#selectparams #lang').val());
 
     // get list of records via ajax:  NBrightRazorTemplate_nbxget({command}, {div of data passed to server}, {return html to this div} )
-    DiscountCodes_nbxget('getlist', '#selectparams', '#editdata');
+    DiscountCodes_nbxget('getdata', '#selectparams', '#editdata');
 
     $('.actionbuttonwrapper #cmdsave').click(function () {
         DiscountCodes_nbxget('savedata', '#editdata');
@@ -13,11 +13,13 @@ $(document).ready(function () {
 
     $('.actionbuttonwrapper #cmdreturn').click(function () {
         $('#selecteditemid').val(''); // clear sleecteditemid.        
-        DiscountCodes_nbxget('getlist', '#selectparams', '#editdata');
+        DiscountCodes_nbxget('getdata', '#selectparams', '#editdata');
     });
 
     $('.actionbuttonwrapper #cmddelete').click(function () {
-        DiscountCodes_nbxget('deleterecord', '#editdata');
+        if (confirm($('#deletemsg').val())) {
+            DiscountCodes_nbxget('deleterecord', '#editdata');            
+        }
     });
 
     $('#addnew').click(function () {
@@ -26,6 +28,12 @@ $(document).ready(function () {
         $('#selecteditemid').val('');
         DiscountCodes_nbxget('addnew', '#selectparams', '#editdata');
     });
+
+    $('.selecteditlanguage').click(function () {
+        $('#editlang').val($(this).attr('lang')); // alter lang after, so we get correct data record
+        DiscountCodes_nbxget('selectlang', '#editdata'); // do ajax call to save current edit form
+    });
+
 
 });
 
@@ -65,7 +73,9 @@ function DiscountCodes_nbxget(cmd, selformdiv, target, selformitemdiv, appendret
                 cmd: cmd
             });
         }
-        $('.processing').hide();
+        if (cmd == 'getdata') { // only hide on getdata
+            $('.processing').hide();
+        }
     });
 
     request.fail(function (jqXHR, textStatus) {
@@ -79,20 +89,30 @@ function DiscountCodes_nbxgetCompleted(e) {
 
     if (e.cmd == 'addnew') {
         $('#newitem').val(''); // clear item so if new was just created we don;t create another record
+        $('#selecteditemid').val($('#itemid').val()); // move the itemid into the selecteditemid, so page knows what itemid is being edited
+        Discountcodes_DetailButtons();
+        $('.processing').hide(); // hide on add, not hidden by return
     }
 
     if (e.cmd == 'deleterecord') {
         $('#selecteditemid').val(''); // clear sleecteditemid, it now doesn;t exists.
-        DiscountCodes_nbxget('getlist', '#selectparams', '#editdata');// relist after delete
+        DiscountCodes_nbxget('getdata', '#selectparams', '#editdata');// relist after delete
     }
 
     if (e.cmd == 'savedata') {
         $('#selecteditemid').val(''); // clear sleecteditemid.        
-        DiscountCodes_nbxget('getlist', '#selectparams', '#editdata');// relist after save
+        DiscountCodes_nbxget('getdata', '#selectparams', '#editdata');// relist after save
     }
 
-    if (e.cmd == 'getlist') {
-        // assign event on data return, otherwise the elemet will not be there, so it can't bind the event
+    if (e.cmd == 'selectlang') {
+        DiscountCodes_nbxget('getdata', '#selectparams', '#editdata'); // do ajax call to get edit form
+    }
+
+    // check if we are displaying a list or the detail and do processing.
+    if (($('#selecteditemid').val() != '') || (e.cmd == 'addnew')) {
+        Discountcodes_DetailButtons();
+    } else {
+        Discountcodes_ListButtons();
         $('.edititem').click(function () {
             $('.processing').show();
             $('#selecteditemid').val($(this).attr("itemid")); // assign the sleected itemid, so the server knows what item is being edited
@@ -102,5 +122,18 @@ function DiscountCodes_nbxgetCompleted(e) {
 
 }
 
+function Discountcodes_DetailButtons() {
+    $('#cmdsave').show();
+    $('#cmddelete').show();
+    $('#cmdreturn').show();
+    $('#addnew').hide();
+    $('input[datatype="date"]').datepicker(); // assign datepicker to any ajax loaded fields
+}
 
+function Discountcodes_ListButtons() {
+    $('#cmdsave').hide();
+    $('#cmddelete').hide();
+    $('#cmdreturn').hide();
+    $('#addnew').show();
+}
 

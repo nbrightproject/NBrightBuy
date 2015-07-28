@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -22,6 +23,7 @@ using NBrightCore.images;
 using NBrightCore.providers;
 using NBrightCore.render;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -284,6 +286,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     return true;
                 case "labelof":
                     CreateLabelOf(container, xmlNod);
+                    return true;
+                case "cultureselect":
+                    CreateEditCultureSelect(container, xmlNod);
                     return true;
                 default:
                     return false;
@@ -4811,6 +4816,50 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
         #endregion
+
+        #region "Literal tokens"
+
+        private void CreateEditCultureSelect(Control container, XmlNode xmlNod)
+        {
+            var cssclass = "";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["cssclass"] != null)) cssclass = xmlNod.Attributes["cssclass"].InnerText;
+            var cssclassli = "";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["cssclassli"] != null)) cssclassli = xmlNod.Attributes["cssclassli"].InnerText;
+            var size = "32";
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["size"] != null)) size = xmlNod.Attributes["size"].InnerText;
+            if (size != "16" & size != "24" & size != "32") size = "32";
+
+            var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+            var strOut = new StringBuilder("<ul class='" + cssclass + "'>");
+            foreach (var l in enabledlanguages)
+            {
+                strOut.Append("<li><a href='javascript:void(0)' lang='" + l.Value.Code + "' class='" + cssclassli + "'>");
+                strOut.Append("<img src='" + StoreSettings.NBrightBuyPath() + "/Themes/config/img/flags/" + size + "/" + l.Value.Code + ".png' alt='" + l.Value.NativeName + "' />");
+                strOut.Append("</a></li>");
+            }
+            strOut.Append("</ul>");
+
+            var lc = new Literal();
+            lc.Text = strOut.ToString();
+            lc.DataBinding += LiteralDataBinding;
+            container.Controls.Add(lc);
+        }
+
+        private void LiteralDataBinding(object sender, EventArgs e)
+        {
+            try
+            {
+                var lc = (Literal)sender;
+                lc.Visible = visibleStatus.Last();
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
+        #endregion
+
 
         #region "Functions"
 

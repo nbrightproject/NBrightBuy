@@ -227,6 +227,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double subtotaldealercost = 0;
             Double totaldealerbonus = 0;
             Double totaldiscount = 0;
+            Double totalsalediscount = 0;
             Double totaldealerdiscount = 0;
             Double totalqty = 0;
             Double totalweight = 0;
@@ -246,6 +247,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     subtotaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
                     totaldealerbonus += info.GetXmlPropertyDouble("genxml/totaldealerbonus");
                     totaldiscount += info.GetXmlPropertyDouble("genxml/totaldiscount");
+                    totalsalediscount += info.GetXmlPropertyDouble("genxml/salediscount");
                     totaldealerdiscount += info.GetXmlPropertyDouble("genxml/totaldealerdiscount");
                     totalqty += info.GetXmlPropertyDouble("genxml/qty");
                     totalweight += info.GetXmlPropertyDouble("genxml/totalweight"); 
@@ -257,19 +259,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulateItemList();
 
             // calculate totals
+
+            var promototaldiscount = (totaldiscount - totalsalediscount);
+
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalqty", totalqty);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalunitcost", totalunitcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, (subtotalcost + totalsalediscount), (subtotaldealercost + totalsalediscount)));
 
-            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
+            // calc any voucher amounts
+            var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
+            PurchaseInfo = DiscountCodeInterface.Instance().CalculateVoucherAmount(PortalId, UserId, PurchaseInfo, discountcode);
+            var voucherDiscount = PurchaseInfo.GetXmlPropertyDouble("genxml/voucherdiscount");
+            promototaldiscount += voucherDiscount;
+            totaldiscount += voucherDiscount;
+            totaldealerdiscount += voucherDiscount;
+
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
             var applieddiscount = AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount);
             PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", applieddiscount);
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", totaldealerbonus);
+
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/totalsalediscount", totalsalediscount);
 
 
             //add shipping
@@ -345,8 +360,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //cart full total
-            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax);
-            var total = (subtotalcost + shippingcost + appliedtax);
+            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax) - promototaldiscount;
+            if (dealertotal < 0) dealertotal = 0;
+            var total = (subtotalcost + shippingcost + appliedtax) - promototaldiscount;
+            if (total < 0) total = 0;
             PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
@@ -516,10 +533,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 cartItemInfo.SetXmlPropertyDouble("genxml/salediscount", totalsalediscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
 
+                // if product is on sale then we need to display the sale price in hte cart, and any discount codes don;t show at this cart item level, only on the order total.
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, totalcost, totaldealercost)); 
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, sellcost, dealercost)); 
 
-
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, totalcost, totaldealercost));
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, sellcost, dealercost));
 
                 // calc tax for item
                 var taxproviderkey = PurchaseInfo.GetXmlProperty("genxml/hidden/taxproviderkey");

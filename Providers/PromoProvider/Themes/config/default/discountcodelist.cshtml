@@ -11,7 +11,6 @@
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.code"/>]</th>
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.name"/>]</th>
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.amount"/>]</th>
-							<th>[<tag type="valueof" resourcekey="DiscountCodes.percentage"/>]</th>
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.validuntil"/>]</th>
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.usagelimit"/>]</th>
 							<th>[<tag type="valueof" resourcekey="DiscountCodes.usage"/>]</th>
@@ -28,12 +27,18 @@
                              <tr>
                                  <td>@x.GetXmlProperty("genxml/textbox/code")</td>
                                  <td>@x.GetXmlProperty("genxml/textbox/name")</td>
-                                 <td>@x.GetXmlProperty("genxml/textbox/amount")</td>
-                                 <td>@x.GetXmlProperty("genxml/textbox/percentage")</td>
+                                 <td>@x.GetXmlProperty("genxml/textbox/amount")
+                                     @if ((@x.GetXmlProperty("genxml/radiobuttonlist/amounttype") == "2"))
+                                     {
+                                        <span> %</span>
+                                     }
+                                 </td>
                                  <td>@x.GetXmlProperty("genxml/textbox/validuntil")</td>
                                  <td>@x.GetXmlProperty("genxml/textbox/usagelimit")</td>
                                  <td>@x.GetXmlProperty("genxml/textbox/usage")</td>
-                                 <td>@x.GetXmlProperty("genxml/textbox/disabled")</td>
+                                 <td>@{var i = "fa-circle"; if (x.GetXmlPropertyBool("genxml/checkbox/disabled")) { i = "fa-check-circle";}}
+                                     <i class="fa  @i fa-2x"></i>
+                                 </td>
                                  <td><span class="edititem" itemid="@x.ItemID">[<tag type="htmlof" resourcekey="General.cmdEditIcon" />]</span></td>
                              </tr>
                          }

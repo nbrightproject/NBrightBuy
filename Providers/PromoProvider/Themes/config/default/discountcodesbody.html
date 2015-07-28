@@ -1,3 +1,5 @@
+[Template:/DesktopModules/NBright/NBrightBuy/Themes/config/default/datepicker.html]
+
 [<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider/App_LocalResources/" />]
 
 <!-- Load these scripts to use nbrightajax functions -->
@@ -11,6 +13,7 @@
     <input id="selecteditemid" type="hidden" value="" ></input> <!-- used as selected edit itemid -->
     <input id="newitem" type="hidden" value="" ></input> <!-- used to hold "new" token to create new record -->
     <input id="typecode" type="hidden" value="DISCOUNTCODE" ></input> <!-- used as selected edit itemid -->
+    <input id="deletemsg" type="hidden" value="[<tag type="htmlof" resourcekey="DiscountCodes.deletemsg"/>]" ></input> <!-- used for prompt on delete -->
 </div>
 
 <div id="nbsnotify"></div>
@@ -23,15 +26,15 @@
 		  <i class="fa fa-bars"></i>
 		</a>
 		<div class="actionbuttonwrapper">
-            <button id="cmdsave" type="button" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdSaveButton"/>]</button>
-		    <button id="addnew" type="button" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</button>
-		    <button id="cmddelete" type="button" class="btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdDeleteButton"/>]</button>
-		    <button id="cmdreturn" type="button" class="btn btn-default">[<tag type="htmlof" resourcekey="General.cmdReturnButton"/>]</button>
+            <button id="cmdsave" type="button" class="btn btn-primary" style="display: none;">[<tag type="htmlof" resourcekey="General.cmdSaveButton"/>]</button>
+		    <button id="addnew" type="button" class="btn btn-primary" style="display: none;">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</button>
+		    <button id="cmddelete" type="button" class="btn btn-danger" style="display: none;">[<tag type="htmlof" resourcekey="General.cmdDeleteButton"/>]</button>
+		    <button id="cmdreturn" type="button" class="btn btn-default" style="display: none;">[<tag type="htmlof" resourcekey="General.cmdReturnButton"/>]</button>
 		</div>
 	</div>
-	<div class="col-xs-3 col-sm-3 top-panel-right">
-		[<tag type="selectlocalebutton" size="32"/>]
-	</div>
+    <div class="col-xs-3 col-sm-3 top-panel-right">
+        [<tag id="editlangauge" type="cultureselect" size="32" cssclass="editlanguage" cssclassli="selecteditlanguage"/>]
+    </div>
 </div>
 
 <br />
