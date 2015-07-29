@@ -4016,7 +4016,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     {
                         var li = new ListItem();
                         li.Text = ddl.Attributes["blank"];
-                        li.Value = "0";
+                        li.Value = "";
                         ddl.Items.Add(li);
                         ddl.Attributes.Remove("blank");
                     }
@@ -4162,7 +4162,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         {
                             var li = new ListItem();
                             li.Text = ddl.Attributes["blank"];
-                            li.Value = "0";
+                            li.Value = "";
                             ddl.Items.Add(li);
                             ddl.Attributes.Remove("blank");
                         }

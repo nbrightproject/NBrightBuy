@@ -255,6 +255,12 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .customerdiscount .onedigit{margin-right:10px}
 .customerdiscount #clientdiscountcodes{list-style: none outside none;margin: 0;padding: 0;}
 .customerdiscount .discountcode{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
+.customerdiscount #clientvouchercodes{list-style: none outside none;margin: 0;padding: 0;}
+
+.customervoucher a.removemodel{cursor:pointer;margin-right:0 !important;}
+.customervoucher .onedigit{margin-right:10px}
+.customervoucher #clientvouchercodes{list-style: none outside none;margin: 0;padding: 0;}
+.customervoucher .vouchercode{background:#FFFFFF;border: 1px dotted #D6D6D6;overflow: hidden;padding: 15px 0;position:relative}
 
 /* Address Book */
 #addresscards hr{margin:6px 0 4px;border-color:#bbbbbb;border-style:dashed;}

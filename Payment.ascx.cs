@@ -83,6 +83,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     rpDetailDisplay.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(ModCtrl.GetTemplateData(ModSettings, displayTempl, Utils.GetCurrentCulture(), DebugMode), ModSettings.Settings(), PortalSettings.HomeDirectory);
                     _templateHeader = (GenXmlTemplate) rpDetailDisplay.ItemTemplate;
 
+                    // we may have voucher discounts that give a zero appliedtotal, so process.
+                    var discountprov = DiscountCodeInterface.Instance();
+                    if (discountprov != null)
+                    {
+                        discountprov.UpdatePercentUsage(PortalId, UserId, _cartInfo.PurchaseInfo);
+                        discountprov.UpdateVoucherAmount(PortalId, UserId, _cartInfo.PurchaseInfo);
+                    }
+
                     #endregion
                 }
                 else

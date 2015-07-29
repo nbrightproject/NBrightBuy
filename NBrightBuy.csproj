@@ -405,9 +405,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="AddressAdmin.ascx" />
-    <Content Include="AddressAdminSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="AddressAdminSettings.ascx" />
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -691,7 +689,9 @@
     <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />

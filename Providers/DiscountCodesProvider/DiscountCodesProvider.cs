@@ -83,17 +83,23 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 var clientData = new ClientData(portalId, userId);
                 if (clientData.DiscountCodes.Count > 0)
                 {
-                    // do client level discount on total cart
-                    foreach (var d in clientData.DiscountCodes)
+                    var subtotal = cartInfo.GetXmlPropertyDouble("genxml/subtotal");
+                    // do client voucher discount on total cart
+                    foreach (var d in clientData.VoucherCodes)
                     {
                         var validutil = d.GetXmlProperty("genxml/textbox/validuntil");
                         var validutildate = DateTime.Today;
                         if (Utils.IsDate(validutil)) validutildate = Convert.ToDateTime(validutil);
                         if (d.GetXmlProperty("genxml/textbox/coderef").ToLower() == discountcode.ToLower() && validutildate >= DateTime.Today)
                         {
-                            var usageleft = d.GetXmlPropertyDouble("genxml/textbox/usageleft");
                             var amount = d.GetXmlPropertyDouble("genxml/textbox/amount");
-                            if (amount > 0 && usageleft > 0) discountcodeamt = amount;
+                            if (amount > 0)
+                            {
+                                if (subtotal >= amount)
+                                    discountcodeamt = amount;
+                                else
+                                    discountcodeamt = subtotal;
+                            }
                         }
                         if (discountcodeamt > 0) break;
                     }
@@ -169,7 +175,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override NBrightInfo UpdateVoucherAmount(int portalId, int userId, NBrightInfo purchaseInfo)
         {
-            // the "UpdatePercentUsage" function deals with the vouchers for DISCOUNTCODE, just left the interface here for compatiblity.
+            // the "UpdatePercentUsage" function deals with the vouchers for DISCOUNTCODE.
+
+            var discountcode = purchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
+            var voucherdiscount = purchaseInfo.GetXmlProperty("genxml/voucherdiscount");
+            if (userId > 0 && Utils.IsNumeric(voucherdiscount))
+            {
+                if (discountcode == "") return purchaseInfo;
+                var clientData = new ClientData(portalId, userId);
+                if (clientData.VoucherCodes.Count > 0)
+                {
+                    clientData.UpdateVoucherAmount(discountcode, Convert.ToDouble(voucherdiscount));
+                    clientData.Save();
+                }
+            }
             return purchaseInfo;
         }
     }

@@ -31,6 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public Boolean Exists;
 
         public List<NBrightInfo> DiscountCodes;
+        public List<NBrightInfo> VoucherCodes;
 
         public ClientData(int portalId, int userid)
         {
@@ -103,6 +104,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strXml = GenXmlFunctions.GetField(rpData, "xmlupdatediscountcodedata");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
             UpdateDiscountCodes(strXml);
+            strXml = GenXmlFunctions.GetField(rpData, "xmlupdatevouchercodedata");
+            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            UpdateVoucherCodes(strXml);
 
         }
 
@@ -203,6 +207,85 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DiscountCodes = GetEntityList("discountcodes");
         }
 
+        public void UpdateVoucherCodes(String xmlAjaxData)
+        {
+            var vouchercodesList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            // build xml for data records
+            var strXml = "<genxml><vouchercodes>";
+            foreach (var vouchercodesInfo in vouchercodesList)
+            {
+                strXml += vouchercodesInfo.XMLData;
+            }
+            strXml += "</vouchercodes></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/vouchercodes", "genxml");
+            VoucherCodes = GetEntityList("vouchercodes");
+
+            // update any new vouchers with starting voucher value
+            var upd = false;
+            foreach (var v in VoucherCodes)
+            {
+                if (v.GetXmlPropertyDouble("genxml/hidden/vouchervalue") == 0)
+                {
+                    v.SetXmlPropertyDouble("genxml/hidden/vouchervalue", v.GetXmlPropertyDouble("genxml/textbox/amount"));
+                    v.SetXmlPropertyDouble("genxml/hidden/amountused", "0");
+                    upd = true;
+                }
+            }
+            if (upd) UpdateVoucherCodeList(VoucherCodes);
+        }
+
+        public void UpdateVoucherAmount(String vouchercode,double amountapplied)
+        {
+            if (amountapplied > 0)
+            {
+                var upd = false;
+                foreach (var v in VoucherCodes)
+                {
+                    if (v.GetXmlProperty("genxml/textbox/coderef") == vouchercode)
+                    {
+                        var vouchervalue = v.GetXmlPropertyDouble("genxml/hidden/vouchervalue");
+                        var amount = v.GetXmlPropertyDouble("genxml/textbox/amount");
+                        v.SetXmlPropertyDouble("genxml/textbox/amount", (amount - amountapplied));
+                        v.SetXmlPropertyDouble("genxml/hidden/amountused", (vouchervalue - (amount - amountapplied)));
+                        upd = true;
+                    }
+                }
+                if (upd) UpdateVoucherCodeList(VoucherCodes);
+            }
+        }
+
+        public void UpdateVoucherCodeList(List<NBrightInfo> vouchercodesList)
+        {
+            // build xml for data records
+            var strXml = "<genxml><vouchercodes>";
+            foreach (var vouchercodesInfo in vouchercodesList)
+            {
+                strXml += vouchercodesInfo.XMLData;
+            }
+            strXml += "</vouchercodes></genxml>";
+
+            // replace models xml 
+            DataRecord.ReplaceXmlNode(strXml, "genxml/vouchercodes", "genxml");
+            VoucherCodes = GetEntityList("vouchercodes");
+        }
+
+        public void AddNewVoucherCode(String xmldata = "")
+        {
+            if (xmldata == "") xmldata = "<genxml><vouchercodes><genxml><textbox><coderef>" + Utils.GetUniqueKey().ToUpper() + "</coderef></textbox></genxml></vouchercodes></genxml>";
+            if (!xmldata.StartsWith("<genxml><vouchercodes>")) xmldata = "<genxml><vouchercodes>" + xmldata + "</vouchercodes></genxml>";
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/vouchercodes") == null)
+            {
+                DataRecord.AddXmlNode(xmldata, "genxml/vouchercodes", "genxml");
+            }
+            else
+            {
+                DataRecord.AddXmlNode(xmldata, "genxml/vouchercodes/genxml", "genxml/vouchercodes");
+            }
+            VoucherCodes = GetEntityList("vouchercodes");
+        }
+
 
     #endregion
 
@@ -259,6 +342,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.TypeCode = "CLIENT";
                 }
                 DiscountCodes = GetEntityList("discountcodes");
+                VoucherCodes = GetEntityList("vouchercodes");
 
             }
         }

@@ -12,11 +12,17 @@
         $('.pageactions div.box-content').toggle();
 
         $('.customerdiscount div.box-content').toggle();
+        $('.customervoucher div.box-content').toggle();
 
         nbxget('clientdiscountcodes', '#clientselectparams', '#clientdiscountcodes'); // load discounts
+        nbxget('clientvouchercodes', '#clientselectparams', '#clientvouchercodes'); // load discounts
 
         $('#clientdiscountcodes').change(function () {
             $('.removediscountcode').click(function () { removeelement($(this).parent().parent().parent().parent()); });
+            if (!Modernizr.inputtypes.date) $('input[[id*="validuntil"]]').datepicker();
+        });
+        $('#clientvouchercodes').change(function () {
+            $('.removevouchercode').click(function () { removeelement($(this).parent().parent().parent().parent()); });
             if (!Modernizr.inputtypes.date) $('input[[id*="validuntil"]]').datepicker();
         });
 
@@ -24,11 +30,17 @@
             $('input[[id*="addqty"]]').val($('input[[id*="txtadddiscountcodeqty"]]').val());
             nbxget('addclientdiscountcode', '#clientselectparams', '#clientdiscountcodes', null, 'true');
         });
+        $('#addvouchercode').click(function () {
+            $('input[[id*="addqty"]]').val($('input[[id*="txtaddvouchercodeqty"]]').val());
+            nbxget('addclientvouchercode', '#clientselectparams', '#clientvouchercodes', null, 'true');
+        });
 
         // save form with postback
         $('a[[id*="cmdSave"]]').click(function () {
             //move data to update postback field   
             $('input[[id*="xmlupdatediscountcodedata"]]').val($.fn.genxmlajaxitems('#clientdiscountcodes', '.discountcode'));
+            //move data to update postback field   
+            $('input[[id*="xmlupdatevouchercodedata"]]').val($.fn.genxmlajaxitems('#clientvouchercodes', '.vouchercode'));
         });
 
         function removeelement(elementtoberemoved) {
@@ -43,6 +55,7 @@
 
 <!-- postback fields to keep ajax populated data for update -->
 [<tag id="xmlupdatediscountcodedata" type="postback" value=""/>]
+[<tag id="xmlupdatevouchercodedata" type="postback" value=""/>]
 
         <!-- Required: id="clientselectparams" -->
 <div id="clientselectparams">
@@ -235,12 +248,42 @@
 	</div>
 </div>
 
+<div class="row customervoucher">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Voucher" />]</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+			    <div class="form-horizontal dnnForm">
+			        <div class="col-sm-12">
+			            <div class="form-group form-inline">
+			                <a class="btn btn-primary" id="addvouchercode">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+			                [<tag id="txtaddvouchercodeqty" cssclass="form-control onedigit text-center" type="textbox" maxlength="2" text="1" />]
+			            </div>
+			            <ul id="clientvouchercodes"></ul>
+			        </div>
+			    </div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row customerdiscount">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Discount" />] / [<tag type="valueof" resourcekey="General.Voucher" />]</span>
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Discount" />]</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"><i class="fa fa-chevron-down"></i>

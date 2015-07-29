@@ -214,10 +214,15 @@
         });
 
         $("#Form").submit(function (e) {
-            // switch of stage done here, so validation doesn't stop stage change working correctly.
-            if ($("input[[id*='currentcartstage']]").val() == "nextcartaddress") $("input[[id*='currentcartstage']]").val('cartsummary');
-            if ($("input[[id*='currentcartstage']]").val() == "prevcartaddress") $("input[[id*='currentcartstage']]").val('cartaddress');
-            $(".processing").show();
+            var validator = $("#Form").validate();
+            if (validator.form()) {
+                // switch of stage done here, so validation doesn't stop stage change working correctly.
+                if ($("input[[id*='currentcartstage']]").val() == "nextcartaddress") $("input[[id*='currentcartstage']]").val('cartsummary');
+                if ($("input[[id*='currentcartstage']]").val() == "prevcartaddress") $("input[[id*='currentcartstage']]").val('cartaddress');
+                $(".processing").show();
+            } else {
+                e.preventDefault();
+            }
         });
 
         $(".updatecart").mousedown(function (e) {
@@ -226,6 +231,7 @@
 
         // auto fire postback when the country dropdown is changed. 
         $("select[[id*='_Country_']]").change(function () {
+            $("input[[id*='currentcartstage']]").val('cartaddress');
             $(".updatecart").trigger("click");
         });
 

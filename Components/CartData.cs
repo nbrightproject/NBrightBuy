@@ -267,6 +267,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalunitcost", totalunitcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, (subtotalcost + totalsalediscount), (subtotaldealercost + totalsalediscount)));
 
             // calc any voucher amounts

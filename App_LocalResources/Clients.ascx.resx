@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdCreateOrder.Text" xml:space="preserve">
     <value>Create Order</value>
@@ -245,5 +245,11 @@
   </data>
   <data name="customerinfos.Text" xml:space="preserve">
     <value>Customer informations</value>
+  </data>
+  <data name="AmountUsed.Text" xml:space="preserve">
+    <value>Amount Used</value>
+  </data>
+  <data name="VoucherAmount.Text" xml:space="preserve">
+    <value>Voucher</value>
   </data>
 </root>

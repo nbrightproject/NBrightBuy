@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Web;
 using System.Xml;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore;
@@ -225,8 +226,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         nbi.UpdateAjax(strIn);
                         objCtrl.Update(nbi);
 
-                        NBrightBuyUtils.RemoveModCache(-2);
-                        
+                        DataCache.ClearCache(); // clear ALL cache, the usagelimit may need to be reset.
+
                     }
                 }
                 return "";
