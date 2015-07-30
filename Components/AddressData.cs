@@ -119,6 +119,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (_addressList.Count > index)
             {
                 _addressList[index].XMLData = xmlData;
+                var ddlregion = _addressList[index].GetXmlProperty("genxml/dropdownlist/region/@selectedtext");
+                if (ddlregion != "") _addressList[index].SetXmlProperty("genxml/textbox/region", ddlregion);
+                var ddlcountry = _addressList[index].GetXmlProperty("genxml/dropdownlist/country/@selectedtext");
+                if (ddlcountry != "") _addressList[index].SetXmlProperty("genxml/textbox/country", ddlcountry);
                 Save();
                 UpdateDnnProfile(_addressList[index]);
             }
@@ -219,6 +223,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     {
                         newAddr += s;                        
                     }
+                }
+            nodlist = nInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
+            if (nodlist != null)
+                foreach (XmlNode n in nodlist)
+                {
+                    var s = n.InnerText.Replace(" ", "").ToLower();
+                    newAddr += s;
                 }
             return newAddr;
         }

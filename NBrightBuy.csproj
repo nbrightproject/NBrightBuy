@@ -415,9 +415,7 @@
     </Content>
     <Content Include="PrintView.aspx" />
     <Content Include="ProductSearch.ascx" />
-    <Content Include="ProfileForm.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProfileForm.ascx" />
     <Content Include="ProfileFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

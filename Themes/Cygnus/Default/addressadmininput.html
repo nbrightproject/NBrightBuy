@@ -79,7 +79,10 @@
 
     <div class="formrow">
         [<tag id="cmdUpdateAddress" type="linkbutton" cssclass="primarybutton" resourcekey="General.Update" commandname="saveaddress" />]
-        [<tag id="canceleditaddress" type="linkbutton" cssclass="secondarybutton" resourcekey="General.cmdCancel" commandname="cancel" />]
+        [<tag id="canceleditaddress" type="linkbutton" cssclass="secondarybutton" resourcekey="General.cmdCancel" commandname="cancel"/>]
+        <span style="display: none;"> <!-- hide this button, it's only for update on country change -->
+        [<tag id="updateaddress" type="button" cssclass="primarybutton updateaddress" resourcekey="General.Update" commandname="updateaddress" />]
+        </span>
     </div>
     
     [<tag id="default" type="hidden" value="" />] <!-- Default flag for DNN profile link: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
@@ -98,6 +101,12 @@
             $("#addressinputform").hide();
             $("#checkoutselectaddress").show();
         });
+
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $(".updateaddress").trigger("click");
+        });
+
 
         //if we have a addressid in the url, the we are editing an address.
         if ('[Url:addressid]' != '') {

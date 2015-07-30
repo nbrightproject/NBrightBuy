@@ -87,7 +87,7 @@
 <!--[<tag id="chkTerms" type="checkbox" resourcekey='ProfileForm.txtTerms' />]
 [<tag id="captcha" type="dnn:captcha" captchawidth="130" captchaheight="40"  />]-->
 
-[<tag id="cmdUpdateProfile" type="linkbutton" resourcekey="General.Update" commandname="saveprofile" cssclass="primarybutton" />]
+[<tag id="cmdUpdateProfile" type="button" resourcekey="General.Update" commandname="saveprofile" cssclass="primarybutton updateprofile" />]
 
 
 </div>
@@ -100,6 +100,11 @@
 
 <script>
     $(document).ready(function () {
+
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $(".updateprofile").trigger("click");
+        });
 
         $('.jqsubmitbutton').click(function (e) {
             if (!$("input[[id*='chkTerms']]").is(":checked")) {

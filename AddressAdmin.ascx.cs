@@ -163,6 +163,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
             switch (e.CommandName.ToLower())
             {
+                case "updateaddress":
+                    _addressData.AddAddress(rpAddr);
+                    param[0] = "addressid=" + Utils.RequestParam(Context, "addressid");
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
                 case "saveaddress":
                     _addressData.AddAddress(rpAddr);
                     var addrid = Utils.RequestParam(Context, "addressid");
