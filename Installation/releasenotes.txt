@@ -1,19 +1,7 @@
 ******************************************
-**** Release note NBrightStore v2.6.0 ****
+**** Release note NBrightStore v3.1.0 ****
 ******************************************
 
-Install Package : NBrightStore_02.06.00_Install_Beta1.zip 
-
-NBrightBuy v2.6.0
-NBrightCore v1.0.2
-NBrightDNN c2.0.2
-
-
-NOTES:
-
-This release is counted as code stable, but the default Cygnus templates are NOT completed.
-
-GIT Branch:  https://nbrightbuy.codeplex.com/SourceControl/latest   (master) 
 
 
 
