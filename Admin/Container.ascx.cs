@@ -96,13 +96,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private String GetControlPath(String ctrl)
         {
             var pluginData = new PluginData(PortalId);
-
-            var nod = pluginData.Info.XMLDoc.SelectSingleNode("genxml/plugin/genxml[textbox/ctrl='" + ctrl + "']/textbox/path");
-            if (nod != null)
-            {
-                return nod.InnerText;
-            }
-            return "";
+            var p = pluginData.GetPluginByCtrl(ctrl);
+            return p.GetXmlProperty("genxml/textbox/path");
         }
 
     }
