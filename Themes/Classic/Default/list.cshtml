@@ -1,0 +1,46 @@
+@using NBrightDNN
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@foreach (NBrightInfo x in Model)
+{
+
+
+    <div class="product" style="width: [Settings:classicitemwidth]px; height: [Settings:classicitemheight]; margin-bottom: [Settings:classicitembottommargin]px"><!-- Product container -->
+
+
+        <div class="productimg" style="width: 294px; height: [Settings:classicitemimagecontainerheight]">
+
+            <div class="productimg-overlay">
+
+                <!-- Add to favorites buttons -->
+                <span [<tag type="if" function="settings" key="enablefavorites" testvalue="True" displayelse="style='display:none;'"/>]>
+                <a class="wishlistadd" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId"/>]">[<tag type="htmlof" resourcekey="ProductView.wishlistaddicon-lg"/>]</a>
+                <a class="wishlistremove" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId"/>]" style="display:none;">[<tag type="htmlof" resourcekey="ProductView.wishlistremoveicon-lg"/>]</a>
+                </span>
+
+            <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+
+                
+                <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="label" resourcekey="ProductView.viewicon-lg"/>]</a>
+            </div>
+
+            @{
+                var w = "[Settings:classicthumbnailwidth]";
+                var h = "[Settings:classicthumbnailheight]";                
+            }
+            <div class="image" style="height: [Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="@ProductImage(x)">
+            </div>
+        </div>
+
+        <div class="description">
+            <h1><a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">@ProductName(x)</a>
+            </h1>
+
+        [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton entryurl" commandname="addtobasket" commandargument="ItemID"/>]
+
+        </div>
+
+
+    </div>
+}

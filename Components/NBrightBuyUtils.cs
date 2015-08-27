@@ -24,6 +24,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
+using NBrightBuy.render;
 using NBrightCore.TemplateEngine;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -1237,44 +1238,73 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Razor"
 
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String lang)
+        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String) GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, "config", StoreSettings.Current.Settings(), lang);
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, StoreSettings.Current.Settings(), lang);
                 if (razorTempl != "")
                 {
                     if (!objList.Any()) objList.Add(new NBrightInfo(true));
                     razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
-                    razorTempl = RazorUtils.RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    razorTempl = RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
                 }
             }
             return razorTempl;
         }
 
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String lang)
+        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String) GetModCache(cachekey);
             if (razorTempl == null)
             {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, "config", StoreSettings.Current.Settings(), lang);
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, StoreSettings.Current.Settings(), lang);
                 if (razorTempl != "")
                 {
                     if (obj == null) obj = new NBrightInfo(true);
                     razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
-                    razorTempl = RazorUtils.RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    razorTempl = RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
                 }
             }
             return razorTempl;
+        }
+
+        public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
+        {
+            // do razor test
+            var config = new TemplateServiceConfiguration();
+            config.Debug = debugMode;
+            config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+            var service = RazorEngineService.Create(config);
+            Engine.Razor = service;
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            return result;
+        }
+
+        public static String RazorRender(List<Object> infoList, String razorTempl, String templateKey, Boolean debugMode = false)
+        {
+            // do razor test
+            if (debugMode)
+            {
+                var config = new TemplateServiceConfiguration();
+                config.Debug = true;
+                config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+                var service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+            }
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
+            return result;
         }
 
         #endregion

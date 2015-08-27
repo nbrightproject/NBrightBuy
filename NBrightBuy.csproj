@@ -345,6 +345,7 @@
     <Compile Include="ProductView.ascx.designer.cs">
       <DependentUpon>ProductView.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="render\NBrightBuyRazorTokens.cs" />
     <Compile Include="XmlConnector.ashx.cs">
       <DependentUpon>XmlConnector.ashx</DependentUpon>
     </Compile>
@@ -442,6 +443,7 @@
     <Content Include="Themes\Classic\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\Classic\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
+    <None Include="Themes\Classic\Default\list.cshtml" />
     <Content Include="Themes\Classic\Default\detail.html" />
     <Content Include="Themes\Classic\Default\detailfooter.html" />
     <Content Include="Themes\Classic\Default\detailheader.html" />

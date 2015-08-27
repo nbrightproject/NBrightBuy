@@ -123,8 +123,32 @@
   <data name="code.Text" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="deletemsg.Text" xml:space="preserve">
+    <value>Supprimer entrée?</value>
+  </data>
   <data name="description.Text" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="disabled.Text" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="percentage.Text" xml:space="preserve">
+    <value>Pourcentage (%)</value>
+  </data>
+  <data name="typedata.Text" xml:space="preserve">
+    <value>Montant,Pourcentage (%)</value>
+  </data>
+  <data name="typevalue.Text" xml:space="preserve">
+    <value>1,2</value>
+  </data>
+  <data name="usage.Text" xml:space="preserve">
+    <value>Utilisation</value>
+  </data>
+  <data name="usagelimit.Text" xml:space="preserve">
+    <value>Limite nombre d'utilisations</value>
   </data>
   <data name="validuntil.Text" xml:space="preserve">
     <value>Valide jusqu'à</value>

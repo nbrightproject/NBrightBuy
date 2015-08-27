@@ -18,6 +18,8 @@ using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using NBrightCore.images;
 
@@ -238,6 +240,17 @@ namespace Nevoweb.DNN.NBrightBuy
                         UpdateProductImages(context);
                         strOut = GetProductImages(context);
                     }
+                    break;
+                case "addtobasket":
+                        AddToBasket(context);
+                    break;
+                case "addalltobasket":
+                    break;
+                case "addcookietobasket":
+                    break;
+                case "docdownload":
+                    break;
+                case "printproduct":
                     break;
             }
 
@@ -1413,7 +1426,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
-
         #region "clients"
 
         private String GetClientDiscountCodes(HttpContext context)
@@ -1595,6 +1607,40 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
         #endregion
+
+        #region "Front Office Actions"
+
+        private string AddToBasket(HttpContext context)
+        {
+            try
+            {
+                var strOut = "";
+                var settings = GetAjaxFields(context);
+
+                if (settings.ContainsKey("productid"))
+                {
+                    if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+                    //var currentcart = new CartData(Convert.ToInt16(settings["PortalId"]));
+                    //currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
+                    //currentcart.Save(StoreSettings.Current.DebugMode);
+                    //param[3] = "addcart=1";
+                    //Response.Redirect(Globals.NavigateURL(rtnTabId, "", param), true);
+
+
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        #endregion
+
 
         #region "functions"
 

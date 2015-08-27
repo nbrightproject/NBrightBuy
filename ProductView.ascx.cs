@@ -63,6 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _print = "";
         private String _printtemplate = "";
         private String _guidkey = "";
+        private Boolean _razortemplate = false;
         #region Event Handlers
 
 
@@ -145,9 +146,17 @@ namespace Nevoweb.DNN.NBrightBuy
                     _templF = ModSettings.Get("txtdisplayfooter");
                 }
 
+                if (_templD.ToLower().EndsWith(".cshtml")) _razortemplate = true; 
 
                 #endregion
 
+                if (_razortemplate)
+                {
+                    
+                }
+                else
+                {
+                    
 
                 // Get Display Header
                 var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
@@ -201,6 +210,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 rpDataF.ItemTemplate = gXml;
 
+                }
 
             }
             catch (Exception exc)
@@ -264,14 +274,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     DisplayDataEntryRepeater(_eid);
-                    
+
                 }
                 else
                 {
+
+
+                    #region "do standard nbright template - Depricated"
+
                     #region "Order BY"
+
                     // get orderby from header if it's there
                     var cachekey = "GetSqlOrderBy*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    _strOrder = (String)Utils.GetCache(cachekey);
+                    _strOrder = (String) Utils.GetCache(cachekey);
                     if (_strOrder == null || StoreSettings.Current.DebugMode)
                     {
                         _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH);
@@ -280,14 +295,17 @@ namespace Nevoweb.DNN.NBrightBuy
                     //Default orderby if not set
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
                     // NOTE: This setting may be overwritten by the navigatedata class in the filter setup
+
                     #endregion
 
                     #region "Get Paging setup"
+
                     //See if we have a pagesize, uses the "searchpagesize" tag token.
                     // : This can be overwritten by the cookie value if we need user selection of pagesize.
                     CtrlPaging.Visible = false;
 
                     #region "Get pagesize, from best place"
+
                     var pageSize = 0;
                     if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
                     if (!Utils.IsNumeric(pageSize) && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
@@ -302,6 +320,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     if (pageSize > 0) CtrlPaging.Visible = true;
                     _navigationdata.PageSize = pageSize.ToString("");
+
                     #endregion
 
                     var pageNumber = 1;
@@ -320,36 +339,36 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #region "Get filter setup"
 
-                        // check the display header to see if we have a sqlfilter defined.
-                        var strFilter = "";
-                        cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
-                        var strHeaderFilter = (String)Utils.GetCache(cachekey);
-                        if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
-                        {
-                            strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
-                        }
-                        
-                        // filter mode and will persist past category selection.
-                        if ((_catid == "" && _catname == ""))
-                        {
-                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                    // check the display header to see if we have a sqlfilter defined.
+                    var strFilter = "";
+                    cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    var strHeaderFilter = (String) Utils.GetCache(cachekey);
+                    if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
+                    {
+                        strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                    }
 
-                            // if navdata is not deleted then get filter from navdata, created by productsearch module.
-                            strFilter = _navigationdata.Criteria;
-                            if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
-                            if (!String.IsNullOrEmpty(_navigationdata.OrderBy)) _strOrder = _navigationdata.OrderBy;
+                    // filter mode and will persist past category selection.
+                    if ((_catid == "" && _catname == ""))
+                    {
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
 
-                            if (_navigationdata.Mode.ToLower() =="s") _navigationdata.ResetSearch(); // single search so clear after
-                        }
-                        else
-                        {
-                            _navigationdata.ResetSearch();
+                        // if navdata is not deleted then get filter from navdata, created by productsearch module.
+                        strFilter = _navigationdata.Criteria;
+                        if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
+                        if (!String.IsNullOrEmpty(_navigationdata.OrderBy)) _strOrder = _navigationdata.OrderBy;
 
-                            // We have a category selected (in url), so overwrite categoryid navigationdata.
-                            // This allows the return to the same category after a returning from a entry view.
-                            _navigationdata.CategoryId = _catid;
-                            strFilter = strHeaderFilter;
-                        }
+                        if (_navigationdata.Mode.ToLower() == "s") _navigationdata.ResetSearch(); // single search so clear after
+                    }
+                    else
+                    {
+                        _navigationdata.ResetSearch();
+
+                        // We have a category selected (in url), so overwrite categoryid navigationdata.
+                        // This allows the return to the same category after a returning from a entry view.
+                        _navigationdata.CategoryId = _catid;
+                        strFilter = strHeaderFilter;
+                    }
 
                     #endregion
 
@@ -382,7 +401,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             {
                                 _catid = defcatid;
                             }
-                        }                        
+                        }
                     }
 
                     //check if we are display categories 
@@ -414,7 +433,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                     }
                                     else
                                     {
-                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId); 
+                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
                                     }
 
                                     try
@@ -422,8 +441,8 @@ namespace Nevoweb.DNN.NBrightBuy
                                         if (redirecturl != "")
                                         {
                                             Response.Redirect(redirecturl, false);
-                                            Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
-                                            Response.End();                                            
+                                            Response.StatusCode = (int) System.Net.HttpStatusCode.MovedPermanently;
+                                            Response.End();
                                         }
                                     }
                                     catch (Exception)
@@ -490,8 +509,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
 
                     #endregion
-                        
+
                     #region "Apply provider product filter"
+
                     // Special filtering can be done, by using the ProductFilter interface.
                     var productfilterkey = "";
                     if (_templateHeader != null) productfilterkey = _templateHeader.GetHiddenFieldValue("providerfilterkey");
@@ -500,6 +520,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         var provfilter = FilterInterface.Instance(productfilterkey);
                         if (provfilter != null) strFilter = provfilter.GetFilter(strFilter, _navigationdata, ModSettings, Context);
                     }
+
                     #endregion
 
                     #region "itemlists (wishlist)"
@@ -509,20 +530,20 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (_itemListName != "")
                     {
                         var cw = new ItemListData(_itemListName);
-                            if (cw.Exists && cw.ItemCount > 0)
+                        if (cw.Exists && cw.ItemCount > 0)
+                        {
+                            strFilter = " and (";
+                            foreach (var i in cw.GetItemList())
                             {
-                                strFilter = " and (";
-                                foreach (var i in cw.GetItemList())
-                                {
-                                    strFilter += " NB1.itemid = '" + i + "' or";
-                                }
-                                strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                                strFilter += " NB1.itemid = '" + i + "' or";
                             }
-                            else
-                            {
-                                //no data in list so select false itemid to stop anything displaying
-                                strFilter += " and (NB1.itemid = '-1') ";
-                            }
+                            strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                        }
+                        else
+                        {
+                            //no data in list so select false itemid to stop anything displaying
+                            strFilter += " and (NB1.itemid = '-1') ";
+                        }
                     }
 
                     #endregion
@@ -534,7 +555,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
 
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
-                    NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey,1);
+                    NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
 
                     strFilter += " and (NB3.Visible = 1) "; // get only visible products
 
@@ -546,8 +567,25 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
 
                     var l = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-                    rpData.DataSource = l;
-                    rpData.DataBind();
+
+                    if (_razortemplate)
+                    {
+                        #region "do razor template"
+
+                        var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture());
+                        var lit = new Literal();
+                        lit.Text = strOut;
+                        phData.Controls.Add(lit);
+
+                        #endregion
+
+                    }
+                    else
+                    {
+                        rpData.DataSource = l;
+                        rpData.DataBind();
+                    }
+
 
                     if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 
@@ -561,12 +599,14 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // display header (Do header after the data return so the productcount works)
                     if (objCat == null)
-                        base.DoDetail(rpDataH,ModuleId);
+                        base.DoDetail(rpDataH, ModuleId);
                     else
                     {
                         if (StoreSettings.Current.DebugModeFileOut) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
                         DoDetail(rpDataH, objCat);
                     }
+
+                    #endregion
 
                 }
             }
