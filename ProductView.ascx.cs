@@ -212,6 +212,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 }
 
+                // set current categoryid into the storesettings so razor template can use it.
+                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                var moduleKey = ModSettings.Get("modulekey");
+                var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalId, Request, 0, ModSettings.Settings(), moduleKey);
+                if (objCInfo != null) StoreSettings.Current.ActiveCatId = objCInfo.categoryid;
             }
             catch (Exception exc)
             {
@@ -572,7 +577,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         #region "do razor template"
 
-                        var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture());
+                        var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         var lit = new Literal();
                         lit.Text = strOut;
                         phData.Controls.Add(lit);

@@ -1,6 +1,34 @@
+@using System.Web.UI.WebControls
 @using NBrightDNN
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@AddMetaData("searchpagesize", "[Settings:pagesize]")
+
+@AddMetaData("orderby", "NB3.FromPrice")
+
+@AddMetaData("orderby0", "NB3.ProductRef")
+@AddMetaData("orderby1", "NB3.ProductName")
+@AddMetaData("orderby2", "NB3.Manufacturer")
+@AddMetaData("orderby3", "NB3.FromPrice")
+@AddMetaData("orderby4", "NB3.FromPrice DESC")
+@AddMetaData("orderby5", "NB3.Qty")
+
+<!-- Product List header -->
+
+<div class="categorybreadcrumbs">@CategoryBreadCrumb(true)</div>
+
+<div class="nbs">
+
+<!-- Show category details -->
+<div class="categorydetails">
+<h1>@Category("categoryname")</h1>
+</div>
+
+<div id="listwrapper" class="productlist">
+
+
+<!-- Product List Body -->
 
 @foreach (NBrightInfo x in Model)
 {
@@ -14,33 +42,61 @@
             <div class="productimg-overlay">
 
                 <!-- Add to favorites buttons -->
-                <span [<tag type="if" function="settings" key="enablefavorites" testvalue="True" displayelse="style='display:none;'"/>]>
-                <a class="wishlistadd" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId"/>]">[<tag type="htmlof" resourcekey="ProductView.wishlistaddicon-lg"/>]</a>
-                <a class="wishlistremove" listname="nbsfavorites0" itemid="[<tag type="valueof" databind="ItemId"/>]" style="display:none;">[<tag type="htmlof" resourcekey="ProductView.wishlistremoveicon-lg"/>]</a>
-                </span>
+                @if ("[Settings:enablefavorites]" == "True")
+                {
+                    <span>
+                    <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                    <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display:none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                    </span>                    
+                }
 
             <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
 
                 
-                <a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">[<tag type="label" resourcekey="ProductView.viewicon-lg"/>]</a>
+                <a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ResourceKey("ProductView.viewicon-lg")</a>
             </div>
 
-            @{
-                var w = "[Settings:classicthumbnailwidth]";
-                var h = "[Settings:classicthumbnailheight]";                
-            }
-            <div class="image" style="height: [Settings:classicitemimagecontainerheight]"><img title="[<tag type='summary' />]" src="@ProductImage(x)">
-            </div>
+            <div class="image" style="height: [Settings:classicitemimagecontainerheight]"><img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x,"[Settings:classicthumbnailwidth]","[Settings:classicthumbnailheight]")"></div>
         </div>
 
         <div class="description">
-            <h1><a href="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]">@ProductName(x)</a>
-            </h1>
-
-        [<tag type="linkbutton" resourcekey="ProductView.addtobasket" cssclass="classicbutton entryurl" commandname="addtobasket" commandargument="ItemID"/>]
-
+            <h1><a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ProductName(x)</a></h1>
         </div>
 
 
     </div>
 }
+
+<!-- Product List footer -->
+
+</div>
+
+</div>
+
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+var $container = $('.productlist').masonry({
+  columnWidth: [Settings:classicitemwidth], // List item width - Can also use CSS width of first list item
+  itemSelector: '.product',
+  gutter: [Settings:classicitemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+  isOriginLeft: true, // Build from right to left if false
+  isOriginTop: true, // Build from bottom to top if false
+});
+
+});
+
+// Detect Touch Device
+function isTouch() {
+ return (('ontouchstart' in window)
+      || (navigator.MaxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0));
+}
+
+if (isTouch()) {
+	$('.productimg').addClass("productimgtouch");
+}
+
+</script>

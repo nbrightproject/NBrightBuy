@@ -215,52 +215,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public GroupCategoryData GetCurrentCategoryData(int portalId, System.Web.HttpRequest request, int entryId = 0, Dictionary<string, string> settings = null, String targetModuleKey = "")
         {
             var defcatid = 0;
-            var qrycatid = Utils.RequestQueryStringParam(request, "catid");
-            if (qrycatid == "")
-            {
-                var qrycatref = Utils.RequestQueryStringParam(request, "catref");
-                if (qrycatref != "")
-                {
-                    var catrefData = GetCategoryByRef(portalId, qrycatref);
-                    if (catrefData != null) qrycatid = catrefData.categoryid.ToString("");
-                }                
-            }
 
+            var categoryid = NBrightBuyUtils.GetCategoryIdFromUrl(portalId, request);
 
             // always use the catid in url if we have no target module
-            if (Utils.IsNumeric(qrycatid) && targetModuleKey == "") return GetCategory(Convert.ToInt32(qrycatid));
+            if ((categoryid > 0) && targetModuleKey == "") return GetCategory(categoryid);
 
             if (targetModuleKey != "")
             {
                 var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
                 // always use the catid in url if we have no navigation categoryid for the target module.
-                if (Utils.IsNumeric(qrycatid) && defcatid == 0) return GetCategory(Convert.ToInt32(qrycatid));
+                if ((categoryid > 0) && defcatid == 0) return GetCategory(categoryid);
             }
-
+ 
             // if we have no catid in url, make sure we have any possible entryid
-            if (entryId == 0)
-            {
-                var qryitemid = Utils.RequestQueryStringParam(request, "eid");
-                if (Utils.IsNumeric(qryitemid))
-                {
-                    entryId = Convert.ToInt32(qryitemid);
-                }
-                else
-                {
-                    var qryguidkey = Utils.RequestQueryStringParam(request, "guidkey");
-                    if (qryguidkey == "") qryguidkey = Utils.RequestQueryStringParam(request, "ref");
-                    if (qryguidkey != "")
-                    {
-                        var objCtrl = new NBrightBuyController();
-                        var guidData = objCtrl.GetByGuidKey(portalId, -1, "PRD", qryguidkey);
-                        if (guidData != null) entryId = guidData.ItemID;
-                    }
-                }
-            }
+            if (entryId == 0) entryId = NBrightBuyUtils.GetEntryIdFromUrl(portalId, request);
 
-            // use the first/default category the proiduct has
-            if (Utils.IsNumeric(entryId) && entryId > 0) return GetDefaultCategory(entryId);
+            // use the first/default category the product has
+            if (entryId > 0) return GetDefaultCategory(entryId);
 
             // get any default set in the settings
             if (defcatid == 0)
@@ -273,6 +246,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             return GetCategory(defcatid);
+
         }
 
         public NBrightInfo GetCurrentCategoryInfo(int portalId, System.Web.HttpRequest request, int entryId = 0)

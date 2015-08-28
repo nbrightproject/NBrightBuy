@@ -1238,18 +1238,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Razor"
 
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang)
+        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String,String> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String) GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, StoreSettings.Current.Settings(), lang);
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
                 if (razorTempl != "")
                 {
                     if (!objList.Any()) objList.Add(new NBrightInfo(true));
-                    razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
+                    razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", settings, null);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
@@ -1258,18 +1258,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return razorTempl;
         }
 
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang)
+        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String) GetModCache(cachekey);
             if (razorTempl == null)
             {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, StoreSettings.Current.Settings(), lang);
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
                 if (razorTempl != "")
                 {
                     if (obj == null) obj = new NBrightInfo(true);
-                    razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
+                    razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", settings, null);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
@@ -1306,6 +1306,48 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
             return result;
         }
+
+        public static int GetEntryIdFromUrl(int portalId, System.Web.HttpRequest request)
+        {
+            var entryId = 0;
+            var qryitemid = Utils.RequestQueryStringParam(request, "eid");
+            if (Utils.IsNumeric(qryitemid))
+            {
+                entryId = Convert.ToInt32(qryitemid);
+            }
+            else
+            {
+                var qryguidkey = Utils.RequestQueryStringParam(request, "guidkey");
+                if (qryguidkey == "") qryguidkey = Utils.RequestQueryStringParam(request, "ref");
+                if (qryguidkey != "")
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var guidData = objCtrl.GetByGuidKey(portalId, -1, "PRD", qryguidkey);
+                    if (guidData != null) entryId = guidData.ItemID;
+                }
+            }
+            return entryId;
+        }
+
+        public static int GetCategoryIdFromUrl(int portalId, System.Web.HttpRequest request)
+        {
+            var categoryid = -1;
+            var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
+
+            var qrycatid = Utils.RequestQueryStringParam(request, "catid");
+            if (Utils.IsNumeric(qrycatid)) categoryid = Convert.ToInt32(qrycatid);
+            if (categoryid == -1 )
+            {
+                var qrycatref = Utils.RequestQueryStringParam(request, "catref");
+                if (qrycatref != "")
+                {
+                    var catrefData = grpCatCtrl.GetCategoryByRef(portalId, qrycatref);
+                    if (catrefData != null) categoryid = catrefData.categoryid;
+                }
+            }
+            return categoryid;
+        }
+
 
         #endregion
 
