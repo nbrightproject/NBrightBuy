@@ -41,8 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         private GenXmlTemplate _templSearch; 
         private String _entryid = "";
         private Boolean _displayentrypage = false;
-        private List<NBrightInfo> _systemPlugins;
-
+        
         #region Event Handlers
 
 
@@ -67,6 +66,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var pData = pluginData.GetPlugin(Convert.ToInt32(_entryid));
                     var pluginTemplatePath = pData.GetXmlProperty("genxml/hidden/plugintemplate");
                     if (pluginTemplatePath != "") pluginTemplate = Utils.ReadFile(MapPath(pluginTemplatePath));
+                }
+                else
+                {
+                    // check for new plugins
+                    var pi = new PluginData(PortalId, true);
+                    pi.UpdateSystemPlugins();
                 }
 
       
@@ -117,29 +122,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
-                    #region "Check for plugins"
-
-                    var pluginData = new PluginData(PortalId, true);
-                    pluginData.UpdateSystemPlugins();
-                    _systemPlugins = pluginData.GetPluginList();
-
-                    pluginData = new PluginData(PortalId);
-                    var portalPlugins = pluginData.GetPluginList();
-                    Boolean upd = false;
-                    foreach (var p in _systemPlugins)
-                    {
-                        var ctrllist = from i in portalPlugins where i.GetXmlProperty("genxml/textbox/ctrl") == p.GetXmlProperty("genxml/textbox/ctrl") select i;
-                        var nBrightInfos = ctrllist as IList<NBrightInfo> ?? ctrllist.ToList();
-                        if (!nBrightInfos.Any())
-                        {
-                            pluginData.AddPlugin(p);
-                            upd = true;
-                        }
-                    }
-                    if (upd) pluginData.Save();
-
-                    #endregion
-
                     PageLoad();
                 }
             }
