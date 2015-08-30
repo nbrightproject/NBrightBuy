@@ -16,6 +16,8 @@
 
 <!-- Product List header -->
 
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true)</div>
 
 <div class="nbs">
@@ -62,7 +64,11 @@
         <div class="description">
             <h1><a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ProductName(x)</a></h1>
         </div>
-
+        
+        <!-- fields required to send required ajax data to server -->
+        <span class="entryid@(x.ItemID)">
+            <input id="@(x.ItemID)_productid" type="hidden" value="@(x.ItemID)">                    
+        </span>
 
     </div>
 }
@@ -73,18 +79,38 @@
 
 </div>
 
+<!-- return area for ajax data -->
+<div id="datareturn" style="display:none;"></div>
+
+<!-- fields required to send required ajax cart to server -->
+<span class="minicartdata">
+    <input id="carttemplate" type="hidden" value="minicart.cshtml">                    
+    <input id="carttheme" type="hidden" value="Classic">                    
+</span>
+
 <!-- Masonry Grid http://masonry.desandro.com -->
 <script type="text/javascript">
 
 $( document ).ready(function() {
 
-var $container = $('.productlist').masonry({
-  columnWidth: [Settings:classicitemwidth], // List item width - Can also use CSS width of first list item
-  itemSelector: '.product',
-  gutter: [Settings:classicitemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
-  isOriginLeft: true, // Build from right to left if false
-  isOriginTop: true, // Build from bottom to top if false
-});
+    $('#datareturn').change(function() {
+        nbxget('rendercart', '.minicartdata', '.minicart'); // load models
+    });
+
+    $('.addtobasket').click(function () {
+        nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // load models
+    });
+
+
+
+    var $container = $('.productlist').masonry({
+      columnWidth: [Settings:classicitemwidth], // List item width - Can also use CSS width of first list item
+      itemSelector: '.product',
+      gutter: [Settings:classicitemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+      isOriginLeft: true, // Build from right to left if false
+      isOriginTop: true, // Build from bottom to top if false
+    });
+
 
 });
 

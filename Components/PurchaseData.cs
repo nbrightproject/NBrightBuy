@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -226,6 +227,64 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         #region "base methods"
+
+        public String AddAjaxItem(NBrightInfo ajaxInfo, NBrightInfo nbSettings, Boolean debugMode = false)
+        {
+
+            var strproductid = ajaxInfo.GetXmlProperty("genxml/hidden/productid");
+            // Get ModelID
+            var modelidlist = new List<String>();
+            var qtylist = new Dictionary<String, String>();
+            var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/repeaters/repeater[1]/*");
+            if (nodList != null && nodList.Count > 0)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    var nbi = new NBrightInfo();
+                    nbi.XMLData = nod.OuterXml;
+                    var strmodelId = nbi.GetXmlProperty("genxml/hidden/modelid");
+                    var strqtyId = nbi.GetXmlProperty("genxml/textbox/selectedmodelqty");
+                    if (Utils.IsNumeric(strqtyId))
+                    {
+                        modelidlist.Add(strmodelId);
+                        qtylist.Add(strmodelId, strqtyId);
+                    }
+                }
+            }
+            if (qtylist.Count == 0)
+            {
+                var strmodelId = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
+                if (strmodelId == "") strmodelId = ajaxInfo.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
+                if (strmodelId == "") strmodelId = ajaxInfo.GetXmlProperty("genxml/hidden/modeldefault");
+                if (strmodelId == "")
+                {
+                    var p = ProductUtils.GetProductData(strproductid,ajaxInfo.Lang);
+                    strmodelId = p.Models[0].GetXmlProperty("genxml/hidden/modelid");
+                }
+                modelidlist.Add(strmodelId);
+                var strqtyId = ajaxInfo.GetXmlProperty("genxml/textbox/selectedaddqty");
+                if (!Utils.IsNumeric(strqtyId)) strqtyId = "1";
+                qtylist.Add(strmodelId, strqtyId);
+            }
+
+            var strRtn = "";
+            foreach (var m in modelidlist)
+            {
+                var numberofmodels = 0; // use additemqty field to add multiple items
+                var additemqty = ajaxInfo.GetXmlProperty("genxml/textbox/additemqty");
+                if (Utils.IsNumeric(additemqty))
+                    numberofmodels = Convert.ToInt32(additemqty); // zero should be allowed on add all to basket option.
+                else
+                    numberofmodels = 1; // if we have no numeric, assume we need to add it
+
+                for (var i = 1; i <= numberofmodels; i++)
+                {
+                    strRtn += AddSingleItem(strproductid, m, qtylist[m], ajaxInfo, debugMode);
+                }
+            }
+            return strRtn;
+        }
+
 
         /// <summary>
         /// Add product to cart

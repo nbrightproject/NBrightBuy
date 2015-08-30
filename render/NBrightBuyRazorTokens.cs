@@ -47,6 +47,8 @@ namespace NBrightBuy.render
 
         #region "NBS display tokens"
 
+        #region "products"
+
         public IEncodedString ProductName(NBrightInfo info)
         {
             return new RawString(info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
@@ -58,6 +60,10 @@ namespace NBrightBuy.render
             var url = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?src=" + imagesrc + "&w=" + width + "&h=" + height +   attributes;
             return new RawString(url);
         }
+
+        #endregion
+
+        #region "categories"
 
         public IEncodedString Category(String fieldname)
         {
@@ -206,6 +212,10 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        #endregion
+
+        #region "Functional"
+
         public IEncodedString EntryUrl(NBrightInfo info, String targetTabId = "", String targetModuleKey = "", Boolean relative = true, String categoryref = "")
         {
             var url = "";
@@ -217,8 +227,9 @@ namespace NBrightBuy.render
                     // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
                 var categoryid = info.GetXmlProperty("genxml/categoryid");
                 if (categoryid == "") categoryid = StoreSettings.Current.ActiveCatId.ToString();
+                if (categoryid == "0") categoryid = ""; // no category active if zero
 
-                    url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), targetModuleKey, urlname, targetTabId, categoryid,categoryref);
+                url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), targetModuleKey, urlname, targetTabId, categoryid,categoryref);
                 if (relative) url = Utils.GetRelativeUrl(url);
 
             }
@@ -229,6 +240,15 @@ namespace NBrightBuy.render
 
             return new RawString(url);
         }
+
+        public IEncodedString CurrencyOf(Double x)
+        {
+            var strOut = NBrightBuyUtils.FormatToStoreCurrency(x);
+            return new RawString(strOut);
+        }
+
+
+        #endregion
 
         #endregion
 

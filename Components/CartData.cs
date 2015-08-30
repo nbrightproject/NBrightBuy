@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -25,6 +26,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private int _cartId;
         private string _cookieName;
         private HttpCookie _cookie;
+
+        public Boolean IsCartEmpty()
+        {
+            var l = GetCartItemList();
+            return !l.Any();
+        }
 
         public CartData(int portalId, string nameAppendix = "",String cartid = "")
         {

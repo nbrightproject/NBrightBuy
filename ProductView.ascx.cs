@@ -152,63 +152,63 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (_razortemplate)
                 {
-                    
+
                 }
                 else
                 {
-                    
 
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
 
-                //-------------------------------------------------------------------------
-                //Get default sort order and filter from the displayheader template.  Use template data, becuase repeater is not fully initialized yet.
-                _strOrder = _navigationdata.OrderBy;
-                if (String.IsNullOrEmpty(_strOrder)) _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl); // get default
-                if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
-                {
-                    _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl,_orderbyindex);
-                    // save the selected orderby to the cookie, so we can page with it.
-                    _navigationdata.OrderBy = _strOrder;
-                }
-                //-------------------------------------------------------------------------
+                    // Get Display Header
+                    var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
-                var cachekey = "GenXmlTemplate*rpDataH" + _templH + "*" + ModuleId.ToString();
-                _templateHeader = (GenXmlTemplate)Utils.GetCache(cachekey);
-                if (_templateHeader == null || StoreSettings.Current.DebugMode)
-                {
-                    _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                }
-                rpDataH.ItemTemplate = _templateHeader;
+                    //-------------------------------------------------------------------------
+                    //Get default sort order and filter from the displayheader template.  Use template data, becuase repeater is not fully initialized yet.
+                    _strOrder = _navigationdata.OrderBy;
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl); // get default
+                    if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
+                    {
+                        _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl, _orderbyindex);
+                        // save the selected orderby to the cookie, so we can page with it.
+                        _navigationdata.OrderBy = _strOrder;
+                    }
+                    //-------------------------------------------------------------------------
 
-                // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
+                    var cachekey = "GenXmlTemplate*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    _templateHeader = (GenXmlTemplate) Utils.GetCache(cachekey);
+                    if (_templateHeader == null || StoreSettings.Current.DebugMode)
+                    {
+                        _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpDataH.ItemTemplate = _templateHeader;
 
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
-                //if body template doesn't contain a default moduleid add it.
-                if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
-                // always add a productid hidden field to the data template (for add to cart)
-                rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
+                    // insert page header text
+                    NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
 
-                cachekey = "GenXmlTemplate*rpData" + _templD + "*" + ModuleId.ToString();
-                var gXml = (GenXmlTemplate)Utils.GetCache(cachekey);
-                if (gXml == null || StoreSettings.Current.DebugMode)
-                {
-                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);                    
-                }
-                rpData.ItemTemplate = gXml;
+                    // Get Display Body
+                    var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
+                    //if body template doesn't contain a default moduleid add it.
+                    if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
+                    // always add a productid hidden field to the data template (for add to cart)
+                    rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
 
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+                    cachekey = "GenXmlTemplate*rpData" + _templD + "*" + ModuleId.ToString();
+                    var gXml = (GenXmlTemplate) Utils.GetCache(cachekey);
+                    if (gXml == null || StoreSettings.Current.DebugMode)
+                    {
+                        gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpData.ItemTemplate = gXml;
 
-                cachekey = "GenXmlTemplate*rpDataF" + _templF + "*" + ModuleId.ToString();
-                gXml = (GenXmlTemplate)Utils.GetCache(cachekey);
-                if (gXml == null || StoreSettings.Current.DebugMode)
-                {
-                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                }
-                rpDataF.ItemTemplate = gXml;
+                    // Get Display Footer
+                    var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+
+                    cachekey = "GenXmlTemplate*rpDataF" + _templF + "*" + ModuleId.ToString();
+                    gXml = (GenXmlTemplate) Utils.GetCache(cachekey);
+                    if (gXml == null || StoreSettings.Current.DebugMode)
+                    {
+                        gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpDataF.ItemTemplate = gXml;
 
                 }
 
@@ -236,7 +236,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
-                    PageLoad();
+                    if (_razortemplate)
+                    {
+                        // do razor code
+                        RazorPageLoad();
+                    }
+                    else
+                    {
+                        // do old legacy code for backward compatiblity
+                        // This does lead to duplicate code, but makes life easier.
+                        PageLoad();
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -250,48 +260,28 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
-        private void PageLoad()
+        private void RazorPageLoad()
         {
             NBrightInfo objCat = null;
 
-            #region "Data Repeater"
             if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
             {
 
                 if (_displayentrypage)
                 {
                     // get correct itemid, based on eid given
-                    if (_ename != "")
-                    {
-                        var o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCodeLang, _ename);
-                        if (o == null)
-                        {
-                            o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCode, _ename);
-                            if (o != null)
-                            {
-                                _eid = o.ItemID.ToString("");
-                            }
-                        }
-                        else
-                        {
-                            _eid = o.ParentItemId.ToString("");
-                        }
-                    }
-
-                    DisplayDataEntryRepeater(_eid);
+                    _eid = GetEntryIdFromName(_eid);
+                    RazorDisplayDataEntry(_eid);
 
                 }
                 else
                 {
 
-
-                    #region "do standard nbright template - Depricated"
-
                     #region "Order BY"
 
                     // get orderby from header if it's there
                     var cachekey = "GetSqlOrderBy*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    _strOrder = (String) Utils.GetCache(cachekey);
+                    _strOrder = (String)Utils.GetCache(cachekey);
                     if (_strOrder == null || StoreSettings.Current.DebugMode)
                     {
                         _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH);
@@ -347,7 +337,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     // check the display header to see if we have a sqlfilter defined.
                     var strFilter = "";
                     cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    var strHeaderFilter = (String) Utils.GetCache(cachekey);
+                    var strHeaderFilter = (String)Utils.GetCache(cachekey);
                     if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
                     {
                         strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
@@ -446,7 +436,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                         if (redirecturl != "")
                                         {
                                             Response.Redirect(redirecturl, false);
-                                            Response.StatusCode = (int) System.Net.HttpStatusCode.MovedPermanently;
+                                            Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
                                             Response.End();
                                         }
                                     }
@@ -573,8 +563,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     var l = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
 
-                    if (_razortemplate)
-                    {
                         #region "do razor template"
 
                         var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
@@ -584,13 +572,335 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         #endregion
 
+
+                    if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
+
+                    if (pageSize > 0)
+                    {
+                        CtrlPaging.PageSize = pageSize;
+                        CtrlPaging.CurrentPage = pageNumber;
+                        CtrlPaging.TotalRecords = recordCount;
+                        CtrlPaging.BindPageLinks();
+                    }
+
+                }
+            }
+
+        }
+
+        private void PageLoad()
+        {
+            NBrightInfo objCat = null;
+
+            #region "Data Repeater"
+            if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
+            {
+
+                if (_displayentrypage)
+                {
+                    // get correct itemid, based on eid given
+                    if (_ename != "")
+                    {
+                        var o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCodeLang, _ename);
+                        if (o == null)
+                        {
+                            o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCode, _ename);
+                            if (o != null)
+                            {
+                                _eid = o.ItemID.ToString("");
+                            }
+                        }
+                        else
+                        {
+                            _eid = o.ParentItemId.ToString("");
+                        }
+                    }
+
+                    DisplayDataEntryRepeater(_eid);
+
+                }
+                else
+                {
+                    #region "Order BY"
+                    // get orderby from header if it's there
+                    var cachekey = "GetSqlOrderBy*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    _strOrder = (String)Utils.GetCache(cachekey);
+                    if (_strOrder == null || StoreSettings.Current.DebugMode)
+                    {
+                        _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH);
+                    }
+
+                    //Default orderby if not set
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
+                    // NOTE: This setting may be overwritten by the navigatedata class in the filter setup
+                    #endregion
+
+                    #region "Get Paging setup"
+                    //See if we have a pagesize, uses the "searchpagesize" tag token.
+                    // : This can be overwritten by the cookie value if we need user selection of pagesize.
+                    CtrlPaging.Visible = false;
+
+                    #region "Get pagesize, from best place"
+                    var pageSize = 0;
+                    if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
+                    if (!Utils.IsNumeric(pageSize) && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+                    //check for url param page size
+                    if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture))) pageSize = Convert.ToInt32(_pagesize);
+                    if (pageSize == 0)
+                    {
+                        var strPgSize = "";
+                        if (_templateHeader != null) strPgSize = _templateHeader.GetHiddenFieldValue("searchpagesize");
+                        if (_templateHeader != null && strPgSize == "") strPgSize = _templateHeader.GetHiddenFieldValue("pagesize");
+                        if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
+                    }
+                    if (pageSize > 0) CtrlPaging.Visible = true;
+                    _navigationdata.PageSize = pageSize.ToString("");
+                    #endregion
+
+                    var pageNumber = 1;
+                    //check for url param paging
+                    if (Utils.IsNumeric(_pagenum) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture)))
+                    {
+                        pageNumber = Convert.ToInt32(_pagenum);
+                    }
+
+                    //Get returnlimt from module settings
+                    var returnlimit = 0;
+                    var strreturnlimit = ModSettings.Get("returnlimit");
+                    if (Utils.IsNumeric(strreturnlimit)) returnlimit = Convert.ToInt32(strreturnlimit);
+
+                    #endregion
+
+                    #region "Get filter setup"
+
+                    // check the display header to see if we have a sqlfilter defined.
+                    var strFilter = "";
+                    cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    var strHeaderFilter = (String)Utils.GetCache(cachekey);
+                    if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
+                    {
+                        strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
+                    }
+
+                    // filter mode and will persist past category selection.
+                    if ((_catid == "" && _catname == ""))
+                    {
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+
+                        // if navdata is not deleted then get filter from navdata, created by productsearch module.
+                        strFilter = _navigationdata.Criteria;
+                        if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
+                        if (!String.IsNullOrEmpty(_navigationdata.OrderBy)) _strOrder = _navigationdata.OrderBy;
+
+                        if (_navigationdata.Mode.ToLower() == "s") _navigationdata.ResetSearch(); // single search so clear after
                     }
                     else
                     {
-                        rpData.DataSource = l;
-                        rpData.DataBind();
+                        _navigationdata.ResetSearch();
+
+                        // We have a category selected (in url), so overwrite categoryid navigationdata.
+                        // This allows the return to the same category after a returning from a entry view.
+                        _navigationdata.CategoryId = _catid;
+                        strFilter = strHeaderFilter;
                     }
 
+                    #endregion
+
+                    #region "Get Category select setup"
+
+                    //get default catid.
+                    var catseo = _catid;
+                    var defcatid = ModSettings.Get("defaultcatid");
+                    if (Utils.IsNumeric(defcatid))
+                    {
+                        // if we have no filter use the default category
+                        if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+
+                        // If we have a static list,then always display the default category
+                        if (ModSettings.Get("staticlist") == "True")
+                        {
+                            _catid = defcatid;
+                        }
+                    }
+                    else
+                    {
+                        defcatid = ModSettings.Get("defaultpropertyid");
+                        if (Utils.IsNumeric(defcatid))
+                        {
+                            // if we have no filter use the default category
+                            if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+
+                            // If we have a static list,then always display the default category
+                            if (ModSettings.Get("staticlist") == "True")
+                            {
+                                _catid = defcatid;
+                            }
+                        }
+                    }
+
+                    //check if we are display categories 
+                    // get category list data
+                    if (_catname != "") // if catname passed in url, calculate what the catid is
+                    {
+                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
+                        if (objCat == null)
+                        {
+                            // check it's not just a single language
+                            objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
+                            if (objCat != null) _catid = objCat.ItemID.ToString("");
+                        }
+                        else
+                        {
+                            _catid = objCat.ParentItemId.ToString("");
+                            if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
+                            {
+                                // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                                var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                                var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
+                                if (activeCat != null)
+                                {
+                                    var redirecturl = "";
+                                    if (Utils.IsNumeric(_eid))
+                                    {
+                                        var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
+                                        redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
+                                    }
+                                    else
+                                    {
+                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
+                                    }
+
+                                    try
+                                    {
+                                        if (redirecturl != "")
+                                        {
+                                            Response.Redirect(redirecturl, false);
+                                            Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
+                                            Response.End();
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        // catch err
+                                    }
+                                }
+                            }
+                        }
+                        // We have a category selected (in url), so overwrite categoryid navigationdata.
+                        // This allows the return to the same category after a returning from a entry view.
+                        _navigationdata.CategoryId = _catid;
+                        catseo = _catid;
+                    }
+
+                    if (Utils.IsNumeric(_catid))
+                    {
+                        var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                        var dbOwner = DataProvider.Instance().DatabaseOwner;
+                        if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                        {
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                        }
+                        else
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                        if (Utils.IsNumeric(catseo))
+                        {
+                            var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                            if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
+                            {
+                                //Page Title
+                                var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                                var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                                if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                                //Page KeyWords
+                                var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                                if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                                //Page Description
+                                var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                                if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                                if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                                if (PortalSettings.HomeTabId == TabId)
+                                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                                else
+                                {
+                                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                }
+                            }
+                        }
+
+                        if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
+
+                    }
+                    else
+                    {
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                    }
+
+                    #endregion
+
+                    #region "Apply provider product filter"
+                    // Special filtering can be done, by using the ProductFilter interface.
+                    var productfilterkey = "";
+                    if (_templateHeader != null) productfilterkey = _templateHeader.GetHiddenFieldValue("providerfilterkey");
+                    if (productfilterkey != "")
+                    {
+                        var provfilter = FilterInterface.Instance(productfilterkey);
+                        if (provfilter != null) strFilter = provfilter.GetFilter(strFilter, _navigationdata, ModSettings, Context);
+                    }
+                    #endregion
+
+                    #region "itemlists (wishlist)"
+
+                    // if we have a itemListName field then get the itemlist cookie.
+                    if (_templateHeader != null) _itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
+                    if (_itemListName != "")
+                    {
+                        var cw = new ItemListData(_itemListName);
+                        if (cw.Exists && cw.ItemCount > 0)
+                        {
+                            strFilter = " and (";
+                            foreach (var i in cw.GetItemList())
+                            {
+                                strFilter += " NB1.itemid = '" + i + "' or";
+                            }
+                            strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                        }
+                        else
+                        {
+                            //no data in list so select false itemid to stop anything displaying
+                            strFilter += " and (NB1.itemid = '-1') ";
+                        }
+                    }
+
+                    #endregion
+
+
+                    // save navigation data
+                    _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
+                    _navigationdata.PageNumber = Utils.RequestParam(Context, "page");
+                    if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
+
+                    // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
+                    NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
+
+                    strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
+                    var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
+
+                    _navigationdata.RecordCount = recordCount.ToString("");
+                    _navigationdata.Save();
+
+                    if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
+
+                    var l = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    rpData.DataSource = l;
+                    rpData.DataBind();
 
                     if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 
@@ -610,8 +920,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (StoreSettings.Current.DebugModeFileOut) objCat.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_categoryproductheader.xml");
                         DoDetail(rpDataH, objCat);
                     }
-
-                    #endregion
 
                 }
             }
@@ -745,7 +1053,29 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Methods"
 
-        private void DisplayDataEntryRepeater(String entryId)
+        private String GetEntryIdFromName(String entryId)
+        {
+            // get correct itemid, based on eid given
+            if (_ename != "")
+            {
+                var o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCodeLang, _ename);
+                if (o == null)
+                {
+                    o = ModCtrl.GetByGuidKey(PortalId, ModuleId, EntityTypeCode, _ename);
+                    if (o != null)
+                    {
+                        entryId = o.ItemID.ToString("");
+                    }
+                }
+                else
+                {
+                    entryId = o.ParentItemId.ToString("");
+                }
+            }
+            return entryId;
+        }
+
+        private void RazorDisplayDataEntry(String entryId)
         {
             var productData = ProductUtils.GetProductData(entryId, Utils.GetCurrentCulture());
 
@@ -798,6 +1128,42 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
         }
+
+        private void DisplayDataEntryRepeater(String entryId)
+        {
+            var productData = ProductUtils.GetProductData(entryId, Utils.GetCurrentCulture());
+
+            if (productData.Exists)
+            {
+
+                if (PortalSettings.HomeTabId == TabId)
+                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                else
+                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetEntryUrl(PortalId, _eid, "", productData.SEOName, TabId.ToString("")));
+
+                // overwrite SEO data
+                if (productData.SEOName != "")
+                    BasePage.Title = productData.SEOTitle;
+                else
+                    BasePage.Title = productData.ProductName;
+
+                if (productData.SEODescription != "") BasePage.Description = productData.SEODescription;
+                if (productData.SEOTagwords != "") BasePage.KeyWords = productData.SEOTagwords;
+
+                // if debug , output the xml used.
+                if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
+                // insert page header text
+                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
+
+                //render the detail page
+                base.DoDetail(rpData, productData.Info);
+
+                DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
+
+            }
+
+        }
+
 
 
         #endregion

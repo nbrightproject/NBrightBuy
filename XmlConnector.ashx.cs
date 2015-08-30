@@ -242,7 +242,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     break;
                 case "addtobasket":
-                        AddToBasket(context);
+                        strOut = AddToBasket(context);
                     break;
                 case "addalltobasket":
                     break;
@@ -251,6 +251,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "docdownload":
                     break;
                 case "printproduct":
+                    break;
+                case "rendercart":
+                        strOut = RenderCart(context);
                     break;
             }
 
@@ -1610,25 +1613,41 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Front Office Actions"
 
+        private String RenderCart(HttpContext context)
+        {
+            var ajaxInfo = GetAjaxInfo(context);
+            var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
+            var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
+            var razorTempl = "";
+            if (carttemplate != "")
+            {
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                var razorTemplName = NBrightBuyUtils.GetTemplateData(carttemplate, "/DesktopModules/NBright/NBrightBuy", theme, StoreSettings.Current.Settings(), Utils.GetCurrentCulture());
+                razorTempl = GenXmlFunctions.RenderRepeater(currentcart.GetInfo(), razorTemplName,"", "XMLData", "", StoreSettings.Current.Settings(), null);
+                var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString("");
+                razorTempl = NBrightBuyUtils.RazorRender(currentcart, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);                
+            }
+            return razorTempl;
+        }
+
         private string AddToBasket(HttpContext context)
         {
             try
             {
                 var strOut = "";
-                var settings = GetAjaxFields(context);
+                var ajaxInfo = GetAjaxInfo(context);
+                var settings = ajaxInfo.ToDictionary();
 
                 if (settings.ContainsKey("productid"))
                 {
                     if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
 
-                    //var currentcart = new CartData(Convert.ToInt16(settings["PortalId"]));
-                    //currentcart.AddItem(rpData, StoreSettings.Current.SettingsInfo, e.Item.ItemIndex, DebugMode);
-                    //currentcart.Save(StoreSettings.Current.DebugMode);
-                    //param[3] = "addcart=1";
-                    //Response.Redirect(Globals.NavigateURL(rtnTabId, "", param), true);
-
-
+                    var currentcart = new CartData(Convert.ToInt16(settings["portalid"]));
+                    currentcart.AddAjaxItem(ajaxInfo, StoreSettings.Current.SettingsInfo,StoreSettings.Current.DebugMode);
+                    currentcart.Save(StoreSettings.Current.DebugMode);
+                    strOut = "OK";
                 }
+
 
                 return strOut;
             }
@@ -1739,21 +1758,30 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private Dictionary<String, String> GetAjaxFields(HttpContext context)
         {
+            var objInfo = GetAjaxInfo(context);
+            var dic =  objInfo.ToDictionary();
+            return dic;
+        }
+
+        private NBrightInfo GetAjaxInfo(HttpContext context)
+        {
             var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
             var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
             var objInfo = new NBrightInfo();
 
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";
+            objInfo.PortalId = PortalSettings.Current.PortalId;
             objInfo.XMLData = xmlData;
-            var dic =  objInfo.ToDictionary();
+            var dic = objInfo.ToDictionary();
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
 
             // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
             if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
-            return dic;
+            return objInfo;
         }
+
 
         private Boolean CheckRights()
         {

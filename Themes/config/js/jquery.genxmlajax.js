@@ -186,7 +186,7 @@
 
             var nam = strID.split('_');
             var shortID = nam[nam.length - 1];
-            var lp = 1
+            var lp = 1;
             while (shortID.length < 3) {
                 lp++;
                 shortID = nam[nam.length - lp];

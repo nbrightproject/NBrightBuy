@@ -197,7 +197,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var catData = CategoryUtils.GetCategoryData(catid, Utils.GetCurrentCulture());
                     if (!strurl.EndsWith("?")) strurl += "&";
-                    strurl += "catref=" + catData.DataLangRecord.GUIDKey;
+                    if (catData.DataLangRecord != null) strurl += "catref=" + catData.DataLangRecord.GUIDKey;
                 }
                 if (catref != "")
                 {

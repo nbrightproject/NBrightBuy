@@ -1,0 +1,11 @@
+﻿@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@if (!Model.IsCartEmpty())
+{
+	<a href="/tabid/[Settings:carttab]"> @Model.GetInfo().GetXmlProperty("genxml/totalqty") @ResourceKey("CartView.txtItems"): @CurrencyOf(Model.GetInfo().GetXmlPropertyDouble("genxml/appliedtotal"))</a>
+}
+else
+{
+	@ResourceKey("General.emptyminicart")
+}
+
