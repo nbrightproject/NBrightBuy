@@ -61,6 +61,33 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
+        public IEncodedString EditUrl(NBrightInfo info, String currenttabid, String moduleid, String pageindex, String catid)
+        {
+            var entryid = info.ItemID;
+            var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
+            if (entryid > 0 && StoreSettings.Current.GetInt("backofficetabid") > 0)
+            {
+                var param = new List<String>();
+
+                param.Add("eid=" + entryid.ToString(""));
+                param.Add("ctrl=products");
+                if (currenttabid != "") param.Add("rtntab=" + currenttabid.Trim());
+                if (moduleid != "") param.Add("rtnmid=" + moduleid.Trim());
+                if (pageindex != "") param.Add("PageIndex=" + pageindex.Trim());
+                if (catid != "") param.Add("catid=" + catid.Trim());
+
+                var paramlist = new string[param.Count];
+                for (int lp = 0; lp < param.Count; lp++)
+                {
+                    paramlist[lp] = param[lp];
+                }
+                
+                url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);
+            }
+            return new RawString(url);
+        }
+
+
         #endregion
 
         #region "categories"

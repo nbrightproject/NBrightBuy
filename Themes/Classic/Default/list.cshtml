@@ -38,7 +38,6 @@
 
     <div class="product" style="width: [Settings:classicitemwidth]px; height: [Settings:classicitemheight]; margin-bottom: [Settings:classicitembottommargin]px"><!-- Product container -->
 
-
         <div class="productimg" style="width: 294px; height: [Settings:classicitemimagecontainerheight]">
 
             <div class="productimg-overlay">
@@ -47,8 +46,8 @@
                 @if ("[Settings:enablefavorites]" == "True")
                 {
                     <span>
-                    <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
-                    <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display:none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                        <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display:none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
                     </span>                    
                 }
 
@@ -60,6 +59,8 @@
 
             <div class="image" style="height: [Settings:classicitemimagecontainerheight]"><img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x,"[Settings:classicthumbnailwidth]","[Settings:classicthumbnailheight]")"></div>
         </div>
+
+        <a href="@EditUrl(x,"[Url:tabid]","[Settings:moduleid]","[Url:page]","[Url:catid]")">@ResourceKey("ProductView.editicon")</a>
 
         <div class="description">
             <h1><a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ProductName(x)</a></h1>
