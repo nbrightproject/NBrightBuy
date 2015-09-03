@@ -708,7 +708,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var l = new Literal();
             l.Text = errmsg;
             phData.Controls.Add(l);
-            Response.StatusCode = 404;
+            //Response.StatusCode = 404; //causes 404 page on live site???
         }
 
         private void DisplayDataEntryRepeater(String entryId)
