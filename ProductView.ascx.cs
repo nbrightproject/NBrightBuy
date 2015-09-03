@@ -23,7 +23,7 @@ using DotNetNuke.Entities.Content.Common;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
-
+using NBrightDNN.render;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
@@ -124,7 +124,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if we have entry detail display, but no catd, get the default one.
                 if (_displayentrypage && _catid == "" && Utils.IsNumeric(_eid))
                 {
-                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
+                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
                     var defcat = prdData.GetDefaultCategory();
                     if (defcat != null) _catid = defcat.categoryid.ToString("");
                 }
@@ -207,9 +207,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 // remove any cookie which might store SQL in error.
                 _navigationdata.Delete();
-
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.ToString(), ModSettings.Settings());
-                // catch any error and allow processing to continue, output error as footer template.
+                DisplayProductError(exc.ToString());
             }
 
         }
@@ -226,12 +224,9 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception exc) //Module failed to load
             {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
-                var l = new Literal();
-                l.Text = exc.ToString();
-                phData.Controls.Add(l);
                 // remove any nav data which might store SQL in error.
                 _navigationdata.Delete();
+                DisplayProductError(exc.ToString());
             }
         }
 
@@ -700,11 +695,27 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Methods"
 
+
+
+        private void DisplayProductError(String msg)
+        {
+            //display the error if superuser (don;t want to log it.)
+            var errmsg = ModCtrl.GetTemplateData(ModSettings, "productunavailable.html", Utils.GetCurrentCulture(), DebugMode); 
+            if (UserInfo.IsSuperUser) errmsg += msg;
+            var obj = new NBrightInfo(true);
+            var razorTemplateKey = "NBrightBuyRazorKey*productunavailable" + PortalId.ToString() + "*" + Utils.GetCurrentCulture();
+            errmsg = RazorUtils.RazorRender(obj, errmsg, razorTemplateKey, StoreSettings.Current.DebugMode);
+            var l = new Literal();
+            l.Text = errmsg;
+            phData.Controls.Add(l);
+            Response.StatusCode = 404;
+        }
+
         private void DisplayDataEntryRepeater(String entryId)
         {
             var productData = ProductUtils.GetProductData(entryId, Utils.GetCurrentCulture());
 
-            if (productData.Exists)
+            if (productData != null && productData.Exists && productData.Info.TypeCode == "PRD")
             {
 
                 if (PortalSettings.HomeTabId == TabId)
@@ -730,26 +741,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 base.DoDetail(rpData, productData.Info);
 
                 DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
-
-                // do razor template
-                //var razorTemplName = System.IO.Path.GetFileNameWithoutExtension(_templD) + ".cshtml";
-                //var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
-                //var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
-                //var lit = new Literal();
-                //if (razorTempl == null || StoreSettings.Current.DebugMode)
-                //{
-                //    razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
-                //    if (razorTempl != "")
-                //    {
-                //        razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
-                //        var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
-                //        razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
-                //        productData.Info.GetXmlPropertyInt("");
-                //        NBrightBuyUtils.SetModCache(ModuleId, cachekey, razorTempl);                        
-                //    }
-                //}
-                //lit.Text = razorTempl;
-                //phData.Controls.Add(lit);
+            }
+            else
+            {
+                DisplayProductError("");
             }
 
         }

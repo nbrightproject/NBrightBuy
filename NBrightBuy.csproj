@@ -596,6 +596,7 @@
     <Content Include="Themes\Cygnus\Default\checkoutheader.html" />
     <Content Include="Themes\Cygnus\Default\checkoutlayout.html" />
     <Content Include="Themes\Cygnus\Default\CheckoutSettings.html" />
+    <Content Include="Themes\Cygnus\Default\productunavailable.html" />
     <Content Include="Themes\Cygnus\Default\pageheaderNBS_MiniCart.html" />
     <Content Include="Themes\Cygnus\Default\pageheaderNBS_FullCart.html" />
     <Content Include="Themes\Cygnus\Default\pageheaderNBS_Checkout.html" />
