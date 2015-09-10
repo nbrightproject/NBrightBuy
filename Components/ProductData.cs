@@ -274,6 +274,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public List<GroupCategoryData> GetCategories(String groupref = "",Boolean cascade = false)
         {
+            if (Info == null) return new List<GroupCategoryData>(); // stop throwing an error no product exists,
+
             var objGrpCtrl = new GrpCatController(_lang);
             var catl = objGrpCtrl.GetProductCategories(Info.ItemID, groupref, cascade);
             if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")) && catl.Count > 0)
@@ -1241,6 +1243,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 IsInStock = CheckIsInStock();
 
             }
+            else
+            {
+                Exists = false;
+            }
         }
 
         private int AddNew()
@@ -1278,7 +1284,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private List<NBrightInfo> GetEntityList(String entityName)
         {
             var l = new List<NBrightInfo>();
-            if (Info != null)
+            if (Info != null && Info.XMLDoc != null)
             {
                 var xmlNodList = Info.XMLDoc.SelectNodes("genxml/" + entityName + "/*");
                 // build generic list to bind to rpModelsLang List
