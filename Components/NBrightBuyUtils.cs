@@ -1236,77 +1236,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objInfo;
         }
 
-        #region "Razor"
-
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String,String> settings)
-        {
-            // do razor template
-            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (String) GetModCache(cachekey);
-            if (razorTempl == null || StoreSettings.Current.DebugMode)
-            {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
-                if (razorTempl != "")
-                {
-                    if (!objList.Any()) objList.Add(new NBrightInfo(true));
-                    razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", settings, null);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
-                    razorTempl = RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    SetModCache(moduleid, cachekey, razorTempl);
-                }
-            }
-            return razorTempl;
-        }
-
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
-        {
-            // do razor template
-            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (String) GetModCache(cachekey);
-            if (razorTempl == null)
-            {
-                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
-                if (razorTempl != "")
-                {
-                    if (obj == null) obj = new NBrightInfo(true);
-                    razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", settings, null);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
-                    razorTempl = RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    SetModCache(moduleid, cachekey, razorTempl);
-                }
-            }
-            return razorTempl;
-        }
-
-        public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
-        {
-            // do razor test
-            var config = new TemplateServiceConfiguration();
-            config.Debug = debugMode;
-            config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
-            var service = RazorEngineService.Create(config);
-            Engine.Razor = service;
-
-            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
-            return result;
-        }
-
-        public static String RazorRender(List<Object> infoList, String razorTempl, String templateKey, Boolean debugMode = false)
-        {
-            // do razor test
-            if (debugMode)
-            {
-                var config = new TemplateServiceConfiguration();
-                config.Debug = true;
-                config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
-                var service = RazorEngineService.Create(config);
-                Engine.Razor = service;
-            }
-
-            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, infoList);
-            return result;
-        }
-
         public static int GetEntryIdFromUrl(int portalId, System.Web.HttpRequest request)
         {
             var entryId = 0;
@@ -1348,8 +1277,92 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return categoryid;
         }
 
+        #region "Razor"
+
+        public static String GetRazorTemplateData(String templatename, String templateControlPath, String themeFolder = "config", String lang = "")
+        {
+            themeFolder = "Themes\\" + themeFolder;
+            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
+            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, themeFolder, StoreSettings.Current.ThemeFolder);
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var templ = templCtrl.GetTemplateData(templatename, lang);
+            return templ;
+        }
+
+
+        public static String RazorTemplRenderList(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        {
+            // do razor template
+            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (String)GetModCache(cachekey);
+            if (razorTempl == null || StoreSettings.Current.DebugMode)
+            {
+                razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl != "")
+                {
+                    if (!objList.Any()) objList.Add(new NBrightInfo(true));
+                    var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    SetModCache(moduleid, cachekey, razorTempl);
+                }
+            }
+            return razorTempl;
+        }
+
+        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, object obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        {
+            // do razor template
+            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (String)GetModCache(cachekey);
+            if (razorTempl == null)
+            {
+                razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl != "")
+                {
+                    if (obj == null) obj = new NBrightInfo(true);
+                    var l = new List<object>();
+                    l.Add(obj);
+                    var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    SetModCache(moduleid, cachekey, razorTempl);
+                }
+            }
+            return razorTempl;
+        }
+
+        public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
+        {
+            // do razor test
+            var config = new TemplateServiceConfiguration();
+            config.Debug = debugMode;
+            config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+            var service = RazorEngineService.Create(config);
+            Engine.Razor = service;
+
+            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            return result;
+        }
+
+        public static void RazorIncludePageHeader(int moduleid, Page page, String razorTemplateName, String theme, Dictionary<String, String> settings)
+        {
+            if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
+            if (!page.Items["nbrightinject"].ToString().Contains(razorTemplateName + ","))
+            {
+                var nbi = new NBrightInfo();
+                nbi.Lang = Utils.GetCurrentCulture();
+                var razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), nbi, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), settings);
+                if (razorTempl != "")
+                {
+                    PageIncludes.IncludeTextInHeader(page, razorTempl);
+                    page.Items["nbrightinject"] = page.Items["nbrightinject"] + razorTemplateName + ",";
+                }
+            }
+        }
 
         #endregion
+
 
     }
 }

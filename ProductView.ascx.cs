@@ -64,6 +64,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _printtemplate = "";
         private String _guidkey = "";
         private Boolean _razortemplate = false;
+
         #region Event Handlers
 
 
@@ -565,7 +566,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         #region "do razor template"
 
-                        var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         var lit = new Literal();
                         lit.Text = strOut;
                         phData.Controls.Add(lit);
@@ -1099,32 +1100,18 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, (GenXmlTemplate)rpData.ItemTemplate, ModSettings.Settings(), productData.Info, DebugMode);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings());
 
-                //render the detail page
-                base.DoDetail(rpData, productData.Info);
+                #region "do razor template"
 
-                DoDetail(rpDataH, productData.Info);  // do header here, so we pickup default cat for breadcrumb
+                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString(), productData, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
 
-                // do razor template
-                //var razorTemplName = System.IO.Path.GetFileNameWithoutExtension(_templD) + ".cshtml";
-                //var cachekey = "RazorTemplate" + razorTemplName + "*" + ModuleId.ToString() + "*" + productData.DataRecord.ItemID.ToString();
-                //var razorTempl = (String)NBrightBuyUtils.GetModCache(cachekey);
-                //var lit = new Literal();
-                //if (razorTempl == null || StoreSettings.Current.DebugMode)
-                //{
-                //    razorTempl = ModCtrl.GetTemplateData(ModSettings, razorTemplName, Utils.GetCurrentCulture(),DebugMode);
-                //    if (razorTempl != "")
-                //    {
-                //        razorTempl = GenXmlFunctions.RenderRepeater(productData.Info, razorTempl, "", "XMLData", "", ModSettings.Settings(), null);
-                //        var razorTemplateKey = "RazorTemplateKey" + razorTemplName + "*" + ModuleId.ToString();
-                //        razorTempl = NBrightBuyUtils.RenderRazor(productData, razorTempl, razorTemplateKey);
-                //        productData.Info.GetXmlPropertyInt("");
-                //        NBrightBuyUtils.SetModCache(ModuleId, cachekey, razorTempl);                        
-                //    }
-                //}
-                //lit.Text = razorTempl;
-                //phData.Controls.Add(lit);
+                #endregion
+
+
             }
 
         }

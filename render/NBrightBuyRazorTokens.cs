@@ -61,7 +61,7 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
-        public IEncodedString EditUrl(NBrightInfo info, String currenttabid, String moduleid, String pageindex, String catid)
+        public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model)
         {
             var entryid = info.ItemID;
             var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
@@ -71,10 +71,10 @@ namespace NBrightBuy.render
 
                 param.Add("eid=" + entryid.ToString(""));
                 param.Add("ctrl=products");
-                if (currenttabid != "") param.Add("rtntab=" + currenttabid.Trim());
-                if (moduleid != "") param.Add("rtnmid=" + moduleid.Trim());
-                if (pageindex != "") param.Add("PageIndex=" + pageindex.Trim());
-                if (catid != "") param.Add("catid=" + catid.Trim());
+                param.Add("rtntab=" + PortalSettings.Current.ActiveTab.TabID.ToString());
+                if (model.GetSetting("moduleid") != "") param.Add("rtnmid=" + model.GetSetting("moduleid").Trim());
+                if (model.GetUrlParam("page") != "") param.Add("PageIndex=" + model.GetUrlParam("page").Trim());
+                if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
 
                 var paramlist = new string[param.Count];
                 for (int lp = 0; lp < param.Count; lp++)
@@ -86,7 +86,6 @@ namespace NBrightBuy.render
             }
             return new RawString(url);
         }
-
 
         #endregion
 
@@ -243,7 +242,7 @@ namespace NBrightBuy.render
 
         #region "Functional"
 
-        public IEncodedString EntryUrl(NBrightInfo info, String targetTabId = "", String targetModuleKey = "", Boolean relative = true, String categoryref = "")
+        public IEncodedString EntryUrl(NBrightInfo info, NBrightRazor model, Boolean relative = true, String categoryref = "")
         {
             var url = "";
             try
@@ -256,7 +255,7 @@ namespace NBrightBuy.render
                 if (categoryid == "") categoryid = StoreSettings.Current.ActiveCatId.ToString();
                 if (categoryid == "0") categoryid = ""; // no category active if zero
 
-                url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), targetModuleKey, urlname, targetTabId, categoryid,categoryref);
+                url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), model.GetSetting("detailmodulekey"), urlname, model.GetSetting("ddldetailtabid"), categoryid, categoryref);
                 if (relative) url = Utils.GetRelativeUrl(url);
 
             }
@@ -267,6 +266,31 @@ namespace NBrightBuy.render
 
             return new RawString(url);
         }
+
+        public IEncodedString EntryReturnUrl(NBrightRazor model)
+        {
+            var product = (ProductData)model.List.First();
+            var entryid = product.Info.ItemID;
+            var url = "";
+
+            var param = new List<String>();
+            if (model.GetUrlParam("page") != "") param.Add("PageIndex=" + model.GetUrlParam("page").Trim());
+            if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
+            var listtab = model.GetUrlParam("rtntab");
+            if (listtab == "") listtab = StoreSettings.Current.Get("productlisttab");
+            var intlisttab = StoreSettings.Current.ActiveCatId;
+            if (Utils.IsNumeric(listtab)) intlisttab = Convert.ToInt32(listtab);
+
+            var paramlist = new string[param.Count];
+            for (int lp = 0; lp < param.Count; lp++)
+            {
+                paramlist[lp] = param[lp];
+            }
+
+            url = Globals.NavigateURL(intlisttab, "", paramlist);
+            return new RawString(url);
+        }
+
 
         public IEncodedString CurrencyOf(Double x)
         {

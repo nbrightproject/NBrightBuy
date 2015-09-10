@@ -186,6 +186,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return null;
         }
 
+        public Double FromPrice()
+        {
+            Double fromprice = 0;
+            foreach (var m in Models)
+            {
+                if ((fromprice == 0) || (fromprice < m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+            }
+            return fromprice;
+        }
+
+        public Double SalePrice()
+        {
+            Double saleprice = 0;
+            foreach (var m in Models)
+            {
+                if ((saleprice == 0) || (saleprice < m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice"))) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+            }
+            if (saleprice == 0) saleprice = FromPrice();
+            return saleprice;
+        }
+
+        public Double BestPrice()
+        {
+            var bestprice = FromPrice();
+            if (SalePrice() < bestprice) bestprice = SalePrice();
+            return bestprice;
+        }
+
         public void AdjustModelQtyBy(String modelid,Double qty)
         {
             var model = GetModel(modelid);

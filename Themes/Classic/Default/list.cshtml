@@ -1,9 +1,11 @@
-@using System.Web.UI.WebControls
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
 @using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-@AddMetaData("searchpagesize", "[Settings:pagesize]")
+@AddMetaData("searchpagesize", Model.GetSetting("pagesize"))
 
 @AddMetaData("orderby", "NB3.FromPrice")
 
@@ -32,18 +34,18 @@
 
 <!-- Product List Body -->
 
-@foreach (NBrightInfo x in Model)
+@foreach (NBrightInfo x in Model.List)
 {
 
 
-    <div class="product" style="width: [Settings:classicitemwidth]px; height: [Settings:classicitemheight]; margin-bottom: [Settings:classicitembottommargin]px"><!-- Product container -->
+    <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight"))px; margin-bottom: @(Model.GetSetting("classicitembottommargin"))px"><!-- Product container -->
 
-        <div class="productimg" style="width: 294px; height: [Settings:classicitemimagecontainerheight]">
+        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
 
             <div class="productimg-overlay">
 
                 <!-- Add to favorites buttons -->
-                @if ("[Settings:enablefavorites]" == "True")
+                @if (Model.GetSetting("enablefavorites") == "True")
                 {
                     <span>
                         <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
@@ -54,16 +56,16 @@
             <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
 
                 
-                <a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ResourceKey("ProductView.viewicon-lg")</a>
+                <a href="@EntryUrl(x,Model)">@ResourceKey("ProductView.viewicon-lg")</a>
             </div>
 
-            <div class="image" style="height: [Settings:classicitemimagecontainerheight]"><img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x,"[Settings:classicthumbnailwidth]","[Settings:classicthumbnailheight]")"></div>
+            <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))"><img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x,Model.GetSetting("classicthumbnailwidth"),Model.GetSetting("classicthumbnailheight"))"></div>
         </div>
 
-        <a href="@EditUrl(x,"[Url:tabid]","[Settings:moduleid]","[Url:page]","[Url:catid]")">@ResourceKey("ProductView.editicon")</a>
+        <a href="@EditUrl(x,Model)">@ResourceKey("ProductView.editicon")</a>
 
         <div class="description">
-            <h1><a href="@EntryUrl(x,"[Settings:ddldetailtabid]","[Settings:detailmodulekey]")">@ProductName(x)</a></h1>
+            <h1><a href="@EntryUrl(x,Model)">@ProductName(x)</a></h1>
         </div>
         
         <!-- fields required to send required ajax data to server -->
@@ -105,9 +107,9 @@ $( document ).ready(function() {
 
 
     var $container = $('.productlist').masonry({
-      columnWidth: [Settings:classicitemwidth], // List item width - Can also use CSS width of first list item
+        columnWidth: @(Model.GetSetting("classicitemwidth")), // List item width - Can also use CSS width of first list item
       itemSelector: '.product',
-      gutter: [Settings:classicitemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+      gutter: @(Model.GetSetting("classicitemgutter")), // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
       isOriginLeft: true, // Build from right to left if false
       isOriginTop: true, // Build from bottom to top if false
     });
