@@ -1104,7 +1104,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 #region "do razor template"
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString(), productData, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

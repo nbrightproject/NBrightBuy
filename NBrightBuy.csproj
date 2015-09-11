@@ -443,6 +443,7 @@
     <Content Include="Themes\Classic\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\Classic\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
+    <None Include="Themes\Classic\Default\Amylis.cshtml" />
     <None Include="Themes\Classic\Default\list.cshtml" />
     <Content Include="Themes\Classic\Default\detail.html" />
     <Content Include="Themes\Classic\Default\detailfooter.html" />
