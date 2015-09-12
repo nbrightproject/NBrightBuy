@@ -77,6 +77,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cArg = e.CommandArgument.ToString();
+            var rtntab = Utils.RequestQueryStringParam(Request, "rtntab");
+            var rtneid = Utils.RequestQueryStringParam(Request, "rtneid");
+
             var param = new string[3];
 
             switch (e.CommandName.ToLower())
@@ -89,6 +92,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "save":
                     Update(_eid);
                     param[0] = "eid=" + cArg;
+                    if (rtntab != "") param[1] = "rtntab=" + rtntab;
+                    if (rtneid != "") param[2] = "rtneid=" + rtneid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "copy":
@@ -101,6 +106,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     break;
                 case "saveexit":
                     Update(_eid);
+                    if (rtntab != "") param[0] = "tabid=" + rtntab;
+                    if (rtneid != "") param[1] = "eid=" + rtneid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "edit":
@@ -109,7 +116,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "return":
-                    if (_page != "") param[1] = "page=" + _page;
+                    if (rtntab != "") param[0] = "tabid=" + rtntab;
+                    if (rtneid != "") param[1] = "eid=" + rtneid;
+                    if (_page != "") param[2] = "page=" + _page;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
                 case "addnew":

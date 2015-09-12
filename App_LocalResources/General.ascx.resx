@@ -1047,4 +1047,7 @@
   <data name="cmdDelete.yesText" xml:space="preserve">
     <value>YEPPPP</value>
   </data>
+  <data name="Clients.Text" xml:space="preserve">
+    <value>Clients</value>
+  </data>
 </root>

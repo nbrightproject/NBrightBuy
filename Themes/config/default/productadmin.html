@@ -375,23 +375,54 @@
 				</div>
 				
 				<h3>[<tag type="valueof" resourcekey="General.relatedproducts" />]</h3>
-				<div class="box-content editrelated">
+			<div class="box-content editrelated">
+			    <div class="form-horizontal dnnForm">
+			        <div class="col-md-12">
+			            <div class="form-group">
+			                <div class="col-sm-12">
+			                    <a class="btn btn-primary" id="productselect">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</a>
+			                </div>
+			            </div>
+			            <div class="form-group">
+			                <div class="col-sm-12">
+			                    <ul id="productrelated" class="productrelated"></ul>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
+             <h3>[<tag type="valueof" resourcekey="General.Clients" />]</h3>
+				<div class="box-content editclients">
 				<div class="form-horizontal dnnForm">
 					<div class="col-md-12">
+			            <div class="form-group">
+			                <div class="col-sm-12">
+			                    <a class="btn btn-primary" id="clientselect">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</a>
+			                </div>
+			            </div>
 					<div class="form-group">
-						<div class="col-sm-12">
-				        <a class="btn btn-primary" id="productselect">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
-				    </div>
-					</div>
-					<div class="form-group">
-				        <div class="col-sm-12">
-				        <ul id="productrelated" class="productrelated"></ul>
-				        </div>
+			            <div class="col-md-12">
+							<table class="table table-striped table-hover">
+					        <thead>
+						        <tr>
+							        <th>[<tag type="valueof" resourcekey="General.Client" />]</th>
+							        <th>[<tag type="valueof" resourcekey="General.Email" />]</th>
+							        <th>[<tag type="valueof" resourcekey="General.Username" />]</th>
+							        <th> </th>
+						        </tr>
+					        </thead>
+							<tbody id="productclients">
+							</tbody>
+							</table>
+			            </div>
 					</div>
 					</div>
 				</div>
+				<div class="clearfix"></div>
 				</div>
-				
+
+
 			</div>
 	</div>
 </div>

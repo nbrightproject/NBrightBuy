@@ -488,6 +488,7 @@
     <Content Include="Themes\config\default\clientssearch.html" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
     <Content Include="Themes\config\default\clientvouchercodes.html" />
+    <Content Include="Themes\config\default\productadminclient.html" />
     <Content Include="Themes\config\default\MiniCart_Settings.html" />
     <Content Include="Themes\config\default\FullCart_Settings.html" />
     <Content Include="Themes\config\default\Checkout_Settings.html" />

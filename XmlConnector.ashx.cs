@@ -183,6 +183,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "productrelated":
                     if (CheckRights()) strOut = GetProductRelated(context);
                     break;
+                case "productclients":
+                    if (CheckRights()) strOut = GetProductClients(context);
+                    break;
                 case "addproductmodels":
                     if (CheckRights()) strOut = AddProductModels(context);
                     break;
@@ -1074,6 +1077,35 @@ namespace Nevoweb.DNN.NBrightBuy
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.GetRelatedProducts(), bodyTempl);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetProductClients(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var bodyTempl = templCtrl.GetTemplateData("productadminclients.html", _lang, true, true, true, StoreSettings.Current.Settings());
+
+                //get data
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.GetClients(), bodyTempl);
 
                 return strOut;
 

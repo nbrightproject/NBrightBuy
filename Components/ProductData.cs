@@ -374,6 +374,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return relList;
         }
 
+        public List<NBrightInfo> GetClients()
+        {
+            var objCtrl = new NBrightBuyController();
+            var strSelectedIds = "";
+            var arylist = objCtrl.GetList(_portalId, -1, "USERPRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
+            foreach (var obj in arylist)
+            {
+                strSelectedIds += obj.XrefItemId.ToString("") + ",";
+            }
+            var userlist = new List<NBrightInfo>();
+            if (strSelectedIds.TrimEnd(',') != "")
+            {
+                var strFilter = " and userid in (" + strSelectedIds.TrimEnd(',') + ") ";
+                userlist = objCtrl.GetDnnUsers(_portalId, strFilter);
+            }
+            return userlist;
+        }
+
         public void Save()
         {
             foreach (var model in Models)
@@ -1017,6 +1035,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
             var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+            objCtrl.ExecSql(stmt);
+        }
+
+        public void AddClient(int userid)
+        {
+            var strGuid = userid.ToString("") + "x" + Info.ItemID.ToString("");
+            var objCtrl = new NBrightBuyController();
+            var nbi = objCtrl.GetByGuidKey(_portalId, -1, "USERPRDXREF", strGuid);
+            if (nbi == null)
+            {
+                nbi = new NBrightInfo();
+                nbi.ItemID = -1;
+                nbi.PortalId = _portalId;
+                nbi.ModuleId = -1;
+                nbi.TypeCode = "USERPRDXREF";
+                nbi.XrefItemId = 0;
+                nbi.ParentItemId = Info.ItemID;
+                nbi.TextData = null;
+                nbi.Lang = null;
+                nbi.UserId = userid;
+                nbi.GUIDKey = strGuid;
+                objCtrl.Update(nbi);
+            }
+        }
+
+        public void RemoveClient(int userid)
+        {
+            var parentitemid = Info.ItemID.ToString("");
+            var objCtrl = new NBrightBuyController();
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'USERPRDXREF' and UserId = " + userid.ToString("") + " and parentitemid = " + parentitemid;
             objCtrl.ExecSql(stmt);
         }
 
