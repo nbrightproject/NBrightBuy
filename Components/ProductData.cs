@@ -381,13 +381,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var arylist = objCtrl.GetList(_portalId, -1, "USERPRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
             {
-                strSelectedIds += obj.XrefItemId.ToString("") + ",";
+                strSelectedIds += obj.UserId.ToString("") + ",";
             }
             var userlist = new List<NBrightInfo>();
             if (strSelectedIds.TrimEnd(',') != "")
             {
-                var strFilter = " and userid in (" + strSelectedIds.TrimEnd(',') + ") ";
-                userlist = objCtrl.GetDnnUsers(_portalId, strFilter);
+                userlist = objCtrl.GetDnnUserList(_portalId, strSelectedIds.TrimEnd(','));
             }
             return userlist;
         }

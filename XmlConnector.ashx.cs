@@ -186,6 +186,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "productclients":
                     if (CheckRights()) strOut = GetProductClients(context);
                     break;
+                case "getclientselectlist":
+                    if (CheckRights()) strOut = GetClientSelectList(context);
+                    break;
                 case "addproductmodels":
                     if (CheckRights()) strOut = AddProductModels(context);
                     break;
@@ -215,6 +218,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "removerelatedproduct":
                     if (CheckRights()) strOut = RemoveRelatedProduct(context);
+                    break;
+                case "addproductclient":
+                    if (CheckRights()) strOut = AddProductClient(context);
+                    break;
+                case "removeproductclient":
+                    if (CheckRights()) strOut = RemoveProductClient(context);
                     break;
                 case "clientdiscountcodes":
                     if (CheckRights()) strOut = GetClientDiscountCodes(context);
@@ -1101,13 +1110,55 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                 var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                var bodyTempl = templCtrl.GetTemplateData("productadminclients.html", _lang, true, true, true, StoreSettings.Current.Settings());
+                var bodyTempl = templCtrl.GetTemplateData("productadminclient.html", _lang, true, true, true, StoreSettings.Current.Settings());
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
                 var strOut = GenXmlFunctions.RenderRepeater(prodData.GetClients(), bodyTempl);
 
                 return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String GetClientSelectList(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var settings = GetAjaxFields(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                var productitemid = settings["itemid"];
+                if (!settings.ContainsKey("header")) settings.Add("header", "");
+                if (!settings.ContainsKey("body")) settings.Add("body", "");
+                if (!settings.ContainsKey("footer")) settings.Add("footer", "");
+                if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
+
+                // get template
+                var themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
+                var headTempl = templCtrl.GetTemplateData(settings["header"], _lang, true, true, true, StoreSettings.Current.Settings());
+                var bodyTempl = templCtrl.GetTemplateData(settings["body"], _lang, true, true, true, StoreSettings.Current.Settings());
+                var footTempl = templCtrl.GetTemplateData(settings["footer"], _lang, true, true, true, StoreSettings.Current.Settings());
+
+                //get data
+                var prodData = ProductUtils.GetProductData(productitemid, _lang);
+                var objCtrl = new NBrightBuyController();
+                var userlist = objCtrl.GetDnnUsers(prodData.Info.PortalId, "%" + settings["searchtext"] + "%", 0,1,20,20);
+
+                var l = new List<NBrightInfo>();
+                l.Add(prodData.Info);
+                var strHead = GenXmlFunctions.RenderRepeater(l, headTempl);
+                var strOut = GenXmlFunctions.RenderRepeater(userlist, bodyTempl);
+                var strFoot = GenXmlFunctions.RenderRepeater(l, footTempl);
+
+                return strHead + strOut + strFoot;
 
             }
             catch (Exception ex)
@@ -1452,6 +1503,55 @@ namespace Nevoweb.DNN.NBrightBuy
                     return GetProductRelated(context);
                 }
                 return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        private string RemoveProductClient(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var productid = "";
+                var selecteduserid = "";
+                if (settings.ContainsKey("itemid")) productid = settings["itemid"];
+                if (settings.ContainsKey("selecteduserid")) selecteduserid = settings["selecteduserid"];
+                if (Utils.IsNumeric(productid) && Utils.IsNumeric(selecteduserid))
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
+                    prodData.RemoveClient(Convert.ToInt32(selecteduserid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductClients(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+       
+        private string AddProductClient(HttpContext context)
+        {
+            try
+            {
+                var settings = GetAjaxFields(context);
+                var productid = "";
+                var selecteduserid = "";
+                if (settings.ContainsKey("itemid")) productid = settings["itemid"];
+                if (settings.ContainsKey("selecteduserid")) selecteduserid = settings["selecteduserid"];
+                if (Utils.IsNumeric(selecteduserid) && Utils.IsNumeric(productid))
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
+                    if (prodData.Exists) prodData.AddClient(Convert.ToInt32(selecteduserid));
+
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductClients(context);
+                }
+                return "Invalid itemid or selecteduserid";
             }
             catch (Exception e)
             {

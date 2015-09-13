@@ -111,13 +111,6 @@
         });
     });
 
-    $('#productclients').change(function () {
-        $('.removeclient').click(function () {
-            $('input[id*="selecteduserid"]').val($(this).attr('userid'));
-            nbxget('removeclient', '#productselectparams', '#productclients'); 
-        });
-    });
-
 
     $('#undomodel').click(function () { undoremove('.modelitem', '#productmodels'); });
     $('#undooption').click(function () { undoremove('.optionitem', '#productoptions'); });
@@ -256,27 +249,6 @@
         $('#productdatasection').show();
     });
 
-    $('#clientselect').click(function () {
-        $(this).hide();
-        $("input[id*='header']").val("clientselectheader.html");
-        $("input[id*='body']").val("clientselectbody.html");
-        $("input[id*='footer']").val("clientselectfooter.html");
-        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
-        $('#productdatasection').hide();
-        $('#clientselectsection').show();
-    });
-
-    $('#returnfromclientselect').click(function () {
-        $('#productselect').show();
-        $("input[id*='header']").val("productlistheader.html");
-        $("input[id*='body']").val("productlistbody.html");
-        $("input[id*='footer']").val("productlistfooter.html");
-        $("input[id*='searchtext']").val('');
-        $("input[id*='searchcategory']").val('');
-        nbxget('getcategoryproductlist', '#categorydata', '#productlist');
-        $('#clientselectsection').hide();
-        $('#productdatasection').show();
-    });
 
 
     //--------------------------------------------------------------------------------
@@ -318,6 +290,61 @@
         nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
     });
     // END: -------------------------------------------------------
+
+
+    //-------------------------------------------------------
+    // -------------  CLIENT SELECT    ----------------------
+    //-------------------------------------------------------
+
+    $('#clientselectlist').change(function () {
+        // select product
+        $('.selectclient').unbind();
+        $('.selectclient').click(function () {
+            $('.selectuserid' + $(this).attr('itemid')).hide();
+            $('input[id*="selecteduserid"]').val($(this).attr('itemid'));
+            nbxget('addproductclient', '#productselectparams', '#productclients'); // load releated
+        });
+    });
+
+
+    // select search
+    $('#clientlistsearch').click(function () {
+        $('input[id*="searchtext"]').val($('input[id*="txtClientSearch"]').val());
+        nbxget('getclientselectlist', '#productselectparams', '#clientselectlist');
+    });
+
+    $('#clientselect').click(function () {
+        $(this).hide();
+        $("input[id*='header']").val("clientselectheader.html");
+        $("input[id*='body']").val("clientselectbody.html");
+        $("input[id*='footer']").val("clientselectfooter.html");
+        $('#productdatasection').hide();
+        $('#clientselectsection').show();
+    });
+
+    $('#returnfromclientselect').click(function () {
+        $('#clientselect').show();
+        $("input[id*='header']").val("productlistheader.html");
+        $("input[id*='body']").val("productlistbody.html");
+        $("input[id*='footer']").val("productlistfooter.html");
+        $("input[id*='searchtext']").val('');
+        nbxget('productclients', '#productdata', '#productclients');
+        $('#clientselectsection').hide();
+        $('#productdatasection').show();
+    });
+
+    $('#productclients').change(function () {
+        $('.removeclient').click(function () {
+            $('input[id*="selecteduserid"]').val($(this).attr('userid'));
+            nbxget('removeclient', '#productselectparams', '#productclients');
+        });
+    });
+
+    //-------------------------------------------------------
+    // CLIENT SELECT END: -----------------------------------
+    //-------------------------------------------------------
+
+
 
     $('#productselect').click(function () {
         $('#pageactionssource').toggle();

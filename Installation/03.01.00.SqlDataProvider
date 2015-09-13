@@ -1,0 +1,71 @@
+﻿
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+--------------                       FUNCTIONS                     ------------
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure [dbo].[NBrightBuy_GetDNNUserList]    Script Date: 13/09/2015 12:15:41 ******/
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[NBrightBuy_GetDNNUserList]    Script Date: 13/09/2015 12:15:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]
+@PortalId int, 
+@UserIdList nvarchar(max),
+@ReturnLimit int = 0
+AS
+begin
+
+SELECT 
+U.UserId as ItemId,
+U.PortalId,
+'<genxml><textbox>' +
+'<username>' + U.Username + '</username>' +
+'<firstname>' + U.FirstName   + '</firstname>' +
+'<lastname>' + U.LastName  + '</lastname>' +
+'<displayname>' + U.DisplayName  + '</displayname>' +
+'<email>' + U.Email  + '</email>' +
+'<authorised>' + convert(nvarchar(1),U.Authorised)  + '</authorised>' +
+'<updatepassword>' + convert(nvarchar(1),U.UpdatePassword)  + '</updatepassword>' +
+'<isdeleted>' + convert(nvarchar(1),U.IsDeleted)  + '</isdeleted>' +
+'</textbox></genxml>' as XMLData			
+	FROM    {databaseOwner}{objectQualifier}vw_Users U
+	WHERE U.PortalId = @PortalId 
+	and U.UserId in (@UserIdList)
+
+end
+
+GO
+
+
+
+
+

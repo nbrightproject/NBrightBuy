@@ -119,6 +119,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
+        /// Get DNN user list
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="sqlSearchFilter"></param>
+        /// <param name="returnLimit"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="recordCount"></param>
+        /// <returns></returns>
+        public override List<NBrightInfo> GetDnnUserList(int portalId, string csvUserList = "")
+        {
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUsers(portalId, csvUserList));
+        }
+        
+
+        /// <summary>
         /// Get full record count for user search. (Needed for paging)
         /// </summary>
         /// <param name="portalId"></param>
