@@ -335,8 +335,8 @@
 
     $('#productclients').change(function () {
         $('.removeclient').click(function () {
-            $('input[id*="selecteduserid"]').val($(this).attr('userid'));
-            nbxget('removeclient', '#productselectparams', '#productclients');
+            $('input[id*="selecteduserid"]').val($(this).attr('itemid'));
+            nbxget('removeproductclient', '#productselectparams', '#productclients');
         });
     });
 

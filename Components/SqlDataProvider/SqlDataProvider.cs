@@ -197,7 +197,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
 
         public override IDataReader GetDnnUserList(int portalId, string csvUserList = "")
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUserList", portalId, csvUserList);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUserList", portalId, csvUserList,0);
         }
 
         public override int GetDnnUsersCount(int portalId, string sqlSearchFilter = "")

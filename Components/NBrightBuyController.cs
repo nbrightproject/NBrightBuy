@@ -130,7 +130,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public override List<NBrightInfo> GetDnnUserList(int portalId, string csvUserList = "")
         {
-            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUsers(portalId, csvUserList));
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUserList(portalId, csvUserList));
         }
         
 

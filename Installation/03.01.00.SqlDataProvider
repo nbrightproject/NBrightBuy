@@ -26,6 +26,7 @@
 -------------------------------------------------------------------------------
 
 /****** Object:  StoredProcedure [dbo].[NBrightBuy_GetDNNUserList]    Script Date: 13/09/2015 12:15:41 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]
 GO
 
