@@ -111,6 +111,13 @@
         });
     });
 
+    $('#productclients').change(function () {
+        $('.removeclient').click(function () {
+            $('input[id*="selecteduserid"]').val($(this).attr('userid'));
+            nbxget('removeclient', '#productselectparams', '#productclients'); 
+        });
+    });
+
 
     $('#undomodel').click(function () { undoremove('.modelitem', '#productmodels'); });
     $('#undooption').click(function () { undoremove('.optionitem', '#productoptions'); });
@@ -118,6 +125,7 @@
     $('#undoimage').click(function () { undoremove('.imageitem', '#productimages'); });
     $('#undodoc').click(function () { undoremove('.docitem', '#productdocs'); });
     $('#undorelated').click(function () { undoremove('.relateditem', '#productrelated'); });
+    $('#undoclient').click(function () { undoremove('.clientitem', '#productclients'); });
 
     function removeelement(elementtoberemoved) {
         if ($('#recyclebin').length > 0) {
@@ -130,6 +138,7 @@
         if ($(elementtoberemoved).hasClass('docitem')) $('#undodoc').show();
         if ($(elementtoberemoved).hasClass('categoryitem')) $('#undocategory').show();
         if ($(elementtoberemoved).hasClass('relateditem')) $('#undorelated').show();
+        if ($(elementtoberemoved).hasClass('clientitem')) $('#undoclient').show();
     }
     function undoremove(itemselector, destinationselector) {
         if ($('#recyclebin').length > 0) {
@@ -143,6 +152,7 @@
             if (itemselector == '.docitem') $('#undodoc').hide();
             if (itemselector == '.categoryitem') $('#undocategory').hide();
             if (itemselector == '.relateditem') $('#undorelated').hide();
+            if (itemselector == '.clientitem') $('#undoclient').hide();
         }
     }
     function showoptionvalues() {
@@ -190,6 +200,7 @@
         $('input[id*="xmlupdateproductdocs"]').val($.fn.genxmlajaxitems('#productdocs', '.docitem'));
         $('input[id*="xmlupdateproductcategories"]').val($.fn.genxmlajaxitems('#productcategories', '.categoryitem'));
         $('input[id*="xmlupdateproductrelated"]').val($.fn.genxmlajaxitems('#productrelated', '.relateditem'));
+        $('input[id*="xmlupdateproductclients"]').val($.fn.genxmlajaxitems('#productclients', '.clientitem'));
     });
 
     //Add models
@@ -242,6 +253,28 @@
         $("input[id*='searchcategory']").val('');
         nbxget('getcategoryproductlist', '#categorydata', '#productlist');
         $('#productselectsection').hide();
+        $('#productdatasection').show();
+    });
+
+    $('#clientselect').click(function () {
+        $(this).hide();
+        $("input[id*='header']").val("clientselectheader.html");
+        $("input[id*='body']").val("clientselectbody.html");
+        $("input[id*='footer']").val("clientselectfooter.html");
+        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        $('#productdatasection').hide();
+        $('#clientselectsection').show();
+    });
+
+    $('#returnfromclientselect').click(function () {
+        $('#productselect').show();
+        $("input[id*='header']").val("productlistheader.html");
+        $("input[id*='body']").val("productlistbody.html");
+        $("input[id*='footer']").val("productlistfooter.html");
+        $("input[id*='searchtext']").val('');
+        $("input[id*='searchcategory']").val('');
+        nbxget('getcategoryproductlist', '#categorydata', '#productlist');
+        $('#clientselectsection').hide();
         $('#productdatasection').show();
     });
 

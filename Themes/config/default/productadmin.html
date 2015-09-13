@@ -81,6 +81,7 @@
         nbxget('productgroupcategories', '#productselectparams', '#productgroupcategories'); // load categories
         nbxget('productrelated', '#productselectparams', '#productrelated'); // load releated
         nbxget('productoptions', '#productselectparams', '#productoptions'); // load options (triggered last, so we try and avoid race condition with select option trigger)
+        nbxget('productclients', '#productselectparams', '#productclients'); // load clients
         $('.processing').hide();
     });
     
@@ -93,6 +94,7 @@
 [<tag id="xmlupdateproductimages" type="postback" value=""/>]
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 [<tag id="xmlupdateproductrelated" type="postback" value=""/>]
+[<tag id="xmlupdateproductclients" type="postback" value=""/>]
 
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
@@ -468,6 +470,47 @@
 					</div>
 						<div class="clearfix"></div>
 						<div id="productselectlist"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<!-- All "id" for the divs/ul are required for ajax in this section -->
+<div id="clientselectsection" style="display:none;">
+<div class="row selectrelated">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<div class="box-name">
+					<i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Related" />] [<tag type="valueof" resourcekey="General.Clients" />]</span>
+				</div>
+				<div class="box-icons">
+					<a class="collapse-link"><i class="fa fa-chevron-down"></i>
+					</a><a class="expand-link"><i class="fa fa-expand"></i></a>
+					<a class="close-link"><i class="fa fa-times"></i></a></div>
+				<div class="no-move">
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="form-horizontal dnnForm">
+					<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Search" />]</label>
+						<div class="col-sm-3">
+							[<tag id="txtClientSearch" cssclass="form-control" type="textbox" />]
+						</div>
+						<div class="col-md-4">
+							<a class="btn btn-primary" href="#" id="selectclientsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
+							<a class="btn btn-default" href="#" id="selectclientreset">[<tag type="htmlof" resourcekey="General.cmdResetIcon" />]</a>
+							<a class="btn btn-default" href="#" id="returnfromclientselect">[<tag type="htmlof" resourcekey="General.cmdReturnButton" />]</a>
+						</div>
+					</div>
+					</div>
+						<div class="clearfix"></div>
+						<div id="clientselectlist"></div>
 				</div>
 				<div class="clearfix"></div>
 			</div>
