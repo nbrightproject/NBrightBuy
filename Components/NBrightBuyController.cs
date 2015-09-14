@@ -128,9 +128,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="pageSize"></param>
         /// <param name="recordCount"></param>
         /// <returns></returns>
-        public override List<NBrightInfo> GetDnnUserList(int portalId, string csvUserList = "")
+        public override List<NBrightInfo> GetDnnUserProductClient(int portalId, int productid)
         {
-            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUserList(portalId, csvUserList));
+            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetDnnUserProductClient(portalId, productid));
         }
         
 

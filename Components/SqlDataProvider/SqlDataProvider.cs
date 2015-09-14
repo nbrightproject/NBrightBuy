@@ -195,9 +195,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUsers", portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount);
         }
 
-        public override IDataReader GetDnnUserList(int portalId, string csvUserList = "")
+        public override IDataReader GetDnnUserProductClient(int portalId, int productid)
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUserList", portalId, csvUserList,0);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "NBrightBuy_GetDNNUserProductClient", portalId, productid);
         }
 
         public override int GetDnnUsersCount(int portalId, string sqlSearchFilter = "")

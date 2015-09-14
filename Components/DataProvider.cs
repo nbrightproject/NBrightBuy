@@ -15,7 +15,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     public abstract class DataCtrlInterfaceNBrightBuy : NBrigthBuyDataCtrlInterface
     {
-        public abstract List<NBrightInfo> GetDnnUserList(int portalId, string csvUserList= "");
+        public abstract List<NBrightInfo> GetDnnUserProductClient(int portalId, int productid);
         public abstract List<NBrightInfo> GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
         public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
         public abstract NBrightInfo GetData(int itemId);
@@ -86,7 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public abstract string ExecSql(string commandText);
         public abstract string GetSqlxml(string commandText);
         public abstract IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
-        public abstract IDataReader GetDnnUserList(int portalId, string csvUserList = "");
+        public abstract IDataReader GetDnnUserProductClient(int portalId, int productid);
         public abstract int GetDnnUsersCount(int portalId, string sqlSearchFilter = "");
         public abstract IDataReader GetData(int itemId);
         public abstract IDataReader GetDataLang(int parentItemId, string lang);

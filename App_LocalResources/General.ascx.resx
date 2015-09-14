@@ -556,7 +556,7 @@
     <value>Orders</value>
   </data>
   <data name="Products.Text" xml:space="preserve">
-    <value>Products</value>
+    <value>Articles</value>
   </data>
   <data name="Properties.Text" xml:space="preserve">
     <value>Properties</value>
@@ -784,7 +784,7 @@
     <value>Be careful. You are going to remove all your products. If you agree, click Validate. To come back to your cart, click Cancel</value>
   </data>
   <data name="Product.Text" xml:space="preserve">
-    <value>Product</value>
+    <value>Article</value>
   </data>
   <data name="OrderDate.Text" xml:space="preserve">
     <value>Date</value>

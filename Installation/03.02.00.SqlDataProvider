@@ -25,12 +25,10 @@
 --------------                       SPROCS                        ------------
 -------------------------------------------------------------------------------
 
-/****** Object:  StoredProcedure [dbo].[NBrightBuy_GetDNNUserList]    Script Date: 13/09/2015 12:15:41 ******/
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserProductClient]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserProductClient]
 GO
 
-/****** Object:  StoredProcedure [dbo].[NBrightBuy_GetDNNUserList]    Script Date: 13/09/2015 12:15:41 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -38,10 +36,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserList]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserProductClient]
 @PortalId int, 
-@UserIdList nvarchar(max),
-@ReturnLimit int = 0
+@ProductId int
 AS
 begin
 
@@ -60,7 +57,7 @@ U.PortalId,
 '</textbox></genxml>' as XMLData			
 	FROM    {databaseOwner}{objectQualifier}vw_Users U
 	WHERE U.PortalId = @PortalId 
-	and U.UserId in (@UserIdList)
+	and U.UserId IN (select userid from {databaseOwner}[{objectQualifier}NBrightBuy] where portalid = @PortalId and typecode = 'USERPRDXREF' and parentitemid = @ProductId)
 
 end
 

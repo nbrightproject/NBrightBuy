@@ -106,6 +106,10 @@ if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{datab
 DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_DashboardStats]
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserProductClient]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}NBrightBuy_GetDNNUserProductClient]
+GO
+
 
 
 

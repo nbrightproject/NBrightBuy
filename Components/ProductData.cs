@@ -377,17 +377,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public List<NBrightInfo> GetClients()
         {
             var objCtrl = new NBrightBuyController();
-            var strSelectedIds = "";
-            var arylist = objCtrl.GetList(_portalId, -1, "USERPRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
-            foreach (var obj in arylist)
-            {
-                strSelectedIds += obj.UserId.ToString("") + ",";
-            }
-            var userlist = new List<NBrightInfo>();
-            if (strSelectedIds.TrimEnd(',') != "")
-            {
-                userlist = objCtrl.GetDnnUserList(_portalId, strSelectedIds.TrimEnd(','));
-            }
+            var userlist = objCtrl.GetDnnUserProductClient(_portalId, Info.ItemID);
             return userlist;
         }
 
