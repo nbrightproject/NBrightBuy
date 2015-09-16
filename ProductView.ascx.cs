@@ -544,6 +544,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #endregion
 
+                    // insert page header text
+                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings());
 
                     // save navigation data
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
