@@ -103,9 +103,7 @@
             [<tag type="if" xpath="genxml/lang/genxml/edt/description" testvalue="" display="{OFF}" />]
             <li class="tab-active"><a href="#tab-1">[<tag type="valueof" resourcekey="ProductView.description" />]</a></li><!-- Product description -->
             [<tag type="endif" />]
-            [<tag type="if" function="optionexists" testvalue="1" display="{ON}" />]
             <li><a href="#tab-2">[<tag type="valueof" resourcekey="ProductView.models" />]</a></li><!-- Show Options table -->
-            [<tag type="endif" />]
             [<tag type="if" function="hasdocuments" display="{ON}" />]
             <li><a href="#tab-3">[<tag type="valueof" resourcekey="ProductView.documentation" />]</a></li><!-- Document downloads -->
             [<tag type="endif" />]
@@ -120,7 +118,6 @@
         </div>
         [<tag type="endif" />]
 
-        [<tag type="if" function="optionexists" testvalue="1" display="{ON}" />]<!-- Show Options table -->
         <div id="tab-2" class="tab-content tab-hide">
           <h3>[<tag type="valueof" resourcekey="ProductView.models" />]</h3>
           <div class="models">
@@ -131,7 +128,6 @@
 		      </table>
           </div>
         </div>
-        [<tag type="endif"  />]
 
         [<tag type="if" function="hasdocuments" display="{ON}" />]
         <div id="tab-3" class="tab-content tab-hide">
