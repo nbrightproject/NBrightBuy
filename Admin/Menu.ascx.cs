@@ -138,17 +138,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         // clickable root menu
                         var rootp = pluginData.GetPluginByCtrl(rootname.Key);
-                        ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
-                        name = rootp.GetXmlProperty("genxml/textbox/name");
-                        icon = rootp.GetXmlProperty("genxml/textbox/icon");
-
-                        securityrootcheck = CheckSecurity(rootp);
-                        if (securityrootcheck)
+                        if (rootp != null)
                         {
-                            strOut += "<li>";
-                            var param = new string[1];
-                            param[0] = "ctrl=" + ctrl;
-                            href = Globals.NavigateURL(TabId, "", param);                            
+                            ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
+                            name = rootp.GetXmlProperty("genxml/textbox/name");
+                            icon = rootp.GetXmlProperty("genxml/textbox/icon");
+
+                            securityrootcheck = CheckSecurity(rootp);
+                            if (securityrootcheck)
+                            {
+                                strOut += "<li>";
+                                var param = new string[1];
+                                param[0] = "ctrl=" + ctrl;
+                                href = Globals.NavigateURL(TabId, "", param);
+                            }
+                        }
+                        else
+                        {
+                            securityrootcheck = false;
                         }
                     }
                     if (securityrootcheck) strOut += GetRootLinkNode(name, ctrl, icon, href, hrefclass);

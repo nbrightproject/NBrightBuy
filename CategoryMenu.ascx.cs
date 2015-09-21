@@ -117,7 +117,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception exc)
             {
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
+                if (UserInfo.IsSuperUser) rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
                 // catch any error and allow processing to continue, output error as footer template.
             }
 
@@ -138,7 +138,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
-                phData.Controls.Add(l);
+                if (UserInfo.IsSuperUser) phData.Controls.Add(l);
             }
         }
 

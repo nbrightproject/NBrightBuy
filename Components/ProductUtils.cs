@@ -462,7 +462,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ProductData prdData;
             var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
             prdData = (ProductData)Utils.GetCache(cacheKey);
-            if (prdData == null)
+            if ((prdData == null) || (productId == -1))
             {
                 prdData = new ProductData(productId, lang, hydrateLists);
                 Utils.SetCache(cacheKey, prdData);
