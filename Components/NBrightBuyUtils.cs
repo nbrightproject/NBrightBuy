@@ -1313,7 +1313,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, object obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
             var razorTempl = (String)GetModCache(cachekey);
             if (razorTempl == null)
             {
@@ -1324,7 +1324,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var l = new List<object>();
                     l.Add(obj);
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
                 }
