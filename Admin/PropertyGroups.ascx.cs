@@ -138,6 +138,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var grpData = new GroupData(Convert.ToInt32(itemid), StoreSettings.Current.EditLanguage);
                     if (grpData.Exists)
                     {
+                        grpData.Validate();
                         var grpname = GenXmlFunctions.GetField(rtnItem, "groupname");
                         var grpref = GenXmlFunctions.GetField(rtnItem, "groupref");
                         grpData.Name = grpname;
