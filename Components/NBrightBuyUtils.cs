@@ -1332,6 +1332,71 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return razorTempl;
         }
 
+        /// <summary>
+        /// legacy method to render template using both tag tokens and razor tokens
+        /// </summary>
+        /// <param name="razorTemplName"></param>
+        /// <param name="moduleid"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="objList"></param>
+        /// <param name="templateControlPath"></param>
+        /// <param name="theme"></param>
+        /// <param name="lang"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static String RazorTemplRenderWithRepeater(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        {
+            // do razor template
+            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (String)GetModCache(cachekey);
+            if (razorTempl == null || StoreSettings.Current.DebugMode)
+            {
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
+                if (razorTempl != "")
+                {
+                    if (!objList.Any()) objList.Add(new NBrightInfo(true));
+                    razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", settings, null);
+                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    razorTempl = RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    SetModCache(moduleid, cachekey, razorTempl);
+                }
+            }
+            return razorTempl;
+        }
+
+        /// <summary>
+        /// legacy method to render template using both tag tokens and razor tokens
+        /// </summary>
+        /// <param name="razorTemplName"></param>
+        /// <param name="moduleid"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="obj"></param>
+        /// <param name="templateControlPath"></param>
+        /// <param name="theme"></param>
+        /// <param name="lang"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static String RazorTemplRenderWithRepeater(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        {
+            // do razor template
+            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (String)GetModCache(cachekey);
+            if (razorTempl == null)
+            {
+                razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
+                if (razorTempl != "")
+                {
+                    if (obj == null) obj = new NBrightInfo(true);
+                    razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", settings, null);
+                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    razorTempl = RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    SetModCache(moduleid, cachekey, razorTempl);
+                }
+            }
+            return razorTempl;
+        }
+
+
         public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
         {
             // do razor test
