@@ -283,7 +283,7 @@
     <value>Show Cart Steps</value>
   </data>
   <data name="friendlyurlids.Help" xml:space="preserve">
-    <value>Instead of the database unique id for products and cateogries the reference will be used in preference.  This option expect usable and unique product refs.</value>
+    <value>Instead of the database unique id for products and cateogries the reference will be used in preference.  This option expect usable and unique category and product refs.</value>
   </data>
   <data name="friendlyurlids.Text" xml:space="preserve">
     <value>Use SEO friendly URL ids</value>
