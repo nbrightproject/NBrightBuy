@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Linq
+@using System.Web
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
 
@@ -36,8 +37,6 @@
 
 @foreach (NBrightInfo x in Model.List)
 {
-
-
     <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight"))px; margin-bottom: @(Model.GetSetting("classicitembottommargin"))px"><!-- Product container -->
 
         <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
@@ -49,19 +48,31 @@
                 {
                     <span>
                         <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
-                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display:none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
-                    </span>                    
+                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                    </span>
                 }
 
-            <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+                <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
 
-                
-                <a href="@EntryUrl(x,Model)">@ResourceKey("ProductView.viewicon-lg")</a>
+
+                <a href="@EntryUrl(x, Model)">@ResourceKey("ProductView.viewicon-lg")</a>
             </div>
 
-            <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))"><img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x,Model.GetSetting("classicthumbnailwidth"),Model.GetSetting("classicthumbnailheight"))"></div>
-        </div>
+            @if (x.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
+            {
+            <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                <img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+            </div>
+            }
+            else
+            {
+                <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                    @(Model.GetSettingHtmlOf("noimageicon"))
+                </div>
+            }
 
+        </div>
+        
         <a href="@EditUrl(x,Model)">@ResourceKey("ProductView.editicon")</a>
 
         <div class="description">
