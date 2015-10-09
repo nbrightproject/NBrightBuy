@@ -1100,7 +1100,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings());
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 

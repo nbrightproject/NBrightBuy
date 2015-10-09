@@ -14,6 +14,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.WebControls;
 using NBrightCore.common;
 using NBrightCore.providers;
 using NBrightCore.render;
@@ -234,6 +235,156 @@ namespace NBrightBuy.render
                 strOut = ex.ToString();
             }
 
+
+            return new RawString(strOut);
+        }
+
+        #endregion
+
+        #region "properties"
+
+        /// <summary>
+        /// Get property values
+        /// </summary>
+        /// <param name="productdata">productdata class</param>
+        /// <param name="propertytype">type of property using propertygroup ref  (e.g. "man" = manufacturer)</param>
+        /// <param name="fieldname">field name of data to return</param>
+        /// <param name="propertyref">property ref to return</param>
+        /// <returns></returns>
+        public IEncodedString PropertyValue(ProductData productdata, String propertytype, String fieldname, String propertyref)
+        {
+            var strOut = "";
+            try
+            {
+                var l = productdata.GetCategories(propertytype);
+                foreach (var i in l)
+                {
+                    if (i.categoryref == propertyref)
+                    {
+                        return PropertyValue(i, fieldname);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
+
+            return new RawString(strOut);
+        }
+        /// <summary>
+        /// Get property values
+        /// </summary>
+        /// <param name="productdata">productdata class</param>
+        /// <param name="propertytype">type of property using propertygroup ref  (e.g. "man" = manufacturer)</param>
+        /// <param name="fieldname">field name of data to return</param>
+        /// <param name="index">zero based index of the property record to return</param>
+        /// <returns></returns>
+        public IEncodedString PropertyValue(ProductData productdata,String propertytype,String fieldname, int index = 0)
+        {
+            var strOut = "";
+            try
+            {
+                var l = productdata.GetCategories(propertytype);
+                if (l.Count > index)
+                {                    
+                var objCInfo = l[index];
+                    return PropertyValue(objCInfo, fieldname);
+                }
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
+
+            return new RawString(strOut);
+        }
+
+
+
+        private IEncodedString PropertyValue(GroupCategoryData groupCategopryData, String fieldname)
+        {
+            var strOut = "";
+            try
+            {
+
+                var objCInfo = groupCategopryData;
+                if (objCInfo != null)
+                {
+                    switch (fieldname.ToLower())
+                    {
+                        case "propertydesc":
+                            strOut = objCInfo.categorydesc;
+                            break;
+                        case "message":
+                            strOut = System.Web.HttpUtility.HtmlDecode(objCInfo.message);
+                            break;
+                        case "archived":
+                            strOut = objCInfo.archived.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case "breadcrumb":
+                            strOut = objCInfo.breadcrumb;
+                            break;
+                        case "propertyid":
+                            strOut = objCInfo.categoryid.ToString("");
+                            break;
+                        case "propertyname":
+                            strOut = objCInfo.categoryname;
+                            break;
+                        case "propertyref":
+                            strOut = objCInfo.categoryref;
+                            break;
+                        case "depth":
+                            strOut = objCInfo.depth.ToString("");
+                            break;
+                        case "disabled":
+                            strOut = objCInfo.disabled.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case "entrycount":
+                            strOut = objCInfo.entrycount.ToString("");
+                            break;
+                        case "grouptyperef":
+                            strOut = objCInfo.grouptyperef;
+                            break;
+                        case "imageurl":
+                            strOut = objCInfo.imageurl;
+                            break;
+                        case "ishidden":
+                            strOut = objCInfo.ishidden.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case "isvisible":
+                            strOut = objCInfo.isvisible.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        case "metadescription":
+                            strOut = objCInfo.metadescription;
+                            break;
+                        case "metakeywords":
+                            strOut = objCInfo.metakeywords;
+                            break;
+                        case "parentcatid":
+                            strOut = objCInfo.parentcatid.ToString("");
+                            break;
+                        case "recordsortorder":
+                            strOut = objCInfo.recordsortorder.ToString("");
+                            break;
+                        case "seoname":
+                            strOut = objCInfo.seoname;
+                            if (strOut == "") strOut = objCInfo.categoryname;
+                            break;
+                        case "seopagetitle":
+                            strOut = objCInfo.seopagetitle;
+                            break;
+                        case "url":
+                            strOut = objCInfo.url;
+                            break;
+                    }
+                }
+            }
+            catch
+                (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
 
             return new RawString(strOut);
         }

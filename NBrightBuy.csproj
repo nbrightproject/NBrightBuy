@@ -449,6 +449,7 @@
     <Content Include="Themes\Classic\Default\detailfooter.html" />
     <Content Include="Themes\Classic\Default\detailheader.html" />
     <Content Include="Themes\Classic\Default\detailimages.xsl" />
+    <None Include="Themes\Classic\Default\pageheaderdetail.cshtml" />
     <Content Include="Themes\Classic\Default\detailpageheader.html" />
     <Content Include="Themes\Classic\Default\list.html" />
     <Content Include="Themes\Classic\Default\listfooter.html" />

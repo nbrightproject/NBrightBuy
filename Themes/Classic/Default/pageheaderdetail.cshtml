@@ -1,24 +1,34 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<!-- "pageheaderdetail.cshtml" template will be auto injected as dynamic data into page head section -->
+@{
+    // assign Model, so we can resolve var in VS
+    var product = (ProductData) Model.List.First(); 
+    var info = (NBrightInfo) product.Info;
+}
+
 <!-- This template is injected into the details page head section -->
 
 <!-- SEO name field test to cover all services Combined to reduce the number of tests needed -->
-[<tag type="if" xpath="genxml/lang/genxml/textbox/txtseoname" testvalue="" display="{OFF}" displayelse="{ON}" />]
-<meta property="og:title" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
-<meta name="twitter:title" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
-<meta itemprop="name" content="[<tag type='valueof' xpath='genxml/lang/genxml/textbox/txtseoname' />]"/>
-[<tag type="endif" />]
-[<tag type="if" xpath="genxml/lang/genxml/textbox/txtseoname" testvalue="" display="{ON}" displayelse="{OFF}" />]
-<meta property="og:title" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
-<meta name="twitter:title" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
-<meta itemprop="name" content="[<tag type='manufacturer' />] [<tag type='productname' />]"/>
-[<tag type="endif" />]
+<meta property="og:title" content="@PropertyValue(product,"man","propertyname") @(product.ProductName)"/>
+<meta name="twitter:title" content="@PropertyValue(product,"man","propertyname") @(product.SEOName)"/>
+<meta itemprop="name" content="@PropertyValue(product,"man","propertyname") @(product.SEOName)"/>
 
 <!-- Open Graph data for Facebook - Title and Type are required - https://developers.facebook.com/docs/reference/opengraph/object-type/object -->
-<meta property="og:description" content="[<tag type='breakof' xpath='genxml/lang/genxml/textbox/txtsummary' />]"/>
-<meta property="og:image" content="http://[<tag type='websiteurl' />][<tag type='valueof' xpath='genxml/imgs/genxml/hidden/imageurl' />]"/>
-<meta property="og:url" content="[<tag type='entryurl' tabid='{Settings:ddldetailtabid}' xpath='genxml/lang/genxml/textbox/txtproductname' modkey='{Settings:detailmodulekey}' />]"/>
-<meta property="og:site_name" content="[Settings:portalname]"/>
-<meta property="og:type" content="[Settings:ogobjecttype]"/>
-<meta property="og:price:amount" content="[<tag type='valueof' xpath='genxml/models/genxml/textbox/txtunitcost' />]"/>
+<meta property="og:description" content="@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")"/>
+    @if (product.Imgs.Count > 0)
+    {
+        <meta property="og:image" content="http://@WebsiteUrl()@product.Imgs.First().GetXmlProperty(" genxml/hidden/imageurl")"/>
+    }
+<meta property="og:url" content="@EntryUrl(info,Model,false,product.SEOName)"/>
+<meta property="og:site_name" content="@Model.GetSetting("portalname")"/>
+<meta property="og:type" content="@Model.GetSetting("ogobjecttype")"/>
+<meta property="og:price:amount" content="@info.GetXmlProperty("genxml/models/genxml/textbox/txtunitcost")"/>
 <meta property="og:price:currency" content="[<tag type='currencyisocode' />]"/>
 
 <!-- Facebook id number for Page Insights - https://www.facebook.com/help/336893449723054 -->
