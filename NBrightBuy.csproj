@@ -428,6 +428,8 @@
     <Content Include="ProductSearchSettings.ascx" />
     <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProductView.ascx" />
+    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx" />
+    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
     <Content Include="Themes\Classic\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Classic\css\images\animated-overlay.gif" />
     <Content Include="Themes\Classic\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -444,6 +446,7 @@
     <Content Include="Themes\Classic\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\Classic\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
+    <None Include="Plugins\menu.config" />
     <None Include="Themes\Classic\Default\Amylis.cshtml" />
     <None Include="Themes\Classic\Default\list.cshtml" />
     <Content Include="Themes\Classic\Default\detail.html" />

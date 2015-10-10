@@ -91,7 +91,7 @@
                 }
                 else
                 {
-                    if (@product.Models.Count >= 1 && @product.Options.Count >= 1) // has models or options
+                    if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
                     {
                         <span>@ResourceKey("ProductView.from")</span>
                     }
@@ -149,7 +149,7 @@
                 {
                     <li class="tab-active"><a href="#tab-1">@ResourceKey("ProductView.description")</a></li><!-- Product description -->
                 }
-                @if (@product.Models.Count >= 1 && @product.Options.Count >= 1) // has models or options
+                @if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
                 {
                     <li><a href="#tab-2">@ResourceKey("ProductView.models")</a></li><!-- Show Options table -->
                 }
@@ -168,7 +168,7 @@
                     @HtmlOf(info, "genxml/lang/genxml/edt/description")
                 </div>
             }
-            @if (@product.Models.Count >= 1 && @product.Options.Count >= 1) // has models or options
+            @if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
             {
                 <div id="tab-2" class="tab-content tab-hide">
                     <h3>@ResourceKey("ProductView.models")</h3>

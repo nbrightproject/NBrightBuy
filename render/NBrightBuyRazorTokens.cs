@@ -88,6 +88,13 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
+        public IEncodedString ModelsRadio(NBrightInfo info)
+        {
+            var strOut = "";
+
+            return new RawString(strOut);
+        }
+
         #endregion
 
         #region "categories"
