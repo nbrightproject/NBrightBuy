@@ -718,6 +718,7 @@
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />
     <None Include="Themes\Classic\Default\minicart.cshtml" />
+    <None Include="Themes\Classic\Default\pageheaderlist.cshtml" />
     <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>

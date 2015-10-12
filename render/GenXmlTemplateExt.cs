@@ -387,13 +387,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             rtnData.DataValue = navdata.RecordCount;
                             break;
                         case "price":
-                            rtnData.DataValue = GetFromPrice((NBrightInfo) container.DataItem);
+                            rtnData.DataValue = NBrightBuyUtils.GetFromPrice((NBrightInfo) container.DataItem);
                             break;
                         case "dealerprice":
-                            rtnData.DataValue = GetDealerPrice((NBrightInfo) container.DataItem);
+                            rtnData.DataValue = NBrightBuyUtils.GetDealerPrice((NBrightInfo) container.DataItem);
                             break;
                         case "saleprice":
-                            rtnData.DataValue = GetSalePrice((NBrightInfo) container.DataItem);
+                            rtnData.DataValue = NBrightBuyUtils.GetSalePrice((NBrightInfo) container.DataItem);
                             break;
                         case "imgexists":
                             rtnData.DataValue = testValue;
@@ -411,14 +411,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             if (nod == null) rtnData.DataValue = "FALSE";
                             break;
                         case "isinstock":
-                            if (IsInStock((NBrightInfo) container.DataItem))
+                            if (NBrightBuyUtils.IsInStock((NBrightInfo) container.DataItem))
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
                             }
                             break;
                         case "ismodelinstock":
-                            if (IsModelInStock((NBrightInfo) container.DataItem))
+                            if (NBrightBuyUtils.IsModelInStock((NBrightInfo) container.DataItem))
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
@@ -440,7 +440,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             break;
                         case "isonsale":
-                            var saleprice = GetSalePriceDouble((NBrightInfo) container.DataItem);
+                            var saleprice = NBrightBuyUtils.GetSalePriceDouble((NBrightInfo) container.DataItem);
                             if (saleprice > 0)
                             {
                                 rtnData.DataValue = "TRUE";
@@ -2704,7 +2704,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             if (rpt.Visible && container.DataItem != null)  // check for null dataitem, becuase we won't have it on postback.
             {
                 //build models list
-                var objL = BuildModelList((NBrightInfo)container.DataItem, true);
+                var objL = NBrightBuyUtils.BuildModelList((NBrightInfo)container.DataItem, true);
                 rpt.DataSource = objL;
                 rpt.DataBind();
             }
@@ -2742,14 +2742,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 rbl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (rbl.Visible)
                 {
-                    var templ = "{name} {price}";
+                    var templ = "{name} ({price})";
                     if (rbl.Attributes["template"] != null)
                     {
                         templ = rbl.Attributes["template"];
                         rbl.Attributes.Remove("template");
                     }
 
-                    var objL = BuildModelList((NBrightInfo) container.DataItem, true);
+                    var objL = NBrightBuyUtils.BuildModelList((NBrightInfo) container.DataItem, true);
 
                     var displayPrice = true;
                     if (rbl.Attributes["displayprice"] != null)
@@ -2759,7 +2759,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     }
                     else
                     {
-                        displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);
+                        displayPrice = NBrightBuyUtils.HasDifferentPrices((NBrightInfo)container.DataItem);
                     }
 
                     if (rbl.Attributes["blank"] != null)
@@ -2774,7 +2774,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     foreach (var obj in objL)
                     {
                         var li = new ListItem();
-                        li.Text = GetItemDisplay(obj, templ, displayPrice);
+                        li.Text = NBrightBuyUtils.GetItemDisplay(obj, templ, displayPrice);
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") rbl.Items.Add(li);
                     }
@@ -2825,7 +2825,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     }
                     var dataInfo = (NBrightInfo) container.DataItem;
 
-                    var objL = BuildModelList(dataInfo, true);
+                    var objL = NBrightBuyUtils.BuildModelList(dataInfo, true);
 
                     var displayPrice = true;
                     if (ddl.Attributes["displayprice"] != null)
@@ -2835,7 +2835,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     }
                     else
                     {
-                        displayPrice = HasDifferentPrices((NBrightInfo)container.DataItem);                        
+                        displayPrice = NBrightBuyUtils.HasDifferentPrices((NBrightInfo)container.DataItem);                        
                     }
 
                     if (ddl.Attributes["blank"] != null)
@@ -2850,7 +2850,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     foreach (var obj in objL)
                     {
                         var li = new ListItem();
-                        li.Text = GetItemDisplay(obj, templ, displayPrice);
+                        li.Text = NBrightBuyUtils.GetItemDisplay(obj, templ, displayPrice);
                         li.Value = obj.GetXmlProperty("genxml/hidden/modelid");
                         if (li.Text != "") ddl.Items.Add(li);
                     }
@@ -2896,56 +2896,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
         }
 
 
-        private String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
-        {
-            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
-            var outText = templ;
-            var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
-            var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
-            if (stock > 0 || !stockOn)
-            {
-                outText = outText.Replace("{ref}", obj.GetXmlProperty("genxml/textbox/txtmodelref"));
-                outText = outText.Replace("{name}", obj.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"));
-                outText = outText.Replace("{stock}", stock.ToString(""));
-
-                if (displayPrices)
-                {
-                    //[TODO: add promotional calc]
-                    var saleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
-                    var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
-                    var bestprice = price;
-                    if (saleprice > 0 && saleprice < price) bestprice = saleprice;
-
-                    var strprice = NBrightBuyUtils.FormatToStoreCurrency(price);
-                    var strbestprice = NBrightBuyUtils.FormatToStoreCurrency(bestprice);
-                    var strsaleprice = NBrightBuyUtils.FormatToStoreCurrency(saleprice);
-
-                    var strdealerprice = "";
-                    var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
-                    if (isDealer)
-                    {
-                        strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
-                        if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
-                        if (dealerprice < bestprice) bestprice = dealerprice;
-                    }
-
-                    outText = outText.Replace("{price}", "(" + strprice + ")");
-                    outText = outText.Replace("{dealerprice}", strdealerprice);
-                    outText = outText.Replace("{bestprice}", strbestprice);
-                    outText = outText.Replace("{saleprice}", strsaleprice);
-                }
-                else
-                {
-                    outText = outText.Replace("{price}", "");
-                    outText = outText.Replace("{dealerprice}", "");
-                    outText = outText.Replace("{bestprice}", "");
-                    outText = outText.Replace("{saleprice}", "");
-                }
-
-                return outText;
-            }
-            return ""; // no stock so return empty string.
-        }
 
         #endregion
 
@@ -3420,13 +3370,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var urlpage = Utils.RequestParam(HttpContext.Current, "page");
                     if (urlpage.Trim() != "")
                     {
-                        IncreaseArray(ref paramlist, 1);
+                        NBrightBuyUtils.IncreaseArray(ref paramlist, 1);
                         paramlist[paramlist.Length - 1] = "PageIndex=" + urlpage.Trim();
                     }
                     var urlcatid = Utils.RequestParam(HttpContext.Current, "catid");
                     if (urlcatid.Trim() != "")
                     {
-                        IncreaseArray(ref paramlist, 1);
+                        NBrightBuyUtils.IncreaseArray(ref paramlist, 1);
                         paramlist[paramlist.Length - 1] = "catid=" + urlcatid.Trim();
                     }
                     url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);                    
@@ -3475,13 +3425,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var urlpage = Utils.RequestParam(HttpContext.Current, "page");
                     if (urlpage.Trim() != "")
                     {
-                        IncreaseArray(ref paramlist, 1);
+                        NBrightBuyUtils.IncreaseArray(ref paramlist, 1);
                         paramlist[paramlist.Length - 1] = "PageIndex=" + urlpage.Trim();
                     }
                     var urlcatid = Utils.RequestParam(HttpContext.Current, "catid");
                     if (urlcatid.Trim() != "")
                     {
-                        IncreaseArray(ref paramlist, 1);
+                        NBrightBuyUtils.IncreaseArray(ref paramlist, 1);
                         paramlist[paramlist.Length - 1] = "catid=" + urlcatid.Trim();
                     }
                     url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);
@@ -3517,7 +3467,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 l.Text = "";
                 l.Visible = visibleStatus.DefaultIfEmpty(true).First();
-                var sp = GetSalePrice((NBrightInfo)container.DataItem);
+                var sp = NBrightBuyUtils.GetSalePrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
                     Double v = -1;
@@ -3555,7 +3505,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 l.Text = "";
                 l.Visible = visibleStatus.DefaultIfEmpty(true).First();
-                var sp = GetDealerPrice((NBrightInfo)container.DataItem);
+                var sp = NBrightBuyUtils.GetDealerPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
                     Double v = -1;
@@ -3622,7 +3572,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 l.Text = "";
                 l.Visible = visibleStatus.DefaultIfEmpty(true).First();
-                var sp = GetFromPrice((NBrightInfo)container.DataItem);
+                var sp = NBrightBuyUtils.GetFromPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
                     Double v = -1;
@@ -3660,7 +3610,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 l.Text = "";
                 l.Visible = visibleStatus.DefaultIfEmpty(true).First();
-                var sp = GetBestPrice((NBrightInfo)container.DataItem);
+                var sp = NBrightBuyUtils.GetBestPrice((NBrightInfo)container.DataItem);
                 if (Utils.IsNumeric(sp))
                 {
                     Double v = -1;
@@ -4862,244 +4812,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
         #endregion
 
 
-        #region "Functions"
 
-        private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj,Boolean addSalePrices = false)
-        {
-            // see  if we have a cart record
-            var xpathprefix = "";
-            var cartrecord = dataItemObj.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
-            if (cartrecord) xpathprefix = "genxml/productxml/";
-
-            //build models list
-            var objL = new List<NBrightInfo>();
-            var nodList = dataItemObj.XMLDoc.SelectNodes(xpathprefix + "genxml/models/*");
-            if (nodList != null)
-            {
-
-                #region "Init"
-
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
-
-
-                #endregion
-
-                var lp = 1;
-                foreach (XmlNode nod in nodList)
-                {
-                    // check if Deleted
-                    var selectDeletedFlag = nod.SelectSingleNode("checkbox/chkdeleted");
-                    if ((selectDeletedFlag == null) || selectDeletedFlag.InnerText != "True")
-                    {
-                    // check if hidden
-                        var selectHiddenFlag = nod.SelectSingleNode("checkbox/chkishidden");
-                        if ((selectHiddenFlag == null) || selectHiddenFlag.InnerText != "True")
-                        {
-                            // check if dealer
-                            var selectDealerFlag = nod.SelectSingleNode("checkbox/chkdealeronly");
-                            if (((selectDealerFlag == null) || (!isDealer && (selectDealerFlag.InnerText != "True"))) | isDealer)
-                            {
-                                // get modelid
-                                var nodModelId = nod.SelectSingleNode("hidden/modelid");
-                                var modelId = "";
-                                if (nodModelId != null) modelId = nodModelId.InnerText;
-
-                                //Build NBrightInfo class for model
-                                var o = new NBrightInfo();
-                                o.XMLData = nod.OuterXml;
-
-                                #region "Add Lanaguge Data"
-
-                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
-                                if (nodLang != null)
-                                {
-                                    o.AddSingleNode("lang", "", "genxml");
-                                    o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
-                                }
-
-                                #endregion
-
-                                #region "Prices"
-
-                                if (addSalePrices)
-                                {
-                                    var uInfo = UserController.GetCurrentUserInfo();
-                                    if (uInfo != null)
-                                    {
-                                        o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
-                                        //[TODO: convert to new promotion provider]
-                                        //var objPromoCtrl = new PromoController();
-                                        //var objPCtrl = new ProductController();
-                                        //var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
-                                        //var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
-                                        //o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
-                                    }
-                                }
-
-                                #endregion
-
-                                // product data for display in modellist
-                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty(xpathprefix + "genxml/lang/genxml/textbox/txtproductname"));
-                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty(xpathprefix + "genxml/textbox/txtproductref"));
-
-                                if (cartrecord)
-                                    o.SetXmlProperty("genxml/hidden/productid", dataItemObj.GetXmlProperty("genxml/productid"));
-                                else
-                                o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
-
-
-                                objL.Add(o);
-                            }
-                        }
-                    }
-                    lp += 1;
-                }
-            }
-            return objL;
-        }
-
-        private Double GetSalePriceDouble(NBrightInfo dataItemObj)
-        {
-            Double price = -1;
-            var l = BuildModelList(dataItemObj);
-            foreach (var m in l)
-            {
-                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
-                if ((s > 0) && (s < price) | (price == -1)) price = s;
-            }
-            if (price == -1) price = 0;
-            return price;
-        }
-
-        private String GetSalePrice(NBrightInfo dataItemObj)
-        {
-            var price = GetSalePriceDouble(dataItemObj);
-            return price.ToString("");
-        }
-
-        private String GetDealerPrice(NBrightInfo dataItemObj)
-        {
-            var dealprice = "-1";
-            var l = BuildModelList(dataItemObj);
-            foreach (var m in l)
-            {
-                var s = m.GetXmlProperty("genxml/textbox/txtdealercost");
-                if (Utils.IsNumeric(s))
-                {
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(dealprice, CultureInfo.GetCultureInfo("en-US"))) | (dealprice == "-1")) dealprice = s;
-                }
-            }
-            return dealprice;
-        }
-
-        private String GetFromPrice(NBrightInfo dataItemObj)
-        {
-            var price = "-1";
-            var l = BuildModelList(dataItemObj);
-            foreach (var m in l)
-            {
-                var s = m.GetXmlProperty("genxml/textbox/txtunitcost");
-                if (Utils.IsNumeric(s))
-                {
-                    // NBrightBuy numeric always stored in en-US format.
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
-                }
-            }
-            return price;
-        }
-
-        private String GetBestPrice(NBrightInfo dataItemObj)
-        {
-            var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
-            if (fromprice < 0) fromprice = 0; // make sure we have a valid price
-            var saleprice = GetSalePriceDouble(dataItemObj);
-            if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
-
-            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
-            {
-                var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
-                if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
-                if (fromprice < dealerprice)
-                {
-                    if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
-                    return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
-                }
-                if (dealerprice < saleprice) return dealerprice.ToString(CultureInfo.GetCultureInfo("en-US"));
-                return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
-            }
-            if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
-            return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));                
-        }
-
-        private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
-        {
-            var saleprice = GetSalePriceDouble(dataItemObj);
-            if (saleprice >= 0) return true;  // if it's on sale we can assume it has multiple prices
-            var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
-            if (nodList != null)
-            {
-                //check if we really need to add prices (don't if all the same)
-                var holdPrice = "";
-                var holdDealerPrice = "";
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
-                foreach (XmlNode nod in nodList)
-                {
-                    var mPrice = nod.SelectSingleNode("textbox/txtunitcost");
-                    if (mPrice != null)
-                    {
-                        if (holdPrice != "" && mPrice.InnerText != holdPrice)
-                        {
-                            return true;
-                        }
-                        holdPrice = mPrice.InnerText;
-                    }
-                    if (isDealer)
-                    {
-                        var mDealerPrice = nod.SelectSingleNode("textbox/txtdealercost");
-                        if (mDealerPrice != null)
-                        {
-                            if (holdDealerPrice != "" && mDealerPrice.InnerText != holdDealerPrice) return true;
-                            holdDealerPrice = mDealerPrice.InnerText;
-                        }                        
-                    }
-
-                }
-            }
-            return false;
-        }
-
-        public static void IncreaseArray(ref string[] values, int increment)
-        {
-            var array = new string[values.Length + increment];
-            values.CopyTo(array, 0);
-            values = array;
-        }
-
-        private Boolean IsInStock(NBrightInfo dataItem)
-        {
-            var nodList = BuildModelList(dataItem);
-            foreach (var obj in nodList)
-            {
-                if (IsModelInStock(obj)) return true;
-            }
-            return false;
-        }
-
-        private Boolean IsModelInStock(NBrightInfo dataItem)
-        {
-            var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
-            if (stockOn)
-            {
-                var modelstatus = dataItem.GetXmlProperty("genxml/dropdownlist/modelstatus");
-                if (modelstatus == "010") return true;
-            }
-            else
-            {
-                return true;
-            }
-            return false;
-        }
-
-        #endregion
     }
 }

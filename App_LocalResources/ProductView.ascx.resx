@@ -309,4 +309,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="productunavailable.Text" xml:space="preserve">
     <value>The Product is currently unavailable.</value>
   </data>
+  <data name="addingtobasket.Text" xml:space="preserve">
+    <value>Adding To Basket....</value>
+  </data>
 </root>

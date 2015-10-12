@@ -29,23 +29,6 @@ namespace NBrightBuy.render
     public class NBrightBuyRazorTokens<T> : RazorEngineTokens<T>
     {
 
-        #region "NBS Action tokens"
-
-        public IEncodedString AddToBasketButton(NBrightInfo info, String xpath, String attributes = "", String defaultValue = "")
-        {
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
-            if (defaultValue.StartsWith("ResourceKey:")) defaultValue = ResourceKey(defaultValue.Replace("ResourceKey:", "")).ToString();
-
-            var id = xpath.Split('/').Last();
-            var value = info.GetXmlProperty(xpath);
-            if (value == "") value = defaultValue;
-            var strOut = "<input value='" + value + "' id='" + id + "' " + attributes + "  type='text' />";
-
-            return new RawString(strOut);
-        }
-
-        #endregion
-
         #region "NBS display tokens"
 
         #region "products"
@@ -88,9 +71,65 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
-        public IEncodedString ModelsRadio(NBrightInfo info)
+        public IEncodedString ModelsRadio(NBrightInfo info, String attributes = "", String template = "{name} ({bestprice})", Int32 defaultIndex = 0, Boolean displayprice = false)
         {
             var strOut = "";
+            var objL = NBrightBuyUtils.BuildModelList(info, true);
+
+            if (!displayprice)
+            {
+                displayprice = NBrightBuyUtils.HasDifferentPrices(info);
+            }
+
+            var c = 0;
+            var id = info.ItemID + "_rblmodelsel";
+            var s = "";
+            var v = "";
+            strOut = "<div " + attributes + ">";
+            foreach (var obj in objL)
+            {
+                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);
+                var value = obj.GetXmlProperty("genxml/hidden/modelid");
+                if (value == v || (v == "" && defaultIndex == c))
+                    s = "checked";
+                else
+                    s = "";
+                strOut += "<input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label>";
+                c += 1;
+
+            }
+            strOut += "</div>";
+            return new RawString(strOut);
+        }
+
+        public IEncodedString ModelsDropDown(NBrightInfo info, String attributes = "", String template = "{name} ({bestprice})", Int32 defaultIndex = 0, Boolean displayprice = false)
+        {
+            var strOut = "";
+            var objL = NBrightBuyUtils.BuildModelList(info, true);
+
+            if (!displayprice)
+            {
+                displayprice = NBrightBuyUtils.HasDifferentPrices(info);
+            }
+
+            var c = 0;
+            var id = info.ItemID + "_ddlmodelsel";
+            var s = "";
+            var v = "";
+            strOut = "<select id='" + id + "' update='save' " + attributes + ">";
+            foreach (var obj in objL)
+            {
+                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);
+                var value = obj.GetXmlProperty("genxml/hidden/modelid");
+                if (value == v || (v == "" && defaultIndex == c))
+                    s = "selected";
+                else
+                    s = "";
+
+                strOut += "    <option value='" + value + "' " + s + ">" + text + "</option>";
+                c += 1;
+            }
+            strOut += "</select>";
 
             return new RawString(strOut);
         }

@@ -234,23 +234,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var strproductid = ajaxInfo.GetXmlProperty("genxml/hidden/productid");
             // Get ModelID
             var modelidlist = new List<String>();
+            // *************************************
+            // Do Model List return
             var qtylist = new Dictionary<String, String>();
-            var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/repeaters/repeater[1]/*");
+            var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/textbox/*");
             if (nodList != null && nodList.Count > 0)
             {
                 foreach (XmlNode nod in nodList)
                 {
-                    var nbi = new NBrightInfo();
-                    nbi.XMLData = nod.OuterXml;
-                    var strmodelId = nbi.GetXmlProperty("genxml/hidden/modelid");
-                    var strqtyId = nbi.GetXmlProperty("genxml/textbox/selectedmodelqty");
-                    if (Utils.IsNumeric(strqtyId))
+                    if (nod.Name.StartsWith("selectedmodelqty")) // model list qty textbox has modelid appedix.
                     {
-                        modelidlist.Add(strmodelId);
-                        qtylist.Add(strmodelId, strqtyId);
+                        if (Utils.IsNumeric(nod.InnerText))
+                        {
+                            var fieldid = nod.Name.Replace("selectedmodelqty", "selectedmodelid"); //link to modelid in hidden field
+                            var strmodelId = ajaxInfo.GetXmlProperty("genxml/hidden/" + fieldid);
+                            var strqtyId = nod.InnerText;
+                            if (Utils.IsNumeric(strqtyId))
+                            {
+                                modelidlist.Add(strmodelId);
+                                qtylist.Add(strmodelId, strqtyId);
+                            }
+                        }
                     }
                 }
             }
+            // *************************************
+            // do dropdown and radio return
             if (qtylist.Count == 0)
             {
                 var strmodelId = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");

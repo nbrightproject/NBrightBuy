@@ -13,6 +13,7 @@
 }
 
 <!-- This template is injected into the details page head section -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 
 <!-- SEO name field test to cover all services Combined to reduce the number of tests needed -->
 <meta property="og:title" content="@PropertyValue(product,"man","propertyname") @(product.ProductName)"/>
@@ -76,15 +77,28 @@ $(document).ready(function () {
     });
 
     $('.qtyminus').click(function () {
-        if (parseInt($('.quantity').val()) > 1)
-            $('.quantity').val(parseInt($('.quantity').val()) - 1);
-        else
-            $('.quantity').val('1');
+
+        var idx = $(this).attr("index");
+        if (idx === undefined) {
+            if (parseInt($('.selectedaddqty').val()) > 1)
+                $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) - 1);
+            else
+                $('.selectedaddqty').val('1');
+        } else {
+            $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) - 1);
+            if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
+        }
     });
 
     $('.qtyplus').click(function () {
-        $('.quantity').val(parseInt($('.quantity').val()) + 1);
-        if ($('.quantity').val() == 'NaN') $('.quantity').val('1');
+        var idx = $(this).attr("index");
+        if (idx === undefined) {
+            $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) + 1);
+            if ($('.selectedaddqty').val() == 'NaN') $('.selectedaddqty').val('1');
+        } else {
+            $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) + 1);
+            if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
+        }
     });
 
     $('.buybutton').click(function () {
