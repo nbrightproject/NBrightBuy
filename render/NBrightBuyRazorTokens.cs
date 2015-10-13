@@ -134,6 +134,70 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+
+        public IEncodedString ProductOption(ProductData productdata, int index, String attributes = "")
+        {
+            var strOut = "";
+
+            var objL = productdata.Options;
+
+            if (objL.Count > index)
+            {
+                var obj = objL[index];
+                var optid = obj.GetXmlProperty("genxml/hidden/optionid");
+                var optvalList = productdata.GetOptionValuesById(optid);
+
+                strOut += "<div  class='option option" + (index + 1) + "' " + attributes + ">";
+                strOut += "<span class='optionname optionname" + (index + 1) + "'>" + obj.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</span>";
+                strOut += "<span class='optionvalue optionvalue" + (index + 1) + "'>";
+
+                if (optvalList.Count > 1)
+                {
+                    //dropdown
+                    strOut += "<select id='optionddl" + (index + 1) + "' update='save'>";
+                    foreach (var optval in optvalList)
+                    {
+                        strOut += "    <option value='" + optval.GetXmlProperty("genxml/hidden/optionvalueid") + "'>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</option>";
+                    }
+                    strOut += "</select>";
+                }
+                if (optvalList.Count == 1)
+                {
+                    //checkbox
+                    foreach (var optval in optvalList)
+                    {
+                        strOut += "    <input id='optionchk" + (index + 1) + "' type='checkbox' " + attributes + " update='save' /><label>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</label>";
+                    }
+                }
+                if (optvalList.Count == 0)
+                {
+                    // textbox
+                    strOut += "<input id='optiontxt" + (index + 1) + "' update='save' type='text' />";
+                }
+                strOut += "<input id='optionid" + (index + 1) + "' update='save' type='hidden' value='" + optid + "' />";
+                strOut += "</span>";
+                strOut += "</div>";
+
+            }
+
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString ProductOptions(ProductData  productdata, String attributes = "")
+        {
+            var strOut = "";
+
+            var objL = productdata.Options;
+            var c = objL.Count;
+            for (int i = 0; i < c; i++)
+            {
+                strOut += ProductOption(productdata, i);
+            }
+
+            return new RawString(strOut);
+        }
+
         #endregion
 
         #region "categories"

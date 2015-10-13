@@ -261,6 +261,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "addcookietobasket":
                     break;
                 case "docdownload":
+                    var fname = Utils.RequestQueryStringParam(context, "filename");
+                    strOut = fname; // return this is error.
+                    var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
+                    var fpath = HttpContext.Current.Server.MapPath(fname);
+                    if (downloadname == "") downloadname = Path.GetFileName(fname);
+                    Utils.ForceDocDownload(fpath, downloadname, context.Response);
                     break;
                 case "printproduct":
                     break;
@@ -1754,10 +1760,8 @@ namespace Nevoweb.DNN.NBrightBuy
             if (carttemplate != "")
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var razorTemplName = NBrightBuyUtils.GetTemplateData(carttemplate, "/DesktopModules/NBright/NBrightBuy", theme, StoreSettings.Current.Settings(), Utils.GetCurrentCulture());
-                razorTempl = GenXmlFunctions.RenderRepeater(currentcart.GetInfo(), razorTemplName,"", "XMLData", "", StoreSettings.Current.Settings(), null);
-                var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString("");
-                razorTempl = NBrightBuyUtils.RazorRender(currentcart, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);                
+                var razorTemplateKey = "NBrightBuyRazorKey" + theme + carttemplate + PortalSettings.Current.PortalId.ToString("");
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, razorTemplateKey, currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
         }

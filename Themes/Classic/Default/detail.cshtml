@@ -142,8 +142,10 @@
             {
                 <div class="options">
                     <!-- OPTION HERE -->
+                    @ProductOptions(product)
                 </div>
-            }
+                <div class="clearfix"></div>
+             }
 
             @if (Model.GetSetting("cataloguemode") != "True")
             {
@@ -216,6 +218,41 @@
                         <table>
                             <tbody>
                             <!-- Model list -->
+                            @foreach (var m in product.Models)
+                            {
+                                <tr>
+                                    <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
+                                    <td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
+                                    @if (Model.GetSetting("productcode") == "True")
+                                    {
+                                        if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
+                                        {
+                                            <td>NC</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
+                                        }
+                                    }
+                                    <td>
+                                        @if (product.BestPrice() < product.FromPrice())
+                                        {
+                                            <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
+                                            <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+                                        }
+                                        else
+                                        {
+                                            <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!product.IsInStock)
+                                        {
+                                            <strong>@ResourceKey("ProductView.outofstock")</strong>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -227,6 +264,12 @@
                     <h3>@ResourceKey("ProductView.documentation")</h3>
                     <ul class="documents">
                         <!-- documents HERE -->
+                        @foreach (var doc in product.Docs)
+                        {
+                            <li><i class='fa fa-file-text fa-2x'>@ResourceKey("ProductView.filebullets")</i><span class="documentname">@doc.GetXmlProperty("genxml/textbox/txttitle")</span><span class="documentdescription">@doc.GetXmlProperty("genxml/textbox/txtdocdesc")</span>
+                                <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&filename=@doc.GetXmlProperty("genxml/hidden/filerelpath")'>@ResourceKey("ProductView.download")</a>   
+                        </li>   
+                        }
                     </ul>
                 </div>
             }
@@ -239,6 +282,36 @@
             <h3>@ResourceKey("ProductView.related")</h3>
             <div id="relatedwrapper" class="productlist">
                 <!-- Related products -->
+                @foreach (var rp in product.GetRelatedProducts())
+                {
+                    var rproduct = new ProductData(rp.ItemID,rp.Lang);
+                    <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
+
+                        @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
+                        {
+                            <div class="image" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemimagecontainerheight")">
+                                <img title="@(rproduct.SEODescription)" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="noimage" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemimagecontainerheight")">
+                                @(Model.GetSettingHtmlOf("noimageicon"))
+                            </div>
+                        }
+
+                        <div class="description">
+                            <h1><a href="@EntryUrl(rp, Model)">@ProductName(rp)</a>
+                            </h1>
+                            <div class="price">@NBrightBuyUtils.FormatToStoreCurrency(rproduct.BestPrice())</div>
+                            @if (!rproduct.IsInStock)
+                            {
+                                <div class="outofstockflag">@ResourceKey("ProductView.outofstock")</div>
+                            }
+                        </div>
+
+                    </div>
+                }
             </div>
         }
 

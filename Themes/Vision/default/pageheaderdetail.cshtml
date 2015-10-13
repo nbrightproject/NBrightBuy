@@ -1,41 +1,17 @@
-</div>
+<!-- Vision ProductView CSS -->
+<link href="/Portals/0/Themes/Vision/css/NBS_ProductView.css" rel="stylesheet">
 
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yourpubid" async="async"></script>
+<!-- Flat Icon CSS -->
+<link rel="stylesheet" type="text/css" href="/Portals/0/Themes/Vision/css/flaticon.css">
 
-<!-- Quantity Input -->
-<script type="text/javascript">
-$(document).ready(function () {
-
-    $(".quantity").keydown(function (e) {
-        if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
-        if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
-    });
-
-    $('.qtyminus').click(function () {
-        if (parseInt($('.quantity').val()) > 1)
-            $('.quantity').val(parseInt($('.quantity').val()) - 1);
-        else
-            $('.quantity').val('1');
-    });
-
-    $('.qtyplus').click(function () {
-        $('.quantity').val(parseInt($('.quantity').val()) + 1);
-        if ($('.quantity').val() == 'NaN') $('.quantity').val('1');
-    });
-
-    $('.buybutton').click(function () {
-        if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
-    });
-
-});
-</script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=fr"></script>
 
 <!-- Details Tabs -->
 <script type="text/javascript">
 $(document).ready(function() {
+
+    // Tabs
 		$('.nav-tabs > li > a').click(function(event){
 		event.preventDefault();//stop browser to take action for clicked anchor
 
@@ -58,6 +34,11 @@ $(document).ready(function() {
 		$(target_tab_selector).removeClass('tab-hide');
 		$(target_tab_selector).addClass('tab-active');
 	  });
+
+    $('#maptab').click(function(){
+	   initialize();
+    });
+
 });
 </script>
 
@@ -90,7 +71,7 @@ $(function() {
 			},
 
 			captionOn = function() {
-			    var description = $('a[[href="' + $('#imagelightbox').attr('src') + '"]] img').attr('alt');
+			    var description = $('a[href="' + $('#imagelightbox').attr('src') + '"] img').attr('alt');
 			    if (description.length > 0)
 			        $('<div id="imagelightbox-caption">' + description + '</div>').appendTo('body');
 			},
@@ -130,11 +111,11 @@ $(function() {
 			navigationOff = function() {
 			    $('#imagelightbox-nav').remove();
 			};
-			
+
 					//	Custom configuration for NBrightBuy
-		var instanceNBB = $('a[[data-imagelightbox="nbb"]]').imageLightbox(
+		var instanceNBB = $('a[data-imagelightbox="nbb"]').imageLightbox(
 		{
-			animationSpeed: [Settings:lightboxspeed],
+			animationSpeed: 100,
 		    onStart: function() { overlayOn(); closeButtonOn(instanceNBB); },
 		    onEnd: function() { overlayOff(); captionOff(); closeButtonOff(); activityIndicatorOff(); },
 		    onLoadStart: function() { captionOff(); activityIndicatorOff(); },
@@ -143,19 +124,4 @@ $(function() {
 });
 });
 
-</script>
-
-<!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript">
-$( document ).ready(function() {
-
-var $container = $('#relatedwrapper').masonry({
-  columnWidth: [Settings:classicrelateditemwidth], // List item width - Can also use CSS width of first list item
-  itemSelector: '.product',
-  gutter: [Settings:classicrelateditemgutter], // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
-  isOriginLeft: true, // Build from right to left if false
-  isOriginTop: true, // Build from bottom to top if false
-});
-
-});
 </script>
