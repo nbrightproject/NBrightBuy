@@ -71,41 +71,78 @@
                             <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Property" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtcategoryname" />]</span>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i>
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
                             </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-                            <a class="close-link"><i class="fa fa-times"></i></a></div>
+                            <a class="close-link"><i class="fa fa-times"></i></a>
+                        </div>
                         <div class="no-move">
                         </div>
                     </div>
                     <div class="box-content">
                         <div class="form-horizontal dnnForm">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
-                                    <div class="col-sm-2">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Ref" />]</label>
-                                        [<tag id="propertyref" cssclass="form-control" type="textbox" maxlength="50" />]
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>
+                                    <div class="col-sm-12">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />]
                                         [<tag id="txtcategoryname" cssclass="form-control" type="textbox" maxlength="250" />]
                                     </div>
-                                    <div class="col-sm-2">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Type" />]</label>
-                                        [<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" allowblank="true" showhidden="true" groupsonly="true" />]
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Description" />]</label>[<tag type="editflag" />]
+                                        [<tag id="txtcategorydesc" cssclass="form-control" type="textbox" rows="4" maxlength="200" textmode="MultiLine" />]
                                     </div>
-                                    <div class="col-sm-4"><br>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label class="control-label sr-only">[<tag type="valueof" resourcekey="General.Image" />]</label>
+                                        [<tag id="image" type="fileupload" cssclass="form-control" textwidth="0" maxlength="50" separator=" " />] [<tag id="cmdUpload" type="linkbutton" cssclass="btn btn-default" resourcekey="General.cmdUploadFileButton" commandname="save" commandargument="ItemID" />]
+                                    </div>
+                                </div>
+                                [<tag type="if" xpath="genxml/hidden/imageurl" testvalue="" display="{OFF}" displayelse="{ON}" />]<!-- check for category image -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        [<tag type='imageof' xpath='genxml/hidden/imageurl' thumb="160" />]
+                                    </div>
+                                </div>
+                                [<tag type="endif" />]
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.seoname" />]</label>[<tag type="editflag" />]
+                                        [<tag id="txtseoname" cssclass="form-control" type="textbox" maxlength="250" />]
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.seotitle" />]</label>[<tag type="editflag" />]
+                                        [<tag id="txtseopagetitle" cssclass="form-control" type="textbox" maxlength="250" />]
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Tags" />]</label>[<tag type="editflag" />]
+                                        [<tag id="txtmetakeywords" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Description" />]</label>[<tag type="editflag" />]
+                                        [<tag id="txtmetadescription" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="control-label">[<tag type="valueof" resourcekey="General.Type" />]</label>
+                                    [<tag id="ddlparentcatid" cssclass="s2_with_tag populate placeholder" type="groupdropdown" allowblank="true" showhidden="true" groupsonly="true" />]
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12" style="text-align:right;">
                                         [<tag id="chkishidden" type="checkbox" Text="" />]
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label>
-                                        [<tag id="chkdisable" type="checkbox" Text="" />]
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Disable" />]</label>
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" databind="GUIDKey" />] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                                    <div class="col-md-12" style="text-align:right;">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" databind="GUIDKey"/>] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
-                                    </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -150,7 +187,7 @@
 	</div>
 </div>
 
-        <div class="row categorymessage hidden"><!-- Hidden for now -->
+        <div class="row categorymessage">
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
@@ -175,47 +212,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row categorytemplates hidden"><!-- Hidden for now -->
-            <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header">
-                        <div class="box-name">
-                            <i class="fa fa-search"></i><span>[<tag type="valueof" resourcekey="General.Templates" />]</span>
-                        </div>
-                        <div class="box-icons">
-                            <a class="collapse-link"><i class="fa fa-chevron-down"></i>
-                            </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-                            <a class="close-link"><i class="fa fa-times"></i></a></div>
-                        <div class="no-move">
-                        </div>
-                    </div>
-                    <div class="box-content">
-                        <p><i class="fa fa-info"></i>Some information about these options on this page here.</p>
-                        <div class="form-horizontal dnnForm">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.List" />]</label>
-                                        [<tag id="listitemtemplate" cssclass="form-control" type="textbox" maxlength="250" />]
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">[<tag type="valueof" resourcekey="General.Detail" />]</label>
-                                        [<tag id="producttemplate" cssclass="form-control" type="textbox" maxlength="250" />]
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="clearfix"></div>
                     </div>
                 </div>
