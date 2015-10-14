@@ -33,8 +33,10 @@
 
 <!-- Product List Body -->
 
-@foreach (NBrightInfo x in Model.List)
+@foreach (NBrightInfo info in Model.List)
 {
+    var product = new ProductData(info.ItemID, info.Lang);
+
     <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight"))px; margin-bottom: @(Model.GetSetting("classicitembottommargin"))px"><!-- Product container -->
 
         <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
@@ -45,21 +47,21 @@
                 @if (Model.GetSetting("enablefavorites") == "True")
                 {
                     <span>
-                        <a class="wishlistadd" listname="nbsfavorites0" itemid="@(x.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
-                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(x.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                        <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
                     </span>
                 }
 
-                <a href="javascript:void();" class="addtobasket" itemid="@(x.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+                <a href="javascript:void();" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
 
 
-                <a href="@EntryUrl(x, Model)">@ResourceKey("ProductView.viewicon-lg")</a>
+                <a href="@EntryUrl(info, Model)">@ResourceKey("ProductView.viewicon-lg")</a>
             </div>
 
-            @if (x.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
+            @if (product.Imgs.Count > 0)
             {
             <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
-                <img title="@(x.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(x, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
             </div>
             }
             else
@@ -71,15 +73,15 @@
 
         </div>
         
-        <a href="@EditUrl(x,Model)">@ResourceKey("ProductView.editicon")</a>
+        <a href="@EditUrl(info,Model)">@ResourceKey("ProductView.editicon")</a>
 
         <div class="description">
-            <h1><a href="@EntryUrl(x,Model)">@ProductName(x)</a></h1>
+            <h1><a href="@EntryUrl(info,Model)">@ProductName(info)</a></h1>
         </div>
         
         <!-- fields required to send required ajax data to server -->
-        <span class="entryid@(x.ItemID)">
-            <input id="@(x.ItemID)_productid" type="hidden" value="@(x.ItemID)">                    
+        <span class="entryid@(info.ItemID)">
+            <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">                    
         </span>
 
     </div>

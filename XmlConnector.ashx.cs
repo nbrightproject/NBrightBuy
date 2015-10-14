@@ -1760,8 +1760,7 @@ namespace Nevoweb.DNN.NBrightBuy
             if (carttemplate != "")
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var razorTemplateKey = "NBrightBuyRazorKey" + theme + carttemplate + PortalSettings.Current.PortalId.ToString("");
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, razorTemplateKey, currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0,"", currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
         }

@@ -1305,12 +1305,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    SetModCache(moduleid, cachekey, razorTempl);
+                    if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
             }
             return razorTempl;
         }
 
+        /// <summary>
+        /// Render a razor template with an object, this method will include the object in the List of the NBrightRazor class
+        /// </summary>
+        /// <param name="razorTemplName"></param>
+        /// <param name="moduleid"></param>
+        /// <param name="cacheKey">If empty no cache done</param>
+        /// <param name="obj"></param>
+        /// <param name="templateControlPath"></param>
+        /// <param name="theme"></param>
+        /// <param name="lang"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, object obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
@@ -1327,7 +1339,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    SetModCache(moduleid, cachekey, razorTempl);
+                    if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
             }
             return razorTempl;

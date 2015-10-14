@@ -85,7 +85,6 @@ namespace NBrightBuy.render
             var id = info.ItemID + "_rblmodelsel";
             var s = "";
             var v = "";
-            strOut = "<div " + attributes + ">";
             foreach (var obj in objL)
             {
                 var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);
@@ -94,11 +93,10 @@ namespace NBrightBuy.render
                     s = "checked";
                 else
                     s = "";
-                strOut += "<input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label>";
+                strOut += "<div " + attributes + "><input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label></div>";
                 c += 1;
 
             }
-            strOut += "</div>";
             return new RawString(strOut);
         }
 
@@ -133,7 +131,6 @@ namespace NBrightBuy.render
 
             return new RawString(strOut);
         }
-
 
         public IEncodedString ProductOption(ProductData productdata, int index, String attributes = "")
         {

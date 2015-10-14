@@ -159,57 +159,57 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
 
 
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode); 
+                    // Get Display Header
+                    var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
 
-                //-------------------------------------------------------------------------
-                //Get default sort order and filter from the displayheader template.  Use template data, becuase repeater is not fully initialized yet.
-                _strOrder = _navigationdata.OrderBy;
-                if (String.IsNullOrEmpty(_strOrder)) _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl); // get default
-                if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
-                {
+                    //-------------------------------------------------------------------------
+                    //Get default sort order and filter from the displayheader template.  Use template data, becuase repeater is not fully initialized yet.
+                    _strOrder = _navigationdata.OrderBy;
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl); // get default
+                    if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
+                    {
                         _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataHTempl, _orderbyindex);
-                    // save the selected orderby to the cookie, so we can page with it.
-                    _navigationdata.OrderBy = _strOrder;
-                }
-                //-------------------------------------------------------------------------
+                        // save the selected orderby to the cookie, so we can page with it.
+                        _navigationdata.OrderBy = _strOrder;
+                    }
+                    //-------------------------------------------------------------------------
 
-                var cachekey = "GenXmlTemplate*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    var cachekey = "GenXmlTemplate*rpDataH" + _templH + "*" + ModuleId.ToString();
                     _templateHeader = (GenXmlTemplate) Utils.GetCache(cachekey);
-                if (_templateHeader == null || StoreSettings.Current.DebugMode)
-                {
-                    _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                }
-                rpDataH.ItemTemplate = _templateHeader;
+                    if (_templateHeader == null || StoreSettings.Current.DebugMode)
+                    {
+                        _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpDataH.ItemTemplate = _templateHeader;
 
-                // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
+                    // insert page header text
+                    NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
 
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
-                //if body template doesn't contain a default moduleid add it.
-                if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
-                // always add a productid hidden field to the data template (for add to cart)
-                rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
+                    // Get Display Body
+                    var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
+                    //if body template doesn't contain a default moduleid add it.
+                    if (!rpDataTempl.ToLower().Contains("nbs:modeldefault")) rpDataTempl = "[<tag type='nbs:modeldefault' />]" + rpDataTempl;
+                    // always add a productid hidden field to the data template (for add to cart)
+                    rpDataTempl = "[<tag type='hidden' id='productid' value='databind:itemid' />]" + rpDataTempl;
 
-                cachekey = "GenXmlTemplate*rpData" + _templD + "*" + ModuleId.ToString();
+                    cachekey = "GenXmlTemplate*rpData" + _templD + "*" + ModuleId.ToString();
                     var gXml = (GenXmlTemplate) Utils.GetCache(cachekey);
-                if (gXml == null || StoreSettings.Current.DebugMode)
-                {
-                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);                    
-                }
-                rpData.ItemTemplate = gXml;
+                    if (gXml == null || StoreSettings.Current.DebugMode)
+                    {
+                        gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpData.ItemTemplate = gXml;
 
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
+                    // Get Display Footer
+                    var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
 
-                cachekey = "GenXmlTemplate*rpDataF" + _templF + "*" + ModuleId.ToString();
+                    cachekey = "GenXmlTemplate*rpDataF" + _templF + "*" + ModuleId.ToString();
                     gXml = (GenXmlTemplate) Utils.GetCache(cachekey);
-                if (gXml == null || StoreSettings.Current.DebugMode)
-                {
-                    gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                }
-                rpDataF.ItemTemplate = gXml;
+                    if (gXml == null || StoreSettings.Current.DebugMode)
+                    {
+                        gXml = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+                    }
+                    rpDataF.ItemTemplate = gXml;
 
                 }
 
