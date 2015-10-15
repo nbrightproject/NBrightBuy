@@ -399,7 +399,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                 // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
                                 var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
                                 var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
-                                if (activeCat != null)
+                                if (activeCat != null && (activeCat.categoryrefGUIDKey == _catname))
                                 {
                                     var redirecturl = "";
                                     if (Utils.IsNumeric(_eid))
@@ -409,7 +409,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                     }
                                     else
                                     {
-                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId); 
+                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId, objCat.Lang); 
                                     }
 
                                     try

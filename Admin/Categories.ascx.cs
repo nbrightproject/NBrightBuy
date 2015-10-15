@@ -319,8 +319,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         }
 
                         catData.Save();
+                        NBrightBuyUtils.RemoveModCachePortalWide(PortalId);  // clear cache before validate lang, so we pickup new changes to name.
                         CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(itemid)); // do validate so we update all refs and children refs
-                        NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
                     }
                 }
             }

@@ -409,6 +409,7 @@
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Installation\menuplugin.xml" />
     <Content Include="Payment.ascx" />
     <Content Include="PaymentSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -699,6 +700,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Installation\02.06.00.SqlDataProvider" />
+    <None Include="Installation\03.00.00.SqlDataProvider" />
+    <None Include="Installation\NBS.dnn" />
+    <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />
     <None Include="Themes\config\js\nbbqtycookie.readme" />

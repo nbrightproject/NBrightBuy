@@ -295,25 +295,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var menupluginsys = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, false, storeSettings.Settings());
             var infosys = new NBrightInfo();
             infosys.XMLData = menupluginsys;
-            var xmlNodeList2 = infosys.XMLDoc.SelectNodes("genxml/plugin/*");
-            if (xmlNodeList2 != null)
+            if (infosys.XMLDoc != null)
             {
-                foreach (XmlNode carNod in xmlNodeList2)
+                var xmlNodeList2 = infosys.XMLDoc.SelectNodes("genxml/plugin/*");
+                if (xmlNodeList2 != null)
                 {
-                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
-                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
-                    var resultsys = rtnList.Where(p => p.GUIDKey == newInfo.GUIDKey);
-                    if (!resultsys.Any())
+                    foreach (XmlNode carNod in xmlNodeList2)
                     {
-                        // add the missing plugin to the active list
-                        newInfo.ItemID = rtnList.Count;
-                        newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                        var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
                         newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
-                        rtnList.Add(newInfo);
+                        var resultsys = rtnList.Where(p => p.GUIDKey == newInfo.GUIDKey);
+                        if (!resultsys.Any())
+                        {
+                            // add the missing plugin to the active list
+                            newInfo.ItemID = rtnList.Count;
+                            newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                            newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
+                            rtnList.Add(newInfo);
+                        }
                     }
                 }
             }
-
 
             return rtnList;
         }
