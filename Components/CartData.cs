@@ -272,8 +272,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // calc any voucher amounts
             var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
-            PurchaseInfo = DiscountCodeInterface.Instance().CalculateVoucherAmount(PortalId, UserId, PurchaseInfo, discountcode);
-            var voucherDiscount = PurchaseInfo.GetXmlPropertyDouble("genxml/voucherdiscount");
+            Double voucherDiscount = 0;
+            if (DiscountCodeInterface.Instance() != null)
+            {
+                PurchaseInfo = DiscountCodeInterface.Instance().CalculateVoucherAmount(PortalId, UserId, PurchaseInfo, discountcode);
+                voucherDiscount = PurchaseInfo.GetXmlPropertyDouble("genxml/voucherdiscount");
+            }
             promototaldiscount += voucherDiscount;
             totaldiscount += voucherDiscount;
             totaldealerdiscount += voucherDiscount;
