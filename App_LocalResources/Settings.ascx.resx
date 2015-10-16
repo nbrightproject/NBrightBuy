@@ -399,4 +399,7 @@
   <data name="checkall.Text" xml:space="preserve">
     <value>Check all</value>
   </data>
+  <data name="Theme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
 </root>

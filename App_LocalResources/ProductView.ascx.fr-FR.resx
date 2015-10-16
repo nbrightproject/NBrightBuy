@@ -301,6 +301,24 @@
 &lt;/span&gt;</value>
   </data>
   <data name="productunavailable.Text" xml:space="preserve">
-    <value>Le produit est actuellement indisponible.</value>
+    <value>Ce produit est actuellement indisponible.</value>
+  </data>
+    <data name="addedtobasket.Text" xml:space="preserve">
+    <value>Produit ajouté au panier</value>
+  </data>
+  <data name="products.Text" xml:space="preserve">
+    <value>produits</value>
+  </data>
+  <data name="promo.Text" xml:space="preserve">
+    <value>Offre promotionnelle</value>
+  </data>
+  <data name="promoflag.Text" xml:space="preserve">
+    <value>Promotion !</value>
+  </data>
+  <data name="references.Text" xml:space="preserve">
+    <value>Références</value>
+  </data>
+  <data name="recommend.Text" xml:space="preserve">
+    <value>Avec ce produit, nous vous recommandons :</value>
   </data>
 </root>

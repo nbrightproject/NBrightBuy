@@ -1,1 +1,2 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Nevoweb.DNN.NBrightBuy.ProductViewSettings" Codebehind="ProductViewSettings.ascx.cs" %>
+<asp:PlaceHolder ID="phData" runat="server"></asp:PlaceHolder>

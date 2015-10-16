@@ -1294,7 +1294,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RazorTemplRenderList(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String)GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
@@ -1326,7 +1326,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, object obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
+            var cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
             var razorTempl = (String)GetModCache(cachekey);
             if (razorTempl == null)
             {

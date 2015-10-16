@@ -307,9 +307,24 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
 &lt;/span&gt;</value>
   </data>
   <data name="productunavailable.Text" xml:space="preserve">
-    <value>The Product is currently unavailable.</value>
+    <value>This product is currently unavailable.</value>
   </data>
-  <data name="addingtobasket.Text" xml:space="preserve">
-    <value>Adding To Basket....</value>
+  <data name="addedtobasket.Text" xml:space="preserve">
+    <value>Product added to basket</value>
+  </data>
+  <data name="products.Text" xml:space="preserve">
+    <value>products</value>
+  </data>
+  <data name="promo.Text" xml:space="preserve">
+    <value>Promotional offer</value>
+  </data>
+  <data name="promoflag.Text" xml:space="preserve">
+    <value>Promotion !</value>
+  </data>
+  <data name="references.Text" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="recommend.Text" xml:space="preserve">
+    <value>With this product, we recommend :</value>
   </data>
 </root>

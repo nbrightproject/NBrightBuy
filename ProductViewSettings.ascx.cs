@@ -1,5 +1,8 @@
 using System;
+using System.Web.UI.WebControls;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
+using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -12,21 +15,35 @@ namespace Nevoweb.DNN.NBrightBuy
     /// The Settings class manages Module Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class ProductViewSettings : NBrightBuySettingBase
+    public partial class ProductViewSettings : ModuleSettingsBase
     {
 
         protected override void OnInit(EventArgs e)
         {
-            base.CtrlTypeCode = "ProductView";
             base.OnInit(e);
+            // insert page header text
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "settingspageheader.cshtml", "config", StoreSettings.Current.Settings());
         }
 
-        public override void UpdateSettings()
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            if (Page.IsPostBack == false)
+            {
+                PageLoad();
+            }
+        }
+
+        private void PageLoad()
         {
             try
             {
-                base.UpdateSettings();
-                UpdateData();
+                var obj = NBrightBuyUtils.GetSettings(PortalId,ModuleId);
+                obj.ModuleId = base.ModuleId; // need to pass the moduleid here, becuase it doesn;t exists in url for settings and on new settings it needs it.
+                var strOut = NBrightBuyUtils.RazorTemplRender("productviewsettings.cshtml", ModuleId, "", obj,"/DesktopModules/NBright/NBrightBuy","config", Utils.GetCurrentCulture(),StoreSettings.Current.Settings());
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
             }
             catch (Exception exc)
             {
@@ -34,29 +51,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
-        public override NBrightInfo EventBeforeUpdate(System.Web.UI.WebControls.Repeater rpData, NBrightDNN.NBrightInfo objInfo)
-        {
-            // check we have a unique modulekey and then return the new key for updating.
-            var dbKey = "";
-            var objDb = ModCtrl.Get(objInfo.ItemID);
-            if (objDb != null) dbKey = objDb.GetXmlProperty("genxml/textbox/modulekey");
-            var newKey = objInfo.GetXmlProperty("genxml/textbox/modulekey");
-            if (newKey != dbKey)
-            {
-                newKey = NBrightBuyUtils.GetUniqueKeyRef(PortalId, ModuleId, newKey, 0);
-                objInfo.SetXmlProperty("genxml/textbox/modulekey",newKey);
-                objInfo.GUIDKey = newKey;
-            }
-            return objInfo;
-        }
-
-        public override void EventAfterUpdate(System.Web.UI.WebControls.Repeater rpData, NBrightDNN.NBrightInfo objInfo)
-        {
-            // set page size so we pick it up in the product view.
-            var navigationdata = new NavigationData(PortalId, objInfo.GetXmlProperty("genxml/textbox/modulekey"));
-            navigationdata.PageSize = objInfo.GetXmlProperty("genxml/textbox/pagesize");
-            navigationdata.Save();
-        }
 
     }
 

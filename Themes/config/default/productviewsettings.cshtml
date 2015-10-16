@@ -1,0 +1,56 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@using System.Web.UI.HtmlControls
+@using NBrightDNN
+
+@AddMetaData("resourcepath","/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+}
+
+<div id="nbrightbuysettings">
+
+    <div>
+        <div id="themedata">
+            <input id="lang" type="hidden" value="@Model.GetUrlParam("language")" /> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
+            <input id="editlang" type="hidden" value="" /> <!-- culture code being edited -->
+            <input id="moduleid" type="hidden" value="@info.ModuleId" />
+            <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
+            <input id="index" type="hidden" value="" />
+            <input id="razortemplate" type="hidden" value="productviewsettings.cshtml" />
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lblthemefolder", "Settings.Theme")
+                    @FolderSelectList(info, "genxml/dropdownlist/themefolder", "/DesktopModules/NBright/NBrightBuy/Themes", " class='form-control' ")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsdata"></div>
+
+    <div>
+        Ref: @info.GetXmlProperty("genxml/hidden/modref")
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            @if (info.GetXmlProperty("genxml/dropdownlist/themefolder") != "")
+            {
+                @:nbxget('getsettings', '#themedata', '#settingsdata');
+            }
+
+            $('a[id*="_cmdUpdate"]').click(function() {
+                nbxget('savesettings', '#nbrightbuysettings');
+            });
+            $('#themefolder').change(function () {
+                nbxget('getsettings', '#themedata', '#settingsdata');
+            });
+        });
+
+    </script>
+
+</div>
+

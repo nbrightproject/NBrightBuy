@@ -273,14 +273,20 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "rendercart":
                         strOut = RenderCart(context);
                     break;
+                case "getsettings":
+                    strOut = GetSettings(context);
+                    break;
+                case "savesettings":
+                    if (CheckRights()) strOut = SaveSettings(context);
+                    break;
             }
 
             #endregion
 
             #region "return results"
 
-                //send back xml as plain text
-                context.Response.Clear();
+            //send back xml as plain text
+            context.Response.Clear();
                 context.Response.ContentType = "text/plain";
                 context.Response.Write(strOut);
                 context.Response.End();                
@@ -1795,6 +1801,99 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
+
+        #region "Settings"
+
+        private String GetSettings(HttpContext context, bool clearCache = false)
+        {
+            try
+            {
+                var strOut = "";
+                //get uploaded params
+                var ajaxInfo = GetAjaxInfo(context);
+
+                var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
+                var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                var themefolder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/themefolder");
+                if (razortemplate == "") razortemplate = "settings.cshtml";
+                if (moduleid == "") moduleid = "-1";
+
+                // do edit field data if a itemid has been selected
+                var obj = NBrightBuyUtils.GetSettings(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid));
+                obj.ModuleId = Convert.ToInt32(moduleid); // assign for new records
+                strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, obj.ModuleId, "settings", obj,"", themefolder, _lang,null);
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String SaveSettings(HttpContext context)
+        {
+            try
+            {
+                var objCtrl = new NBrightDataController();
+
+                //get uploaded params
+                var ajaxInfo = GetAjaxInfo(context);
+
+                var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
+                if (Utils.IsNumeric(moduleid))
+                {
+                    // get DB record
+                    var nbi = NBrightBuyUtils.GetSettings(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid)); 
+                    if (nbi.ModuleId == 0) // new setting record
+                    {
+                        nbi = CreateSettingsInfo(moduleid, nbi);
+                    }
+                    // get data passed back by ajax
+                    var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                    // update record with ajax data
+                    nbi.UpdateAjax(strIn);
+
+
+                    if (nbi.GetXmlProperty("genxml/hidden/modref") == "") nbi.SetXmlProperty("genxml/hidden/modref", Utils.GetUniqueKey(10));
+                    if (nbi.TextData == "") nbi.TextData = "NBrightBuy";
+                    objCtrl.Update(nbi);
+                }
+                return "";
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private NBrightInfo CreateSettingsInfo(String moduleid, NBrightInfo nbi)
+        {
+
+            var objCtrl = new NBrightDataController();
+            nbi = objCtrl.GetByType(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), "SETTINGS");
+            if (nbi == null)
+            {
+                nbi = new NBrightInfo(true); // populate empty XML so we can update nodes.
+                nbi.GUIDKey = "";
+                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.ModuleId = Convert.ToInt32(moduleid);
+                nbi.TypeCode = "SETTINGS";
+                nbi.Lang = "";
+            }
+            //rebuild xml
+            nbi.ModuleId = Convert.ToInt32(moduleid);
+            nbi.GUIDKey = Utils.GetUniqueKey(10);
+            nbi.SetXmlProperty("genxml/hidden/modref", nbi.GUIDKey);
+            return nbi;
+        }
+
+
+        #endregion
 
         #region "functions"
 
