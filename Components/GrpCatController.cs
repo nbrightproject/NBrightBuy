@@ -220,15 +220,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var categoryid = NBrightBuyUtils.GetCategoryIdFromUrl(portalId, request);
 
-            // always use the catid in url if we have no target module
-            if ((categoryid > 0) && targetModuleKey == "") return GetCategory(categoryid);
+            // always use the catid in url if we have no target module (use GetGrpCategory to include properties being listed)
+            if ((categoryid > 0) && targetModuleKey == "") return GetGrpCategory(categoryid);
 
             if (targetModuleKey != "")
             {
                 var navigationdata = new NavigationData(portalId, targetModuleKey);
                 if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) defcatid = Convert.ToInt32(navigationdata.CategoryId);
                 // always use the catid in url if we have no navigation categoryid for the target module.
-                if ((categoryid > 0) && defcatid == 0) return GetCategory(categoryid);
+                if ((categoryid > 0) && defcatid == 0) return GetGrpCategory(categoryid);
             }
  
             // if we have no catid in url, make sure we have any possible entryid
@@ -247,7 +247,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
-            return GetCategory(defcatid);
+            return GetGrpCategory(defcatid);
 
         }
 

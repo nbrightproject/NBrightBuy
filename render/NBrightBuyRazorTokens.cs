@@ -33,11 +33,25 @@ namespace NBrightBuy.render
 
         #region "products"
 
+        /// <summary>
+        /// Product Name
+        /// </summary>
+        /// <param name="info">NBrightInfo class of PRD type</param>
+        /// <returns>Product name text</returns>
         public IEncodedString ProductName(NBrightInfo info)
         {
             return new RawString(info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
         }
 
+        /// <summary>
+        /// Thumbnail image
+        /// </summary>
+        /// <param name="info">NBrightInfo class of PRD type</param>
+        /// <param name="width">width</param>
+        /// <param name="height">height</param>
+        /// <param name="idx">index of the image to display</param>
+        /// <param name="attributes">free text added onto end of url parameters</param>
+        /// <returns>Thumbnailer url</returns>
         public IEncodedString ProductImage(NBrightInfo info, String width = "150", String height = "0", String idx = "1", String attributes = "")
         {
             var imagesrc = info.GetXmlProperty("genxml/imgs/genxml[" + idx + "]/hidden/imageurl");
@@ -45,6 +59,12 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
+        /// <summary>
+        /// Edit Product url
+        /// </summary>
+        /// <param name="info">NBrightInfo class of PRD type</param>
+        /// <param name="model">Razor Model class (NBrightRazor)</param>
+        /// <returns>Url to edit product</returns>
         public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model)
         {
             var entryid = info.ItemID;
@@ -206,7 +226,7 @@ namespace NBrightBuy.render
             {
                 // if we have no catid in url, we're going to need a default category from module.
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var objCInfo = grpCatCtrl.GetCategory(StoreSettings.Current.ActiveCatId);
+                var objCInfo = grpCatCtrl.GetGrpCategory(StoreSettings.Current.ActiveCatId);
                 if (objCInfo != null)
                 {
                     GroupCategoryData objPcat;
@@ -314,7 +334,7 @@ namespace NBrightBuy.render
             try
             {
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var objCInfo = grpCatCtrl.GetCategory(StoreSettings.Current.ActiveCatId);
+                var objCInfo = grpCatCtrl.GetGrpCategory(StoreSettings.Current.ActiveCatId);
                 if (objCInfo != null)
                 {
 
@@ -407,9 +427,51 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString PropertyUrl(ProductData productdata, String propertytype, String propertyref, int tabRedirect = -1)
+        {
+            var strOut = "";
+            try
+            {
+                var objGCC = new GrpCatController(productdata.Info.Lang);
+                var l = productdata.GetProperties(propertytype);
+                foreach (var i in l)
+                {
+                    if (i.categoryref == propertyref)
+                    {
+                        if (tabRedirect == -1) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
+                        return new RawString(objGCC.GetCategoryUrl(i, tabRedirect));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
+            return new RawString(strOut);
+        }
+
+        public IEncodedString PropertyUrl(ProductData productdata, String propertytype, int index = 0, int tabRedirect = -1)
+        {
+            var strOut = "";
+            try
+            {
+                var objGCC = new GrpCatController(productdata.Info.Lang);
+                var l = productdata.GetCategories(propertytype);
+                if (l.Count > index)
+                {
+                    if (tabRedirect == -1) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
+                    return new RawString(objGCC.GetCategoryUrl(l[index], tabRedirect));
+                }
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
+            return new RawString(strOut);
+        }
 
 
-        private IEncodedString PropertyValue(GroupCategoryData groupCategopryData, String fieldname)
+        public IEncodedString PropertyValue(GroupCategoryData groupCategopryData, String fieldname)
         {
             var strOut = "";
             try

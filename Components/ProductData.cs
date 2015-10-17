@@ -321,6 +321,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return catl;
         }
 
+        /// <summary>
+        /// Select properties linked to product, by groupref
+        /// </summary>
+        /// <param name="groupref">groupref for select, "" = all, "cat"= Category only, "!cat" = all non-category, "{groupref}"=this group only</param>
+        /// <param name="cascade">get all cascade records to get all parent categories</param>
+        /// <returns></returns>
+        public List<GroupCategoryData> GetProperties(String groupref = "", Boolean cascade = false)
+        {
+            return GetCategories(groupref, cascade);
+        }
+
         public GroupCategoryData GetDefaultCategory()
         {
             if (Utils.IsNumeric(DataRecord.GetXmlProperty("genxml/defaultcatid")))

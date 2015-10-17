@@ -1837,7 +1837,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var objCtrl = new NBrightDataController();
+                var objCtrl = new NBrightBuyController();
 
                 //get uploaded params
                 var ajaxInfo = GetAjaxInfo(context);
@@ -1860,6 +1860,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (nbi.GetXmlProperty("genxml/hidden/modref") == "") nbi.SetXmlProperty("genxml/hidden/modref", Utils.GetUniqueKey(10));
                     if (nbi.TextData == "") nbi.TextData = "NBrightBuy";
                     objCtrl.Update(nbi);
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId); // make sure all new settings are used.
                 }
                 return "";
 
@@ -1874,7 +1875,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private NBrightInfo CreateSettingsInfo(String moduleid, NBrightInfo nbi)
         {
 
-            var objCtrl = new NBrightDataController();
+            var objCtrl = new NBrightBuyController();
             nbi = objCtrl.GetByType(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), "SETTINGS");
             if (nbi == null)
             {
