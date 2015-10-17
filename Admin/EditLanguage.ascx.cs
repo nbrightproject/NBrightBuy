@@ -67,9 +67,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     cmd.Command += (s, cmde) =>
                                        {
                                            var param = new string[2];
-                                           if (_entryid != "") param[0] = "eid=" + _entryid;
+                                           if (_entryid != "")
+                                           {
+                                               param[0] = "eid=" + _entryid;
+                                               ProductUtils.RemoveProductDataCache(_entryid, StoreSettings.Current.EditLanguage); // clear product cache, if there, so we can see saved data.
+                                           }
                                            if (_ctrl != "") param[1] = "ctrl=" + _ctrl;
-                                           
+
+                                           NBrightBuyUtils.RemoveModCachePortalWide(PortalId); 
+
                                            StoreSettings.Current.EditLanguage = cmde.CommandArgument.ToString();
                                            Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                                        };

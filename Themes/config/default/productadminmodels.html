@@ -10,21 +10,21 @@
 
 	<div class="col-sm-12 form-horizontal">
 	    <div class="row">
-	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag id="txtmodelname" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
+	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />][<tag id="txtmodelname" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Code" />]</label>[<tag id="txtmodelref" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Price" />]</label>[<tag id="txtunitcost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00"/>]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.SalePrice" />]</label>[<tag id="txtsaleprice" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Cost" />]</label>[<tag id="txtpurchasecost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Price" />]</label>[<tag id="txtunitcost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.SalePrice" />]</label>[<tag id="txtsaleprice" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Cost" />]</label>[<tag id="txtpurchasecost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
 		</div>
 		<div class="row">
-	        <div class="col-sm-4"><label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag id="txtextra" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]</div>
+	        <div class="col-sm-4"><label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag type="editflag" />][<tag id="txtextra" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Tax" />]</label>[<tag id="taxrate" update="save" type="taxdropdown" cssclass="form-control input-sm" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Barcode" />]</label>[<tag id="txtbarcode" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
-            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Weight" />]</label>[<tag id="weight" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" />]</div>
-            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Depth" />]</label>[<tag id="depth" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0"/>]</div>
-		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Width" />]</label>[<tag id="width" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0"/>]</div>
-		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Height" />]</label>[<tag id="height" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0"/>]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Weight" />]</label>[<tag id="weight" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Depth" />]</label>[<tag id="depth" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
+		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Width" />]</label>[<tag id="width" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
+		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Height" />]</label>[<tag id="height" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
 		</div>
 	    <div class="row form-group">
 	        <div class="col-sm-2 activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />]">[<tag id="chkstockon" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
@@ -34,9 +34,9 @@
 	        <div class="col-sm-4 text-right"><a class="removemodel btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
 		</div>
 	    <div style="margin-top:10px;" class="row stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]">
-            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Stock" />]</label>[<tag id="txtqtyremaining" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" />]</div>
-            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Min" />]</label>[<tag id="txtqtyminstock" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0"/>]</div>
-		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Max" />]</label>[<tag id="txtqtystockset" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0"/>]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Stock" />]</label>[<tag id="txtqtyremaining" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Min" />]</label>[<tag id="txtqtyminstock" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
+		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Max" />]</label>[<tag id="txtqtystockset" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
 	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.unit" />]</label>[<tag id="unit" update="save" cssclass="form-control input-sm" type="textbox" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.status" />]</label>[<tag id="modelstatus" update="save" type="modelstatus" cssclass="form-control input-sm" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.availabledate" />]</label>[<tag id="availabledate" update="save" cssclass="form-control input-sm" type="textbox" datatype="date" />]</div>

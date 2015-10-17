@@ -654,6 +654,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
                     else
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -665,6 +667,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -693,14 +697,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
                 foreach (var f in localfields.Where(f => f != ""))
                 {
-                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                    else
+                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
 
                 var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
-                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                    else
+                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
                 strXml += objInfo.XMLData;
             }
@@ -762,14 +778,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
                                 foreach (var f in localfields.Where(f => f != ""))
                                 {
-                                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                                    if (datatype == "date")
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                                    else if (datatype == "double")
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                    else
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXmlLang += objInfoLang.XMLData;
 
                                 var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                                 foreach (var f in fields.Where(f => f != ""))
                                 {
-                                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                                    if (datatype == "date")
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                                    else if (datatype == "double")
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                    else
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXml += objInfo.XMLData;
                             }
@@ -1226,6 +1254,172 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return newid;
         }
 
+        public void FillEmptyLanguageFields()
+        {
+            var objCtrl = new NBrightBuyController();
+            foreach (var toLang in DnnUtils.GetCultureCodeList(_portalId))
+            {
+                if (toLang != _lang)
+                {
+                    var dlang = objCtrl.GetDataLang(DataRecord.ItemID, toLang);
+                    if (dlang != null)
+                    {
+                        // product
+                        var nodList = DataLangRecord.XMLDoc.SelectNodes("genxml/textbox/*");
+                        if (nodList != null)
+                        {
+                            foreach (XmlNode nod in nodList)
+                            {
+                                if (nod.InnerText.Trim() != "")
+                                {
+                                    if (dlang.GetXmlProperty("genxml/textbox/" + nod.Name) == "")
+                                    {
+                                        dlang.SetXmlProperty("genxml/textbox/" + nod.Name, nod.InnerText);
+                                    }
+                                }
+                            }
+                        }
+
+                        // editor
+                        if (DataLangRecord.GetXmlProperty("genxml/edt/description") != "")
+                        {
+                            if (dlang.GetXmlProperty("genxml/edt/description") == "")
+                            {
+                                dlang.SetXmlProperty("genxml/edt/description", DataLangRecord.GetXmlPropertyRaw("genxml/edt/description"));
+                            }
+                        }
+
+
+                        // models
+                        var nodList1 = DataLangRecord.XMLDoc.SelectNodes("genxml/models/genxml");
+                        if (nodList1 != null)
+                        {
+                            var c = 1;
+                            foreach (XmlNode nod1 in nodList1)
+                            {
+                                nodList = nod1.SelectNodes("textbox/*");
+                                if (nodList != null)
+                                {
+                                    foreach (XmlNode nod in nodList)
+                                    {
+                                        if (nod.InnerText.Trim() != "")
+                                        {
+                                            if (dlang.GetXmlProperty("genxml/models/genxml[" + c + "]/textbox/" + nod.Name) == "")
+                                            {
+                                                dlang.SetXmlProperty("genxml/models/genxml[" + c + "]/textbox/" + nod.Name, nod.InnerText);
+                                            }
+                                        }
+                                    }
+                                }
+                                c += 1;
+                            }
+                        }
+
+                        // options
+                        nodList1 = DataLangRecord.XMLDoc.SelectNodes("genxml/options/genxml");
+                        if (nodList1 != null)
+                        {
+                            var c = 1;
+                            foreach (XmlNode nod1 in nodList1)
+                            {
+                                nodList = nod1.SelectNodes("textbox/*");
+                                if (nodList != null)
+                                {
+                                    foreach (XmlNode nod in nodList)
+                                    {
+                                        if (nod.InnerText.Trim() != "")
+                                        {
+                                            if (dlang.GetXmlProperty("genxml/options/genxml[" + c + "]/textbox/" + nod.Name) == "")
+                                            {
+                                                dlang.SetXmlProperty("genxml/options/genxml[" + c + "]/textbox/" + nod.Name, nod.InnerText);
+                                            }
+                                        }
+                                    }
+                                }
+                                c += 1;
+                            }
+                        }
+
+                        // imgs
+                        nodList1 = DataLangRecord.XMLDoc.SelectNodes("genxml/imgs/genxml");
+                        if (nodList1 != null)
+                        {
+                            var c = 1;
+                            foreach (XmlNode nod1 in nodList1)
+                            {
+                                nodList = nod1.SelectNodes("textbox/*");
+                                if (nodList != null)
+                                {
+                                    foreach (XmlNode nod in nodList)
+                                    {
+                                        if (nod.InnerText.Trim() != "")
+                                        {
+                                            if (dlang.GetXmlProperty("genxml/imgs/genxml[" + c + "]/textbox/" + nod.Name) == "")
+                                            {
+                                                dlang.SetXmlProperty("genxml/imgs/genxml[" + c + "]/textbox/" + nod.Name, nod.InnerText);
+                                            }
+                                        }
+                                    }
+                                }
+                                c += 1;
+                            }
+                        }
+
+                        // docs
+                        nodList1 = DataLangRecord.XMLDoc.SelectNodes("genxml/docs/genxml");
+                        if (nodList1 != null)
+                        {
+                            var c = 1;
+                            foreach (XmlNode nod1 in nodList1)
+                            {
+                                nodList = nod1.SelectNodes("textbox/*");
+                                if (nodList != null)
+                                {
+                                    foreach (XmlNode nod in nodList)
+                                    {
+                                        if (nod.InnerText.Trim() != "")
+                                        {
+                                            if (dlang.GetXmlProperty("genxml/docs/genxml[" + c + "]/textbox/" + nod.Name) == "")
+                                            {
+                                                dlang.SetXmlProperty("genxml/docs/genxml[" + c + "]/textbox/" + nod.Name, nod.InnerText);
+                                            }
+                                        }
+                                    }
+                                }
+                                c += 1;
+                            }
+                        }
+
+                        // optionvalues
+                        nodList1 = DataLangRecord.XMLDoc.SelectNodes("genxml/optionvalues/genxml");
+                        if (nodList1 != null)
+                        {
+                            var c = 1;
+                            foreach (XmlNode nod1 in nodList1)
+                            {
+                                nodList = nod1.SelectNodes("textbox/*");
+                                if (nodList != null)
+                                {
+                                    foreach (XmlNode nod in nodList)
+                                    {
+                                        if (nod.InnerText.Trim() != "")
+                                        {
+                                            if (dlang.GetXmlProperty("genxml/optionvalues/genxml[" + c + "]/textbox/" + nod.Name) == "")
+                                            {
+                                                dlang.SetXmlProperty("genxml/optionvalues/genxml[" + c + "]/textbox/" + nod.Name, nod.InnerText);
+                                            }
+                                        }
+                                    }
+                                }
+                                c += 1;
+                            }
+                        }                        
+
+                    }
+                    objCtrl.Update(dlang);
+                }
+            }
+        }
 
 
         public void OutputDebugFile(String filePathName)
