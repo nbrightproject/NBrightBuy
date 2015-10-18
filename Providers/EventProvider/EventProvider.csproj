@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NBrightCore">
-      <HintPath>..\..\..\..\..\..\..\..\Support\NBright\NBrightCore.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Support\nbrightcore\bin\Debug\NBrightCore.dll</HintPath>
     </Reference>
     <Reference Include="NBrightDNN">
-      <HintPath>..\..\..\..\..\..\..\..\Support\NBright\NBrightDNN.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Support\nbrightdnn\bin\Debug\NBrightDNN.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
