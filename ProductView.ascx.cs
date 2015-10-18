@@ -275,6 +275,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
+                    // Get meta data from template
+
+                    var metaTokens = RazorUtils.RazorPreProcessTempl()
 
                     #region "Order BY"
 

@@ -1311,6 +1311,42 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return razorTempl;
         }
 
+
+        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, int moduleid, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        {
+
+            var cachekey = "preprocessmetadata" + theme + "." + razorTemplName + moduleid;
+
+            // get cached data if there
+            var cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
+            if (cachedlist != null) return cachedlist;
+
+            // build cache data from template.
+            cachedlist = new Dictionary<String, String>();
+            var razorTemplate = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+            if (razorTemplate != "")
+            {
+                var obj = new NBrightInfo(true);
+                obj.Lang = lang;
+                obj.ModuleId = Convert.ToInt32(moduleid);
+                var l = new List<object>();
+                l.Add(obj);
+                var modRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
+                try
+                {
+                    // do razor and cache preprocessmetadata
+                    razorTemplate = RazorRender(modRazor, razorTemplate, cachekey, false);
+                }
+                catch (Exception ex)
+                {
+                    // Only log exception, could be a error because of missing data.  The preprocessing doesn't care.
+                }
+                cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
+            }
+            return cachedlist;
+        }
+
+
         /// <summary>
         /// Render a razor template with an object, this method will include the object in the List of the NBrightRazor class
         /// </summary>
