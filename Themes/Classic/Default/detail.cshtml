@@ -14,7 +14,6 @@
 
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true)</div>
 
-
 <div class="nbs">
 
     <div class="productdetail" itemscope itemtype="http://schema.org/Product">
@@ -22,13 +21,18 @@
         @if (@product.Imgs.Count >= 1)
         {
             <div class="images">
+
+                <div class="addedtobasket" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
+
                 <div class="image">
 
                     <!-- Add to favorites buttons -->
                     @if (Model.GetSetting("enablefavorites") == "True")
                     {
-                        <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
-                        <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                        <div class="favorite-flag">
+                          <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                          <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                        </div>
                     }
 
                     @if (product.Imgs.Count > 0)
@@ -150,7 +154,6 @@
             @if (Model.GetSetting("cataloguemode") != "True")
             {
                 <div class="buy">
-                    <div class="addtobasketinput">
                         @if (@product.IsInStock)
                         {
                             if (Model.GetSetting("modeldisplaytype") != "2")
@@ -163,17 +166,15 @@
                                  </div>
                              }
                             <!-- Buy button HERE -->
-                            <a class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon")</a>
+                            <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
                         }
                         else
                         {
                             <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
                         }
-                        <span class="return"><a href="@EntryReturnUrl(Model)">@ResourceKey("ProductView.return")</a></span>
-                    </div>
-                    <div class="addtobasketmsg" style="display: none;">
-                        <span class="addingtobasket">@ResourceKey("ProductView.addingtobasket")</span>                        
-                    </div>
+
+                        <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+
                 </div>
             }
 
@@ -187,7 +188,7 @@
                 {
                     <li class="tab-active"><a href="#tab-1">@ResourceKey("ProductView.description")</a></li><!-- Product description -->
                 }
-                @if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
+                @if (@product.Models.Count > 1) // has models
                 {
                     <li><a href="#tab-2">@ResourceKey("ProductView.models")</a></li><!-- Show Options table -->
                 }
@@ -210,7 +211,7 @@
                     @HtmlOf(info, "genxml/lang/genxml/edt/description")
                 </div>
             }
-            @if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
+            @if (@product.Models.Count > 1) // has models
             {
                 <div id="tab-2" class="tab-content tab-hide">
                     <h3>@ResourceKey("ProductView.models")</h3>
@@ -276,10 +277,10 @@
 
         </div>
         <!-- End Details -->
-        <!-- Related Items -->
+                <!-- Related Items -->
         @if (@product.GetRelatedProducts().Count >= 1)
         {
-            <h3>@ResourceKey("ProductView.related")</h3>
+            <h3>@ResourceKey("ProductView.recommend")</h3>
             <div id="relatedwrapper" class="productlist">
                 <!-- Related products -->
                 @foreach (var rp in product.GetRelatedProducts())
@@ -287,27 +288,52 @@
                     var rproduct = new ProductData(rp.ItemID,rp.Lang);
                     <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
 
+                    <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+
                         @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                         {
-                            <div class="image" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemimagecontainerheight")">
-                                <img title="@(rproduct.SEODescription)" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                            <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                            <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
                             </div>
                         }
                         else
                         {
-                            <div class="noimage" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemimagecontainerheight")">
-                                @(Model.GetSettingHtmlOf("noimageicon"))
+                            <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                            @(Model.GetSettingHtmlOf("noimageicon"))
                             </div>
                         }
+                    </div>
 
                         <div class="description">
-                            <h1><a href="@EntryUrl(rp, Model)">@ProductName(rp)</a>
-                            </h1>
-                            <div class="price">@NBrightBuyUtils.FormatToStoreCurrency(rproduct.BestPrice())</div>
-                            @if (!rproduct.IsInStock)
-                            {
-                                <div class="outofstockflag">@ResourceKey("ProductView.outofstock")</div>
-                            }
+                        <h2><a href="@EntryUrl(rp, Model)">@ProductName(rp)</a></h2>
+
+                <div class="price">
+
+                @if (product.IsOnSale)
+                {
+                    if (product.Models.Count > 1)
+                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.SalePrice()))</span>
+                }
+                else
+                {
+                    if (product.Models.Count > 1) // has models or options
+                    {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))
+                }
+
+                </div>
+
+    @if (rproduct.IsOnSale)
+    {
+    <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+		}
+
+    @if (!rproduct.IsInStock)
+    {
+		<div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+		}
+
+    <a href="@EntryUrl(rp, Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>
+
                         </div>
 
                     </div>
@@ -328,23 +354,3 @@
     <input id="carttheme" type="hidden" value="Classic">
     <input id="lang" type="hidden" value="@(info.Lang)">
 </span>
-
-<script type="text/javascript">
-
-$( document ).ready(function() {
-
-    $('#datareturn').change(function () {
-        $('.addtobasketmsg').hide();
-        $('.addtobasket').show();
-        nbxget('rendercart', '.minicartdata', '.minicart'); // load models
-    });
-
-    $('.addtobasket').click(function () {
-        $('.addtobasket').hide();
-        $('.addtobasketmsg').show();
-        nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // load models
-    });
-
-});
-
-</script>

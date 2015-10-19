@@ -310,7 +310,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
     <value>This product is currently unavailable.</value>
   </data>
   <data name="addedtobasket.Text" xml:space="preserve">
-    <value>Product added to basket</value>
+    <value>Item added to basket</value>
   </data>
   <data name="products.Text" xml:space="preserve">
     <value>products</value>

@@ -1,2 +1,39 @@
-﻿<!-- This template is injected into the details page head section -->
+<!-- This template is injected into the details page head section -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    $('.addtobasket').click(function () {
+        nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // Reload Cart
+        $('.addbasketmsg' + $(this).attr('itemid')).delay(500).fadeIn('fast');
+    });
+
+    $('#datareturn').change(function () {
+        nbxget('rendercart', '.minicartdata', '.cartpane'); // Reload Cart
+        $('.addedtobasket').delay(1000).fadeOut('fast');
+    });
+
+    var $container = $('.productlist').masonry({
+        columnWidth: @(Model.GetSetting("classicitemwidth")), // List item width - Can also use CSS width of first list item
+      itemSelector: '.product',
+      gutter: @(Model.GetSetting("classicitemgutter")), // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+      isOriginLeft: true, // Build from right to left if false
+      isOriginTop: true, // Build from bottom to top if false
+    });
+
+});
+
+// Detect Touch Device
+function isTouch() {
+ return (('ontouchstart' in window)
+      || (navigator.MaxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0));
+}
+
+if (isTouch()) {
+	$('.productimg').addClass("productimgtouch");
+}
+
+</script>

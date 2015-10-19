@@ -304,7 +304,7 @@
     <value>Ce produit est actuellement indisponible.</value>
   </data>
     <data name="addedtobasket.Text" xml:space="preserve">
-    <value>Produit ajouté au panier</value>
+    <value>Article ajouté au panier</value>
   </data>
   <data name="products.Text" xml:space="preserve">
     <value>produits</value>

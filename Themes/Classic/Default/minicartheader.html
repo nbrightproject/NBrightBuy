@@ -1,0 +1,14 @@
+<!-- Favorites -->
+<div class="miniwishlist">
+<a href="/tabid/[Settings:favoritestab]">[<tag type="valueof" resourcekey="General.favorites" />] (<span class='nbsfavorites0count'>0</span>)</a>
+</div>
+
+<div class="minicart">
+
+[<tag type="if" function="iscartempty" display="{OFF}" />]
+<a href="/tabid/[Settings:carttab]">[<tag type="valueof" resourcekey="General.basket" />] ([<tag type="valueof" xpath="genxml/totalqty" />])</a>
+[<tag type="endif"  />]
+
+[<tag type="if" function="iscartempty" display="{ON}" />]
+[<tag type="valueof" resourcekey="General.basket" />] (0)
+[<tag type="endif" />]

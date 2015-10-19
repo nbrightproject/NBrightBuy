@@ -1,4 +1,4 @@
-﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Linq
 @using System.Web.Razor.Parser.SyntaxTree
 @using NBrightDNN
@@ -12,12 +12,19 @@
     var info = cart.PurchaseInfo;
 }
 
+<!-- Favorites -->
+<div class="miniwishlist">
+<a href="#">@ResourceKey("General.favorites") (<span class='nbsfavorites0count'>0</span>)</a>
+</div>
+
+<div class="minicart">
 @if (info.GetXmlPropertyDouble("genxml/totalqty") > 0)
 {
-    <a href="/tabid/@Model.GetSetting("carttab")"> @info.GetXmlProperty("genxml/totalqty") @ResourceKey("CartView.txtItems")<span> : </span>@(NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal")))</a>
+  <a href="/tabid/@Model.GetSetting("carttab")">@ResourceKey("General.basket") (@info.GetXmlPropertyDouble("genxml/totalqty"))</a>
 }
 else
 {
-	<span>@ResourceKey("General.emptyminicart")</span>
+	@ResourceKey("General.basket") <span>(0)</span>
 }
-
+</div>
+<div class="clearfix"></div>

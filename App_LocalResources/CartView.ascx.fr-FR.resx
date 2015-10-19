@@ -150,6 +150,9 @@
   <data name="txtItems.Text" xml:space="preserve">
     <value>Article(s)</value>
   </data>
+  <data name="txtitems.Text" xml:space="preserve">
+    <value>article(s)</value>
+  </data>
   <data name="ShippingAddress.Text" xml:space="preserve">
     <value>Adresse de livraison</value>
   </data>

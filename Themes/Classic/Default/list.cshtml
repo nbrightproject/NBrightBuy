@@ -25,7 +25,7 @@
 
 <!-- Show category details -->
 <div class="categorydetails">
-<h1>@Category("categoryname")</h1>
+<h1>@Category("categoryname") - @Category("entrycount") @ResourceKey("ProductView.products")</h1>
 </div>
 
 <div id="listwrapper" class="productlist">
@@ -33,11 +33,19 @@
 
 <!-- Product List Body -->
 
+@{
+var lang = "";
+}
 @foreach (NBrightInfo info in Model.List)
 {
     var product = new ProductData(info.ItemID, info.Lang);
+    lang = info.Lang;
 
-    <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight"))px; margin-bottom: @(Model.GetSetting("classicitembottommargin"))px"><!-- Product container -->
+    <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight")); margin-bottom: @(Model.GetSetting("classicitembottommargin"))px"><!-- Product container -->
+
+        <!--<div class="edit"><a href="@EditUrl(info,Model)">@ResourceKey("ProductView.editicon")</a></div>-->
+
+        <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
         <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
 
@@ -73,15 +81,50 @@
 
         </div>
         
-        <a href="@EditUrl(info,Model)">@ResourceKey("ProductView.editicon")</a>
-
         <div class="description">
-            <h1><a href="@EntryUrl(info,Model)">@ProductName(info)</a></h1>
+        <h2><a href="@EntryUrl(info,Model)">@ProductName(info)</a></h2>
+
+              <div class="price">
+
+                @if (product.IsOnSale)
+                {
+                    if (product.Models.Count > 1)
+                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(product.SalePrice()))</span>
+                }
+                else
+                {
+                    if (product.Models.Count > 1) // has models or options
+                    {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))
+                }
+
+            </div>
+
+		@if (product.IsOnSale)
+    {
+    <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+		}
+
+    @if (!product.IsInStock)
+    {
+		<div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+		}
+
+    @if (product.Models.Count > 1) // has models or options
+    {
+    <a href="@EntryUrl(info,Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>
+    }
+    else
+    {
+      if (Model.GetSetting("cataloguemode") != "True")
+      {
+      <a href="javascript:void();" class="classicbutton entryurl addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasket")</a>
+      }
+    }
         </div>
         
         <!-- fields required to send required ajax data to server -->
         <span class="entryid@(info.ItemID)">
-            <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">                    
+            <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
         </span>
 
     </div>
@@ -98,45 +141,7 @@
 
 <!-- fields required to send required ajax cart to server -->
 <span class="minicartdata">
-    <input id="carttemplate" type="hidden" value="minicart.cshtml">                    
-    <input id="carttheme" type="hidden" value="Classic">                    
+    <input id="carttemplate" type="hidden" value="minicart.cshtml">
+    <input id="carttheme" type="hidden" value="Classic">
+    <input id="lang" type="hidden" value="@(lang)">
 </span>
-
-<!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript">
-
-$( document ).ready(function() {
-
-    $('#datareturn').change(function() {
-        nbxget('rendercart', '.minicartdata', '.minicart'); // load models
-    });
-
-    $('.addtobasket').click(function () {
-        nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // load models
-    });
-
-
-
-    var $container = $('.productlist').masonry({
-        columnWidth: @(Model.GetSetting("classicitemwidth")), // List item width - Can also use CSS width of first list item
-      itemSelector: '.product',
-      gutter: @(Model.GetSetting("classicitemgutter")), // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
-      isOriginLeft: true, // Build from right to left if false
-      isOriginTop: true, // Build from bottom to top if false
-    });
-
-
-});
-
-// Detect Touch Device
-function isTouch() {
- return (('ontouchstart' in window)
-      || (navigator.MaxTouchPoints > 0)
-      || (navigator.msMaxTouchPoints > 0));
-}
-
-if (isTouch()) {
-	$('.productimg').addClass("productimgtouch");
-}
-
-</script>
