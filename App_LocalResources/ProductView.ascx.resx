@@ -327,4 +327,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="recommend.Text" xml:space="preserve">
     <value>With this product, we recommend :</value>
   </data>
+  <data name="orderby.Text" xml:space="preserve">
+    <value>,From Price, From Price Desc,Product Ref,Product Name</value>
+  </data>
 </root>

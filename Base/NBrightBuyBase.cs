@@ -45,7 +45,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             #region "Get all Settings for module"
             //get Model Level Settings
             ModSettings = new ModSettings(ModuleId, Settings);
-            ModuleKey = ModSettings.Get("modulekey");
+            ModuleKey = ModSettings.Get("modref");
 
             #endregion
 

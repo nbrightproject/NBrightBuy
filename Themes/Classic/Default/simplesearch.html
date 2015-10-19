@@ -1,0 +1,60 @@
+<!-- Add postback field for filtermode -->
+[<tag id='navigationmode' type='postback' value="s" />]
+
+<!-- Token to create the SQL required for the textbox search -->
+[<tag id="search0" type="meta" action="open" sqloperator="and" />]
+[<tag id="search1" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/lang/genxml/textbox/txtproductname" />]
+[<tag id="search2" type="meta" action="like" search="genxml/textbox/txtsearch" sqlfield="genxml/lang/genxml/textbox/txtsummary" sqloperator="or" />]
+[<tag id="search3" type="meta" action="like" search="genxml/textbox/txtsearch" sqlfield="genxml/lang/genxml/textbox/txttagwords"  sqloperator="or" />]
+[<tag id="search4" type="meta" action="like" search="genxml/textbox/txtsearch" sqlcol="NB1.GUIDKey"  sqloperator="or" />]
+[<tag id="search5" type="meta" action="close" />]
+
+<div id="loader" class="processing" style="display:none"><i class="fa fa-cog fa-spin fa-4x"></i></div>
+
+<span class="nbssearchinput">
+[<tag id='txtSearch' type='textbox' maxlength='150' placeholder="Rechercher dans la boutique" cssclass="NormalTextBox " />]
+</span>
+[<tag id="cmdSimpleSearch" type="linkbutton" cssclass="postbacklink searchpostbacklink nbssearchgo" commandname="search" commandargument="" />]
+<a href="javascript:void();" class="nbssearchgo fakesearchdiv"></a>
+<script>
+
+$('.searchpostbacklink').hide();
+
+$("input[[id*='_txtSearch_']]").keyup(function(event) {
+  var length = this.value.length;
+  if (length >= 2 && length <= 99) {
+	$('.searchpostbacklink').show();
+	$('.fakesearchdiv').hide();
+    if (event.which == 13) {
+		$('.processing').show();
+		eval(jQuery('.searchpostbacklink').attr('href'));
+    }
+  } 
+  else
+  {
+	$('.searchpostbacklink').hide();
+	$('.fakesearchdiv').show();
+  }
+});
+
+$(document).ready(function() {
+
+	// if we do any postback then check if we want to disable any search criteria
+	$("body").on("click", ".postbacklink", function () {
+		$('.processing').show();
+	});
+
+	  var length = $("input[[id*='_txtSearch_']]").val().length;
+	  if(length >= 2 && length <= 99) {
+		$('.searchpostbacklink').show();
+		$('.fakesearchdiv').hide();
+	  } 
+	  else
+	  {
+		$('.searchpostbacklink').hide();
+		$('.fakesearchdiv').show();
+	  }
+
+});
+
+</script>

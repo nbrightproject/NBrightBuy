@@ -4,19 +4,35 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // start load all ajax data, continued by js in product.js file
         nbxget('getproductlist', '#productselectparams', '#productlist');
 
-        $('#productlist').change(function () {
+        $('#productlist').change(function() {
             $('.editlink').unbind();
-            $('.editlink').click(function () {
+            $('.editlink').click(function() {
                 $('.processing').show();
             });
+
+            if ($("input[[id*='movetoproductid']]").val() != '') {
+                // cancel the select option if we've done the move
+                $("input[[id*='movetoproductid']]").val('');
+                $("input[[id*='moveproductid']]").val('');
+            }
+
+            var selectid = $("input[[id*='moveproductid']]").val();
+            if (selectid != '') {
+                $(".selectrecord").hide();
+                $(".selectmove").show();
+                $(".selectmove[[itemid='" + selectid + "']]").hide();
+                $(".selectcancel[[itemid='" + selectid + "']]").show();
+                
+            }
         });
 
     });
 </script>
+
 
 <div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 

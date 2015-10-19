@@ -269,6 +269,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Save()
         {
             #region "Get temp filename"
+
             var tempfilename = "";
 
             if (_storageType == DataStorageType.SessionMemory)
@@ -277,7 +278,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             else
             {
-                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");                
+                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
             }
 
             if (tempfilename == "") tempfilename = Utils.GetUniqueKey(12);
@@ -290,26 +291,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 Cookie.SetCookieValue(_portalId, _cookieName, "tempname", tempfilename, 1, "");
             }
+
             #endregion
 
-            if (XmlData != "")
-            {
-                var nbi = new NBrightInfo();
-                nbi.XMLData = XmlData;
+            var nbi = new NBrightInfo(true);
+            if (XmlData != "") nbi.XMLData = XmlData;
 
-                nbi.SetXmlProperty("genxml/Criteria", _criteria);
-                nbi.SetXmlProperty("genxml/PageModuleId", PageModuleId);
-                nbi.SetXmlProperty("genxml/PageNumber", PageNumber);
-                nbi.SetXmlProperty("genxml/PageName", PageName);
-                nbi.SetXmlProperty("genxml/PageSize", PageSize);
-                nbi.SetXmlProperty("genxml/OrderBy", OrderBy);
-                nbi.SetXmlProperty("genxml/CategoryId", CategoryId);
-                nbi.SetXmlProperty("genxml/RecordCount", RecordCount);
-                nbi.SetXmlProperty("genxml/Mode", Mode);
+            nbi.SetXmlProperty("genxml/Criteria", _criteria);
+            nbi.SetXmlProperty("genxml/PageModuleId", PageModuleId);
+            nbi.SetXmlProperty("genxml/PageNumber", PageNumber);
+            nbi.SetXmlProperty("genxml/PageName", PageName);
+            nbi.SetXmlProperty("genxml/PageSize", PageSize);
+            nbi.SetXmlProperty("genxml/OrderBy", OrderBy);
+            nbi.SetXmlProperty("genxml/CategoryId", CategoryId);
+            nbi.SetXmlProperty("genxml/RecordCount", RecordCount);
+            nbi.SetXmlProperty("genxml/Mode", Mode);
+            nbi.SetXmlProperty("genxml/OrderByIdx", OrderByIdx);
 
-                var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
-                Utils.SaveFile(filePath, nbi.XMLData);                
-            }
+            var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
+            Utils.SaveFile(filePath, nbi.XMLData);
 
 
             Exists = true;
@@ -352,6 +352,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 CategoryId = nbi.GetXmlProperty("genxml/CategoryId");
                 RecordCount = nbi.GetXmlProperty("genxml/RecordCount");
                 Mode = nbi.GetXmlProperty("genxml/Mode");
+                OrderByIdx = nbi.GetXmlProperty("genxml/OrderByIdx");
 
             }
 
@@ -407,6 +408,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PageSize = "";
             RecordCount = "";
             Mode = "";
+            OrderByIdx = "";
         }
 
         /// <summary>
@@ -452,6 +454,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Save the sort order of the last required
         /// </summary>
         public string OrderBy { get; set; }
+
+        /// <summary>
+        /// Save the sort order index key 
+        /// </summary>
+        public string OrderByIdx { get; set; }
 
         /// <summary>
         /// Save form xml data (this could be large, be careful on the cookie size)

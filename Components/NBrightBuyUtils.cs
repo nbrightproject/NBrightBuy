@@ -1312,10 +1312,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, int moduleid, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
 
-            var cachekey = "preprocessmetadata" + theme + "." + razorTemplName + moduleid;
+            var cachekey = "preprocessmetadata" + theme + "." + razorTemplName;
 
             // get cached data if there
             var cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
@@ -1328,7 +1328,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var obj = new NBrightInfo(true);
                 obj.Lang = lang;
-                obj.ModuleId = Convert.ToInt32(moduleid);
+                obj.ModuleId = -1;
                 var l = new List<object>();
                 l.Add(obj);
                 var modRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
@@ -1342,6 +1342,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // Only log exception, could be a error because of missing data.  The preprocessing doesn't care.
                 }
                 cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
+                if (cachedlist == null) cachedlist = new Dictionary<string, string>();
             }
             return cachedlist;
         }

@@ -118,7 +118,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 _pagenum = Utils.RequestQueryStringParam(Context, "page");
                 _pagesize = Utils.RequestQueryStringParam(Context, "pagesize");
                 _orderbyindex = Utils.RequestQueryStringParam(Context, "orderby");
-                
 
                 // see if we need to display the entry page.
                 if ((_modkey == ModuleKey | _modkey == "") && (_eid != "" | _ename != "")) _displayentrypage = true;
@@ -157,7 +156,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
-
+                    #region "legacy init"
 
                     // Get Display Header
                     var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
@@ -211,6 +210,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     rpDataF.ItemTemplate = gXml;
 
+                    #endregion
                 }
 
                 // set current categoryid into the storesettings so razor template can use it.
@@ -277,21 +277,19 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     // Get meta data from template
 
-                    var metaTokens = RazorUtils.RazorPreProcessTempl()
+                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
 
                     #region "Order BY"
 
-                    // get orderby from header if it's there
-                    var cachekey = "GetSqlOrderBy*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    _strOrder = (String)Utils.GetCache(cachekey);
-                    if (_strOrder == null || StoreSettings.Current.DebugMode)
-                    {
-                        _strOrder = GenXmlFunctions.GetSqlOrderBy(rpDataH);
-                    }
-
-                    //Default orderby if not set
+                    ////////////////////////////////////////////
+                    // get ORDERBY SORT 
+                    ////////////////////////////////////////////
+                    _navigationdata.OrderByIdx = _orderbyindex;
+                    if (_orderbyindex != "" && metaTokens.ContainsKey(_orderbyindex)) _strOrder = " Order by " + metaTokens[_orderbyindex];
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
+                    if (String.IsNullOrEmpty(_strOrder) && metaTokens.ContainsKey("orderby")) _strOrder = " Order by " + metaTokens["orderby"];
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
-                    // NOTE: This setting may be overwritten by the navigatedata class in the filter setup
+                    if (_strOrder.EndsWith("{bycategoryproduct}")) _strOrder = "{bycategoryproduct}"; // special processing for cat product sort.
 
                     #endregion
 
@@ -338,7 +336,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // check the display header to see if we have a sqlfilter defined.
                     var strFilter = "";
-                    cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
+                    var cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
                     var strHeaderFilter = (String)Utils.GetCache(cachekey);
                     if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
                     {

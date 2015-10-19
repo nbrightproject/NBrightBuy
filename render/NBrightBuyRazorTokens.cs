@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Web;
 using System.Web.Routing;
@@ -611,10 +612,32 @@ namespace NBrightBuy.render
             return new RawString(url);
         }
 
-
         public IEncodedString CurrencyOf(Double x)
         {
             var strOut = NBrightBuyUtils.FormatToStoreCurrency(x);
+            return new RawString(strOut);
+        }
+
+        public IEncodedString SortOrderDropDownList(String datatext, String modRef, String attributes = "")
+        {
+            if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, modRef);
+
+            var strOut = "";
+            var datat = datatext.Split(',');
+                strOut = "<select " + attributes + ">";
+                var c = 0;
+                var s = "";
+                foreach (var t in datat)
+                {
+                    s = "";
+                    if (("orderby" + c) == navigationdata.OrderByIdx.ToLower()) s = "selected"; 
+                    strOut += "    <option value='orderby" + c + "' " + s + " >" + t + "</option>";
+                    c += 1;
+                }
+                strOut += "</select>";
             return new RawString(strOut);
         }
 

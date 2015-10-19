@@ -444,6 +444,7 @@
     <Content Include="Themes\Classic\Default\pageheaderNBS_MiniCart.html" />
     <Content Include="Themes\Classic\Default\pageheaderNBS_ProductView.html" />
     <None Include="Themes\Classic\Default\productviewsettings.cshtml" />
+    <Content Include="Themes\Classic\Default\simplesearch.html" />
     <Content Include="Themes\Classic\img\addthis.png" />
     <Content Include="Themes\Classic\img\basket.png" />
     <Content Include="Themes\Classic\img\favorites.png" />
@@ -1364,6 +1365,7 @@
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
     <Content Include="Themes\config\img\nb-store_24x24.png" />
     <Content Include="Themes\config\js\categoryajax.js" />
+    <Content Include="Themes\config\js\js.cookie.js" />
     <Content Include="Themes\config\js\nbsfavoritescookie.js" />
     <Content Include="Themes\config\js\imagesloaded.pkgd.min.js" />
     <Content Include="Themes\config\js\jquery.datepick.xlang.eur.js" />

@@ -2,17 +2,15 @@
 
 
 
-
 <script>
-
 $(document).ready(function() {
 
 	$(".selectmove").hide();
-	$(".selectcancel").hide();		
+	$(".selectcancel").hide();
 	$(".savebutton").hide();
 	if ($("input[[id*='_searchcategory_'").val() == '') $(".selectrecord").hide();
 
-    $(".selectrecord").click(function() {
+	$(".selectrecord").click(function () {
 		$(".selectrecord").hide();
 		$(".selectmove").show();
 		$(".selectmove[[itemid='" + $(this).attr("itemid") + "']]").hide();
@@ -27,24 +25,26 @@ $(document).ready(function() {
 
     });
 
-    $(".selectcancel").click(function() {
+    $(".selectcancel").click(function () {
 		$(".selectmove").hide();
-		$(".selectcancel").hide();		
-		$(".selectrecord").show();		
+		$(".selectcancel").hide();
+		$(".selectrecord").show();
 		$("input[[id*='selectedcatid']]").val('');
     });
 
-    $(".selectmove").click(function() {
+    $(".selectmove").click(function () {
 		$(".selectmove").hide();
-		$(".selectcancel").hide();		
+		$(".selectcancel").hide();
 		$(".selectrecord").show();
 		$("input[[id*='movetoproductid']]").val($(this).attr("itemid"));
         nbxget('moveproductadmin', '#productselectparams', '#productlist');
     });
 
+
 });
 
 </script>
+
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">

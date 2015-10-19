@@ -6,16 +6,15 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-@AddMetaData("searchpagesize", Model.GetSetting("pagesize"))
+@AddMetaData("searchpagesize", Model.GetSetting("pagesize"),"Classic.list.cshtml")
 
-@AddMetaData("orderby", "NB3.FromPrice")
+@AddMetaData("orderby", "{bycategoryproduct}", "Classic.list.cshtml") <!-- set default to manual sort on category product -->
 
-@AddMetaData("orderby0", "NB3.ProductRef")
-@AddMetaData("orderby1", "NB3.ProductName")
-@AddMetaData("orderby2", "NB3.Manufacturer")
-@AddMetaData("orderby3", "NB3.FromPrice")
-@AddMetaData("orderby4", "NB3.FromPrice DESC")
-@AddMetaData("orderby5", "NB3.Qty")
+@AddMetaData("orderby0", "{bycategoryproduct}", "Classic.list.cshtml")
+@AddMetaData("orderby1", "NB3.FromPrice", "Classic.list.cshtml")
+@AddMetaData("orderby2", "NB3.FromPrice DESC", "Classic.list.cshtml")
+@AddMetaData("orderby3", "NB3.ProductRef", "Classic.list.cshtml")
+@AddMetaData("orderby4", "NB3.ProductName", "Classic.list.cshtml")
 
 <!-- Product List header -->
 
@@ -23,7 +22,17 @@
 
 <div class="nbs">
 
-<!-- Show category details -->
+    <!-- show sort order selection -->
+    <div>
+        @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model.GetSetting("modref"), " class='sortorderdropdown'")
+        <script>
+            $('.sortorderdropdown').change(function() {
+                window.location.replace("?orderby=" + $(this).val());
+            });
+        </script>
+    </div>
+
+    <!-- Show category details -->
 <div class="categorydetails">
 <h1>@Category("categoryname") - @Category("entrycount") @ResourceKey("ProductView.products")</h1>
 </div>
