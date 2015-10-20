@@ -12,7 +12,7 @@
     var info = (NBrightInfo) product.Info;
 }
 
-<div class="categorybreadcrumbs">@CategoryBreadCrumb(true)</div>
+<div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
 
@@ -293,7 +293,7 @@
                         @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                         {
                             <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
-                            <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                            <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
                             </div>
                         }
                         else

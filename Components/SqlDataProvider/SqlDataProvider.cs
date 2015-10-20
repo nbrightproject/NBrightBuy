@@ -176,9 +176,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
                     XmlReader dr = command.ExecuteXmlReader();
                     if (dr.Read())
                     {
-                        XmlDocument doc = new XmlDocument();
-                        doc.Load(dr);
-                        rtnData = doc.OuterXml;
+                        try
+                        {
+                            XmlDocument doc = new XmlDocument();
+                                doc.Load(dr);
+                                rtnData = doc.OuterXml;
+
+                            }
+                        catch (Exception)
+                        {
+                            // DB read error
+                            rtnData = "<root></root>";
+                        }
                     }
                 }
                 finally
@@ -187,7 +196,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
                     connection.Close();
                 }
             }
-           return rtnData;
+
+            return rtnData;
         }
 
         public override IDataReader GetDnnUsers(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)

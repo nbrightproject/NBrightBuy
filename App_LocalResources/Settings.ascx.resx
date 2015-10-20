@@ -402,4 +402,10 @@
   <data name="Theme.Text" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="defaultcategory.Text" xml:space="preserve">
+    <value>Default Category</value>
+  </data>
+  <data name="defaultproperty.Text" xml:space="preserve">
+    <value>Default Property</value>
+  </data>
 </root>

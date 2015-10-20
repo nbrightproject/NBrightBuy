@@ -182,9 +182,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String BuildCriteriaCatId()
         {
             var criteriacatid = "";
-            var catid = HttpContext.Current.Request.QueryString["catid"] ?? CategoryId;
-            CategoryId = catid;
-            if (!string.IsNullOrEmpty(catid))
+            var catid = HttpContext.Current.Request.QueryString["catid"] ?? CategoryId.ToString("D");
+            CategoryId = 0;
+            if (Utils.IsNumeric(catid)) CategoryId = Convert.ToInt32(catid);
+            if (CategoryId > 0)
             {
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
@@ -303,7 +304,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.SetXmlProperty("genxml/PageName", PageName);
             nbi.SetXmlProperty("genxml/PageSize", PageSize);
             nbi.SetXmlProperty("genxml/OrderBy", OrderBy);
-            nbi.SetXmlProperty("genxml/CategoryId", CategoryId);
+            nbi.SetXmlProperty("genxml/CategoryId", CategoryId.ToString("D"));
             nbi.SetXmlProperty("genxml/RecordCount", RecordCount);
             nbi.SetXmlProperty("genxml/Mode", Mode);
             nbi.SetXmlProperty("genxml/OrderByIdx", OrderByIdx);
@@ -349,7 +350,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PageName = nbi.GetXmlProperty("genxml/PageName");
                 PageSize = nbi.GetXmlProperty("genxml/PageSize");
                 OrderBy = nbi.GetXmlProperty("genxml/OrderBy");
-                CategoryId = nbi.GetXmlProperty("genxml/CategoryId");
+                CategoryId = Convert.ToInt32(nbi.GetXmlPropertyDouble("genxml/CategoryId"));
                 RecordCount = nbi.GetXmlProperty("genxml/RecordCount");
                 Mode = nbi.GetXmlProperty("genxml/Mode");
                 OrderByIdx = nbi.GetXmlProperty("genxml/OrderByIdx");
@@ -404,7 +405,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PageName = "";
             OrderBy = "";
             XmlData = "";
-            CategoryId = "";
+            CategoryId = 0;
             PageSize = "";
             RecordCount = "";
             Mode = "";
@@ -468,7 +469,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// CategoryId Selected
         /// </summary>
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         /// <summary>
         /// Count of records returned on last Display

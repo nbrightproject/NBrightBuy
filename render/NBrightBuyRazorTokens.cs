@@ -220,14 +220,16 @@ namespace NBrightBuy.render
 
         #region "categories"
 
-        public IEncodedString Category(String fieldname)
+        public IEncodedString Category(String fieldname, NBrightRazor model)
         {
             var strOut = "";
             try
             {
+                var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+
                 // if we have no catid in url, we're going to need a default category from module.
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var objCInfo = grpCatCtrl.GetGrpCategory(StoreSettings.Current.ActiveCatId);
+                var objCInfo = grpCatCtrl.GetGrpCategory(navigationdata.CategoryId);
                 if (objCInfo != null)
                 {
                     GroupCategoryData objPcat;
@@ -328,27 +330,29 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString CategoryBreadCrumb(Boolean includelinks, Boolean aslist = true, int tabRedirect = -1, String separator = "", int wordlength = -1, int maxlength = 400)
+        public IEncodedString CategoryBreadCrumb(Boolean includelinks, NBrightRazor model, Boolean aslist = true, int tabRedirect = -1, String separator = "", int wordlength = -1, int maxlength = 400)
         {
             var strOut = "";
 
             try
             {
+                var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var objCInfo = grpCatCtrl.GetGrpCategory(StoreSettings.Current.ActiveCatId);
+                var objCInfo = grpCatCtrl.GetGrpCategory(navigationdata.CategoryId);
                 if (objCInfo != null)
                 {
 
-                    if (StoreSettings.Current.ActiveCatId > 0) // check we have a catid
+                    if (navigationdata.CategoryId > 0) // check we have a catid
                     {
                         if (includelinks)
                         {
                             if (tabRedirect == -1) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
-                            strOut = grpCatCtrl.GetBreadCrumbWithLinks(StoreSettings.Current.ActiveCatId, tabRedirect, wordlength, separator, aslist);
+                            strOut = grpCatCtrl.GetBreadCrumbWithLinks(navigationdata.CategoryId, tabRedirect, wordlength, separator, aslist);
                         }
                         else
                         {
-                            strOut = grpCatCtrl.GetBreadCrumb(StoreSettings.Current.ActiveCatId, wordlength, separator, aslist);
+                            strOut = grpCatCtrl.GetBreadCrumb(navigationdata.CategoryId, wordlength, separator, aslist);
                         }
 
                         if ((strOut.Length > maxlength) && (!aslist))
@@ -363,6 +367,33 @@ namespace NBrightBuy.render
                 strOut = ex.ToString();
             }
 
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString CategoryDropDownList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            var rtnList = NBrightBuyUtils.BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, breadcrumbseparator, lang);
+
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = xpath.Split('/').Last();
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            var c = 0;
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in rtnList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
 
             return new RawString(strOut);
         }
@@ -470,8 +501,7 @@ namespace NBrightBuy.render
             }
             return new RawString(strOut);
         }
-
-
+        
         public IEncodedString PropertyValue(GroupCategoryData groupCategopryData, String fieldname)
         {
             var strOut = "";
@@ -559,6 +589,33 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString PropertyDropDownList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            var rtnList = NBrightBuyUtils.BuildPropertyList(10, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, breadcrumbseparator, lang);
+
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = xpath.Split('/').Last();
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            var c = 0;
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in rtnList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
         #endregion
 
         #region "Functional"
@@ -568,12 +625,14 @@ namespace NBrightBuy.render
             var url = "";
             try
             {
+                var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+
                 var urlname = info.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
                 if (urlname == "") urlname = info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
 
                     // see if we've injected a categoryid into the data class, this is done in the case of the categorymenu when displaying products.
                 var categoryid = info.GetXmlProperty("genxml/categoryid");
-                if (categoryid == "") categoryid = StoreSettings.Current.ActiveCatId.ToString();
+                if (categoryid == "") categoryid = navigationdata.CategoryId.ToString();
                 if (categoryid == "0") categoryid = ""; // no category active if zero
 
                 url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), model.GetSetting("detailmodulekey"), urlname, model.GetSetting("ddldetailtabid"), categoryid, categoryref);
@@ -598,8 +657,8 @@ namespace NBrightBuy.render
             if (model.GetUrlParam("page") != "") param.Add("PageIndex=" + model.GetUrlParam("page").Trim());
             if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
             var listtab = model.GetUrlParam("rtntab");
-            if (listtab == "") listtab = StoreSettings.Current.Get("productlisttab");
-            var intlisttab = StoreSettings.Current.ActiveCatId;
+            if (listtab == "") listtab = model.GetUrlParam("tabid").Trim();
+            var intlisttab = 0;
             if (Utils.IsNumeric(listtab)) intlisttab = Convert.ToInt32(listtab);
 
             var paramlist = new string[param.Count];
@@ -618,12 +677,12 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString SortOrderDropDownList(String datatext, String modRef, String attributes = "")
+        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String attributes = "")
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
-            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, modRef);
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
 
             var strOut = "";
             var datat = datatext.Split(',');

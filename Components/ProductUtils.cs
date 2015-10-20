@@ -490,7 +490,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	        Utils.RemoveCache(cacheKey);
 	    }
 
+        public static void RemoveProductDataCache(ProductData product)
+        {
+            foreach (var lang in DnnUtils.GetCultureCodeList(product.Info.PortalId))
+            {
+                var cacheKey = "NBSProductData*" + product.Info.ItemID.ToString("") + "*" + lang;
+                Utils.RemoveCache(cacheKey);
+            }
+        }
 
 
-	}
+    }
 }

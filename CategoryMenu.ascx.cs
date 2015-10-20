@@ -77,7 +77,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 var navigationdata = new NavigationData(PortalId, _targetModuleKey);
                 if (Utils.IsNumeric(_catid)) navigationdata.Delete(); // if a category button has been clicked (in url) then clear search;
-                if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) _catid = navigationdata.CategoryId;
+                if (Utils.IsNumeric(navigationdata.CategoryId) && navigationdata.FilterMode) _catid = navigationdata.CategoryId.ToString("D");
                 if (Utils.IsNumeric(_entryid)) 
                 {
                     // Get catid from product

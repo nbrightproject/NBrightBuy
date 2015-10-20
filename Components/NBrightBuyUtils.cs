@@ -338,7 +338,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var navigationdata = new NavigationData(PortalSettings.Current.PortalId, moduleKey);
             if (navigationdata.PageNumber != "") page = "&page=" + navigationdata.PageNumber;
             if (navigationdata.PageModuleId != "") pagemid = "&pagemid=" + navigationdata.PageModuleId;
-            if (navigationdata.CategoryId != "") catid = "&catid=" + navigationdata.CategoryId;
+            if (navigationdata.CategoryId > 0) catid = "&catid=" + navigationdata.CategoryId;
             if (navigationdata.PageName != "") pagename = navigationdata.PageName + ".aspx";
             var url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(redirectTab, "~/Default.aspx?tabid=" + redirectTab.TabID.ToString("") + page + pagemid + catid, pagename);
 
@@ -1301,7 +1301,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
                 if (razorTempl != "")
                 {
-                    if (!objList.Any()) objList.Add(new NBrightInfo(true));
+                    //if (!objList.Any())
+                    //{
+                    //    var fake = new NBrightInfo(true);
+                    //    fake.ItemID = -1; // we need to have a fake item to render
+                    //    objList.Add(fake);
+                    //}
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
@@ -1779,6 +1784,114 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return outText;
             }
             return ""; // no stock so return empty string.
+        }
+
+
+        public static Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var rtnDic = new Dictionary<int, string>();
+
+            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
+
+            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
+
+            if (objCache == null | StoreSettings.Current.DebugMode)
+            {
+                var grpCatCtrl = new GrpCatController(lang);
+                var d = new Dictionary<int, string>();
+                var rtnList = new List<GroupCategoryData>();
+                rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref, breadcrumbseparator);
+                var strCount = "";
+                foreach (var grpcat in rtnList)
+                {
+                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+
+                    if (grpcat.depth < displaylevels)
+                    {
+                        if (showEmpty || grpcat.entrycount > 0)
+                        {
+                            if (grpcat.ishidden == false || showHidden)
+                            {
+                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                if (catreflist == "")
+                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                else
+                                {
+                                    if (grpcat.categoryref != "" &&
+                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                    {
+                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
+
+            }
+            else
+            {
+                rtnDic = (Dictionary<int, string>)objCache;
+            }
+            return rtnDic;
+        }
+
+        public static Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var rtnDic = new Dictionary<int, string>();
+
+            var strCacheKey = "NBrightBuy_BuildPropertyList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
+
+            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
+
+            if (objCache == null | StoreSettings.Current.DebugMode)
+            {
+                var grpCatCtrl = new GrpCatController(lang);
+                var d = new Dictionary<int, string>();
+                var rtnList = new List<GroupCategoryData>();
+                rtnList = grpCatCtrl.GetTreePropertyList(breadcrumbseparator);
+                var strCount = "";
+                foreach (var grpcat in rtnList)
+                {
+                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+
+                    if (grpcat.depth < displaylevels)
+                    {
+                        if (showEmpty || grpcat.entrycount > 0)
+                        {
+                            if (grpcat.ishidden == false || showHidden)
+                            {
+                                if (!rtnDic.ContainsKey(grpcat.categoryid))
+                                {
+                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                    if (catreflist == "")
+                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                    else
+                                    {
+                                        if (grpcat.categoryref != "" &&
+                                            (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                        {
+                                            rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
+
+            }
+            else
+            {
+                rtnDic = (Dictionary<int, string>)objCache;
+            }
+            return rtnDic;
         }
 
         #endregion

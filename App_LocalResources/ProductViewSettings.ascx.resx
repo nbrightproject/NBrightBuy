@@ -378,4 +378,7 @@
   <data name="lblmodeldisplaytype.Text" xml:space="preserve">
     <value>Model Display Method</value>
   </data>
+  <data name="lbldefaultlistmodule.Text" xml:space="preserve">
+    <value>Default List module</value>
+  </data>
 </root>

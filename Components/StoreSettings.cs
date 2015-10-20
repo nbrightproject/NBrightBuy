@@ -218,7 +218,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String ManagerEmail { get; private set; }
         public NBrightInfo SettingsInfo { get; private set; }
         public String ThemeFolder { get; private set; }
-        public int ActiveCatId { get; set; }
 
         public String FolderImagesMapPath { get; private set; }
         public String FolderDocumentsMapPath { get; private set; }

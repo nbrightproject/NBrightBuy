@@ -213,11 +213,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     #endregion
                 }
 
-                // set current categoryid into the storesettings so razor template can use it.
-                var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var moduleKey = ModSettings.Get("modulekey");
-                var objCInfo = grpCatCtrl.GetCurrentCategoryData(PortalId, Request, 0, ModSettings.Settings(), moduleKey);
-                if (objCInfo != null) StoreSettings.Current.ActiveCatId = objCInfo.categoryid;
             }
             catch (Exception exc)
             {
@@ -244,9 +239,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         // do old legacy code for backward compatiblity
                         // This does lead to duplicate code, but makes life easier.
-                    PageLoad();
+                        PageLoad();
+                    }
                 }
-            }
             }
             catch (Exception exc) //Module failed to load
             {
@@ -303,14 +298,14 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     var pageSize = 0;
                     if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
-                    if (!Utils.IsNumeric(pageSize) && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+                    if ((pageSize == 0 || !Utils.IsNumeric(pageSize))  && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
                     //check for url param page size
                     if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture))) pageSize = Convert.ToInt32(_pagesize);
                     if (pageSize == 0)
                     {
                         var strPgSize = "";
-                        if (_templateHeader != null) strPgSize = _templateHeader.GetHiddenFieldValue("searchpagesize");
-                        if (_templateHeader != null && strPgSize == "") strPgSize = _templateHeader.GetHiddenFieldValue("pagesize");
+                        if (metaTokens.ContainsKey("searchpagesize")) strPgSize = metaTokens["searchpagesize"];
+                        if (metaTokens.ContainsKey("pagesize") && strPgSize == "") strPgSize = metaTokens["pagesize"];
                         if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
                     }
                     if (pageSize > 0) CtrlPaging.Visible = true;
@@ -337,7 +332,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     // check the display header to see if we have a sqlfilter defined.
                     var strFilter = "";
                     var cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    var strHeaderFilter = (String)Utils.GetCache(cachekey);
+                    var strHeaderFilter = (String) Utils.GetCache(cachekey);
                     if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
                     {
                         strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
@@ -346,7 +341,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     // filter mode and will persist past category selection.
                     if ((_catid == "" && _catname == ""))
                     {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
 
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
@@ -358,10 +353,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     else
                     {
                         _navigationdata.ResetSearch();
-
-                        // We have a category selected (in url), so overwrite categoryid navigationdata.
-                        // This allows the return to the same category after a returning from a entry view.
-                        _navigationdata.CategoryId = _catid;
                         strFilter = strHeaderFilter;
                     }
 
@@ -376,12 +367,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         // if we have no filter use the default category
                         if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
-
-                        // If we have a static list,then always display the default category
-                        if (ModSettings.Get("staticlist") == "True")
-                        {
-                            _catid = defcatid;
-                        }
                     }
                     else
                     {
@@ -390,118 +375,126 @@ namespace Nevoweb.DNN.NBrightBuy
                         {
                             // if we have no filter use the default category
                             if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
-
-                            // If we have a static list,then always display the default category
-                            if (ModSettings.Get("staticlist") == "True")
-                            {
-                                _catid = defcatid;
-                            }
                         }
                     }
 
-                    //check if we are display categories 
-                    // get category list data
-                    if (_catname != "") // if catname passed in url, calculate what the catid is
+                    // If we have a static list,then always display the default category
+                    if (ModSettings.Get("staticlist") == "True")
                     {
-                        objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
-                        if (objCat == null)
-                        {
-                            // check it's not just a single language
-                            objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
-                            if (objCat != null) _catid = objCat.ItemID.ToString("");
-                        }
-                        else
-                        {
-                            _catid = objCat.ParentItemId.ToString("");
-                            if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
-                            {
-                                // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
-                                var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                                var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
-                                if (activeCat != null)
-                                {
-                                    var redirecturl = "";
-                                    if (Utils.IsNumeric(_eid))
-                                    {
-                                        var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
-                                        redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
-                                    }
-                                    else
-                                    {
-                                        redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
-                                    }
-
-                                    try
-                                    {
-                                        if (redirecturl != "")
-                                        {
-                                            Response.Redirect(redirecturl, false);
-                                            Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
-                                            Response.End();
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
-                                        // catch err
-                                    }
-                                }
-                            }
-                        }
-                        // We have a category selected (in url), so overwrite categoryid navigationdata.
-                        // This allows the return to the same category after a returning from a entry view.
-                        _navigationdata.CategoryId = _catid;
-                        catseo = _catid;
-                    }
-
-                    if (Utils.IsNumeric(_catid))
-                    {
-                        var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                        var dbOwner = DataProvider.Instance().DatabaseOwner;
-                        if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
-                        {
-                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
-                        }
-                        else
-                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
-
-                        if (Utils.IsNumeric(catseo))
-                        {
-                            var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
-                            if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
-                            {
-                                //Page Title
-                                var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                                if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
-
-                                var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
-                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
-                                if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
-                                if (newBaseTitle != "") BasePage.Title = newBaseTitle;
-                                //Page KeyWords
-                                var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
-                                if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
-                                //Page Description
-                                var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
-                                if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
-                                if (newBaseDescription != "") BasePage.Description = newBaseDescription;
-
-                                if (PortalSettings.HomeTabId == TabId)
-                                    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
-                                else
-                                {
-                                    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
-                                }
-                            }
-                        }
-
-                        if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
-
+                        _catid = defcatid;
                     }
                     else
                     {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
-                        if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                        #region "use url to get category to display"
+                        //check if we are display categories 
+                        // get category list data
+                        if (_catname != "") // if catname passed in url, calculate what the catid is
+                        {
+                            objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORYLANG", _catname);
+                            if (objCat == null)
+                            {
+                                // check it's not just a single language
+                                objCat = ModCtrl.GetByGuidKey(PortalId, ModuleId, "CATEGORY", _catname);
+                                if (objCat != null) _catid = objCat.ItemID.ToString("");
+                            }
+                            else
+                            {
+                                _catid = objCat.ParentItemId.ToString("");
+                                if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
+                                {
+                                    // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                                    var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                                    var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
+                                    if (activeCat != null)
+                                    {
+                                        var redirecturl = "";
+                                        if (Utils.IsNumeric(_eid))
+                                        {
+                                            var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
+                                            redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
+                                        }
+                                        else
+                                        {
+                                            redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
+                                        }
+
+                                        try
+                                        {
+                                            if (redirecturl != "")
+                                            {
+                                                Response.Redirect(redirecturl, false);
+                                                Response.StatusCode = (int) System.Net.HttpStatusCode.MovedPermanently;
+                                                Response.End();
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            // catch err
+                                        }
+                                    }
+                                }
+                            }
+                            // We have a category selected (in url), so overwrite categoryid navigationdata.
+                            // This allows the return to the same category after a returning from a entry view.
+                            if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+                            catseo = _catid;
+                        }
+
+                        if (Utils.IsNumeric(_catid))
+                        {
+                            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                            var dbOwner = DataProvider.Instance().DatabaseOwner;
+                            if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                            {
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                            }
+                            else
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                            if (Utils.IsNumeric(catseo))
+                            {
+                                var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                                if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
+                                {
+                                    //Page Title
+                                    var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                    if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                                    var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                                    if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                                    if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                                    //Page KeyWords
+                                    var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                                    if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                                    //Page Description
+                                    var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                                    if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                                    if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+                                    if (PortalSettings.HomeTabId == TabId)
+                                        PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                                    else
+                                    {
+                                        PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                                    }
+                                }
+                            }
+
+                            if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
+
+                        }
+                        else
+                        {
+                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
+                            if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                        }
+
+                        #endregion
                     }
+
+                    // This allows the return to the same category after a returning from a entry view. + Gives support for current category in razor tokens
+                    if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
 
                     #endregion
 
@@ -687,7 +680,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         // filter mode and will persist past category selection.
                         if ((_catid == "" && _catname == ""))
                         {
-                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                            if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
 
                             // if navdata is not deleted then get filter from navdata, created by productsearch module.
                             strFilter = _navigationdata.Criteria;
@@ -702,8 +695,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
                             // We have a category selected (in url), so overwrite categoryid navigationdata.
                             // This allows the return to the same category after a returning from a entry view.
-                            _navigationdata.CategoryId = _catid;
-                            strFilter = strHeaderFilter;
+                        if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+                        strFilter = strHeaderFilter;
                         }
 
                     #endregion
@@ -790,7 +783,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                         // We have a category selected (in url), so overwrite categoryid navigationdata.
                         // This allows the return to the same category after a returning from a entry view.
-                        _navigationdata.CategoryId = _catid;
+                        if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
                         catseo = _catid;
                     }
 
@@ -840,7 +833,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     else
                     {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = ""; // filter mode persist catid
+                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
                         if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
                     }
 

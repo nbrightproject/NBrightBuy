@@ -1555,112 +1555,6 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
-        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">",string lang = "")
-        {
-            if (lang == "") lang = Utils.GetCurrentCulture();
-
-            var rtnDic = new Dictionary<int, string>();
-
-            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
-
-            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
-
-            if (objCache == null | StoreSettings.Current.DebugMode)
-            {
-                var grpCatCtrl = new GrpCatController(lang);
-                var d = new Dictionary<int, string>();
-                var rtnList = new List<GroupCategoryData>();
-                rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref,breadcrumbseparator);
-                var strCount = "";
-                foreach (var grpcat in rtnList)
-                {
-                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
-
-                    if (grpcat.depth < displaylevels)
-                    {
-                        if (showEmpty || grpcat.entrycount > 0)
-                        {
-                            if (grpcat.ishidden == false || showHidden)
-                            {
-                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
-                                if (catreflist == "")
-                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                else
-                                {
-                                    if (grpcat.categoryref != "" &&
-                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
-                                    {
-                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
-
-            }
-            else
-            {
-                rtnDic = (Dictionary<int, string>)objCache;
-            }
-            return rtnDic;
-        }
-
-        private Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
-        {
-            if (lang == "") lang = Utils.GetCurrentCulture();
-
-            var rtnDic = new Dictionary<int, string>();
-
-            var strCacheKey = "NBrightBuy_BuildPropertyList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
-
-            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
-
-            if (objCache == null | StoreSettings.Current.DebugMode)
-            {
-                var grpCatCtrl = new GrpCatController(lang);
-                var d = new Dictionary<int, string>();
-                var rtnList = new List<GroupCategoryData>();
-                rtnList = grpCatCtrl.GetTreePropertyList(breadcrumbseparator);
-                var strCount = "";
-                foreach (var grpcat in rtnList)
-                {
-                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
-
-                    if (grpcat.depth < displaylevels)
-                    {
-                        if (showEmpty || grpcat.entrycount > 0)
-                        {
-                            if (grpcat.ishidden == false || showHidden)
-                            {
-                                if (!rtnDic.ContainsKey(grpcat.categoryid))
-                                {
-                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
-                                    if (catreflist == "")
-                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                    else
-                                    {
-                                        if (grpcat.categoryref != "" &&
-                                            (catreflist + ",").Contains(grpcat.categoryref + ","))
-                                        {
-                                            rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
-
-            }
-            else
-            {
-                rtnDic = (Dictionary<int, string>)objCache;
-            }
-            return rtnDic;
-        }
 
         private Dictionary<int, string> GetCatList(XmlNode xmlNod)
         {
@@ -1719,7 +1613,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
-                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId.ToString("D"); 
                     if (Utils.IsNumeric(catid))
                     {
                         validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
@@ -1728,7 +1622,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             }
 
-            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref,">",lang);
+            var rtnList = NBrightBuyUtils.BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref,">",lang);
 
             if (validCatList != null)
             {
@@ -1805,7 +1699,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 {
                     var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
-                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId;
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId.ToString("D");
                     if (Utils.IsNumeric(catid))
                     {
                         validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
@@ -1814,7 +1708,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             }
 
-            var rtnList = BuildPropertyList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, ">", lang);
+            var rtnList = NBrightBuyUtils.BuildPropertyList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, ">", lang);
 
             if (validCatList != null)
             {

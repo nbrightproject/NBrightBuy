@@ -18,13 +18,13 @@
 
 <!-- Product List header -->
 
-<div class="categorybreadcrumbs">@CategoryBreadCrumb(true)</div>
+<div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
 
     <!-- show sort order selection -->
     <div>
-        @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model.GetSetting("modref"), " class='sortorderdropdown'")
+        @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model, " class='sortorderdropdown'")
         <script>
             $('.sortorderdropdown').change(function() {
                 window.location.replace("?orderby=" + $(this).val());
@@ -34,7 +34,7 @@
 
     <!-- Show category details -->
 <div class="categorydetails">
-<h1>@Category("categoryname") - @Category("entrycount") @ResourceKey("ProductView.products")</h1>
+<h1>@Category("categoryname", Model) - @Category("entrycount", Model) @ResourceKey("ProductView.products")</h1>
 </div>
 
 <div id="listwrapper" class="productlist">
