@@ -1301,13 +1301,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
                 if (razorTempl != "")
                 {
-                    //if (!objList.Any())
-                    //{
-                    //    var fake = new NBrightInfo(true);
-                    //    fake.ItemID = -1; // we need to have a fake item to render
-                    //    objList.Add(fake);
-                    //}
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.ModuleId = moduleid;
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.

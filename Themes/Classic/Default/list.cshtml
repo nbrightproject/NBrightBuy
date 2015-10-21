@@ -16,6 +16,9 @@
 @AddMetaData("orderby3", "NB3.ProductRef", "Classic.list.cshtml")
 @AddMetaData("orderby4", "NB3.ProductName", "Classic.list.cshtml")
 
+@AddMetaData("selectpagesize", "True", "Classic.list.cshtml") <!-- flag to tell product list a custom pagesize may be applied -->
+
+
 <!-- Product List header -->
 
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
@@ -24,12 +27,8 @@
 
     <!-- show sort order selection -->
     <div>
-        @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model, " class='sortorderdropdown'")
-        <script>
-            $('.sortorderdropdown').change(function() {
-                window.location.replace("?orderby=" + $(this).val());
-            });
-        </script>
+        @ResourceKey("General.OrderBy")@SortOrderDropDownList("ResourceKey:ProductView.orderby", Model)
+        @ResourceKey("General.pagesize")@PageSizeDropDownList("4,8,16,32", Model)
     </div>
 
     <!-- Show category details -->

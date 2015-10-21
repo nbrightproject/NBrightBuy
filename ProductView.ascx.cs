@@ -279,8 +279,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     ////////////////////////////////////////////
                     // get ORDERBY SORT 
                     ////////////////////////////////////////////
-                    _navigationdata.OrderByIdx = _orderbyindex;
-                    if (_orderbyindex != "" && metaTokens.ContainsKey(_orderbyindex)) _strOrder = " Order by " + metaTokens[_orderbyindex];
+                    if (_orderbyindex != "") _navigationdata.OrderByIdx = _orderbyindex; // only update orderbyidx if we have a value passed (paging doesn't pass a orderbyidx)
+                    if (_orderbyindex != "" && metaTokens.ContainsKey("orderby" + _orderbyindex)) _strOrder = " Order by " + metaTokens["orderby" + _orderbyindex];
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
                     if (String.IsNullOrEmpty(_strOrder) && metaTokens.ContainsKey("orderby")) _strOrder = " Order by " + metaTokens["orderby"];
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
@@ -297,8 +297,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "Get pagesize, from best place"
 
                     var pageSize = 0;
-                    if (Utils.IsNumeric(_navigationdata.PageSize)) pageSize = Convert.ToInt32(_navigationdata.PageSize);
-                    if ((pageSize == 0 || !Utils.IsNumeric(pageSize))  && Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+                    if (Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+                    // overwrite default module pagesize , if we have a pagesize control in the template
+                    if (metaTokens.ContainsKey("selectpagesize") && Utils.IsNumeric(_navigationdata.PageSize))
+                    {
+                        pageSize = Convert.ToInt32(_navigationdata.PageSize);
+                    }
                     //check for url param page size
                     if (Utils.IsNumeric(_pagesize) && (_pagemid == "" | _pagemid == ModuleId.ToString(CultureInfo.InvariantCulture))) pageSize = Convert.ToInt32(_pagesize);
                     if (pageSize == 0)
@@ -331,29 +335,24 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // check the display header to see if we have a sqlfilter defined.
                     var strFilter = "";
-                    var cachekey = "GetSqlSearchFilters*rpDataH" + _templH + "*" + ModuleId.ToString();
-                    var strHeaderFilter = (String) Utils.GetCache(cachekey);
-                    if (strHeaderFilter == null || StoreSettings.Current.DebugMode)
-                    {
-                        strHeaderFilter = GenXmlFunctions.GetSqlSearchFilters(rpDataH);
-                    }
+                    var sqlTemplateFilter = "";
+                    if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
 
-                    // filter mode and will persist past category selection.
                     if ((_catid == "" && _catname == ""))
                     {
                         if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
 
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
-                        if (!strFilter.Contains(strHeaderFilter)) strFilter += " " + strHeaderFilter;
-                        if (!String.IsNullOrEmpty(_navigationdata.OrderBy)) _strOrder = _navigationdata.OrderBy;
+                        if (!strFilter.Contains(sqlTemplateFilter)) strFilter += " " + sqlTemplateFilter;
 
                         if (_navigationdata.Mode.ToLower() == "s") _navigationdata.ResetSearch(); // single search so clear after
                     }
                     else
                     {
+                        // reset search if category selected.
                         _navigationdata.ResetSearch();
-                        strFilter = strHeaderFilter;
+                        strFilter = sqlTemplateFilter;
                     }
 
                     #endregion
@@ -502,7 +501,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // Special filtering can be done, by using the ProductFilter interface.
                     var productfilterkey = "";
-                    if (_templateHeader != null) productfilterkey = _templateHeader.GetHiddenFieldValue("providerfilterkey");
+                    if (metaTokens.ContainsKey("providerfilterkey")) productfilterkey = metaTokens["providerfilterkey"];
                     if (productfilterkey != "")
                     {
                         var provfilter = FilterInterface.Instance(productfilterkey);
@@ -514,7 +513,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "itemlists (wishlist)"
 
                     // if we have a itemListName field then get the itemlist cookie.
-                    if (_templateHeader != null) _itemListName = _templateHeader.GetHiddenFieldValue("itemlistname");
+                    if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
                     if (_itemListName != "")
                     {
                         var cw = new ItemListData(_itemListName);
@@ -543,6 +542,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
                     _navigationdata.PageNumber = Utils.RequestParam(Context, "page");
                     if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
+                    _navigationdata.OrderBy = _strOrder;
 
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);

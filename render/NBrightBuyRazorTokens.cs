@@ -336,23 +336,39 @@ namespace NBrightBuy.render
 
             try
             {
-                var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+                var catid = 0;
+                if (model.GetUrlParam("eid") != "")
+                {
+                    // looking at detail, so use product categoryid
+                    if (model.List.Any())
+                    {
+                        var product = (ProductData)model.List.First();
+                        var catgrp = product.GetDefaultCategory();
+                        catid = catgrp.categoryid;
+                    }
+                }
+                else
+                {
+                    var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+                    catid = navigationdata.CategoryId;
+                }
+
 
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                var objCInfo = grpCatCtrl.GetGrpCategory(navigationdata.CategoryId);
+                var objCInfo = grpCatCtrl.GetGrpCategory(catid);
                 if (objCInfo != null)
                 {
 
-                    if (navigationdata.CategoryId > 0) // check we have a catid
+                    if (catid > 0) // check we have a catid
                     {
                         if (includelinks)
                         {
-                            if (tabRedirect == -1) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
-                            strOut = grpCatCtrl.GetBreadCrumbWithLinks(navigationdata.CategoryId, tabRedirect, wordlength, separator, aslist);
+                            if (tabRedirect == -1) tabRedirect = StoreSettings.Current.ProductListTabId;
+                            strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist);
                         }
                         else
                         {
-                            strOut = grpCatCtrl.GetBreadCrumb(navigationdata.CategoryId, wordlength, separator, aslist);
+                            strOut = grpCatCtrl.GetBreadCrumb(catid, wordlength, separator, aslist);
                         }
 
                         if ((strOut.Length > maxlength) && (!aslist))
@@ -677,26 +693,103 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String attributes = "")
+        /// <summary>
+        /// Display a Sort order selection on the product list
+        /// 
+        /// @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model, " class='sortorderdropdown'")
+        /// 
+        /// </summary>
+        /// <param name="datatext"></param>
+        /// <param name="model"></param>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String cssclass = "")
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
-            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.GetSetting("modref"));
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.ModuleRef);
 
             var strOut = "";
             var datat = datatext.Split(',');
-                strOut = "<select " + attributes + ">";
-                var c = 0;
-                var s = "";
-                foreach (var t in datat)
+            strOut = "<select class='sortorderdropdown" + model.ModuleRef + " " + cssclass + " '>";
+            var c = 0;
+            var s = "";
+            foreach (var t in datat)
+            {
+                var url = "";
+                var param = new List<String>();
+                if (model.GetUrlParam("pagemid") != "") param.Add("pagemid=" + model.ModuleId.ToString("D"));
+                if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
+                param.Add("orderby=" + c.ToString("D"));
+                var paramlist = new string[param.Count];
+                for (int lp = 0; lp < param.Count; lp++)
                 {
-                    s = "";
-                    if (("orderby" + c) == navigationdata.OrderByIdx.ToLower()) s = "selected"; 
-                    strOut += "    <option value='orderby" + c + "' " + s + " >" + t + "</option>";
-                    c += 1;
+                    paramlist[lp] = param[lp];
                 }
-                strOut += "</select>";
+
+                url = Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, "", paramlist);
+
+                s = "";
+                if (c.ToString("D") == navigationdata.OrderByIdx) s = "selected";
+
+                strOut += "    <option value='" + c.ToString("D") + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                c += 1;
+
+            }
+            strOut += "</select>";
+            strOut += "<script>";
+            strOut += "$('.sortorderdropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); });";
+            strOut += "</script>";
+            return new RawString(strOut);
+        }
+
+        /// <summary>
+        /// Display a page size option on the product list module.
+        /// </summary>
+        /// <param name="datatext"></param>
+        /// <param name="model"></param>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public IEncodedString PageSizeDropDownList(String datatext, NBrightRazor model, String cssclass = "")
+        {
+            if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
+
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.ModuleRef);
+
+            if (navigationdata.PageSize == "") navigationdata.PageSize = model.GetSetting("pagesize");
+
+            var strOut = "";
+            var datat = datatext.Split(',');
+            strOut = "<select class='pagesizedropdown" + model.ModuleRef + " " + cssclass + " '>";
+            var c = 0;
+            var s = "";
+            foreach (var t in datat)
+            {
+                var url = "";
+                var param = new List<String>();
+                if (model.GetUrlParam("pagemid") != "") param.Add("pagemid=" + model.ModuleId.ToString("D"));
+                if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
+                param.Add("pagesize=" + t);
+                var paramlist = new string[param.Count];
+                for (int lp = 0; lp < param.Count; lp++)
+                {
+                    paramlist[lp] = param[lp];
+                }
+
+                url = Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, "", paramlist);
+
+                s = "";
+                if (t == navigationdata.PageSize) s = "selected";
+
+                strOut += "    <option value='" + t + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                c += 1;
+            }
+            strOut += "</select>";
+
+            strOut += "<script>";
+            strOut += "$('.pagesizedropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); });";
+            strOut += "</script>";
+
             return new RawString(strOut);
         }
 

@@ -1050,4 +1050,7 @@
   <data name="Clients.Text" xml:space="preserve">
     <value>Clients</value>
   </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
 </root>
