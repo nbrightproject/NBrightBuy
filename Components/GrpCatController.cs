@@ -607,14 +607,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="categoryid"></param>
         public void ReIndexCascade(int categoryid)
         {
-            ReIndexSingleCascade(categoryid);
-            var cat = GetCategory(categoryid);
-            if (cat != null)
+            if (categoryid > 0)
             {
-                foreach (var p in cat.Parents)
+                ReIndexSingleCascade(categoryid);
+                var cat = GetCategory(categoryid);
+                if (cat != null)
                 {
-                    ReIndexSingleCascade(p);
-                }                
+                    foreach (var p in cat.Parents)
+                    {
+                        ReIndexSingleCascade(p);
+                    }
+                }
             }
         }
 
@@ -624,32 +627,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="categoryid"></param>
         private void ReIndexSingleCascade(int categoryid)
         {
-            //get all category product ids from catxref sub category records.
-            var xrefList = new List<NBrightInfo>();
-            var prodItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
-            var catList = new List<GroupCategoryData>();
-            var subCats = GetSubCategoryList(catList, categoryid);
-            foreach (var c in subCats)
+            if (categoryid > 0)
             {
-                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
-                prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
-            }
-            //Get the current catascade records
-            xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
-            var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+                //get all category product ids from catxref sub category records.
+                var xrefList = new List<NBrightInfo>();
+                var prodItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
+                var catList = new List<GroupCategoryData>();
+                var subCats = GetSubCategoryList(catList, categoryid);
+                foreach (var c in subCats)
+                {
+                    xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
+                    prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
+                }
+                //Get the current catascade records
+                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
+                var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
 
-            //Update the catcascade records.
-            foreach (var prodId in prodItemIdList)
-            {
-                AddCatCascadeRecord(categoryid, prodId);
-                casacdeProdItemIdList.RemoveAll(i => i == prodId);
-            }
-            //remove any cascade records that no longer exists
-            foreach (var productid in casacdeProdItemIdList)
-            {
-                var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
-                var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                if (nbi != null) _objCtrl.Delete(nbi.ItemID);
+                //Update the catcascade records.
+                foreach (var prodId in prodItemIdList)
+                {
+                    AddCatCascadeRecord(categoryid, prodId);
+                    casacdeProdItemIdList.RemoveAll(i => i == prodId);
+                }
+                //remove any cascade records that no longer exists
+                foreach (var productid in casacdeProdItemIdList)
+                {
+                    var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
+                    var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                    if (nbi != null) _objCtrl.Delete(nbi.ItemID);
+                }
             }
         }
 

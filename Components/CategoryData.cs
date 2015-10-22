@@ -389,7 +389,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _portalId = Info.PortalId;
                 DataRecord = objCtrl.GetData(categoryId);
                 DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
-                if (DataLangRecord == null) // rebuild langauge is we have a missing lang record
+                if (DataLangRecord == null) // rebuild langauge if we have a missing lang record
                 {
                     Validate();
                     DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);

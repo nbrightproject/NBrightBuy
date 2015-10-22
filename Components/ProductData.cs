@@ -1184,18 +1184,60 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 if (l.Count > 1)
                 {
-                    // we have more records than shoudl exists, remove any old ones.
+                    // we have more records than should exists, remove any old ones.
                     var l2 = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
                     var lp2 = 1;
                     foreach (var i in l2)
                     {
                         if (lp2 >= 2) objCtrl.Delete(i.ItemID);
+                        errorcount += 1;
                         lp2 += 1;
                     }
                 }
             }
 
+            // remove duplicate category xrefs.
+            var catlist = GetCategories();
+            foreach (var c in catlist)
+            {
+                var l = objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = " + c.categoryid.ToString(""));
+                if (l.Count > 1)
+                {
+                    var catlp = 0;
+                    foreach (var i in l)
+                    {
+                        if (catlp >= 1)
+                        {
+                            objCtrl.Delete(i.ItemID);
+                            errorcount += 1;
+                        }
+                        catlp += 1;
+                    }
+                }
+            }
 
+            // remove duplicate catcascade records
+            var cascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") );
+            foreach (var c in cascadeList)
+            {
+                var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and GUIDKey = '" + c.GUIDKey + "'");
+                if (l2.Count > 1)
+                {
+                    for (int i = 1; i < l2.Count; i++)
+                    {
+                        objCtrl.Delete(l2[i].ItemID);
+                        errorcount += 1;
+                    }
+                }
+            }
+
+            // remove any unlinked catacscade records
+            cascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = 0");
+            foreach (var c in cascadeList)
+            {
+                objCtrl.Delete(c.ItemID);
+                errorcount += 1;
+            }
 
             return errorcount;
         }

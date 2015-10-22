@@ -1849,7 +1849,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         if (isLink)
                         {
                             var defTabId = PortalSettings.Current.ActiveTab.TabID;
-                            if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                            if (xmlNod.Attributes["admin"] == null)
+                            {
+                                if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                            }
                             lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
                         }
                         else

@@ -363,6 +363,7 @@ namespace NBrightBuy.render
                     {
                         if (includelinks)
                         {
+                            if (tabRedirect == 0) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
                             if (tabRedirect == -1) tabRedirect = StoreSettings.Current.ProductListTabId;
                             strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist);
                         }

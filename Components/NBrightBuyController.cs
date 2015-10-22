@@ -216,16 +216,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strFilter += " and UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1);
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1); // only return 1, not a real guidkey, so m,ay be duplicates.
             if (l.Count == 0) return null;
-            if (l.Count > 1)
-            {
-                for (int i = 1; i < l.Count; i++)
-                {
-                    // remove invalid DB entries
-                    Delete(l[i].ItemID);
-                }
-            }
             Utils.SetCache(strCacheKey, l[0]);
             return l[0];
         }
