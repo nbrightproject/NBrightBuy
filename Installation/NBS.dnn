@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="NBS_ProductView" type="Module" version="3.1.4">
-			<friendlyName>NBS_ProductView</friendlyName>
+		<package name="NBS_ProductDisplay" type="Module" version="3.4.0">
+			<friendlyName>NBS_ProductDisplay</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Front office product list and detail. (supports DNN7.2+)
 			</description>
@@ -30,7 +30,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</license>
 			<releaseNotes>
 
-			v3.1.0.
+			v3.4.0.
 			
 			NBSv3 required the NBrightTemplate system to be installed.
 
@@ -100,47 +100,48 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</assembly>
 					</assemblies>
 				</component>
-				<component type="Module">
-					<desktopModule>
-						<moduleName>NBS_ProductView</moduleName>
-						<foldername>NBright/NBrightBuy</foldername>
-						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
-						<supportedFeatures>
-							<supportedFeature type="Portable" />
-							<supportedFeature type="Searchable" />
-						</supportedFeatures>
-						<moduleDefinitions>
-							<moduleDefinition>
-								<friendlyName>NBS_ProductView</friendlyName>
-								<defaultCacheTime>0</defaultCacheTime>
-								<moduleControls>
-									<moduleControl>
-										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/ProductView.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle />
-										<controlType>View</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
-									</moduleControl>
-									<moduleControl>
-										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/ProductViewSettings.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Settings</controlTitle>
-										<controlType>Edit</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
-									</moduleControl>
-								</moduleControls>
-							</moduleDefinition>
-						</moduleDefinitions>
-					</desktopModule>
-				</component>
+    <component type="Module">
+      <desktopModule>
+        <moduleName>NBS_ProductDisplay</moduleName>
+        <foldername>NBright/NBrightBuy</foldername>
+        <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
+        <supportedFeatures>
+          <supportedFeature type="Portable" />
+          <supportedFeature type="Searchable" />
+        </supportedFeatures>
+        <moduleDefinitions>
+          <moduleDefinition>
+            <friendlyName>NBS_ProductDisplay</friendlyName>
+            <defaultCacheTime>0</defaultCacheTime>
+            <moduleControls>
+              <moduleControl>
+                <controlKey />
+                <controlSrc>DesktopModules/NBright/NBrightBuy/ProductRazorView.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle />
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>0</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>Settings</controlKey>
+                <controlSrc>DesktopModules/NBright/NBrightBuy/ProductRazorViewSettings.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Settings</controlTitle>
+                <controlType>Edit</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>0</viewOrder>
+              </moduleControl>
+            </moduleControls>
+          </moduleDefinition>
+        </moduleDefinitions>
+      </desktopModule>
+    </component>
 
-				<component type="Skin">
+
+    <component type="Skin">
 					<skinFiles>
 						<skinName>NBrightStoreBO</skinName>
 						<basePath>Portals\_default\Skins\NBrightStoreBO</basePath>

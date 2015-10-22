@@ -288,6 +288,20 @@
     <Compile Include="ProductSearch.ascx.designer.cs">
       <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductRazorView.ascx.cs">
+      <DependentUpon>ProductRazorView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductRazorView.ascx.designer.cs">
+      <DependentUpon>ProductRazorView.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductViewSettings.ascx.cs">
+      <DependentUpon>ProductViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductViewSettings.ascx.designer.cs">
+      <DependentUpon>ProductViewSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProfileForm.ascx.cs">
       <DependentUpon>ProfileForm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -332,12 +346,12 @@
     <Compile Include="Components\ProductUtils.cs" />
     <Compile Include="Components\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Components\NBrightBuyUtils.cs" />
-    <Compile Include="ProductViewSettings.ascx.cs">
-      <DependentUpon>ProductViewSettings.ascx</DependentUpon>
+    <Compile Include="ProductRazorViewSettings.ascx.cs">
+      <DependentUpon>ProductRazorViewSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ProductViewSettings.ascx.designer.cs">
-      <DependentUpon>ProductViewSettings.ascx.cs</DependentUpon>
+    <Compile Include="ProductRazorViewSettings.ascx.designer.cs">
+      <DependentUpon>ProductRazorViewSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProductView.ascx.cs">
@@ -419,6 +433,8 @@
     </Content>
     <Content Include="PrintView.aspx" />
     <Content Include="ProductSearch.ascx" />
+    <Content Include="ProductRazorView.ascx" />
+    <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProfileForm.ascx" />
     <Content Include="ProfileFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -428,7 +444,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductViewSettings.ascx" />
+    <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductView.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
@@ -442,6 +458,7 @@
     <Content Include="Themes\Classic\Default\minicartfooter.html" />
     <Content Include="Themes\Classic\Default\minicartheader.html" />
     <Content Include="Themes\Classic\Default\pageheaderNBS_MiniCart.html" />
+    <Content Include="Themes\Classic\Default\pageheaderNBS_ProductDisplay.html" />
     <Content Include="Themes\Classic\Default\pageheaderNBS_ProductView.html" />
     <None Include="Themes\Classic\Default\productviewsettings.cshtml" />
     <Content Include="Themes\Classic\Default\simplesearch.html" />

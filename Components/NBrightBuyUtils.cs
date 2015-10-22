@@ -1373,6 +1373,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (obj == null) obj = new NBrightInfo(true);
                     var l = new List<object>();
                     l.Add(obj);
+                    if (settings == null) settings = new Dictionary<string, string>();
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
                     var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
