@@ -18,6 +18,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightDNN;
@@ -70,11 +71,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                            if (_entryid != "")
                                            {
                                                param[0] = "eid=" + _entryid;
-                                               ProductUtils.RemoveProductDataCache(_entryid, StoreSettings.Current.EditLanguage); // clear product cache, if there, so we can see saved data.
                                            }
                                            if (_ctrl != "") param[1] = "ctrl=" + _ctrl;
 
-                                           NBrightBuyUtils.RemoveModCachePortalWide(PortalId); 
+                                           //remove all cahce setting from cache for reload
+                                           //DNN is sticky with some stuff (had some issues with email addresses not updating), so to be sure clear it all. 
+                                           DataCache.ClearCache();
 
                                            StoreSettings.Current.EditLanguage = cmde.CommandArgument.ToString();
                                            Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
