@@ -174,11 +174,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
                 try
                 {
                     XmlReader dr = command.ExecuteXmlReader();
-                    if (dr.Read())
+                    while (dr.Read())
                     {
-                        XmlDocument doc = new XmlDocument();
-                        doc.Load(dr);
-                        rtnData = doc.OuterXml;
+                        rtnData += dr.ReadOuterXml();
                     }
                 }
                 finally
