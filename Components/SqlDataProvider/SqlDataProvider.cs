@@ -173,11 +173,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.SqlDataProvider
                 var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
                 try
                 {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
                     XmlReader dr = command.ExecuteXmlReader();
                     while (dr.Read())
                     {
-                        rtnData += dr.ReadOuterXml();
+                        sb.AppendLine(dr.ReadOuterXml());
                     }
+                    rtnData = sb.ToString();
                 }
                 finally
                 {

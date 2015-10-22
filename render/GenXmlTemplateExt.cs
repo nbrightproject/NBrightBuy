@@ -1608,11 +1608,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
                     if (p != null) parentid = p.categoryid;                    
                 }
-                var catid = "";
+                var catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
+                if (parentid == 0 && Utils.IsNumeric(catid)) parentid = Convert.ToInt32(catid); // needs to be passed to BuildCatList
+
                 if (filtermode != "")
                 {
                     var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
-                    catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
                     if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId.ToString("D"); 
                     if (Utils.IsNumeric(catid))
                     {
@@ -4616,7 +4617,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         nbi.XMLData = nod.OuterXml;
 
                         strOut += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth") + "',";
-                        strOut += "'y': " + nbi.GetXmlPropertyDouble("item/appliedtotal").ToString() + "},";
+                        strOut += "'y': " + nbi.GetXmlPropertyRaw("item/appliedtotal").ToString() + "},";
 
                     }
                     strOut = strOut.TrimEnd(',');

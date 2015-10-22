@@ -480,7 +480,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         #region "do razor template"
 
-                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, "productviewrazor" + ModuleId.ToString(), l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                        // get same cachekey used for DB return, and use for razor.
+                        var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+
+                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         var lit = new Literal();
                         lit.Text = strOut;
                         phData.Controls.Add(lit);

@@ -370,11 +370,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        /// <summary>
+        /// Build cachekey for razor, so we get the same results from cache for DB and razor.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="moduleId"></param>
+        /// <param name="entityTypeCode"></param>
+        /// <param name="entityTypeCodeLang"></param>
+        /// <param name="cultureCode"></param>
+        /// <param name="strFilters"></param>
+        /// <param name="strOrderBy"></param>
+        /// <param name="debugMode"></param>
+        /// <param name="selUserId"></param>
+        /// <param name="returnLimit"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="recordCount"></param>
+        /// <returns></returns>
+        public String GetDataListCacheKey(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            if (selUserId != "") strFilters += " and UserId = " + selUserId + " ";
+            return portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
+        }
+
         #endregion
 
         #region "NBrightBuy Control functions"
 
-	    public string GetTemplateData(ModSettings modSettings, string templatename, string lang, bool debugMode = false)
+        public string GetTemplateData(ModSettings modSettings, string templatename, string lang, bool debugMode = false)
 	    {
 	        return GetTemplateData(modSettings.Moduleid, templatename, lang, modSettings.Settings(), debugMode);
 	    }
