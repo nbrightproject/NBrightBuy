@@ -281,6 +281,13 @@
     <Compile Include="PrintView.aspx.designer.cs">
       <DependentUpon>PrintView.aspx.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductRazorViewSettings.ascx.cs">
+      <DependentUpon>ProductRazorViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductRazorViewSettings.ascx.designer.cs">
+      <DependentUpon>ProductRazorViewSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductSearch.ascx.cs">
       <DependentUpon>ProductSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -346,13 +353,6 @@
     <Compile Include="Components\ProductUtils.cs" />
     <Compile Include="Components\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Components\NBrightBuyUtils.cs" />
-    <Compile Include="ProductRazorViewSettings.ascx.cs">
-      <DependentUpon>ProductRazorViewSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductRazorViewSettings.ascx.designer.cs">
-      <DependentUpon>ProductRazorViewSettings.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProductView.ascx.cs">
       <DependentUpon>ProductView.ascx</DependentUpon>
@@ -432,6 +432,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="PrintView.aspx" />
+    <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />
     <Content Include="ProductViewSettings.ascx" />
@@ -444,7 +445,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductView.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
