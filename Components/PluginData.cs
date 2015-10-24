@@ -46,8 +46,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cachekey = "pluginlist" + portalId + "*" + systemlevel;
             var pList = NBrightBuyUtils.GetModCache(cachekey);
 
-            if (pList != null && !storeSettings.DebugMode)
+            if (pList != null)
             {
+                // if we've created an empty cache record, clear cache data
+                _pluginList = (List<NBrightInfo>)pList;
+                if (_pluginList.Count == 0) DotNetNuke.Common.Utilities.DataCache.ClearCache();
+            }
+
+            if (pList != null && !storeSettings.DebugMode)
+            {                
                 _pluginList = (List<NBrightInfo>)pList;
             }
             else
