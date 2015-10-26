@@ -1555,54 +1555,41 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
-        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">",string lang = "")
+        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
 
             var rtnDic = new Dictionary<int, string>();
 
-            var strCacheKey = "NBrightBuy_BuildCatList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
-
-            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
-
-            if (objCache == null | StoreSettings.Current.DebugMode)
+            var grpCatCtrl = new GrpCatController(lang);
+            var d = new Dictionary<int, string>();
+            var rtnList = new List<GroupCategoryData>();
+            rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref, breadcrumbseparator);
+            var strCount = "";
+            foreach (var grpcat in rtnList)
             {
-                var grpCatCtrl = new GrpCatController(lang);
-                var d = new Dictionary<int, string>();
-                var rtnList = new List<GroupCategoryData>();
-                rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref,breadcrumbseparator);
-                var strCount = "";
-                foreach (var grpcat in rtnList)
-                {
-                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+                if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
 
-                    if (grpcat.depth < displaylevels)
+                if (grpcat.depth < displaylevels)
+                {
+                    if (showEmpty || grpcat.entrycount > 0)
                     {
-                        if (showEmpty || grpcat.entrycount > 0)
+                        if (grpcat.ishidden == false || showHidden)
                         {
-                            if (grpcat.ishidden == false || showHidden)
+                            var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                            if (catreflist == "")
+                                rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                            else
                             {
-                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
-                                if (catreflist == "")
-                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                else
+                                if (grpcat.categoryref != "" &&
+                                    (catreflist + ",").Contains(grpcat.categoryref + ","))
                                 {
-                                    if (grpcat.categoryref != "" &&
-                                        (catreflist + ",").Contains(grpcat.categoryref + ","))
-                                    {
-                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
-                                    }
+                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                 }
                             }
                         }
                     }
                 }
-                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
-
-            }
-            else
-            {
-                rtnDic = (Dictionary<int, string>)objCache;
             }
             return rtnDic;
         }
@@ -1677,13 +1664,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var displaycount = "False";
             var displayCount = false;
             var showEmpty = true;
-            var groupref = "";
+            var groupref = "cat";
             var filtermode = "";
             List<int> validCatList = null;
             var modulekey = "";
             var redirecttabid = "";
             var tabid = "";
-            var lang = Utils.GetCurrentCulture(); 
+            var lang = Utils.GetCurrentCulture();
+            var ctrlid = "";
 
             if (xmlNod.Attributes != null)
             {
@@ -1692,6 +1680,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (Utils.IsNumeric(xmlNod.Attributes["displaylevels"].Value)) displaylevels = Convert.ToInt32(xmlNod.Attributes["displaylevels"].Value);
                 }
 
+                if (xmlNod.Attributes["id"] != null) ctrlid = xmlNod.Attributes["id"].Value;
                 if (xmlNod.Attributes["parentref"] != null) parentref = xmlNod.Attributes["parentref"].Value;
                 if (xmlNod.Attributes["showhidden"] != null) showhidden = xmlNod.Attributes["showhidden"].Value;
                 if (xmlNod.Attributes["showarchived"] != null) showarchived = xmlNod.Attributes["showarchived"].Value;
@@ -1702,7 +1691,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
                 if (xmlNod.Attributes["lang"] != null) lang = xmlNod.Attributes["lang"].Value;
-                
+
                 if (showhidden.ToLower() == "true") showHidden = true;
                 if (showarchived.ToLower() == "true") showArchived = true;
                 if (showempty.ToLower() == "false") showEmpty = false;
@@ -1712,14 +1701,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (parentref != "")
                 {
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
-                    if (p != null) parentid = p.categoryid;                    
+                    if (p != null) parentid = p.categoryid;
                 }
                 var catid = "";
                 if (filtermode != "")
                 {
                     var navigationData = new NavigationData(PortalSettings.Current.PortalId, modulekey);
                     catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
-                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId; 
+                    if (String.IsNullOrEmpty(catid)) catid = navigationData.CategoryId;
                     if (Utils.IsNumeric(catid))
                     {
                         validCatList = GetCateoriesInProductList(Convert.ToInt32(catid));
@@ -1728,7 +1717,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
             }
 
-            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref,">",lang);
+            var rtnList = BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, ">", lang);
 
             if (validCatList != null)
             {
