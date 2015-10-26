@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="NBS_ProductView" type="Module" version="3.1.5">
+		<package name="NBS_ProductView" type="Module" version="3.1.6">
 			<friendlyName>NBS_ProductView</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Front office product list and detail. (supports DNN7.2+)
@@ -154,7 +154,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_ProductSearch" type="Module" version="3.1.5">
+		<package name="NBS_ProductSearch" type="Module" version="3.1.6">
 			<friendlyName>NBS_ProductSearch</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Search options for front office.
@@ -234,7 +234,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_CategoryMenu" type="Module" version="3.1.5">
+		<package name="NBS_CategoryMenu" type="Module" version="3.1.6">
 			<friendlyName>NBS_CategoryMenu</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Stand alone Category menu for front office
@@ -307,7 +307,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_AddressAdmin" type="Module" version="3.1.5">
+		<package name="NBS_AddressAdmin" type="Module" version="3.1.6">
 			<friendlyName>NBS_AddressAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Admin for clients addresses from the front office.
@@ -382,7 +382,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_Payment" type="Module" version="3.1.5">
+		<package name="NBS_Payment" type="Module" version="3.1.6">
 			<friendlyName>NBS_Payment</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Process payment of orders.
@@ -456,7 +456,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_OrderAdmin" type="Module" version="3.1.5">
+		<package name="NBS_OrderAdmin" type="Module" version="3.1.6">
 
 			<friendlyName>NBS_OrderAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
@@ -532,7 +532,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_ProfileForm" type="Module" version="3.1.5">
+		<package name="NBS_ProfileForm" type="Module" version="3.1.6">
 			<friendlyName>NBS_ProfileForm</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   This module creates a profile form that links to the DNN profile and NBS address.
@@ -608,7 +608,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		</package>
 
 		
-				<package name="NBS_Checkout" type="Module" version="3.1.5">
+				<package name="NBS_Checkout" type="Module" version="3.1.6">
 			<friendlyName>NBS_Checkout</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Checkout process.
 			</description>
@@ -682,7 +682,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_MiniCart" type="Module" version="3.1.5">
+				<package name="NBS_MiniCart" type="Module" version="3.1.6">
 			<friendlyName>NBS_MiniCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Mini cart view.
 			</description>
@@ -756,7 +756,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_FullCart" type="Module" version="3.1.5">
+				<package name="NBS_FullCart" type="Module" version="3.1.6">
 			<friendlyName>NBS_FullCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. full cart view.
 			</description>
