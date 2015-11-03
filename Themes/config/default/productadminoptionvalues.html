@@ -11,8 +11,8 @@
 
 	<div class="col-sm-12 form-horizontal">
 		<div class="row">
-	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Value" />] </label>[<tag id="txtoptionvaluedesc" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
-	        <div class="col-sm-3"><label class="control-label">[<tag type="valueof" resourcekey="General.ExtraCost" />]</label>[<tag id="txtaddedcost" type="textbox" cssclass="form-control input-sm" maxlength="50" />]</div>
+	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Value" />] </label>[<tag type="editflag" />][<tag id="txtoptionvaluedesc" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
+	        <div class="col-sm-3"><label class="control-label">[<tag type="valueof" resourcekey="General.ExtraCost" />]</label>[<tag id="txtaddedcost" type="textbox" cssclass="form-control input-sm" maxlength="50" datatype="double" />]</div>
 	        <div class="col-sm-3"><label class="control-label">&nbsp;</label><br><a class="removeoptionvalue btn btn-danger input-sm">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- required: class="removeoptionvalue" -->
 	        <span style="display:none">[<tag type="valueof" xpath="genxml/hidden/optionid" />] - [<tag type="valueof" xpath="genxml/hidden/optionvalueid" />]</span>
 		</div>

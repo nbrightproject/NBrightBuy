@@ -4758,7 +4758,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         nbi.XMLData = nod.OuterXml;
 
                         strOut += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth") + "',";
-                        strOut += "'y': " + nbi.GetXmlPropertyDouble("item/appliedtotal").ToString() + "},";
+                        strOut += "'y': " + nbi.GetXmlPropertyRaw("item/appliedtotal").ToString() + "},";
 
                     }
                     strOut = strOut.TrimEnd(',');
