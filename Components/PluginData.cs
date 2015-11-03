@@ -53,6 +53,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (_pluginList.Count == 0) DotNetNuke.Common.Utilities.DataCache.ClearCache();
             }
 
+            if (pList != null)
+            {
+                // if we've created an empty cache record, clear cache data
+                _pluginList = (List<NBrightInfo>)pList;
+                if (_pluginList.Count == 0) DotNetNuke.Common.Utilities.DataCache.ClearCache();
+            }
+
             if (pList != null && !storeSettings.DebugMode)
             {                
                 _pluginList = (List<NBrightInfo>)pList;
