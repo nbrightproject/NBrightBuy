@@ -16,7 +16,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override NBrightInfo CalculateItemPercentDiscount(int portalId, int userId, NBrightInfo cartItemInfo,String discountcode)
         {
-            if (discountcode == "") return cartItemInfo;
+            cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "");
             cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", "0"); // reset discount amount
             Double discountcodeamt = 0;
             if (userId > 0)
@@ -86,7 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override NBrightInfo CalculateVoucherAmount(int portalId, int userId, NBrightInfo cartInfo, string discountcode)
         {
-            if (discountcode == "") return cartInfo;
+            cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "");
             cartInfo.SetXmlPropertyDouble("genxml/voucherdiscount", "0"); // reset discount amount
             Double discountcodeamt = 0;
             if (userId > 0)
