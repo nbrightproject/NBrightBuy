@@ -16,7 +16,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override NBrightInfo CalculateItemPercentDiscount(int portalId, int userId, NBrightInfo cartItemInfo,String discountcode)
         {
-            if (discountcode == "") return cartItemInfo;
+            cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "");
             cartItemInfo.SetXmlPropertyDouble("genxml/discountcodeamt", "0"); // reset discount amount
             Double discountcodeamt = 0;
             if (userId > 0)
@@ -38,6 +38,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                             {
                                 var appliedtotalcost = cartItemInfo.GetXmlPropertyDouble("genxml/appliedtotalcost");
                                 discountcodeamt = ((appliedtotalcost/100)*percentage);
+                                cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "valid");
+                            }
+                            else
+                            {
+                                cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "invalid");
                             }
                         }
                         if (discountcodeamt > 0) break;
@@ -58,11 +63,17 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     {
                         var usage = d.GetXmlPropertyDouble("genxml/textbox/usage");
                         var usagelimit = d.GetXmlPropertyDouble("genxml/textbox/usagelimit");
+                        var minamountlimit = d.GetXmlPropertyDouble("genxml/textbox/minamountlimit");
                         var percentage = d.GetXmlPropertyDouble("genxml/textbox/amount");
-                        if (percentage > 0 && (usagelimit == 0 || usagelimit > usage))
+                        var appliedtotalcost = cartItemInfo.GetXmlPropertyDouble("genxml/appliedtotalcost");
+                        if (percentage > 0 && (usagelimit == 0 || usagelimit > usage) && (appliedtotalcost >= minamountlimit))
                         {
-                            var appliedtotalcost = cartItemInfo.GetXmlPropertyDouble("genxml/appliedtotalcost");
                             discountcodeamt = ((appliedtotalcost / 100) * percentage);
+                            cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "valid");
+                        }
+                        else
+                        {
+                            cartItemInfo.SetXmlPropertyDouble("genxml/discountstatus", "invalid");
                         }
                     }
                 }
@@ -75,7 +86,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override NBrightInfo CalculateVoucherAmount(int portalId, int userId, NBrightInfo cartInfo, string discountcode)
         {
-            if (discountcode == "") return cartInfo;
+            cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "");
             cartInfo.SetXmlPropertyDouble("genxml/voucherdiscount", "0"); // reset discount amount
             Double discountcodeamt = 0;
             if (userId > 0)
@@ -99,6 +110,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                                     discountcodeamt = amount;
                                 else
                                     discountcodeamt = subtotal;
+                                cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "valid");
+                            }
+                            else
+                            {
+                                cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "invalid");
                             }
                         }
                         if (discountcodeamt > 0) break;
@@ -117,10 +133,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     if (Utils.IsDate(validutil)) validutildate = Convert.ToDateTime(validutil);
                     if (validutildate >= DateTime.Today && d.GetXmlProperty("genxml/radiobuttonlist/amounttype") == "1")
                     {
+                        var minamountlimit = d.GetXmlPropertyDouble("genxml/textbox/minamountlimit");
+                        var amount = d.GetXmlPropertyDouble("genxml/textbox/amount");
                         var usage = d.GetXmlPropertyDouble("genxml/textbox/usage");
                         var usagelimit = d.GetXmlPropertyDouble("genxml/textbox/usagelimit");
-                        var amount = d.GetXmlPropertyDouble("genxml/textbox/amount");
-                        if (amount > 0 && (usagelimit == 0 || usagelimit > usage)) discountcodeamt = amount;
+                        var appliedsubtotal = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
+                        if (amount > 0 && (usagelimit == 0 || usagelimit > usage) && (appliedsubtotal >= minamountlimit))
+                        {
+                            discountcodeamt = amount;
+                            cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "valid");
+                        }
+                        else
+                        {
+                            cartInfo.SetXmlPropertyDouble("genxml/discountstatus", "invalid");
+                        }
                     }
                 }
             }

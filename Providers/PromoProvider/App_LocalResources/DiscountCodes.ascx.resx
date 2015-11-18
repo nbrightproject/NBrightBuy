@@ -132,6 +132,9 @@
   <data name="disabled.Text" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="minamountlimit.Text" xml:space="preserve">
+    <value>Minimum Amount Limit</value>
+  </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
