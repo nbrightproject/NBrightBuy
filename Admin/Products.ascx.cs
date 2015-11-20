@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightCore.render;
@@ -154,11 +155,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 prodData.Save();
 
                 if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
-
-                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
-                ProductUtils.RemoveProductDataCache(productid, StoreSettings.Current.EditLanguage);
-
                 
+                // clear all data cache, so list picks up changes. 
+                DataCache.ClearCache();
+
             }
         }
 
