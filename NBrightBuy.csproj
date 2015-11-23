@@ -45,6 +45,14 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
+    <Reference Include="NBrightCore, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NBrightCore.dll</HintPath>
+    </Reference>
+    <Reference Include="NBrightDNN, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
+    </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\..\..\..\Support\DNN7x\bin\RazorEngine.dll</HintPath>
     </Reference>
@@ -1577,16 +1585,6 @@
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj">
-      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
-      <Name>NBrightCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj">
-      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
-      <Name>NBrightDNN</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Themes\Classic\js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -1595,11 +1593,8 @@
 
 copy "$(AssemblyName).pdb" "..\..\..\..\..\bin\$(AssemblyName).pdb"
 
-copy "NBrightCore.dll" "..\..\..\..\..\bin\NBrightCore.dll"
-
-copy "NBrightCore.pdb" "..\..\..\..\..\bin\NBrightCore.pdb"
-copy "NBrightDNN.dll" "..\..\..\..\..\bin\NBrightDNN.dll"
-copy "NBrightDNN.pdb" "..\..\..\..\..\bin\NBrightDNN.pdb"
+copy "..\..\..\..\..\..\..\..\Support\nbrightdnn\bin\Debug\NBrightDNN.dll" "..\..\..\..\..\bin\NBrightDNN.dll"
+copy "..\..\..\..\..\..\..\..\Support\nbrightcore\bin\Debug\NBrightCore.dll" "..\..\..\..\..\bin\NBrightCore.dll"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
