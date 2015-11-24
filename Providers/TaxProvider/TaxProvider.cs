@@ -153,15 +153,16 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var taxratecode = cartItemInfo.GetXmlProperty("genxml/taxratecode");
             if (taxratecode == "") taxratecode = "0";
             if (!rateDic.ContainsKey(taxratecode)) taxratecode = "0";
-            var taxrate = rateDic[taxratecode];
-
+            Double taxrate = 0;
+            if (rateDic.ContainsKey(taxratecode)) taxrate = rateDic[taxratecode]; // Can happen is no default tax added.
+            
             if (taxtype == "1") // included in unit price
             {
-                taxtotal += totalcost - ((totalcost/(100 + taxrate))*100);
+                taxtotal += totalcost - ((totalcost / (100 + taxrate)) * 100);
             }
             if (taxtype == "2") // NOT included in unit price
             {
-                taxtotal += (totalcost/100)*taxrate;
+                taxtotal += (totalcost / 100) * taxrate;
             }
 
             return Math.Round(taxtotal, 2);
