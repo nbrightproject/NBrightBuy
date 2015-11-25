@@ -49,11 +49,19 @@ namespace Nevoweb.DNN.NBrightBuy
 
             _isSkinControl = false;
             // get setting via control params
-            if (!String.IsNullOrEmpty(RedirectTabId))  ModSettings.Set("redirecttabid", RedirectTabId);
-            if (!String.IsNullOrEmpty(TargetModulekey)) ModSettings.Set("targetmodulekey", TargetModulekey);
-            if (!String.IsNullOrEmpty(Themefolder)) ModSettings.Set("themefolder", Themefolder);
-            if (!String.IsNullOrEmpty(Searchtemplate)) ModSettings.Set("txtsearchtemplate", Searchtemplate);
-            if (!String.IsNullOrEmpty(Searchtemplate)) _isSkinControl = true;
+            if (!String.IsNullOrEmpty(Searchtemplate))
+            {
+                // is skin control
+                _isSkinControl = true;
+                if (!String.IsNullOrEmpty(RedirectTabId))
+                    ModSettings.Set("redirecttabid", RedirectTabId);
+                else
+                    ModSettings.Set("redirecttabid", StoreSettings.Current.Get("productlisttab")); // choose the default search page
+                if (String.IsNullOrEmpty(TargetModulekey)) TargetModulekey = StoreSettings.Current.Get("productsearchmod"); //choose the default search page                
+                if (!String.IsNullOrEmpty(TargetModulekey)) ModSettings.Set("targetmodulekey", TargetModulekey);
+                if (!String.IsNullOrEmpty(Themefolder)) ModSettings.Set("themefolder", Themefolder);
+                if (!String.IsNullOrEmpty(Searchtemplate)) ModSettings.Set("txtsearchtemplate", Searchtemplate);
+            }
 
             if (ModSettings.Get("txtsearchtemplate") == "")  // if we don't have module setting jump out
             {

@@ -408,4 +408,10 @@
   <data name="defaultproperty.Text" xml:space="preserve">
     <value>Default Property</value>
   </data>
+  <data name="productsearchmod.Text" xml:space="preserve">
+    <value>Product Search Results Module Ref</value>
+  </data>
+  <data name="productsearchtab.Text" xml:space="preserve">
+    <value>Product Search Results Page</value>
+  </data>
 </root>

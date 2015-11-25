@@ -5,7 +5,8 @@
       <friendlyName>NBS_ProductView</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
-        Phased out module, package now used to load config on installation
+        Legacy Module. (package now used to load config on installation.)
+        Products should be displayed with the NB_ProductDisplay module.
       </description>
       <iconFile />
       <owner>
