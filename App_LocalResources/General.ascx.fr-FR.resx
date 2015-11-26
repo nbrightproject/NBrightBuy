@@ -724,7 +724,7 @@
     <value>Trouver une commande</value>
   </data>
   <data name="OrderBy.Text" xml:space="preserve">
-    <value>Organiser par</value>
+    <value>Trier par</value>
   </data>
   <data name="OrderCount.Text" xml:space="preserve">
     <value>Nombre de commandes</value>

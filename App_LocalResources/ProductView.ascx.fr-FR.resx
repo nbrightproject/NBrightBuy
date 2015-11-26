@@ -322,6 +322,6 @@
     <value>Avec ce produit, nous vous recommandons :</value>
   </data>
   <data name="orderby.Text" xml:space="preserve">
-    <value>, De prix, de prix décroissant, Réf produit, nom du produit</value>
+    <value>Défaut,Prix croissant,Prix décroissant,Réf. produit,Nom du produit</value>
   </data>
 </root>

@@ -1577,7 +1577,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var modulekey = "";
             var redirecttabid = "";
             var tabid = "";
-            var lang = Utils.GetCurrentCulture(); 
+            var lang = Utils.GetCurrentCulture();
+            var showall = "false";
+            var showAll = false;
 
             if (xmlNod.Attributes != null)
             {
@@ -1596,7 +1598,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (xmlNod.Attributes["filtermode"] != null) filtermode = xmlNod.Attributes["filtermode"].Value;
                 if (xmlNod.Attributes["modulekey"] != null) modulekey = xmlNod.Attributes["modulekey"].Value;
                 if (xmlNod.Attributes["lang"] != null) lang = xmlNod.Attributes["lang"].Value;
-                
+                if (xmlNod.Attributes["showall"] != null) showall = xmlNod.Attributes["showall"].Value;
+
+                if (showall.ToLower() == "true") showAll = true;
                 if (showhidden.ToLower() == "true") showHidden = true;
                 if (showarchived.ToLower() == "true") showArchived = true;
                 if (showempty.ToLower() == "false") showEmpty = false;
@@ -1609,7 +1613,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     if (p != null) parentid = p.categoryid;                    
                 }
                 var catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
-                if (parentid == 0 && Utils.IsNumeric(catid)) parentid = Convert.ToInt32(catid); // needs to be passed to BuildCatList
+                if (!showAll && parentid == 0 && Utils.IsNumeric(catid)) parentid = Convert.ToInt32(catid); // needs to be passed to BuildCatList
 
                 if (filtermode != "")
                 {

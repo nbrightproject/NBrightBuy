@@ -70,13 +70,13 @@
             @DnnLabel("lblcascaderesults", "ProductViewSettings.lblcascaderesults")@CheckBox(info, "genxml/checkbox/chkcascaderesults", "", " class='dnnCheckbox' ", true)
         </div>
         <div class="dnnFormItem">
-            @DnnLabel("lbldetailtab", "ProductViewSettings.lbldetailtab")@TabSelectList(info, "genxml/dropdownlist/ddldetailtabid", "", true) @Model.GetSetting("ddldetailtabid")
+            @DnnLabel("lbldetailtab", "ProductViewSettings.lbldetailtab")@TabSelectListOnTabId(info, "genxml/dropdownlist/ddldetailtabid", "", true) @info.GetXmlProperty("genxml/dropdownlist/ddldetailtabid")
         </div>
         <div class="dnnFormItem detailmoduleref">
             @DnnLabel("lbldetailmoduleref", "ProductViewSettings.lbldetailmoduleref")@TextBox(info, "genxml/textbox/detailmodulekey", "width='300'")
         </div>
         <div class="dnnFormItem">
-            @DnnLabel("lblreturntab", "ProductViewSettings.lblreturntab")@TabSelectList(info, "genxml/dropdownlist/ddllisttabid", "", true) @Model.GetSetting("ddllisttabid")
+            @DnnLabel("lblreturntab", "ProductViewSettings.lblreturntab")@TabSelectListOnTabId(info, "genxml/dropdownlist/ddllisttabid", "", true) @info.GetXmlProperty("genxml/dropdownlist/ddllisttabid")
         </div>
         <div class="dnnFormItem">
             @DnnLabel("lbldefaultlistmodule", "ProductViewSettings.lbldefaultlistmodule")@CheckBox(info, "genxml/checkbox/chkdefaultlistmodule", "", " class='dnnCheckbox' ")

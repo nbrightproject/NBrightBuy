@@ -381,7 +381,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (breadCrumb.StartsWith(separator)) breadCrumb = breadCrumb.Substring(separator.Length);
-                if (aslist) breadCrumb = "<ul class='crumbs'>" + breadCrumb + "</ul>";
+                if (aslist && breadCrumb != "") breadCrumb = "<ul class='crumbs'>" + breadCrumb + "</ul>";
                 return breadCrumb;
             }
             return "";
