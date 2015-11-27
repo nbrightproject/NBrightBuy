@@ -47,9 +47,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void Save(Boolean debugMode = false)
         {
+            Save(debugMode,false);
+        }
+
+        /// <summary>
+        /// Save cart
+        /// </summary>
+        /// <param name="debugMode"></param>
+        /// <param name="removeZeroQtyItems">Sometimes with Stock activated we don't want to remove zero items from basket until final process on checkout</param>
+        public void Save(Boolean debugMode, Boolean removeZeroQtyItems)
+        {
             //save cart so any added items are included
             _cartId = base.SavePurchaseData();
-            ValidateCart();
+            ValidateCart(removeZeroQtyItems);
             //save cart after validation so calculated costs are saved.
             _cartId = base.SavePurchaseData();
             if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_currentcart.xml");
@@ -225,7 +235,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "cart validation and calculation"
 
-        public void ValidateCart()
+        public void ValidateCart(Boolean removeZeroQtyItems = false)
         {
             PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartBefore, PurchaseInfo);
 
@@ -245,7 +255,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 // check product still exists and remove if deleted, altered or disabled.
 
-                var cartItem = ValidateCartItem(PortalId, UserId, info);
+                var cartItem = ValidateCartItem(PortalId, UserId, info, removeZeroQtyItems);
                 if (cartItem != null)
                 {
                     strXml += cartItem.XMLData;
@@ -391,13 +401,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SavePurchaseData();
         }
 
-        private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo)
+        private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo,Boolean removeZeroQtyItems = false)
         {
             cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemBefore, cartItemInfo);
 
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+
+            if (removeZeroQtyItems && qty == 0) return null; // Remove zero qty item
 
             var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
@@ -570,7 +582,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (cost < 0) cost = 0;
             if (dealercost < 0) dealercost = 0;
-            //always return nortmal price for non-registered users
+            //always return normal price for non-registered users
             if (UserController.GetCurrentUserInfo().UserID == -1) return cost;
 
             var userInfo = UserController.GetUserById(portalId, userId);

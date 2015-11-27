@@ -367,7 +367,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         _cartInfo.Lang = Utils.GetCurrentCulture();  // set lang so we can send emails in same language the order was made in.
                         UpdateCartAddresses();
                         UpdateCartInfo();
-                        SaveCart();
+                        SaveCart(true); // remove zero qty items on order, so they don;t appear in BO or on order.
                         _addressData.AddAddress(rpAddrS);
                         _addressData.AddAddress(rpAddrB);
                         var paytabid = ModSettings.Get("paymenttab");
@@ -396,7 +396,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Methods"
 
-        private void SaveCart()
+        private void SaveCart(Boolean removeZeroQtyItems = false)
         {
             if (_cartInfo.EditMode == "E") // is order being edited, so return to order status after edit.
             {
@@ -420,7 +420,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var pickuppointaddr = GenXmlFunctions.GetField(rpExtra, "pickuppointaddr");
                 _cartInfo.PurchaseInfo.SetXmlProperty("genxml/pickuppointaddr", pickuppointaddr);
 
-                _cartInfo.Save(DebugMode);
+                _cartInfo.Save(DebugMode, removeZeroQtyItems);
             }
             if (UserId == -1)
             {
