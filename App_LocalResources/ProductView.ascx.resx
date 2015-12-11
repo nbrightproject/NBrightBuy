@@ -330,4 +330,10 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="orderby.Text" xml:space="preserve">
     <value>Default,From Price, From Price Desc,Product Ref,Product Name</value>
   </data>
+  <data name="favorites.Text" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="searchresults.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
 </root>

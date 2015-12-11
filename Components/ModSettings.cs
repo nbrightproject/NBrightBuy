@@ -72,8 +72,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (!_settingsDic.ContainsKey("tabid")) _settingsDic.Add("tabid", PortalSettings.Current.ActiveTab.TabID.ToString(""));
 
-                // add stores ettings (we keep store settings at module level, because these can be overwritten by the module)
-                foreach (var item in StoreSettings.Current.Settings())
+                // add store settings (we keep store settings at module level, because these can be overwritten by the module)
+                var storesettings = StoreSettings.Current.Settings(); // assign to var, so it doesn;t causes error if site settings change during loop.
+                foreach (var item in storesettings)
                 {
                     if (_settingsDic.ContainsKey(item.Key))
                         _settingsDic[item.Key] = item.Value;

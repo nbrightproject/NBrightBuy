@@ -41,11 +41,13 @@
         <div id="settingsdata"></div>
 
     </fieldset>
-
-
+    
 
     <h2 class="dnnFormSectionHead"><a href="">@ResourceKey("ProductViewSettings.lbladvancedsettings")</a></h2>
     <fieldset>
+        <div class="dnnFormItem">
+            @DnnLabel("lbldisplaytype", "ProductViewSettings.displaytype")@RadioButtonList(info, "genxml/radiobuttonlist/displaytype","0,1,2","Normal,Search,Selected list","0")
+        </div>
         <div class="dnnFormItem">
             @DnnLabel("lbllistbody", "ProductViewSettings.lbllistbody")@TextBox(info, "genxml/textbox/txtdisplaybody", "width='300'", "list.cshtml")
         </div>
@@ -83,22 +85,6 @@
         </div>
         <div class="dnnFormItem">
             @DnnLabel("lblreturnlimit", "ProductViewSettings.lblreturnlimit")@TextBox(info, "genxml/textbox/returnlimit", "width='75'", "0")
-        </div>
-    </fieldset>
-
-    <h2 class="dnnFormSectionHead"><a href="">Legacy</a></h2>
-    <fieldset>
-        <div class="dnnFormItem">
-            @DnnLabel("lbllistheader", "ProductViewSettings.lbllistheader")@TextBox(info, "genxml/textbox/txtdisplayheader", "width='300'", "listheader.html")
-        </div>
-        <div class="dnnFormItem">
-            @DnnLabel("lbllistfooter", "ProductViewSettings.lbllistfooter")@TextBox(info, "genxml/textbox/txtdisplayfooter", "width='300'", "listfooter.html")
-        </div>
-        <div class="dnnFormItem">
-            @DnnLabel("lbldetailheader", "ProductViewSettings.lbldetailheader")@TextBox(info, "genxml/textbox/txtdisplayentryheader", "width='300'", "detailheader.html")
-        </div>
-        <div class="dnnFormItem">
-            @DnnLabel("lbldetailfooter", "ProductViewSettings.lbldetailfooter")@TextBox(info, "genxml/textbox/txtdisplayentryfooter", "width='300'", "detailfooter.html")
         </div>
     </fieldset>
 
