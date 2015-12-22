@@ -59,7 +59,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 
 		// return the provider
-        public static new FilterInterface Instance(String ctrlkey)
+        public static FilterInterface Instance(String ctrlkey)
 		{
             if (_providerList.ContainsKey(ctrlkey)) return _providerList[ctrlkey];
             if (_providerList.Count > 0) return _providerList.Values.First();

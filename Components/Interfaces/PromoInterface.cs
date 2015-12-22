@@ -46,7 +46,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
         }
 
 		// return the provider
-        public static new PromoInterface Instance()
+        public static PromoInterface Instance()
 		{
             return objProvider;
 		}

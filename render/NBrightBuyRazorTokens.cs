@@ -399,7 +399,6 @@ namespace NBrightBuy.render
             var upd = getUpdateAttr(xpath, attributes);
             var id = xpath.Split('/').Last();
             strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
-            var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in rtnList)
@@ -617,7 +616,6 @@ namespace NBrightBuy.render
             var upd = getUpdateAttr(xpath, attributes);
             var id = xpath.Split('/').Last();
             strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
-            var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in rtnList)

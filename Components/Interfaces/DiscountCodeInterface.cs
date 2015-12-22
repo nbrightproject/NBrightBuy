@@ -62,7 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
 
 		// return the provider
-        public static new DiscountCodeInterface Instance(String ctrlkey = "")
+        public static DiscountCodeInterface Instance(String ctrlkey = "")
 		{
             if (ProviderList.ContainsKey(ctrlkey)) return ProviderList[ctrlkey];
             if (ProviderList.Count > 0) return ProviderList.Values.First();

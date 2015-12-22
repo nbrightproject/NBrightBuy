@@ -1086,7 +1086,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (newInfo.GetXmlProperty("genxml/itemcode") == itemCode)
                     {
                         return lp;
-                        break;
                     }
                     lp += 1;
                 }

@@ -207,7 +207,7 @@
   <data name="txtItems.Text" xml:space="preserve">
     <value>Item/s</value>
   </data>
-  <data name="txtitems.Text" xml:space="preserve">
+  <data name="txtitemslower.Text" xml:space="preserve">
     <value>item/s</value>
   </data>
   <data name="cartempty.Text" xml:space="preserve">

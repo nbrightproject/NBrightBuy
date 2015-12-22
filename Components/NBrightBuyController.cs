@@ -8,9 +8,11 @@ using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search;
+using DotNetNuke.Services.Search.Entities;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -19,8 +21,8 @@ using NBrightDNN;
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
 
-    public class NBrightBuyController : DataCtrlInterfaceNBrightBuy, IPortable, ISearchable
-	{
+    public class NBrightBuyController : DataCtrlInterfaceNBrightBuy, IPortable
+    {
 
         #region "NBrightBuy override DB Public Methods"
 
@@ -639,28 +641,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 		}
 
-		#endregion
-
-
-		#region ISearchable Members
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		///   GetSearchItems implements the ISearchable Interface
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <param name = "ModInfo">The ModuleInfo for the module to be Indexed</param>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo)
-		{
-			var searchItemCollection = new SearchItemInfoCollection();
-			return searchItemCollection;
-		}
-
-		#endregion
+        #endregion
 
 
 		#endregion
