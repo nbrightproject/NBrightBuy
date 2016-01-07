@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addressbook.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Rubrica</value>
+  </data>
+  <data name="admin.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Admin</value>
+  </data>
+  <data name="admin_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="assembly.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Assembly</value>
+  </data>
+  <data name="bomenuattributes.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">class="nav main-menu"</value>
+  </data>
+  <data name="bosubmenuattributes.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">class="dropdown-menu"</value>
+  </data>
+  <data name="catalog.Text" lastModified="2015-11-11 08:53:50">
+    <value xml:space="preserve">Catalogo</value>
+  </data>
+  <data name="catalog_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="categories.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Categorie</value>
+  </data>
+  <data name="clients.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Clienti</value>
+  </data>
+  <data name="cmdDownIcon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i  title="Muovi Giù" class="fa fa-arrow-circle-down fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdEdit.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Modifica</value>
+  </data>
+  <data name="cmdUpIcon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i  title="Move Su" class="fa fa-arrow-circle-up fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdView.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Vedi</value>
+  </data>
+  <data name="dashboard.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Cruscotto</value>
+  </data>
+  <data name="dashboard_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="dashsummary.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Panoramica</value>
+  </data>
+  <data name="EmailOrder.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Messaggi di posta elettronica</value>
+  </data>
+  <data name="exit.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Uscita</value>
+  </data>
+  <data name="exit_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-power-off fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="export.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Esportare</value>
+  </data>
+  <data name="import.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Importare</value>
+  </data>
+  <data name="lblctrl.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Plugin Ref per identificare il plugin del sistema, deve essere unico e utilizzato per Referece la voce del file resx per il nome del menu.</value>
+  </data>
+  <data name="lblctrl.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Plugin Ref</value>
+  </data>
+  <data name="lbldescription.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Attivare la ricerca di testo sulla descrizione prodotto</value>
+  </data>
+  <data name="lbldescription.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Ricerca testo nella descrizione</value>
+  </data>
+  <data name="lblgroup.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Gruppo</value>
+  </data>
+  <data name="lblhelp.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Descrizione del pubblico per il menu tooltip.</value>
+  </data>
+  <data name="lblhelp.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Aiuto</value>
+  </data>
+  <data name="lblhidden.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Non visualizzare sul menu.</value>
+  </data>
+  <data name="lblhidden.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Nascosto</value>
+  </data>
+  <data name="lblicon.Hep" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Icona per visualizzare il menu.</value>
+  </data>
+  <data name="lblicon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Icona html</value>
+  </data>
+  <data name="lblname.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Nome descrittivo per il Plugin. (usato come nome predefinito sul menu se nessuna voce resx in plugins.ascx.resx è definita)</value>
+  </data>
+  <data name="lblname.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Nome Default</value>
+  </data>
+  <data name="lblpath.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Percorso relativo al controllo ascx del plugin.</value>
+  </data>
+  <data name="lblpath.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Percorso di controllo</value>
+  </data>
+  <data name="lblprovidertype.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Tipo di provider</value>
+  </data>
+  <data name="lblroles.Help" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Elenco CSV di ruoli che sono in grado di visualizzare questo controllo</value>
+  </data>
+  <data name="lblroles.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Ruoli di sicurezza</value>
+  </data>
+  <data name="namespaceclass.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Namespace e Classe</value>
+  </data>
+  <data name="orders.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Ordini</value>
+  </data>
+  <data name="plugins.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Plugin</value>
+  </data>
+  <data name="products.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Prodotti</value>
+  </data>
+  <data name="promotions.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Promozioni</value>
+  </data>
+  <data name="promotions_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-tags fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="properties.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Proprietà</value>
+  </data>
+  <data name="propertiesvalue.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Proprietà</value>
+  </data>
+  <data name="propertygroups.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Gruppi di proprietà</value>
+  </data>
+  <data name="providertype.data" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Solo UI;Spedizione;Tassa;Promozioni;Schedulazione;Eventi;Pagamenti;CodiceSconto;Filtro;TemplateExt;Altro</value>
+  </data>
+  <data name="providertype.datavalue" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">01;02;03;04;05;06;07;08;09;10;99</value>
+  </data>
+  <data name="sales.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Vendite</value>
+  </data>
+  <data name="sales_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-bar-chart-o fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="settings.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Impostazioni</value>
+  </data>
+  <data name="shipping.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Spedizione</value>
+  </data>
+  <data name="shipping_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-truck fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="tax.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Tassa</value>
+  </data>
+  <data name="templatepath.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Percorso relativo File modello</value>
+  </data>
+  <data name="ToggleDropdown.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Stampa</value>
+  </data>
+  <data name="tools.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Strumenti</value>
+  </data>
+  <data name="utilities.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">Utilità</value>
+  </data>
+  <data name="utilities_icon.Text" lastModified="2015-11-12 08:49:37">
+    <value xml:space="preserve">&lt;i class="fa fa-wrench fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+</root>

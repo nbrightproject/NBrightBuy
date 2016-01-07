@@ -25,22 +25,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         private List<NBrightInfo> _pluginList;
         private NBrightCore.TemplateEngine.TemplateGetter _templCtrl;
-        private Boolean portallevel;
-        private StoreSettings storeSettings;
+        private Boolean _portallevel;
+        private StoreSettings _storeSettings;
  
         public PluginData(int portalId, Boolean systemlevel = false)
         {
             _templCtrl = NBrightBuyUtils.GetTemplateGetter(portalId,"config");
 
-            portallevel = !systemlevel;
+            _portallevel = !systemlevel;
 
             if (StoreSettings.Current == null)
             {
-                storeSettings = new StoreSettings(portalId);   
+                _storeSettings = new StoreSettings(portalId);   
             }
             else
             {
-                storeSettings = StoreSettings.Current;
+                _storeSettings = StoreSettings.Current;
             }
 
             var cachekey = "pluginlist" + portalId + "*" + systemlevel;
@@ -53,20 +53,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (_pluginList.Count == 0) DotNetNuke.Common.Utilities.DataCache.ClearCache();
             }
 
-            if (pList != null)
+            if (pList != null && !_storeSettings.DebugMode)
             {
-                // if we've created an empty cache record, clear cache data
-                _pluginList = (List<NBrightInfo>)pList;
-                if (_pluginList.Count == 0) DotNetNuke.Common.Utilities.DataCache.ClearCache();
-            }
-
-            if (pList != null && !storeSettings.DebugMode)
-            {                
                 _pluginList = (List<NBrightInfo>)pList;
             }
             else
             {
-                var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, storeSettings.Settings());
+                var menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, _portallevel, _storeSettings.Settings());
                 if (menuplugin != "")
                 {
                     var info = new NBrightInfo();
@@ -85,7 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Themes/config/default");
                         xmlDoc.Save(pluginfoldermappath + "\\menuplugin.xml");
                         //load new config
-                        menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, portallevel, storeSettings.Settings());
+                        menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, _portallevel, _storeSettings.Settings());
                         if (menuplugin != "")
                         {
                             var Info = new NBrightInfo();
@@ -106,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public Boolean UpdateSystemPlugins()
         {
             var result = false;
-            if (!portallevel) // only want to edit system level file
+            if (!_portallevel) // only want to edit system level file
             {
                 // remove delete plugins.
                 var updated = false;
@@ -140,7 +133,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (updated)
                 {
-                    Save();
+                    Save(false); // only update system level
                     result = true;
                 }
 
@@ -171,7 +164,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                     if (updated)
                     {
-                        Save();
+                        Save(false); // only update system level
                         result = true;
                     }
                 }
@@ -306,7 +299,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // get the systemlevel, incase this is an update and we have new system level provider that needs to be added
-            var menupluginsys = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, false, storeSettings.Settings());
+            var menupluginsys = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, false, _storeSettings.Settings());
             var infosys = new NBrightInfo();
             infosys.XMLData = menupluginsys;
             if (infosys.XMLDoc != null)

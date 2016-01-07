@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addtobasket.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Acquistare</value>
+  </data>
+  <data name="addtobasketicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Aggiungi al Carrello" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="addtobasketicon-lg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Aggiungi al Carrello" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="choosemodel.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Seleziona modello</value>
+  </data>
+  <data name="code.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Codice</value>
+  </data>
+  <data name="convertor.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Convertitore di valuta</value>
+  </data>
+  <data name="currencyconvertormsg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;p&gt; Se non è già visualizzato, selezionare la valuta di destinazione e fare clic sul pulsante per la conversione. Il risultato viene calcolato sulla base del cambio di mercato degli attuali tassi. &lt;/p&gt;&lt;p&gt; Le banche e le altre istituzioni si fanno pagare le tasse per la conversione e la gestione di valute estere e quindi il prezzo finale sarà probabilmente una piccola percentuale superiore al risultato mostrato qui. Utilizzare questo solo come guida. &lt;/p&gt;&lt;p style="font-size:11px;font-style:italic"&gt;Questo è un servizio fornito da foreignexchangeresource.com&lt;/p&gt;</value>
+  </data>
+  <data name="dealer.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Commerciante</value>
+  </data>
+  <data name="dealerprice.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Prezzo Commerciante</value>
+  </data>
+  <data name="debugmode.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Modalità di debug è on - Caching è spento</value>
+  </data>
+  <data name="description.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Descrizione</value>
+  </data>
+  <data name="documentation.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Download</value>
+  </data>
+  <data name="download.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Scarica questo file &lt;i class='fa fa-download'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="downloadableproduct.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Questo è un prodotto scaricabile. Recuperarlo da questa pagina dopo l'acquisto, o attraverso un link fornito nella notifica di acquisto.</value>
+  </data>
+  <data name="edit.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Modifica</value>
+  </data>
+  <data name="editicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;i title="Edita Prodotto" class="fa fa-edit"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="emailmsg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Si prega di informare il prezzo di questo prodotto a</value>
+  </data>
+  <data name="emailprice.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">E-mail per prezzo</value>
+  </data>
+  <data name="filebullets.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;i class='fa-li fa fa-file-o'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="from.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Da parte di</value>
+  </data>
+  <data name="fromlower.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">da parte di</value>
+  </data>
+  <data name="holidaymsg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Chiuso per ferie</value>
+  </data>
+  <data name="instock.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Sì</value>
+  </data>
+  <data name="model.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Modello</value>
+  </data>
+  <data name="models.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Modelli</value>
+  </data>
+  <data name="noimage.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;i class="fa fa-camera"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="normally.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Vendita al dettaglio normale</value>
+  </data>
+  <data name="onsale.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Offerta</value>
+  </data>
+  <data name="onsaleflag.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">In Offerta!</value>
+  </data>
+  <data name="outofstock.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Esaurito</value>
+  </data>
+  <data name="outofstockflag.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Esaurito</value>
+  </data>
+  <data name="price.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Prezzo</value>
+  </data>
+  <data name="pricerequest.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Prezzo richiesto</value>
+  </data>
+  <data name="productunavailable.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Il prodotto è attualmente non disponibile.</value>
+  </data>
+  <data name="purchasabledocument.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Scarica qui dopo l'acquisto &lt;i class='fa fa-exclamation-circle'&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="related.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Prodotti correlati</value>
+  </data>
+  <data name="remaining.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Rimanente</value>
+  </data>
+  <data name="reserved.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Riservato</value>
+  </data>
+  <data name="retail.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Al dettaglio</value>
+  </data>
+  <data name="return.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Ritorno</value>
+  </data>
+  <data name="returnicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Ritorna alla lista" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-reply fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="saleprice.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Prezzo di vendita</value>
+  </data>
+  <data name="share.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Share</value>
+  </data>
+  <data name="stock.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Magazzino</value>
+  </data>
+  <data name="view.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Vedi</value>
+  </data>
+  <data name="viewicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Informazioni" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="viewicon-lg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Vedi Dettagli" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistadd.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Aggiungi ai preferiti</value>
+  </data>
+  <data name="wishlistaddicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Aggiungi ai Favoriti" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistaddicon-lg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Aggiungi ai Favoriti" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistremove.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">Rimuovere dai preferiti</value>
+  </data>
+  <data name="wishlistremoveicon.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Rimuovi dai Preferiti" class="fa-stack"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistremoveicon-lg.Text" lastModified="2015-11-13 09:47:50">
+    <value xml:space="preserve">&lt;span title="Rimuovi dai Preferiti" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+</root>
