@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="NBS_ProductView" type="Module" version="3.1.10">
+		<package name="NBS_ProductView" type="Module" version="3.1.11">
 			<friendlyName>NBS_ProductView</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Front office product list and detail. (supports DNN7.2+)
