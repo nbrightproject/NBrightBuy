@@ -1,9 +1,0 @@
-﻿<div class="minicart">
-
-[<tag type="if" function="iscartempty" display="{OFF}" />]
-<a href="/tabid/[Settings:carttab]">[<tag type="valueof" xpath="genxml/totalqty" />] [<tag type='valueof' resourcekey='CartView.txtItems' />]: [<tag type="currencyof" xpath="genxml/appliedtotal" />]</a>
-[<tag type="endif"  />]
-
-[<tag type="if" function="iscartempty" display="{ON}" />]
-[<tag type='valueof' resourcekey='General.emptyminicart' />]
-[<tag type="endif" />]

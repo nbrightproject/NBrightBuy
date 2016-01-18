@@ -241,7 +241,7 @@ $(document).ready(function() {
 
     $('.addtobasket').click(function () {
         nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // Reload Cart
-        $('.addedtobasket').delay(500).fadeIn('fast');
+        $('.addedtobasket').delay(100).fadeIn('fast');
     });
 
     $('#datareturn').change(function () {

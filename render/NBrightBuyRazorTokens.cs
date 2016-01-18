@@ -153,7 +153,7 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString ProductOption(ProductData productdata, int index, String attributes = "")
+        public IEncodedString ProductOption(ProductData productdata, int index, String attributes = "", Boolean required = false)
         {
             var strOut = "";
 
@@ -190,7 +190,9 @@ namespace NBrightBuy.render
                 if (optvalList.Count == 0)
                 {
                     // textbox
-                    strOut += "<input id='optiontxt" + (index + 1) + "' update='save' type='text' />";
+                    var requiredattr = "";
+                    if (required) requiredattr = " required='' ";
+                    strOut += "<input id='optiontxt" + (index + 1) + "' " + requiredattr + " update='save' type='text' />";
                 }
                 strOut += "<input id='optionid" + (index + 1) + "' update='save' type='hidden' value='" + optid + "' />";
                 strOut += "</span>";

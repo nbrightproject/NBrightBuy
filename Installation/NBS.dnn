@@ -771,7 +771,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 								<moduleControls>
 									<moduleControl>
 										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartView.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorView.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle />
 										<controlType>View</controlType>
@@ -781,7 +781,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									</moduleControl>
 									<moduleControl>
 										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartViewSettings.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorViewSettings.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle>Settings</controlTitle>
 										<controlType>Edit</controlType>

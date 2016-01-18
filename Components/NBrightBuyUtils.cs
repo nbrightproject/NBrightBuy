@@ -1892,6 +1892,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #endregion
 
+        #region "Razor functions"
+
+        public static String RenderCart(String theme, String carttemplate)
+        {
+            var razorTempl = "";
+            if (carttemplate != "")
+            {
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            }
+            return razorTempl;
+        }
+
+
+        #endregion
+
+
     }
 }
 

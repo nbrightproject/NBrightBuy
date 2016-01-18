@@ -289,6 +289,20 @@
     <Compile Include="PrintView.aspx.designer.cs">
       <DependentUpon>PrintView.aspx.cs</DependentUpon>
     </Compile>
+    <Compile Include="CartRazorViewSettings.ascx.cs">
+      <DependentUpon>CartRazorViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartRazorViewSettings.ascx.designer.cs">
+      <DependentUpon>CartRazorViewSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CartRazorView.ascx.cs">
+      <DependentUpon>CartRazorView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartRazorView.ascx.designer.cs">
+      <DependentUpon>CartRazorView.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductRazorViewSettings.ascx.cs">
       <DependentUpon>ProductRazorViewSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -440,6 +454,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="PrintView.aspx" />
+    <Content Include="CartRazorViewSettings.ascx" />
+    <Content Include="CartRazorView.ascx" />
     <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />
@@ -461,13 +477,9 @@
     <None Include="Installation\03.02.00.SqlDataProvider" />
     <None Include="Plugins\menu.config" />
     <None Include="Themes\Classic\Default\list.cshtml" />
+    <None Include="Themes\Classic\Default\NBS_MiniCart.cshtml" />
     <None Include="Themes\Classic\Default\pageheaderdetail.cshtml" />
-    <Content Include="Themes\Classic\Default\minicartbody.html" />
-    <Content Include="Themes\Classic\Default\minicartfooter.html" />
-    <Content Include="Themes\Classic\Default\minicartheader.html" />
-    <Content Include="Themes\Classic\Default\pageheaderNBS_MiniCart.html" />
-    <Content Include="Themes\Classic\Default\pageheaderNBS_ProductDisplay.html" />
-    <Content Include="Themes\Classic\Default\pageheaderNBS_ProductView.html" />
+    <None Include="Themes\Classic\Default\pageheaderNBS_MiniCart.cshtml" />
     <None Include="Themes\Classic\Default\productviewsettings.cshtml" />
     <Content Include="Themes\Classic\Default\simplesearch.html" />
     <Content Include="Themes\Classic\img\addthis.png" />
@@ -1449,9 +1461,6 @@
     <Content Include="Themes\Cygnus\Default\list.html" />
     <Content Include="Themes\Cygnus\Default\listfooter.html" />
     <Content Include="Themes\Cygnus\Default\listheader.html" />
-    <Content Include="Themes\Cygnus\Default\minicartbody.html" />
-    <Content Include="Themes\Cygnus\Default\minicartfooter.html" />
-    <Content Include="Themes\Cygnus\Default\minicartheader.html" />
     <Content Include="Themes\Cygnus\Default\modellist.html" />
     <Content Include="Themes\Cygnus\Default\orderadminbody.html" />
     <Content Include="Themes\Cygnus\Default\orderadmindetail.html" />
@@ -1609,7 +1618,6 @@
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />
-    <None Include="Themes\Classic\Default\minicart.cshtml" />
     <None Include="Themes\Classic\Default\pageheaderlist.cshtml" />
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.eot" />
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.ttf" />
@@ -1639,12 +1647,14 @@
     <None Include="Themes\config\default\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <None Include="Themes\config\default\plugins\xcharts\LICENSE" />
     <None Include="Themes\config\default\plugins\xcharts\README.md" />
+    <None Include="Themes\config\default\NBS_MiniCartsettings.cshtml" />
     <None Include="Themes\config\default\productviewsettings.cshtml" />
     <None Include="Themes\config\default\settingspageheader.cshtml" />
     <None Include="Themes\config\img\flags\16\Thumbs.db" />
     <None Include="Themes\config\img\flags\24\Thumbs.db" />
     <None Include="Themes\config\img\flags\32\Thumbs.db" />
     <None Include="Themes\config\js\nbbqtycookie.readme" />
+    <None Include="Themes\Cygnus\Default\NBS_MiniCart.cshtml" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
