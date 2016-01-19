@@ -191,7 +191,7 @@ namespace NBrightBuy.render
                 {
                     // textbox
                     var requiredattr = "";
-                    if (required) requiredattr = " required='' ";
+                    if (required) requiredattr = " required='' name='optiontxt" + (index + 1) + "'"; // name also needs to be added for JQuery Validation to work correctly
                     strOut += "<input id='optiontxt" + (index + 1) + "' " + requiredattr + " update='save' type='text' />";
                 }
                 strOut += "<input id='optionid" + (index + 1) + "' update='save' type='hidden' value='" + optid + "' />";

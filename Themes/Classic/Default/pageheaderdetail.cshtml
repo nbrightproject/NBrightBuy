@@ -12,6 +12,21 @@
     var info = (NBrightInfo) product.Info;
 }
 
+<!-- Get messages for JQuery validation -->
+@{
+    var langcode = Model.GetUrlParam("language");
+    if (langcode != "")
+    {
+        langcode = langcode.Substring(0, 2);
+    }
+
+}
+@if (langcode != "" && langcode != "en")
+{
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_@(langcode).js"></script>
+}
+
+
 <!-- This template is injected into the details page head section -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 
@@ -235,13 +250,19 @@ var $container = $('.productlist').masonry({
 });
 </script>
 
+
 <script type="text/javascript">
 
 $(document).ready(function() {
 
+    var form = $("#Form");
+    form.validate();
+
     $('.addtobasket').click(function () {
-        nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // Reload Cart
-        $('.addedtobasket').delay(100).fadeIn('fast');
+        if (form.valid()) {
+            nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // Reload Cart
+            $('.addedtobasket').delay(100).fadeIn('fast');
+        }
     });
 
     $('#datareturn').change(function () {

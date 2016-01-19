@@ -1053,4 +1053,7 @@
   <data name="pagesize.Text" xml:space="preserve">
     <value>Page Size</value>
   </data>
+  <data name="logoff.Text" xml:space="preserve">
+    <value>Log Off</value>
+  </data>
 </root>

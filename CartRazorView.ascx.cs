@@ -38,28 +38,7 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class CartRazorView : NBrightBuyFrontOfficeBase
     {
 
-        private String _eid = "";
-        private String _ename = "";
-        private String _catid = "";
-        private String _catname = "";
-        private String _modkey = "";
-        private String _pagemid = "";
-        private String _pagenum = "1";
-        private String _pagesize = "";
-        private String _strOrder = "";
-        private String _templD = "";
-        private Boolean _displayentrypage = false;
-        private String _orderbyindex = "";
-        private NavigationData _navigationdata;
-        private const String EntityTypeCode = "PRD";
-        private const String EntityTypeCodeLang = "PRDLANG";
-        private String _itemListName = "";
-        private String _print = "";
-        private String _printtemplate = "";
-        private String _guidkey = "";
-
         #region Event Handlers
-
 
         override protected void OnInit(EventArgs e)
         {           
@@ -70,6 +49,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var lit = new Literal();
                 lit.Text = "NO MODULE SETTINGS";
                 phData.Controls.Add(lit);
+                return;
             }
 
         }
@@ -91,8 +71,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 var l = new Literal();
                 l.Text = exc.ToString();
                 phData.Controls.Add(l);
-                // remove any nav data which might store SQL in error.
-                _navigationdata.Delete();
             }
         }
 
@@ -101,12 +79,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var strOut = "";
             var template = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
-            var theme = ModSettings.Get("themefolder");
 
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + template, ThemeFolder, ModSettings.Settings());
 
-            strOut = NBrightBuyUtils.RenderCart(theme, template);
+            strOut = NBrightBuyUtils.RenderCart(ThemeFolder, template);
 
             var lit = new Literal();
             lit.Text = strOut;
