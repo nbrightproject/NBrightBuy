@@ -1,2 +1,34 @@
-<!-- Classic Cart CSS -->
-<link href="/DesktopModules/NBright/NBrightBuy/Themes/Classic/css/NBS_Cart.css" rel="stylesheet">
+<!-- Wiseopro CSS -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/Wiseopro/css/NBS_Cart.css" rel="stylesheet">
+
+<!-- fields required to send required ajax cart to server -->
+<!-- This is in this template so it works for ALL products list/detail modules on the page.-->
+<span class="minicartdata" style="display:  none;">
+    <input id="carttemplate" type="hidden" value="NBS_MiniCart.cshtml">
+    <input id="carttheme" type="hidden" value="Wiseopro">
+</span>
+<!-- return area for ajax data -->
+<div id="minicartdatareturn" style="display:none;"></div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    var form = $("#Form");
+    form.validate();
+
+    $('.addtobasket').click(function () {
+        if (form.valid()) {
+            nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+            $('.addedtobasket').delay(10).fadeIn('fast');
+        }
+    });
+
+    $('#minicartdatareturn').change(function () {
+        nbxget('rendercart', '.minicartdata', '.cartpane'); // Reload Cart
+        $('.addedtobasket').delay(1000).fadeOut('fast');
+    });
+
+});
+
+</script>

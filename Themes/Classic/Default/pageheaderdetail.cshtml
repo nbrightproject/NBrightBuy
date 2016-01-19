@@ -244,32 +244,9 @@ var $container = $('.productlist').masonry({
   itemSelector: '.product',
   gutter: @Model.GetSetting("classicitemgutter"), // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
   isOriginLeft: true, // Build from right to left if false
-  isOriginTop: true, // Build from bottom to top if false
+  isOriginTop: true // Build from bottom to top if false
 });
 
 });
 </script>
 
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-
-    var form = $("#Form");
-    form.validate();
-
-    $('.addtobasket').click(function () {
-        if (form.valid()) {
-            nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#datareturn'); // Reload Cart
-            $('.addedtobasket').delay(100).fadeIn('fast');
-        }
-    });
-
-    $('#datareturn').change(function () {
-        nbxget('rendercart', '.minicartdata', '.cartpane'); // Reload Cart
-        $('.addedtobasket').delay(1000).fadeOut('fast');
-    });
-
-});
-
-</script>
