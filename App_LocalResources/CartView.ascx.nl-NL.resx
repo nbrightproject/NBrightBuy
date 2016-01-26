@@ -117,8 +117,8 @@
   <data name="Totaltopay.Text">
     <value xml:space="preserve">Totaal te betalen</value>
   </data>
-  <data name="txtitems.Text">
-    <value xml:space="preserve">Artikel(en)</value>
+  <data name="txtitemslower.Text">
+    <value xml:space="preserve">artikel(en)</value>
   </data>
   <data name="txtItems.Text">
     <value xml:space="preserve">Artikel(en)</value>

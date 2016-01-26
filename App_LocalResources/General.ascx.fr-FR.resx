@@ -229,7 +229,7 @@
     <value>Effacer données</value>
   </data>
   <data name="cmdDelete.confirm" xml:space="preserve">
-    <value>Supprimer l'entrée ?</value>
+    <value>Confirmer la suppression ?</value>
   </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Supprimer</value>
@@ -238,7 +238,7 @@
     <value>Supprimer</value>
   </data>
   <data name="cmdDeleteButton.confirm" xml:space="preserve">
-    <value>Supprimer l'entrée ?</value>
+    <value>Confirmer la suppression ?</value>
   </data>
   <data name="cmdDeleteButton.Text" xml:space="preserve">
     <value>&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
@@ -253,19 +253,19 @@
     <value>Supprimer le fichier</value>
   </data>
   <data name="cmdDeleteIcon.confirm" xml:space="preserve">
-    <value>Supprimer l'entrée ?</value>
+    <value>Supprimer entrée ?</value>
   </data>
   <data name="cmdDeleteIcon.Text" xml:space="preserve">
     <value>&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDeleteLang.confirm" xml:space="preserve">
-    <value>Supprimer l'entrée multilingue ?</value>
+    <value>Confirmer la suppression ?</value>
   </data>
   <data name="cmdDeleteLang.Text" xml:space="preserve">
-    <value>Supprimer l'entrée multilingue</value>
+    <value>Confirmer la suppression ?</value>
   </data>
   <data name="cmdDeleteLang.ToolTip" xml:space="preserve">
-    <value>Supprimer l'entrée multilingue</value>
+    <value>Confirmer la suppression ?</value>
   </data>
   <data name="cmdDownloadButton.Text" xml:space="preserve">
     <value>&lt;i title="Télécharger" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Télécharger</value>

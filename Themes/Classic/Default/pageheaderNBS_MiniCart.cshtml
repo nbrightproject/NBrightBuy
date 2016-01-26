@@ -1,14 +1,33 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using NBrightCore.common
+
 <!-- Wiseopro CSS -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/Wiseopro/css/NBS_Cart.css" rel="stylesheet">
 
 <!-- fields required to send required ajax cart to server -->
 <!-- This is in this template so it works for ALL products list/detail modules on the page.-->
-<span class="minicartdata" style="display:  none;">
+<span class="minicartdata" style="display: none;">
     <input id="carttemplate" type="hidden" value="NBS_MiniCart.cshtml">
-    <input id="carttheme" type="hidden" value="Wiseopro">
+    <input id="carttheme" type="hidden" value="Classic">
+    <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
 </span>
+
 <!-- return area for ajax data -->
 <div id="minicartdatareturn" style="display:none;"></div>
+
+<!-- Get messages for JQuery validation -->
+@{
+    var langcode = Model.GetUrlParam("language");
+    if (langcode != "")
+    {
+        langcode = langcode.Substring(0, 2);
+    }
+
+}
+@if (langcode != "" && langcode != "en")
+{
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_@(langcode).js"></script>
+}
 
 <script type="text/javascript">
 
