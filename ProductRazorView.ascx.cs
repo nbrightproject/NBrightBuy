@@ -192,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     // Get meta data from template
 
-                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(),ModuleId.ToString());
 
                     #region "Order BY"
 
@@ -201,10 +201,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     ////////////////////////////////////////////
                     if (_orderbyindex != "") _navigationdata.OrderByIdx = _orderbyindex; // only update orderbyidx if we have a value passed (paging doesn't pass a orderbyidx)
                     if (_orderbyindex != "" && metaTokens.ContainsKey("orderby" + _orderbyindex)) _strOrder = " Order by " + metaTokens["orderby" + _orderbyindex];
-                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
                     if (String.IsNullOrEmpty(_strOrder) && metaTokens.ContainsKey("orderby")) _strOrder = " Order by " + metaTokens["orderby"];
+                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
-                    if (_strOrder.EndsWith("{bycategoryproduct}")) _strOrder = "{bycategoryproduct}"; // special processing for cat product sort.
+                    if (_strOrder.Contains("{bycategoryproduct}")) _strOrder = "{bycategoryproduct}"; // special processing for cat product sort.
 
                     #endregion
 

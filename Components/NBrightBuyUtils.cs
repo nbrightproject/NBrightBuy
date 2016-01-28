@@ -1312,15 +1312,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, String templateControlPath, String theme, String lang, Dictionary<String, String> settings, String moduleid = "")
         {
-
-            var cachekey = "preprocessmetadata" + theme + "." + razorTemplName;
+            var cachekey = "preprocessmetadata" + theme + "." + razorTemplName + moduleid;
 
             // get cached data if there
             var cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
             if (cachedlist != null) return cachedlist;
-
+            
             // build cache data from template.
             cachedlist = new Dictionary<String, String>();
             var razorTemplate = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
