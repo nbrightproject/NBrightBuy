@@ -732,14 +732,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
                                 foreach (var f in localfields.Where(f => f != ""))
                                 {
-                                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                                    if (datatype == "date")
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                                    else if (datatype == "double")
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                    else
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXmlLang += objInfoLang.XMLData;
 
                                 var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
                                 foreach (var f in fields.Where(f => f != ""))
                                 {
-                                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
+                                    if (datatype == "date")
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
+                                    else if (datatype == "double")
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                    else
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXml += objInfo.XMLData;
                             }
