@@ -74,12 +74,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var objCtrl = new NBrightBuyController();
 
-            var uInfo = new UserDataInfo(UserController.Instance.GetCurrentUserInfo().PortalID, intModuleId, objCtrl, ctlType);
+            var uInfo = new UserDataInfo(UserController.GetCurrentUserInfo().PortalID, intModuleId, objCtrl, ctlType);
             strOut = "ERROR!! - No Security rights for current user!";
             switch (paramCmd)
             {
                 case "test":
-                    strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
+                    strOut = "<root>" + UserController.GetCurrentUserInfo().Username + "</root>";
                     break;
                 case "setdata":
                     break;
@@ -273,9 +273,8 @@ namespace Nevoweb.DNN.NBrightBuy
             if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "langauge"); // fallbacl
             if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallbacl
             if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
-            if (lang != "") _lang = lang;
             // set the context  culturecode, so any DNN functions use the correct culture 
-            if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
         }
 
@@ -1721,8 +1720,6 @@ namespace Nevoweb.DNN.NBrightBuy
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
 
-            // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-            if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
             return dic;
         }
 

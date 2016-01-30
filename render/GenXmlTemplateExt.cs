@@ -290,6 +290,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "cultureselect":
                     CreateEditCultureSelect(container, xmlNod);
                     return true;
+                case "currentlang":
+                    CreateCurrentLang(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -4105,6 +4108,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 hid.Attributes.Add("id", "lang");
             hid.Attributes.Add("type", "hidden");
             hid.Attributes.Add("value", StoreSettings.Current.EditLanguage);
+            container.Controls.Add(hid);
+        }
+
+        private void CreateCurrentLang(Control container, XmlNode xmlNod)
+        {
+            var hid = new HtmlGenericControl("input");
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                hid.ID = xmlNod.Attributes["id"].InnerXml.ToLower();
+            else
+                hid.Attributes.Add("id", "currentlang");
+            hid.Attributes.Add("type", "hidden");
+            hid.Attributes.Add("value", Utils.GetCurrentCulture());
             container.Controls.Add(hid);
         }
 
