@@ -655,7 +655,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -668,7 +668,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -701,7 +701,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
@@ -714,7 +714,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
@@ -782,9 +782,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     if (datatype == "date")
                                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                                     else if (datatype == "double")
-                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                                     else
-                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXmlLang += objInfoLang.XMLData;
 
@@ -795,9 +795,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     if (datatype == "date")
                                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                                     else if (datatype == "double")
-                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                                     else
-                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXml += objInfo.XMLData;
                             }

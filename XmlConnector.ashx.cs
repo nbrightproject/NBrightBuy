@@ -63,13 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy
             #region "setup language"
 
             // because we are using a webservice the system current thread culture might not be set correctly,
-            //  so use the lang/lanaguge param to set it.
-            if (lang == "") lang = language;
-            if (!string.IsNullOrEmpty(lang)) _lang = lang;
-            // default to current thread if we have no language.
-            if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_lang);
+            SetContextLangauge(context);
 
             #endregion
 
@@ -286,8 +280,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #region "return results"
 
-            //send back xml as plain text
-            context.Response.Clear();
+                //send back xml as plain text
+                context.Response.Clear();
                 context.Response.ContentType = "text/plain";
                 context.Response.Write(strOut);
                 context.Response.End();                
@@ -303,6 +297,28 @@ namespace Nevoweb.DNN.NBrightBuy
                 return false;
             }
         }
+
+
+        private void SetContextLangauge(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
+        }
+
+        private void SetContextLangauge(NBrightInfo ajaxInfo = null)
+        {
+            // NOTE: "genxml/hidden/lang" should be set in the template for langauge to work OK.
+            // set langauge if we have it passed.
+            if (ajaxInfo == null) ajaxInfo = new NBrightInfo(true);
+            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "langauge"); // fallbacl
+            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallbacl
+            if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
+            // set the context  culturecode, so any DNN functions use the correct culture 
+            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+
+        }
+
 
         #region "fileupload"
 
@@ -2071,14 +2087,10 @@ namespace Nevoweb.DNN.NBrightBuy
                         objInfo.ItemID = -1;
                         objInfo.TypeCode = "AJAXDATA";
                         objInfo.PortalId = PortalSettings.Current.PortalId;
-                        objInfo.XMLData = xmlData;
+            objInfo.XMLData = xmlData;
                         var dic = objInfo.ToDictionary();
-                        // set langauge if we have it passed.
-                        if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-
-                        // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-                        if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
-
+            // set langauge if we have it passed.
+            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
                         rtnList.Add(objInfo);
                     }
                 }

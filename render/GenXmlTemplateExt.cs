@@ -290,6 +290,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "cultureselect":
                     CreateEditCultureSelect(container, xmlNod);
                     return true;
+                case "currentlang":
+                    CreateCurrentLang(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -1610,7 +1613,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (parentref != "")
                 {
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
-                    if (p != null) parentid = p.categoryid;                    
+                    if (p != null) parentid = p.categoryid;
                 }
                 var catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
                 if (!showAll && parentid == 0 && Utils.IsNumeric(catid)) parentid = Convert.ToInt32(catid); // needs to be passed to BuildCatList
@@ -1856,7 +1859,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             var defTabId = PortalSettings.Current.ActiveTab.TabID;
                             if (xmlNod.Attributes["admin"] == null)
                             {
-                                if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                            if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
                             }
                             lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
                         }
@@ -2795,7 +2798,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //do nothing
             }
-        }
+                    }
 
 
 
@@ -3968,6 +3971,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 hid.Attributes.Add("id", "lang");
             hid.Attributes.Add("type", "hidden");
             hid.Attributes.Add("value", StoreSettings.Current.EditLanguage);
+            container.Controls.Add(hid);
+        }
+
+        private void CreateCurrentLang(Control container, XmlNode xmlNod)
+        {
+            var hid = new HtmlGenericControl("input");
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                hid.ID = xmlNod.Attributes["id"].InnerXml.ToLower();
+            else
+                hid.Attributes.Add("id", "currentlang");
+            hid.Attributes.Add("type", "hidden");
+            hid.Attributes.Add("value", Utils.GetCurrentCulture());
             container.Controls.Add(hid);
         }
 
