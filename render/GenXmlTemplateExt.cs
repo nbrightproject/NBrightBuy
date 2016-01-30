@@ -4968,33 +4968,26 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetDealerPrice(NBrightInfo dataItemObj)
         {
-            var dealprice = "-1";
+            double dealprice = -1;
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/textbox/txtdealercost");
-                if (Utils.IsNumeric(s))
-                {
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(dealprice, CultureInfo.GetCultureInfo("en-US"))) | (dealprice == "-1")) dealprice = s;
-                }
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) dealprice = s;
             }
-            return dealprice;
+            return dealprice.ToString("");
         }
 
         private String GetFromPrice(NBrightInfo dataItemObj)
         {
-            var price = "-1";
+            double price = -1;
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/textbox/txtunitcost");
-                if (Utils.IsNumeric(s))
-                {
-                    // NBrightBuy numeric always stored in en-US format.
-                    if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(price, CultureInfo.GetCultureInfo("en-US"))) | (price == "-1")) price = s;
-                }
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((s < price) || (price == -1)) price = s;
             }
-            return price;
+            return price.ToString("");
         }
 
         private String GetBestPrice(NBrightInfo dataItemObj)
