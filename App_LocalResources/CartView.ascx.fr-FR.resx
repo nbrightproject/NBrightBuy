@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddBill.Text" xml:space="preserve">
     <value>Ajouter une adresse de facturation</value>
@@ -199,7 +199,7 @@
     <value>Recevoir notre Newsletter</value>
   </data>
   <data name="chkterms.Text" xml:space="preserve">
-    <value>J'ai lu et j'accepte les Termes et Conditions.</value>
+    <value>Soumettant votre commande confirme que vous acceptez les termes et conditions.</value>
   </data>
   <data name="cartempty.Text" xml:space="preserve">
     <value>Le panier est vide</value>
