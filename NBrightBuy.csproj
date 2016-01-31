@@ -53,8 +53,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\..\..\..\..\..\Support\DNN7x\bin\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>packages\RazorEngine.3.7.7\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -63,9 +64,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
@@ -474,7 +475,9 @@
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
     <Content Include="Themes\Classic\css\NBS_Cart.css" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
+    <None Include="app.config" />
     <None Include="Installation\03.02.00.SqlDataProvider" />
+    <None Include="packages.config" />
     <None Include="Plugins\menu.config" />
     <None Include="Themes\Classic\Default\list.cshtml" />
     <None Include="Themes\Classic\Default\NBS_MiniCart.cshtml" />
