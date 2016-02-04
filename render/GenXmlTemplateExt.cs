@@ -4977,20 +4977,28 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetSalePrice(NBrightInfo dataItemObj)
         {
-            var price = GetSalePriceDouble(dataItemObj);
-            return price.ToString("");
+            double dealprice = -1;
+            string price = "";
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtsaleprice");
+            }
+            return price;
         }
 
         private String GetDealerPrice(NBrightInfo dataItemObj)
         {
             double dealprice = -1;
+            string price = "";
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
-                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) dealprice = s;
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtdealercost");
             }
-            return dealprice.ToString("");
+            return price;
         }
 
         private String GetFromPrice(NBrightInfo dataItemObj)
