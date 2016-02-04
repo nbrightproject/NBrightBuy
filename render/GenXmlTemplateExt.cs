@@ -4995,14 +4995,15 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetFromPrice(NBrightInfo dataItemObj)
         {
-            double price = -1;
+            double tprice = -1;
+            string price = "";
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
-                if ((s < price) || (price == -1)) price = s;
+                if ((s < tprice) || (tprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtunitcost");
             }
-            return price.ToString("");
+            return price;
         }
 
         private String GetBestPrice(NBrightInfo dataItemObj)
