@@ -36,11 +36,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=7.2.0.607, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
-      <HintPath>..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -456,7 +457,9 @@
     </Content>
     <Content Include="PrintView.aspx" />
     <Content Include="CartRazorViewSettings.ascx" />
-    <Content Include="CartRazorView.ascx" />
+    <Content Include="CartRazorView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />

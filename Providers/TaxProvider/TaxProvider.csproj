@@ -34,8 +34,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=7.2.0.607, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="NBrightCore">
       <HintPath>..\..\..\..\..\..\..\..\Support\nbrightcore\bin\Debug\NBrightCore.dll</HintPath>

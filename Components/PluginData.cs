@@ -252,7 +252,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void DeletePlugin(int index)
         {
-            if (UserController.GetCurrentUserInfo().IsSuperUser) // only super user allow to remove plugins at system level.
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser) // only super user allow to remove plugins at system level.
             {
                 _pluginList.RemoveAt(index);
                 Save(false); // system level save

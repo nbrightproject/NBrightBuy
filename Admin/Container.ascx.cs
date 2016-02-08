@@ -39,6 +39,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 {
 
                     var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
+
+                    // anyone only in the client role is only allowed in the products control
+                    if (UserInfo.IsInRole(StoreSettings.ClientRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")))
+                    {
+                        ctrl = "products";
+                    }
+
                     if (ctrl == "")
                         ctrl = (String) HttpContext.Current.Session["nbrightbackofficectrl"];
                     else

@@ -18,6 +18,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public const String ManagerRole = "Manager";
         public const String EditorRole = "Editor";
         public const String DealerRole = "Dealer";
+        public const String ClientRole = "ClientEditor";
 
         #region Constructors
         public StoreSettings(int portalId)

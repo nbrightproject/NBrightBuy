@@ -387,10 +387,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> GetClients()
         {
+            if (Info == null) return new List<NBrightInfo>();
             var objCtrl = new NBrightBuyController();
             var userlist = objCtrl.GetDnnUserProductClient(_portalId, Info.ItemID);
             return userlist;
         }
+
+        public Boolean HasClient(int userId)
+        {
+            var l = GetClients();
+            foreach (var u in l)
+            {
+                // usewrid from DB is past back in ItemId column, so test userid against that.
+                if (u.ItemID == userId) return true;
+            }
+
+            return false;
+        }
+
 
         public void Save()
         {

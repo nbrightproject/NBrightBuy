@@ -59,9 +59,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.PortalId = PortalId;
             PurchaseInfo.ModuleId = -1;
             PurchaseInfo.TypeCode = PurchaseTypeCode;
-            if (UserController.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
+            if (UserController.Instance.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
             {
-                if (UserId != UserController.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.GetCurrentUserInfo().UserID;
+                if (UserId != UserController.Instance.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.Instance.GetCurrentUserInfo().UserID;
                 PurchaseInfo.UserId = UserId;                
             }
             _entryId = modCtrl.Update(PurchaseInfo);
@@ -405,7 +405,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("basecost", modelInfo.GetXmlProperty("genxml/textbox/txtunitcost"), "genxml");
 
                 // flag if dealer
-                var userInfo = UserController.GetCurrentUserInfo();
+                var userInfo = UserController.Instance.GetCurrentUserInfo();
                 if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
                     objInfo.SetXmlProperty("genxml/isdealer", "True");
                 else
@@ -947,7 +947,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
-                if (!UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) && !UserController.GetCurrentUserInfo().IsInRole("Administrators")) // user not editor, so stop edit mode.
+                if (!UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")) // user not editor, so stop edit mode.
                 {                    
                     PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
                     SavePurchaseData();
@@ -1043,13 +1043,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 
                 if (entryId == -1)
                 {
-                    PurchaseInfo.UserId = UserController.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
+                    PurchaseInfo.UserId = UserController.Instance.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
                     EditMode = "";
                 }
             }
             PurchaseTypeCode = PurchaseInfo.TypeCode;
             UserId = PurchaseInfo.UserId; //retain theuserid, if created by a manager for a client.
-            var currentuserInfo = UserController.GetCurrentUserInfo();
+            var currentuserInfo = UserController.Instance.GetCurrentUserInfo();
             if (UserId > 0 && EditMode != "") // 0 is default userid for new cart
             {
                 PurchaseInfo.SetXmlProperty("genxml/clientmode", "True", TypeCode.String, false);

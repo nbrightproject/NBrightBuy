@@ -55,11 +55,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void ConvertToCart(Boolean debugMode = false, String storageType = "Cookie", string nameAppendix = "")
         {
             // only magers and editors allowed to edit orders
-            if (UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) ||
-                UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
-                UserController.GetCurrentUserInfo().IsInRole("Administrators")) 
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) ||
+                UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) ||
+                UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")) 
             {
-                AddAuditMessage("EDIT ORDER","sys",UserController.GetCurrentUserInfo().Username,"False");
+                AddAuditMessage("EDIT ORDER","sys",UserController.Instance.GetCurrentUserInfo().Username,"False");
                 PurchaseTypeCode = "CART";
                 EditMode = "E";
                 var cartId = base.SavePurchaseData();
@@ -104,7 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 NBrightBuyUtils.ProcessEventProvider(EventActions.BeforeOrderStatusChange, PurchaseInfo);
 
-                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value, UserController.GetCurrentUserInfo().Username);
+                if (PurchaseInfo.GUIDKey != value) AddAuditStatusChange(value, UserController.Instance.GetCurrentUserInfo().Username);
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
 

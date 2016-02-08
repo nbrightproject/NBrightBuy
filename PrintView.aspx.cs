@@ -87,7 +87,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void PageLoad()
         {
             var portalId = ((PortalSettings) HttpContext.Current.Items["PortalSettings"]).PortalId;
-            var objUserInfo = UserController.GetCurrentUserInfo();
+            var objUserInfo = UserController.Instance.GetCurrentUserInfo();
             //var settings = new Dictionary<String,String>();
             //foreach (var item in StoreSettings.Current.Settings())
             //{

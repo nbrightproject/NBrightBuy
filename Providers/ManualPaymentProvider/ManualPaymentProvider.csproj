@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
+      <HintPath>..\..\..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="NBrightCore">
       <HintPath>..\..\..\..\..\..\..\..\Support\nbrightcore\bin\Debug\NBrightCore.dll</HintPath>

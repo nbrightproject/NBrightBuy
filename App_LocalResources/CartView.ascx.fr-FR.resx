@@ -202,7 +202,7 @@
     <value>Recevoir notre Newsletter</value>
   </data>
   <data name="chkterms.Text" xml:space="preserve">
-    <value>Soumettant votre commande confirme que vous acceptez les termes et conditions.</value>
+    <value>En soumettant votre commande, vous confirmez que vous acceptez nos Conditions Générales de Vente.</value>
   </data>
   <data name="cartempty.Text" xml:space="preserve">
     <value>Le panier est vide</value>
