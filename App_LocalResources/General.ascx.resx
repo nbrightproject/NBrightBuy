@@ -1056,4 +1056,7 @@
   <data name="logoff.Text" xml:space="preserve">
     <value>Log Off</value>
   </data>
+  <data name="Owners.Text" xml:space="preserve">
+    <value>Owners</value>
+  </data>
 </root>

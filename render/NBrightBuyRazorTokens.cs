@@ -66,7 +66,7 @@ namespace NBrightBuy.render
         /// <param name="info">NBrightInfo class of PRD type</param>
         /// <param name="model">Razor Model class (NBrightRazor)</param>
         /// <returns>Url to edit product</returns>
-        public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model)
+        public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model,String ctrl = "products")
         {
             var entryid = info.ItemID;
             var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
@@ -75,7 +75,7 @@ namespace NBrightBuy.render
                 var param = new List<String>();
 
                 param.Add("eid=" + entryid.ToString(""));
-                param.Add("ctrl=products");
+                param.Add("ctrl=" + ctrl);
                 param.Add("rtntab=" + PortalSettings.Current.ActiveTab.TabID.ToString());
                 if (model.GetSetting("moduleid") != "") param.Add("rtnmid=" + model.GetSetting("moduleid").Trim());
                 if (model.GetUrlParam("page") != "") param.Add("PageIndex=" + model.GetUrlParam("page").Trim());
@@ -392,6 +392,11 @@ namespace NBrightBuy.render
 
         public IEncodedString CategoryDropDownList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
         {
+            return CategorySelectList( info,  xpath, attributes ,  allowEmpty ,  displaylevels ,  showHidden ,  showArchived , parentid , catreflist , prefix ,  displayCount ,  showEmpty ,  groupref ,  breadcrumbseparator , lang);
+        }
+
+        public IEncodedString CategorySelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
             var rtnList = NBrightBuyUtils.BuildCatList(displaylevels, showHidden, showArchived, parentid, catreflist, prefix, displayCount, showEmpty, groupref, breadcrumbseparator, lang);
 
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
@@ -415,6 +420,36 @@ namespace NBrightBuy.render
 
             return new RawString(strOut);
         }
+
+        public IEncodedString GroupSelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true)
+        {
+            var strOut = "";
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = xpath.Split('/').Last();
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+
+            var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true);
+            foreach (var tItem in tList)
+            {
+                if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")
+                {
+                    if (info.GetXmlProperty(xpath) == tItem.GetXmlProperty("genxml/textbox/groupref"))
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + tItem.GetXmlProperty("genxml/textbox/groupref") + "' " + s + ">" + tItem.GetXmlProperty("genxml/textbox/groupref") + ": " + tItem.GetXmlProperty("genxml/lang/genxml/textbox/groupname") + "</option>";
+                }
+            }
+
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
 
         #endregion
 
