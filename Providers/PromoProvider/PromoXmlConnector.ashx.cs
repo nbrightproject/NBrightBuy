@@ -66,7 +66,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 switch (paramCmd)
                 {
                     case "test":
-                        strOut = "<root>" + UserController.GetCurrentUserInfo().Username + "</root>";
+                        strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
                         break;
                     case "getdata":
                         strOut = GetData(context);
@@ -281,7 +281,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         private Boolean CheckRights()
         {
-            if (UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) || UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) || UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) || UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
             {
                 return true;
             }

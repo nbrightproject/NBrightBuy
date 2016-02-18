@@ -40,6 +40,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             // Get Display Body
             var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
             rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+
         }
 
         protected override void OnLoad(EventArgs e)
@@ -66,7 +67,31 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
                 var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
-                base.DoDetail(rpData,prodData.Info);
+                if (UserInfo.IsInRole(StoreSettings.ClientRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")) )
+                {
+                    //Client User Only, clients can only alter products they are linked to, so test 
+                    if (prodData.HasClient(UserId))
+                    {
+                        base.DoDetail(rpData, prodData.Info);
+                    }
+                    else
+                    {
+                        if (_eid > 0)
+                        {
+                            // has no right to access, throw error page.
+                            Response.Redirect("~/Error.aspx", true);
+                        }
+                        else
+                        {
+                            // we need list so process for client user, logic to restircit list is in XmlConnector>getproductlist
+                            base.DoDetail(rpData, prodData.Info);
+                        }
+                    }
+                }
+                else
+                {
+                    base.DoDetail(rpData, prodData.Info);
+                }
             }
         }
 

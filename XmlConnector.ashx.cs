@@ -63,13 +63,7 @@ namespace Nevoweb.DNN.NBrightBuy
             #region "setup language"
 
             // because we are using a webservice the system current thread culture might not be set correctly,
-            //  so use the lang/lanaguge param to set it.
-            if (lang == "") lang = language;
-            if (!string.IsNullOrEmpty(lang)) _lang = lang;
-            // default to current thread if we have no language.
-            if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_lang);
+            SetContextLangauge(context);
 
             #endregion
 
@@ -82,19 +76,19 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var objCtrl = new NBrightBuyController();
 
-            var uInfo = new UserDataInfo(UserController.GetCurrentUserInfo().PortalID, intModuleId, objCtrl, ctlType);
+            var uInfo = new UserDataInfo(UserController.Instance.GetCurrentUserInfo().PortalID, intModuleId, objCtrl, ctlType);
             strOut = "ERROR!! - No Security rights for current user!";
             switch (paramCmd)
             {
                 case "test":
-                    strOut = "<root>" + UserController.GetCurrentUserInfo().Username + "</root>";
+                    strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
                     break;
                 case "setdata":
                     break;
                 case "deldata":
                     break;
                 //case "setcategoryadminform":
-                //    if (CheckRights()) strOut = SetCategoryForm(context);
+                //    if (NBrightBuyUtils.CheckRights()) strOut = SetCategoryForm(context);
                 //    break;
                 case "getdata":
                     strOut = GetReturnData(context);
@@ -130,124 +124,124 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = GetCategoryProductList(context);
                     break;
                 case "setdefaultcategory":
-                    if (CheckRights()) strOut = SetDefaultCategory(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = SetDefaultCategory(context);
                     break;
                 case "deletecatxref":
-                    if (CheckRights()) strOut = DeleteCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = DeleteCatXref(context);
                     break;
                 case "selectcatxref":
-                    if (CheckRights()) strOut = SelectCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = SelectCatXref(context);
                     break;
                 case "deleteallcatxref":
-                    if (CheckRights()) strOut = DeleteAllCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = DeleteAllCatXref(context);
                     break;
                 case "copyallcatxref":
-                    if (CheckRights()) strOut = CopyAllCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context);
                     break;
                 case "moveallcatxref":
-                    if (CheckRights()) strOut = CopyAllCatXref(context,true);
+                    if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context,true);
                     break;
                 case "editproduct":
-                    if (CheckRights()) strOut = GetProductGeneralData(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductGeneralData(context);
                     break;
                 case "productdescription":
-                    if (CheckRights()) strOut = GetProductDescription(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductDescription(context);
                     break;
                 case "productmodels":
-                    if (CheckRights()) strOut = GetProductModels(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
                     break;
                 case "productoptions":
-                    if (CheckRights()) strOut = GetProductOptions(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptions(context);
                     break;
                 case "productoptionvalues":
-                    if (CheckRights()) strOut = GetProductOptionValues(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptionValues(context);
                     break;
                 case "productimages":
-                    if (CheckRights()) strOut = GetProductImages(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductImages(context);
                     break;
                 case "productdocs":
-                    if (CheckRights()) strOut = GetProductDocs(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductDocs(context);
                     break;
                 case "productrelatedproducts":
-                    if (CheckRights()) strOut = GetProductModels(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
                     break;
                 case "productcategories":
-                    if (CheckRights()) strOut = GetProductCategories(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductCategories(context);
                     break;
                 case "productisincategory":
-                    if (CheckRights()) strOut = ProductIsInCategory(context).ToString();
+                    if (NBrightBuyUtils.CheckRights()) strOut = ProductIsInCategory(context).ToString();
                     break;
                 case "productgroupcategories":
-                    if (CheckRights()) strOut = GetProductGroupCategories(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductGroupCategories(context);
                     break;                    
                 case "productrelated":
-                    if (CheckRights()) strOut = GetProductRelated(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductRelated(context);
                     break;
                 case "productclients":
-                    if (CheckRights()) strOut = GetProductClients(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetProductClients(context);
                     break;
                 case "getclientselectlist":
-                    if (CheckRights()) strOut = GetClientSelectList(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetClientSelectList(context);
                     break;
                 case "addproductmodels":
-                    if (CheckRights()) strOut = AddProductModels(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductModels(context);
                     break;
                 case "addproductoptions":
-                    if (CheckRights()) strOut = AddProductOptions(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptions(context);
                     break;
                 case "addproductoptionvalues":
-                    if (CheckRights()) strOut = AddProductOptionValues(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptionValues(context);
                     break;
                 case "addproductcategory":
-                    if (CheckRights()) strOut = AddProductCategory(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductCategory(context);
                     break;
                 case "addproductgroupcategory":
-                    if (CheckRights()) strOut = AddProductGroupCategory(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductGroupCategory(context);
                     break;
                 case "removeproductcategory":
-                    if (CheckRights()) strOut = RemoveProductCategory(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductCategory(context);
                     break;
                 case "removeproductgroupcategory":
-                    if (CheckRights()) strOut = RemoveProductGroupCategory(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductGroupCategory(context);
                     break;                    
                 case "populatecategorylist":
-                    if (CheckRights()) strOut = GetGroupCategoryListBox(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetGroupCategoryListBox(context);
                     break;
                 case "addrelatedproduct":
-                    if (CheckRights()) strOut = AddRelatedProduct(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddRelatedProduct(context);
                     break;
                 case "removerelatedproduct":
-                    if (CheckRights()) strOut = RemoveRelatedProduct(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveRelatedProduct(context);
                     break;
                 case "addproductclient":
-                    if (CheckRights()) strOut = AddProductClient(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddProductClient(context);
                     break;
                 case "removeproductclient":
-                    if (CheckRights()) strOut = RemoveProductClient(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductClient(context);
                     break;
                 case "clientdiscountcodes":
-                    if (CheckRights()) strOut = GetClientDiscountCodes(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetClientDiscountCodes(context);
                     break;
                 case "addclientdiscountcode":
-                    if (CheckRights()) strOut = AddClientDiscountCodes(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddClientDiscountCodes(context);
                     break;
                 case "clientvouchercodes":
-                    if (CheckRights()) strOut = GetClientVoucherCodes(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = GetClientVoucherCodes(context);
                     break;
                 case "addclientvouchercode":
-                    if (CheckRights()) strOut = AddClientVoucherCodes(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddClientVoucherCodes(context);
                     break;
                 case "moveproductadmin":
-                    if (CheckRights()) strOut = MoveProductAdmin(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = MoveProductAdmin(context);
                     break;
                 case "fileupload":
-                    if (CheckRights() && Utils.IsNumeric(itemId))
+                    if (NBrightBuyUtils.CheckRights() && Utils.IsNumeric(itemId))
                     {
                         strOut = FileUpload(context);
                     }
                     break;
                 case "updateproductimages":
-                    if (CheckRights())
+                    if (NBrightBuyUtils.CheckRights())
                     {
                         UpdateProductImages(context);
                         strOut = GetProductImages(context);
@@ -278,7 +272,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = GetSettings(context);
                     break;
                 case "savesettings":
-                    if (CheckRights()) strOut = SaveSettings(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = SaveSettings(context);
                     break;
             }
 
@@ -286,8 +280,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #region "return results"
 
-            //send back xml as plain text
-            context.Response.Clear();
+                //send back xml as plain text
+                context.Response.Clear();
                 context.Response.ContentType = "text/plain";
                 context.Response.Write(strOut);
                 context.Response.End();                
@@ -303,6 +297,28 @@ namespace Nevoweb.DNN.NBrightBuy
                 return false;
             }
         }
+
+
+        private void SetContextLangauge(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
+        }
+
+        private void SetContextLangauge(NBrightInfo ajaxInfo = null)
+        {
+            // NOTE: "genxml/hidden/lang" should be set in the template for langauge to work OK.
+            // set langauge if we have it passed.
+            if (ajaxInfo == null) ajaxInfo = new NBrightInfo(true);
+            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "langauge"); // fallbacl
+            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallbacl
+            if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
+            // set the context  culturecode, so any DNN functions use the correct culture 
+            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+
+        }
+
 
         #region "fileupload"
 
@@ -1535,7 +1551,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (Utils.IsNumeric(productid) && Utils.IsNumeric(selecteduserid))
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _lang, false);
-                    prodData.RemoveClient(Convert.ToInt32(selecteduserid));
+                    if (!(NBrightBuyUtils.IsClientOnly() && (Convert.ToInt32(selecteduserid) == UserController.Instance.GetCurrentUserInfo().UserID)))
+                    {
+                        // ClientEditor role cannot remove themselves.
+                        prodData.RemoveClient(Convert.ToInt32(selecteduserid));
+                    }
                     NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     return GetProductClients(context);
                 }
@@ -1977,6 +1997,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (orderby == "{bycategoryproduct}") orderby = " order by NB3.productname ";                
             }
 
+            // logic for client list of products
+            if (NBrightBuyUtils.IsClientOnly())
+            {
+                filter += " and NB1.ItemId in (select ParentItemId from dbo.[NBrightBuy] as NBclient where NBclient.TypeCode = 'USERPRDXREF' and NBclient.UserId = " + UserController.Instance.GetCurrentUserInfo().UserID.ToString("") + ") ";
+            }
+
+
             var recordCount = 0;
 
             var themeFolder = StoreSettings.Current.ThemeFolder;
@@ -2071,14 +2098,10 @@ namespace Nevoweb.DNN.NBrightBuy
                         objInfo.ItemID = -1;
                         objInfo.TypeCode = "AJAXDATA";
                         objInfo.PortalId = PortalSettings.Current.PortalId;
-                        objInfo.XMLData = xmlData;
+            objInfo.XMLData = xmlData;
                         var dic = objInfo.ToDictionary();
-                        // set langauge if we have it passed.
-                        if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-
-                        // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-                        if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
-
+            // set langauge if we have it passed.
+            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
                         rtnList.Add(objInfo);
                     }
                 }
@@ -2087,14 +2110,6 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
 
-        private Boolean CheckRights()
-        {
-            if (UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) || UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) || UserController.GetCurrentUserInfo().IsInRole("Administrators"))
-            {
-                return true;
-            }
-            return false;
-        }
 
 
         #endregion

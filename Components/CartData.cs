@@ -393,7 +393,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
                 // user not editor, so stop edit mode.
-                if (!UserController.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
+                if (!UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators") && !UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole)) PurchaseInfo.SetXmlProperty("genxml/clientmode", "False");
             }
 
             PurchaseInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartAfter, PurchaseInfo);
@@ -583,7 +583,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (cost < 0) cost = 0;
             if (dealercost < 0) dealercost = 0;
             //always return normal price for non-registered users
-            if (UserController.GetCurrentUserInfo().UserID == -1) return cost;
+            if (UserController.Instance.GetCurrentUserInfo().UserID == -1) return cost;
 
             var userInfo = UserController.GetUserById(portalId, userId);
             if (userInfo != null)

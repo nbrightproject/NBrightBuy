@@ -70,7 +70,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         switch (htmlDecode.ToLower())
                         {
                             case "<tag:menu>":
-                                var c1 = LoadControl(ControlPath +  "/Menu.ascx");
+                                var c1 = LoadControl(ControlPath + "/Menu.ascx");
                                 phData.Controls.Add(c1);
                                 break;
                             case "<tag:container>":

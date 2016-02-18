@@ -290,6 +290,9 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 case "cultureselect":
                     CreateEditCultureSelect(container, xmlNod);
                     return true;
+                case "currentlang":
+                    CreateCurrentLang(container, xmlNod);
+                    return true;
                 default:
                     return false;
 
@@ -509,7 +512,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             nod = GenXmlFunctions.GetGenXmLnode(DataBinder.Eval(container.DataItem, _databindColumn).ToString(), "genxml/docs/genxml[" + index + "]/hidden/docid");
                             if (nod != null && Utils.IsNumeric(nod.InnerText))
                             {
-                                var uInfo = UserController.GetCurrentUserInfo();
+                                var uInfo = UserController.Instance.GetCurrentUserInfo();
                                 //[TODO: work out method of finding if user purchased document.]
                                 //if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nod.InnerText)))
                                 //{
@@ -566,14 +569,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             break;
                         case "issuperuser":
-                            if (UserController.GetCurrentUserInfo().IsSuperUser)
+                            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
                             }
                             break;
                         case "isuser":
-                            if (UserController.GetCurrentUserInfo().UserID >= 0)
+                            if (UserController.Instance.GetCurrentUserInfo().UserID >= 0)
                             {
                                 rtnData.DataValue = "TRUE";
                                 rtnData.TestValue = "TRUE";
@@ -615,7 +618,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             }
                             break;
                         case "profile":
-                            var userInfo = UserController.GetCurrentUserInfo();
+                            var userInfo = UserController.Instance.GetCurrentUserInfo();
                             if (userInfo.UserID >= 0) rtnData.DataValue = userInfo.Profile.GetPropertyValue(settingkey);
                             break;
                         case "static":
@@ -1610,7 +1613,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (parentref != "")
                 {
                     var p = grpCatCtrl.GetGrpCategoryByRef(parentref);
-                    if (p != null) parentid = p.categoryid;                    
+                    if (p != null) parentid = p.categoryid;
                 }
                 var catid = Utils.RequestQueryStringParam(HttpContext.Current.Request, "catid");
                 if (!showAll && parentid == 0 && Utils.IsNumeric(catid)) parentid = Convert.ToInt32(catid); // needs to be passed to BuildCatList
@@ -1856,7 +1859,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                             var defTabId = PortalSettings.Current.ActiveTab.TabID;
                             if (xmlNod.Attributes["admin"] == null)
                             {
-                                if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
+                            if (_settings.ContainsKey("ddllisttabid") && Utils.IsNumeric(_settings["ddllisttabid"])) defTabId = Convert.ToInt32(_settings["ddllisttabid"]);
                             }
                             lc.Text = grpCatCtrl.GetBreadCrumbWithLinks(catid, defTabId, intShortLength, separator, aslist);
                         }
@@ -2795,7 +2798,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //do nothing
             }
-        }
+                    }
 
 
 
@@ -3083,7 +3086,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         //    cmd.Visible = false;
                         //    var role = "Manager";
                         //    if (!String.IsNullOrEmpty(_settings["manager.role"])) role = _settings["manager.role"];
-                        //    var uInfo = UserController.GetCurrentUserInfo();
+                        //    var uInfo = UserController.Instance.GetCurrentUserInfo();
                         //    if (NBrightBuyV2Utils.DocHasBeenPurchasedByDocId(uInfo.UserID, Convert.ToInt32(nodDocId.InnerText)) || CmsProviderManager.Default.IsInRole(role)) cmd.Visible = true;
                         //}
                     }
@@ -3620,7 +3623,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     txt.Text = nbInfo.GetXmlProperty("genxml/textbox/cartemailaddress");
                     if (txt.Text == "")
                     {
-                        var usr = UserController.GetCurrentUserInfo();
+                        var usr = UserController.Instance.GetCurrentUserInfo();
                         if (usr != null && usr.UserID > 0) txt.Text = usr.Email;
                     }
                 }
@@ -3971,6 +3974,18 @@ namespace Nevoweb.DNN.NBrightBuy.render
             container.Controls.Add(hid);
         }
 
+        private void CreateCurrentLang(Control container, XmlNode xmlNod)
+        {
+            var hid = new HtmlGenericControl("input");
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
+                hid.ID = xmlNod.Attributes["id"].InnerXml.ToLower();
+            else
+                hid.Attributes.Add("id", "currentlang");
+            hid.Attributes.Add("type", "hidden");
+            hid.Attributes.Add("value", Utils.GetCurrentCulture());
+            container.Controls.Add(hid);
+        }
+
         private void SelectLangaugeDataBind(object sender, EventArgs e)
         {
             var lc = (EditLanguage)sender;
@@ -4146,7 +4161,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (ddl.Visible)
                 {
 
-                    var usr = UserController.GetCurrentUserInfo();
+                    var usr = UserController.Instance.GetCurrentUserInfo();
                     var addressData = new AddressData(usr.UserID.ToString(""));
 
                     if (ddl.Attributes["blank"] != null)

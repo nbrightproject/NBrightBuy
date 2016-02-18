@@ -1549,7 +1549,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                                 if (addSalePrices)
                                 {
-                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    var uInfo = UserController.Instance.GetCurrentUserInfo();
                                     if (uInfo != null)
                                     {
                                         o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
@@ -1887,6 +1887,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 rtnDic = (Dictionary<int, string>)objCache;
             }
             return rtnDic;
+        }
+
+        #endregion
+
+        #region "security functions"
+
+        public static Boolean IsClientOnly()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ClientRole) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        public static Boolean CheckRights()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ClientRole) || UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) || UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.EditorRole) || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion

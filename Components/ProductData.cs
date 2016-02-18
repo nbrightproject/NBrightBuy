@@ -387,10 +387,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public List<NBrightInfo> GetClients()
         {
+            if (Info == null) return new List<NBrightInfo>();
             var objCtrl = new NBrightBuyController();
             var userlist = objCtrl.GetDnnUserProductClient(_portalId, Info.ItemID);
             return userlist;
         }
+
+        public Boolean HasClient(int userId)
+        {
+            var l = GetClients();
+            foreach (var u in l)
+            {
+                // usewrid from DB is past back in ItemId column, so test userid against that.
+                if (u.ItemID == userId) return true;
+            }
+
+            return false;
+        }
+
 
         public void Save()
         {
@@ -655,7 +669,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -668,7 +682,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -701,7 +715,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
@@ -714,7 +728,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                     else
                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                 }
@@ -782,9 +796,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     if (datatype == "date")
                                         objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                                     else if (datatype == "double")
-                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                                     else
-                                        objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    objInfoLang.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXmlLang += objInfoLang.XMLData;
 
@@ -795,9 +809,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     if (datatype == "date")
                                         objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.DateTime);
                                     else if (datatype == "double")
-                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f), TypeCode.Double);
+                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
                                     else
-                                        objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
+                                    objInfo.SetXmlProperty(f, objDataInfo.GetXmlProperty(f));
                                 }
                                 strXml += objInfo.XMLData;
                             }

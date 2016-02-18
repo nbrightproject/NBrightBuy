@@ -77,7 +77,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             var strOut = "";
             var obj = Utils.GetCache(strCacheKey);
-            if (obj != null) strOut = (String)obj;
+            if (obj != null) strOut = (String) obj;
 
             if (StoreSettings.Current.DebugMode || strOut == "")
             {
@@ -85,9 +85,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 var bomenuattributes = DnnUtils.GetLocalizedString("bomenuattributes", _resxpath, Utils.GetCurrentCulture());
                 var bosubmenuattributes = DnnUtils.GetLocalizedString("bosubmenuattributes", _resxpath, Utils.GetCurrentCulture());
-               
+
                 //get group list (these are the sections/first level of the menu)
                 var rootList = new Dictionary<String, String>();
+
                 foreach (var p in pluginData.GetPluginList())
                 {
                     var grpname = p.GetXmlProperty("genxml/textbox/group");
@@ -104,85 +105,87 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                 }
 
-
                 strOut = "<ul " + bomenuattributes + ">";
 
-
-                foreach (var rootname in rootList)
+                // clientEditor roles can only access products, so only add the exit button to the menu.
+                // the security restriuction on product ctrl is applied in the container.ascx.cs
+                if (!NBrightBuyUtils.IsClientOnly()) 
                 {
-                    var rtnlist = pluginData.GetSubList(rootname.Key);
-                    var sublist = new List<NBrightInfo>();
-                    // check security
-                    foreach (var p in rtnlist)
+                    foreach (var rootname in rootList)
                     {
-                        if (CheckSecurity(p)) sublist.Add(p);
-                    }
-
-
-                    var href = "#";
-                    var ctrl = "";
-                    var name = "unknown";
-                    var icon = "";
-                    var hrefclass = "";
-                    var securityrootcheck = true;
-                    if (sublist.Count > 0)
-                    {
-                        // has sub menus
-                        ctrl = rootname.Key;
-                        name = rootname.Value;
-                        hrefclass = "class='dropdown-toggle'";
-                        icon = DnnUtils.GetLocalizedString(ctrl.ToLower() + "_icon", _resxpath, Utils.GetCurrentCulture());
-                        strOut += "<li class='dropdown'>";
-                    }
-                    else
-                    {
-                        // clickable root menu
-                        var rootp = pluginData.GetPluginByCtrl(rootname.Key);
-                        if (rootp != null)
+                        var rtnlist = pluginData.GetSubList(rootname.Key);
+                        var sublist = new List<NBrightInfo>();
+                        // check security
+                        foreach (var p in rtnlist)
                         {
-                            ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
-                            name = rootp.GetXmlProperty("genxml/textbox/name");
-                            icon = rootp.GetXmlProperty("genxml/textbox/icon");
+                            if (CheckSecurity(p)) sublist.Add(p);
+                        }
 
-                            securityrootcheck = CheckSecurity(rootp);
-                            if (securityrootcheck)
-                            {
-                                strOut += "<li>";
-                                var param = new string[1];
-                                param[0] = "ctrl=" + ctrl;
-                                href = Globals.NavigateURL(TabId, "", param);
-                            }
+
+                        var href = "#";
+                        var ctrl = "";
+                        var name = "unknown";
+                        var icon = "";
+                        var hrefclass = "";
+                        var securityrootcheck = true;
+                        if (sublist.Count > 0)
+                        {
+                            // has sub menus
+                            ctrl = rootname.Key;
+                            name = rootname.Value;
+                            hrefclass = "class='dropdown-toggle'";
+                            icon = DnnUtils.GetLocalizedString(ctrl.ToLower() + "_icon", _resxpath, Utils.GetCurrentCulture());
+                            strOut += "<li class='dropdown'>";
                         }
                         else
                         {
-                            securityrootcheck = false;
-                        }
-                    }
-                    if (securityrootcheck) strOut += GetRootLinkNode(name, ctrl, icon, href, hrefclass);
-
-                    if (sublist.Count > 0)
-                    {
-                        strOut += "<ul " + bosubmenuattributes + ">";
-                        foreach (var p in sublist)
-                        {
-                            if (p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
+                            // clickable root menu
+                            var rootp = pluginData.GetPluginByCtrl(rootname.Key);
+                            if (rootp != null)
                             {
+                                ctrl = rootp.GetXmlProperty("genxml/textbox/ctrl");
+                                name = rootp.GetXmlProperty("genxml/textbox/name");
+                                icon = rootp.GetXmlProperty("genxml/textbox/icon");
 
-                                ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
-                                name = p.GetXmlProperty("genxml/textbox/name");
-                                icon = p.GetXmlProperty("genxml/textbox/icon");
-                                var param = new string[1];
-                                param[0] = "ctrl=" + ctrl;
-                                href = Globals.NavigateURL(TabId, "", param);
-                                strOut += "<li>" + GetSubLinkNode(name, ctrl, icon, href) + "</li>";
+                                securityrootcheck = CheckSecurity(rootp);
+                                if (securityrootcheck)
+                                {
+                                    strOut += "<li>";
+                                    var param = new string[1];
+                                    param[0] = "ctrl=" + ctrl;
+                                    href = Globals.NavigateURL(TabId, "", param);
+                                }
+                            }
+                            else
+                            {
+                                securityrootcheck = false;
                             }
                         }
-                        strOut += "</ul>";
+                        if (securityrootcheck) strOut += GetRootLinkNode(name, ctrl, icon, href, hrefclass);
+
+                        if (sublist.Count > 0)
+                        {
+                            strOut += "<ul " + bosubmenuattributes + ">";
+                            foreach (var p in sublist)
+                            {
+                                if (p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)
+                                {
+
+                                    ctrl = p.GetXmlProperty("genxml/textbox/ctrl");
+                                    name = p.GetXmlProperty("genxml/textbox/name");
+                                    icon = p.GetXmlProperty("genxml/textbox/icon");
+                                    var param = new string[1];
+                                    param[0] = "ctrl=" + ctrl;
+                                    href = Globals.NavigateURL(TabId, "", param);
+                                    strOut += "<li>" + GetSubLinkNode(name, ctrl, icon, href) + "</li>";
+                                }
+                            }
+                            strOut += "</ul>";
+                        }
+                        if (securityrootcheck) strOut += "</li>";
                     }
-                    if (securityrootcheck) strOut += "</li>";
+
                 }
-
-
 
                 // add exit button
                 strOut += "<li>";

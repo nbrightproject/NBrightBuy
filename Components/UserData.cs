@@ -93,7 +93,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(userId))
                 _userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
             else
-                _userInfo = UserController.GetCurrentUserInfo();
+                _userInfo = UserController.Instance.GetCurrentUserInfo();
 
             if (_userInfo != null && _userInfo.UserID != -1) // only create userdata if we have a user logged in.
             {
