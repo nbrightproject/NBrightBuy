@@ -44,7 +44,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
         /// <summary>
-        /// This method return the data item with the lang node merged id the lang param is past.  NOTE: The typecodeLang Param is redundant
+        /// This method return the data item with the lang node merged if the lang param is past.  NOTE: The typecodeLang Param is redundant
         /// </summary>
         /// <param name="itemId"></param>
         /// <param name="typeCodeLang">Redundant, set to ""</param>
@@ -55,10 +55,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().Get(itemId, typeCodeLang, lang));
         }
 
+        /// <summary>
+        /// Return ONLY the data record
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public override NBrightInfo GetData(int itemId)
         {
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetData(itemId));
         }
+        /// <summary>
+        /// Returns only the LANG data record, by using no language recored itemid (parentitemid)
+        /// </summary>
+        /// <param name="parentItemId"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
         public override NBrightInfo GetDataLang(int parentItemId, string lang)
         {
             return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentItemId, lang));
@@ -224,7 +235,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l[0];
         }
 
-
+        /// <summary>
+        /// This method return the data item with the lang node merged if the lang param is past. (with cache option)  NOTE: The typecodeLang Param is redundant
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="typeCodeLang">Redundant, set to ""</param>
+        /// <param name="lang"></param>
+        /// <param name="debugMode"></param>
+        /// <returns></returns>
         public NBrightInfo GetData(int itemId, string typeCodeLang, string lang = "",bool debugMode = false)
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
@@ -519,15 +537,109 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return strXml;
         }
 
+        /// <summary>
+        /// Update any empty language fields to the same as the base language data
+        /// </summary>
+        /// <param name="baseParentItemId">Itemid of the data record (ParentItemId of hte base language record)</param>
+        /// <param name="baseLang">Base Langauge culture code</param>
+        /// <param name="extraXmlNodes">List of extra nodes to be updated, this is for custom data. NBS defaults are already included. (imgs,docs,options,optionvalues,models)</param>
+        public void FillEmptyLanguageFields(int baseParentItemId, String baseLang, List<String> extraXmlNodes = null)
+        {
+            var baseInfo = GetDataLang(baseParentItemId, baseLang);
+            if (baseInfo != null)
+            {
+                foreach (var toLang in DnnUtils.GetCultureCodeList(baseInfo.PortalId))
+                {
+                    if (toLang != baseInfo.Lang)
+                    {
+                        var dlang = GetDataLang(baseParentItemId, toLang);
+                        if (dlang != null)
+                        {
+                            var nodList = baseInfo.XMLDoc.SelectNodes("genxml/textbox/*");
+                            if (nodList != null)
+                            {
+                                foreach (XmlNode nod in nodList)
+                                {
+                                    if (nod.InnerText.Trim() != "")
+                                    {
+                                        if (dlang.GetXmlProperty("genxml/textbox/" + nod.Name) == "")
+                                        {
+                                            dlang.SetXmlProperty("genxml/textbox/" + nod.Name, nod.InnerText);
+                                        }
+                                    }
+                                }
+                            }
+
+                            dlang = UpdateLangNodeFields("imgs",baseInfo,dlang);
+                            dlang = UpdateLangNodeFields("docs", baseInfo, dlang);
+                            dlang = UpdateLangNodeFields("options", baseInfo, dlang);
+                            dlang = UpdateLangNodeFields("optionvalues", baseInfo, dlang);
+                            dlang = UpdateLangNodeFields("models", baseInfo, dlang);
+
+                            if (extraXmlNodes != null)
+                            {
+                                foreach (var xmlname in extraXmlNodes)
+                                {
+                                    dlang = UpdateLangNodeFields(xmlname, baseInfo, dlang);
+                                }
+                            }
+
+                            Update(dlang);
+                        }
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
-        #region "static methods"
+            #region "static methods"
+
+        private static NBrightInfo UpdateLangNodeFields(String xmlname, NBrightInfo baseInfo, NBrightInfo dlang)
+        {
+            var nodList3I = baseInfo.XMLDoc.SelectNodes("genxml/" + xmlname + "/genxml");
+            if (nodList3I != null)
+            {
+                for (int i = 1; i <= nodList3I.Count; i++)
+                {
+                    var nodList3 = baseInfo.XMLDoc.SelectNodes("genxml/" + xmlname + "/genxml[" + i + "]/textbox/*");
+                    if (nodList3 != null)
+                    {
+                        foreach (XmlNode nod in nodList3)
+                        {
+                            if (nod.InnerText.Trim() != "")
+                            {
+                                if (dlang.GetXmlProperty("genxml/" + xmlname + "/genxml[" + i + "]/textbox/" + nod.Name) == "")
+                                {
+                                    if (dlang.XMLDoc.SelectSingleNode("genxml/" + xmlname + "/genxml[" + i + "]") == null)
+                                    {
+                                        var baseXml = baseInfo.XMLDoc.SelectSingleNode("genxml/" + xmlname + "/genxml[" + i + "]");
+                                        if (baseXml != null)
+                                        {
+                                            if (dlang.XMLDoc.SelectSingleNode("genxml/" + xmlname) == null)
+                                            {
+                                                dlang.AddSingleNode(xmlname, "", "genxml");
+                                            }
+                                            dlang.AddXmlNode(baseXml.OuterXml, "genxml", "genxml/" + xmlname);
+                                        }
+                                    }
+
+                                    dlang.SetXmlProperty("genxml/" + xmlname + "/genxml[" + i + "]/textbox/" + nod.Name, nod.InnerText);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return dlang;
+        }
 
         /// <summary>
-        /// Get current portal StoreSettings
-        /// </summary>
-        /// <returns></returns>
-	    public static StoreSettings GetCurrentPortalData()
+            /// Get current portal StoreSettings
+            /// </summary>
+            /// <returns></returns>
+        public static StoreSettings GetCurrentPortalData()
 	    {
             StoreSettings objPortalSettings = null;
             if (HttpContext.Current != null)
