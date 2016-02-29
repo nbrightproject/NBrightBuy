@@ -1224,6 +1224,42 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return -1;
         }
 
+        /// <summary>
+        /// Get a list of Ajax XML for each item posted as a list of ajax records. 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static List<String> GetAjaxXmlFieldsList(HttpContext context)
+        {
+            var rtnList = new List<String>();
+            var xmlAjaxData = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            // get each returned xml root node
+            var xmlDoc1 = new XmlDocument();
+            if (!String.IsNullOrEmpty(xmlAjaxData))
+            {
+                xmlDoc1.LoadXml(xmlAjaxData);
+                var xmlNodeList = xmlDoc1.SelectNodes("root/root");
+                if (xmlNodeList != null)
+                {
+                    foreach (XmlNode nod in xmlNodeList)
+                    {
+                        rtnList.Add(nod.OuterXml);
+                    }
+                }
+            }
+            return rtnList;
+        }
+
+        /// <summary>
+        /// Return data from Ajax in ajax string format
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static String GetAjaxXmlFields(HttpContext context)
+        {
+            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            return strIn;
+        }
 
         public static NBrightInfo GetAjaxFields(HttpContext context)
         {
