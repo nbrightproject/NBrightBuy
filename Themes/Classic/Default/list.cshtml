@@ -60,7 +60,7 @@ var lang = "";
             <div class="productimg-overlay">
 
                 <!-- Add to favorites buttons -->
-                @if (Model.GetSetting("enablefavorites") == "True")
+                @if (Model.GetSettingBool("enablefavorites"))
                 {
                     <span>
                         <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>

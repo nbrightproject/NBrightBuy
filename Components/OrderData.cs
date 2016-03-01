@@ -64,7 +64,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 EditMode = "E";
                 var cartId = base.SavePurchaseData();
                 var cartData = new CartData(PortalId, "", cartId.ToString("")); //create the client record (cookie)
-                cartData.PurchaseInfo.SetXmlProperty("genxml/hidden/currentcartstage", "cartlist"); // make sure we start edit at cart stage.               
+                cartData.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartlist"); // make sure we start edit at cart stage.               
                 cartData.Save();
                 if (StoreSettings.Current.DebugModeFileOut) OutputDebugFile("debug_convertedorder.xml");
             }

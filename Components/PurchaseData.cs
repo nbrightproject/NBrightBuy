@@ -555,7 +555,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void RemoveItem(int index)
         {
-            _itemList.RemoveAt(index);
+            if (index < _itemList.Count)
+            {
+                _itemList.RemoveAt(index);
+            }
             SavePurchaseData();
         }
 

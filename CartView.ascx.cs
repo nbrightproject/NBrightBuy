@@ -398,8 +398,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void SaveCart(Boolean removeZeroQtyItems = false)
         {
-            if (_cartInfo.EditMode == "E") // is order being edited, so return to order status after edit.
+            var activecartstage = _cartInfo.PurchaseInfo.GetXmlProperty("genxml/currentcartstage");
+            var currentcartstage = GenXmlFunctions.GetField(checkoutlayout, "currentcartstage");
+            if (_cartInfo.EditMode == "E" && activecartstage == "cartsummary" && currentcartstage == "cartsummary") 
             {
+                // is order being edited, so return to order status after edit.
+                // ONLY if the cartsummry is being displayed to the manager.
                 _cartInfo.ConvertToOrder();
                 // redirect to back office
                 var param = new string[2];
@@ -413,7 +417,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             else
             {
-                var currentcartstage = GenXmlFunctions.GetField(checkoutlayout, "currentcartstage");
                 _cartInfo.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", currentcartstage);
                 var pickuppointref = GenXmlFunctions.GetField(rpExtra, "pickuppointref");
                 _cartInfo.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
