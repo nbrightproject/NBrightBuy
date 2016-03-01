@@ -46,14 +46,6 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightCore, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\NBrightCore.dll</HintPath>
-    </Reference>
-    <Reference Include="NBrightDNN, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
-    </Reference>
     <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>packages\RazorEngine.3.7.7\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
@@ -487,11 +479,14 @@
     <None Include="Themes\Classic\Default\pageheaderdetail.cshtml" />
     <None Include="Themes\Classic\Default\pageheaderNBS_MiniCart.cshtml" />
     <None Include="Themes\Classic\Default\productviewsettings.cshtml" />
+    <Content Include="Themes\Classic\Default\frontofficepageheader.html" />
+    <Content Include="Themes\Classic\Default\pageheaderNBS_ProductDisplay.html" />
     <Content Include="Themes\Classic\Default\simplesearch.html" />
     <Content Include="Themes\Classic\img\addthis.png" />
     <Content Include="Themes\Classic\img\basket.png" />
     <Content Include="Themes\Classic\img\favorites.png" />
     <Content Include="Themes\config\css\backoffice.css" />
+    <Content Include="Themes\config\css\global.css" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\addressbookbody.html" />
     <Content Include="Themes\config\default\addressbookfooter.html" />
@@ -1422,6 +1417,7 @@
     <Content Include="Themes\config\js\nbbqtycookie.js" />
     <Content Include="Themes\config\js\productajax.js" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
+    <Content Include="Themes\Cygnus\css\global.css" />
     <Content Include="Themes\Cygnus\css\imagelightbox.nbb.css" />
     <Content Include="Themes\Cygnus\Default\addclientrole.html" />
     <Content Include="Themes\Cygnus\Default\addressadminbody.html" />
@@ -1667,6 +1663,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\Classic\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj">
+      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
+      <Name>NBrightCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj">
+      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
+      <Name>NBrightDNN</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

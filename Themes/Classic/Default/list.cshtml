@@ -68,7 +68,7 @@ var lang = "";
                     </span>
                 }
 
-                <a href="javascript:void();" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+                <a href="javascript:void(0);" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
 
 
                 <a href="@EntryUrl(info, Model)">@ResourceKey("ProductView.viewicon-lg")</a>
@@ -125,7 +125,7 @@ var lang = "";
     {
       if (Model.GetSetting("cataloguemode") != "True")
       {
-      <a href="javascript:void();" class="classicbutton entryurl addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasket")</a>
+      <a href="javascript:void(0);" class="classicbutton entryurl addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasket")</a>
       }
     }
         </div>
