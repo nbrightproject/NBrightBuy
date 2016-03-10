@@ -68,9 +68,14 @@ namespace NBrightBuy.render
         /// <returns>Url to edit product</returns>
         public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model,String ctrl = "products")
         {
-            var entryid = info.ItemID;
+            return EditUrl(info.ItemID, model,ctrl);
+        }
+
+        public IEncodedString EditUrl(int itemid, NBrightRazor model, String ctrl = "products")
+        {
+            var entryid = itemid;
             var url = "Unable to find BackOffice Setting, go into Back Office settings and save.";
-            if (entryid > 0 && StoreSettings.Current.GetInt("backofficetabid") > 0)
+            if (Utils.IsNumeric(entryid) && StoreSettings.Current.GetInt("backofficetabid") > 0)
             {
                 var param = new List<String>();
 
@@ -86,7 +91,7 @@ namespace NBrightBuy.render
                 {
                     paramlist[lp] = param[lp];
                 }
-                
+
                 url = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", paramlist);
             }
             return new RawString(url);

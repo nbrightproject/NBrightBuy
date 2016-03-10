@@ -1059,4 +1059,7 @@
   <data name="Owners.Text" xml:space="preserve">
     <value>Owners</value>
   </data>
+  <data name="AreYouSure.Text" xml:space="preserve">
+    <value>Are You Sure?</value>
+  </data>
 </root>
