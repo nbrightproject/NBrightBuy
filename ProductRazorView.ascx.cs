@@ -54,8 +54,8 @@ namespace Nevoweb.DNN.NBrightBuy
         private Boolean _displayentrypage = false;
         private String _orderbyindex = "";
         private NavigationData _navigationdata;
-        private const String EntityTypeCode = "PRD";
-        private const String EntityTypeCodeLang = "PRDLANG";
+        public String EntityTypeCode = "PRD";
+        public String EntityTypeCodeLang = "PRDLANG";
         private String _itemListName = "";
         private String _print = "";
         private String _printtemplate = "";
@@ -79,7 +79,7 @@ namespace Nevoweb.DNN.NBrightBuy
             if (_guidkey == "") _guidkey = Utils.RequestQueryStringParam(Context, "ref");
             if (_eid== "" && _guidkey != "")
             {
-                var guidData = ModCtrl.GetByGuidKey(PortalId, -1, "PRD", _guidkey);
+                var guidData = ModCtrl.GetByGuidKey(PortalId, -1, EntityTypeCode, _guidkey);
                 if (guidData != null)
                     _eid = guidData.ItemID.ToString("D");
                 else
@@ -469,19 +469,19 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     strFilter += " and (NB3.Visible = 1) "; // get only visible products
 
-                    var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, "PRD", strFilter, "PRDLANG", Utils.GetCurrentCulture(), DebugMode);
+                    var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, EntityTypeCode, strFilter, EntityTypeCodeLang, Utils.GetCurrentCulture(), DebugMode);
 
                     _navigationdata.RecordCount = recordCount.ToString("");
                     _navigationdata.Save();
 
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
 
-                    var l = ModCtrl.GetDataList(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
 
                         #region "do razor template"
 
                         // get same cachekey used for DB return, and use for razor.
-                        var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, "PRD", "PRDLANG", Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                        var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
 
                         var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         var lit = new Literal();
