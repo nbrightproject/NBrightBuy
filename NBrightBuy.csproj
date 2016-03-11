@@ -452,7 +452,9 @@
     <Content Include="CartRazorView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductRazorViewSettings.ascx" />
+    <Content Include="ProductRazorViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />
     <Content Include="ProductViewSettings.ascx" />

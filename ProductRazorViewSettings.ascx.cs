@@ -18,11 +18,13 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class ProductRazorViewSettings : ModuleSettingsBase
     {
 
+        public String SettingsTemplate = "productviewsettings.cshtml";
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "settingspageheader.cshtml", "config", StoreSettings.Current.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "settingspageheader.cshtml", ControlPath, "config", StoreSettings.Current.Settings());
         }
 
         protected override void OnLoad(EventArgs e)
@@ -40,7 +42,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var obj = NBrightBuyUtils.GetSettings(PortalId,ModuleId);
                 obj.ModuleId = base.ModuleId; // need to pass the moduleid here, becuase it doesn;t exists in url for settings and on new settings it needs it.
-                var strOut = NBrightBuyUtils.RazorTemplRender("productviewsettings.cshtml", ModuleId, "", obj,"/DesktopModules/NBright/NBrightBuy","config", Utils.GetCurrentCulture(),StoreSettings.Current.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(SettingsTemplate, ModuleId, "", obj, ControlPath,"config", Utils.GetCurrentCulture(),StoreSettings.Current.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

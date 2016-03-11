@@ -22,7 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             base.OnInit(e);
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "settingspageheader.cshtml", "config", StoreSettings.Current.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "settingspageheader.cshtml", ControlPath, "config", StoreSettings.Current.Settings());
         }
 
         protected override void OnLoad(EventArgs e)

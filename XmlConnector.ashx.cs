@@ -1850,12 +1850,14 @@ namespace Nevoweb.DNN.NBrightBuy
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+            var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
+            if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
             var razorTempl = "";
             if (carttemplate != "")
             {
                 if (lang == "") lang = Utils.GetCurrentCulture();
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0,"", currentcart, "/DesktopModules/NBright/NBrightBuy", theme, lang, StoreSettings.Current.Settings());
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0,"", currentcart, controlpath, theme, lang, StoreSettings.Current.Settings());
             }
             return razorTempl;
         }
@@ -1934,13 +1936,15 @@ namespace Nevoweb.DNN.NBrightBuy
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
                 var themefolder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/themefolder");
+                var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
+                if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
                 if (razortemplate == "") razortemplate = "settings.cshtml";
                 if (moduleid == "") moduleid = "-1";
 
                 // do edit field data if a itemid has been selected
                 var obj = NBrightBuyUtils.GetSettings(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid));
                 obj.ModuleId = Convert.ToInt32(moduleid); // assign for new records
-                strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, obj.ModuleId, "settings", obj,"", themefolder, _lang,null);
+                strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, obj.ModuleId, "settings", obj, controlpath, themefolder, _lang,null);
 
                 return strOut;
 

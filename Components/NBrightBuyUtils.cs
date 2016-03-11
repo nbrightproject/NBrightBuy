@@ -1496,7 +1496,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return result;
         }
 
-        public static void RazorIncludePageHeader(int moduleid, Page page, String razorTemplateName, String theme, Dictionary<String, String> settings, ProductData productdata = null)
+        public static void RazorIncludePageHeader(int moduleid, Page page, String razorTemplateName,String controlPath, String theme, Dictionary<String, String> settings, ProductData productdata = null)
         {
 
             if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
@@ -1507,11 +1507,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var nbi = new NBrightInfo();
                     nbi.Lang = Utils.GetCurrentCulture();
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), nbi, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), settings);
+                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
                 else
                 {
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), productdata, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), settings);
+                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
                 if (razorTempl != "")
                 {

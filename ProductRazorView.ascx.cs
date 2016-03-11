@@ -192,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     // Get meta data from template
 
-                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(),ModuleId.ToString());
+                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(),ModuleId.ToString());
 
                     #region "Order BY"
 
@@ -456,7 +456,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     #endregion
 
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
 
                     // save navigation data
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
@@ -483,7 +483,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         // get same cachekey used for DB return, and use for razor.
                         var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
 
-                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         var lit = new Literal();
                         lit.Text = strOut;
                         phData.Controls.Add(lit);
@@ -557,11 +557,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

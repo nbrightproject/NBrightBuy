@@ -81,7 +81,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var template = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
 
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + template, ThemeFolder, ModSettings.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + template, ControlPath, ThemeFolder, ModSettings.Settings());
 
             strOut = NBrightBuyUtils.RenderCart(ThemeFolder, template);
 
