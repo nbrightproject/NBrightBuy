@@ -71,6 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 {
                     // check for new plugins
                     var pi = new PluginData(PortalId, true);
+                    pi.RemoveDeletedSystemPlugins();
                     pi.UpdateSystemPlugins();
                 }
 

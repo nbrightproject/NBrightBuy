@@ -53,7 +53,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (String.IsNullOrEmpty(ctrl))
                     {
-                        ctrl = StoreSettings.Current.Get("startupctrl");
+                        var plugins = new PluginData(PortalId);
+                        var p = plugins.GetPlugin(0);
+                        if (p != null) ctrl = p.GUIDKey;
                         if (ctrl=="") ctrl = "orders";
                         if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";
                         HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
