@@ -132,6 +132,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     ResetLanguage();
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "resetportalmenu":
+                    param[0] = "";
+                    ResetPortalMenu();
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -275,6 +280,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
+
+        private void ResetPortalMenu()
+        {
+            var pass = GenXmlFunctions.GetField(rpData, "txtclearpass");
+            if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
+            {
+                DataCache.ClearCache();
+
+                var pi = new PluginData(PortalId);
+                pi.RemovePortalLevel();
+
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+            }
+            else
+            {
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "nopin", NotifyCode.fail);
+            }
+        }
 
     }
 

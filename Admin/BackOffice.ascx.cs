@@ -41,6 +41,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
 
+                // check for new plugins
+                var pi = new PluginData(PortalId, true);
+                pi.CheckforNewSystemPlugins(false);
+
                 #region "load templates"
 
                 var t1 = "backoffice.html";

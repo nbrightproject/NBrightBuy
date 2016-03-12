@@ -81,10 +81,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         menuplugin = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, _portallevel, _storeSettings.Settings());
                         if (menuplugin != "")
                         {
-                            var Info = new NBrightInfo();
-                            Info.XMLData = menuplugin;
+                            var info = new NBrightInfo();
+                            info.XMLData = menuplugin;
                             _pluginList = new List<NBrightInfo>();
-                            _pluginList = GetPluginList();
+                            _pluginList = CalcPluginList(info);
                         }
                     }
                 }
@@ -137,8 +137,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     result = true;
                 }
 
+                result = CheckforNewSystemPlugins(result);
+
+            }
+
+            if (result) NBrightBuyUtils.RemoveModCache(0);
+
+            return result;
+        }
+
+        public Boolean CheckforNewSystemPlugins(Boolean result)
+        {
+            if (!_portallevel) // only want to edit system level file
+            {
                 // Add new plugins
-                updated = false;
+                var updated = false;
                 var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
                 if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
                 {
@@ -153,6 +166,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 var nbi = new NBrightInfo();
                                 nbi.XMLData = datain;
                                 AddPlugin(nbi);
+                                if (nbi.GetXmlPropertyInt("genxml/hidden/index") == 0)
+                                {
+                                    var ctrl = nbi.GetXmlProperty("genxml/textbox/ctrl");
+                                    // save so index is correct for all
+                                    Save(false); // only update system level
+                                    // move new plugin to top.
+                                    var topPlugin = GetPlugin(0);
+                                    MovePlugin(ctrl, topPlugin.GUIDKey);
+                                }
+
                                 updated = true;
                                 File.Delete(f);
                             }
@@ -165,10 +188,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (updated)
                     {
                         Save(false); // only update system level
+                    }
+                    foreach (var f in flist)
+                    {
+                        if (f.EndsWith("system.config"))
+                        {
+                            // the system.config file allow us to reset plugins at a system default level.
+                            var datain = File.ReadAllText(f);
+                            try
+                            {
+                                var nbi = new NBrightInfo();
+                                nbi.XMLData = datain;
+
+                                SystemConfigMerge(nbi);
+
+                                File.Delete(f);
+                                updated = true;
+                            }
+                            catch (Exception)
+                            {
+                                // data might not be XML complient (ignore)
+                            }
+
+                        }
+                    }
+                    if (updated)
+                    {
+                        Save(false); // only update system level
                         result = true;
                     }
                 }
-
             }
 
             if (result) NBrightBuyUtils.RemoveModCache(0);
@@ -204,6 +253,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void RemovePortalLevel()
         {
              _templCtrl.RemovePortalLevelTemplate("menuplugin.xml");
+            NBrightBuyUtils.RemoveModCache(0);
         }
 
         #region "base methods"
@@ -243,9 +293,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             if (index == -1)
+            {
                 _pluginList.Add(pluginInfo);
+            }
             else
+            {
                 UpdatePlugin(pluginInfo.XMLData, index);
+            }
 
             return ""; // if everything is OK, don't send a message back.
         }
@@ -466,6 +520,39 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var toctrlidx = moveplugin.GetXmlPropertyInt("genxml/hidden/index");
                 _pluginList.Insert(toctrlidx,selectedplugin);
                 Save();
+            }
+        }
+
+
+        private void SystemConfigMerge(NBrightInfo info)
+        {
+            var sysList = new Dictionary<String, NBrightInfo>();
+            var xmlNodeList = info.XMLDoc.SelectNodes("genxml/plugin/*");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var newInfo = new NBrightInfo {XMLData = carNod.OuterXml};
+                    newInfo.ItemID = sysList.Count;
+                    newInfo.SetXmlProperty("genxml/hidden/index", sysList.Count.ToString(""));
+                    newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
+                    sysList.Add(newInfo.GUIDKey, newInfo);
+                }
+
+                var newpluginList  = new List<NBrightInfo>();
+                foreach (var pluginInfo in _pluginList)
+                {
+                    if (sysList.ContainsKey(pluginInfo.GUIDKey))
+                    {
+                        newpluginList.Add(sysList[pluginInfo.GUIDKey]);
+                    }
+                    else
+                    {
+                        newpluginList.Add(pluginInfo);
+                    }
+                }
+
+                _pluginList = newpluginList;
             }
         }
 
