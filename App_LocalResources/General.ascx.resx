@@ -1062,4 +1062,7 @@
   <data name="AreYouSure.Text" xml:space="preserve">
     <value>Are You Sure?</value>
   </data>
+  <data name="Article.Text" xml:space="preserve">
+    <value>Article</value>
+  </data>
 </root>
