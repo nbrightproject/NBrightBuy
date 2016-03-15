@@ -252,4 +252,7 @@
   <data name="VoucherAmount.Text" xml:space="preserve">
     <value>Voucher</value>
   </data>
+  <data name="cmdAddClientEditorRole.Text" xml:space="preserve">
+    <value>Allow client to Edit assigned articles</value>
+  </data>
 </root>

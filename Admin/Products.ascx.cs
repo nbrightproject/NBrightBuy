@@ -67,7 +67,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (UserId > 0) // only logged in users can see data on this module.
             {
                 var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
-                if (UserInfo.IsInRole(StoreSettings.ClientRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")) )
+                if (UserInfo.IsInRole(StoreSettings.ClientEditorRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")) )
                 {
                     //Client User Only, clients can only alter products they are linked to, so test 
                     if (prodData.HasClient(UserId))

@@ -30,8 +30,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class Container : DotNetNuke.Entities.Modules.PortalModuleBase
     {
 
+        private PluginData _pluginData;
+
         protected override void OnInit(EventArgs e)
         {
+            _pluginData = new PluginData(PortalId);
+
             base.OnInit(e);
             try
             {
@@ -41,9 +45,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var ctrl = Utils.RequestQueryStringParam(Context, "ctrl");
 
                     // anyone only in the client role is only allowed in the products control
-                    if (UserInfo.IsInRole(StoreSettings.ClientRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")))
+                    if (UserInfo.IsInRole(StoreSettings.ClientEditorRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")))
                     {
-                        ctrl = "products";
+                     //   ctrl = "products";
                     }
 
                     if (ctrl == "")
@@ -53,8 +57,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (String.IsNullOrEmpty(ctrl))
                     {
-                        var plugins = new PluginData(PortalId);
-                        var p = plugins.GetPlugin(0);
+                        var p = _pluginData.GetPlugin(0);
                         if (p != null) ctrl = p.GUIDKey;
                         if (ctrl=="") ctrl = "orders";
                         if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";
@@ -77,7 +80,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, "settingssetup", NotifyCode.fail);
                     }
 
-                    if (ctlpath != "")
+                    if (ctlpath != "" && CheckSecurity(ctrl))
                     {
                         // make compatible with running DNN in virtual directory
                         if (HttpContext.Current.Request.ApplicationPath != null && !ctlpath.StartsWith(HttpContext.Current.Request.ApplicationPath)) ctlpath = HttpContext.Current.Request.ApplicationPath + ctlpath;
@@ -104,10 +107,26 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private String GetControlPath(String ctrl)
         {
-            var pluginData = new PluginData(PortalId);
-            var p = pluginData.GetPluginByCtrl(ctrl);
+            var p = _pluginData.GetPluginByCtrl(ctrl);
             return p.GetXmlProperty("genxml/textbox/path");
         }
+
+        private Boolean CheckSecurity(String ctrl)
+        {
+            if (UserInfo.IsSuperUser) return true;
+            if (UserInfo.IsInRole("Administrators")) return true;
+
+            var p = _pluginData.GetPluginByCtrl(ctrl);
+            var roles = p.GetXmlProperty("genxml/textbox/roles");
+            if (roles.Trim() == "") roles = StoreSettings.ManagerRole + "," + StoreSettings.EditorRole;
+            var rlist = roles.Split(',');
+            foreach (var r in rlist)
+            {
+                if (UserInfo.IsInRole(r)) return true;
+            }
+            return false;
+        }
+
 
     }
 

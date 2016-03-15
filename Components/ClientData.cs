@@ -12,6 +12,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Mail;
 using NBrightCore.common;
@@ -53,16 +54,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return _clientInfo;
         }
 
-        public void AddClientRole(ModSettings modSettings)
+        public void AddClientEditorRole()
         {
             if (_userInfo != null)
             {
-                if (!_userInfo.IsInRole(StoreSettings.ClientRole))
+                if (!_userInfo.IsInRole(StoreSettings.ClientEditorRole))
                 {
                     var rc = new DotNetNuke.Security.Roles.RoleController();
-                    var ri = rc.GetRoleByName(PortalId, StoreSettings.ClientRole);
-                    if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate);
+                    var ri = rc.GetRoleByName(PortalId, StoreSettings.ClientEditorRole);
+                    if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate, Null.NullDate);
                     if (StoreSettings.Current.Get("sendclientroleemail") == "True") NBrightBuyUtils.SendEmail(_userInfo.Email, "addclientrole.html", _clientInfo, "", "", _userInfo.Profile.PreferredLocale);
+                }
+            }
+        }
+
+        public void RemoveClientEditorRole()
+        {
+            if (_userInfo != null)
+            {
+                if (_userInfo.IsInRole(StoreSettings.ClientEditorRole))
+                {
+                    var rc = new DotNetNuke.Security.Roles.RoleController();
+                    var ri = rc.GetRoleByName(PortalId, StoreSettings.ClientEditorRole);
+                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    if (ri != null) RoleController.DeleteUserRole(_userInfo, ri, portalSettings, false);
                 }
             }
         }
@@ -75,7 +90,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _userInfo.PasswordResetToken = Guid.NewGuid();
                 _userInfo.Membership.UpdatePassword = true;
                 UserController.UpdateUser(_userInfo.PortalID, _userInfo);
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 Mail.SendMail(_userInfo, MessageType.PasswordReminder, portalSettings);               
             }
         }
@@ -98,6 +113,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 _userInfo.Email = email;
                 UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
+            }
+
+            // ClientEditorRole
+            var clientEditorRole = GenXmlFunctions.GetField(rpData, "clienteditorrole");
+            if (clientEditorRole == "True")
+            {
+                AddClientEditorRole();
+            }
+            else
+            {
+                RemoveClientEditorRole();
             }
 
             // update Discount codes
@@ -329,6 +355,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
+                if (_userInfo.IsInRole(StoreSettings.ClientEditorRole))
+                {
+                    _clientInfo.SetXmlProperty("genxml/checkbox/clienteditorrole", "True");
+                }
+                else
+                {
+                    _clientInfo.SetXmlProperty("genxml/checkbox/clienteditorrole", "False");
+                }
 
                 var objCtrl = new NBrightBuyController();
                 DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));

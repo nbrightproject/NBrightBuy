@@ -256,7 +256,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     {
                         var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
                         clientData.AuthoriseClient();
-                        clientData.AddClientRole(ModSettings);
+                        clientData.AddClientEditorRole();
                         if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();                            
                     }
                     param[0] = "uid=" + cArg;

@@ -109,8 +109,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                 // clientEditor roles can only access products, so only add the exit button to the menu.
                 // the security restriuction on product ctrl is applied in the container.ascx.cs
-                if (!NBrightBuyUtils.IsClientOnly()) 
-                {
+                //if (!NBrightBuyUtils.IsClientOnly()) 
+                //{
                     foreach (var rootname in rootList)
                     {
                         var rtnlist = pluginData.GetSubList(rootname.Key);
@@ -185,7 +185,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         if (securityrootcheck) strOut += "</li>";
                     }
 
-                }
+               // }
 
                 // add exit button
                 strOut += "<li>";
@@ -211,9 +211,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (pluginData.GetXmlPropertyBool("genxml/checkbox/hidden")) return false;
 
             var roles = pluginData.GetXmlProperty("genxml/textbox/roles");
-            if (roles.Trim() == "") return true;
+            if (roles.Trim() == "") roles=  StoreSettings.ManagerRole + "," + StoreSettings.EditorRole;
             if (UserInfo.IsSuperUser) return true;
-            if (UserInfo.IsInRole("Administrator")) return true;
+            if (UserInfo.IsInRole("Administrators")) return true;
             var rlist = roles.Split(',');
             foreach (var r in rlist)
             {
