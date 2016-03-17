@@ -147,6 +147,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 {
                     ImportRecord(xmlFile,"PRD");
                     ImportRecord(xmlFile, "PRDLANG");
+                    ImportRecord(xmlFile, "AMY");
+                    ImportRecord(xmlFile, "AMYLANG");
                     ImportRecord(xmlFile, "PRDXREF");
                 }
 

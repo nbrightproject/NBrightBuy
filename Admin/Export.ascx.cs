@@ -141,7 +141,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (GenXmlFunctions.GetField(rpData,"exportproducts") == "True")
             {
-                var l = ModCtrl.GetList(PortalId, -1, "PRD");
+
+                var l = ModCtrl.GetList(PortalId, -1, "AMY");
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+
+                l = ModCtrl.GetList(PortalId, -1, "AMYLANG");
+                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+
+                l = ModCtrl.GetList(PortalId, -1, "PRD");
                 foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
 
                 l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
@@ -218,6 +225,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
             }
 
+            l = ModCtrl.GetList(PortalId, -1, "AMY");
+            foreach (var i in l)
+            {
+                var nodlist = i.XMLDoc.SelectNodes("genxml/imgs/*");
+                if (nodlist != null)
+                {
+                    foreach (XmlNode nod in nodlist)
+                    {
+                        var fname = nod.SelectSingleNode("./hidden/imagepath");
+                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                    }
+                }
+            }
+
+
             l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
             foreach (var i in l)
             {
@@ -235,6 +257,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var fileMapPathList = new List<string>();
 
             var l = ModCtrl.GetList(PortalId, -1, "PRD");
+            foreach (var i in l)
+            {
+                var nodlist = i.XMLDoc.SelectNodes("genxml/docs/*");
+                if (nodlist != null)
+                {
+                    foreach (XmlNode nod in nodlist)
+                    {
+                        var fname = nod.SelectSingleNode("./hidden/docpath");
+                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                    }
+                }
+            }
+
+            l = ModCtrl.GetList(PortalId, -1, "AMY");
             foreach (var i in l)
             {
                 var nodlist = i.XMLDoc.SelectNodes("genxml/docs/*");
