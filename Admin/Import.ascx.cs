@@ -245,6 +245,26 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             nbi.ParentItemId = _recordXref[nbi.ParentItemId];
                         }
                     }
+
+                    if (typeCode == "AMY" && updaterecordsbyref)
+                    {
+                        var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
+                        if (itemref != "")
+                        {
+                            var l = ModCtrl.GetList(PortalId, -1, "AMY", " and NB3.ProductRef = '" + itemref.Replace("'", "''") + "' ");
+                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                        }
+                    }
+                    if (typeCode == "AMYLANG" && updaterecordsbyref)
+                    {
+                        if (_recordXref.ContainsKey(nbi.ParentItemId))
+                        {
+                            var l = ModCtrl.GetList(PortalId, -1, "AMYLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
+                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                            nbi.ParentItemId = _recordXref[nbi.ParentItemId];
+                        }
+                    }
+
                     if (typeCode == "CATEGORY" && updaterecordsbyref)
                     {
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtcategoryref");
@@ -293,6 +313,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
                     if (typeCode == "PRD") _productList.Add(newitemid);
+                    if (typeCode == "AMY") _productList.Add(newitemid);
 
                 }
 
