@@ -270,9 +270,17 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                     else
                     {
-                        // reset search if category selected.
-                        _navigationdata.ResetSearch();
-                        strFilter = sqlTemplateFilter;
+                        if (_navigationdata.FilterMode)
+                        {
+                            // filter mode so continue with filter
+                            strFilter = _navigationdata.Criteria;
+                        }
+                        else
+                        {
+                            // reset search if category selected when not in filter mode
+                            _navigationdata.ResetSearch();
+                            strFilter = sqlTemplateFilter;
+                        }
                     }
 
                     #endregion

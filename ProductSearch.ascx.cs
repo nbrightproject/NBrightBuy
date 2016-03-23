@@ -118,49 +118,56 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var param = new string[2];
             var targlist = _targetModuleKey.Split(',');
-                switch (e.CommandName.ToLower())
-                {
-                    case "search":
-                        foreach (var targ in targlist)
+            switch (e.CommandName.ToLower())
+            {
+                case "search":
+                    foreach (var targ in targlist)
+                    {
+                        var navigationData = new NavigationData(PortalId, targ);
+                        var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
+                        navigationData.Build(strXml, _templD);
+                        navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
+                        navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
+                        navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
+                        navigationData.Save();
+
+                        if (navigationData.CategoryId > 0)
                         {
-                            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
-                            var navigationData = new NavigationData(PortalId, targ);
-                            navigationData.Build(strXml, _templD);
-                            navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                            navigationData.XmlData = GenXmlFunctions.GetGenXml(rpData);
-                            navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
-                            navigationData.Save();
-
-                            if (StoreSettings.Current.DebugModeFileOut)
-                            {
-                                strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
-                                var xmlDoc = new System.Xml.XmlDocument();
-                                xmlDoc.LoadXml(strXml);
-                                xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
-                            }
-
+                            // if we're using categoryid, redirect including catid param
+                            param[0] = "catid=" + navigationData.CategoryId.ToString("D");
                         }
 
-                        Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
-                        break;
-                    case "resetsearch":
-                        // clear cookie info
-                        foreach (var targ in targlist)
+                        if (StoreSettings.Current.DebugModeFileOut)
                         {
-                            var navigationData = new NavigationData(PortalId, targ);
-                            navigationData.Delete();
+                            strXml = "<root><sql><![CDATA[" + navigationData.Criteria + "]]></sql>" + strXml + "</root>";
+                            var xmlDoc = new System.Xml.XmlDocument();
+                            xmlDoc.LoadXml(strXml);
+                            xmlDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_search.xml");
                         }
-                        Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                        break;
-                    case "orderby":
-                        foreach (var targ in targlist)
-                        {
-                            var navigationData = new NavigationData(PortalId, targ);
-                            navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
-                            navigationData.Save();
-                        }
-                        break;
-                }
+
+                    }
+
+                    Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
+                    break;
+                case "resetsearch":
+                    param[0] = "catid=" + Utils.RequestParam(Context, "catid"); // use catid if in url
+                    // clear cookie info
+                    foreach (var targ in targlist)
+                    {
+                        var navigationData = new NavigationData(PortalId, targ);
+                        navigationData.Delete();
+                    }
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
+                case "orderby":
+                    foreach (var targ in targlist)
+                    {
+                        var navigationData = new NavigationData(PortalId, targ);
+                        navigationData.OrderBy = GenXmlFunctions.GetSqlOrderBy(rpData);
+                        navigationData.Save();
+                    }
+                    break;
+            }
         }
 
         #endregion
