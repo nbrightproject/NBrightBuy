@@ -1065,4 +1065,7 @@
   <data name="Article.Text" xml:space="preserve">
     <value>Article</value>
   </data>
+  <data name="attrcode.Text" xml:space="preserve">
+    <value>Attribute Code</value>
+  </data>
 </root>

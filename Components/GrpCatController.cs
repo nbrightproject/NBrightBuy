@@ -529,6 +529,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 grpcat.ishidden = i.GetXmlPropertyBool("genxml/checkbox/chkishidden");
                 grpcat.disabled = i.GetXmlPropertyBool("genxml/checkbox/chkdisable");
                 grpcat.grouptyperef = i.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                grpcat.attributecode = i.GetXmlProperty("genxml/dropdownlist/ddlattrcode");
                 grpcat.parentcatid = i.ParentItemId;
                 grpcat.entrycount = GetEntryCount(lx, grpcat.categoryid);
                 if (GroupsDictionary.ContainsKey(grpcat.grouptyperef)) grpcat.groupname = GroupsDictionary[grpcat.grouptyperef];

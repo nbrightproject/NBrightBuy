@@ -33,7 +33,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _storageType = StoreSettings.Current.StorageTypeClient;
             Exists = false;
             _portalId = portalId;
-            _cookieName = "NBrightBuyNav" + "_" + moduleKey + nameAppendix;
+            _cookieName = "NBrightBuyNav" + "_" + moduleKey.Trim() + nameAppendix.Trim();
             Get();
         }
 

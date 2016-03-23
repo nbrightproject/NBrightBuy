@@ -275,6 +275,9 @@ namespace NBrightBuy.render
                         case "grouptyperef":
                             strOut = objCInfo.grouptyperef;
                             break;
+                        case "attributecode":
+                            strOut = objCInfo.attributecode;
+                            break;
                         case "imageurl":
                             strOut = objCInfo.imageurl;
                             break;

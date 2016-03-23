@@ -57,7 +57,7 @@
             [<tag id="searchcategory" type="hidden" value=""/>]     
         </div>
 
-        [<tag id="fields" type="postback" value="genxml/checkbox/chkdisable,genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid" />]
+        [<tag id="fields" type="postback" value="genxml/checkbox/chkdisable,genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid,genxml/dropdownlist/ddlattrcode" />]
         [<tag id="localizedfields" type="postback" value="genxml/textbox/txtcategoryname,genxml/textbox/txtcategorydesc,genxml/textbox/txtseoname,genxml/textbox/txtmetadescription,genxml/textbox/txtmetakeywords,genxml/textbox/txtseopagetitle,genxml/edt/message" />]
 
         <!-- Is this hidden tag required -->
@@ -133,6 +133,12 @@
                                     <div class="col-md-12">
                                         <label class="control-label">[<tag type="valueof" resourcekey="General.Meta" />] [<tag type="valueof" resourcekey="General.Description" />]</label>[<tag type="editflag" />]
                                         [<tag id="txtmetadescription" cssclass="form-control" type="textbox" maxlength="250" rows="2" textmode="MultiLine" />]
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">[<tag type="valueof" resourcekey="General.attrcode" />]</label>
+                                        [<tag id="ddlattrcode" cssclass="s2_with_tag populate" type="groupdropdown" allowblank="true" blank="" showhidden="true" groupsonly="true" />]
                                     </div>
                                 </div>
                                 <div class="form-group">

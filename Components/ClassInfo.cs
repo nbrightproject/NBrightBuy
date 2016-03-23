@@ -29,6 +29,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public string categoryref { get; set; }
         public string categoryrefGUIDKey { get; set; }        
         public string grouptyperef { get; set; }
+        public string attributecode { get; set; }
         public string groupname { get; set; }
         public bool archived { get; set; }
         public bool ishidden { get; set; }
