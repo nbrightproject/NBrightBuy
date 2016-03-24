@@ -131,11 +131,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         navigationData.Mode = GenXmlFunctions.GetField(rpData, "navigationmode").ToLower();
                         navigationData.Save();
 
-                        if (navigationData.CategoryId > 0)
-                        {
-                            // if we're using categoryid, redirect including catid param
-                            param[0] = "catid=" + navigationData.CategoryId.ToString("D");
-                        }
 
                         if (StoreSettings.Current.DebugModeFileOut)
                         {
@@ -150,13 +145,19 @@ namespace Nevoweb.DNN.NBrightBuy
                     Response.Redirect(Globals.NavigateURL(_redirecttabid, "", param), true);
                     break;
                 case "resetsearch":
-                    param[0] = "catid=" + Utils.RequestParam(Context, "catid"); // use catid if in url
+                    var catid = Utils.RequestParam(Context, "catid");
                     // clear cookie info
                     foreach (var targ in targlist)
                     {
                         var navigationData = new NavigationData(PortalId, targ);
+
+                        if (!Utils.IsNumeric(catid)) catid = navigationData.CategoryId.ToString("D"); // re3set to current catid if selected.
+
                         navigationData.Delete();
                     }
+
+                    if (Utils.IsNumeric(catid)) param[0] = "catid=" + catid; // use catid if in url
+
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
                 case "orderby":
