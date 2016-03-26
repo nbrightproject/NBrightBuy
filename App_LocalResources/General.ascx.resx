@@ -1068,4 +1068,13 @@
   <data name="attrcode.Text" xml:space="preserve">
     <value>Attribute Code</value>
   </data>
+  <data name="cmdFilter.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="cmdResetFilters.Text" xml:space="preserve">
+    <value>&amp;lt;i class="fa fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Reset filter(s)</value>
+  </data>
+  <data name="filterkeywords.Text" xml:space="preserve">
+    <value>Keyword(s)</value>
+  </data>
 </root>
