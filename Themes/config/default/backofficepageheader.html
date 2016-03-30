@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="//fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css">
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/jquery-ui/jquery-ui-nbb.css" rel="stylesheet"><!-- This stylesheet is modified from jQuery default - see readme.html -->
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/config/default/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
@@ -42,10 +42,10 @@ $(function () {
 })
 
 $(document).ready(function() {
-  $(window).keydown(function(event){
-    if ((event.which== 13) && ($(event.target)[[0]]!=$("textarea")[[0]])) {
-      event.preventDefault();
-      return false;
+    $(window).keydown(function (event) {
+        if ((event.which == 13) && ($(event.target)[[0]].type != 'textarea')) {
+        event.preventDefault();
+        return false;
     }
   });
 });

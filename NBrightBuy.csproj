@@ -468,7 +468,9 @@
     </Content>
     <Content Include="ProductSearchSettings.ascx" />
     <Content Include="ProductView.ascx" />
-    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx" />
+    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
     <Content Include="Themes\Classic\css\NBS_Cart.css" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
