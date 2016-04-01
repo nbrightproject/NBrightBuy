@@ -204,7 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             foreach (var r in _productList)
             {
                 // if product then validate the data.
-                var prodData = ProductUtils.GetProductData(r.Key, StoreSettings.Current.EditLanguage,true, r.Value,r.Value + "LANG");
+                var prodData = ProductUtils.GetProductData(r.Key, StoreSettings.Current.EditLanguage,true, r.Value);
                 if (prodData.Exists)
                 {
                     prodData.Validate();

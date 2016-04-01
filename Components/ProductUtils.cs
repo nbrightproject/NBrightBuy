@@ -460,14 +460,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="typeCode">Typecode of record default "PRD"</param>
         /// <param name="typeLangCode">Langauge Typecode of record default "PRDLANG"</param>
         /// <returns></returns>
-        public static ProductData GetProductData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD", String typeLangCode = "PRDLANG")
+        public static ProductData GetProductData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD")
         {
             ProductData prdData;
             var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
             prdData = (ProductData)Utils.GetCache(cacheKey);
             if ((prdData == null) || (productId == -1))
             {
-                prdData = new ProductData(productId, lang, hydrateLists, typeCode, typeLangCode);
+                prdData = new ProductData(productId, lang, hydrateLists, typeCode);
                 Utils.SetCache(cacheKey, prdData);
             }
             return prdData;

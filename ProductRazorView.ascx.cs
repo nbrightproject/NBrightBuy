@@ -123,7 +123,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if we have entry detail display, but no catd, get the default one.
                 if (_displayentrypage && _catid == "" && Utils.IsNumeric(_eid))
                 {
-                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture());
+                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid),Utils.GetCurrentCulture(), true, EntityTypeCode);
                     var defcat = prdData.GetDefaultCategory();
                     if (defcat != null) _catid = defcat.categoryid.ToString("");
                 }
@@ -330,7 +330,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                         var redirecturl = "";
                                         if (Utils.IsNumeric(_eid))
                                         {
-                                            var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture());
+                                            var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture(), true, EntityTypeCode);
                                             redirecturl = NBrightBuyUtils.GetEntryUrl(PortalId, _eid, _modkey, prdData.SEOName, TabId.ToString(), "", activeCat.categoryrefGUIDKey);
                                         }
                                         else
@@ -536,7 +536,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void RazorDisplayDataEntry(String entryId)
         {
-            var productData = ProductUtils.GetProductData(entryId, Utils.GetCurrentCulture());
+            var productData = ProductUtils.GetProductData(Convert.ToInt32(entryId), Utils.GetCurrentCulture(),true,EntityTypeCode);
 
             if (productData.Exists)
         {

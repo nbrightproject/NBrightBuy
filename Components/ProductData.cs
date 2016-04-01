@@ -35,15 +35,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ResetData(int productId, String lang, Boolean hydrateLists = true)
         {
-            ResetData(productId, lang, hydrateLists, "PRD", "PRDLANG");
+            ResetData(productId, lang, hydrateLists, "PRD");
         }
 
         // used to reset the data, so we don;t have to create new object in import loops for memory management.
-        public void ResetData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD", String typeLangCode = "PRDLANG")
+        public void ResetData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD")
         {
             _lang = lang;
             _typeCode = typeCode;
-            _typeLangCode = typeLangCode;
+            _typeLangCode = typeCode + "LANG";
             #region "Init data objects to prevent possible errors"
 
             Models = new List<NBrightInfo>();
@@ -85,9 +85,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="hydrateLists">populate the sub data into lists</param>
         /// <param name="typeCode">Typecode of record default "PRD"</param>
         /// <param name="typeLangCode">Langauge Typecode of record default "PRDLANG"</param>
-        public ProductData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD", String typeLangCode = "PRDLANG")
+        public ProductData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD")
         {
-            ResetData(productId, lang, hydrateLists, typeCode, typeLangCode);
+            ResetData(productId, lang, hydrateLists, typeCode);
         }
 
         #region "public functions/interface"
