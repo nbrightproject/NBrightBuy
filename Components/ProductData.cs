@@ -30,12 +30,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private int _portalId = -1; // so we don;t need to use Portalsettings.Current (If called from scheduler)
         private StoreSettings _storeSettings = null;
 
+        private String _typeCode = "";
+        private String _typeLangCode = "";
 
-        // used to reset the data, so we don;t have to create new object in import loops for memory management.
         public void ResetData(int productId, String lang, Boolean hydrateLists = true)
         {
-            _lang = lang;
+            ResetData(productId, lang, hydrateLists, "PRD", "PRDLANG");
+        }
 
+        // used to reset the data, so we don;t have to create new object in import loops for memory management.
+        public void ResetData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD", String typeLangCode = "PRDLANG")
+        {
+            _lang = lang;
+            _typeCode = typeCode;
+            _typeLangCode = typeLangCode;
             #region "Init data objects to prevent possible errors"
 
             Models = new List<NBrightInfo>();
@@ -45,10 +53,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Docs = new List<NBrightInfo>();
 
             DataRecord = new NBrightInfo(true);
-            DataRecord.TypeCode = "PRD";
+            DataRecord.TypeCode = _typeCode;
             DataRecord.Lang = "";
             DataLangRecord = new NBrightInfo(true);
-            DataLangRecord.TypeCode = "PRDLANG";
+            DataLangRecord.TypeCode = _typeLangCode;
             DataLangRecord.Lang = lang;
 
             #endregion
@@ -68,15 +76,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // do nothing assume, resetdata will be used later in calling code.
         }
 
+
         /// <summary>
         /// Populate the ProductData in this class
         /// </summary>
         /// <param name="productId">productid</param>
         /// <param name="lang">langauge to populate</param>
         /// <param name="hydrateLists">populate the sub data into lists</param>
-        public ProductData(int productId, String lang, Boolean hydrateLists = true)
+        /// <param name="typeCode">Typecode of record default "PRD"</param>
+        /// <param name="typeLangCode">Langauge Typecode of record default "PRDLANG"</param>
+        public ProductData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD", String typeLangCode = "PRDLANG")
         {
-            ResetData(productId,lang,hydrateLists);
+            ResetData(productId, lang, hydrateLists, typeCode, typeLangCode);
         }
 
         #region "public functions/interface"
@@ -371,7 +382,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var objCtrl = new NBrightBuyController();
             var strSelectedIds = "";
-            var arylist = objCtrl.GetList(_portalId, -1, "PRDXREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
+            var arylist = objCtrl.GetList(_portalId, -1, _typeCode + "XREF", " and NB1.parentitemid = " + Info.ItemID.ToString(""));
             foreach (var obj in arylist)
             {
                 strSelectedIds += obj.XrefItemId.ToString("") + ",";
@@ -380,7 +391,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (strSelectedIds.TrimEnd(',') != "")
             {
                 var strFilter = " and NB1.[ItemId] in (" + strSelectedIds.TrimEnd(',') + ") ";
-                relList = objCtrl.GetDataList(_portalId, -1, "PRD", "PRDLANG", _lang, strFilter, "");
+                relList = objCtrl.GetDataList(_portalId, -1, _typeCode, _typeLangCode, _lang, strFilter, "");
             }
             return relList;
         }
@@ -1050,14 +1061,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var strGuid = productid.ToString("") + "x" + Info.ItemID.ToString("");
                 var objCtrl = new NBrightBuyController();
-                var nbi = objCtrl.GetByGuidKey(_portalId, -1, "PRDXREF", strGuid);
+                var nbi = objCtrl.GetByGuidKey(_portalId, -1, _typeCode + "XREF", strGuid);
                 if (nbi == null)
                 {
                     nbi = new NBrightInfo();
                     nbi.ItemID = -1;
                     nbi.PortalId = _portalId;
                     nbi.ModuleId = -1;
-                    nbi.TypeCode = "PRDXREF";
+                    nbi.TypeCode = _typeCode + "XREF";
                     nbi.XrefItemId = productid;
                     nbi.ParentItemId = Info.ItemID;
                     nbi.XMLData = null;
@@ -1076,7 +1087,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
             var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
-            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'PRDXREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
+            var stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = '" + _typeCode + "XREF' and XrefItemId = " + xrefitemid + " and parentitemid = " + parentitemid;
             objCtrl.ExecSql(stmt);
         }
 
@@ -1138,7 +1149,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (DataLangRecord == null)
             {
                 // we have no datalang record for this language, so get an existing one and save it.
-                var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                var l = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
                 if (l.Count > 0)
                     DataLangRecord = (NBrightInfo) l[0].Clone();
                 else
@@ -1146,7 +1157,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 DataLangRecord.ItemID = -1;
                 DataLangRecord.ValidateXmlFormat();
-                DataLangRecord.TypeCode = "PRDLANG";
+                DataLangRecord.TypeCode = _typeLangCode;
                 DataLangRecord.ParentItemId = Info.ItemID;
                 DataLangRecord.Lang = _lang;
                 objCtrl.Update(DataLangRecord);
@@ -1187,7 +1198,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                var l = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
                     var nbi = (NBrightInfo)DataLangRecord.Clone();
@@ -1199,7 +1210,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (l.Count > 1)
                 {
                     // we have more records than should exists, remove any old ones.
-                    var l2 = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var l2 = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
                     var lp2 = 1;
                     foreach (var i in l2)
                     {
@@ -1268,7 +1279,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var newid = objCtrl.Update(dr);
             
             // copy all language records
-            var l = objCtrl.GetList(_portalId, -1, "PRDLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            var l = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dlr in l)
             {
                 dlr.ParentItemId = newid;
@@ -1297,7 +1308,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // copy PRDXREF records
-            l = objCtrl.GetList(_portalId, -1, "PRDXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            l = objCtrl.GetList(_portalId, -1, _typeCode + "XREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
             foreach (var dr3 in l)
             {
                 dr3.ParentItemId = newid;
@@ -1517,7 +1528,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var testGUIDKey = newGUIDKey.ToLower();
             while (doloop)
             {
-                var obj = objCtrl.GetByGuidKey(_portalId, -1, "PRD", testGUIDKey);
+                var obj = objCtrl.GetByGuidKey(_portalId, -1, _typeCode, testGUIDKey);
                 if (obj != null && obj.ItemID != productId)
                 {
                     testGUIDKey = newGUIDKey + lp;
@@ -1537,7 +1548,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Exists = false;
             var objCtrl = new NBrightBuyController();
             if (productId == -1) productId = AddNew(); // add new record if -1 is used as id.
-            Info = objCtrl.Get(productId, "PRDLANG", _lang);
+            Info = objCtrl.Get(productId, _typeLangCode, _lang);
             if (Info != null)
             {
                 _portalId = Info.PortalId;
@@ -1586,7 +1597,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             else
                 _portalId = PortalSettings.Current.PortalId;
             nbi.PortalId = _portalId;
-            nbi.TypeCode = "PRD";
+            nbi.TypeCode = _typeCode;
             nbi.ModuleId = -1;
             nbi.ItemID = -1;
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
@@ -1598,7 +1609,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 nbi = new NBrightInfo(true);
                 nbi.PortalId = _portalId;
-                nbi.TypeCode = "PRDLANG";
+                nbi.TypeCode = _typeLangCode;
                 nbi.ModuleId = -1;
                 nbi.ItemID = -1;
                 nbi.Lang = lang;

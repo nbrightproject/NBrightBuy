@@ -36,7 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
 
         private Dictionary<int, int> _recordXref;
-        private List<int> _productList;
+        private Dictionary<int,string> _productList;
 
         override protected void OnInit(EventArgs e)
         {
@@ -116,11 +116,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var nbi = new NBrightInfo(false);
                     nbi.XMLData = importXML;
                     _recordXref = new Dictionary<int, int>();
-                    _productList = new List<int>();
+                    _productList = new Dictionary<int,string>();
                     DoImport(nbi);
                     DoImportImages(nbi);
                     DoImportDocs(nbi);
                     Validate();
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
                     NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
@@ -203,7 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             foreach (var r in _productList)
             {
                 // if product then validate the data.
-                var prodData = ProductUtils.GetProductData(r, StoreSettings.Current.EditLanguage);
+                var prodData = ProductUtils.GetProductData(r.Key, StoreSettings.Current.EditLanguage,true, r.Value,r.Value + "LANG");
                 if (prodData.Exists)
                 {
                     prodData.Validate();
@@ -312,8 +313,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     var newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
-                    if (typeCode == "PRD") _productList.Add(newitemid);
-                    if (typeCode == "AMY") _productList.Add(newitemid);
+                    if (typeCode == "PRD" || typeCode == "AMY") _productList.Add(newitemid, typeCode);
 
                 }
 
