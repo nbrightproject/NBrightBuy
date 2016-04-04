@@ -33,13 +33,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String _typeCode = "";
         private String _typeLangCode = "";
 
-        public void ResetData(int productId, String lang, Boolean hydrateLists = true)
+        public void ResetData(int productId, String lang, Boolean hydrateLists)
         {
             ResetData(productId, lang, hydrateLists, "PRD");
         }
 
         // used to reset the data, so we don;t have to create new object in import loops for memory management.
-        public void ResetData(int productId, String lang, Boolean hydrateLists = true, String typeCode = "PRD")
+        public void ResetData(int productId, String lang, Boolean hydrateLists, String typeCode)
         {
             _lang = lang;
             _typeCode = typeCode;
