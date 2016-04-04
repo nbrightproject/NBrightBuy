@@ -305,7 +305,13 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .orderstatus120 {background:#eb2659;} /* Being Manufactured - Pink */
 
 /* Branding */
-.nbstore-logo {height:50px;background:#1aa8e3 url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/nb-store_24x24.png") no-repeat 0 12px;font-family:'Source Sans Pro', sans-serif;font-weight:300;font-size:28px;color:white;line-height:48px;padding-left:34px;}
+.backoffice-logo {height:50px;font-family:'Source Sans Pro', sans-serif;font-weight:300;font-size:28px;color:white;line-height:48px;padding-left:34px;background:#bbcf1f url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/amylis_24x24.png") no-repeat 0 12px;}
+/* NB-Store */
+.nbstore .backoffice-logo {background:#1aa8e3 url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/nb-store_24x24.png") no-repeat 0 12px;}
+/* Amylis */
+.amylis .backoffice-logo {background:#bbcf1f url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/amylis_24x24.png") no-repeat 0 12px;}
+.amylis .navbar #logo{background:#bbcf1f;}
+.amylis .ui-accordion-header.ui-state-active {background:#bbcf1f !important;}
 
 /*
  * jQuery File Upload Plugin CSS 1.3.0

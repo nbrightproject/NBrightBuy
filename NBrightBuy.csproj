@@ -1573,9 +1573,15 @@
     <EmbeddedResource Include="App_LocalResources\paymentsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\paymentsettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="App_LocalResources\plugins.ascx.it-IT.resx" />
-    <EmbeddedResource Include="App_LocalResources\plugins.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.fr-FR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\plugins.ascx.it-IT.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\plugins.ascx.nl-NL.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\productsearch.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.nl-NL.resx" />

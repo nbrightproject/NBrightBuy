@@ -105,7 +105,7 @@ select month(isnull([XMLData].value('(genxml/createddate)[1]','datetime'),'')) a
 	  ,year(isnull([XMLData].value('(genxml/createddate)[1]','datetime'),'')) as createdyear
 	  ,isnull([XMLData].value('(genxml/appliedtotal)[1]','decimal(10,2)'),0) as appliedtotal
   FROM {databaseOwner}[{objectQualifier}NBrightBuy]
-  where typecode = 'ORDER' 
+  where typecode = 'ORDER' and GUIDKey != '010' and GUIDKey != '020' and GUIDKey != '030'
   and isnull([XMLData].value('(genxml/createddate)[1]','datetime'),'') > dateadd(M,-25,GETDATE())
   
 set @getdata = (select createdyear, createdmonth, sum(appliedtotal) as appliedtotal, count(createdyear) as [ordercount]  from @temptable

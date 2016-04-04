@@ -429,7 +429,7 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString GroupSelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true)
+        public IEncodedString GroupSelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1")
         {
             var strOut = "";
             var upd = getUpdateAttr(xpath, attributes);
@@ -440,7 +440,7 @@ namespace NBrightBuy.render
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
 
-            var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true);
+            var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true, groupType);
             foreach (var tItem in tList)
             {
                 if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")

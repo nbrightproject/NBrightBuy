@@ -1462,7 +1462,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 var ddl = new ListBox();
                 ddl = (ListBox)GenXmlFunctions.AssignByReflection(ddl, xmlNod);
 
-                var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true);
+                var grptype = "1";
+                if (ddl.Attributes["grouptype"] != null)
+                {
+                    grptype = ddl.Attributes["grouptype"];
+                }
+
+                var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true, grptype);
                 foreach (var tItem in tList)
                 {
                     if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")
@@ -3651,6 +3657,10 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 rbl.Attributes.Add("groupsonly", xmlNod.Attributes["groupsonly"].Value);
             }
+            if (xmlNod.Attributes != null && (xmlNod.Attributes["grouptype"] != null))
+            {
+                rbl.Attributes.Add("grouptype", xmlNod.Attributes["grouptype"].Value);
+            }
             rbl = (DropDownList)GenXmlFunctions.AssignByReflection(rbl, xmlNod);
             rbl.DataBinding += GroupdropdownDataBind;
             if (xmlNod.Attributes != null && (xmlNod.Attributes["id"] != null))
@@ -3669,8 +3679,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 ddl.Visible = visibleStatus.DefaultIfEmpty(true).First();
                 if (ddl.Visible)
                 {
+                    var grptype = "1";
+                    if (ddl.Attributes["grouptype"] != null)
+                    {
+                        grptype = ddl.Attributes["grouptype"];
+                    }
 
-                    var objL = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true);
+                    var objL = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true, grptype);
 
                     if (ddl.Attributes["blank"] != null)
                     {

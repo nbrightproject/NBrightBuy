@@ -34,7 +34,7 @@
     <value xml:space="preserve">Catalogo</value>
   </data>
   <data name="catalog_icon.Text" lastModified="2015-11-12 08:49:37">
-    <value xml:space="preserve">&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+    <value xml:space="preserve">&lt;i class="fa fa-book fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="categories.Text" lastModified="2015-11-12 08:49:37">
     <value xml:space="preserve">Categorie</value>

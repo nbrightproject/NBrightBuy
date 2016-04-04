@@ -27,6 +27,12 @@ $(document).ready(function() {
 		$(".savebutton").show();
     });
 
+    $("select[[id*='grouptype']]").change(function () {
+        var id = $(this).attr("id").replace('grouptype', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
+    });
+
     $("input[[id*='groupref']]").keyup(function () {
         var id = $(this).attr("id").replace('groupref', 'isdirty');
         $('#' + id).val(true);
@@ -84,8 +90,9 @@ $(document).ready(function() {
 								<tr>
 									<th>[<tag type="valueof" resourcekey="General.Type" />]</th>
 									<th>[<tag type="valueof" resourcekey="General.Ref" />]</th>
+									<th>[<tag type="valueof" resourcekey="General.propertygroup" />]</th>
 									<th> </th>
-									<th> </th>
+                                    <th> </th>
 								</tr>
 							</thead>
 							<tbody>

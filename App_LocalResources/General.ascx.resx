@@ -1077,4 +1077,10 @@
   <data name="filterkeywords.Text" xml:space="preserve">
     <value>Keyword(s)</value>
   </data>
+  <data name="propertygroup.Text" xml:space="preserve">
+    <value>Group Type</value>
+  </data>
+  <data name="selectable.Text" xml:space="preserve">
+    <value>Selectable</value>
+  </data>
 </root>

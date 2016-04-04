@@ -238,7 +238,7 @@
     <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="catalog_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-book fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>

@@ -1,60 +1,59 @@
 
 [<tag id="includeinheader" type="meta" value="backofficepageheader.html" />]<!-- Injects a template with dynamic data into page head section -->
 
-
-<!--Start Header-->
-<div id="screensaver">
-	<canvas id="canvas"></canvas>
-	<i class="fa fa-lock" id="screen_unlock"></i>
+<div class='[Settings:boclass]'>
+    <!--Start Header-->
+    <div id="screensaver">
+        <canvas id="canvas"></canvas>
+        <i class="fa fa-lock" id="screen_unlock"></i>
+    </div>
+    <div id="modalbox">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>Basic table</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+            </div>
+            <div class="devoops-modal-bottom">
+            </div>
+        </div>
+    </div>
+    <header class="navbar">
+        <div class="container-fluid expanded-panel">
+            <div class="row">
+                <div id="logo" class="col-xs-12 col-sm-2">
+                    <div class="backoffice-logo">NBright</div>
+                </div>
+                <div id="top-panel" class="col-xs-12 col-sm-10">
+                    <div id="pageactionstarget" class="row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--End Header-->
+    <!--Start Container-->
+    <div id="main" class="container-fluid">
+        <div class="row">
+            <div id="sidebar-left" class="col-xs-2 col-sm-2">
+                [<tag:menu>]
+            </div>
+            <!--Start Content-->
+            <div id="content" class="col-xs-12 col-sm-10">
+                [<tag:container>]
+            </div>
+            <!--End Content-->
+        </div>
+    </div>
+    <!--End Container-->
 </div>
-<div id="modalbox">
-	<div class="devoops-modal">
-		<div class="devoops-modal-header">
-			<div class="modal-header-name">
-				<span>Basic table</span>
-			</div>
-			<div class="box-icons">
-				<a class="close-link">
-					<i class="fa fa-times"></i>
-				</a>
-			</div>
-		</div>
-		<div class="devoops-modal-inner">
-		</div>
-		<div class="devoops-modal-bottom">
-		</div>
-	</div>
-</div>
-<header class="navbar">
-	<div class="container-fluid expanded-panel">
-		<div class="row">
-			<div id="logo" class="col-xs-12 col-sm-2">
-			<div class="nbstore-logo">NBright</div>
-			</div>
-			<div id="top-panel" class="col-xs-12 col-sm-10">
-				<div id="pageactionstarget" class="row">
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
-<!--End Header-->
-
-
-<!--Start Container-->
-<div id="main" class="container-fluid">
-	<div class="row">
-		<div id="sidebar-left" class="col-xs-2 col-sm-2">
-		[<tag:menu>]
-		</div>
-		<!--Start Content-->
-		<div id="content" class="col-xs-12 col-sm-10">
-		[<tag:container>]
-		</div>
-		<!--End Content-->
-	</div>
-</div>
-<!--End Container-->
 
 <!-- All functions for this theme + document.ready processing -->
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/default/js/devoops-nbb.js"></script><!-- need to replace with minimised version -->

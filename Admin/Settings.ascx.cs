@@ -202,21 +202,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             //Create default category grouptype
             var l = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
             var g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "cat" select i;
-            if (!g.Any()) CreateGroup("cat", "Categories");
+            if (!g.Any()) CreateGroup("cat", "Categories","2");
             if (l.Count == 0)
             {
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "promo" select i;
-                if (!g.Any()) CreateGroup("promo", "Promotions");
+                if (!g.Any()) CreateGroup("promo", "Promotions", "1");
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "man" select i;
-                if (!g.Any()) CreateGroup("man", "Manufacturer");
+                if (!g.Any()) CreateGroup("man", "Manufacturer", "1");
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "supp" select i;
-                if (!g.Any()) CreateGroup("supp", "Supplier");
+                if (!g.Any()) CreateGroup("supp", "Supplier", "1");
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "fea" select i;
-                if (!g.Any()) CreateGroup("fea", "Features");
+                if (!g.Any()) CreateGroup("fea", "Features", "1");
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "spec" select i;
-                if (!g.Any()) CreateGroup("spec", "Specifications");
+                if (!g.Any()) CreateGroup("spec", "Specifications", "1");
                 g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
-                if (!g.Any()) CreateGroup("temp", "Temp");
+                if (!g.Any()) CreateGroup("temp", "Temp", "1");
+                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "searchfilter" select i;
+                if (!g.Any()) CreateGroup("searchfilter", "Display Search Filter", "3");
             }
 
             //update resx fields
@@ -231,11 +233,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         }
 
-        private void CreateGroup(String groupref, String name)
+        private void CreateGroup(String groupref, String name,String groupType)
         {
             var n = new GroupData(-1, StoreSettings.Current.EditLanguage);
             n.Ref = groupref;
             n.Name = name;
+            n.Type = groupType;
             n.DataRecord.GUIDKey = groupref;
             n.Save();
         }

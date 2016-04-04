@@ -64,6 +64,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public String Type
+        {
+            get
+            {
+                if (Exists) return Info.GetXmlProperty("genxml/dropdownlist/grouptype");
+                return "";
+            }
+            set
+            {
+                if (Exists)
+                {
+                    DataRecord.SetXmlProperty("genxml/dropdownlist/grouptype", value);
+                }
+            }
+        }
+
 
         public void Save()
         {

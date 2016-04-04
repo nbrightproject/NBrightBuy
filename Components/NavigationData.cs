@@ -147,24 +147,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                             break;
                         case "range":
-                            // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
-                            if (searchValFrom == "")
+                            if (searchVal != "") // don't include search if we have not value input.
                             {
-                                if (sqltype.ToLower() == "datetime")
-                                    searchValFrom = "1800-01-01";
-                                else
-                                    searchValFrom = "0";                                
-                            }
-                            if (searchValTo == "")
-                            {
-                                if (sqltype.ToLower() == "datetime")
-                                    searchValTo = "3000-12-30";
-                                else
-                                    searchValTo = "999999999";
-                            }
+                                // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
+                                if (searchValFrom == "")
+                                {
+                                    if (sqltype.ToLower() == "datetime")
+                                        searchValFrom = "1800-01-01";
+                                    else
+                                        searchValFrom = "0";
+                                }
+                                if (searchValTo == "")
+                                {
+                                    if (sqltype.ToLower() == "datetime")
+                                        searchValTo = "3000-12-30";
+                                    else
+                                        searchValTo = "999999999";
+                                }
 
-                            _criteria += " " + sqloperator + " " +
-                                         GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
+                                _criteria += " " + sqloperator + " " +
+                                             GenXmlFunctions.GetSqlFilterRange(sqlfield, sqltype, searchValFrom, searchValTo, sqlcol);
+                            }
+                            else
+                            {
+                                _criteria += " 1 = 1 "; // add a dummy test, so we get a valid SQL structure.
+                            }
                             break;
                         case "cats":
                             _criteria += " " + sqloperator + " ";

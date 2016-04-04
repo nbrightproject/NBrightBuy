@@ -232,7 +232,7 @@
     <value>&lt;i class="fa fa-cog fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="catalog_icon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-shopping-cart fa-fw"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fa-book fa-fw"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dashboard_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-dashboard fa-fw"&gt;&lt;/i&gt;</value>
@@ -302,5 +302,8 @@
   </data>
   <data name="promotions_icon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-tags fa-fw"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="pluginsmsg.Text" xml:space="preserve">
+    <value>(The first plugin listed is the default entry point for Back Office)</value>
   </data>
 </root>

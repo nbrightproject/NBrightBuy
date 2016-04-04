@@ -72,7 +72,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                     // check for group data, this MUST be there otherwise this is the first time into the BO, so redirect to Admin.
-                    var l = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture());
+                    var l = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true,"2");
                     if (!l.Any())
                     {
                         ctrl = "settings";

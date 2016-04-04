@@ -626,6 +626,17 @@
 							</script>
                     	</div>
 				    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="Settings.boclass" />]</label>
+                        <div class="col-sm-3">
+                            [<tag id="boclass" cssclass="form-control" type="textbox" maxlength="40" Text="" />]
+                            <script type="text/javascript">
+							$(document).ready(function() {
+							    if ($('input[[id*="boclass"]]').val() == '') $('input[[id*="boclass"]]').val('nbstore');
+							});
+                            </script>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>

@@ -136,7 +136,7 @@
     <value>Product List</value>
   </data>
   <data name="adminemail.Help" xml:space="preserve">
-    <value>Email Address of store administrator, this is the default store sending email address.</value>
+    <value>Email Address of administrator, this is the default sending email address.</value>
   </data>
   <data name="adminemail.Text" xml:space="preserve">
     <value>Administrator</value>
@@ -413,5 +413,8 @@
   </data>
   <data name="productsearchtab.Text" xml:space="preserve">
     <value>Product Search Results Page</value>
+  </data>
+  <data name="boclass.Text" xml:space="preserve">
+    <value>Back Office Class</value>
   </data>
 </root>
