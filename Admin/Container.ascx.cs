@@ -72,9 +72,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
                     // check for group data, this MUST be there otherwise this is the first time into the BO, so redirect to Admin.
-                    var l = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true,"2");
+                    var l = NBrightBuyUtils.GetCategoryGroups(Utils.GetCurrentCulture(),true,""); // don't test for grouptype, on upgrade it might not be there!!
                     if (!l.Any())
                     {
+                        // redisplay settings
                         ctrl = "settings";
                         ctlpath = GetControlPath(ctrl);
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, "settingssetup", NotifyCode.fail);

@@ -166,12 +166,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            if (Ref == "")
+            {
+                Ref = DataRecord.GUIDKey;
+                objCtrl.Update(DataRecord);
+            }
+
             // add required field values to make getting group easier.
-            if (DataRecord.GUIDKey != Ref)
+            if (Ref != "" && DataRecord.GUIDKey != Ref)
             {
                 DataRecord.GUIDKey = Ref;
                 objCtrl.Update(DataRecord);
             }
+
+            // check we have a groupt type, it might be missing if upgraded.
+            if (Type == "")
+            {
+                if (Ref == "cat")
+                {
+                    Type = "2";
+                }
+                else
+                {
+                    Type = "1";
+                }
+                objCtrl.Update(DataRecord);
+            }
+
 
             return errorcount;
         }
