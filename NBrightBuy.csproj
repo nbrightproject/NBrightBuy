@@ -991,6 +991,7 @@
     <Content Include="Themes\config\default\ProductView_Settings.html" />
     <Content Include="Themes\config\default\ProfileForm_Settings.html" />
     <Content Include="Themes\config\default\settingsbody.html" />
+    <Content Include="Themes\config\img\amylis_24x24.png" />
     <Content Include="Themes\config\img\flags\16\af-ZA.png" />
     <Content Include="Themes\config\img\flags\16\ar-AE.png" />
     <Content Include="Themes\config\img\flags\16\ar-BH.png" />

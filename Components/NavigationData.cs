@@ -147,7 +147,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                             break;
                         case "range":
-                            if (searchVal != "") // don't include search if we have not value input.
+                            if (searchValFrom != "") // don't include search if we have no value input.
                             {
                                 // We always need to return a value, otherwise we get an error, so range select cannot be empty. (we'll default here to 9999999)
                                 if (searchValFrom == "")

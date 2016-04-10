@@ -19,6 +19,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -138,6 +139,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
         {
             
             var strXml = new StringBuilder("<root>");
+            var objCtrlUser = new UserController();
 
             if (GenXmlFunctions.GetField(rpData,"exportproducts") == "True")
             {
@@ -156,6 +158,18 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             
                 l = ModCtrl.GetList(PortalId, -1, "PRDXREF");
                 foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+
+                l = ModCtrl.GetList(PortalId, -1, "USERPRDXREF");
+                foreach (var i in l)
+                {
+                    var u = objCtrlUser.GetUser(i.PortalId, i.UserId);
+                    if (u != null)
+                    {
+                        i.TextData = u.Username;
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
+                
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True")

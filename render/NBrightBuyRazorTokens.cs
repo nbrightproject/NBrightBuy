@@ -717,6 +717,7 @@ namespace NBrightBuy.render
             if (model.GetUrlParam("page") != "") param.Add("PageIndex=" + model.GetUrlParam("page").Trim());
             if (model.GetUrlParam("catid") != "") param.Add("catid=" + model.GetUrlParam("catid").Trim());
             var listtab = model.GetUrlParam("rtntab");
+            if (listtab == "" && model.Settings.ContainsKey("productlisttab")) listtab = model.Settings["productlisttab"].Trim();
             if (listtab == "") listtab = model.GetUrlParam("tabid").Trim();
             var intlisttab = 0;
             if (Utils.IsNumeric(listtab)) intlisttab = Convert.ToInt32(listtab);

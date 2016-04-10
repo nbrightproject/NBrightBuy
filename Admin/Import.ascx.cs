@@ -18,6 +18,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -151,6 +152,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     ImportRecord(xmlFile, "AMY");
                     ImportRecord(xmlFile, "AMYLANG");
                     ImportRecord(xmlFile, "PRDXREF");
+                    ImportRecord(xmlFile, "USERPRDXREF");
                 }
 
                 if (GenXmlFunctions.GetField(rpData, "importcategories") == "True")
@@ -215,6 +217,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void ImportRecord(XmlDocument xmlFile, String typeCode, Boolean updaterecordsbyref = true)
         {
+            var objCtrlUser = new UserController();
+
             var nodList = xmlFile.SelectNodes("root/item[./typecode='" + typeCode + "']");
             if (nodList != null)
             {
@@ -265,6 +269,23 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             nbi.ParentItemId = _recordXref[nbi.ParentItemId];
                         }
                     }
+
+                    if (typeCode == "PRDXREF" && updaterecordsbyref)
+                    {
+                        if (_recordXref.ContainsKey(nbi.XrefItemId)) nbi.XrefItemId = _recordXref[nbi.XrefItemId];
+                        if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
+                    }
+
+                    if (typeCode == "USERPRDXREF" && updaterecordsbyref)
+                    {
+                        var u = objCtrlUser.GetUserByUsername(PortalId, nbi.TextData);
+                        if (u != null)
+                        {
+                            if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
+                            if (_recordXref.ContainsKey(nbi.XrefItemId)) nbi.UserId = u.UserID;
+                        }
+                    }
+
 
                     if (typeCode == "CATEGORY" && updaterecordsbyref)
                     {
