@@ -192,7 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     // Get meta data from template
 
-                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(),ModuleId.ToString());
+                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), ModuleId.ToString());
 
                     #region "Order BY"
 
@@ -280,6 +280,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     #region "Get Category select setup"
 
+                    var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                    var dbOwner = DataProvider.Instance().DatabaseOwner;
+
                     //get default catid.
                     var catseo = _catid;
                     var defcatid = ModSettings.Get("defaultcatid");
@@ -302,10 +305,24 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (ModSettings.Get("staticlist") == "True")
                     {
                         _catid = defcatid;
+                        if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                        else
+                            strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                        if (ModSettings.Get("caturlfilter") == "True")
+                        {
+                            // add aditional filter for catid filter on url (catseo holds catid from url)
+                            if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + catseo + ") ";
+                            else
+                                strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + catseo + ") ";
+                        }
                     }
                     else
                     {
                         #region "use url to get category to display"
+
                         //check if we are display categories 
                         // get category list data
                         if (_catname != "") // if catname passed in url, calculate what the catid is
@@ -362,12 +379,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         if (Utils.IsNumeric(_catid))
                         {
-                            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                            var dbOwner = DataProvider.Instance().DatabaseOwner;
+
                             if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
-                            {
                                 strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
-                            }
                             else
                                 strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
 
@@ -477,20 +491,20 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
 
-                    var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    // **** check if we already have the template cached, if so no need for DB call or razor call ****
+                    // get same cachekey used for DB return, and use for razor.
+                    var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + PortalId.ToString();
+                    var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
+                    if (strOut == null || StoreSettings.Current.DebugMode)
+                    {
+                        var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                        strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                    }
 
-                        #region "do razor template"
-
-                        // get same cachekey used for DB return, and use for razor.
-                        var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-
-                        var strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
-                        var lit = new Literal();
-                        lit.Text = strOut;
-                        phData.Controls.Add(lit);
-
-                        #endregion
-
+                    var lit = new Literal();
+                    lit.Text = strOut;
+                    phData.Controls.Add(lit);
 
                     if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 

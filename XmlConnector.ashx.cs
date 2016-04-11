@@ -2104,9 +2104,16 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (pageNumber == 0) pageNumber = 1;
                 if (pageSize == 0) pageSize = StoreSettings.Current.GetInt("pagesize");
                 recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "PRD", filter,"PRDLANG",_lang);
+                var recordCountAMY = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "AMY", filter, "AMYLANG", _lang);
+                recordCount += recordCountAMY;
             }
 
             var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode,"",returnLimit,pageNumber,pageSize,recordCount);
+
+            // add AMY type entries
+            var objListAMY = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "AMY", "AMYLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
+            objList.AddRange(objListAMY);
+
             strOut += GenXmlFunctions.RenderRepeater(objList, bodyTempl);
 
             strOut += GenXmlFunctions.RenderRepeater(obj, footerTempl);

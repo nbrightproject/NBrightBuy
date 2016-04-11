@@ -387,4 +387,7 @@
   <data name="displaytype.Text" xml:space="preserve">
     <value>Display Type</value>
   </data>
+  <data name="caturlfilter.Text" xml:space="preserve">
+    <value>Filter by Selected Category</value>
+  </data>
 </root>

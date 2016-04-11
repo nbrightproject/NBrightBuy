@@ -1187,7 +1187,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(_storeSettings.FolderDocumentsMapPath))
                 {
-                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", _storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + d.GetXmlProperty("genxml/textbox/txtfilename"));
+                    var fname = d.GetXmlProperty("genxml/textbox/txtfilename");
+                    if (d.GetXmlProperty("genxml/hidden/filerelpath") != "")
+                    {
+                        fname = Path.GetFileName("D:" + d.GetXmlProperty("genxml/hidden/filerelpath").Replace("/","\\"));
+                    }
+                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", _storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + fname);
                     errorcount += 1;
                 }
                 lp += 1;

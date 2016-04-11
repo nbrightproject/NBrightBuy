@@ -368,10 +368,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strFilters += " and UserId = " + selUserId + " ";
             }
 
+            // NEW() in orderby needs random, so calc multiple cache keys from seconds
+	        var randomkey = "";
+	        if (strOrderBy.Contains("NEWID()"))
+	        {
+                randomkey = Convert.ToInt32(DateTime.Now.Second / 4).ToString("");
+	        }
+
             List<NBrightInfo> l = null;
 
             // get cache template 
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
+            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture() + randomkey;
             if (debugMode == false)
             {
                 l = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
@@ -409,8 +416,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <returns></returns>
         public String GetDataListCacheKey(int portalId, int moduleId, string entityTypeCode, string entityTypeCodeLang, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
+            // NEW() in orderby needs random, so calc multiple cache keys from seconds
+            var randomkey = "";
+            if (strOrderBy.Contains("NEWID()"))
+            {
+                randomkey = Convert.ToInt32(DateTime.Now.Second / 4).ToString("");
+            }
+
             if (selUserId != "") strFilters += " and UserId = " + selUserId + " ";
-            return portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
+            return portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture() + randomkey;
         }
 
         #endregion
