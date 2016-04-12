@@ -304,13 +304,14 @@ namespace Nevoweb.DNN.NBrightBuy
                     // If we have a static list,then always display the default category
                     if (ModSettings.Get("staticlist") == "True")
                     {
+                        if (catseo == "") catseo = _catid;
                         _catid = defcatid;
                         if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
                             strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
                         else
                             strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
 
-                        if (ModSettings.Get("caturlfilter") == "True")
+                        if (ModSettings.Get("caturlfilter") == "True" && catseo != "" && catseo != _catid)
                         {
                             // add aditional filter for catid filter on url (catseo holds catid from url)
                             if (ModSettings.Get("chkcascaderesults").ToLower() == "true")

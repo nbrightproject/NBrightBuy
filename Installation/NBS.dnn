@@ -33,9 +33,12 @@
       </license>
       <releaseNotes>
 
-        v3.4.0.
+        v3.5.0.
 
-        NBSv3 required the NBrightTemplate system to be installed.
+        NOTE: NBSv3 required the NBrightTemplate system to be installed.
+
+        - Converted product view templates to razor.
+        - Module NBS_ProductView replaced with NBS_ProductDisplay
 
 
       </releaseNotes>
