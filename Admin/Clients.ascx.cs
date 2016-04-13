@@ -238,6 +238,15 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "uid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "restoreuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.RestoreUser();
+                    }
+                    param[0] = "uid=" + cArg;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
                 case "removeuser":
                     if (Utils.IsNumeric(cArg))
                     {
@@ -258,6 +267,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         clientData.AuthoriseClient();
                         clientData.AddClientEditorRole();
                         if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();                            
+                    }
+                    param[0] = "uid=" + cArg;
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
+                case "unauthoriseuser":
+                    if (Utils.IsNumeric(cArg))
+                    {
+                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
+                        clientData.UnAuthoriseClient();
+                        clientData.RemoveClientEditorRole();
                     }
                     param[0] = "uid=" + cArg;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);

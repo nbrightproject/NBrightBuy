@@ -68,7 +68,9 @@ namespace NBrightBuy.render
         /// <returns>Url to edit product</returns>
         public IEncodedString EditUrl(NBrightInfo info, NBrightRazor model,String ctrl = "products")
         {
-            return EditUrl(info.ItemID, model,ctrl);
+            var itemid = -1;
+            if (info != null) itemid = info.ItemID;
+            return EditUrl(itemid, model,ctrl);
         }
 
         public IEncodedString EditUrl(int itemid, NBrightRazor model, String ctrl = "products")

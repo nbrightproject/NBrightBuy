@@ -136,7 +136,7 @@
     <value>Unlock User</value>
   </data>
   <data name="cmdValidateUser.Text" xml:space="preserve">
-    <value>Validate User</value>
+    <value>Authorise User</value>
   </data>
   <data name="cmdViewOrders.Text" xml:space="preserve">
     <value>View Orders</value>
@@ -254,5 +254,17 @@
   </data>
   <data name="cmdAddClientEditorRole.Text" xml:space="preserve">
     <value>Allow client to Edit assigned articles</value>
+  </data>
+  <data name="cmdUnAuthoriseUser.confirm" xml:space="preserve">
+    <value>Remove Authorisation for User and stop website login access?</value>
+  </data>
+  <data name="cmdUnAuthoriseUser.Text" xml:space="preserve">
+    <value>Remove Authorisation</value>
+  </data>
+  <data name="cmdRestoreUser.confirm" xml:space="preserve">
+    <value>Restore User?</value>
+  </data>
+  <data name="cmdRestoreUser.Text" xml:space="preserve">
+    <value>Restore User</value>
   </data>
 </root>

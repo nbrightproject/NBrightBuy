@@ -226,7 +226,12 @@
 					<p class="page-header">[<tag type="valueof" resourcekey="Clients.UserAccount" />]</p>
 					<div class="form-group">
 						<div class="col-sm-4">
-						[<tag id="cmdValidateUser" type="linkbutton" resourcekey="Clients.cmdValidateUser" commandname="validateuser" cssclass="btn btn-success btn-block" commandargument="ItemID" />]
+                            [<tag type='if' xpath='genxml/membership/approved' testvalue='True' display='{OFF}' />]
+	    					    [<tag id="cmdValidateUser" type="linkbutton" resourcekey="Clients.cmdValidateUser" commandname="validateuser" cssclass="btn btn-success btn-block" commandargument="ItemID"/>]
+                            [<tag type='endif' />]
+                            [<tag type='if' xpath='genxml/membership/approved' testvalue='True' display='{ON}' />]
+                                [<tag id="cmdUnAuthoriseUser" type="linkbutton" resourcekey="Clients.cmdUnAuthoriseUser" commandname="unauthoriseuser" cssclass="btn btn-danger btn-block" commandargument="ItemID" />]
+                            [<tag type='endif' />]
 						</div>
 						<div class="col-sm-4">
 						[<tag id="cmdResetPass" type="linkbutton" resourcekey="Clients.cmdResetPass" commandname="resetpass" cssclass="btn btn-warning btn-block" commandargument="ItemID" />]
@@ -234,14 +239,17 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-4">
-						[<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+                            [<tag type='if' xpath='genxml/membership/lockedout' testvalue='True' display='{ON}' />]
+        						[<tag id="cmdUnlockUser" type="linkbutton" resourcekey="Clients.cmdUnlockUser" commandname="unlockuser" cssclass="btn btn-default btn-block" commandargument="ItemID" />]
+                            [<tag type='endif' />]
 						</div>
 					    <div class="col-sm-4">
 					        [<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='{OFF}' />]
     					        [<tag id="Tag1" type="linkbutton" resourcekey="Clients.cmdDeleteUser" commandname="deleteuser" cssclass="btn btn-warning btn-block" commandargument="ItemID" />]					        
                             [<tag type='endif' />]
 					        [<tag type='if' xpath='genxml/textbox/isdeleted' testvalue='True' display='{ON}' />]
-    					        [<tag id="cmdRemoveUser" type="linkbutton" resourcekey="Clients.cmdRemoveUser" commandname="removeuser" cssclass="btn btn-warning btn-block" commandargument="ItemID" />]					        
+    					        [<tag id="cmdRemoveUser" type="linkbutton" resourcekey="Clients.cmdRemoveUser" commandname="removeuser" cssclass="btn btn-danger btn-block" commandargument="ItemID" />]					        
+                                [<tag id="cmdRestoreUser" type="linkbutton" resourcekey="Clients.cmdRestoreUser" commandname="restoreuser" cssclass="btn btn-success btn-block" commandargument="ItemID" />]
                             [<tag type='endif' />]
 					    </div>
 					</div>

@@ -1950,6 +1950,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
+        public static Boolean CheckManagerRights()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ManagerRole) || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+            {
+                return true;
+            }
+            return false;
+        }
+
         #endregion
 
         #region "Razor functions"

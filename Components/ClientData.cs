@@ -150,12 +150,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void UnAuthoriseClient()
+        {
+            if (_userInfo != null)
+            {
+                _userInfo.Membership.Approved = false;
+                UserController.UpdateUser(PortalSettings.Current.PortalId, _userInfo);
+            }
+        }
+
         public void DeleteUser()
         {
             if (_userInfo != null)
             {
                 var usrInfo = UserController.GetUserById(PortalSettings.Current.PortalId,_userInfo.UserID);
                 UserController.DeleteUser(ref usrInfo, false, false);
+            }
+        }
+
+        public void RestoreUser()
+        {
+            if (_userInfo != null)
+            {
+                var usrInfo = UserController.GetUserById(PortalSettings.Current.PortalId, _userInfo.UserID);
+                UserController.RestoreUser(ref usrInfo);
             }
         }
 
