@@ -1522,6 +1522,7 @@
     <Content Include="Themes\Cygnus\img\red_asterisk.png" />
     <Content Include="Themes\Cygnus\js\imagelightbox.nbb.js" />
     <Content Include="Themes\Cygnus\js\imagesloaded.pkgd.min.js" />
+    <Content Include="Themes\Cygnus\js\isotope.pkgd.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.cookie.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.navgoco.min.js" />
     <Content Include="Themes\Cygnus\js\jquery.responsiveTabs.min.js" />

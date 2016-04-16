@@ -205,6 +205,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
                     if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
                     if (_strOrder.Contains("{bycategoryproduct}")) _strOrder = "{bycategoryproduct}"; // special processing for cat product sort.
+                    if (_strOrder.ToLower().Contains("{none}")) _strOrder = ""; // special processing for no sort.
+
 
                     #endregion
 
