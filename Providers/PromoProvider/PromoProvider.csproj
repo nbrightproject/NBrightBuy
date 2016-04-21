@@ -37,6 +37,12 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\..\..\..\..\..\Support\DNN7x\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="NBrightCore">
+      <HintPath>..\..\..\..\..\bin\NBrightCore.dll</HintPath>
+    </Reference>
+    <Reference Include="NBrightDNN">
+      <HintPath>..\..\..\..\..\bin\NBrightDNN.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -77,14 +83,6 @@
     <None Include="PromoXmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj">
-      <Project>{7b338113-6a9a-484d-a6c6-4d63fd5e58c6}</Project>
-      <Name>NBrightCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj">
-      <Project>{ec815d38-62cf-4b46-8177-cf40ce1aab62}</Project>
-      <Name>NBrightDNN</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NBrightBuy.csproj">
       <Project>{8f850303-bec5-4247-9126-1e58f1402205}</Project>
       <Name>NBrightBuy</Name>
