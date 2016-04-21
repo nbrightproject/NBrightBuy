@@ -37,11 +37,13 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightCore">
-      <HintPath>..\..\..\..\..\..\..\..\Support\nbrightcore\bin\Debug\NBrightCore.dll</HintPath>
+    <Reference Include="NBrightCore, Version=3.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\bin\NBrightCore.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightDNN">
-      <HintPath>..\..\..\..\..\..\..\..\Support\nbrightdnn\bin\Debug\NBrightDNN.dll</HintPath>
+    <Reference Include="NBrightDNN, Version=8.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\bin\NBrightDNN.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RazorEngine.3.7.7\lib\net45\RazorEngine.dll</HintPath>

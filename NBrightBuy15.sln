@@ -17,10 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualPaymentProvider", "Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountCodesProvider", "Providers\DiscountCodesProvider\DiscountCodesProvider.csproj", "{A634CB2D-946E-4C73-B7DC-0677CE5AA7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBrightDNN", "..\..\..\..\..\..\Support\nbrightdnn\NBrightDNN.csproj", "{EC815D38-62CF-4B46-8177-CF40CE1AAB62}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBrightCore", "..\..\..\..\..\..\Support\nbrightcore\NBrightCore.csproj", "{7B338113-6A9A-484D-A6C6-4D63FD5E58C6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,14 +51,6 @@ Global
 		{A634CB2D-946E-4C73-B7DC-0677CE5AA7D0}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{A634CB2D-946E-4C73-B7DC-0677CE5AA7D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A634CB2D-946E-4C73-B7DC-0677CE5AA7D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC815D38-62CF-4B46-8177-CF40CE1AAB62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC815D38-62CF-4B46-8177-CF40CE1AAB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC815D38-62CF-4B46-8177-CF40CE1AAB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC815D38-62CF-4B46-8177-CF40CE1AAB62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B338113-6A9A-484D-A6C6-4D63FD5E58C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B338113-6A9A-484D-A6C6-4D63FD5E58C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B338113-6A9A-484D-A6C6-4D63FD5E58C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B338113-6A9A-484D-A6C6-4D63FD5E58C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
