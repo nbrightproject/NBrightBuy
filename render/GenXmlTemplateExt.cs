@@ -4983,7 +4983,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
-                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtsaleprice");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtsaleprice");
+                    dealprice = s;
+                }
             }
             return price;
         }
@@ -4996,7 +5000,11 @@ namespace Nevoweb.DNN.NBrightBuy.render
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
-                if (((s > 0) && (s < dealprice)) || (dealprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtdealercost");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtdealercost");
+                    dealprice = s;
+                }
             }
             return price;
         }
@@ -5009,14 +5017,31 @@ namespace Nevoweb.DNN.NBrightBuy.render
             foreach (var m in l)
             {
                 var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
-                if ((s < tprice) || (tprice == -1)) price = m.GetXmlProperty("genxml/textbox/txtunitcost");
+                if ((s < tprice) || (tprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtunitcost");
+                    tprice = s;
+                }
             }
+            return price;
+        }
+
+        private Double GetFromPriceDouble(NBrightInfo dataItemObj)
+        {
+            Double price = -1;
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
             return price;
         }
 
         private String GetBestPrice(NBrightInfo dataItemObj)
         {
-            var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
+            var fromprice = GetFromPriceDouble(dataItemObj);
             if (fromprice < 0) fromprice = 0; // make sure we have a valid price
             var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
@@ -5027,13 +5052,13 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
                 if (fromprice < dealerprice)
                 {
-                    if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                    if ((saleprice <= 0) || (fromprice < saleprice)) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
                     return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
                 }
-                if (dealerprice < saleprice) return dealerprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                if ((dealerprice <= 0) || (dealerprice < saleprice)) return dealerprice.ToString(CultureInfo.GetCultureInfo("en-US"));
                 return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
             }
-            if (fromprice < saleprice) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            if ((saleprice <= 0) || (fromprice < saleprice)) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
             return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));                
         }
 
