@@ -1493,11 +1493,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
         {
-            // THIS CACHING DOES NOT WORK AS REQUIRED. 
-            // We need to persist DNN cache so that we don't recompile each razor template on every entry save!
-            // Or alter the way cache is cleared!!! ???
-            var service = (IRazorEngineService)Utils.GetCache("NBrightBuyIRazorEngineService");
-            if (service == null)
+            var service = (IRazorEngineService) HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
+            if (service == null || debugMode)
             {
                 // do razor test
                 var config = new TemplateServiceConfiguration();
@@ -1505,10 +1502,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
                 service = RazorEngineService.Create(config);
                 Engine.Razor = service;
-                Utils.SetCache("NBrightBuyIRazorEngineService",service);
+                HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService",service);
             }
 
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+
             return result;
         }
 

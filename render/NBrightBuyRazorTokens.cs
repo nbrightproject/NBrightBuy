@@ -62,7 +62,7 @@ namespace NBrightBuy.render
             var imageurlsrc = info.GetXmlProperty("genxml/imgs/genxml[" + idx + "]/hidden/imageurl");
             if (fileImage)
             {
-                var src = info.GetXmlProperty("genxml/imgs/genxml[" + idx + "]/hidden/imagepath");
+                var src = HttpContext.Current.Server.MapPath(imageurlsrc);
 
                 var strCacheKey = info.PortalId + "*" + src + "*" + Utils.GetCurrentCulture() + "*imgfile:" + width + "*" + height + "*";
                 url = (String)Utils.GetCache(strCacheKey);
@@ -73,7 +73,7 @@ namespace NBrightBuy.render
                     var ext = ".jpg";
                     if (outputPNG) ext = ".png";
                     var thumbname = imgpath + "_Thumb" + width + "x" + height + ext;
-                    imgpath = Path.GetPathRoot(src) + "\\" + thumbname;
+                    imgpath = Path.GetFullPath(src).Replace(Path.GetFileName(src), "") + thumbname;
                     url = imageurlsrc.Replace(Path.GetFileName(src), thumbname);
 
                     if (!File.Exists(imgpath))

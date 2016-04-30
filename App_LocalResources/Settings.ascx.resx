@@ -417,4 +417,7 @@
   <data name="boclass.Text" xml:space="preserve">
     <value>Back Office Class</value>
   </data>
+  <data name="debugmode.Text" xml:space="preserve">
+    <value>Activate this to allow editing of razor templates, without the need to clear cache.  Warning!! Do NOT use in production, this can cause a memory leak and bad performance.</value>
+  </data>
 </root>
