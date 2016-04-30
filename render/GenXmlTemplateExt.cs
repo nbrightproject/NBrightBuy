@@ -1564,6 +1564,99 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
 
 
+        private Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var rtnDic = new Dictionary<int, string>();
+
+            var grpCatCtrl = new GrpCatController(lang);
+            var d = new Dictionary<int, string>();
+            var rtnList = new List<GroupCategoryData>();
+            rtnList = grpCatCtrl.GetTreeCategoryList(rtnList, 0, parentid, groupref, breadcrumbseparator);
+            var strCount = "";
+            foreach (var grpcat in rtnList)
+            {
+                if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+
+                if (grpcat.depth < displaylevels)
+                {
+                    if (showEmpty || grpcat.entrycount > 0)
+                    {
+                        if (grpcat.ishidden == false || showHidden)
+                        {
+                            var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                            if (catreflist == "")
+                                rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                            else
+                            {
+                                if (grpcat.categoryref != "" &&
+                                    (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                {
+                                    rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
+        private Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+
+            var rtnDic = new Dictionary<int, string>();
+
+            var strCacheKey = "NBrightBuy_BuildPropertyList" + PortalSettings.Current.PortalId + "*" + displaylevels + "*" + showHidden.ToString(CultureInfo.InvariantCulture) + "*" + showArchived.ToString(CultureInfo.InvariantCulture) + "*" + parentid + "*" + catreflist + "*" + prefix + "*" + Utils.GetCurrentCulture() + "*" + showEmpty + "*" + displayCount + "*" + groupref + "*" + lang;
+
+            var objCache = NBrightBuyUtils.GetModCache(strCacheKey);
+
+            if (objCache == null | StoreSettings.Current.DebugMode)
+            {
+                var grpCatCtrl = new GrpCatController(lang);
+                var d = new Dictionary<int, string>();
+                var rtnList = new List<GroupCategoryData>();
+                rtnList = grpCatCtrl.GetTreePropertyList(breadcrumbseparator);
+                var strCount = "";
+                foreach (var grpcat in rtnList)
+                {
+                    if (displayCount) strCount = " (" + grpcat.entrycount.ToString("") + ")";
+
+                    if (grpcat.depth < displaylevels)
+                    {
+                        if (showEmpty || grpcat.entrycount > 0)
+                        {
+                            if (grpcat.ishidden == false || showHidden)
+                            {
+                                if (!rtnDic.ContainsKey(grpcat.categoryid))
+                                {
+                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                    if (catreflist == "")
+                                        rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                    else
+                                    {
+                                        if (grpcat.categoryref != "" &&
+                                            (catreflist + ",").Contains(grpcat.categoryref + ","))
+                                        {
+                                            rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, rtnDic);
+
+            }
+            else
+            {
+                rtnDic = (Dictionary<int, string>)objCache;
+            }
+            return rtnDic;
+        }
 
         private Dictionary<int, string> GetCatList(XmlNode xmlNod)
         {
@@ -2804,9 +2897,59 @@ namespace Nevoweb.DNN.NBrightBuy.render
             {
                 //do nothing
             }
+        }
+
+
+        private String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
+        {
+            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+            var outText = templ;
+            var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
+            if (stock > 0 || !stockOn)
+            {
+                outText = outText.Replace("{ref}", obj.GetXmlProperty("genxml/textbox/txtmodelref"));
+                outText = outText.Replace("{name}", obj.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"));
+                outText = outText.Replace("{stock}", stock.ToString(""));
+
+                if (displayPrices)
+                {
+                    //[TODO: add promotional calc]
+                    var saleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                    var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    var bestprice = price;
+                    if (saleprice > 0 && saleprice < price) bestprice = saleprice;
+
+                    var strprice = NBrightBuyUtils.FormatToStoreCurrency(price);
+                    var strbestprice = NBrightBuyUtils.FormatToStoreCurrency(bestprice);
+                    var strsaleprice = NBrightBuyUtils.FormatToStoreCurrency(saleprice);
+
+                    var strdealerprice = "";
+                    var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                    if (isDealer)
+                    {
+                        strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
+                        if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
+                        if (dealerprice < bestprice) bestprice = dealerprice;
                     }
 
+                    outText = outText.Replace("{price}", "(" + strprice + ")");
+                    outText = outText.Replace("{dealerprice}", strdealerprice);
+                    outText = outText.Replace("{bestprice}", strbestprice);
+                    outText = outText.Replace("{saleprice}", strsaleprice);
+                }
+                else
+                {
+                    outText = outText.Replace("{price}", "");
+                    outText = outText.Replace("{dealerprice}", "");
+                    outText = outText.Replace("{bestprice}", "");
+                    outText = outText.Replace("{saleprice}", "");
+                }
 
+                return outText;
+            }
+            return ""; // no stock so return empty string.
+        }
 
         #endregion
 
@@ -4744,6 +4887,271 @@ namespace Nevoweb.DNN.NBrightBuy.render
         #endregion
 
 
+        #region "Functions"
 
+        private List<NBrightInfo> BuildModelList(NBrightInfo dataItemObj,Boolean addSalePrices = false)
+        {
+            // see  if we have a cart record
+            var xpathprefix = "";
+            var cartrecord = dataItemObj.GetXmlProperty("genxml/productid") != ""; // if we have a productid node, then is datarecord is a cart item
+            if (cartrecord) xpathprefix = "genxml/productxml/";
+
+            //build models list
+            var objL = new List<NBrightInfo>();
+            var nodList = dataItemObj.XMLDoc.SelectNodes(xpathprefix + "genxml/models/*");
+            if (nodList != null)
+            {
+
+                #region "Init"
+
+                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+
+
+                #endregion
+
+                var lp = 1;
+                foreach (XmlNode nod in nodList)
+                {
+                    // check if Deleted
+                    var selectDeletedFlag = nod.SelectSingleNode("checkbox/chkdeleted");
+                    if ((selectDeletedFlag == null) || selectDeletedFlag.InnerText != "True")
+                    {
+                    // check if hidden
+                        var selectHiddenFlag = nod.SelectSingleNode("checkbox/chkishidden");
+                        if ((selectHiddenFlag == null) || selectHiddenFlag.InnerText != "True")
+                        {
+                            // check if dealer
+                            var selectDealerFlag = nod.SelectSingleNode("checkbox/chkdealeronly");
+                            if (((selectDealerFlag == null) || (!isDealer && (selectDealerFlag.InnerText != "True"))) | isDealer)
+                            {
+                                // get modelid
+                                var nodModelId = nod.SelectSingleNode("hidden/modelid");
+                                var modelId = "";
+                                if (nodModelId != null) modelId = nodModelId.InnerText;
+
+                                //Build NBrightInfo class for model
+                                var o = new NBrightInfo();
+                                o.XMLData = nod.OuterXml;
+
+                                #region "Add Lanaguge Data"
+
+                                var nodLang = dataItemObj.XMLDoc.SelectSingleNode(xpathprefix + "genxml/lang/genxml/models/genxml[" + lp.ToString("") + "]");
+                                if (nodLang != null)
+                                {
+                                    o.AddSingleNode("lang", "", "genxml");
+                                    o.AddXmlNode(nodLang.OuterXml, "genxml", "genxml/lang");
+                                }
+
+                                #endregion
+
+                                #region "Prices"
+
+                                if (addSalePrices)
+                                {
+                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    if (uInfo != null)
+                                    {
+                                        o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
+                                        //[TODO: convert to new promotion provider]
+                                        //var objPromoCtrl = new PromoController();
+                                        //var objPCtrl = new ProductController();
+                                        //var objM = objPCtrl.GetModel(modelId, Utils.GetCurrentCulture());
+                                        //var salePrice = objPromoCtrl.GetSalePrice(objM, uInfo);
+                                        //o.AddSingleNode("saleprice", salePrice.ToString(CultureInfo.GetCultureInfo("en-US")), "genxml/hidden");
+                                    }
+                                }
+
+                                #endregion
+
+                                // product data for display in modellist
+                                o.SetXmlProperty("genxml/lang/genxml/textbox/txtproductname", dataItemObj.GetXmlProperty(xpathprefix + "genxml/lang/genxml/textbox/txtproductname"));
+                                o.SetXmlProperty("genxml/textbox/txtproductref", dataItemObj.GetXmlProperty(xpathprefix + "genxml/textbox/txtproductref"));
+
+                                if (cartrecord)
+                                    o.SetXmlProperty("genxml/hidden/productid", dataItemObj.GetXmlProperty("genxml/productid"));
+                                else
+                                o.SetXmlProperty("genxml/hidden/productid", dataItemObj.ItemID.ToString(""));
+
+
+                                objL.Add(o);
+                            }
+                        }
+                    }
+                    lp += 1;
+                }
+            }
+            return objL;
+        }
+
+        private Double GetSalePriceDouble(NBrightInfo dataItemObj)
+        {
+            Double price = -1;
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
+            return price;
+        }
+
+        private String GetSalePrice(NBrightInfo dataItemObj)
+        {
+            double dealprice = -1;
+            string price = "";
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtsaleprice");
+                    dealprice = s;
+                }
+            }
+            return price;
+        }
+
+        private String GetDealerPrice(NBrightInfo dataItemObj)
+        {
+            double dealprice = -1;
+            string price = "";
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                if (((s > 0) && (s < dealprice)) || (dealprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtdealercost");
+                    dealprice = s;
+                }
+            }
+            return price;
+        }
+
+        private String GetFromPrice(NBrightInfo dataItemObj)
+        {
+            double tprice = -1;
+            string price = "";
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((s < tprice) || (tprice == -1))
+                {
+                    price = m.GetXmlPropertyRaw("genxml/textbox/txtunitcost");
+                    tprice = s;
+                }
+            }
+            return price;
+        }
+
+        private Double GetFromPriceDouble(NBrightInfo dataItemObj)
+        {
+            Double price = -1;
+            var l = BuildModelList(dataItemObj);
+            foreach (var m in l)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
+            return price;
+        }
+
+        private String GetBestPrice(NBrightInfo dataItemObj)
+        {
+            var fromprice = GetFromPriceDouble(dataItemObj);
+            if (fromprice < 0) fromprice = 0; // make sure we have a valid price
+            var saleprice = GetSalePriceDouble(dataItemObj);
+            if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
+
+            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
+            {
+                var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
+                if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
+                if (fromprice < dealerprice)
+                {
+                    if ((saleprice <= 0) || (fromprice < saleprice)) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                    return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                }
+                if ((dealerprice <= 0) || (dealerprice < saleprice)) return dealerprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+                return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            }
+            if ((saleprice <= 0) || (fromprice < saleprice)) return fromprice.ToString(CultureInfo.GetCultureInfo("en-US"));
+            return saleprice.ToString(CultureInfo.GetCultureInfo("en-US"));                
+        }
+
+        private Boolean HasDifferentPrices(NBrightInfo dataItemObj)
+        {
+            var saleprice = GetSalePriceDouble(dataItemObj);
+            if (saleprice >= 0) return true;  // if it's on sale we can assume it has multiple prices
+            var nodList = dataItemObj.XMLDoc.SelectNodes("genxml/models/*");
+            if (nodList != null)
+            {
+                //check if we really need to add prices (don't if all the same)
+                var holdPrice = "";
+                var holdDealerPrice = "";
+                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                foreach (XmlNode nod in nodList)
+                {
+                    var mPrice = nod.SelectSingleNode("textbox/txtunitcost");
+                    if (mPrice != null)
+                    {
+                        if (holdPrice != "" && mPrice.InnerText != holdPrice)
+                        {
+                            return true;
+                        }
+                        holdPrice = mPrice.InnerText;
+                    }
+                    if (isDealer)
+                    {
+                        var mDealerPrice = nod.SelectSingleNode("textbox/txtdealercost");
+                        if (mDealerPrice != null)
+                        {
+                            if (holdDealerPrice != "" && mDealerPrice.InnerText != holdDealerPrice) return true;
+                            holdDealerPrice = mDealerPrice.InnerText;
+                        }                        
+                    }
+
+                }
+            }
+            return false;
+        }
+
+        public static void IncreaseArray(ref string[] values, int increment)
+        {
+            var array = new string[values.Length + increment];
+            values.CopyTo(array, 0);
+            values = array;
+        }
+
+        private Boolean IsInStock(NBrightInfo dataItem)
+        {
+            var nodList = BuildModelList(dataItem);
+            foreach (var obj in nodList)
+            {
+                if (IsModelInStock(obj)) return true;
+            }
+            return false;
+        }
+
+        private Boolean IsModelInStock(NBrightInfo dataItem)
+        {
+            var stockOn = dataItem.GetXmlPropertyBool("genxml/checkbox/chkstockon");
+            if (stockOn)
+            {
+                var modelstatus = dataItem.GetXmlProperty("genxml/dropdownlist/modelstatus");
+                if (modelstatus == "010") return true;
+            }
+            else
+            {
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }
