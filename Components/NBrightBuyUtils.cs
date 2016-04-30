@@ -1361,7 +1361,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // build cache data from template.
             cachedlist = new Dictionary<String, String>();
             var razorTemplate = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
-            if (razorTemplate != "")
+            if (razorTemplate != "" && razorTemplate.Contains("AddPreProcessMetaData"))
             {
                 var obj = new NBrightInfo(true);
                 obj.Lang = lang;
@@ -1378,8 +1378,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     // Only log exception, could be a error because of missing data.  The preprocessing doesn't care.
                 }
-                cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
+                cachedlist = (Dictionary<String, String>) Utils.GetCache(cachekey);
                 if (cachedlist == null) cachedlist = new Dictionary<string, string>();
+                Utils.SetCache(cachekey, cachedlist);
+            }
+            else
+            {
+                cachedlist = new Dictionary<string, string>();
+                Utils.SetCache(cachekey, cachedlist);
             }
             return cachedlist;
         }
@@ -1487,12 +1493,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
         {
-            // do razor test
-            var config = new TemplateServiceConfiguration();
-            config.Debug = debugMode;
-            config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
-            var service = RazorEngineService.Create(config);
-            Engine.Razor = service;
+            // THIS CACHING DOES NOT WORK AS REQUIRED. 
+            // We need to persist DNN cache so that we don't recompile each razor template on every entry save!
+            // Or alter the way cache is cleared!!! ???
+            var service = (IRazorEngineService)Utils.GetCache("NBrightBuyIRazorEngineService");
+            if (service == null)
+            {
+                // do razor test
+                var config = new TemplateServiceConfiguration();
+                config.Debug = debugMode;
+                config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+                service = RazorEngineService.Create(config);
+                Engine.Razor = service;
+                Utils.SetCache("NBrightBuyIRazorEngineService",service);
+            }
 
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
             return result;
@@ -1509,11 +1523,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var nbi = new NBrightInfo();
                     nbi.Lang = Utils.GetCurrentCulture();
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
                 else
                 {
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + moduleid.ToString(), productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader", productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
                 if (razorTempl != "")
                 {
