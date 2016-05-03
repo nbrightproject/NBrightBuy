@@ -1332,7 +1332,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static String RazorTemplRenderList(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var cachekey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
             var razorTempl = (String)GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
@@ -1341,7 +1341,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
                     nbRazor.ModuleId = moduleid;
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
@@ -1501,10 +1501,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 config.Debug = debugMode;
                 config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
                 service = RazorEngineService.Create(config);
-                Engine.Razor = service;
                 HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService",service);
             }
-
+            Engine.Razor = service;
             var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
 
             return result;
@@ -1659,7 +1658,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/textbox/txtdealercost");
+                var s = m.GetXmlPropertyRaw("genxml/textbox/txtdealercost");
                 if (Utils.IsNumeric(s))
                 {
                     if ((Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) > 0) && (Convert.ToDouble(s, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(dealprice, CultureInfo.GetCultureInfo("en-US"))) | (dealprice == "-1")) dealprice = s;
@@ -1674,7 +1673,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var l = BuildModelList(dataItemObj);
             foreach (var m in l)
             {
-                var s = m.GetXmlProperty("genxml/textbox/txtunitcost");
+                var s = m.GetXmlPropertyRaw("genxml/textbox/txtunitcost");
                 if (Utils.IsNumeric(s))
                 {
                     // NBrightBuy numeric always stored in en-US format.
