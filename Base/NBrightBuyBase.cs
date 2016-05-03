@@ -46,6 +46,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             //get Model Level Settings
             ModSettings = new ModSettings(ModuleId, Settings);
             ModuleKey = ModSettings.Get("modref");
+            if (String.IsNullOrEmpty(ModuleKey)) ModuleKey = ModSettings.Get("modulekey"); // keep backward compatiblity with NBS_ProductView.
 
             #endregion
 

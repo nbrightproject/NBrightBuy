@@ -1418,7 +1418,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     l.Add(obj);
                     if (settings == null) settings = new Dictionary<string, string>();
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
@@ -1450,7 +1450,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (!objList.Any()) objList.Add(new NBrightInfo(true));
                     razorTempl = GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", settings, null);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(objList, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
                 }
@@ -1482,7 +1482,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (obj == null) obj = new NBrightInfo(true);
                     razorTempl = GenXmlFunctions.RenderRepeater(obj, razorTempl, "", "XMLData", "", settings, null);
-                    var razorTemplateKey = "NBrightBuyRazorKey" + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(obj, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     SetModCache(moduleid, cachekey, razorTempl);
                 }
