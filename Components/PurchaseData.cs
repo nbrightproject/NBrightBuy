@@ -111,18 +111,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set { _userId = value; }
         }
 
-        public String ShippingCountry
-        {
-            get { return PurchaseInfo.GetXmlProperty("genxml/shippingcountry"); }
-            set { PurchaseInfo.SetXmlProperty("genxml/shippingcountry",value); }
-        }
-
-        public String ShippingRegion
-        {
-            get { return PurchaseInfo.GetXmlProperty("genxml/shippingregion"); }
-            set { PurchaseInfo.SetXmlProperty("genxml/shippingregion", value); }
-        }
-
         #region "Audit data"
 
         public void AddAuditMessage(String msg,String type, String username,String showtouser,String emailsubject = "")
@@ -931,6 +919,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="value"> 1 = use billing, 2=shipping, 3 = collection</param>
         public void SetShippingOption(String value)
         {
+            if (PurchaseInfo.XMLDoc.SelectSingleNode("genxml/extrainfo/genxml") == null)
+            {
+                var nbi = new NBrightInfo(true);
+                AddExtraInfo(nbi);
+            }
+
             PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", value, TypeCode.String, false);
         }
 

@@ -1422,6 +1422,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
+                else
+                {
+                    razorTempl = "ERROR - Razor Template Not Found: " + theme + "." + razorTemplName;
+                }
             }
             return razorTempl;
         }
@@ -1526,7 +1530,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader", productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
-                if (razorTempl != "")
+                if (razorTempl != "" && !razorTempl.StartsWith("ERROR"))
                 {
                     PageIncludes.IncludeTextInHeader(page, razorTempl);
                     page.Items["nbrightinject"] = page.Items["nbrightinject"] + razorTemplateName + ",";

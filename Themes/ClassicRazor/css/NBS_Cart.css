@@ -1,0 +1,13 @@
+/* Wishlist */
+.miniwishlist {background:url("/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/favorites.png") no-repeat 0 17px;height:60px;line-height:58px;color:white;font-size:14px;text-transform:uppercase;padding-left:34px;float:left;margin-right:12px;}
+.miniwishlist a:link, .miniwishlist a:visited {color:white;text-decoration:none;}
+.miniwishlist a:active, .miniwishlist a:hover {color:#505050;text-decoration:none;}
+
+/* Minicart */
+.minicart {background:url("/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/basket.png") no-repeat 0 17px;height:60px;line-height:58px;color:white;font-size:14px;text-transform:uppercase;padding-left:34px;float:left;}
+.minicart a:link, .minicart a:visited {color:white;text-decoration:none;}
+.minicart a:active, .minicart a:hover {color:#505050;text-decoration:none;}
+
+/* Default buttons */
+.nbs .primarybutton{background:#c0392b !important;}
+.nbs .primarybutton:hover{background:#505050 !important;}

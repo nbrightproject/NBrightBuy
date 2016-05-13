@@ -27,6 +27,9 @@ using RazorEngine.Text;
 using System.Drawing.Imaging;
 using NBrightCore.images;
 using System.IO;
+using DotNetNuke.Entities.Users;
+using Nevoweb.DNN.NBrightBuy;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace NBrightBuy.render
 {
@@ -462,7 +465,7 @@ namespace NBrightBuy.render
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, attributes);
-            var id = xpath.Split('/').Last();
+            var id = getIdFromXpath(xpath);
             strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
@@ -483,7 +486,7 @@ namespace NBrightBuy.render
         {
             var strOut = "";
             var upd = getUpdateAttr(xpath, attributes);
-            var id = xpath.Split('/').Last();
+            var id = getIdFromXpath(xpath);
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
             strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
@@ -709,7 +712,7 @@ namespace NBrightBuy.render
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, attributes);
-            var id = xpath.Split('/').Last();
+            var id = getIdFromXpath(xpath);
             strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
@@ -890,6 +893,165 @@ namespace NBrightBuy.render
 
 
         #endregion
+
+
+        #region "Checkout"
+
+        public IEncodedString CountrySelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true)
+        {
+            var rtnList = NBrightBuyUtils.GetCountryList();
+
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in rtnList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString RegionSelect(NBrightInfo info, String xpath,String countryCode, String attributes = "", Boolean allowEmpty = true)
+        {
+            if (countryCode == "")
+            {
+                // get the countrycode if already updated
+                countryCode = info.GetXmlProperty(xpath.Replace("region", "country"));
+            }
+
+            var rtnList = NBrightBuyUtils.GetRegionList(countryCode);
+
+            if (rtnList != null && rtnList.Count > 0)
+            {
+                // we have a list, so do a dropdownlist
+                if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+                var strOut = "";
+
+                var upd = getUpdateAttr(xpath, attributes);
+                var id = getIdFromXpath(xpath);
+                strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+                var s = "";
+                if (allowEmpty) strOut += "    <option value=''></option>";
+                foreach (var tItem in rtnList)
+                {
+                    if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+                }
+                strOut += "</select>";
+                return new RawString(strOut);
+            }
+            else
+            {
+                // no list so output textbox
+                xpath = xpath.Replace("dropdownlist", "textbox");
+                return NBrightTextBox(info,xpath,attributes,"");
+            }
+
+
+        }
+
+        public IEncodedString AddressSelectList(NBrightInfo info, String xpath, String formselector, String datafields, String attributes = "", Boolean allowEmpty = true)
+        {
+            var usr = UserController.Instance.GetCurrentUserInfo();
+            var addressData = new AddressData(usr.UserID.ToString(""));
+
+            var rtnList = addressData.GetAddressList();
+
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var fieldList = datafields.Split(',');
+
+            var strOut = "";
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + " formselector='" + formselector + "' >";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in rtnList)
+            {
+                var fields = tItem.ToDictionary();
+                var datavalues = "";
+                foreach (var xp in fieldList)
+                {
+                    if (xp != "" && fields.ContainsKey(xp))
+                    {
+                        datavalues += "," + fields[xp].Replace(",", " ");
+                    }
+                    else
+                    {
+                        datavalues += ",";
+                    }
+                }
+
+                var itemtext = tItem.GetXmlProperty("genxml/textbox/firstname") + "," + tItem.GetXmlProperty("genxml/textbox/lastname") + "," + tItem.GetXmlProperty("genxml/textbox/unit") + "," + tItem.GetXmlProperty("genxml/textbox/street") + "," + tItem.GetXmlProperty("genxml/textbox/city");
+                var idx = tItem.GetXmlProperty("genxml/hidden/index");
+                if (idx != "")
+                {
+                    if (info.GetXmlProperty(xpath) == idx)
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + idx + "' " + s + " datafields = '" + datafields + "' datavalues = '" + datavalues.TrimStart(',') + "' > " + itemtext.TrimStart(',') + "</option>";
+                }
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString ShippingProviderList(NBrightInfo info, String attributes = "")
+        {
+            var xpath = "genxml/extrainfo/genxml/radiobuttonlist/shippingprovider";
+
+            var strOut = "";
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            strOut = "<div " + attributes + ">";
+            var c = 0;
+            var s = "";
+            var value = info.GetXmlProperty(xpath);
+
+            var cartData = new CartData(PortalSettings.Current.PortalId);
+
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetShippingProviders();
+            foreach (var d in provList)
+            {
+                var isValid = true;
+                var shipprov = ShippingInterface.Instance(d.Key);
+                if (shipprov != null) isValid = shipprov.IsValid(cartData.PurchaseInfo);
+                var p = d.Value;
+                if (isValid)
+                {
+                    if (value == "") value = d.Key;
+                    s = "";
+                    if (value == d.Key) s = "checked";
+                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + upd + " name='" + id + "radio' type='radio' value='" + d.Key + "'  " + s + "/><label>" + p.GetXmlProperty("genxml/textbox/name") + "</label>";
+                    c += 1;
+                }
+            }
+            strOut += "</div>";
+            return new RawString(strOut);
+        }
+
+        #endregion 
+
 
         #endregion
 

@@ -1,0 +1,33 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Text
+@using System.Web
+@using System.Web.Razor.Parser
+@using System.Web.Razor.Parser.SyntaxTree
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/gastonmercier/resx")
+
+@{
+    // assign Model, so we can resolve var in VS
+    var cart = (CartData)Model.List.First();
+    var info = cart.PurchaseInfo;
+}
+
+<div class="minicart">
+
+
+    <span>@ResourceKey("General.basket")</span>
+
+    @if (info.GetXmlPropertyDouble("genxml/totalqty") > 0)
+    {
+        <a href="/tabid/@Model.GetSetting("carttab")/Default.aspx">@info.GetXmlPropertyDouble("genxml/totalqty") @ResourceKey("General.txtitems"): @NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))</a>
+    }
+    else
+    {
+        @ResourceKey("General.txtemptybasket")
+    }
+</div>
+    <div class="clearfix"></div>

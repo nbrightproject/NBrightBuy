@@ -21,7 +21,10 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Exceptions;
+using NBrightBuy.render;
 using NBrightCore.images;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy
 {
@@ -272,9 +275,44 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "printproduct":
                     break;
+                case "removefromcart":
+                    RemoveFromCart(context);
+                    strOut = "removefromcart";
+                    break;
+                case "recalculatecart":
+                    RecalculateCart(context);
+                    strOut = "recalculatecart";
+                    break;
+                case "recalculatesummary":
+                    RecalculateSummary(context);
+                    strOut = "recalculatecart";
+                    break;
+                case "redirecttopayment":
+                    strOut = RedirectToPayment(context);
+                    break;
+                case "updatebilladdress":
+                    strOut = UpdateCartAddress(context,"bill");
+                    break;
+                case "updateshipaddress":
+                    strOut = UpdateCartAddress(context, "ship");
+                    break;
+                case "updateshipoption":
+                    strOut = UpdateCartAddress(context, "shipoption");
+                    break;
                 case "rendercart":
                         strOut = RenderCart(context);
                     break;
+                case "renderpostdata":
+                    strOut = RenderPostData(context);
+                    break;
+                case "clearcart":
+                    var currentcart = new CartData(PortalSettings.Current.PortalId);
+                    currentcart.DeleteCart();
+                    strOut = "clearcart";
+                    break;
+                case "shippingprovidertemplate":
+                    strOut = GetShippingProviderTemplates(context);
+                    break;                    
                 case "getsettings":
                     strOut = GetSettings(context);
                     break;
@@ -1862,6 +1900,28 @@ namespace Nevoweb.DNN.NBrightBuy
             return razorTempl;
         }
 
+        /// <summary>
+        /// This token used the ajax posted context data to render the razor template specified in "carttemplate"
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private String RenderPostData(HttpContext context)
+        {
+            var ajaxInfo = GetAjaxInfo(context);
+            var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
+            var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
+            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+            var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
+            if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
+            var razorTempl = "";
+            if (carttemplate != "")
+            {
+                if (lang == "") lang = Utils.GetCurrentCulture();
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", ajaxInfo, controlpath, theme, lang, StoreSettings.Current.Settings());
+            }
+            return razorTempl;
+        }
+
         private string AddToBasket(HttpContext context)
         {
             try
@@ -1919,6 +1979,203 @@ namespace Nevoweb.DNN.NBrightBuy
                 return ex.ToString();
             }
         }
+
+        private string RecalculateCart(HttpContext context)
+        {
+            try
+            {
+                var strOut = "";
+                var ajaxInfoList = GetAjaxInfoList(context);
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                foreach (var ajaxInfo in ajaxInfoList)
+                {
+                        currentcart.MergeCartInputData(currentcart.GetItemIndex(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode")), ajaxInfo);
+                        currentcart.Save(StoreSettings.Current.DebugMode);
+                        strOut = "OK";
+                }
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string UpdateCartAddress(HttpContext context,String addresstype = "")
+        {
+            try
+            {
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                var ajaxInfo = GetAjaxInfo(context,true);
+
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
+
+                if (addresstype == "bill")
+                {
+                    currentcart.AddBillingAddress(ajaxInfo);
+                    currentcart.Save();
+                }
+
+                if (addresstype == "ship")
+                {
+                    if (currentcart.GetShippingOption() == "2") // need to test this, becuase in legacy code the shipping option is set to "2" when we save the shipping address.
+                    {
+                        currentcart.AddShippingAddress(ajaxInfo);
+                        currentcart.Save();
+                    }
+                }
+
+                if (addresstype == "shipoption")
+                {
+                    var shipoption = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/rblshippingoptions");
+                    currentcart.SetShippingOption(shipoption);
+                    currentcart.Save();
+                }
+
+                return addresstype;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string RedirectToPayment(HttpContext context)
+        {
+            try
+            {
+                RecalculateSummary(context);
+
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+
+                if (currentcart.GetCartItemList().Count > 0)
+                {
+                    currentcart.SetValidated(true);
+                    if (currentcart.EditMode == "E") currentcart.ConvertToOrder();
+                }
+
+                var rtnurl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId);
+                if (currentcart.EditMode == "E")
+                {
+                    // is order being edited, so return to order status after edit.
+                    // ONLY if the cartsummry is being displayed to the manager.
+                    currentcart.ConvertToOrder();
+                    // redirect to back office
+                    var param = new string[2];
+                    param[0] = "ctrl=orders";
+                    param[1] = "eid=" + currentcart.PurchaseInfo.ItemID.ToString("");
+                    var strbackofficeTabId = StoreSettings.Current.Get("backofficetabid");
+                    var backofficeTabId = PortalSettings.Current.ActiveTab.TabID;
+                    if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
+                    rtnurl = Globals.NavigateURL(backofficeTabId, "", param);
+                }
+                return rtnurl;
+
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return "ERROR";
+            }
+        }
+
+        private string RecalculateSummary(HttpContext context)
+        {
+            try
+            {
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                var ajaxInfo = GetAjaxInfo(context, true);
+                var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
+
+                currentcart.AddExtraInfo(ajaxInfo);
+                currentcart.SetShippingOption(shipoption);
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider"));
+
+                var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/shippingproductcode", shippingproductcode);
+                var pickuppointref = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointref");
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
+                var pickuppointaddr = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointaddr");
+                currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointaddr", pickuppointaddr);
+
+                currentcart.Lang = ajaxInfo.Lang;  // set lang so we can send emails in same language the order was made in.
+
+                currentcart.Save();
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string RemoveFromCart(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = GetAjaxInfo(context);
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+                currentcart.RemoveItem(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode"));
+                currentcart.Save(StoreSettings.Current.DebugMode);
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        private String GetShippingProviderTemplates(HttpContext context)
+        {
+            var ajaxInfo = GetAjaxInfo(context);
+            var activeprovider = ajaxInfo.GetXmlProperty("genxml/hidden/shippingprovider");
+            var currentcart = new CartData(PortalSettings.Current.PortalId);
+
+            var shipoption = currentcart.GetShippingOption(); // we don't want to overwrite the selected shipping option.
+            currentcart.AddExtraInfo(ajaxInfo);
+            currentcart.SetShippingOption(shipoption);
+            currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
+            currentcart.Save();
+
+            if (activeprovider == "") activeprovider = currentcart.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
+
+
+            var strRtn = "";
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetShippingProviders();
+            if (provList != null && provList.Count > 0)
+            {
+                if (activeprovider == "") activeprovider = provList.First().Key;
+                foreach (var d in provList)
+                {
+                    var p = d.Value;
+                    var shippingkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                    var shipprov = ShippingInterface.Instance(shippingkey);
+                    if (shipprov != null)
+                    {
+                        if (activeprovider == d.Key)
+                        {
+                            var razorTempl = shipprov.GetTemplate(currentcart.PurchaseInfo);
+                            var objList = new List<NBrightInfo>();
+                            objList.Add(currentcart.PurchaseInfo);
+                            if (razorTempl.StartsWith("@"))
+                            {
+                                strRtn += NBrightBuyUtils.RazorRender(objList, razorTempl, shippingkey + "shippingtemplate", StoreSettings.Current.DebugMode);
+                            }
+                            else
+                            {
+                                strRtn += GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
+                            }
+                        }
+                    }
+                }
+            }
+            return strRtn;
+        }
+
 
         #endregion
 
@@ -2135,22 +2392,38 @@ namespace Nevoweb.DNN.NBrightBuy
             return dic;
         }
 
-        private NBrightInfo GetAjaxInfo(HttpContext context)
+        /// <summary>
+        /// Put Ajax data into a NBrightInfo class for processing
+        /// </summary>
+        /// <param name="context">Http context</param>
+        /// <param name="updatefields">If true only fields marked with update attribute are returned.</param>
+        /// <returns></returns>
+        private NBrightInfo GetAjaxInfo(HttpContext context, Boolean updatefields = false)
         {
             var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+
             var objInfo = new NBrightInfo();
 
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";
             objInfo.PortalId = PortalSettings.Current.PortalId;
-            objInfo.XMLData = xmlData;
+            if (updatefields)
+            {
+                objInfo.UpdateAjax(strIn);
+            }
+            else
+            {
+                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+                objInfo.XMLData = xmlData;
+            }
             var dic = objInfo.ToDictionary();
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
 
             // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
             if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+            objInfo.Lang = _lang; // make sure we have the langauge in the object.
+
             return objInfo;
         }
 

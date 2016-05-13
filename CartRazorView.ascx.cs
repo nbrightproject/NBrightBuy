@@ -76,19 +76,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void RazorPageLoad()
         {
-
-            var strOut = "";
-            var template = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
-
-            // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + template, ControlPath, ThemeFolder, ModSettings.Settings());
-
-            strOut = NBrightBuyUtils.RenderCart(ThemeFolder, template);
-
+            var strOut = NBrightBuyUtils.RenderCart(ThemeFolder, RazorTemplate);
             var lit = new Literal();
             lit.Text = strOut;
             phData.Controls.Add(lit);
-
         }
 
         #endregion

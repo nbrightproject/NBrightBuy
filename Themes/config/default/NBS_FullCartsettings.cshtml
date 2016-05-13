@@ -23,7 +23,7 @@
             <input id="moduleid" type="hidden" value="@info.ModuleId" />
             <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
             <input id="index" type="hidden" value="" />
-            <input id="razortemplate" type="hidden" value="NBS_MiniCartsettings.cshtml" />
+            <input id="razortemplate" type="hidden" value="NBS_FullCartsettings.cshtml" />
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lblthemefolder", "Settings.Theme")
@@ -33,7 +33,7 @@
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lbltemplate", "Settings.razortemplate")
-                    @NBrightTextBox(info,"genxml/textbox/razortemplate","","NBS_MiniCart.cshtml")
+                    @NBrightTextBox(info,"genxml/textbox/razortemplate","","NBS_FullCart.cshtml")
                 </div>
             </div>
         </div>

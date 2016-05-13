@@ -1,0 +1,354 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<!-- "pageheaderdetail.cshtml" template will be auto injected as dynamic data into page head section -->
+@{
+    // assign Model, so we can resolve var in VS
+    var product = (ProductData)Model.List.First();
+    var info = (NBrightInfo)product.Info;
+}
+
+<div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
+
+<div class="nbs">
+
+    <div class="productdetail" itemscope itemtype="http://schema.org/Product">
+
+        @if (@product.Imgs.Count >= 1)
+        {
+            <div class="images">
+
+                <div class="addedtobasket" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
+
+                <div class="image">
+
+                    <!-- Add to favorites buttons -->
+                    @if (Model.GetSetting("enablefavorites") == "True")
+                    {
+                        <div class="favorite-flag">
+                            <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                            <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                        </div>
+                    }
+
+                    @if (product.Imgs.Count > 0)
+                    {
+                        <a href="@(product.Imgs.First().GetXmlProperty("genxml/hidden/imageurl"))" data-imagelightbox="nbb"><img src="@ProductImage(info, Model.GetSetting("classicimagewidth"), Model.GetSetting("classicimageheight"))" alt="@(product.Imgs.First().GetXmlProperty("genxml/textbox/txtimagedesc"))" title="@(product.Imgs.First().GetXmlProperty("genxml/textbox/txtimagedesc"))" /></a>
+                    }
+                    else
+                    {
+                        <div class="noimage" style="height: @(Model.GetSetting("classicimageheight"))">
+                            @(Model.GetSettingHtmlOf("noimageicon"))NO IMAGE
+                        </div>
+                    }
+                    @if (@product.IsOnSale)
+                    {
+                        <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                    }
+                    @if (!@product.IsInStock)
+                    {
+                        <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                    }
+                </div>
+
+                <!-- display images -->
+                <ul class="gallery">
+                    @{
+                        var lp = 1;
+                        foreach (var img in product.Imgs)
+                        {
+                            if (lp > 1)
+                            {
+                                <li class="image@(lp.ToString())">
+                                    <a href="@(img.GetXmlProperty("genxml/hidden/imageurl"))" data-imagelightbox="nbb">
+                                        <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=70&amp;h=0" alt="2" title="">
+                                    </a>
+                                </li>
+                            }
+                            lp += 1;
+                        }
+                    }
+                </ul>
+
+            </div>
+                        }
+
+        <!-- fields required to send required ajax data to server to purchase product -->
+        <div class="purchasing entryid@(info.ItemID)">
+            <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
+            <input id="lang" type="hidden" value="@(info.Lang)">
+
+            <h1 itemprop="name">@(product.ProductName)</h1>
+
+            <div class="price">
+
+                @if (@product.IsOnSale)
+                {
+                    <span>@ResourceKey("ProductView.onsale") : </span>
+                    if (@product.Models.Count >= 1 && @product.Options.Count >= 1)
+                    {
+                        <span>@ResourceKey("ProductView.from") </span>
+                    }
+                    <span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))</span>
+                    <span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(product.SalePrice()))</span>
+                }
+                else
+                {
+                    if (@product.Models.Count >= 1 || @product.Options.Count >= 1) // has models or options
+                    {
+                        <span>@ResourceKey("ProductView.from")</span>
+                    }
+                    <span>@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))</span>
+                }
+
+            </div>
+
+            @if (@info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary") != "")
+            {
+                <div itemprop="description" class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
+            }
+            @if (@product.Models.Count >= 2)
+            {
+                var c = 0;
+                <div class="models">
+                    @if (Model.GetSetting("modeldisplaytype") == "0")
+                    {
+                        @ModelsRadio(info)
+                    }
+                    @if (Model.GetSetting("modeldisplaytype") == "1")
+                    {
+                        @ModelsDropDown(info)
+                    }
+                    @if (Model.GetSetting("modeldisplaytype") == "2")
+                    {
+                        foreach (NBrightInfo x in product.Models)
+                        {
+                            <div class="quantityoptions">
+                                <a class="qtyminus" index="@(c)" href="javascript:void(0)">-</a>
+                                <input type="text" id="selectedmodelqty@(c)" update="save" class="quantity" style='width: 21px' value="1" />
+                                <!-- use hiddenfield to pass back modelid -->
+                                <input id="selectedmodelid@(c)" type="hidden" value="@(x.GetXmlProperty("genxml/hidden/modelid"))">
+                                <a class="qtyplus" index="@(c)" href="javascript:void(0)">+</a>
+                                <label>@NBrightBuyUtils.GetItemDisplay(x, "{name} ({bestprice})", true) </label>
+                            </div>
+                            c += 1;
+                        }
+                    }
+                </div>
+                <div class="clearfix"></div>
+            }
+
+            @if (@product.Options.Count >= 1)
+            {
+                <div class="options">
+                    <!-- OPTION HERE -->
+                    @ProductOptions(product)
+                </div>
+                <div class="clearfix"></div>
+            }
+
+            @if (Model.GetSetting("cataloguemode") != "True")
+            {
+                <div class="buy">
+                    @if (@product.IsInStock)
+                    {
+                        if (Model.GetSetting("modeldisplaytype") != "2")
+                        {
+                            <div class="quantityoptions">
+                                <a class="qtyminus" href="javascript:void(0)">-</a>
+                                <!-- "selectedaddqty"" expected by server as name of qty field -->
+                                @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
+                                <a class="qtyplus" href="javascript:void(0)">+</a>
+                            </div>
+                        }
+                            <!-- Buy button HERE -->
+                        <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
+                    }
+                    else
+                    {
+                        <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
+                    }
+
+                    <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+
+                </div>
+            }
+
+        </div>
+
+        <!-- Details -->
+        
+
+            <div class="categorybreadcrumbs">
+
+
+                @*<ul class="nav-tabs">
+                        @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
+                        {
+                            <li class="tab-active"><a href="#tab-1">@ResourceKey("ProductView.description")</a></li><!-- Product description -->
+                        }
+                        @if (@product.Models.Count > 1) // has models
+                        {
+                            <li><a href="#tab-2">@ResourceKey("ProductView.models")</a></li><!-- Show Options table -->
+                        }
+                        @if (@product.Docs.Count >= 1)
+                        {
+                            <li><a href="#tab-3">@ResourceKey("ProductView.documentation")</a></li><!-- Document downloads -->
+                        }
+                    </ul>*@
+                <!--<div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="addthis_sharing_toolbox"></div></div> Sharing widget -->
+
+                <div class="sharingwidget">
+                    <div class="share">@ResourceKey("ProductView.share") :</div>
+                    <div class="addthis_fake">
+                        <img src="/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/addthis.png" />
+                    </div>
+                </div>
+
+            @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
+            {
+                <div id="tab-1" class="tab-content tab-active">
+                    <h3>@ResourceKey("ProductView.description")</h3>
+                    @HtmlOf(info, "genxml/lang/genxml/edt/description")
+                </div>
+            }
+            @if (@product.Models.Count > 1) // has models
+            {
+                <div id="tab-2" class="tab-content tab-hide">
+                    <h3>@ResourceKey("ProductView.models")</h3>
+                    <div class="models">
+                        <table>
+                            <tbody>
+                                <!-- Model list -->
+                                @foreach (var m in product.Models)
+                                {
+                                    <tr>
+                                        <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
+                                        <td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
+                                        @if (Model.GetSetting("productcode") == "True")
+                                        {
+                                            if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
+                                            {
+                                                <td>NC</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
+                                            }
+                                        }
+                                        <td>
+                                            @if (product.BestPrice() < product.FromPrice())
+                                            {
+                                                <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
+                                                <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+                                            }
+                                            else
+                                            {
+                                                <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            @if (!product.IsInStock)
+                                            {
+                                                <strong>@ResourceKey("ProductView.outofstock")</strong>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            @if (@product.Docs.Count >= 1)
+            {
+                <div id="tab-3" class="tab-content tab-hide">
+                    <h3>@ResourceKey("ProductView.documentation")</h3>
+                    <ul class="documents">
+                        <!-- documents HERE -->
+                        @foreach (var doc in product.Docs)
+                        {
+                            <li>
+                                <i class='fa fa-file-text fa-2x'>@ResourceKey("ProductView.filebullets")</i><span class="documentname">@doc.GetXmlProperty("genxml/textbox/txttitle")</span><span class="documentdescription">@doc.GetXmlProperty("genxml/textbox/txtdocdesc")</span>
+                                <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&filename=@doc.GetXmlProperty("genxml/hidden/filerelpath")'>@ResourceKey("ProductView.download")</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+        </div>
+        <!-- End Details -->
+        <!-- Related Items -->
+        @if (@product.GetRelatedProducts().Count >= 1)
+        {
+            <h3>@ResourceKey("ProductView.recommend")</h3>
+            <div id="relatedwrapper" class="productlist">
+                <!-- Related products -->
+                @foreach (var rp in product.GetRelatedProducts())
+                {
+                    var rproduct = new ProductData(rp.ItemID, rp.Lang);
+                    <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
+
+                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+
+                            @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
+                            {
+                                <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                    @(Model.GetSettingHtmlOf("noimageicon"))
+                                </div>
+                            }
+                        </div>
+
+                        <div class="description">
+                            <h2><a href="@EntryUrl(rp, Model)">@ProductName(rp)</a></h2>
+
+                            @*<div class="price">
+
+                                @if (product.IsOnSale)
+                                {
+                                    if (product.Models.Count > 1)
+                                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.SalePrice()))</span>
+                                }
+                                else
+                                {
+                                    if (product.Models.Count > 1) // has models or options
+                                    {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))
+
+                                }
+
+                            </div>
+
+                            @if (rproduct.IsOnSale)
+                            {
+                                <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                            }
+
+                            @if (!rproduct.IsInStock)
+                            {
+                                <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                            }
+
+                            <a href="@EntryUrl(rp, Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>*@
+
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</div>

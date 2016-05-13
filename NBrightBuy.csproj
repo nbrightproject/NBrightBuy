@@ -439,7 +439,9 @@
     </Content>
     <Content Include="CategoryMenu.ascx" />
     <Content Include="CategoryMenuSettings.ascx" />
-    <Content Include="CartView.ascx" />
+    <Content Include="CartView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CartViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -449,7 +451,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Installation\menuplugin.xml" />
-    <Content Include="Payment.ascx" />
+    <Content Include="Payment.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="PaymentSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -478,8 +482,57 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
+    <Content Include="Themes\ClassicRazor\css\imagelightbox.nbb.css" />
+    <Content Include="Themes\ClassicRazor\css\images\animated-overlay.gif" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_55_fbf9ee_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_75_cccccc_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_75_dadada_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_75_e6e6e6_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_95_fef1ec_40x100.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-icons_222222_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-icons_454545_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-icons_888888_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\NBS_Cart.css" />
+    <Content Include="Themes\ClassicRazor\css\NBS_ProductView.css" />
+    <Content Include="Themes\ClassicRazor\img\addthis.png" />
+    <Content Include="Themes\ClassicRazor\img\basket.png" />
+    <Content Include="Themes\ClassicRazor\img\email-facebook.gif" />
+    <Content Include="Themes\ClassicRazor\img\email-twitter.gif" />
+    <Content Include="Themes\ClassicRazor\img\favorites.png" />
+    <Content Include="Themes\ClassicRazor\js\imagelightbox.nbb.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery.navgoco.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery.navgoco.min.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery.responsiveTabs.min.js" />
+    <Content Include="Themes\ClassicRazor\js\product.js" />
     <Content Include="Themes\Classic\css\NBS_Cart.css" />
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
+    <None Include="Themes\ClassicRazor\css\images\Thumbs.db" />
+    <None Include="Themes\ClassicRazor\Default\detail.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\list.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_Checkout.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CheckoutAddress.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CheckoutList.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CheckoutRegion.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_Checkoutsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CheckoutShipMethod.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CheckoutSummary.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_FullCart.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_FullCartList.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_FullCartsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_MiniCart.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_MiniCartsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\pageheaderdetail.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\pageheaderlist.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\pageheaderNBS_Checkout.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\pageheaderNBS_FullCart.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\pageheaderNBS_MiniCart.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\productviewsettings.cshtml" />
+    <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
     <None Include="Installation\03.02.00.SqlDataProvider" />
     <None Include="packages.config" />
@@ -1541,7 +1594,9 @@
     <EmbeddedResource Include="App_LocalResources\CartView.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\cartview.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\CartView.ascx.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\cartviewsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\cartviewsettings.ascx.nl-NL.resx" />
@@ -1643,6 +1698,7 @@
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Themes\config\default\fileuploadjs.cshtml" />
+    <None Include="Themes\config\default\NBS_FullCartsettings.cshtml" />
     <None Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.scss" />
     <None Include="Themes\config\default\plugins\bootstrap\bootstrap-theme.css.map" />
     <None Include="Themes\config\default\plugins\bootstrap\bootstrap.css.map" />

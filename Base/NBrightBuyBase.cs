@@ -26,6 +26,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 		public string SelUserId = "";
         public string ThemeFolder = "";
 	    public ModSettings ModSettings;
+        public string RazorTemplate = "";
 
         public Boolean EnablePaging;
 

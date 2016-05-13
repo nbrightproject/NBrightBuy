@@ -1,0 +1,156 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Web
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@AddMetaData("searchpagesize", Model.GetSetting("pagesize"), "ClassicRazor.list.cshtml")
+
+@AddMetaData("orderby", "{bycategoryproduct}", "ClassicRazor.list.cshtml") <!-- set default to manual sort on category product -->
+
+@AddMetaData("orderby0", "{bycategoryproduct}", "ClassicRazor.list.cshtml")
+@AddMetaData("orderby1", "NB3.FromPrice", "ClassicRazor.list.cshtml")
+@AddMetaData("orderby2", "NB3.FromPrice DESC", "ClassicRazor.list.cshtml")
+@AddMetaData("orderby3", "NB3.ProductRef", "ClassicRazor.list.cshtml")
+@AddMetaData("orderby4", "NB3.ProductName", "ClassicRazor.list.cshtml")
+
+@AddMetaData("selectpagesize", "True", "ClassicRazor.list.cshtml") <!-- flag to tell product list a custom pagesize may be applied -->
+
+    <!-- Product List header -->
+
+    <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
+
+    <div class="nbs">
+
+        <!-- show sort order selection -->
+        @*<div>
+                @ResourceKey("General.OrderBy")@SortOrderDropDownList("ResourceKey:ProductView.orderby", Model)
+                @ResourceKey("General.pagesize")@PageSizeDropDownList("4,8,16,32", Model)
+            </div>*@
+
+        <!-- Show category details -->
+        <div class="categorydetails">
+            <h3>@Category("categoryname", Model) @Category("entrycount", Model) @ResourceKey("ProductView.products")</h3> @*change h1 to h3*@
+        </div>
+
+        <div id="listwrapper" class="productlist">
+
+            <div class="leftpanewrapper">
+                <h3>@Category("categoryname", Model) @Category("entrycount", Model) @ResourceKey("ProductView.products")</h3>
+            </div>
+
+
+            <!-- Product List Body -->
+
+            @{
+                var lang = "";
+            }
+            @foreach (NBrightInfo info in Model.List)
+            {
+                var product = new ProductData(info.ItemID, info.Lang);
+                lang = info.Lang;
+
+                <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight")); margin-bottom: @(Model.GetSetting("classicitembottommargin"))px">
+                    <!-- Product container -->
+                    <!--<div class="edit"><a href="@EditUrl(info,Model)">@ResourceKey("ProductView.editicon")</a></div>-->
+
+                    <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
+
+                    <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+
+                        <div class="productimg-overlay">
+
+                            <!-- Add to favorites buttons -->
+                            @if (Model.GetSettingBool("enablefavorites"))
+                {
+                                <span>
+                                    <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                                    <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                                </span>
+                            }
+
+                            <a href="javascript:void(0);" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+
+
+                            <a href="@EntryUrl(info, Model)">@ResourceKey("ProductView.viewicon-lg")</a>
+                        </div>
+
+                        @if (product.Imgs.Count > 0)
+                        {
+                            <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                @(Model.GetSettingHtmlOf("noimageicon"))
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="description">
+                        <h2><a href="@EntryUrl(info,Model)">@ProductName(info)</a></h2>
+
+                        @*to add desctiption in PRODUCT DISPLAY page*@
+                        <div class="summary">@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))</div>
+
+                        <div class="price">
+
+                            @if (product.IsOnSale)
+                {
+                    if (product.Models.Count > 1)
+                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(product.SalePrice()))</span>
+                            }
+                            else
+                            {
+                                if (product.Models.Count > 1) // has models or options
+                                {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice()))
+                            }
+
+                        </div>
+
+                        @if (product.IsOnSale)
+                        {
+                            <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                        }
+
+                        @if (!product.IsInStock)
+                        {
+                            <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                        }
+
+
+                        @if (product.Models.Count > 1) // has models or options
+                        {
+                            //no button "More details"
+
+                    @*<a href="@EntryUrl(info,Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>*@
+                        }
+                        else
+                        {
+                            if (Model.GetSetting("cataloguemode") != "True")
+                            {
+                                //no button "Add to baket"
+
+                            @*<a href="javascript:void(0);" class="classicbutton entryurl addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasket")</a>*@
+                            }
+                        }
+                    </div>
+
+                    <!-- fields required to send required ajax data to server -->
+                    <span class="entryid@(info.ItemID)">
+                        <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
+                    </span>
+
+                </div>
+            }
+
+            <!-- Product List footer -->
+
+        </div>
+
+    </div>

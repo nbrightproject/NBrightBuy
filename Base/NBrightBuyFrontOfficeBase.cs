@@ -27,14 +27,24 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             }
             if (ThemeFolder == "") ThemeFolder = StoreSettings.Current.ThemeFolder;
 
-            NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "frontofficepageheader.html", ThemeFolder, DebugMode);
-            if (ModuleContext.Configuration != null)
+            if (ModSettings.Settings().ContainsKey("razortemplate") && ModSettings.Settings()["razortemplate"] != "")
             {
-                NBrightBuyUtils.IncludePageHeaderDefault(ModCtrl, Page, "pageheader" + ModuleContext.Configuration.DesktopModule.ModuleName + ".html", ThemeFolder, DebugMode);                
+                RazorTemplate = ModSettings.Settings()["razortemplate"];
             }
 
-            Controls.AddAt(0, new LiteralControl("<div class='" + ThemeFolder + "'><!-- " + ThemeFolder + " Start -->"));
-            Controls.AddAt(Controls.Count, new LiteralControl("</div><!-- " + ThemeFolder + " End -->"));
+            // insert page header text
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "frontofficepageheader.cshtml", ControlPath, ThemeFolder, ModSettings.Settings());
+
+            if (ModuleContext.Configuration != null)
+            {
+                if (String.IsNullOrEmpty(RazorTemplate)) RazorTemplate = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
+                // insert page header text
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + RazorTemplate, ControlPath, ThemeFolder, ModSettings.Settings());
+            }
+            var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
+
+            Controls.AddAt(0, new LiteralControl("<div class='container_" + ThemeFolder.ToLower().Replace(" ","_") + "_" + RazorTemplate.ToLower().Replace(".cshtml","").Replace(" ", "_") + "'>"));
+            Controls.AddAt(Controls.Count, new LiteralControl("</div>"));
 
         }
 

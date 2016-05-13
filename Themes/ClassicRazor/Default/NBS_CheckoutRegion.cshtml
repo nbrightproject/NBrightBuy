@@ -1,0 +1,15 @@
+﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using NBrightDNN
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/gastonmercier/resx")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+    var countrycode = info.GetXmlProperty("genxml/dropdownlist/country");
+    var xpath = info.GetXmlProperty("genxml/hidden/xpath");
+}
+
+<h6>@ResourceKey("General.lblRegion")</h6>
+@RegionSelect(info, xpath, countrycode,"")
