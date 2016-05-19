@@ -77,6 +77,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\DiscountCodes.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\DiscountCodes.ascx.resx" />
   </ItemGroup>
   <ItemGroup>

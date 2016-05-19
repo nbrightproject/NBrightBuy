@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountryCodesCSV.Text" xml:space="preserve">
-    <value>Liste des codes pays</value>
+    <value>Liste des codes pays concernés (CSV)</value>
   </data>
   <data name="FreeShipping.Text" xml:space="preserve">
     <value>Franco de port</value>
