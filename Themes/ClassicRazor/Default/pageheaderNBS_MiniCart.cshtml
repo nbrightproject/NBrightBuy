@@ -18,7 +18,7 @@
 <!-- This is in this template so it works for ALL products list/detail modules on the page.-->
 <span class="minicartdata" style="display: none;">
     <input id="carttemplate" type="hidden" value="NBS_MiniCart.cshtml">
-    <input id="carttheme" type="hidden" value="gastonmercier">
+    <input id="carttheme" type="hidden" value="classicrazor">
     <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
 </span>
 
@@ -54,7 +54,7 @@
         });
 
         $('#minicartdatareturn').change(function () {
-            nbxget('rendercart', '.minicartdata', '.container_gastonmercier_nbs_minicart'); // Reload Cart
+            nbxget('rendercart', '.minicartdata', '.container_classicrazor_nbs_minicart'); // Reload Cart
             $('.addedtobasket').delay(1000).fadeOut('fast');
         });
 

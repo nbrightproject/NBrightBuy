@@ -43,8 +43,8 @@
 
       </releaseNotes>
       <dependencies>
-        <dependency type="CoreVersion">07.02.00</dependency>
-        <dependency type="managedPackage" version="3.3.0">NBrightTemplateSys</dependency>
+        <dependency type="CoreVersion">08.00.00</dependency>
+        <dependency type="managedPackage" version="8.0.0">NBrightTemplateSys</dependency>
       </dependencies>
       <components>
         <component type="Script">
@@ -704,7 +704,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 								<moduleControls>
 									<moduleControl>
 										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartView.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorView.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle />
 										<controlType>View</controlType>
@@ -714,7 +714,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									</moduleControl>
 									<moduleControl>
 										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartViewSettings.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorViewSettings.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle>Settings</controlTitle>
 										<controlType>Edit</controlType>
@@ -852,7 +852,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 								<moduleControls>
 									<moduleControl>
 										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartView.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorView.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle />
 										<controlType>View</controlType>
@@ -862,7 +862,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									</moduleControl>
 									<moduleControl>
 										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CartViewSettings.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/CartRazorViewSettings.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle>Settings</controlTitle>
 										<controlType>Edit</controlType>

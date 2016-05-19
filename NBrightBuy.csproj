@@ -513,6 +513,7 @@
     <Content Include="Themes\Classic\css\NBS_ProductView.css" />
     <None Include="Themes\ClassicRazor\css\images\Thumbs.db" />
     <None Include="Themes\ClassicRazor\Default\detail.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\frontofficepageheader.cshtml" />
     <None Include="Themes\ClassicRazor\Default\list.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Checkout.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CheckoutAddress.cshtml" />
@@ -542,7 +543,7 @@
     <None Include="Themes\Classic\Default\pageheaderdetail.cshtml" />
     <None Include="Themes\Classic\Default\pageheaderNBS_MiniCart.cshtml" />
     <None Include="Themes\Classic\Default\productviewsettings.cshtml" />
-    <Content Include="Themes\Classic\Default\frontofficepageheader.html" />
+    <None Include="Themes\Classic\Default\frontofficepageheader.cshtml" />
     <Content Include="Themes\Classic\Default\pageheaderNBS_ProductDisplay.html" />
     <Content Include="Themes\Classic\Default\simplesearch.html" />
     <Content Include="Themes\Classic\img\addthis.png" />

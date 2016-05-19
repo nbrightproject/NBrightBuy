@@ -420,4 +420,10 @@
   <data name="debugmode.Text" xml:space="preserve">
     <value>Activate this to allow editing of razor templates, without the need to clear cache.  Warning!! Do NOT use in production, this can cause a memory leak and bad performance.</value>
   </data>
+  <data name="lbltemplate.Help" xml:space="preserve">
+    <value>Name of razor template to use.</value>
+  </data>
+  <data name="lbltemplate.Text" xml:space="preserve">
+    <value>Razor Template</value>
+  </data>
 </root>
