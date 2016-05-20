@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -474,7 +475,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     #endregion
 
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
 
                     // save navigation data
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
@@ -575,7 +576,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + _templD, ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 

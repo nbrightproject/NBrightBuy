@@ -1,0 +1,48 @@
+<div class="nbs myorders">
+
+<!-- Client Menu -->
+<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuTitle" />]</h1>
+<div class="clientmenu">
+<div class="clientmenuheader">[<tag type="valueof" resourcekey="Clients.ClientmenuManage" />]</div>
+<ul>
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+<li><a href="/tabid/[Settings:profiletab]"><i class="fa fa-user fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+<li><a href="/tabid/[Settings:addressestab]"><i class="fa fa-book fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+<li class="activetab"><a href="/tabid/[Settings:ordermanagertab]"><i class="fa fa-shopping-cart fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a></li>
+[<tag type="endif"  />]
+</ul>
+</div>
+
+<div class="formrow">
+[Template:datepicker.html]
+
+<div class="ordersearch">
+    <div>[<tag type="valueof" resourcekey="General.Search" />]<br>[<tag id="txtSearch" type="textbox" width="150" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.From" />]<br>[<tag id="dateSearchFrom" type="textbox" width="90" datatype="date" />]</div>
+    <div>[<tag type="valueof" resourcekey="General.To" />]<br>[<tag id="dateSearchTo" type="textbox" width="90" datatype="date" />]</div>
+    <div><span>&nbsp;</span><br>[<tag id="cmdSearch" type="linkbutton" resourcekey="General.cmdSearchButton" cssclass="primarybutton" commandname="search"/>]</div>
+    <div><span>&nbsp;</span><br>[<tag id="cmdReset" type="linkbutton" resourcekey="General.cmdResetButton" cssclass="secondarybutton" commandname="resetsearch"/>]</div>
+</div>
+</div>
+
+[<tag id="search0" type="meta" action="open" />]
+[<tag id="search1" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/firstname" />]
+[<tag id="search2" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/lastname" sqloperator="or" />]
+[<tag id="search3" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/unit" sqloperator="or" />]
+[<tag id="search4" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/street" sqloperator="or" />]
+[<tag id="search7" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/postalcode" sqloperator="or" />]
+[<tag id="search8" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/billaddress/genxml/textbox/email" sqloperator="or" />]
+[<tag id="search9" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/firstname" sqloperator="or" />]
+[<tag id="search10" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/lastname" sqloperator="or" />]
+[<tag id="search11" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/unit" sqloperator="or" />]
+[<tag id="search12" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/street" sqloperator="or" />]
+[<tag id="search15" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/postalcode" sqloperator="or" />]
+[<tag id="search16" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/shipaddress/genxml/textbox/email" sqloperator="or" />]
+[<tag id="search17" type="meta" action="like" search="genxml/textbox/txtsearch" static="%" sqlfield="genxml/ordernumber" sqloperator="or" />]
+[<tag id="search18" type="meta" action="close" />]
+[<tag id="search21" type="meta" action="range" searchfrom="genxml/textbox/datesearchfrom" searchto="genxml/textbox/datesearchto" sqlcol="ModifiedDate" sqltype="datetime" sqloperator="and"  />]
+

@@ -21,6 +21,24 @@
     var info = cart.PurchaseInfo;
 }
 
+    @if (Model.GetSettingBool("carttitle"))
+    {
+<h1>@ResourceKey("CartView.YourBasket")</h1>
+    }
+    @if (Model.GetSettingBool("cartsteps"))
+    {
+<div class="checkoutsteps">
+    <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
+    <ol>
+        <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
+        <li class="step2 activestep">@ResourceKey("CartView.CartstepsAddresses")</li>
+        <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
+        <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
+        <li class="step5">@ResourceKey("CartView.CartstepsConfirm")</li>
+    </ol>
+</div>
+    }
+
 <div class="checkoutbillform">
     <h3>@ResourceKey("CartView.BillingAddress")</h3>
 
@@ -107,11 +125,11 @@
         <h3>@ResourceKey("General.lblshippingoptions")</h3>
         @if (Model.GetSettingBool("collectfromstore"))
         {
-            @RadioButtonList(info, "genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", "ResourceKey:CartView.shippingoption1datavalue", "ResourceKey:CartView.shippingoption1data", "class='rblshippingoptions'", "1")
+            @RadioButtonList(info, "genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", "ResourceKey:CartView.shippingoption1datavalue", "ResourceKey:CartView.shippingoption1data", "class='rblshippingoptions'", "1", "class='radio-inline'")
         }
         else
         {
-            @RadioButtonList(info, "genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", "ResourceKey:CartView.shippingoption2datavalue", "ResourceKey:CartView.shippingoption2data", "class='rblshippingoptions'", "1")
+            @RadioButtonList(info, "genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions", "ResourceKey:CartView.shippingoption2datavalue", "ResourceKey:CartView.shippingoption2data", "class='rblshippingoptions'", "1", "class='radio-inline'")
         }
     </div>
 </div>

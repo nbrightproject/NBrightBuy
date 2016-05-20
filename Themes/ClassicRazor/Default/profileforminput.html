@@ -1,0 +1,123 @@
+<div class="nbs myprofile">
+
+<!-- Client Menu -->
+<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuTitle" />]</h1>
+<div class="clientmenu">
+<div class="clientmenuheader">[<tag type="valueof" resourcekey="Clients.ClientmenuManage" />]</div>
+<ul>
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+<li class="activetab"><a href="/tabid/[Settings:profiletab]"><i class="fa fa-user fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+<li><a href="/tabid/[Settings:addressestab]"><i class="fa fa-book fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+<li><a href="/tabid/[Settings:ordermanagertab]"><i class="fa fa-shopping-cart fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a></li>
+[<tag type="endif"  />]
+</ul>
+</div>
+
+<div class="formrow">
+
+
+</div>
+
+
+<!-- This function not ready yet -->
+
+<div class="reqlegend">* [<tag type='valueof' resourcekey='General.txtRequiredFields' />]</div>
+
+<div id="profileinputform" >
+
+    <div id="profileinput" class="panel">
+
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
+	        [<tag id='FirstName' type='textbox' />]
+        </div>
+        <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblLastName' />]</h6>
+	        [<tag id='LastName' type='textbox' />]
+        </div>
+    </div>
+	
+    <div class="formrow">
+	    <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
+	        [<tag id='Telephone' type='textbox' />]
+    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+	        [<tag id='Email' type='textbox' />]
+    </div>
+</div>
+    
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
+	    [<tag id='Company' type='textbox' />]
+    </div>
+
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
+	    [<tag id='Unit' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblAddress2' />]</h6>
+	    [<tag id='Street' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblCity' />]</h6>
+	        [<tag id='City' type='textbox' />]
+	    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
+	        [<tag id='PostalCode' type='textbox' required=""/>]
+	    </div>
+    </div>
+
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
+	        [<tag id="Country" type="countrydropdown" />]
+	    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
+	        [<tag id='Region' type='regioncontrol' blank="" />]
+	    </div>
+    </div>
+    
+
+</div>
+
+<div style="clear:both"></div>
+
+    </div>
+</div>
+
+
+[<tag id="chkTerms" type="checkbox" resourcekey='ProfileForm.txtTerms' />]
+
+[<tag id="captcha" type="dnn:captcha" captchawidth="130" captchaheight="40"  />]
+
+[<tag id="cmdRegisterProfile" type="button" resourcekey="General.Submit" commandname="register" cssclass="dnnPrimaryAction jqsubmitbutton" />]
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('.jqsubmitbutton').click(function (e) {
+            if (!$("input[[id*='chkTerms']]").is(":checked")) {
+                alert('[<tag type="valueof" resourcekey="Notification.terms" />]');
+                e.preventDefault();
+            }
+        });
+
+    });
+</script>

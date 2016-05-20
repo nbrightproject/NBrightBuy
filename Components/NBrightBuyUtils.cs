@@ -1411,6 +1411,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (razorTempl == null)
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl == "")
+                {
+                    // check for non-razor templates
+                    razorTemplName = razorTemplName.ToLower().Replace(".cshtml", ".html");
+                    cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang; // reset cachekey
+                    razorTempl = (String)GetModCache(cachekey);
+                    if (razorTempl != null)
+                    {
+                        return razorTempl;
+                    }
+                    razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                }
                 if (razorTempl != "")
                 {
                     if (obj == null) obj = new NBrightInfo(true);

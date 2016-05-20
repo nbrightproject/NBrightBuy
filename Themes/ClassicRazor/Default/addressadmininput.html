@@ -1,0 +1,120 @@
+<div id="addressinputform" style="display:none;" >
+
+    <div id="addressinput" class="panel">
+
+[<tag type="if" xpath="genxml/hidden/default" testvalue="True" display="{ON}" />]
+	<h3>[<tag type='valueof' resourcekey='General.PrimaryAddress' />]</h3>
+    <p>[<tag type='valueof' resourcekey='General.PrimaryAddressMessage' />]</p>
+[<tag type="endif" />]
+
+[<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]
+	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
+[<tag type="endif" />]
+
+[<tag type="if" xpath="genxml/hidden/default" testvalue="" display="{ON}" />]
+	<h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
+[<tag type="endif" />]
+
+    
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblFirstName' />]</h6>
+	        [<tag id='FirstName' type='textbox' />]
+        </div>
+        <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblLastName' />]</h6>
+	        [<tag id='LastName' type='textbox' />]
+    </div>
+    </div>
+    
+    <div class="formrow">
+	    <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblPhone' />]</h6>
+	        [<tag id='Telephone' type='textbox' />]
+	    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.Email' />]</h6>
+	        [<tag id='Email' type='textbox' />]
+	    </div>
+    </div>
+    
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblCompany' />]</h6>
+	    [<tag id='Company' type='textbox' />]
+    </div>
+
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblAddress1' />]</h6>
+	    [<tag id='Unit' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+	    <h6>[<tag type='valueof' resourcekey='General.lblAddress2' />]</h6>
+	    [<tag id='Street' type='textbox' />]
+    </div>
+    
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblCity' />]</h6>
+	        [<tag id='City' type='textbox' />]
+	    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblPostCode' />]</h6>
+	        [<tag id='PostalCode' type='textbox' required=""/>]
+	    </div>
+    </div>
+
+    <div class="formrow">
+        <div class="leftside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblCountry' />]</h6>
+	        [<tag id="Country" type="countrydropdown" />]
+	    </div>
+	    <div class="rightside">
+	        <h6>[<tag type='valueof' resourcekey='General.lblRegion' />]</h6>
+	        [<tag id='Region' type='regioncontrol' blank="" />]
+	    </div>
+    </div>
+    
+<div class="clearfix"></div>
+
+    <div class="formrow">
+        [<tag id="cmdUpdateAddress" type="linkbutton" cssclass="primarybutton" resourcekey="General.Update" commandname="saveaddress" />]
+        [<tag id="canceleditaddress" type="linkbutton" cssclass="secondarybutton" resourcekey="General.cmdCancel" commandname="cancel"/>]
+        <span style="display: none;"> <!-- hide this button, it's only for update on country change -->
+        [<tag id="updateaddress" type="button" cssclass="primarybutton updateaddress" resourcekey="General.Update" commandname="updateaddress" />]
+        </span>
+    </div>
+    
+    [<tag id="default" type="hidden" value="" />] <!-- Default flag for DNN profile link: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
+    [<tag id="index" type="hidden" value="" />] <!-- index of address in list for update: MUST BE INCLUDED IN ADDRESS UPDATE FORM -->
+    </div>
+</div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#addressinputform").hide();
+
+        $("#canceleditaddress").click(function () {
+            $("#addressinputform").hide();
+            $("#checkoutselectaddress").show();
+        });
+
+        // auto fire postback when the country dropdown is changed. 
+        $("select[[id*='_Country_']]").change(function () {
+            $(".updateaddress").trigger("click");
+        });
+
+
+        //if we have a addressid in the url, the we are editing an address.
+        if ('[Url:addressid]' != '') {
+            $("#addressinputform").show();
+            $("#checkoutselectaddress").hide();
+            $(".addressbookheader").hide();
+            $(".addbutton").hide();
+        }
+
+    });
+</script>

@@ -1,0 +1,13 @@
+[<tag id="resourcepath" type="meta" value="/DesktopModules/NBright/NBrightBuy/App_LocalResources/" />]
+
+<tr>
+    <td>[<tag type='valueof' xpath='genxml/createddate' datatype='date' format='dd MMM yyyy H:mm' />]</td>
+    <td class="removecolumn">[<tag type='valueof' xpath='genxml/modifieddate' datatype='date' format='dd MMM yyyy H:mm' />]</td>
+    <td>[<tag type='valueof' xpath='genxml/ordernumber' />]</td>
+    <td>[<tag type="currencyof" xpath="genxml/appliedtotal" />]</td>
+    <td class="removecolumn">[<tag id="orderstatus" cssclass="form-control" enabled="false" type="orderstatus" />]</td>
+    <td class="nowrap text-right">
+    [<tag id="cmdView" type="linkbutton" resourcekey="OrderAdmin.cmdViewIcon" commandname="entrydetail" commandargument="ItemID" />]
+    [<tag id="cmdReOrder" type="linkbutton" resourcekey="OrderAdmin.cmdReOrderIcon" commandname="reorder" commandargument="ItemID" />]</td>
+</tr>
+

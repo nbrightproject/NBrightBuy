@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
@@ -38,8 +39,9 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             if (ModuleContext.Configuration != null)
             {
                 if (String.IsNullOrEmpty(RazorTemplate)) RazorTemplate = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
+
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "pageheader" + RazorTemplate, ControlPath, ThemeFolder, ModSettings.Settings());
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), ControlPath, ThemeFolder, ModSettings.Settings());
             }
             var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
 

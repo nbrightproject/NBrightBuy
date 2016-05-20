@@ -12,9 +12,6 @@
 .categorybreadcrumbs ul li a:hover{background:#505050;color:#ffffff;}
 .categorybreadcrumbs ul li a:hover:after{border-left-color:#505050;color:#ffffff;}
 
-/* Classic buttons */
-a.classicbutton:link, a.classicbutton:visited {text-decoration:none;background:#505050;color:white;display:inline-block;font-size:14px;line-height:14px;padding:4px 8px 6px 8px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
-a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-color:#c0392b;color:white;}
 
 /* Product List - Go to Module settings for basic layout options */
 .categorydetails {margin-bottom:20px;}

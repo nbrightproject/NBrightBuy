@@ -264,4 +264,16 @@
   <data name="CartstepsConfirm.Text" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="shippingoption1data.Text" xml:space="preserve">
+    <value>Ship to the billing address,Ship to a separate address,Collect from store</value>
+  </data>
+  <data name="shippingoption1datavalue.Text" xml:space="preserve">
+    <value>1,2,3</value>
+  </data>
+  <data name="shippingoption2data.Text" xml:space="preserve">
+    <value>Use Billing Address,Enter Shipping Address</value>
+  </data>
+  <data name="shippingoption2datavalue.Text" xml:space="preserve">
+    <value>1,2</value>
+  </data>
 </root>

@@ -1,0 +1,23 @@
+﻿[<tag type="if" function="productcount" modulekey="{Settings:targetmodulekey}" testvalue="0" display="{ON}" />]<!-- Show drilldown menu when current category has zero items -->
+<!-- Drilldown Menu body -->
+<a class="categoryurl" href="[<tag type='valueof' databind='url' />]">
+<ul class="drilldownitem" style="width:[Settings:itemwidth]px;height:[Settings:itemheight];margin-bottom:[Settings:itembottommargin]px">
+
+[<tag type="if" databind="imageurl" testvalue="" display="{ON}" displayelse="{OFF}" />]
+<li class="noimage" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]">
+[<tag type="if" function="settings" key="placeholderimage" testvalue="True" display="{ON}" displayelse="{OFF}" />]
+[Settings:noimageicon]
+[<tag type="endif"  />]
+</li>
+[<tag type="endif"  />]
+
+[<tag type="if" databind="imageurl" testvalue="" display="{OFF}" displayelse="{ON}" />]
+<li class="image" style="width:[Settings:itemwidth]px;height:[Settings:itemimagecontainerheight]">
+<img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=[<tag type='valueof' databind='imageurl' />]&w=[Settings:thumbnailwidth]&h=[Settings:thumbnailheight]" /></li>
+[<tag type="endif"  />]
+
+<li class="title">[<tag type="valueof" databind="categoryname" />]
+</li>
+</ul>
+</a>
+[<tag type="endif"  />]<!-- End show drilldown menu when current category has zero items -->
