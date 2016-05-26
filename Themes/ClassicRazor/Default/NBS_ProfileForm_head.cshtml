@@ -21,6 +21,17 @@ $(document).ready(function () {
         alert("Profile Updated");
     });
 
+    $('#billaddress_country').unbind();
+    $('#billaddress_country').change(function () {
+        $('.checkoutbillformregiondiv').hide();
+        nbxget('renderpostdata', '.checkoutbillformcountrydiv', '.checkoutbillformregiondiv');
+    });
+
+    $('.checkoutbillformregiondiv').unbind();
+    $('.checkoutbillformregiondiv').change(function () {
+        $('.checkoutbillformregiondiv').show();
+    });
+
 });
 </script>
 
