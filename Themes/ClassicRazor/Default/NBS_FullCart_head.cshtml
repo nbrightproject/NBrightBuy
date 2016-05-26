@@ -48,9 +48,9 @@
 
         // Ajax redirect action return, redirect to checkout
         $('#fullcartredirectreturn').change(function () {
-            $('.processing').hide();
+            $('.processing').show();
             var redirecturl = '@(Globals.NavigateURL(Model.GetSettingInt("checkouttabid")))';
-            window.location.href = redirecturl;
+            window.location.href = redirecturl + '?cartstep=2';
         });
 
         // cart list loaded

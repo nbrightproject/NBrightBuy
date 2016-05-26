@@ -21,15 +21,16 @@ $(document).ready(function () {
         alert("Profile Updated");
     });
 
-    $('#billaddress_country').unbind();
-    $('#billaddress_country').change(function () {
+
+    $('.profileformcountry').unbind();
+    $('.profileformcountry').change(function () {
         $('.checkoutbillformregiondiv').hide();
-        nbxget('renderpostdata', '.checkoutbillformcountrydiv', '.checkoutbillformregiondiv');
+        nbxget('renderpostdata', '.profileformcountrydiv', '.profileformregiondiv');
     });
 
-    $('.checkoutbillformregiondiv').unbind();
-    $('.checkoutbillformregiondiv').change(function () {
-        $('.checkoutbillformregiondiv').show();
+    $('.profileformregiondiv').unbind();
+    $('.profilebillformregiondiv').change(function () {
+        $('.profileformregiondiv').show();
     });
 
 });

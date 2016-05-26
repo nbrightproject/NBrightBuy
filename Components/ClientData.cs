@@ -354,6 +354,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (propertyInfo.CanRead)
                     {
                         var pv = propertyInfo.GetValue(_userInfo, null);
+                        if (pv == null) pv = "";
                         _clientInfo.SetXmlProperty("genxml/textbox/" + propertyInfo.Name.ToLower(), pv.ToString());
                     }
                 }
