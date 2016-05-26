@@ -47,6 +47,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Save(strXml, debugMode);
         }
 
+        public void UpdateProfileAjax(String profileXml, Boolean debugMode = false)
+        {
+            Save(profileXml, debugMode);
+        }
+
         public NBrightInfo GetProfile()
         {
             var pInfo = new NBrightInfo(true);

@@ -1432,7 +1432,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
+                    if (cacheKey != "" && !StoreSettings.Current.DebugMode) SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
                 }
                 else
                 {
@@ -1997,6 +1997,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            }
+            return razorTempl;
+        }
+
+        public static String RenderProfile(String theme, String carttemplate)
+        {
+            var razorTempl = "";
+            if (carttemplate != "")
+            {
+                var profileData = new ProfileData();
+                var objprof = profileData.GetProfile();
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", objprof, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
         }

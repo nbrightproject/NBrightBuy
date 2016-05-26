@@ -202,7 +202,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double fromprice = 0;
             foreach (var m in Models)
             {
-                if ((fromprice == 0) || (fromprice < m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((fromprice == 0) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
             }
             return fromprice;
         }
@@ -212,7 +212,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double saleprice = 0;
             foreach (var m in Models)
             {
-                if ((saleprice == 0) || (saleprice < m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice"))) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((saleprice == 0) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice"))) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
             }
             if (saleprice == 0) saleprice = FromPrice();
             return saleprice;

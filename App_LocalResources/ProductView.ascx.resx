@@ -336,4 +336,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="searchresults.Text" xml:space="preserve">
     <value>Search Results</value>
   </data>
+  <data name="endoflineflag.Text" xml:space="preserve">
+    <value>End Of Line!</value>
+  </data>
 </root>

@@ -188,6 +188,20 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ProfileRazorFormSettings.ascx.cs">
+      <DependentUpon>ProfileRazorFormSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileRazorFormSettings.ascx.designer.cs">
+      <DependentUpon>ProfileRazorFormSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileRazorForm.ascx.cs">
+      <DependentUpon>ProfileRazorForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileRazorForm.ascx.designer.cs">
+      <DependentUpon>ProfileRazorForm.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\CartData.cs" />
     <Compile Include="Components\CategoryUtils.cs" />
     <Compile Include="Components\CatMenuBuilder.cs" />
@@ -437,6 +451,12 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="ProfileRazorFormSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileRazorForm.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CategoryMenu.ascx" />
     <Content Include="CategoryMenuSettings.ascx" />
     <Content Include="CartView.ascx">
@@ -466,7 +486,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearch.ascx" />
-    <Content Include="ProductRazorView.ascx" />
+    <Content Include="ProductRazorView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProfileForm.ascx" />
     <Content Include="ProfileFormSettings.ascx">
@@ -549,7 +571,8 @@
     <Content Include="Themes\ClassicRazor\Default\printorder.html" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <Content Include="Themes\ClassicRazor\Default\profileformemail.html" />
-    <Content Include="Themes\ClassicRazor\Default\profileforminput.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
     <Content Include="Themes\ClassicRazor\Default\profileformupdate.html" />
     <Content Include="Themes\ClassicRazor\Default\profileregisteredemail.html" />
     <Content Include="Themes\ClassicRazor\img\addthis.png" />
@@ -585,6 +608,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_Checkout_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_FullCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\productviewsettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
@@ -1102,7 +1126,7 @@
     <Content Include="Themes\config\default\productselectfooter.html" />
     <Content Include="Themes\config\default\productselectheader.html" />
     <Content Include="Themes\config\default\ProductView_Settings.html" />
-    <Content Include="Themes\config\default\ProfileForm_Settings.html" />
+    <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\config\img\amylis_24x24.png" />
     <Content Include="Themes\config\img\flags\16\af-ZA.png" />

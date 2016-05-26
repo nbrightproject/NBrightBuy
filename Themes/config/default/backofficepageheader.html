@@ -33,13 +33,13 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 
 <script type="text/javascript">
 // Fix for Android stock browser issue http://stackoverflow.com/questions/14744437/html-select-box-not-showing-drop-down-arrow-on-android-version-4-0-when-set-with
-$(function () {
-  var nua = navigator.userAgent
-  var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
-  if (isAndroid) {
-    $('select.form-control').removeClass('form-control').css('width', '100%')
-  }
-})
+    $(function() {
+        var nua = navigator.userAgent
+        var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+        if (isAndroid) {
+            $('select.form-control').removeClass('form-control').css('width', '100%');
+        }
+    });
 
 $(document).ready(function() {
     $(window).keydown(function (event) {

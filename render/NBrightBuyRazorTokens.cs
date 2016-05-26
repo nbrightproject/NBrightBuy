@@ -233,7 +233,15 @@ namespace NBrightBuy.render
                     strOut += "<select id='optionddl" + (index + 1) + "' update='save'>";
                     foreach (var optval in optvalList)
                     {
-                        strOut += "    <option value='" + optval.GetXmlProperty("genxml/hidden/optionvalueid") + "'>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</option>";
+                        var addcost = optval.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                        var addedcostdisplay = "";
+                        if (addcost > 0)
+                        {
+                            addedcostdisplay = "    (+" + NBrightBuyUtils.FormatToStoreCurrency(addcost) + ")";
+                        }
+                            
+
+                        strOut += "    <option value='" + optval.GetXmlProperty("genxml/hidden/optionvalueid") + "'>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + addedcostdisplay + "</option>";
                     }
                     strOut += "</select>";
                 }
@@ -242,7 +250,14 @@ namespace NBrightBuy.render
                     //checkbox
                     foreach (var optval in optvalList)
                     {
-                        strOut += "    <input id='optionchk" + (index + 1) + "' type='checkbox' " + attributes + " update='save' /><label>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</label>";
+                        var addcost = optval.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
+                        var addedcostdisplay = "";
+                        if (addcost > 0)
+                        {
+                            addedcostdisplay = "    (+" + NBrightBuyUtils.FormatToStoreCurrency(addcost) + ")";
+                        }
+
+                        strOut += "    <input id='optionchk" + (index + 1) + "' type='checkbox' " + attributes + " update='save' /><label>" + optval.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + addedcostdisplay + "</label>";
                     }
                 }
                 if (optvalList.Count == 0)

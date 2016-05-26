@@ -319,14 +319,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "savesettings":
                     if (NBrightBuyUtils.CheckRights()) strOut = SaveSettings(context);
                     break;
+                case "updateprofile":
+                    strOut = UpdateProfile(context);
+                    break;
             }
 
             #endregion
 
             #region "return results"
 
-                //send back xml as plain text
-                context.Response.Clear();
+            //send back xml as plain text
+            context.Response.Clear();
                 context.Response.ContentType = "text/plain";
                 context.Response.Write(strOut);
                 context.Response.End();                
@@ -1994,6 +1997,22 @@ namespace Nevoweb.DNN.NBrightBuy
                         strOut = "OK";
                 }
                 return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string UpdateProfile(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = GetAjaxInfo(context, true);
+                var profileData = new ProfileData();
+                profileData.UpdateProfileAjax(ajaxInfo.XMLData, StoreSettings.Current.DebugMode);
+
+                return "OK";
             }
             catch (Exception ex)
             {
