@@ -90,7 +90,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     {
                         var clientData = new ClientData(PortalId, ordData.UserId);
                         clientData.UpdateEmail(ordData.EmailAddress);
-                    }                    
+                    }
+                    var addrData = new AddressData(ordData.UserId.ToString());
+                    var billAddr = ordData.GetBillingAddress();
+                    var selectedbilladdrIdx = billAddr.GetXmlProperty("genxml/dropdownlist/selectaddress");
+                    if (!Utils.IsNumeric(selectedbilladdrIdx)) selectedbilladdrIdx = "-1";
+                    addrData.AddAddress(billAddr, Convert.ToInt32(selectedbilladdrIdx));
+                    var shipAddr = ordData.GetShippingAddress();
+                    var selectedShipaddrIdx = billAddr.GetXmlProperty("genxml/dropdownlist/selectaddress");
+                    if (!Utils.IsNumeric(selectedShipaddrIdx)) selectedShipaddrIdx = "-1";
+                    addrData.AddAddress(shipAddr, Convert.ToInt32(selectedShipaddrIdx));
                 }
                 ordData.Save();
 

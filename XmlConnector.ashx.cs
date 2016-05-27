@@ -2072,6 +2072,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     currentcart.SetValidated(true);
                     if (currentcart.EditMode == "E") currentcart.ConvertToOrder();
                 }
+                else
+                {
+                    currentcart.SetValidated(true);
+                }
+                currentcart.Save();
 
                 var rtnurl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId);
                 if (currentcart.EditMode == "E")

@@ -9,8 +9,8 @@
 .minicart a:active, .minicart a:hover {color:#505050;text-decoration:none;}
 
 /* Default buttons */
-.nbs .primarybutton{background:#c0392b !important;}
-.nbs .primarybutton:hover{background:#505050 !important;}
+#.nbs .primarybutton{background:#c0392b !important;}
+#.nbs .primarybutton:hover{background:#505050 !important;}
 
 
 

@@ -92,7 +92,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (StoreSettings.Current.DebugModeFileOut) addressInfo.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addressadd.xml");
             var addrExists = AddressExists(addressInfo);
-            if (!addrExists)
+            if (!addrExists && _addressList.Count < 20)
             {
                 if (addressIndex >= 0)
                 {
