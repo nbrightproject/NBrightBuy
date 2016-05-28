@@ -281,9 +281,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                         if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
                         {
-                            var propertyref = GenXmlFunctions.GetField(rtnItem, "txtcategoryref");
+                            var propertyref = GenXmlFunctions.GetField(rtnItem, "propertyref");
                             if (propertyref != "")
                             {
+                                catData.DataRecord.SetXmlProperty("genxml/textbox/propertyref", propertyref);
                                 catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", propertyref);
                             }
                             var grptype = catData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");

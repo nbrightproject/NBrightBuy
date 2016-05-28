@@ -36,6 +36,11 @@ $(document).ready(function() {
 		$('#' + id).val(true);
 		$(".savebutton").show();
     });
+    $("input[[id*='propertyref']]").keyup(function () {
+        var id = $(this).attr("id").replace('propertyref', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
+    });
     $("input[[id*='chkishidden']]").change(function () {
         var id = $(this).attr("id").replace('chkishidden', 'isdirty');
         $('#' + id).val(true);
