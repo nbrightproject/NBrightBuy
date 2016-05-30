@@ -426,4 +426,10 @@
   <data name="lbltemplate.Text" xml:space="preserve">
     <value>Razor Template</value>
   </data>
+  <data name="razordetailtemplate.Text" xml:space="preserve">
+    <value>Detail Template</value>
+  </data>
+  <data name="razorlisttemplate.Text" xml:space="preserve">
+    <value>List Template</value>
+  </data>
 </root>

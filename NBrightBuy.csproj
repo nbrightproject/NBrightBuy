@@ -606,7 +606,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_FullCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
-    <None Include="Themes\ClassicRazor\Default\productviewsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
     <None Include="Installation\03.02.00.SqlDataProvider" />
@@ -1123,6 +1123,7 @@
     <Content Include="Themes\config\default\productselectfooter.html" />
     <Content Include="Themes\config\default\productselectheader.html" />
     <Content Include="Themes\config\default\ProductView_Settings.html" />
+    <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\config\img\amylis_24x24.png" />

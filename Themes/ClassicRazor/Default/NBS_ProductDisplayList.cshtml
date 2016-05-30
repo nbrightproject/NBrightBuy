@@ -6,17 +6,17 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-@AddMetaData("searchpagesize", Model.GetSetting("pagesize"), "ClassicRazor.list.cshtml")
+@AddPreProcessMetaData("searchpagesize", Model.GetSetting("pagesize"), Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
 
-@AddMetaData("orderby", "{bycategoryproduct}", "ClassicRazor.list.cshtml") <!-- set default to manual sort on category product -->
+@AddPreProcessMetaData("orderby", "{bycategoryproduct}", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString()) <!-- set default to manual sort on category product -->
 
-@AddMetaData("orderby0", "{bycategoryproduct}", "ClassicRazor.list.cshtml")
-@AddMetaData("orderby1", "NB3.FromPrice", "ClassicRazor.list.cshtml")
-@AddMetaData("orderby2", "NB3.FromPrice DESC", "ClassicRazor.list.cshtml")
-@AddMetaData("orderby3", "NB3.ProductRef", "ClassicRazor.list.cshtml")
-@AddMetaData("orderby4", "NB3.ProductName", "ClassicRazor.list.cshtml")
+@AddPreProcessMetaData("orderby0", "{bycategoryproduct}", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby1", "NB3.FromPrice", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby2", "NB3.FromPrice DESC", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby3", "NB3.ProductRef", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
+@AddPreProcessMetaData("orderby4", "NB3.ProductName", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString())
 
-@AddMetaData("selectpagesize", "True", "ClassicRazor.list.cshtml") <!-- flag to tell product list a custom pagesize may be applied -->
+@AddPreProcessMetaData("selectpagesize", "True", Model.GetSetting("themefolder") + "." + Model.GetSetting("razorlisttemplate"), Model.ModuleId.ToString()) <!-- flag to tell product list a custom pagesize may be applied -->
 
     <!-- Product List header -->
 

@@ -134,11 +134,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 // get template codes
                 if (_displayentrypage)
                 {
-                    _templD = ModSettings.Get("txtdisplayentrybody");
+                    _templD = ModSettings.Get("razordetailtemplate");
                 }
                 else
                 {
-                    _templD = ModSettings.Get("txtdisplaybody");
+                    _templD = ModSettings.Get("razorlisttemplate");
                 }
 
                 #endregion
