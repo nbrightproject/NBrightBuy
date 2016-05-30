@@ -144,11 +144,12 @@ a.entryurl{color:#333;display:block;}
 .productdetail #tabsoff h3{margin-bottom:16px;}
 .productdetail .sharingwidget{margin-top:24px;}
 
-/* Minicart */
+/* Minicart 
 .minicart{background:#041839;margin-bottom:24px;max-width:240px;}
 .minicart .checkoutbuttonleft, .minicart .checkoutbuttonright{color:#FFFFFF;display:inline-block;font-size:16px;line-height:35px;padding:0 16px;}
 .minicart .checkoutbuttonright{background:#AE0051;font-weight:bold;float:right;}
 .minicart .checkoutbuttonright:hover{background:#FF0076;}
+*/
 
 /* Document Downloads */
 .productdetail .downloadableproduct{margin-top:12px !important;margin-left:24px !important;}
@@ -535,11 +536,12 @@ mark, .mark {
     text-decoration: none !important;
 }
 
-/* Minicart */
+/* Minicart 
 .cygnus .minicart{background:#041839;margin-bottom:24px;max-width:240px;}
 .cygnus .minicart .checkoutbuttonleft, .minicart .checkoutbuttonright{color:#FFFFFF;display:inline-block;font-size:16px;line-height:35px;padding:0 16px;}
 .cygnus .minicart .checkoutbuttonright{background:#AE0051;font-weight:bold;float:right;}
 .cygnus .minicart .checkoutbuttonright:hover{background:#FF0076;}
+*/
 
 /* General Form Styles */
 .formrow:after, .radiobuttonlist:after {content:"";display:table;clear:both;}
