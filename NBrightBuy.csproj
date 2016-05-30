@@ -521,6 +521,7 @@
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\NBS_Cart.css" />
+    <Content Include="Themes\ClassicRazor\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicRazor\css\NBS_ProductView.css" />
     <Content Include="Themes\ClassicRazor\Default\addclientrole.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminbody.html" />

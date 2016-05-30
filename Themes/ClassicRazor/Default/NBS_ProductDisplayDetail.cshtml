@@ -15,7 +15,7 @@
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
-    
+
     <div class="productdetail" itemscope itemtype="http://schema.org/Product">
 
         @if (@product.Imgs.Count >= 1)
@@ -115,23 +115,34 @@
             {
                 <div itemprop="description" class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
             }
+			
+			<!-- Start Share widget -->
+			<div class="sharingwidget">
+				<div class="share">
+					@ResourceKey("ProductView.share") :
+					<img src="/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/addthis.png" />
+				</div>
+			</div><!-- End Share widget -->
+			
+            @if (@product.Models.Count >= 2)
+            {
+                var c = 0;
                 <div class="models">
-                    @if ((Model.GetSetting("modeldisplaytype") == "0") && (product.Models.Count >= 2))
+                    @if (Model.GetSetting("modeldisplaytype") == "0" && (product.Models.Count >= 2))
                     {
                         @ModelsRadio(info)
                     }
-                    @if ((Model.GetSetting("modeldisplaytype") == "1") && (product.Models.Count >= 2))
+                    @if (Model.GetSetting("modeldisplaytype") == "1" && (product.Models.Count >= 2))
                     {
                         @ModelsDropDown(info)
                     }
                     @if (Model.GetSetting("modeldisplaytype") == "2")
                     {
-                        var c = 0;
                         foreach (NBrightInfo x in product.Models)
                         {
                             <div class="quantityoptions">
                                 <a class="qtyminus" index="@(c)" href="javascript:void(0)">-</a>
-                                <input type="text" id="selectedmodelqty@(c)" update="save" class="quantity" style='width: 21px' value="0" />
+                                <input type="text" id="selectedmodelqty@(c)" update="save" class="quantity" style='width: 21px' value="1" />
                                 <!-- use hiddenfield to pass back modelid -->
                                 <input id="selectedmodelid@(c)" type="hidden" value="@(x.GetXmlProperty("genxml/hidden/modelid"))">
                                 <a class="qtyplus" index="@(c)" href="javascript:void(0)">+</a>
@@ -142,6 +153,7 @@
                     }
                 </div>
                 <div class="clearfix"></div>
+            }
 
             @if (@product.Options.Count >= 1)
             {
@@ -166,7 +178,7 @@
                                 <a class="qtyplus" href="javascript:void(0)">+</a>
                             </div>
                         }
-                        <!-- Buy button HERE -->
+                            <!-- Buy button HERE -->
                         <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
                     }
                     else
@@ -200,12 +212,12 @@
                     }
                 </ul>
 
-                <div class="sharingwidget">
+                <!--<div class="sharingwidget">
                     <div class="share">@ResourceKey("ProductView.share") :</div>
                     <div class="addthis_fake">
                         <img src="/DesktopModules/NBright/NBrightBuy/Themes/Classic/img/addthis.png" />
                     </div>
-                </div>
+                </div>-->
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
             {
@@ -239,7 +251,15 @@
                                             }
                                         }
                                         <td>
-                                                <span>@NBrightBuyUtils.FormatToStoreCurrency(m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))</span>
+                                            @if (product.BestPrice() < product.FromPrice())
+                                            {
+                                                <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
+                                                <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+                                            }
+                                            else
+                                            {
+                                                <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+                                            }
                                         </td>
 
                                         <td>
@@ -282,6 +302,7 @@
                 <!-- Related products -->
                 @foreach (var rp in product.GetRelatedProducts())
                 {
+                    var rproduct = new ProductData(rp.ItemID, rp.Lang);
                     <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
 
                         <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
@@ -302,6 +323,35 @@
 
                         <div class="description">
                             <h2><a href="@EntryUrl(rp, Model)">@ProductName(rp)</a></h2>
+
+                            @*<div class="price">
+
+                                @if (product.IsOnSale)
+                                {
+                                    if (product.Models.Count > 1)
+                                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.SalePrice()))</span>
+                                }
+                                else
+                                {
+                                    if (product.Models.Count > 1) // has models or options
+                                    {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))
+
+                                }
+
+                            </div>
+
+                            @if (rproduct.IsOnSale)
+                            {
+                                <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                            }
+
+                            @if (!rproduct.IsInStock)
+                            {
+                                <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                            }
+
+                            <a href="@EntryUrl(rp, Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>*@
+
                         </div>
 
                     </div>
