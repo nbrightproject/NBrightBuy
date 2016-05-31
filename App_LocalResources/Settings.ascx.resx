@@ -432,4 +432,7 @@
   <data name="razorlisttemplate.Text" xml:space="preserve">
     <value>List Template</value>
   </data>
+  <data name="razortemplate.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
 </root>
