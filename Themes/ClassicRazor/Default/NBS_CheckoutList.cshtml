@@ -18,27 +18,26 @@
     var info = cart.PurchaseInfo;
 }
 
+@if (Model.GetSettingBool("carttitle"))
+{
+<h1>@ResourceKey("CartView.YourBasket")</h1>
+}
+@if (Model.GetSettingBool("cartsteps"))
+{
+<div class="checkoutsteps">
+    <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
+    <ol>
+        <li class="step1 activestep">@ResourceKey("CartView.CartstepsRecap")</li>
+        <li class="step2">@ResourceKey("CartView.CartstepsAddresses")</li>
+        <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
+        <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
+        <li class="step5">@ResourceKey("CartView.CartstepsConfirm")</li>
+    </ol>
+</div>
+}
+
 @if (info.GetXmlPropertyInt("genxml/totalqty") > 0)
 {
-
-    if (Model.GetSettingBool("carttitle"))
-    {
-       <h1>@ResourceKey("CartView.YourBasket")</h1>
-    }
-    if (Model.GetSettingBool("cartsteps"))
-    {
-        <div class="checkoutsteps">
-            <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
-            <ol>
-                <li class="step1 activestep">@ResourceKey("CartView.CartstepsRecap")</li>
-                <li class="step2">@ResourceKey("CartView.CartstepsAddresses")</li>
-                <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
-                <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
-                <li class="step5">@ResourceKey("CartView.CartstepsConfirm")</li>
-            </ol>
-        </div>
-    }
-
     <table cellspacing="0" class="StackThis large-only">
         <tr>
             <th class="detailscolumn">@ResourceKey("General.lblcartlist")</th>

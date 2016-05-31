@@ -49,7 +49,7 @@
         $('.addtobasket').click(function () {
             if (form.valid()) {
                 nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
-                $('.addedtobasket').delay(10).fadeIn('fast');
+                $('.addbasketmsg' + $(this).attr('itemid')).delay(10).fadeIn('fast');
             }
         });
 
