@@ -22,7 +22,7 @@
         {
             <div class="images">
 
-                <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
+                <div class="addedtobasket" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
                 <div class="image">
 
@@ -116,14 +116,6 @@
                 <div itemprop="description" class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
             }
 			
-			<!-- Start Share widget -->
-			<div class="sharingwidget">
-				<div class="share">
-					@ResourceKey("ProductView.share") :
-					<img src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/img/addthis.png" />
-				</div>
-			</div><!-- End Share widget -->
-			
             @if (@product.Models.Count >= 2)
             {
                 var c = 0;
@@ -195,7 +187,7 @@
 
         <!-- Details -->
 
-            <div class="detailtabs">
+            <div class="details">
 
                 <ul class="nav-tabs">
                     @if (info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
@@ -212,12 +204,12 @@
                     }
                 </ul>
 
-                <!--<div class="sharingwidget">
+                <div class="sharingwidget">
                     <div class="share">@ResourceKey("ProductView.share") :</div>
                     <div class="addthis_fake">
                         <img src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/img/addthis.png" />
                     </div>
-                </div>-->
+                </div>
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
             {

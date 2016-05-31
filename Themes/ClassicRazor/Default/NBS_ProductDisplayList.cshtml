@@ -46,10 +46,6 @@
 
         <div id="listwrapper" class="productlist">
 
-            <div class="leftpanewrapper">
-                <h3>@Category("categoryname", Model) @Category("entrycount", Model) @ResourceKey("ProductView.products")</h3>
-            </div>
-
             <!-- Product List Body -->
 
             @{
@@ -65,7 +61,7 @@
 
                     <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
-                    <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                    <div class="productimg" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
 
                         <div class="productimg-overlay">
 

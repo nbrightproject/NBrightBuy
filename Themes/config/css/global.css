@@ -1,6 +1,9 @@
 /*#Body {background:#FFF}Temporary white for DNN skin */
 .dnnEditState .DnnModule{opacity:1 !important;transition:none !important;}/* Fix DNN */
 
+/* Global links Fix */
+.nbs a {text-decoration:none !important;}
+
 /* Common */
 @-webkit-viewport   { width: device-width; }
 @-moz-viewport      { width: device-width; }
@@ -13,8 +16,8 @@
 .debug{clear:both;background:#AB0000;color:#FFFFFF;font-weight:bold;padding:2px;text-align:center;}
 
 /* Default buttons */
-.nbs .primarybutton{background:#1AA8E3;color:#FFFFFF;}
-.nbs .primarybutton:hover{background:#23BAF5;color:#FFFFFF;}
+.nbs .primarybutton{background:#42403f;color:#FFFFFF;}
+.nbs .primarybutton:hover{background:#757370;color:#FFFFFF;}
 .nbs .secondarybutton{background:#C2C2C2;color:#FFFFFF;}
 .nbs .secondarybutton:hover{background:#777777;color:#FFFFFF;}
 .nbs .warningbutton{background:#c62222;color:#FFFFFF;}
