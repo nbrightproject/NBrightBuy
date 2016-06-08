@@ -43,14 +43,17 @@
 
     $(document).ready(function() {
 
-        var form = $("#Form");
-        form.validate();
+        //This form validation is removed for all over compatiblity
+        //This validation should be done on any site which needs to have a valid product detail form.
+        //
+        //var form = $("#Form");
+        //form.validate();
 
         $('.addtobasket').click(function () {
-            if (form.valid()) {
+            //if (form.valid()) {
                 nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
                 $('.addbasketmsg' + $(this).attr('itemid')).delay(10).fadeIn('fast');
-            }
+            //}
         });
 
         $('#minicartdatareturn').change(function () {
