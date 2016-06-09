@@ -1509,18 +1509,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
         {
-            var service = (IRazorEngineService) HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
-            if (service == null || debugMode)
+            var result = "";
+            try
             {
-                // do razor test
-                var config = new TemplateServiceConfiguration();
-                config.Debug = debugMode;
-                config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
-                service = RazorEngineService.Create(config);
-                HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService",service);
+                var service = (IRazorEngineService)HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
+                if (service == null || debugMode)
+                {
+                    // do razor test
+                    var config = new TemplateServiceConfiguration();
+                    config.Debug = debugMode;
+                    config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+                    service = RazorEngineService.Create(config);
+                    HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService", service);
+                }
+                Engine.Razor = service;
+                result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
             }
-            Engine.Razor = service;
-            var result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
 
             return result;
         }
