@@ -33,7 +33,13 @@
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lbltemplate", "Settings.razorlisttemplate")
-                    @NBrightTextBox(info,"genxml/textbox/razorlisttemplate","", "NBS_ProductDisplayList.cshtml")
+                    @NBrightTextBox(info, "genxml/textbox/razorlisttemplate", "", "NBS_ProductDisplayList.cshtml")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lbllisttab", "Settings.productlisttab")
+                    @TabSelectListOnTabId(info, "genxml/dropdownlist/ddllisttabid", "", true)
                 </div>
             </div>
             <div class="dnnFormItem">
@@ -42,11 +48,23 @@
                     @NBrightTextBox(info, "genxml/textbox/razordetailtemplate", "", "NBS_ProductDisplayDetail.cshtml")
                 </div>
             </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lbldetailtab", "Settings.productdetailtab")
+                    @TabSelectListOnTabId(info, "genxml/dropdownlist/ddldetailtabid", "", true)
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lbldetailtab", "Settings.productdetailtab")
+                    @TabSelectListOnTabId(info, "genxml/dropdownlist/ddldetailtabid", "", true)
+                </div>
+            </div>
         </div>
 
-        <div id="settingsdata"></div>
+                <div id="settingsdata"></div>
 
-    </fieldset>
+</fieldset>
     
 </div>
 
