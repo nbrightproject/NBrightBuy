@@ -38,28 +38,54 @@
             </div>
             <div class="dnnFormItem">
                 <div>
-                    @DnnLabel("lbllisttab", "Settings.productlisttab")
-                    @TabSelectListOnTabId(info, "genxml/dropdownlist/ddllisttabid", "", true)
-                </div>
-            </div>
-            <div class="dnnFormItem">
-                <div>
                     @DnnLabel("lbltemplate", "Settings.razordetailtemplate")
                     @NBrightTextBox(info, "genxml/textbox/razordetailtemplate", "", "NBS_ProductDisplayDetail.cshtml")
                 </div>
             </div>
+
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lbldetailtab", "Settings.productdetailtab")
                     @TabSelectListOnTabId(info, "genxml/dropdownlist/ddldetailtabid", "", true)
                 </div>
             </div>
+
             <div class="dnnFormItem">
-                <div>
-                    @DnnLabel("lbldetailtab", "Settings.productdetailtab")
-                    @TabSelectListOnTabId(info, "genxml/dropdownlist/ddldetailtabid", "", true)
-                </div>
+                @DnnLabel("lbldisplaytype", "ProductViewSettings.displaytype")@RadioButtonList(info, "genxml/radiobuttonlist/displaytype", "0,1,2", "Normal,Search,Selected list", "0")
             </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lbldefaultcatid", "ProductViewSettings.lbldefaultcatid")
+                @CategoryDropDownList(info, "genxml/dropdownlist/defaultcatid", "width='300'", true, 20, true, false, 0, "", ".")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lbldefaultproperty", "ProductViewSettings.lbldefaultproperty")
+                @PropertyDropDownList(info, "genxml/dropdownlist/defaultpropertyid", "width='300'", true, true, false, 0, "", ".")
+            </div>
+            <div class="dnnFormItem staticlist">
+                @DnnLabel("lblstaticlist", "ProductViewSettings.lblstaticlist")@CheckBox(info, "genxml/checkbox/staticlist", "", " class='dnnCheckbox' ") @CheckBox(info, "genxml/checkbox/caturlfilter", "ResourceKey:ProductViewSettings.caturlfilter", " class='dnnCheckbox' ")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lbllistonly", "ProductViewSettings.lbllistonly")@CheckBox(info, "genxml/checkbox/listonly", "", " class='dnnCheckbox' ")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lblcascaderesults", "ProductViewSettings.lblcascaderesults")@CheckBox(info, "genxml/checkbox/chkcascaderesults", "", " class='dnnCheckbox' ", true)
+            </div>
+            <div class="dnnFormItem detailmoduleref">
+                @DnnLabel("lbldetailmoduleref", "ProductViewSettings.lbldetailmoduleref")@TextBox(info, "genxml/textbox/detailmodulekey", "width='300'")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lblreturntab", "ProductViewSettings.lblreturntab")@TabSelectListOnTabId(info, "genxml/dropdownlist/ddllisttabid", "", true) @info.GetXmlProperty("genxml/dropdownlist/ddllisttabid")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lbldefaultlistmodule", "ProductViewSettings.lbldefaultlistmodule")@CheckBox(info, "genxml/checkbox/chkdefaultlistmodule", "", " class='dnnCheckbox' ")
+            </div>
+            <div class="dnnFormItem">
+                @DnnLabel("lblreturnlimit", "ProductViewSettings.lblreturnlimit")@TextBox(info, "genxml/textbox/returnlimit", "width='75'", "0")
+            </div>
+
+            <hr/>
+
+
         </div>
 
                 <div id="settingsdata"></div>
