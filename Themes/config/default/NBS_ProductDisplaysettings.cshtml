@@ -51,6 +51,11 @@
             </div>
 
             <div class="dnnFormItem">
+                @DnnLabel("lblpagesize", "Settings.pagesize")
+                @TextBox(info, "genxml/textbox/pagesize", "width='300'", "75")
+            </div>
+
+            <div class="dnnFormItem">
                 @DnnLabel("lbldisplaytype", "ProductViewSettings.displaytype")@RadioButtonList(info, "genxml/radiobuttonlist/displaytype", "0,1,2", "Normal,Search,Selected list", "0")
             </div>
             <div class="dnnFormItem">

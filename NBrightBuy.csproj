@@ -486,9 +486,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductSearch.ascx" />
-    <Content Include="ProductRazorView.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProductRazorView.ascx" />
     <Content Include="ProductViewSettings.ascx" />
     <Content Include="ProfileForm.ascx" />
     <Content Include="ProfileFormSettings.ascx">
@@ -533,7 +531,6 @@
     <Content Include="Themes\ClassicRazor\Default\cattreebody.html" />
     <Content Include="Themes\ClassicRazor\Default\cattreefooter.html" />
     <Content Include="Themes\ClassicRazor\Default\cattreeheader.html" />
-    <Content Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.html" />
     <Content Include="Themes\ClassicRazor\Default\NBS_Payment_head.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadminbody.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadmindetail.html" />
@@ -1810,6 +1807,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\Classic\js\" />
+    <Folder Include="Themes\Wiseopro\css\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

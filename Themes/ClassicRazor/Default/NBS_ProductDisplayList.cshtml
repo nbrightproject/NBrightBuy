@@ -20,9 +20,13 @@
 
     <!-- Product List header -->
 
-    <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
-
     <div class="nbs">
+
+        <!-- Product List header -->
+        @if (Model.GetSettingInt("displaytype") == 0)
+        {
+           <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
+        }
 
         <!-- show sort order selection -->
         <div>

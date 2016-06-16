@@ -19,28 +19,8 @@ var info = (NBrightInfo)Model.List.First();
 
         <!-- Client Menu -->
         <h1>@ResourceKey("Clients.ClientmenuTitle")</h1>
-        <div class="clientmenu">
-            <div class="clientmenuheader">@ResourceKey("Clients.ClientmenuManage")</div>
 
-            <div>
-                @if (Model.GetSettingBool("enablemyprofile"))
-                {
-                    var profiletabid = Model.GetSetting("profiletab");
-                    <a class="btn btn-primary" href="/tabid/@(profiletabid)"><i class="fa fa-user fa-lg"></i>@ResourceKey("Clients.ClientmenuProfile")</a>
-                }
-                @if (Model.GetSettingBool("enablemyaddress"))
-                {
-                    var addressestabid = Model.GetSetting("addressestab");
-                    <a class="btn btn-default" href="/tabid/@(addressestabid)"><i class="fa fa-book fa-lg"></i>@ResourceKey("Clients.ClientmenuAddresses")</a>
-                }
-                @if (Model.GetSettingBool("enablemyorders"))
-                {
-                    var ordermanagertabid = Model.GetSetting("ordermanagertab");
-                    <a class="btn btn-default" href="/tabid/@(ordermanagertabid)"><i class="fa fa-shopping-cart fa-lg"></i>@ResourceKey("Clients.ClientmenuOrders")</a>
-                }
-            </div>
-
-        </div>
+        @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicRazor\\Default\\ClientMenu.cshtml",Model)
 
         <!-- This function not ready yet -->
 
@@ -49,8 +29,6 @@ var info = (NBrightInfo)Model.List.First();
             <div class="updatedform" style="display:none;"><span>@ResourceKey("General.updated")</span></div>
 
             <div id="profileinput" class="panel">
-
-
 
                 <div class="formrow">
                     <div class="leftside">
@@ -117,17 +95,12 @@ var info = (NBrightInfo)Model.List.First();
                     </div>
                 </div>
 
-
-
             </div>
 
-            <div style="clear:both"></div>
+            <div class="formrow clearfix">
+                <a href="javascript:void(0)" class='profilesubmit primarybutton'>@ResourceKey("General.Submit")</a>
+            </div>
 
         </div>
-    </div>
 
-
-<div class="formrow">
-    <a href="javascript:void(0)" class='profilesubmit'><i class="fa fa-user fa-lg"></i>@ResourceKey("General.Submit")</a>
 </div>
-

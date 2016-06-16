@@ -126,9 +126,9 @@ a.categoryurl{display:block;}
 /* Pager */
 .NBrightPagingDiv{font-size:18px;margin:24px 0;text-align:left;}
 .NBrightPagingDiv ul{list-style:none;margin:0;}
-.NBrightPagingDiv ul li{display:inline-block;}
-.NBrightPagingDiv a{background:#F2F2F2;border:1px solid #DDDDDD;color:#777777;display:inline-block;font-size:14px;margin-right:4px;padding:6px 10px;}
-.NBrightPagingDiv a:hover{color:#FFFFFF;background:#3B96B6;}
+.NBrightPagingDiv ul li{display:inline-block;background:none;padding-left:0;margin-bottom:0;overflow:visible;}
+.NBrightPagingDiv a{background:#F2F2F2;border:1px solid #DDDDDD;color:#777777 !important;display:inline-block;font-size:14px;margin-right:4px;padding:6px 10px;text-decoration:none;}
+.NBrightPagingDiv a:hover{background:#3B96B6;color:#FFFFFF !important;}
 .NBrightNormalPg a{}
 .NBrightSelectPg a{background:#FFFFFF;}
 .NBrightNextPg a{}
@@ -267,212 +267,13 @@ input.quantity {float:left;margin:0 6px;}
 .advancedsearch .processing{}
 .advancedsearch .processing .fa{color:#68ABE1;vertical-align:middle;}
 
-/* Client Menu */
-.clientmenu{margin-bottom:30px;overflow:hidden;}
-.clientmenu .fa{margin:0 0 0 4px}
-.clientmenu a{background:#42403f;color:#ffffff;display:inline-block;float:right;margin-left:4px;padding:5px 9px 4px 6px;}
-.clientmenu a:hover{background:#757370;color:#FFFFFF;}
-.myorders{}
-.myaddresses{}
-.myprofile{}
+/* Classic buttons */
+a.classicbutton:link, a.classicbutton:visited {text-decoration:none;background:#505050;color:white;display:inline-block;font-size:14px;line-height:14px;padding:4px 8px 6px 8px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-color:#757370;color:white;}
 
-/* Address Book */
-#checkoutselectaddress{list-style:none;padding:0;margin:30px 0 0;}
-#checkoutselectaddress li{background:none repeat scroll 0 0 #ffffff;border-radius:5px;box-shadow:1px 1px 6px #C9C9C9;box-sizing:border-box;float:left;margin:0 4% 3% 0;min-height:260px;min-width:270px;padding:50px 30px 30px;width:29%;position:relative;}
-#checkoutselectaddress hr{margin:6px 0 4px;border-color:#dddddd;border-style:dashed;}
-#checkoutselectaddress .addresstype{top:10px;color:#bbbbbb;position:absolute;right:10px;}
-#checkoutselectaddress .addressbuttons{display:inline-block;vertical-align:-5px;}
-#checkoutselectaddress a{color:#dddddd;}
-#checkoutselectaddress a.editaddress:hover{color:#47BE27;}
-#checkoutselectaddress a.deleteaddress:hover{color:#D33030;}
-#addressinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
-#addressinput{float:left;width:47%;margin-bottom:30px;min-width:240px;}
-#addressinput .leftside{float:left;width:48%;}
-#addressinput .rightside{float:right;width:48%;}
-#addressinput H3{line-height:34px;margin:0 0 12px;padding:0;}
-#addressinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
-
-/* Order Manager */
-.ordersearch{margin-bottom:30px;overflow:hidden;}
-.ordersearch div{float:left;margin:0 15px 0 0;}
-.ordersearch .primarybutton, .ordersearch .secondarybutton{margin:0;padding:0 15px;width:auto;}
-#orderadmin{clear:both;}
-#orderadmin .address{margin-bottom:5px;}
-#orderadmin .person{border-bottom:1px solid rgba(153, 153, 153, 0.34);}
-.ordersearch input{margin-bottom:0;}
-.orders .fa{color:#cccccc;}
-.orders .fa-edit:hover{color:#47BE27;}
-.orders .fa-repeat:hover{color:#42403f;}
-/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
-.orders select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0;}
-.orders select.aspNetDisabled.form-control option{padding-bottom:0;}
-.orders select.aspNetDisabled.form-control::-ms-expand{display:none;}
-.orders .dropdown-menu > li > a{display:inline-block;width:100%;}
-/* The default DNN input styling is not applied to date inputs - fixed here but only for default skin */
-.ordersearch input[type=date]{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #bfbfbf;border-radius:0;box-shadow:0 1px 0 0 rgba(255, 255, 255, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.1) inset;color:#666666;font-size:13px;margin-bottom:20px;padding:9px;}
-
-/* Profile Manager */
-#profileinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
-#profileinput{float:left;width:47%;margin-bottom:30px;min-width:240px;}
-#profileinput .leftside{float:left;width:48%;}
-#profileinput .rightside{float:right;width:48%;}
-#profileinput H3{line-height:34px;margin:0 0 12px;padding:0;}
-#profileinput H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
-
-/* cartlist Table - csstablegenerator.com */
-.orders{border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
-.orders th{vertical-align:top;border:none;border-bottom:2px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:bold;color:inherit;}
-.orders tr:last-child td:last-child{}
-.orders tr:first-child td:first-child{}
-.orders tr:first-child td:last-child{}
-.orders tr:last-child td:first-child{}
-.orders tr:hover td{background-color:#fff;}
-.orders tr:nth-child(odd){}
-.orders tr:nth-child(even){background-color:#F5F5F5;}
-.orders td{vertical-align:top;border:none;border-bottom:1px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:normal;color:inherit;}
-.orders tr:last-child td{}
-.orders tr td:last-child{}
-.orders tr:last-child td:last-child{}
-.orders tr:first-child td{}
-.orders tr:first-child:hover td{}
-.orders tr:first-child td:first-child{}
-.orders tr:first-child td:last-child{}
-#orderadmin .panel{padding:40px 60px;}
-#orderadmin .leftside{float:left;width:57%;margin-right:6%;}
-#orderadmin .rightside{float:left;width:37%;}
-#orderadmin .billaddress{float:left;width:47%;margin-right:6%;line-height:160%;margin-bottom:15px;}
-#orderadmin .shipaddress{float:left;width:47%;line-height:160%;margin-bottom:15px;min-width:145px;}
-#orderadmin .storeaddress{float:left;width:100%;line-height:160%;}
-/* These 3 lines make the status dropdown show only text on the orders list and hides the select arrow in IE - To be removed when status has a token */
-#orderadmin select.aspNetDisabled.form-control{background-color:transparent;border:0 none;box-shadow:none;cursor:default;color:inherit;height:inherit;line-height:inherit;opacity:1;padding:0;margin:0;}
-#orderadmin select.aspNetDisabled.form-control option{padding-bottom:0;}
-#orderadmin select.aspNetDisabled.form-control::-ms-expand{display:none;}
-#orderadmin .dropdown-menu > li > a{display:inline-block;width:100%;}
-
-/* orderdetails Table - csstablegenerator.com */
-.orderdetailitems{border-collapse:collapse;border-spacing:0;width:100%;height:100%;margin:0px;padding:0px;}
-.orderdetailitems th{vertical-align:top;border:none;border-bottom:2px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:bold;color:inherit;}
-.orderdetailitems tr:last-child td:last-child{}
-.orderdetailitems tr:first-child td:first-child{}
-.orderdetailitems tr:first-child td:last-child{}
-.orderdetailitems tr:last-child td:first-child{}
-.orderdetailitems tr:hover td{background-color:#F5F5F5;}
-.orderdetailitems tr:nth-child(odd){}
-.orderdetailitems tr:nth-child(even){}
-.orderdetailitems td{vertical-align:top;border:none;border-bottom:1px solid #dddddd;text-align:left;padding:10px;font-size:inherit;font-family:inherit;font-weight:normal;color:inherit;}
-.orderdetailitems tr:last-child td{}
-.orderdetailitems tr td:last-child{}
-.orderdetailitems tr:last-child td:last-child{}
-.orderdetailitems tr:first-child td{}
-.orderdetailitems tr:first-child:hover td{}
-.orderdetailitems tr:first-child td:first-child{}
-.orderdetailitems tr:first-child td:last-child{}
-.orderdetailitems .active td{background-color:#f5f5f5;}
-
-/* General Form Styles */
-.formrow:after, .radiobuttonlist:after {content:"";display:table;clear:both;}
-.formrow label {display:block;font-size:12px;font-weight:normal;text-transform:uppercase;line-height:normal;margin:0 0 5px;}
-.formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea {border:1px solid #dddddd;box-sizing:border-box;height:30px;padding:0 7px;width:100%;margin:0 0 15px;}
-.formrow select {padding-right:0;}
-.formrow input[type=radio] {float:left;margin:0 0 0 10px;}
-.radiobuttonlist label {float:left;margin:-2px 0 0 6px;text-transform:none;}
-.formrow input[type=checkbox] {float:left;margin:0 0 0 10px;}
-.submissioncheck {margin:0 0 9px !important;}
-.submissioncheck label {float:left;margin:-2px 0 0 6px;text-transform:none;font-style:italic;}
-/* === HTML5 Validation Styles === */
-.Cygnus input:required {background:#fff url("/Portals/naturalgames/Themes/Cygnus/img/red_asterisk.png") no-repeat 98% center;outline:none !important;}
-.Cygnus input:focus:invalid {background:#fff url("/Portals/naturalgames/Themes/Cygnus/img/invalid.png") no-repeat 98% center;}
-
-/* Checkout Steps */
-.checkoutsteps {background:#efefef;font-size:12px;color:#3f3030;margin-bottom:12px;}
-.checkoutsteps:after {content:"";display:table;clear:both;}
-.checkoutstepsheader {background:#dedede;padding:12px 24px;font-weight:bold;float:left;}
-.checkoutsteps ol {counter-reset:li;list-style:none;padding:0;margin:0;}
-.checkoutsteps li {position:relative;display:block;padding:6px 36px 6px 24px;margin:6px 0;float:left;color:#747474;}
-.checkoutsteps li:before {content:counter(li);counter-increment:li;position:absolute;left:-12px;top:50%;margin-top:-12px;background:white;color:#a7a7a7;height:24px;width:24px;line-height:22px;text-align:center;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;}
-.checkoutsteps li.activestep {color:#3f3030;}
-.checkoutsteps li.activestep:before {background:#56a9df;color:white;}
-
-/* Checkout */
-#cartdetails{overflow:hidden;padding:1%;}/* some padding for panel shadows */
-#cartdetails H3{line-height:34px;margin:0 0 12px;padding:0;}
-#cartdetails H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
-#cartdetails .formrow{clear:both;}
-/*#cartlist .formrow{clear:both;text-align:right;}*/
-#cartdetails .chooseaddress{background:#fefff4;box-shadow:none;padding:3px;}
-#cartdetails .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}
-#cartdetails .leftside{float:left;width:48%;}
-#cartdetails .rightside{float:right;width:48%;}
-#shippingoptions{margin-bottom:10px;}
-#shippingoptions input{vertical-align:-2px;margin:0 0 0 10px;}
-#shippingoptions label{line-height:22px;margin:0 0 0 6px;}
-.checkoutship input{vertical-align:-2px;margin:0 0 0 10px;}
-.checkoutship label{line-height:22px;margin:0 0 0 6px;}
-#checkoutdetails .primarybutton{margin-right:0;}
-.checkoutextra .summaryleft{float:left;width:43%;min-width:240px;overflow:hidden;margin-bottom:25px;}
-.checkoutextra .summaryright{float:right;min-width:240px;width:45%;}
-.summaryleft .newscheckbox{padding-top:26px;}
-.checkoutdetails{list-style:none outside none;margin:0;padding:0 0 15px;display:inline-block;}
-.checkoutdetails li{line-height:180%;}
-.checkoutdetails li div{display:inline-block;width:140px;}
-.checkoutdetails li.total{border-top:2px solid #bbbbbb;margin-bottom:12px;}
-.checkoutdetails .submission{margin-top:15px;}
-.checkoutdetails .dnnForm{margin-bottom:4px}
-.productdetail .purchasing{}
-#cartempty{}
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{overflow:hidden;box-sizing:border-box;}
-#cartbilladdress{float:left;width:47%;margin-bottom:30px;min-width:240px;}
-#cartshippingoptions{float:right;width:47%;margin-bottom:30px;min-width:240px;}
-#cartshippingmethods{clear:both;width:100%;margin-bottom:30px;}
-#cartextra{clear:both;width:100%;margin-bottom:30px;}
-#cartlist{clear:both;width:100%;margin-bottom:30px;overflow:visible;}
-#cartlist .secondarybutton{margin-right:0;}
-#cartdetails .radiobuttonlist .dnnRadiobutton{margin:0 0 9px;}
-#cartdetails .radiobuttonlist .dnnBoxLabel{margin-right:15px;}
-
-/* cartlist Table - www.csstablegenerator.com */
-#cartlist{margin-bottom:24px;}
-#cartlist table{margin:0px;padding:0px;width:100%;border-collapse:collapse;border-spacing:0;width:100%;}
-#cartlist table tr:nth-child(odd){background-color:#f2f2f2;}
-#cartlist table tr:nth-child(even){background-color:#ffffff;}
-#cartlist table td{vertical-align:middle;text-align:center;padding:6px;font-family:inherit;font-weight:normal;border:1px solid #DDDDDD;padding:10px;text-align:center;}
-#cartlist table tr:last-child td{}
-#cartlist table tr td:last-child{}
-#cartlist table tr:last-child td:last-child{}
-#cartlist table th{background:#777777;color:#FFFFFF;line-height:34px;padding:0;}
-#cartlist table tr:first-child td:first-child{}
-#cartlist table tr:first-child td:last-child{}
-
-/* cartlist items */
-#cartlist .detailscolumn .noimage{float:left;height:100px;margin-right:12px;width:100px;}
-#cartlist .detailscolumn .image{float:left;height:100px;margin-right:12px;width:100px;}
-#cartlist .detailscolumn img{width:100%;height:100%;}
-#cartlist .detailscolumn .details{overflow:hidden;}
-#cartlist th.detailscolumn{padding-left:12px;}
-#cartlist .detailscolumn{text-align:left;}
-#cartlist .detailscolumn .title{font-weight:bold;}
-#cartlist .cartlistoptions{clear:both;}
-#cartlist .quantity{box-shadow:none;text-align:center;width:33px;}
-#cartlist .ui-spinner{font-size:17px;}
-#cartlist .deleteitem{}
-#cartlist .fa-times-circle{color:#666;}
-#cartlist .fa-times-circle:hover{color:#C80000;}
-
-/* Payment */
-#payment{width:66%;margin:0 auto;padding:1%;} /* padding to allow for box shadow on panel */
-#payment .paymentlogo{float:right;margin:0 0 15px 15px;}
-#payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
-.paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}*/
-
-/* default payment button */
-.paybutton{background:#42403f;color:#FFFFFF;}
-.paybutton:hover{background:#757370;color:#FFFFFF;}
-.paybutton{display:inline-block;font-weight:bold;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;text-align:center;width:45%;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
-.paybutton{font-family:sans-serif;display:inline-block;font-weight:bold;font-size:13px;line-height:35px;padding:0 10px;margin:10px 10px 10px 0;min-width:120px;text-align:center;border:medium none;text-decoration:none;box-sizing:border-box;cursor:pointer;}
-.paybutton:hover{text-decoration:none;}
-
-/* Temporary conversion fixes */
+/* Temporary conversion fixes 
 .share {color:white !important;}
+*/
 
 /* Geoff / This is stuff that gets the checkout working again and also overrides some other bootster skin styles
 #cartlist .formrow{text-align:left}
@@ -495,84 +296,31 @@ mark, .mark {background-color:transparent;}
 .minicart a:active, .minicart a:hover {color:#505050;text-decoration:none;}
 */
 
-/* Classic buttons */
-a.classicbutton:link, a.classicbutton:visited {text-decoration:none;background:#505050;color:white;display:inline-block;font-size:14px;line-height:14px;padding:4px 8px 6px 8px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
-a.classicbutton:active, a.classicbutton:hover {text-decoration:none;background-color:#757370;color:white;}
-
-/* MEDIA QUERIES FROM GLOBAL.CSS NEEDS TO BE MOVED HERE */
-
-/* Responsive stuff belongs at end */
+/**********************************************************/
+/* MEDIA QUERIES */
+/**********************************************************/
 
 /* Responsive layout - Any screen at less than 768px - Most tablets */
 @media only screen 
 and (min-width : 481px) 
 and (max-width : 768px) {
-.panel{padding:30px 60px;}
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #payment, #addressinput{min-width:240px;width:100%;float:none;}
-.checkoutextra .summaryleft,.checkoutextra .summaryright,.checkoutextra .checkoutdetails{width:100%;}
-#checkoutitemlist .detailscolumn .details{clear:left;}
-#checkoutitemlist .detailscolumn .noimage{height:160px;margin-right:0;width:160px;}
-#checkoutitemlist .detailscolumn .image{height:160px;margin-right:0;width:160px;}
-#checkoutitemlist .detailscolumn .image{height:160px;width:160px;}
-#chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
-#chronopostrelaistemplate #map-canvas{width:100%;height:400px;float:none;}
-#checkoutselectaddress li{width:48%;margin:0 2% 24px 0;min-width:240px;}
-#orderadmin .orders .removecolumn{display:none;}
-#payment h1{font-size:28px;margin:24px 58px;}
-.paymentcomplete, .paymentfailed{width:80%;}
 #imagelightbox-close{top:1.25em;right:1.25em;}
 #imagelightbox-nav{bottom:1.25em;}
-.currencyconverter, .ccinfo{display:table-row;}
 .r-tabs .r-tabs-nav {display:none;}
 .r-tabs .r-tabs-accordion-title {display:block;}
-.checkoutsteps {display: none !important;}
-
 }
 
 /* Responsive layout - Any screen at less than 480px - Most phones */
 @media only screen 
 and (min-width : 0px) 
 and (max-width : 480px) {
-.panel{padding:15px;margin-bottom:15px;}
-#cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment, #addressinput{width:100%;float:none;}
-#cartlist{padding:0;}
-.checkoutextra .summaryleft,.checkoutextra .summaryright, .checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
-#checkoutitemlist .detailscolumn .details{clear:left;}
-#checkoutitemlist .detailscolumn .noimage{height:130px;margin-right:0;width:130px;}
-#checkoutitemlist .detailscolumn .image{height:130px;margin-right:0;width:130px;}
-.pricecolumn, .removecolumn{display:none;}
-#chronopostrelaistemplate #relais{float:none;margin:0 0 25px;width:100%;}
-#chronopostrelaistemplate #map-canvas{width:100%;height:320px;float:none;}
-#checkoutselectaddress li{width:100%;margin:0 0 15px 0;min-width:240px;}
-#orderadmin .leftside{margin:0 0 15px;width:100%;}
-#orderadmin .rightside{margin:0;width:100%;}
-#orderadmin .rightside .text-right{text-align:left !important;}
-#orderadmin .panel{padding:15px;}
-#payment .paymentlogo{float:none;margin:0 0 15px;}
-#payment h1{font-size:22px;margin:15px;}
-.paymentcomplete, .paymentfailed{width:100%;}
 #imagelightbox-close{top:1.25em;right:1.25em;}
-#imagelightbox-nav{bottom:1.25em;}
-.currencyconverter, .ccinfo{display:table-row;}
+#imagelightbox-nav{bottom:1.25em;}    
 .r-tabs .r-tabs-nav {display:none;}
 .r-tabs .r-tabs-accordion-title {display:block;}
-.checkoutsteps {display: none !important;}
-
 }
 
-/* Responsive layout - iPhones in portrait and landscape view
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) {
-}*/
-
-/* Responsive layout - iPads in portrait and landscape view
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
-} */
-
-
+/* NOT USED */
 
 /* Responsive Product List and Detail
 @media only screen and (max-width: 1200px){
@@ -583,5 +331,4 @@ and (max-device-width : 1024px) {
 .productdetail .gallery li {height: auto;width: 20%;}
 }
  */
-
 

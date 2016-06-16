@@ -1889,7 +1889,9 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var ajaxInfo = GetAjaxInfo(context);
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
+            if (carttemplate == "") carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
+            if (theme == "") theme = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttheme");
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
             var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
             if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
