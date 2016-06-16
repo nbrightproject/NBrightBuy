@@ -341,57 +341,84 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             objInfo.XMLData = xmlData;
             var settings = objInfo.ToDictionary(); // put the fieds into a dictionary, so we can get them easy.
 
+            // check we don't have an invalid parentitemid
+            var parentitemid = objInfo.GetXmlPropertyInt("genxml/dropdownlist/ddlparentcatid");
             var strOut = "No Category ID ('itemid' hidden fields needed on input form)";
             if (settings.ContainsKey("itemid"))
             {
-                var catData = CategoryUtils.GetCategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
-
-                catData.Update(objInfo);
-
-                if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                if (parentitemid != Convert.ToInt32(settings["itemid"]))
                 {
-                    var grptype = objInfo.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
-                    var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
-                    if (grp != null)
+
+                    var catData = CategoryUtils.GetCategoryData(Convert.ToInt32(settings["itemid"]), StoreSettings.Current.EditLanguage);
+
+                    // check we've not put a category under it's child
+                    if (IsParentInChildren(catData, parentitemid))
                     {
-                        var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
-                        if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, Utils.UrlFriendly(newGuidKey));
-                        catData.DataRecord.GUIDKey = newGuidKey;
-                        catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
-                        catData.DataRecord.ParentItemId = grp.ItemID;
-                        // list done using ddlgrouptype, in  GetCatList 
-                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype);
-                        catData.Save();
-                        NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.fail);
+                    }
+                    else
+                    {
+
+                        catData.Update(objInfo);
+
+                        if (!String.IsNullOrEmpty(Edittype) && Edittype.ToLower() == "group")
+                        {
+                            var grptype = objInfo.GetXmlProperty("genxml/dropdownlist/ddlparentcatid");
+                            var grp = ModCtrl.GetByGuidKey(PortalSettings.PortalId, -1, "GROUP", grptype);
+                            if (grp != null)
+                            {
+                                var newGuidKey = objInfo.GetXmlProperty("genxml/textbox/propertyref");
+                                if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(catData.CategoryId, Utils.UrlFriendly(newGuidKey));
+                                catData.DataRecord.GUIDKey = newGuidKey;
+                                catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", newGuidKey);
+                                catData.DataRecord.ParentItemId = grp.ItemID;
+                                // list done using ddlgrouptype, in  GetCatList 
+                                catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grptype);
+                                catData.Save();
+                                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                            }
+                        }
+                        else
+                        {
+                            // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                            var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                            if (catref == "")
+                            {
+                                if (catData.DataRecord.GUIDKey == "")
+                                {
+                                    catref = Utils.GetUniqueKey().ToLower();
+                                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                                    catData.DataRecord.GUIDKey = catref;
+                                }
+                                else
+                                {
+                                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catData.DataRecord.GUIDKey);
+                                }
+                            }
+                            catData.Save();
+                            CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(settings["itemid"])); // do validate so we update all refs and children refs
+                            NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                        }
+                        NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.ok);
                     }
                 }
                 else
                 {
-                    // the base category ref cannot have language dependant refs, we therefore just use a unique key
-                    var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
-                    if (catref == "")
-                    {
-                        if (catData.DataRecord.GUIDKey == "")
-                        {
-                            catref = Utils.GetUniqueKey().ToLower();
-                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
-                            catData.DataRecord.GUIDKey = catref;                            
-                        }
-                        else
-                        {
-                            catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catData.DataRecord.GUIDKey);
-                        }
-                    }
-                    catData.Save();
-                    CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(settings["itemid"])); // do validate so we update all refs and children refs
-                    NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.fail);
                 }
             }
-            else
-            {
-                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.fail);
-            }
             NBrightBuyUtils.RemoveModCachePortalWide(PortalId); //clear any cache
+        }
+
+        private Boolean IsParentInChildren(CategoryData catData,int parentItemId)
+        {
+            foreach (var ch in catData.GetDirectChildren())
+            {
+                if (ch.ItemID == parentItemId) return true;
+                var catChildData = CategoryUtils.GetCategoryData(ch.ItemID, StoreSettings.Current.EditLanguage);
+                if (IsParentInChildren(catChildData, parentItemId)) return true;
+            }
+            return false;
         }
 
         private void MoveRecord(int itemId)

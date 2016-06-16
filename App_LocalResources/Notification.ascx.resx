@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="addressbookupdated_ok.Text" xml:space="preserve">
     <value>Address Update Successful</value>
@@ -314,5 +314,8 @@
   </data>
   <data name="nopin_fail.Text" xml:space="preserve">
     <value>Invalid Admin PIN</value>
+  </data>
+  <data name="categoryactionsave_fail.Text" xml:space="preserve">
+    <value>Category update Failed.  Ensure Parent category is not set to a child of itself.</value>
   </data>
 </root>

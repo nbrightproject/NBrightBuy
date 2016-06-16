@@ -1900,6 +1900,14 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (lang == "") lang = Utils.GetCurrentCulture();
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
+                if (UserController.Instance.GetCurrentUserInfo().UserID != -1)  // If we have a user, do save to update userid, so addrees checkout can get addresses.
+                {
+                    if (currentcart.UserId != UserController.Instance.GetCurrentUserInfo().UserID && currentcart.EditMode == "")
+                    {
+                        currentcart.Save();
+                    }
+                }
+
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0,"", currentcart, controlpath, theme, lang, StoreSettings.Current.Settings());
             }
             return razorTempl;
