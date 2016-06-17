@@ -213,7 +213,20 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 case "delete":
                     if (Utils.IsNumeric(cArg))
                     {
-                        ModCtrl.Delete(Convert.ToInt32(cArg));
+                        var catid = Convert.ToInt32(cArg);
+
+                        //var l = ModCtrl.GetDataList(PortalId, -1, "CATXREF", "", "", "ParentItemId = '" + cArg + "' or XrefItemId = '" + cArg + "'","");
+                        //foreach (NBrightInfo i in l)
+                        //{
+                        //    ModCtrl.Delete(i.ItemID);
+                        //}
+                        //l = ModCtrl.GetDataList(PortalId, -1, "CATCASCADE", "", "", "ParentItemId = " + cArg + " or XrefItemId = " + cArg, "");
+                        //foreach (NBrightInfo i in l)
+                        //{
+                        //    ModCtrl.Delete(i.ItemID);
+                        //}
+
+                        ModCtrl.Delete(catid);
                     }
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
