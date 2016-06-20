@@ -80,13 +80,13 @@ BEGIN
 
 CREATE TABLE {databaseOwner}[{objectQualifier}NBrightBuyIdx](
 	[ItemId] [int] NOT NULL,
-	[ProductRef] [varchar](255) NULL,
-	[ProductName] [varchar](255) NULL,
-	[Manufacturer] [varchar](255) NULL,
-	[Summary] [varchar](255) NULL,
-	[SEOName] [varchar](255) NULL,
-	[TagWords] [varchar](255) NULL,
-	[SEOPageTitle] [varchar](255) NULL,
+	[ProductRef] [nvarchar](255) NULL,
+	[ProductName] [nvarchar](255) NULL,
+	[Manufacturer] [nvarchar](255) NULL,
+	[Summary] [nvarchar](255) NULL,
+	[SEOName] [nvarchar](255) NULL,
+	[TagWords] [nvarchar](255) NULL,
+	[SEOPageTitle] [nvarchar](255) NULL,
 	[FromPrice] [decimal](10, 2) NULL,
 	[Qty] [int] NULL,
 	[TypeCode] [nvarchar](50) NULL,
@@ -236,6 +236,9 @@ begin
 	-- Delete all linked child records.
 	delete from {databaseOwner}[{objectQualifier}NBrightBuy] 
 	where ParentItemId = @ItemId
+
+	delete from dbo.[NBrightBuy] 
+	where XrefItemId = @ItemId
 	
 end
 

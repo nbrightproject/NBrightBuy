@@ -318,4 +318,7 @@
   <data name="categoryactionsave_fail.Text" xml:space="preserve">
     <value>Category update Failed.  Ensure Parent category is not set to a child of itself.</value>
   </data>
+  <data name="onlyleafcat_fail.Text" xml:space="preserve">
+    <value>Only end leaf categories can be deleted.</value>
+  </data>
 </root>

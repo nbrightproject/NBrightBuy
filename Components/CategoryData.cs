@@ -24,6 +24,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String _lang = ""; // needed for webservice
         private int _portalId = -1; // for shared products.
 
+        private NBrightBuyController _objCtrl = null;
+
         /// <summary>
         /// Populate the ProductData in this class
         /// </summary>
@@ -31,9 +33,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="lang"> </param>
         public CategoryData(String categoryId,String lang)
         {
-            _lang = lang;
-            if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
-            if (Utils.IsNumeric(categoryId)) LoadData(Convert.ToInt32(categoryId));
+            if (Utils.IsNumeric(categoryId))
+            {
+                LoadCatData(Convert.ToInt32(categoryId), lang);
+            }
         }
 
         /// <summary>
@@ -43,6 +46,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="lang"> </param>
         public CategoryData(int categoryId, String lang)
         {
+            LoadCatData(categoryId, lang);
+        }
+
+        private void LoadCatData(int categoryId, String lang)
+        {
+            _objCtrl = new NBrightBuyController();
             _lang = lang;
             if (_lang == "") _lang = StoreSettings.Current.EditLanguage;
             LoadData(categoryId);
@@ -121,21 +130,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public String CategoryRef
-        {
-            get
-            {
-                return DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
-            }
-        }
+        public String CategoryRef => DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
 
-        public int CategoryId
-        {
-            get
-            {
-                return DataRecord.ItemID;
-            }
-        }
+        public int CategoryId => DataRecord.ItemID;
 
 
         public Boolean IsHidden
@@ -153,9 +150,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Save()
         {
-            var objCtrl = new NBrightBuyController();
-            objCtrl.Update(DataRecord);
-            objCtrl.Update(DataLangRecord);
+            _objCtrl.Update(DataRecord);
+            _objCtrl.Update(DataLangRecord);
             
             //do reindex of cascade records.
             if (_doCascadeIndex)
@@ -221,29 +217,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (resetToLang != DataLangRecord.Lang)
             {
                 var resetToLangData = CategoryUtils.GetCategoryData(DataRecord.ItemID, resetToLang);
-                var objCtrl = new NBrightBuyController();
                 DataLangRecord.XMLData = resetToLangData.DataLangRecord.XMLData;
-                objCtrl.Update(DataLangRecord);
+                _objCtrl.Update(DataLangRecord);
             }
         }
 
         public List<NBrightInfo> GetDirectChildren()
         {
-            var objCtrl = new NBrightBuyController();
-            var l = objCtrl.GetList(_portalId, -1, "CATEGORY", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            var l = _objCtrl.GetList(_portalId, -1, "CATEGORY", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            return l;
+        }
+
+        public List<NBrightInfo> GetDirectArticles()
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.XRefItemId = " + Info.ItemID.ToString(""));
+            return l;
+        }
+
+        public List<NBrightInfo> GetCascadeArticles()
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATCASCADE", " and NB1.XRefItemId = " + Info.ItemID.ToString(""));
             return l;
         }
 
         public int Validate()
         {
             var errorcount = 0;
-            var objCtrl = new NBrightBuyController();
 
             // default any undefined group type as category (I think quickcategory v1.0.0 plugin causes this)
             if (DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype") == "")
             {
                 DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
-                objCtrl.Update(DataRecord);
+                _objCtrl.Update(DataRecord);
             }
 
             if (GroupType == "cat")
@@ -270,14 +275,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (DataLangRecord == null)
             {
                 // we have no datalang record for this language, so get an existing one and save it.
-                var l = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+                var l = _objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
                 if (l.Count > 0)
                 {
                     DataLangRecord = (NBrightInfo)l[0].Clone();
                     DataLangRecord.ItemID = -1;
                     DataLangRecord.Lang = _lang;
                     DataLangRecord.ValidateXmlFormat();
-                    objCtrl.Update(DataLangRecord);
+                    _objCtrl.Update(DataLangRecord);
                 }
             }
             
@@ -313,28 +318,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 errorcount += 1;
             }
 
-            if (errorcount > 0) objCtrl.Update(DataRecord); // update if we find a error
+            if (errorcount > 0) _objCtrl.Update(DataRecord); // update if we find a error
 
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                var l = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+                var l = _objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
                     var nbi = (NBrightInfo)DataLangRecord.Clone();
                     nbi.ItemID = -1;
                     nbi.Lang = lang;
-                    objCtrl.Update(nbi);
+                    _objCtrl.Update(nbi);
                     errorcount += 1;
                 }
                 if (l.Count > 1)
                 {
                     // we have more records than shoudl exists, remove any old ones.
-                    var l2 = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
+                    var l2 = _objCtrl.GetList(_portalId, -1, "CATEGORYLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'", "order by Modifieddate desc");
                     var lp = 1;
                     foreach (var i in l2)
                     {
-                      if (lp >=2) objCtrl.Delete(i.ItemID);
+                      if (lp >=2) _objCtrl.Delete(i.ItemID);
                       lp += 1;
                     }
                 }
@@ -347,20 +352,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (updaterequired)
                 {
                     // the catref has been updated, so reload the datarecord
-                    DataLangRecord = objCtrl.GetDataLang(CategoryId, _lang);
+                    DataLangRecord = _objCtrl.GetDataLang(CategoryId, _lang);
                 }
             }
 
             // fix groups with mismatching ddlgrouptype
             if (GroupType != "cat")
             {
-                var grp = objCtrl.Get(DataRecord.ParentItemId, "GROUP");
+                var grp = _objCtrl.Get(DataRecord.ParentItemId, "GROUP");
                 if (grp != null)
                 {
                     if (grp.GUIDKey != GroupType)
                     {
                         DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", grp.GUIDKey);
-                        objCtrl.Update(DataRecord);
+                        _objCtrl.Update(DataRecord);
                         errorcount += 1;
                     }
                 }
@@ -380,19 +385,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             Exists = false;
             if (categoryId == -1) categoryId = AddNew(); // add new record if -1 is used as id.
-            var objCtrl = new NBrightBuyController();
             if (_lang == "") _lang = Utils.GetCurrentCulture();
-            Info = objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
+            Info = _objCtrl.Get(categoryId, "CATEGORYLANG", _lang);
             if (Info != null)
             {
                 Exists = true;
                 _portalId = Info.PortalId;
-                DataRecord = objCtrl.GetData(categoryId);
-                DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
+                DataRecord = _objCtrl.GetData(categoryId);
+                DataLangRecord = _objCtrl.GetDataLang(categoryId, _lang);
                 if (DataLangRecord == null) // rebuild langauge if we have a missing lang record
                 {
                     Validate();
-                    DataLangRecord = objCtrl.GetDataLang(categoryId, _lang);
+                    DataLangRecord = _objCtrl.GetDataLang(categoryId, _lang);
                 }
             }
         }
@@ -411,19 +415,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", "cat");
             nbi.SetXmlProperty("genxml/checkbox/chkishidden", "True");
             nbi.SetXmlPropertyDouble("genxml/hidden/recordsortorder", 99999);
-            var objCtrl = new NBrightBuyController();
-            var itemId = objCtrl.Update(nbi);
+            var itemId = _objCtrl.Update(nbi);
 
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                nbi = new NBrightInfo(true);
-                nbi.PortalId = _portalId;
-                nbi.TypeCode = "CATEGORYLANG";
-                nbi.ModuleId = -1;
-                nbi.ItemID = -1;
-                nbi.Lang = lang;
-                nbi.ParentItemId = itemId;
-                objCtrl.Update(nbi);
+                nbi = new NBrightInfo(true)
+                {
+                    PortalId = _portalId,
+                    TypeCode = "CATEGORYLANG",
+                    ModuleId = -1,
+                    ItemID = -1,
+                    Lang = lang,
+                    ParentItemId = itemId
+                };
+                _objCtrl.Update(nbi);
             }
 
             return itemId;

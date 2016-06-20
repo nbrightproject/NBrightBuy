@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics.Eventing.Reader;
@@ -214,19 +215,51 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (Utils.IsNumeric(cArg))
                     {
                         var catid = Convert.ToInt32(cArg);
+                        if (catid > 0)
+                        {
+                            var delCatData = CategoryUtils.GetCategoryData(catid, EditLanguage);
+                            if (delCatData.Exists && delCatData.GetDirectChildren().Count == 0) // only delete end leaf
+                            {
+                                var productidlist = new ArrayList();
+                                foreach (var dc in delCatData.GetDirectArticles())
+                                {
+                                    productidlist.Add(dc.ParentItemId);
+                                }
 
-                        //var l = ModCtrl.GetDataList(PortalId, -1, "CATXREF", "", "", "ParentItemId = '" + cArg + "' or XrefItemId = '" + cArg + "'","");
-                        //foreach (NBrightInfo i in l)
-                        //{
-                        //    ModCtrl.Delete(i.ItemID);
-                        //}
-                        //l = ModCtrl.GetDataList(PortalId, -1, "CATCASCADE", "", "", "ParentItemId = " + cArg + " or XrefItemId = " + cArg, "");
-                        //foreach (NBrightInfo i in l)
-                        //{
-                        //    ModCtrl.Delete(i.ItemID);
-                        //}
+                                var parentCatList = new List<CategoryData>();
+                                var loopCat = CategoryUtils.GetCategoryData(catid, EditLanguage);
+                                while (loopCat.Exists && loopCat.ParentItemId > 0)
+                                {
+                                    loopCat = CategoryUtils.GetCategoryData(loopCat.ParentItemId, EditLanguage);
+                                    parentCatList.Add(loopCat);
+                                }
 
-                        ModCtrl.Delete(catid);
+                                foreach (var pCat in parentCatList)
+                                {
+                                    foreach (var prodxref in pCat.GetCascadeArticles())
+                                    {
+                                        if (productidlist.Contains(prodxref.ParentItemId))
+                                        {
+                                            // delete CATCASCADE record
+                                           ModCtrl.Delete(prodxref.ItemID);   
+                                        }                                        
+                                    }
+                                    
+                                }
+
+                                foreach (var dc in delCatData.GetDirectArticles())
+                                {
+                                    // delete CATXREF record
+                                    ModCtrl.Delete(dc.ParentItemId);
+                                }
+                                // delete CATEGORY record (constrants remove LANG records.)
+                                ModCtrl.Delete(catid);
+                            }
+                            else
+                            {
+                                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "onlyleafcat", NotifyCode.fail);
+                            }
+                        }
                     }
                     param[2] = "catid=" + _openid;
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
