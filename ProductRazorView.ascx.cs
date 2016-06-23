@@ -135,10 +135,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (_displayentrypage)
                 {
                     _templD = ModSettings.Get("razordetailtemplate");
+                    if (_templD == "") _templD = ModSettings.Get("txtdisplayentrybody"); // legacy name
                 }
                 else
                 {
                     _templD = ModSettings.Get("razorlisttemplate");
+                    if (_templD == "") _templD = ModSettings.Get("txtdisplaybody"); // legacy name
                 }
 
                 #endregion

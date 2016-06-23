@@ -188,6 +188,22 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="CategoryRazorMenuSettings.ascx.cs">
+      <DependentUpon>CategoryRazorMenuSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryRazorMenuSettings.ascx.designer.cs">
+      <DependentUpon>CategoryRazorMenuSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryRazorMenu.ascx.cs">
+      <DependentUpon>CategoryRazorMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryRazorMenu.ascx.designer.cs">
+      <DependentUpon>CategoryRazorMenu.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\CatMenuRazorBuilder.cs" />
+    <Compile Include="Components\Interfaces\EntityTypeInterface.cs" />
     <Compile Include="ProfileRazorFormSettings.ascx.cs">
       <DependentUpon>ProfileRazorFormSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -451,13 +467,21 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="CategoryRazorMenuSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="CategoryRazorMenu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProfileRazorFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProfileRazorForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="CategoryMenu.ascx" />
+    <Content Include="CategoryMenu.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CategoryMenuSettings.ascx" />
     <Content Include="CartView.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -478,7 +502,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="PrintView.aspx" />
-    <Content Include="CartRazorViewSettings.ascx" />
+    <Content Include="CartRazorViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CartRazorView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

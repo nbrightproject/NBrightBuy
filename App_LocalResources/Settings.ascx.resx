@@ -435,4 +435,7 @@
   <data name="razortemplate.Text" xml:space="preserve">
     <value>Template</value>
   </data>
+  <data name="parentcategory.Text" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
 </root>

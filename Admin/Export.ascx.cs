@@ -25,6 +25,7 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -144,13 +145,24 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (GenXmlFunctions.GetField(rpData,"exportproducts") == "True")
             {
 
-                var l = ModCtrl.GetList(PortalId, -1, "AMY");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                // export any entitytype provider data
+                // This is data created by plugins into the NBS data tables.
+                var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                var provList = pluginData.GetEntityTypeProviders();
+                foreach (var prov in provList)
+                {
+                    var entityprov = EntityTypeInterface.Instance(prov.Key);
+                    if (entityprov != null)
+                    {
+                        var provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCode());
+                        foreach (var i in provl) { strXml.Append(i.ToXmlItem()); }
 
-                l = ModCtrl.GetList(PortalId, -1, "AMYLANG");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                        provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCodeLang());
+                        foreach (var i in provl) { strXml.Append(i.ToXmlItem()); }
+                    }
+                }
 
-                l = ModCtrl.GetList(PortalId, -1, "PRD");
+                var l = ModCtrl.GetList(PortalId, -1, "PRD");
                 foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
 
                 l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
@@ -239,16 +251,28 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
             }
 
-            l = ModCtrl.GetList(PortalId, -1, "AMY");
-            foreach (var i in l)
+
+            // export any entitytype provider data
+            // This is data created by plugins into the NBS data tables.
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetEntityTypeProviders();
+            foreach (var prov in provList)
             {
-                var nodlist = i.XMLDoc.SelectNodes("genxml/imgs/*");
-                if (nodlist != null)
+                var entityprov = EntityTypeInterface.Instance(prov.Key);
+                if (entityprov != null)
                 {
-                    foreach (XmlNode nod in nodlist)
+                    var provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCode());
+                    foreach (var i in provl)
                     {
-                        var fname = nod.SelectSingleNode("./hidden/imagepath");
-                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                        var nodlist = i.XMLDoc.SelectNodes("genxml/imgs/*");
+                        if (nodlist != null)
+                        {
+                            foreach (XmlNode nod in nodlist)
+                            {
+                                var fname = nod.SelectSingleNode("./hidden/imagepath");
+                                if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                            }
+                        }
                     }
                 }
             }
@@ -284,19 +308,32 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
             }
 
-            l = ModCtrl.GetList(PortalId, -1, "AMY");
-            foreach (var i in l)
+
+            // export any entitytype provider data
+            // This is data created by plugins into the NBS data tables.
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetEntityTypeProviders();
+            foreach (var prov in provList)
             {
-                var nodlist = i.XMLDoc.SelectNodes("genxml/docs/*");
-                if (nodlist != null)
+                var entityprov = EntityTypeInterface.Instance(prov.Key);
+                if (entityprov != null)
                 {
-                    foreach (XmlNode nod in nodlist)
+                    var provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCode());
+                    foreach (var i in provl)
                     {
-                        var fname = nod.SelectSingleNode("./hidden/docpath");
-                        if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                        var nodlist = i.XMLDoc.SelectNodes("genxml/docs/*");
+                        if (nodlist != null)
+                        {
+                            foreach (XmlNode nod in nodlist)
+                            {
+                                var fname = nod.SelectSingleNode("./hidden/docpath");
+                                if (fname != null && fname.InnerText != "") fileMapPathList.Add(fname.InnerText);
+                            }
+                        }
                     }
                 }
             }
+
 
             DnnUtils.Zip(StoreSettings.Current.FolderUploadsMapPath + "\\exportdocs.zip", fileMapPathList);
 

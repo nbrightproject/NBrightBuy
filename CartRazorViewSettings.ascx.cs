@@ -41,7 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var obj = NBrightBuyUtils.GetSettings(PortalId,ModuleId);
                 
                 obj.ModuleId = base.ModuleId; // need to pass the moduleid here, becuase it doesn;t exists in url for settings and on new settings it needs it.
-                var strOut = NBrightBuyUtils.RazorTemplRender(ModuleConfiguration.DesktopModule.ModuleName + "settings.cshtml", ModuleId, "", obj,"/DesktopModules/NBright/NBrightBuy","config", Utils.GetCurrentCulture(),StoreSettings.Current.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(ModuleConfiguration.DesktopModule.ModuleName + "settings.cshtml", ModuleId, "", obj, ControlPath, "config", Utils.GetCurrentCulture(),StoreSettings.Current.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

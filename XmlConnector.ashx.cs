@@ -2229,7 +2229,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var themefolder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/themefolder");
                 var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
                 if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
-                if (razortemplate == "") razortemplate = "settings.cshtml";
+                if (razortemplate == "") return ""; // assume no settings requirted
                 if (moduleid == "") moduleid = "-1";
 
                 // do edit field data if a itemid has been selected
@@ -2328,6 +2328,12 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
             if (!settings.ContainsKey("cascade")) settings.Add("cascade", "False");
 
+            // select a specific entity data type for the product (used by plugins)
+            if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
+            if (!settings.ContainsKey("entitytypecodelang")) settings.Add("entitytypecodelang", "PRDLANG");
+            var entitytypecodelang = settings["entitytypecodelang"];
+            var entitytypecode = settings["entitytypecode"];
+
             var header = settings["header"];
             var body = settings["body"];
             var footer = settings["footer"];
@@ -2390,20 +2396,23 @@ namespace Nevoweb.DNN.NBrightBuy
             var obj = new NBrightInfo(true);
             strOut = GenXmlFunctions.RenderRepeater(obj, headerTempl);
 
+            // This is data created by plugins into the NBS data tables.
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetEntityTypeProviders();
+
             if (paging) // get record count for paging
             {
                 if (pageNumber == 0) pageNumber = 1;
                 if (pageSize == 0) pageSize = StoreSettings.Current.GetInt("pagesize");
-                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "PRD", filter,"PRDLANG",_lang);
-                var recordCountAMY = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "AMY", filter, "AMYLANG", _lang);
-                recordCount += recordCountAMY;
+
+                // get only entity type required
+                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter, entitytypecodelang, _lang);
+
+
             }
 
-            var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "PRD", "PRDLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode,"",returnLimit,pageNumber,pageSize,recordCount);
-
-            // add AMY type entries
-            var objListAMY = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "AMY", "AMYLANG", _lang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
-            objList.AddRange(objListAMY);
+            // get selected entitytypecode.
+            var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode, entitytypecodelang, _lang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
 
             strOut += GenXmlFunctions.RenderRepeater(objList, bodyTempl);
 

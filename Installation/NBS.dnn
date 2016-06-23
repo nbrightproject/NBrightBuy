@@ -284,79 +284,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_CategoryMenu" type="Module" version="3.5.0">
-			<friendlyName>NBS_CategoryMenu</friendlyName>
-			<description>NBrightStore open source e-commerce for DNN.
-  Stand alone Category menu for front office
-			</description>
-			<iconFile />
-			<owner>
-				<name>David Lee</name>
-				<organization>Nevoweb</organization>
-				<url>www.nevoweb.com</url>
-				<email>info@nevoweb.com</email>
-			</owner>
-			<license>
-New BSD License (BSD)
-
-Copyright (c) 2015, David Lee
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-* Neither the name of Nevoweb nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			</license>
-			<releaseNotes />
-			<components>
-
-				<component type="Module">
-					<desktopModule>
-						<moduleName>NBS_CategoryMenu</moduleName>
-						<foldername>NBright/NBrightBuy</foldername>
-						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
-						<supportedFeatures>
-							<supportedFeature type="Portable" />
-							<supportedFeature type="Searchable" />
-						</supportedFeatures>
-						<moduleDefinitions>
-							<moduleDefinition>
-								<friendlyName>NBS_CategoryMenu</friendlyName>
-								<defaultCacheTime>0</defaultCacheTime>
-								<moduleControls>
-									<moduleControl>
-										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CategoryMenu.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle />
-										<controlType>View</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
-									</moduleControl>
-									<moduleControl>
-										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/CategoryMenuSettings.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Settings</controlTitle>
-										<controlType>Edit</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
-									</moduleControl>
-								</moduleControls>
-							</moduleDefinition>
-						</moduleDefinitions>
-					</desktopModule>
-				</component>
-			</components>
-		</package>
-
 		<package name="NBS_AddressAdmin" type="Module" version="3.5.0">
 			<friendlyName>NBS_AddressAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
@@ -880,6 +807,71 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		
-	</packages>
+    <package name="NBS_CategoryMenu" type="Module" version="1.0.0">
+      <friendlyName>NBS_CategoryMenu</friendlyName>
+      <description>
+        NBS_CategoryMenu Display 
+      </description>
+      <iconFile />
+      <owner>
+        <name>David Lee</name>
+        <organization>Nevoweb</organization>
+        <url>www.nevoweb.com</url>
+        <email>info@nevoweb.com</email>
+      </owner>
+      <license>
+        THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+        YOU MAY NOT REDISTRIBUTE, NOT VIEW THE SOURCE CODE, NOT COPY THIS SOFTWARE.
+      </license>
+      <releaseNotes>
+
+        v1.0.0.
+
+        Requires NBSv3.5 to be installed.
+
+      </releaseNotes>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>NBS_CategoryMenu</moduleName>
+            <foldername>NBright/NBrightBuy</foldername>
+            <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>NBS_CategoryMenu</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/NBright/NBrightBuy/CategoryRazorMenu.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/NBright/NBrightBuy/CategoryRazorMenuSettings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+      </components>
+    </package>
+
+    
+  </packages>
 </dotnetnuke>

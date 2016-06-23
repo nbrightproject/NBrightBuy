@@ -454,6 +454,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetProviders("10", activeOnly);
         }
 
+        public Dictionary<String, NBrightInfo> GetEntityTypeProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("11", activeOnly);
+        }
+
         public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
         {
             return GetProviders("99", activeOnly);

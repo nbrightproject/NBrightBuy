@@ -76,7 +76,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void RazorPageLoad()
         {
-            var strOut = NBrightBuyUtils.RenderCart(ThemeFolder, RazorTemplate);
+            var strOut = NBrightBuyUtils.RenderCart(ThemeFolder, RazorTemplate, ControlPath);
             var lit = new Literal();
             lit.Text = strOut;
             phData.Controls.Add(lit);

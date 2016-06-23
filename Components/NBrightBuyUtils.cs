@@ -73,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetTemplateGetter(PortalSettings.Current.PortalId, themeFolder);
         }
 
-        public static NBrightInfo GetSettings(int portalId, int moduleId, String ctrlTypeCode = "", bool useCache = true)
+        public static NBrightInfo GetSettings(int portalId, int moduleId, string ctrlTypeCode = "", bool useCache = true)
         {
             var obj = (NBrightInfo) GetModCache("NBright_NBsettings" + portalId.ToString("") + "_" + moduleId.ToString(""));
             if (obj == null | !useCache)
@@ -174,7 +174,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var cachekey = "entryurl*" + entryid + "*" + catid + "*" + catref + "*" + modulekey + "*" + rdTabid + "*" + Utils.GetCurrentCulture();
             var urldata = "";
             var chacheData = Utils.GetCache(cachekey);
-            if (chacheData != null) return (String)chacheData;
+            if (chacheData != null) return (string)chacheData;
 
 
             if (objTabInfo.TabID != rdTabid)
@@ -381,8 +381,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="objObject"></param>
         public static void SetModCache(int moduleid, string CacheKey, object objObject, DateTime AbsoluteExpiration)
         {
-            var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
-            if (cList == null) cList = new List<String>();
+            var cList = (List<string>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
+            if (cList == null) cList = new List<string>();
             if (!cList.Contains(CacheKey))
             {
                 cList.Add(CacheKey);
@@ -396,14 +396,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SetModCache(moduleid, CacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
         }
 
-        public static void RemoveCache(String cacheKey)
+        public static void RemoveCache(string cacheKey)
         {
             NBrightCore.common.Utils.RemoveCache(cacheKey);
         }
 
         public static void RemoveModCache(int moduleid)
         {
-            var cList = (List<String>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
+            var cList = (List<string>) NBrightCore.common.Utils.GetCache("keylist:" + moduleid.ToString(CultureInfo.InvariantCulture));
             if (cList != null)
             {
                 foreach (var s in cList)
@@ -438,7 +438,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="objInfo"></param>
         /// <param name="debugMode"></param>
         /// <returns></returns>
-        public static string IncludePageHeaders(NBrightBuyController modCtrl, int moduleId, Page page, GenXmlTemplate template, Dictionary<String, String> settings, NBrightInfo objInfo = null, bool debugMode = false)
+        public static string IncludePageHeaders(NBrightBuyController modCtrl, int moduleId, Page page, GenXmlTemplate template, Dictionary<string, string> settings, NBrightInfo objInfo = null, bool debugMode = false)
         {
             foreach (var mt in template.MetaTags)
             {
@@ -467,7 +467,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, String templatename, String themeFolder, bool debugMode = false)
+        public static string IncludePageHeaderDefault(NBrightBuyController modCtrl, Page page, string templatename, string themeFolder, bool debugMode = false)
         {
 
             if (!page.Items.Contains("nbrightbuyinject")) page.Items.Add("nbrightbuyinject", "");
@@ -485,7 +485,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory)
+        public static GenXmlTemplate GetGenXmlTemplate(string templateData, Dictionary<string, string> settingsDic, string portalHomeDirectory)
         {
             return GetGenXmlTemplate(templateData, settingsDic, portalHomeDirectory,null);
         }
@@ -498,7 +498,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="portalHomeDirectory"></param>
         /// <param name="visibleStatusIn">List of the visible staus used for nested if</param>
         /// <returns></returns>
-        public static GenXmlTemplate GetGenXmlTemplate(String templateData, Dictionary<String, String> settingsDic, String portalHomeDirectory, ConcurrentStack<Boolean> visibleStatusIn)
+        public static GenXmlTemplate GetGenXmlTemplate(string templateData, Dictionary<string, string> settingsDic, string portalHomeDirectory, ConcurrentStack<Boolean> visibleStatusIn)
         {
             if (templateData.Trim() != "") templateData = "[<tag type='tokennamespace' value='nbs' />]" + templateData; // add token namespoace for nbs (no need if empty)
 
@@ -519,7 +519,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="moduleId"></param>
         /// <param name="msgcode"></param>
         /// <param name="result"></param>
-        public static void SetFormTempData(int moduleId, String xmlData)
+        public static void SetFormTempData(int moduleId, string xmlData)
         {
             if (xmlData != "")
             {
@@ -527,11 +527,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 HttpContext.Current.Session[sessionkey] = xmlData;
             }
         }
-        public static String GetFormTempData(int moduleId)
+        public static string GetFormTempData(int moduleId)
         {
             var xmlData = "";
             var sessionkey = "NBrightBuyForm*" + moduleId.ToString("");
-            if (HttpContext.Current.Session[sessionkey] != null) xmlData = (String)HttpContext.Current.Session[sessionkey];
+            if (HttpContext.Current.Session[sessionkey] != null) xmlData = (string)HttpContext.Current.Session[sessionkey];
             if (xmlData != "")
             {
                 HttpContext.Current.Session.Remove(sessionkey);
@@ -547,7 +547,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="msgcode">message code to pick in resx</param>
         /// <param name="result">result code</param>
         /// <param name="resxpath">resx folder path of the message</param>
-        public static void SetNotfiyMessage(int moduleId, String msgcode, NotifyCode result, String resxpath = "")
+        public static void SetNotfiyMessage(int moduleId, string msgcode, NotifyCode result, string resxpath = "")
         {
             if (resxpath == "") resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
             if (msgcode != "")
@@ -559,15 +559,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static String GetNotfiyMessage(int moduleId)
+        public static string GetNotfiyMessage(int moduleId)
         {
             var msgcode = "";
             var sessionkey = "NBrightBuyNotify*" + moduleId.ToString("");
-            if (HttpContext.Current.Session[sessionkey] != null) msgcode = (String) HttpContext.Current.Session[sessionkey];
+            if (HttpContext.Current.Session[sessionkey] != null) msgcode = (string) HttpContext.Current.Session[sessionkey];
             if (msgcode != "")
             {
                 var sessionkeyresx = "NBrightBuyNotify*" + moduleId.ToString("") + "*resxpath";
-                var resxmsgpath = (String)HttpContext.Current.Session[sessionkeyresx];
+                var resxmsgpath = (string)HttpContext.Current.Session[sessionkeyresx];
                 HttpContext.Current.Session.Remove(sessionkey);
                 HttpContext.Current.Session.Remove(sessionkeyresx);
 
@@ -577,7 +577,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return "";
         }
 
-        public static String GetResxMessage(String msgcode = "general_ok",String resxmsgpath = "")
+        public static string GetResxMessage(string msgcode = "general_ok", string resxmsgpath = "")
         {
             var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
             if (resxmsgpath == "") resxmsgpath = resxpath;
@@ -592,12 +592,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return msgtempl;
         }
 
-        public static void SendEmailToManager(String templateName, NBrightInfo dataObj, String emailsubjectresxkey = "", String fromEmail = "")
+        public static void SendEmailToManager(string templateName, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
         {
             NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
-        public static void SendEmailOrderToClient(String templateName, int orderId, String emailsubjectresxkey = "", String fromEmail = "", String emailmsg = "")
+        public static void SendEmailOrderToClient(string templateName, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
         {
             var ordData = new OrderData(orderId);
             var lang = ordData.Lang;
@@ -624,7 +624,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 
-        public static void SendEmail(String toEmail, String templateName, NBrightInfo dataObj, String emailsubjectresxkey, String fromEmail,String lang)
+        public static void SendEmail(string toEmail, string templateName, NBrightInfo dataObj, string emailsubjectresxkey, string fromEmail, string lang)
         {
             dataObj = ProcessEventProvider(EventActions.BeforeSendEmail, dataObj, templateName);
 
@@ -670,7 +670,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public static List<NBrightInfo> GetCategoryGroups(String lang, Boolean debugMode = false, String groupType = "")
+        public static List<NBrightInfo> GetCategoryGroups(string lang, Boolean debugMode = false, string groupType = "")
         {
             var filter = "";
             if (groupType != "") filter = " and [XMLData].value('(genxml/dropdownlist/grouptype)[1]','nvarchar(max)') = '" + groupType + "' ";
@@ -682,7 +682,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static List<NBrightInfo> GetGenXmlListByAjax(string xmlAjaxData, string originalXml, string lang = "en-US", string xmlRootName = "genxml")
         {
             var rtnList = new List<NBrightInfo>();
-            if (!String.IsNullOrEmpty(xmlAjaxData))
+            if (!string.IsNullOrEmpty(xmlAjaxData))
             {
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(xmlAjaxData);
@@ -704,7 +704,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
 
-        public static String FormatToStoreCurrency(double value)
+        public static string FormatToStoreCurrency(double value)
         {
 
 
@@ -725,7 +725,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static String GetCurrencyIsoCode()
+        public static string GetCurrencyIsoCode()
         {
             var currencycode = StoreSettings.Current.Get("currencyculturecode");
             if (currencycode == "") currencycode = StoreSettings.Current.Get("merchantculturecode");
@@ -740,13 +740,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static Dictionary<String, String> GetCountryList(String dnnlistname = "Country")
+        public static Dictionary<string, string> GetCountryList(string dnnlistname = "Country")
         {
             var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/CountryNames.ascx.resx";
 
             var objCtrl = new DotNetNuke.Common.Lists.ListController();
             var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname);
-            var rtnDic = new Dictionary<String, String>();
+            var rtnDic = new Dictionary<string, string>();
 
             var xmlNodeList = StoreSettings.Current.SettingsInfo.XMLDoc.SelectNodes("genxml/checkboxlist/countrycodelist/chk[@value='True']");
             if (xmlNodeList != null)
@@ -762,7 +762,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (tList.ContainsKey(datavalue))
                             {
                                 var countryname = DnnUtils.GetLocalizedString(datavalue, resxpath, Utils.GetCurrentCulture());
-                                if (String.IsNullOrEmpty(countryname)) countryname = tList[datavalue].Text;
+                                if (string.IsNullOrEmpty(countryname)) countryname = tList[datavalue].Text;
                                 rtnDic.Add(datavalue.Replace(dnnlistname + ":", ""),countryname);
                             }
                         }
@@ -772,7 +772,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var sortlist = StoreSettings.Current.Get("countrysortorder");
             if (sortlist == "") return rtnDic;
             
-            var rtnSort = new Dictionary<String, String>();
+            var rtnSort = new Dictionary<string, string>();
             var s = sortlist.Split(';');
             foreach (var c in s)
             {
@@ -794,28 +794,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnSort;
         }
 
-        public static Dictionary<String, String> GetRegionList(String countrycode, String dnnlistname = "Region")
+        public static Dictionary<string, string> GetRegionList(string countrycode, string dnnlistname = "Region")
         {
             var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/RegionNames.ascx.resx";
             var parentkey = "Country." + countrycode;
             var objCtrl = new DotNetNuke.Common.Lists.ListController();
             var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname, parentkey);
-            var rtnDic = new Dictionary<String, String>();
+            var rtnDic = new Dictionary<string, string>();
 
             foreach (var r in tList)
             {
                 var datavalue = r.Value;
                 var regionname = DnnUtils.GetLocalizedString(datavalue.Text, resxpath, Utils.GetCurrentCulture());
-                if (String.IsNullOrEmpty(regionname)) regionname = datavalue.Text;
+                if (string.IsNullOrEmpty(regionname)) regionname = datavalue.Text;
                 rtnDic.Add(datavalue.Key, regionname);                
             }
 
             return rtnDic;
         }
 
-        public static Boolean UpdateResxFields(Dictionary<String, String> resxFields, List<String> resxFolders, String lang, Boolean createFile)
+        public static Boolean UpdateResxFields(Dictionary<string, string> resxFields, List<string> resxFolders, string lang, Boolean createFile)
         {
-            var fileList = new Dictionary<String, String>(); // use NBrightInfo to edit res file to make it easier.
+            var fileList = new Dictionary<string, string>(); // use NBrightInfo to edit res file to make it easier.
 
             if (lang != "") lang = "." + lang;
 
@@ -865,7 +865,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return updDone;
         }
 
-        public static void CreateResourceFile(String path)
+        public static void CreateResourceFile(string path)
         {
             var pathString = Path.GetDirectoryName(path);
             if (!Directory.Exists(pathString)) System.IO.Directory.CreateDirectory(pathString);
@@ -875,7 +875,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             resourceWriter.Close();
         }
 
-        public static Boolean UpdateResourceFile(String key, String value, String path)
+        public static Boolean UpdateResourceFile(string key, string value, string path)
         {
             Hashtable resourceEntries = new Hashtable();
 
@@ -917,7 +917,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 ResXResourceWriter resourceWriter = new ResXResourceWriter(path);
 
-                foreach (String key2 in resourceEntries.Keys)
+                foreach (string key2 in resourceEntries.Keys)
                 {
                     resourceWriter.AddResource(key2, resourceEntries[key2]);
                 }
@@ -927,7 +927,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return updDone;
         }
 
-        public static String AdminUrl(int tabId, string[] param )
+        public static string AdminUrl(int tabId, string[] param )
         {
             var newparam = new string[(param.Length + 1)];
             var foundCtrl = false;
@@ -940,13 +940,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return Globals.NavigateURL(tabId, "", newparam);
         }
 
-        public static List<String> GetAllFieldxPaths(NBrightInfo nbi, Boolean ignoreHiddenFields = false)
+        public static List<string> GetAllFieldxPaths(NBrightInfo nbi, Boolean ignoreHiddenFields = false)
         {
             var ignorefields = nbi.GetXmlProperty("genxml/hidden/ignorefields");
             ignorefields = ignorefields + ",ignorefields";
             var ignoreAry = ignorefields.Split(',');
             
-            var rtnList = new List<String>();
+            var rtnList = new List<string>();
             var nods = nbi.XMLDoc.SelectNodes("genxml/hidden/*");
             if (!ignoreHiddenFields)
             {
@@ -1051,7 +1051,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return ProcessEventProvider(eventaction, nbrightInfo, "");
         }
 
-        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, String eventinfo)
+        public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, string eventinfo)
         {
             var rtnInfo = nbrightInfo;
             var pluginData = new PluginData(nbrightInfo.PortalId);
@@ -1150,7 +1150,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="settings">Settings to use, default to storesettings</param>
         /// <param name="lang">culture code</param>
         /// <returns></returns>
-        public static String GetTemplateData(String templatename, String templateControlPath, String themeFolder = "config", Dictionary<String, String> settings = null,String lang = "")
+        public static string GetTemplateData(string templatename, string templateControlPath, string themeFolder = "config", Dictionary<string, string> settings = null, string lang = "")
         {
             themeFolder = "Themes\\" + themeFolder;
             if (settings == null) settings = StoreSettings.Current.Settings();
@@ -1163,7 +1163,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templ;
         }
 
-        public static List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "", String lang = "")
+        public static List<NBrightInfo> GetCatList(int parentid = 0, string groupref = "", string lang = "")
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
 
@@ -1231,13 +1231,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static List<String> GetAjaxXmlFieldsList(HttpContext context)
+        public static List<string> GetAjaxXmlFieldsList(HttpContext context)
         {
-            var rtnList = new List<String>();
+            var rtnList = new List<string>();
             var xmlAjaxData = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
             // get each returned xml root node
             var xmlDoc1 = new XmlDocument();
-            if (!String.IsNullOrEmpty(xmlAjaxData))
+            if (!string.IsNullOrEmpty(xmlAjaxData))
             {
                 xmlDoc1.LoadXml(xmlAjaxData);
                 var xmlNodeList = xmlDoc1.SelectNodes("root/root");
@@ -1257,7 +1257,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static String GetAjaxXmlFields(HttpContext context)
+        public static string GetAjaxXmlFields(HttpContext context)
         {
             var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
             return strIn;
@@ -1318,7 +1318,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Razor"
 
-        public static String GetRazorTemplateData(String templatename, String templateControlPath, String themeFolder = "config", String lang = "")
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder = "config", string lang = "")
         {
             themeFolder = "Themes\\" + themeFolder;
             var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
@@ -1329,11 +1329,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static String RazorTemplRenderList(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<NBrightInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (String)GetModCache(cachekey);
+            var razorTempl = (string)GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
@@ -1349,17 +1349,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return razorTempl;
         }
 
+        public static string RazorTemplRenderGroupCategoryList(string razorTemplName, int moduleid, string cacheKey, List<GroupCategoryData> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
+        {
+            // do razor template
+            var cachekey = "NBrightBuyRazorOutputGrp" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (string)GetModCache(cachekey);
+            if (razorTempl == null || StoreSettings.Current.DebugMode)
+            {
+                razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl != "")
+                {
+                    var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.ModuleId = moduleid;
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
+                    if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
+                }
+            }
+            return razorTempl;
+        }
 
-        public static Dictionary<String, String> RazorPreProcessTempl(String razorTemplName, String templateControlPath, String theme, String lang, Dictionary<String, String> settings, String moduleid = "")
+        public static Dictionary<string, string> RazorPreProcessTempl(string razorTemplName, string templateControlPath, string theme, string lang, Dictionary<string, string> settings, string moduleid = "")
         {
             var cachekey = "preprocessmetadata" + theme + "." + razorTemplName + moduleid;
 
             // get cached data if there
-            var cachedlist = (Dictionary<String, String>)Utils.GetCache(cachekey);
+            var cachedlist = (Dictionary<string, string>)Utils.GetCache(cachekey);
             if (cachedlist != null) return cachedlist;
             
             // build cache data from template.
-            cachedlist = new Dictionary<String, String>();
+            cachedlist = new Dictionary<string, string>();
             var razorTemplate = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
             if (razorTemplate != "" && razorTemplate.Contains("AddPreProcessMetaData"))
             {
@@ -1378,7 +1397,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     // Only log exception, could be a error because of missing data.  The preprocessing doesn't care.
                 }
-                cachedlist = (Dictionary<String, String>) Utils.GetCache(cachekey);
+                cachedlist = (Dictionary<string, string>) Utils.GetCache(cachekey);
                 if (cachedlist == null) cachedlist = new Dictionary<string, string>();
                 Utils.SetCache(cachekey, cachedlist);
             }
@@ -1403,11 +1422,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="lang"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static String RazorTemplRender(String razorTemplName, int moduleid, String cacheKey, object obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static string RazorTemplRender(string razorTemplName, int moduleid, string cacheKey, object obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
-            var razorTempl = (String)GetModCache(cachekey);
+            var razorTempl = (string)GetModCache(cachekey);
             if (razorTempl == null)
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
@@ -1416,7 +1435,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // check for non-razor templates
                     razorTemplName = razorTemplName.ToLower().Replace(".cshtml", ".html");
                     cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang; // reset cachekey
-                    razorTempl = (String)GetModCache(cachekey);
+                    razorTempl = (string)GetModCache(cachekey);
                     if (razorTempl != null)
                     {
                         return razorTempl;
@@ -1454,11 +1473,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="lang"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static String RazorTemplRenderWithRepeater(String razorTemplName, int moduleid, String cacheKey, List<NBrightInfo> objList, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static string RazorTemplRenderWithRepeater(string razorTemplName, int moduleid, string cacheKey, List<NBrightInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (String)GetModCache(cachekey);
+            var razorTempl = (string)GetModCache(cachekey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
                 razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
@@ -1486,11 +1505,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="lang"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static String RazorTemplRenderWithRepeater(String razorTemplName, int moduleid, String cacheKey, NBrightInfo obj, String templateControlPath, String theme, String lang, Dictionary<String, String> settings)
+        public static string RazorTemplRenderWithRepeater(string razorTemplName, int moduleid, string cacheKey, NBrightInfo obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
             var cachekey = "NBrightBuyRazorKey" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (String)GetModCache(cachekey);
+            var razorTempl = (string)GetModCache(cachekey);
             if (razorTempl == null)
             {
                 razorTempl = GetTemplateData(razorTemplName, templateControlPath, theme, settings, lang);
@@ -1507,7 +1526,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static String RazorRender(Object info, String razorTempl, String templateKey, Boolean debugMode = false)
+        public static string RazorRender(Object info, string razorTempl, string templateKey, Boolean debugMode = false)
         {
             var result = "";
             try
@@ -1533,7 +1552,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return result;
         }
 
-        public static void RazorIncludePageHeader(int moduleid, Page page, String razorTemplateName,String controlPath, String theme, Dictionary<String, String> settings, ProductData productdata = null)
+        public static void RazorIncludePageHeader(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
         {
 
             if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
@@ -1670,13 +1689,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return price;
         }
 
-        public static String GetSalePrice(NBrightInfo dataItemObj)
+        public static string GetSalePrice(NBrightInfo dataItemObj)
         {
             var price = GetSalePriceDouble(dataItemObj);
             return price.ToString("");
         }
 
-        public static String GetDealerPrice(NBrightInfo dataItemObj)
+        public static string GetDealerPrice(NBrightInfo dataItemObj)
         {
             var dealprice = "-1";
             var l = BuildModelList(dataItemObj);
@@ -1691,7 +1710,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return dealprice;
         }
 
-        public static String GetFromPrice(NBrightInfo dataItemObj)
+        public static string GetFromPrice(NBrightInfo dataItemObj)
         {
             var price = "-1";
             var l = BuildModelList(dataItemObj);
@@ -1707,7 +1726,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return price;
         }
 
-        public static String GetBestPrice(NBrightInfo dataItemObj)
+        public static string GetBestPrice(NBrightInfo dataItemObj)
         {
             var fromprice = Convert.ToDouble(GetFromPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
             if (fromprice < 0) fromprice = 0; // make sure we have a valid price
@@ -1799,7 +1818,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
-        public static String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
+        public static string GetItemDisplay(NBrightInfo obj, string templ, Boolean displayPrices)
         {
             var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
             var outText = templ;
@@ -1855,7 +1874,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        public static Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        public static Dictionary<int, string> BuildCatList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, string catreflist = "", string prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
 
@@ -1882,7 +1901,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         {
                             if (grpcat.ishidden == false || showHidden)
                             {
-                                var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                var addprefix = new string(' ', grpcat.depth).Replace(" ", prefix);
                                 if (catreflist == "")
                                     rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                 else
@@ -1907,7 +1926,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return rtnDic;
         }
 
-        public static Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
+        public static Dictionary<int, string> BuildPropertyList(int displaylevels = 20, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, string catreflist = "", string prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
 
@@ -1936,7 +1955,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             {
                                 if (!rtnDic.ContainsKey(grpcat.categoryid))
                                 {
-                                    var addprefix = new String(' ', grpcat.depth).Replace(" ", prefix);
+                                    var addprefix = new string(' ', grpcat.depth).Replace(" ", prefix);
                                     if (catreflist == "")
                                         rtnDic.Add(grpcat.categoryid, addprefix + grpcat.categoryname + strCount);
                                     else
@@ -1998,29 +2017,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Razor functions"
 
-        public static String RenderCart(String theme, String carttemplate)
+        public static string RenderCart(string theme, string carttemplate, string controlPath = "/DesktopModules/NBright/NBrightBuy")
         {
             var razorTempl = "";
             if (carttemplate != "")
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, controlPath, theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
         }
 
-        public static String RenderProfile(String theme, String carttemplate)
+        public static string RenderProfile(string theme, string carttemplate, string controlPath = "/DesktopModules/NBright/NBrightBuy")
         {
             var razorTempl = "";
             if (carttemplate != "")
             {
                 var profileData = new ProfileData();
                 var objprof = profileData.GetProfile();
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", objprof, "/DesktopModules/NBright/NBrightBuy", theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", objprof, controlPath, theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
         }
-
 
         #endregion
 

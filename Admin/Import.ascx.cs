@@ -24,6 +24,7 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -149,8 +150,21 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 {
                     ImportRecord(xmlFile,"PRD");
                     ImportRecord(xmlFile, "PRDLANG");
-                    ImportRecord(xmlFile, "AMY");
-                    ImportRecord(xmlFile, "AMYLANG");
+
+                    // import any entitytype provider data
+                    // This is data created by plugins into the NBS data tables.
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetEntityTypeProviders();
+                    foreach (var prov in provList)
+                    {
+                        var entityprov = EntityTypeInterface.Instance(prov.Key);
+                        if (entityprov != null)
+                        {
+                            ImportRecord(xmlFile, entityprov.GetEntityTypeCode());
+                            ImportRecord(xmlFile, entityprov.GetEntityTypeCodeLang());
+                        }
+                    }
+
                     ImportRecord(xmlFile, "PRDXREF");
                     ImportRecord(xmlFile, "USERPRDXREF");
                 }
@@ -251,24 +265,39 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         }
                     }
 
-                    if (typeCode == "AMY" && updaterecordsbyref)
+
+
+                    // import any entitytype provider data
+                    // This is data created by plugins into the NBS data tables.
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetEntityTypeProviders();
+                    foreach (var prov in provList)
                     {
-                        var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
-                        if (itemref != "")
+                        var entityprov = EntityTypeInterface.Instance(prov.Key);
+                        if (entityprov != null)
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "AMY", " and NB3.ProductRef = '" + itemref.Replace("'", "''") + "' ");
-                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                            if (typeCode == entityprov.GetEntityTypeCode() && updaterecordsbyref)
+                            {
+                                var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
+                                if (itemref != "")
+                                {
+                                    var l = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCode(), " and NB3.ProductRef = '" + itemref.Replace("'", "''") + "' ");
+                                    if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                                }
+                            }
+                            if (typeCode == entityprov.GetEntityTypeCodeLang() && updaterecordsbyref)
+                            {
+                                if (_recordXref.ContainsKey(nbi.ParentItemId))
+                                {
+                                    var l = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCodeLang(), " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
+                                    if (l.Count > 0) nbi.ItemID = l[0].ItemID;
+                                    nbi.ParentItemId = _recordXref[nbi.ParentItemId];
+                                }
+                            }
+
                         }
                     }
-                    if (typeCode == "AMYLANG" && updaterecordsbyref)
-                    {
-                        if (_recordXref.ContainsKey(nbi.ParentItemId))
-                        {
-                            var l = ModCtrl.GetList(PortalId, -1, "AMYLANG", " and NB1.parentitemid = '" + _recordXref[nbi.ParentItemId].ToString("") + "' and NB1.Lang = '" + nbi.Lang + "'");
-                            if (l.Count > 0) nbi.ItemID = l[0].ItemID;
-                            nbi.ParentItemId = _recordXref[nbi.ParentItemId];
-                        }
-                    }
+
 
                     if (typeCode == "PRDXREF" && updaterecordsbyref)
                     {
@@ -292,7 +321,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtcategoryref");
                         if (itemref != "")
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "CATEGORY", " and [XMLData].value('(genxml/textbox/txtcategoryref)[1]','nvarchar(max)') = '" + itemref.Replace("'","''") + "' ");
+                            var l = ModCtrl.GetList(PortalId, -1, "CATEGORY", " and [XMLData].value('(genxml/textbox/txtcategoryref)[1]','nvarchar(max)') = '" + itemref.Replace("'", "''") + "' ");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
                         }
                     }
@@ -334,7 +363,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     var newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
-                    if (typeCode == "PRD" || typeCode == "AMY") _productList.Add(newitemid, typeCode);
+                    if (typeCode == "PRD") _productList.Add(newitemid, typeCode);
+
+                    // Add any provider data types
+                    foreach (var prov in provList)
+                    {
+                        var entityprov = EntityTypeInterface.Instance(prov.Key);
+                        if (entityprov != null)
+                        {
+                            if (typeCode == entityprov.GetEntityTypeCode()) _productList.Add(newitemid, typeCode);
+                        }
+                    }
 
                 }
 

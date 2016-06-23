@@ -744,6 +744,13 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString CategoryTreeMenu(int parentCatId,String razorTemplate, String controlPath, String theme,int currentCatId, String lang,int tabid, string identClass = "nbrightbuy_catmenu", string styleClass = "", string activeClass = "active")
+        {
+            var catBuiler = new CatMenuRazorBuilder(razorTemplate,controlPath,theme,currentCatId,lang);
+            var strOut = catBuiler.GetTreeCatList(50, parentCatId, tabid,identClass,styleClass,activeClass);
+            return new RawString(strOut);
+        }
+
         #endregion
 
         #region "Functional"
