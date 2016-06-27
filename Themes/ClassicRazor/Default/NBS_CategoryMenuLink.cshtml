@@ -1,0 +1,8 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+
+@{
+    var grpcat = (Nevoweb.DNN.NBrightBuy.Components.GroupCategoryData)Model.List.First();
+    var depth = grpcat.depth;
+}
+<a class="level@(depth)" href="@grpcat.url">@grpcat.categoryname</a>

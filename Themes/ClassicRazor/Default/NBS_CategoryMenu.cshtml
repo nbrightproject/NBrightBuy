@@ -1,0 +1,25 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using NBrightCore.render
+@using NBrightDNN
+@using NBrightCore.common
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    var catid = 0;
+    if (Utils.IsNumeric(Model.GetUrlParam("catid")))
+    {
+        catid = Convert.ToInt32(Model.GetUrlParam("catid"));
+    }
+
+}
+
+<div class="Vision">
+    <div class="treemenu">
+        @CategoryTreeMenu(Model.GetSettingInt("parentcatid"), "NBS_CategoryMenuLink.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), catid, Utils.GetCurrentCulture(), Model.GetSettingInt("productlisttab"))
+    </div>
+</div>

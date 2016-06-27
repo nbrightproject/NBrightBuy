@@ -593,6 +593,9 @@
     <Content Include="Themes\ClassicRazor\Default\printorder.html" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLink.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
     <Content Include="Themes\ClassicRazor\img\addthis.png" />
@@ -630,6 +633,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplaysettings.cshtml" />
+    <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
     <None Include="Installation\03.02.00.SqlDataProvider" />
