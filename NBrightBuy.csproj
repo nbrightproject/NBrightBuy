@@ -544,19 +544,13 @@
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_454545_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\NBS_Checkout.css" />
     <Content Include="Themes\ClassicRazor\Default\addclientrole.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminbody.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminemail.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminheader.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
-    <Content Include="Themes\ClassicRazor\Default\catmenu.html" />
-    <Content Include="Themes\ClassicRazor\Default\catmenubody.html" />
-    <Content Include="Themes\ClassicRazor\Default\catmenufooter.html" />
-    <Content Include="Themes\ClassicRazor\Default\catmenuheader.html" />
-    <Content Include="Themes\ClassicRazor\Default\cattreebody.html" />
-    <Content Include="Themes\ClassicRazor\Default\cattreefooter.html" />
-    <Content Include="Themes\ClassicRazor\Default\cattreeheader.html" />
     <Content Include="Themes\ClassicRazor\Default\NBS_Payment_head.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadminbody.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadmindetail.html" />
@@ -585,7 +579,6 @@
     <Content Include="Themes\ClassicRazor\Default\ordershippedemail.html" />
     <Content Include="Themes\ClassicRazor\Default\ordervalidatedemail.html" />
     <Content Include="Themes\ClassicRazor\Default\NBS_OrderAdmin_head.html" />
-    <Content Include="Themes\ClassicRazor\Default\pageheaderNBS_CategoryMenu.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentFAIL.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
@@ -593,7 +586,9 @@
     <Content Include="Themes\ClassicRazor\Default\printorder.html" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrill.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrillLink.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLink.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
@@ -1791,7 +1786,7 @@
   <ItemGroup>
     <None Include="Installation\02.06.00.SqlDataProvider" />
     <None Include="Installation\03.00.00.SqlDataProvider" />
-    <None Include="Installation\NBS.dnn" />
+    <None Include="NBS.dnn" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />

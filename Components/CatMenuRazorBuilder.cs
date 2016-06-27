@@ -124,6 +124,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return rtnList;
         }
+
         private String BuildTreePropertyList(String rtnList, int level, int parentid, string groupref, int tabid, int displaylevels = 50, String identClass = "nbrightbuy_catmenu", String styleClass = "", String activeClass = "active")
         {
             if (level > displaylevels) return rtnList; // stop infinate loop
@@ -175,6 +176,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return rtnList;
         }
+
+        public String GetDrillDownMenu(int parentid, int tabid, String itemClass = "")
+        {
+
+            var rtnList = "";
+            var levelList = _catGrpCtrl.GetGrpCategories(parentid, ""); // force this to always categories
+            foreach (GroupCategoryData grpcat in levelList)
+            {
+                if (grpcat.isvisible)
+                {
+                    // update cat info
+                    grpcat.url = _catGrpCtrl.GetCategoryUrl(grpcat, tabid);
+                    grpcat.depth = 0; 
+
+                    rtnList += "<div class='" + itemClass + "'>";
+
+                    rtnList += NBrightBuyUtils.RazorTemplRender(_razorTemplateName[0], -1, "", grpcat, _controlPath, _theme, _lang, StoreSettings.Current.Settings());
+
+                    rtnList += "</div>";
+
+                }
+            }
+
+
+            return rtnList;
+        }
+
+
 
         private List<string> GetMenuTemplates(string basetempl,string controlPath,string theme,string lang)
         {

@@ -744,10 +744,17 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString CategoryTreeMenu(int parentCatId,String razorTemplate, String controlPath, String theme,int currentCatId, String lang,int tabid, string identClass = "nbrightbuy_catmenu", string styleClass = "", string activeClass = "active")
+        public IEncodedString CategoryTreeMenu(int parentCatId,String razorTemplate, String controlPath, String theme,int currentCatId, String lang,int tabid, string identClass = "nbrightbuy_catmenu", string styleClass = "", string activeClass = "active", int displaylevels = 20)
         {
             var catBuiler = new CatMenuRazorBuilder(razorTemplate,controlPath,theme,currentCatId,lang);
-            var strOut = catBuiler.GetTreeCatList(50, parentCatId, tabid,identClass,styleClass,activeClass);
+            var strOut = catBuiler.GetTreeCatList(displaylevels, parentCatId, tabid,identClass,styleClass,activeClass);
+            return new RawString(strOut);
+        }
+
+        public IEncodedString CategoryDrillDown(int parentCatId, string razorTemplate, string controlPath, string theme, int currentCatId, string lang, int tabid, string itemClass = "drilldownitem")
+        {
+            var catBuiler = new CatMenuRazorBuilder(razorTemplate, controlPath, theme, currentCatId, lang);
+            var strOut = catBuiler.GetDrillDownMenu(parentCatId, tabid, itemClass);
             return new RawString(strOut);
         }
 
