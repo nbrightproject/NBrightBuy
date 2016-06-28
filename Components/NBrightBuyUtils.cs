@@ -1448,6 +1448,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     l.Add(obj);
                     if (settings == null) settings = new Dictionary<string, string>();
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                    nbRazor.TemplateName = razorTemplName;
+                    nbRazor.ThemeFolder = theme;
+
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "" && !StoreSettings.Current.DebugMode) SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.

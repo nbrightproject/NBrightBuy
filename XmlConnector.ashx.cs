@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -321,6 +322,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "updateprofile":
                     strOut = UpdateProfile(context);
+                    break;
+                case "dosearch":
+                    strOut = DoSearch(context);
+                    break;
+                case "orderby":
+                    strOut = DoOrderBy(context);
                     break;
             }
 
@@ -2021,6 +2028,54 @@ namespace Nevoweb.DNN.NBrightBuy
                 var ajaxInfo = GetAjaxInfo(context, true);
                 var profileData = new ProfileData();
                 profileData.UpdateProfileAjax(ajaxInfo.XMLData, StoreSettings.Current.DebugMode);
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string DoSearch(HttpContext context)
+        {
+            try
+            {
+                // take all input and created a SQL select with data and save for processing on search list.
+                var ajaxInfo = GetAjaxInfo(context, true);
+                var tagList = new List<string>();
+                var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/hidden/*");
+                foreach (XmlNode nod in nodList)
+                {
+                    tagList.Add(nod.InnerText);
+                }
+                var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
+                navData.Build(ajaxInfo.XMLData,tagList);
+                navData.Save();
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string DoOrderBy(HttpContext context)
+        {
+            try
+            {
+                // take all input and created a SQL select with data and save for processing on search list.
+                var ajaxInfo = GetAjaxInfo(context, true);
+                var tagList = new List<string>();
+                var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/hidden/*");
+                foreach (XmlNode nod in nodList)
+                {
+                    tagList.Add(nod.InnerText);
+                }
+                var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
+                navData.OrderByIdx = "1";
+                navData.Save();
 
                 return "OK";
             }

@@ -1,3 +1,7 @@
+/* default search */
+a.nbssearchgo {float:right;display:block;width:34px;height:30px;background:#12aec5 url("/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/img/loupe.png") no-repeat center center;}
+
+
 /* Drilldown category menu */
 a.categoryurl{display:block;}
 .drilldownlist{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;overflow:hidden;}

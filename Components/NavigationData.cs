@@ -40,7 +40,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Build the SQL criteria form the xml field input and the template meta data
         /// </summary>
+
         public void Build(String xmlData, GenXmlTemplate templ)
+        {
+            Build(xmlData, templ.MetaTags);
+        }
+
+        public void Build(String xmlData, List<String> metaTags)
         {
             _criteria = "";
             var obj = new NBrightInfo();
@@ -58,7 +64,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             //Get only search tags
             var searchTags = new List<String>();
-            foreach (var mta in templ.MetaTags)
+            foreach (var mta in metaTags)
             {
                 var orderId = GenXmlFunctions.GetGenXmlValue(mta, "tag/@id");
                 var active = GenXmlFunctions.GetGenXmlValue(mta, "tag/@active");

@@ -188,6 +188,20 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ProductRazorSearch.ascx.cs">
+      <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductRazorSearch.ascx.designer.cs">
+      <DependentUpon>ProductRazorSearch.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductRazorSearchSettings.ascx.cs">
+      <DependentUpon>ProductRazorSearchSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductRazorSearchSettings.ascx.designer.cs">
+      <DependentUpon>ProductRazorSearchSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="CategoryRazorMenuSettings.ascx.cs">
       <DependentUpon>CategoryRazorMenuSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -467,6 +481,12 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="ProductRazorSearch.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProductRazorSearchSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CategoryRazorMenuSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -586,10 +606,12 @@
     <Content Include="Themes\ClassicRazor\Default\printorder.html" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrill.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrillLink.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLink.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
@@ -598,6 +620,7 @@
     <Content Include="Themes\ClassicRazor\img\email-facebook.gif" />
     <Content Include="Themes\ClassicRazor\img\email-twitter.gif" />
     <Content Include="Themes\ClassicRazor\img\favorites.png" />
+    <Content Include="Themes\ClassicRazor\img\loupe.png" />
     <Content Include="Themes\ClassicRazor\js\imagelightbox.nbb.js" />
     <Content Include="Themes\ClassicRazor\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicRazor\js\jquery.navgoco.min.js" />
@@ -628,6 +651,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplaysettings.cshtml" />
+    <None Include="Themes\config\default\NBS_DisplaySearchSettings.cshtml" />
     <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />

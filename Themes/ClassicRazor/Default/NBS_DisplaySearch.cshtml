@@ -1,0 +1,73 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using NBrightCore.render
+@using NBrightDNN
+@using NBrightCore.common
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+
+    var tabid = Model.GetSettingInt("productlisttab");
+    if (tabid <= 0)
+    {
+        tabid = StoreSettings.Current.ProductListTabId;
+    }
+
+}
+
+
+<div id="loader" class="processing" style="display:none"><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
+
+<span class="nbssearchinput">
+    @NBrightTextBox(info, "genxml/textbox/searchtext", "maxlength='150' placeholder='" + @ResourceKey("General.Search") + "' class='NormalTextBox'")        
+    <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
+    <input id="modulekey" type="hidden" update="save" value="@Model.GetSetting("targetmodulekey")">
+    <input id="navigationmode" update="save" type="hidden" value="s">
+    <input id="search1" type="hidden" update="save" value="<tag id='search' action='open' sqloperator='and' />">
+    <input id="search2" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' static='%' sqlfield='genxml/lang/genxml/textbox/txtproductname' />">
+    <input id="search3" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' sqlfield='genxml/lang/genxml/textbox/description' sqloperator='or' />">
+    <input id="search4" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' sqlfield='genxml/lang/genxml/textbox/txttagwords' sqloperator='or' />">
+    <input id="search5" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' sqlcol='NB1.GUIDKey' sqloperator='or' />">
+    <input id="search6" type="hidden" update="save" value="<tag id='search' action='close' />">
+</span>
+<div class='searchreturn' style="display: none;"></div>
+<a id="cmdSimpleSearch" href="javascript:void();" class="postbacklink searchpostbacklink nbssearchgo" style="display: none;"></a>
+<a id="cmdSimpleSearchFake" href="javascript:void();" class="nbssearchgo fakesearchdiv"></a>
+<script>
+
+$('.searchpostbacklink').hide();
+
+$("input[id*='searchtext']").keyup(function (event) {
+  var length = this.value.length;
+  if (length >= 2 && length <= 99) {
+	$('.searchpostbacklink').show();
+	$('.fakesearchdiv').hide();
+    if (event.which == 13) {
+		$('.processing').show();
+		nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+    }
+  }
+  else
+  {
+	$('.searchpostbacklink').hide();
+	$('.fakesearchdiv').show();
+  }
+});
+
+$(document).ready(function() {
+
+    $('.searchpostbacklink').click(function(event) {
+        $('.processing').show();
+        nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+    });
+    $('.searchreturn').change(function(event) {
+        window.location.href = "@NBrightBuyUtils.GetSEOLink(info.PortalId, tabid, "", "", "")";
+    });
+});
+
+</script>
