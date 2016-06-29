@@ -368,17 +368,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strFilters += " and UserId = " + selUserId + " ";
             }
 
-            // NEW() in orderby needs random, so calc multiple cache keys from seconds
-	        var randomkey = "";
-	        if (strOrderBy.Contains("NEWID()"))
-	        {
-                randomkey = Convert.ToInt32(DateTime.Now.Second / 4).ToString("");
-	        }
+            // NOTE: orderby random code removed, becuase paging will not work with that caching.
 
             List<NBrightInfo> l = null;
 
             // get cache template 
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture() + randomkey;
+            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + entityTypeCodeLang + "*" + Utils.GetCurrentCulture();
             if (debugMode == false)
             {
                 l = (List<NBrightInfo>)Utils.GetCache(strCacheKey);

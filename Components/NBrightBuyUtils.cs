@@ -1387,6 +1387,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var l = new List<object>();
                 l.Add(obj);
                 var modRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
+                modRazor.FullTemplateName = theme + "." + razorTemplName;
+                modRazor.TemplateName = razorTemplName;
+                modRazor.ThemeFolder = theme;
                 try
                 {
                     // do razor and cache preprocessmetadata

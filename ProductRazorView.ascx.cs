@@ -50,7 +50,6 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _pagemid = "";
         private String _pagenum = "1";
         private String _pagesize = "";
-        private String _strOrder = "";
         private String _templD = "";
         private Boolean _displayentrypage = false;
         private String _orderbyindex = "";
@@ -202,14 +201,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     ////////////////////////////////////////////
                     // get ORDERBY SORT 
                     ////////////////////////////////////////////
-                    if (_orderbyindex != "") _navigationdata.OrderByIdx = _orderbyindex; // only update orderbyidx if we have a value passed (paging doesn't pass a orderbyidx)
-                    if (_orderbyindex != "" && metaTokens.ContainsKey("orderby" + _orderbyindex)) _strOrder = " Order by " + metaTokens["orderby" + _orderbyindex];
-                    if (String.IsNullOrEmpty(_strOrder) && metaTokens.ContainsKey("orderby")) _strOrder = " Order by " + metaTokens["orderby"];
-                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = _navigationdata.OrderBy;
-                    if (String.IsNullOrEmpty(_strOrder)) _strOrder = " Order by ModifiedDate DESC  ";
-                    if (_strOrder.Contains("{bycategoryproduct}")) _strOrder = "{bycategoryproduct}"; // special processing for cat product sort.
-                    if (_strOrder.ToLower().Contains("{none}")) _strOrder = ""; // special processing for no sort.
-
+                    if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
+                    {
+                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                        _navigationdata.Save();
+                    }
 
                     #endregion
 
@@ -421,13 +417,13 @@ namespace Nevoweb.DNN.NBrightBuy
                                 }
                             }
 
-                            if (_strOrder == "{bycategoryproduct}") _strOrder += _catid; // do special custom sort in each cateogry
+                            if (_navigationdata.OrderBy == "{bycategoryproduct}") _navigationdata.OrderBy += _catid; // do special custom sort in each cateogry
 
                         }
                         else
                         {
                             if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
-                            if (_strOrder == "{bycategoryproduct}") _strOrder = " Order by ModifiedDate DESC  ";
+                            if (_navigationdata.OrderBy == "{bycategoryproduct}") _navigationdata.OrderBy = " Order by ModifiedDate DESC  ";
                         }
 
                         #endregion
@@ -483,7 +479,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
                     _navigationdata.PageNumber = Utils.RequestParam(Context, "page");
                     if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
-                    _navigationdata.OrderBy = _strOrder;
 
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
@@ -499,12 +494,12 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // **** check if we already have the template cached, if so no need for DB call or razor call ****
                     // get same cachekey used for DB return, and use for razor.
-                    var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                     var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + PortalId.ToString();
                     var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
                     if (strOut == null || StoreSettings.Current.DebugMode)
                     {
-                        var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _strOrder, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                        var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
                         strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                     }
 

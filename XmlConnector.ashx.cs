@@ -2067,14 +2067,9 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 // take all input and created a SQL select with data and save for processing on search list.
                 var ajaxInfo = GetAjaxInfo(context, true);
-                var tagList = new List<string>();
-                var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/hidden/*");
-                foreach (XmlNode nod in nodList)
-                {
-                    tagList.Add(nod.InnerText);
-                }
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
-                navData.OrderByIdx = "1";
+                navData.OrderByIdx = ajaxInfo.GetXmlProperty("genxml/hidden/orderbyidx");
+                navData.OrderBy = " order by " + ajaxInfo.GetXmlProperty("genxml/hidden/orderby" + navData.OrderByIdx);
                 navData.Save();
 
                 return "OK";
