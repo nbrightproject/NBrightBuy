@@ -259,7 +259,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var sqlTemplateFilter = "";
                     if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
 
-                    if ((_catid == "" && _catname == ""))
+                    if ((_catid == "" && _catname == "") || _navigationdata.FilterMode)
                     {
                         if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Xml;
 using NBrightCore.common;
@@ -59,8 +60,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //Just jump out without search.
             }
 
-            // get any disable controls, we dont; want to process SQL for these.
-            var disabledtokens = obj.GetXmlProperty("genxml/hidden/disabledsearchtokens") + ";";
+            // using a client side list of disabled token caused some issues with ajax. The new prefered method is to calc server side.
+            var disabledtokens = GetDisabledTokens(obj);
 
             //Get only search tags
             var searchTags = new List<String>();
@@ -89,6 +90,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var searchto = GenXmlFunctions.GetGenXmlValue(mt, "tag/@searchto");
                     var sqltype = GenXmlFunctions.GetGenXmlValue(mt, "tag/@sqltype");
                     var sqloperator = GenXmlFunctions.GetGenXmlValue(mt, "tag/@sqloperator");
+                    var sqlinject = GenXmlFunctions.GetGenXmlValue(mt, "tag/@sqlinject");
 
                     if (sqlfield == "") sqlfield = GenXmlFunctions.GetGenXmlValue(mt, "tag/@xpath"); //check is xpath of node ha been used.
 
@@ -132,6 +134,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                     switch (action.ToLower())
                     {
+                        case "sqloperator":
+                            _criteria += " " + sqloperator + " ";
+                            break;
+                        case "sqlinject":
+                            _criteria += " " + sqlinject + " ";
+                            break;
                         case "open":
                             _criteria += sqloperator + " ( ";
                             break;
@@ -190,6 +198,70 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
             }
+        }
+
+        // calc any 
+        private string GetDisabledTokens(NBrightInfo objInfo)
+        {
+            var searchData = new List<NavigationSearchData>();
+            var disabledList = "";
+            var hiddenList = objInfo.XMLDoc.SelectNodes("genxml/hidden/*");
+            if (hiddenList == null) return "";
+            foreach (XmlNode nod in hiddenList)
+            {
+                var sd = new NavigationSearchData(nod.InnerText);
+                if (!String.IsNullOrEmpty(sd.Id) && sd.Id.ToLower().StartsWith("search"))
+                {
+                   searchData.Add(sd); 
+                }
+            }
+
+            // checkboxes
+            var ctrlList = objInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
+            if (ctrlList != null)
+            {
+                foreach (XmlNode nod in ctrlList)
+                {
+                    // add unchecked to the disabled list
+                    if (!Convert.ToBoolean(nod.InnerText))
+                    {
+                        var f = searchData.FirstOrDefault(a => a.FieldId == nod.Name);
+                        if (f != null) disabledList += f.Id + ";" + f.Dependency + ";";
+                    }
+                }
+            }
+
+            // textboxes
+            ctrlList = objInfo.XMLDoc.SelectNodes("genxml/textbox/*");
+            if (ctrlList != null)
+            {
+                foreach (XmlNode nod in ctrlList)
+                {
+                    // add empty to the disabled list
+                    if (nod.InnerText == "")
+                    {
+                        var f = searchData.FirstOrDefault(a => a.FieldId == nod.Name);
+                        if (f != null) disabledList += f.Id + ";" + f.Dependency + ";";
+                    }
+                }
+            }
+
+            // dropdownlist
+            ctrlList = objInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");
+            if (ctrlList != null)
+            {
+                foreach (XmlNode nod in ctrlList)
+                {
+                    // add empty to the disabled list
+                    if (nod.InnerText == "")
+                    {
+                        var f = searchData.FirstOrDefault(a => a.FieldId == nod.Name);
+                        if (f != null) disabledList += f.Id + ";" + f.Dependency + ";";
+                    }
+                }
+            }
+
+            return disabledList;
         }
 
         private String BuildCriteriaCatId()
@@ -515,4 +587,63 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     }
 
+    public class NavigationSearchData
+    {
+        public NavigationSearchData(string xmltag)
+        {
+            Id = "";
+            FieldId = "";
+            Action = "";
+            SqlOperator = "";
+            SearchFrom = "";
+            SearchTo = "";
+            SqlType = "";
+            SearchField = "";
+            SqlField = "";
+            ControlType = "";
+            Static = "";
+            Dependency = "";
+            if (xmltag.Trim().StartsWith("<tag"))
+            {
+                var xdoc = new XmlDataDocument();
+                xdoc.LoadXml(xmltag);
+                var nodtag = xdoc.SelectSingleNode("tag");
+                if (nodtag != null)
+                {
+                    if (nodtag.Attributes["search"] != null)
+                    {
+                        SearchField = nodtag.Attributes["search"].Value;
+                        var s = SearchField.Split('/');
+                        FieldId = s[s.Count() - 1];
+                        ControlType = s[s.Count() - 2];
+                    }
+                    if (nodtag.Attributes["id"] != null) Id = nodtag.Attributes["id"].Value;
+                    if (nodtag.Attributes["action"] != null) Action = nodtag.Attributes["action"].Value;
+                    if (nodtag.Attributes["sqloperator"] != null) SqlOperator = nodtag.Attributes["sqloperator"].Value;
+                    if (nodtag.Attributes["searchfrom"] != null) SearchFrom = nodtag.Attributes["searchfrom"].Value;
+                    if (nodtag.Attributes["searchto"] != null) SearchTo = nodtag.Attributes["searchto"].Value;
+                    if (nodtag.Attributes["sqltype"] != null) SqlType = nodtag.Attributes["sqltype"].Value;
+                    if (nodtag.Attributes["sqlfield"] != null) SqlField = nodtag.Attributes["sqlfield"].Value;
+                    if (nodtag.Attributes["static"] != null) Static = nodtag.Attributes["static"].Value;
+                    if (nodtag.Attributes["dependency"] != null) Dependency = nodtag.Attributes["dependency"].Value;
+                    
+
+                }
+            }
+        }
+
+        public string Id { get; set; }
+        public string FieldId { get; set; }
+        public string Action { get; set; }
+        public string SqlOperator { get; set; }
+        public string SearchFrom { get; set; }
+        public string SearchTo { get; set; }
+        public string SqlType { get; set; }
+        public string SearchField { get; set; }
+        public string SqlField { get; set; }
+        public string ControlType { get; set; }
+        public string Static { get; set; }
+        public string Dependency { get; set; }
+
+    }
 }

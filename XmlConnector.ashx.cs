@@ -26,6 +26,7 @@ using DotNetNuke.Services.Exceptions;
 using NBrightBuy.render;
 using NBrightCore.images;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy
 {
@@ -325,6 +326,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     break;
                 case "dosearch":
                     strOut = DoSearch(context);
+                    break;
+                case "resetsearch":
+                    strOut = ResetSearch(context);
                     break;
                 case "orderby":
                     strOut = DoOrderBy(context);
@@ -2037,6 +2041,23 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        private string ResetSearch(HttpContext context)
+        {
+            try
+            {
+                // take all input and created a SQL select with data and save for processing on search list.
+                var ajaxInfo = GetAjaxInfo(context, true);
+                var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
+                navData.Delete();
+
+                return "RESET";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         private string DoSearch(HttpContext context)
         {
             try
@@ -2051,6 +2072,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.Build(ajaxInfo.XMLData,tagList);
+                navData.Mode = ajaxInfo.GetXmlProperty("genxml/hidden/navigationmode").ToLower();
+                navData.CategoryId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
+                if (ajaxInfo.GetXmlProperty("genxml/hidden/pagenumber") != "") navData.PageNumber = ajaxInfo.GetXmlProperty("genxml/hidden/pagenumber");
+                if (ajaxInfo.GetXmlProperty("genxml/hidden/pagesize") != "") navData.PageSize = ajaxInfo.GetXmlProperty("genxml/hidden/pagesize");
+                if (ajaxInfo.GetXmlProperty("genxml/hidden/pagename") != "") navData.PageName = ajaxInfo.GetXmlProperty("genxml/hidden/pagename");
+                if (ajaxInfo.GetXmlProperty("genxml/hidden/pagemoduleid") != "") navData.PageModuleId  = ajaxInfo.GetXmlProperty("genxml/hidden/pagemoduleid");
                 navData.Save();
 
                 return "OK";
