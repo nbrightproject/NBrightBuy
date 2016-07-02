@@ -394,6 +394,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             nbi.SetXmlProperty("genxml/Mode", Mode);
             nbi.SetXmlProperty("genxml/OrderByIdx", OrderByIdx);
 
+            if (!String.IsNullOrEmpty(SearchFormData))
+            {
+                nbi.RemoveXmlNode("genxml/SearchFormData");
+                nbi.SetXmlProperty("genxml/SearchFormData", "",TypeCode.String,false);
+                nbi.AddXmlNode(SearchFormData,"genxml", "genxml/SearchFormData");
+            }
+
             var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
             Utils.SaveFile(filePath, nbi.XMLData);
 
@@ -439,6 +446,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 RecordCount = nbi.GetXmlProperty("genxml/RecordCount");
                 Mode = nbi.GetXmlProperty("genxml/Mode");
                 OrderByIdx = nbi.GetXmlProperty("genxml/OrderByIdx");
+                SearchFormData = nbi.GetXmlNode("genxml/SearchFormData").ToString();
 
             }
 
@@ -584,6 +592,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return Mode.ToLower() == "s";
             }
         }
+        /// <summary>
+        /// Store search form data so wee can redisplay correct settings on filter form.
+        /// </summary>
+        public string SearchFormData { get; set; }
 
     }
 

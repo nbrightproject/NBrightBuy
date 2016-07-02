@@ -78,8 +78,8 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var obj = new NBrightInfo(true);
             // no cache key, we don't want to cache this form.
-            //var searchcookie = new NavigationData(PortalId, ModSettings.Get("targetmodulekey"));
-            //if (searchcookie.XmlData != "") obj.XMLData = searchcookie.XmlData;
+            var searchcookie = new NavigationData(PortalId, ModSettings.Get("targetmodulekey"));
+            if (searchcookie.SearchFormData != "") obj.XMLData = searchcookie.SearchFormData;
             var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate,-1,"", obj,ControlPath, ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
             var lit = new Literal();
             lit.Text = strOut;

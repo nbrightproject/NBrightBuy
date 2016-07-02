@@ -259,9 +259,16 @@ namespace Nevoweb.DNN.NBrightBuy
                     var sqlTemplateFilter = "";
                     if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
 
-                    if ((_catid == "" && _catname == "") || _navigationdata.FilterMode)
+                    if (_navigationdata.Criteria != "")
                     {
-                        if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
+                        var paramcatid = Utils.RequestQueryStringParam(Context, "catid");
+                        if (Utils.IsNumeric(paramcatid))
+                        {
+                            if (_navigationdata.CategoryId != Convert.ToInt32(paramcatid)) // filter mode DOES NOT persist catid (stop confusion when user selects a category)
+                            {
+                                _navigationdata.ResetSearch();
+                            }
+                        }
 
                         // if navdata is not deleted then get filter from navdata, created by productsearch module.
                         strFilter = _navigationdata.Criteria;
