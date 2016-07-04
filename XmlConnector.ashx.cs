@@ -2073,7 +2073,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.Build(ajaxInfo.XMLData,tagList);
                 navData.Mode = ajaxInfo.GetXmlProperty("genxml/hidden/navigationmode").ToLower();
-                navData.CategoryId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
+                navData.CategoryId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/categoryid");
                 if (ajaxInfo.GetXmlProperty("genxml/hidden/pagenumber") != "") navData.PageNumber = ajaxInfo.GetXmlProperty("genxml/hidden/pagenumber");
                 if (ajaxInfo.GetXmlProperty("genxml/hidden/pagesize") != "") navData.PageSize = ajaxInfo.GetXmlProperty("genxml/hidden/pagesize");
                 if (ajaxInfo.GetXmlProperty("genxml/hidden/pagename") != "") navData.PageName = ajaxInfo.GetXmlProperty("genxml/hidden/pagename");

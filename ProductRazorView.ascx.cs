@@ -107,7 +107,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _catname = Utils.RequestQueryStringParam(Context, "catref");
-                
+
                 #region "set templates based on entry id (eid) from url"
 
                 _ename = Utils.RequestQueryStringParam(Context, "entry");
@@ -259,7 +259,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var sqlTemplateFilter = "";
                     if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
 
-                    if (_navigationdata.Criteria != "")
+                    if (_navigationdata.HasCriteria)
                     {
                         var paramcatid = Utils.RequestQueryStringParam(Context, "catid");
                         if (Utils.IsNumeric(paramcatid))

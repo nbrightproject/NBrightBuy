@@ -267,15 +267,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private String BuildCriteriaCatId()
         {
             var criteriacatid = "";
-            var catid = HttpContext.Current.Request.QueryString["catid"] ?? CategoryId.ToString("D");
-            CategoryId = 0;
-            if (Utils.IsNumeric(catid)) CategoryId = Convert.ToInt32(catid);
             if (CategoryId > 0)
             {
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
                 criteriacatid += "and (NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and (";
-                criteriacatid += "XrefItemId = " + catid;
+                criteriacatid += "XrefItemId = " + CategoryId;
                 criteriacatid += " )))";
             }
             return criteriacatid;
@@ -486,6 +483,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             _criteria = "";
             XmlData = "";
+            SearchFormData = "";
             Save();
         }
 
@@ -517,10 +515,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get
             {
+                // categoryid is sometimes known/ or diofferent when crteria is first built.
+                // so we use a token and replace when we know the categoryid have been assigned.
+                // Us HadCriteria property to test if criteria has been assigned.
                 var criteria = _criteria.Replace("{criteriacatid}", BuildCriteriaCatId());
                 if (criteria.Trim() == "") return "";
                 if (!criteria.Trim().ToLower().StartsWith("and")) criteria = " and ( " + criteria + " )"; //wrap criteria into a AND, if not already.
                 return criteria; 
+            }
+        }
+
+        public bool HasCriteria
+        {
+            get
+            {
+                if (_criteria != "") return true;
+                return false;
             }
         }
 

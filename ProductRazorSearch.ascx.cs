@@ -79,7 +79,16 @@ namespace Nevoweb.DNN.NBrightBuy
             var obj = new NBrightInfo(true);
             // no cache key, we don't want to cache this form.
             var searchcookie = new NavigationData(PortalId, ModSettings.Get("targetmodulekey"));
-            if (searchcookie.SearchFormData != "") obj.XMLData = searchcookie.SearchFormData;
+            var paramcatid = Utils.RequestQueryStringParam(Context, "catid");
+            if (!Utils.IsNumeric(paramcatid)) paramcatid = "0";
+            if (searchcookie.CategoryId == Convert.ToInt32(paramcatid)) // filter mode DOES NOT persist catid (stop confusion when user selects a category)
+            {               
+                if (searchcookie.SearchFormData != "") obj.XMLData = searchcookie.SearchFormData;
+            }
+            else
+            {
+                searchcookie.ResetSearch();
+            }
             var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate,-1,"", obj,ControlPath, ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
             var lit = new Literal();
             lit.Text = strOut;
