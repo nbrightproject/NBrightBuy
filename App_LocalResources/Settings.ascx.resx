@@ -438,4 +438,10 @@
   <data name="parentcategory.Text" xml:space="preserve">
     <value>Parent Category</value>
   </data>
+  <data name="itemlistname.Help" xml:space="preserve">
+    <value>Name of wishlist to be added/remove to, or displayed in when displating selected list.</value>
+  </data>
+  <data name="itemlistname.Text" xml:space="preserve">
+    <value>Wishlist Name</value>
+  </data>
 </root>

@@ -6,6 +6,8 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
+@AddPreProcessMetaData("itemlistname", Model.GetSetting("itemlistname"), Model.FullTemplateName, Model.ModuleId.ToString())
+
 @AddPreProcessMetaData("searchpagesize", Model.GetSetting("pagesize"), Model.FullTemplateName, Model.ModuleId.ToString())
 
 @AddPreProcessMetaData("orderby", "{bycategoryproduct}", Model.FullTemplateName, Model.ModuleId.ToString()) <!-- set default to manual sort on category product -->
@@ -18,7 +20,10 @@
 
 @AddPreProcessMetaData("selectpagesize", "True", Model.FullTemplateName, Model.ModuleId.ToString()) <!-- flag to tell product list a custom pagesize may be applied -->
 
-    <!-- Product List header -->
+
+
+
+<!-- Product List header -->
 
     <div class="nbs">
 
@@ -73,8 +78,8 @@
                             @if (Model.GetSettingBool("enablefavorites"))
                             {
                                 <span>
-                                    <a class="wishlistadd" listname="nbsfavorites0" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
-                                    <a class="wishlistremove" listname="nbsfavorites0" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
+                                    <a class="wishlistadd" listname="@(Model.GetSetting("itemlistname"))" itemid="@(info.ItemID)">@ResourceKey("ProductView.wishlistaddicon-lg")</a>
+                                    <a class="wishlistremove" listname="@(Model.GetSetting("itemlistname"))" itemid="@(info.ItemID)" style="display: none;">@ResourceKey("ProductView.wishlistremoveicon-lg")</a>
                                 </span>
                             }
 

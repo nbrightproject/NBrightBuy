@@ -528,9 +528,7 @@
     <Content Include="CartRazorView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductRazorViewSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProductRazorViewSettings.ascx" />
     <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />
     <Content Include="ProductViewSettings.ascx" />
@@ -1103,8 +1101,6 @@
     <Content Include="Themes\config\default\plugins\xcharts\xcharts.min.css" />
     <Content Include="Themes\config\default\plugins\xcharts\xcharts.min.js" />
     <Content Include="Themes\config\default\productadminclient.html" />
-    <Content Include="Themes\config\default\MiniCart_Settings.html" />
-    <Content Include="Themes\config\default\FullCart_Settings.html" />
     <Content Include="Themes\config\default\Checkout_Settings.html" />
     <Content Include="Themes\config\default\extrapaymentdata.html" />
     <Content Include="Themes\config\default\extrashippingdata.html" />

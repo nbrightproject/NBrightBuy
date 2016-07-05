@@ -424,13 +424,14 @@ namespace Nevoweb.DNN.NBrightBuy
                                 }
                             }
 
-                            if (_navigationdata.OrderBy == "{bycategoryproduct}") _navigationdata.OrderBy += _catid; // do special custom sort in each cateogry
+                            // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                            if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" +  _catid; 
 
                         }
                         else
                         {
                             if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
-                            if (_navigationdata.OrderBy == "{bycategoryproduct}") _navigationdata.OrderBy = " Order by ModifiedDate DESC  ";
+                            if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = " Order by ModifiedDate DESC  ";
                         }
 
                         #endregion
@@ -457,23 +458,27 @@ namespace Nevoweb.DNN.NBrightBuy
                     #region "itemlists (wishlist)"
 
                     // if we have a itemListName field then get the itemlist cookie.
-                    if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
-                    if (_itemListName != "")
+                    if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
                     {
-                        var cw = new ItemListData(_itemListName);
-                        if (cw.Exists && cw.ItemCount > 0)
+                        if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
+                        if (_itemListName == "") _itemListName = Utils.RequestParam(Context, "itemlistname"); // see if we've passed a wishlist name in url
+                        if (_itemListName != "")
                         {
-                            strFilter = " and (";
-                            foreach (var i in cw.GetItemList())
+                            var cw = new ItemListData(_itemListName);
+                            if (cw.Exists && cw.ItemCount > 0)
                             {
-                                strFilter += " NB1.itemid = '" + i + "' or";
+                                strFilter = " and (";
+                                foreach (var i in cw.GetItemList())
+                                {
+                                    strFilter += " NB1.itemid = '" + i + "' or";
+                                }
+                                strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
                             }
-                            strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
-                        }
-                        else
-                        {
-                            //no data in list so select false itemid to stop anything displaying
-                            strFilter += " and (NB1.itemid = '-1') ";
+                            else
+                            {
+                                //no data in list so select false itemid to stop anything displaying
+                                strFilter += " and (NB1.itemid = '-1') ";
+                            }
                         }
                     }
 

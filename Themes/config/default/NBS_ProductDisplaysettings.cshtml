@@ -59,6 +59,10 @@
                 @DnnLabel("lbldisplaytype", "ProductViewSettings.displaytype")@RadioButtonList(info, "genxml/radiobuttonlist/displaytype", "0,1,2", "Normal,Search,Selected list", "0")
             </div>
             <div class="dnnFormItem">
+                    @DnnLabel("lbltemplate", "Settings.itemlistname")
+                    @NBrightTextBox(info, "genxml/textbox/itemlistname", "", "nbsfavorites0")
+            </div>
+            <div class="dnnFormItem">
                 @DnnLabel("lbldefaultcatid", "ProductViewSettings.lbldefaultcatid")
                 @CategoryDropDownList(info, "genxml/dropdownlist/defaultcatid", "width='300'", true, 20, true, false, 0, "", ".")
             </div>

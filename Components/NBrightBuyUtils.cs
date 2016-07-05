@@ -1321,7 +1321,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder = "config", string lang = "")
         {
             var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\" + themeFolder, "Themes\\" + StoreSettings.Current.ThemeFolder);
+            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\" + StoreSettings.Current.ThemeFolder, "Themes\\" + themeFolder );
             if (lang == "") lang = Utils.GetCurrentCulture();
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
