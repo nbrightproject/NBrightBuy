@@ -201,11 +201,22 @@ namespace Nevoweb.DNN.NBrightBuy
                     ////////////////////////////////////////////
                     // get ORDERBY SORT 
                     ////////////////////////////////////////////
-                    if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
+                    if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
                     {
-                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
-                        _navigationdata.Save();
+                        if (metaTokens.ContainsKey("orderby" + _orderbyindex))
+                        {
+                            _navigationdata.OrderBy = " Order by " + metaTokens["orderby" + _orderbyindex];
+                        }
                     }
+                    else
+                    {
+                        if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
+                        {
+                            _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                            _navigationdata.Save();
+                        }
+                    }
+
 
                     #endregion
 
