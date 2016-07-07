@@ -14,10 +14,12 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
     var request = $.ajax({ type: "POST",
 		url: cmdupdate,
 		cache: false,
+        timeout: 5000,
 		data: { inputxml: encodeURI(values) }		
 	});
 
 	request.done(function (data) {
+	    $('#loader').hide('');
 	    if (data != 'noaction') {
 	        if (appendreturn == null) {
 	            $(target).children().remove();
@@ -43,7 +45,8 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	});
 
 	request.fail(function (jqXHR, textStatus) {
-		alert("Request failed: " + textStatus);
+	    $('#loader').hide('');
+	    alert("Request failed: " + textStatus);
 	});
 }
 

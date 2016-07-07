@@ -7,3 +7,30 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 
+<!-- Global CSS -->
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/config/css/global.css" rel="stylesheet">
+
+
+<script>
+    $(document).ready(function() {
+
+        if ($('#themefolder').val() != "config" && $('#themefolder').val() != "") {
+            nbxget('getsettings', '#themedata', '#settingsdata');
+        }
+
+        $('a[id*="_cmdUpdate"]').click(function () {
+            nbxget('savesettings', '#nbrightbuysettings');
+        });
+        $('#themefolder').change(function () {
+            $('#settingsdata').html('');
+            $('#loader').show('');
+            if ($('#themefolder').val() != "config") {
+                nbxget('getsettings', '#themedata', '#settingsdata');
+            } else {
+                $('#themefolder').val('');
+                $('#loader').hide('');
+            }
+        });
+    });
+
+</script>

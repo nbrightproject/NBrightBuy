@@ -39,21 +39,3 @@
 
     </div>
 
-
-    <script>
-    $(document).ready(function() {
-
-        @if (info.GetXmlProperty("genxml/dropdownlist/themefolder") != "")
-        {
-            @:nbxget('getsettings', '#themedata', '#settingsdata');
-        }
-
-        $('a[id*="_cmdUpdate"]').click(function () {
-            nbxget('savesettings', '#nbrightbuysettings');
-        });
-        $('#themefolder').change(function() {
-            nbxget('getsettings', '#themedata', '#settingsdata');
-        });
-    });
-
-    </script>
