@@ -339,4 +339,13 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="endoflineflag.Text" xml:space="preserve">
     <value>End Of Line!</value>
   </data>
+  <data name="wishlistclearall.Text" xml:space="preserve">
+    <value>Clear all favorites</value>
+  </data>
+  <data name="wishlistclearallicon-lg.Text" xml:space="preserve">
+    <value>&lt;span title="Clear all favorites" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-close fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
 </root>

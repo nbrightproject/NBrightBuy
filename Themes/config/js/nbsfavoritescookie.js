@@ -75,7 +75,7 @@ function AddToFavCookie(itemid, name) {
         $('.wishlistremoveall').click(function () {
             var name = $(this).attr('listname');
             Cookies.remove(name, { path: '/' });
-            showhidebuttons(name);
+            location.reload(true);
         });
 
     });

@@ -547,6 +547,7 @@
     </Content>
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
     <Content Include="Themes\ClassicRazor\css\classicrazor.css" />
+    <Content Include="Themes\ClassicRazor\css\ClientAccount.css" />
     <Content Include="Themes\ClassicRazor\css\imagelightbox.nbb.css" />
     <Content Include="Themes\ClassicRazor\css\images\animated-overlay.gif" />
     <Content Include="Themes\ClassicRazor\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -562,6 +563,8 @@
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_454545_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\ClassicRazor\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Themes\ClassicRazor\css\jquery-ui-1.10.4.custom.css" />
+    <Content Include="Themes\ClassicRazor\css\jquery-ui-1.10.4.custom.min.css" />
     <Content Include="Themes\ClassicRazor\css\NBS_Checkout.css" />
     <Content Include="Themes\ClassicRazor\Default\addclientrole.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminbody.html" />
@@ -620,6 +623,9 @@
     <Content Include="Themes\ClassicRazor\img\favorites.png" />
     <Content Include="Themes\ClassicRazor\img\loupe.png" />
     <Content Include="Themes\ClassicRazor\js\imagelightbox.nbb.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery-ui-1.10.4.custom.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery-ui-1.10.4.custom.min.js" />
+    <Content Include="Themes\ClassicRazor\js\jquery.cookie.min.js" />
     <Content Include="Themes\ClassicRazor\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicRazor\js\jquery.navgoco.min.js" />
     <Content Include="Themes\ClassicRazor\js\jquery.responsiveTabs.min.js" />
@@ -649,6 +655,8 @@
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplaysettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_WishList_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_WishList.cshtml" />
     <None Include="Themes\config\default\NBS_DisplaySearchSettings.cshtml" />
     <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
