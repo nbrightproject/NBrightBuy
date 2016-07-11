@@ -18,9 +18,13 @@
             nbxget('getsettings', '#themedata', '#settingsdata');
         }
 
+        // hijack cmdupdate button (so we can do ajax update before postback.)
+        var hrefction = $('a[id*="_cmdUpdate"]').attr('href');
+        $('a[id*="_cmdUpdate"]').attr('href', '#');
         $('a[id*="_cmdUpdate"]').click(function () {
             nbxget('savesettings', '#nbrightbuysettings');
         });
+
         $('#themefolder').change(function () {
             $('#settingsdata').html('');
             $('#loader').show('');
@@ -31,6 +35,16 @@
                 $('#loader').hide('');
             }
         });
+
+        // ajx update complated listener
+        $(document).on('nbxgetcompleted', function (event) {
+            if (event.cmd == 'savesettings') {
+                $('a[id*="_cmdUpdate"]').unbind('click'); // disable event 
+                eval(hrefction);
+            }
+        });
+
     });
+
 
 </script>
