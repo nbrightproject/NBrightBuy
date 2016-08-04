@@ -91,11 +91,12 @@ CREATE TABLE {databaseOwner}[{objectQualifier}NBrightBuyIdx](
 	[FromPrice] [decimal](10, 2) NULL,
 	[Qty] [int] NULL,
 	[TypeCode] [nvarchar](50) NULL,
-	[Lang] [nvarchar](50) NULL,
+	[Lang] [nvarchar](50) NOT NULL,
 	[Visible] [bit] NULL,
  CONSTRAINT [PK_NBrightBuyIdx] PRIMARY KEY CLUSTERED 
 (
-	[ItemId] ASC
+	[ItemId] ASC,
+	[Lang] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
