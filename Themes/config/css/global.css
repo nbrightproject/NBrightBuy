@@ -42,8 +42,8 @@
 .submissioncheck {margin:0 0 9px !important;}
 .submissioncheck label {float:left;margin:-2px 0 0 6px;text-transform:none;font-style:italic;}
 /* === HTML5 Validation Styles === */
-.nbs input:required {background:#fff url("/DesktopModules/NBright/Themes/config/img/asterisk.png") no-repeat 98% center;outline:none !important;}
-.nbs input:focus:invalid {background:#fff url("/DesktopModules/NBright/Themes/config/img/invalid.png") no-repeat 98% center;}
+.nbs input:required {background:#fff url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/asterisk.png") no-repeat 98% center;outline:none !important;}
+.nbs input:focus:invalid {background:#fff url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/invalid.png") no-repeat 98% center;}
 
 /* Misc */
 .large{font-size:115%}
