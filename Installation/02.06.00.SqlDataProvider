@@ -67,6 +67,7 @@ GO
 -- but sorting by calculated columns seems no quicker than sorting the XML     --
 -- directly.  Therefore we are implementing a index table to help speed it up  --
 -- NOTE: if extra fields need orderby, they will need to be added + the trigger --
+-- Primary Key has been created for Azure install, which always requires a primary key --
 -------------------------------------------------------------------------------
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}NBrightBuyIdx]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
@@ -91,7 +92,11 @@ CREATE TABLE {databaseOwner}[{objectQualifier}NBrightBuyIdx](
 	[Qty] [int] NULL,
 	[TypeCode] [nvarchar](50) NULL,
 	[Lang] [nvarchar](50) NULL,
-	[Visible] [bit] NULL
+	[Visible] [bit] NULL,
+ CONSTRAINT [PK_NBrightBuyIdx] PRIMARY KEY CLUSTERED 
+(
+	[ItemId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 -- Index NBrightBuyIdx

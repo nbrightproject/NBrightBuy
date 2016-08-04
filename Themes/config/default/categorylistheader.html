@@ -31,10 +31,11 @@ $(document).ready(function() {
 		$("input[[id*='selecteditemid']]").val('');
     });
 
-    $("input[[id*='txtcategoryname']]").keyup(function() {
-		var id = $(this).attr("id").replace('txtcategoryname','isdirty');
-		$('#' + id).val(true);
-		$(".savebutton").show();
+
+    $("input[[id*='txtcategoryname']]").click(function () {
+        var id = $(this).attr("id").replace('txtcategoryname', 'isdirty');
+        $('#' + id).val(true);
+        $(".savebutton").show();
     });
     $("input[[id*='chkishidden']]").change(function () {
         var id = $(this).attr("id").replace('chkishidden', 'isdirty');

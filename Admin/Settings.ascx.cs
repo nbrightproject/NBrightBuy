@@ -190,7 +190,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
             // create upload folders
-            var folder = StoreSettings.Current.FolderImagesMapPath;
+            var folder = StoreSettings.Current.FolderNBStore;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            folder = StoreSettings.Current.FolderImagesMapPath;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             folder = StoreSettings.Current.FolderDocumentsMapPath;
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);

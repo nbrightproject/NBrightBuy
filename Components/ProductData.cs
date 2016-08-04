@@ -1333,10 +1333,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (toLang != _lang)
                 {
-                    var dlang = objCtrl.GetDataLang(DataRecord.ItemID, toLang);
-                    if (dlang != null)
-                    {
-                        // product
+                    var dlang = objCtrl.GetDataLang(DataRecord.ItemID, toLang) ?? DataLangRecord;
+                    // product
                         var nodList = DataLangRecord.XMLDoc.SelectNodes("genxml/textbox/*");
                         if (nodList != null)
                         {
@@ -1487,7 +1485,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             }
                         }                        
 
-                    }
                     objCtrl.Update(dlang);
                 }
             }
