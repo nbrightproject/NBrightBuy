@@ -422,7 +422,7 @@ namespace NBrightBuy.render
                     {
                         var product = (ProductData)model.List.First();
                         var catgrp = product.GetDefaultCategory();
-                        catid = catgrp.categoryid;
+                        catid = catgrp != null ? catgrp.categoryid : 0;
                     }
                 }
                 else
@@ -431,29 +431,29 @@ namespace NBrightBuy.render
                     catid = navigationdata.CategoryId;
                 }
 
+                if (catid > 0) // check we have a catid
+                {
+                    return null;
+                }
 
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
                 var objCInfo = grpCatCtrl.GetGrpCategory(catid);
                 if (objCInfo != null)
                 {
-
-                    if (catid > 0) // check we have a catid
+                    if (includelinks)
                     {
-                        if (includelinks)
-                        {
-                            if (tabRedirect == 0) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
-                            if (tabRedirect == -1) tabRedirect = StoreSettings.Current.ProductListTabId;
-                            strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist);
-                        }
-                        else
-                        {
-                            strOut = grpCatCtrl.GetBreadCrumb(catid, wordlength, separator, aslist);
-                        }
+                        if (tabRedirect == 0) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
+                        if (tabRedirect == -1) tabRedirect = StoreSettings.Current.ProductListTabId;
+                        strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist);
+                    }
+                    else
+                    {
+                        strOut = grpCatCtrl.GetBreadCrumb(catid, wordlength, separator, aslist);
+                    }
 
-                        if ((strOut.Length > maxlength) && (!aslist))
-                        {
-                            strOut = strOut.Substring(0, (maxlength - 3)) + "...";
-                        }
+                    if ((strOut.Length > maxlength) && (!aslist))
+                    {
+                        strOut = strOut.Substring(0, (maxlength - 3)) + "...";
                     }
                 }
             }
