@@ -110,6 +110,7 @@ and (max-width : 768px) {
 #addressinput{min-width:240px;width:100%;float:none;}
 #checkoutselectaddress li{width:48%;margin:0 2% 24px 0;min-width:240px;}
 #orderadmin .orders .removecolumn{display:none;}
+#profileinput{float:none;width:100%;}
 }
 
 /* Responsive layout - Any screen at less than 480px - Most phones */
@@ -122,4 +123,5 @@ and (max-width : 480px) {
 #orderadmin .rightside{margin:0;width:100%;}
 #orderadmin .rightside .text-right{text-align:left !important;}
 #orderadmin .panel{padding:15px;}
+#profileinput{float:none;width:100%;}
 }
