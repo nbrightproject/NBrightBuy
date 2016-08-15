@@ -777,7 +777,9 @@ namespace NBrightBuy.render
                 if (categoryid == "") categoryid = navigationdata.CategoryId.ToString();
                 if (categoryid == "0") categoryid = ""; // no category active if zero
 
-                url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, info.ItemID.ToString(), model.GetSetting("detailmodulekey"), urlname, model.GetSetting("ddldetailtabid"), categoryid, categoryref);
+                var eid = info.ItemID.ToString()!="0" ? info.ItemID.ToString() : info.GetXmlProperty("genxml/productid");
+
+                url = NBrightBuyUtils.GetEntryUrl(PortalSettings.Current.PortalId, eid, model.GetSetting("detailmodulekey"), urlname, model.GetSetting("ddldetailtabid"), categoryid, categoryref);
                 if (relative) url = Utils.GetRelativeUrl(url);
 
             }
