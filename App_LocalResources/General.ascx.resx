@@ -1023,6 +1023,9 @@
   <data name="basket.Text" xml:space="preserve">
     <value>Basket</value>
   </data>
+  <data name="txtemptybasket.Text" xml:space="preserve">
+    <value>Basket (0)</value>
+  </data>
   <data name="favorites.Text" xml:space="preserve">
     <value>Favorites</value>
   </data>
