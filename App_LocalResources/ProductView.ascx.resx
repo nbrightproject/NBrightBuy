@@ -348,4 +348,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   &lt;i class="fa fa-close fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
+  <data name="articles.Text" xml:space="preserve">
+    <value>items</value>
+  </data>
 </root>
