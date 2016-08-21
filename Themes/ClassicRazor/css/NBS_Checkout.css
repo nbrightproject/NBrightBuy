@@ -114,7 +114,7 @@ and (min-width : 0px)
 and (max-width : 480px) {
 #cartbilladdress, #cartshippingoptions, #cartshippingmethods, #cartextra, #cartlist, #payment{width:100%;float:none;}
 #cartlist{padding:0;}
-.checkoutextra .summaryleft, .checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
+.checkoutextra .summaryleft, .checkoutextra .summaryright, .checkoutextra .checkoutdetails{float:none;min-width:210px;width:100%;}
 #checkoutitemlist .detailscolumn .details{clear:left;}
 #checkoutitemlist .detailscolumn .noimage{height:130px;margin-right:0;width:130px;}
 #checkoutitemlist .detailscolumn .image{height:130px;margin-right:0;width:130px;}
