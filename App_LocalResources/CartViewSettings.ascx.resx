@@ -183,4 +183,7 @@
   <data name="lblgroupresults.Text" xml:space="preserve">
     <value>Group Cart Items :</value>
   </data>
+  <data name="lblshowcarttotal.Text" xml:space="preserve">
+    <value>Show Cart Total</value>
+  </data>
 </root>
