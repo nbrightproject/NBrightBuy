@@ -1,1 +1,16 @@
-<!-- No Settings -->
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@using System.Web.UI.HtmlControls
+@using NBrightDNN
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    // assign Model, so we can resolve var in VS
+    var info = (NBrightInfo)Model.List.First();    
+}
+
+<div class="dnnFormItem">
+    @DnnLabel("lblshowcarttotal", "CartViewSettings.lblshowcarttotal")
+    @CheckBox(info, "genxml/checkbox/showcarttotal", "", " class='dnnCheckbox' ", true)
+</div>
