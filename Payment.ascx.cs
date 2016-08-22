@@ -258,9 +258,13 @@ namespace Nevoweb.DNN.NBrightBuy
                 case "pay":
                     if (_cartInfo != null)
                     {
+                      
                         _cartInfo.SaveModelTransQty(); // move qty into trans
                         _cartInfo.ConvertToOrder(DebugMode);
                         var orderData = new OrderData(_cartInfo.PurchaseInfo.ItemID);
+
+                        orderData.payselectionXml = GenXmlFunctions.GetGenXml(rpPaymentGateways, "", "");
+                         
                         orderData.PaymentProviderKey = cArg.ToLower(); // provider keys should always be lowecase
                         orderData.SavePurchaseData();
                         var redirecturl = PaymentsInterface.Instance(orderData.PaymentProviderKey).RedirectForPayment(orderData);

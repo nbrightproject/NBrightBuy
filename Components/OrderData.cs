@@ -21,6 +21,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class OrderData : PurchaseData
     {
 
+        public string payselectionXml { get; set; }
+
         public OrderData(int entryid)
         {
             PurchaseTypeCode = "ORDER";
