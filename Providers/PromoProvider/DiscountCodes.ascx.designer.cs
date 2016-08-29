@@ -13,15 +13,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider {
     public partial class DiscountCodes {
         
         /// <summary>
-        /// rpData control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpData;
-        
-        /// <summary>
         /// phData control.
         /// </summary>
         /// <remarks>
@@ -29,14 +20,5 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phData;
-        
-        /// <summary>
-        /// phPaging control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
     }
 }

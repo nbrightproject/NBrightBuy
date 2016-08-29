@@ -1331,8 +1331,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<NBrightInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
-            var razorTempl = (string)GetModCache(cachekey);
+            var ckey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            var razorTempl = (string)GetModCache(ckey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
@@ -1342,7 +1342,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbRazor.ModuleId = moduleid;
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
+                    if (cacheKey != "") SetModCache(moduleid, ckey, razorTempl); // only save to cache if we pass in a cache key.
                 }
             }
             return razorTempl;
@@ -1427,8 +1427,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string RazorTemplRender(string razorTemplName, int moduleid, string cacheKey, object obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
-            var cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
-            var razorTempl = (string)GetModCache(cachekey);
+            var ckey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
+            var razorTempl = (string)GetModCache(ckey);
             if (razorTempl == null)
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
@@ -1436,8 +1436,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     // check for non-razor templates
                     razorTemplName = razorTemplName.ToLower().Replace(".cshtml", ".html");
-                    cachekey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang; // reset cachekey
-                    razorTempl = (string)GetModCache(cachekey);
+                    ckey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang; // reset cachekey
+                    razorTempl = (string)GetModCache(ckey);
                     if (razorTempl != null)
                     {
                         return razorTempl;
@@ -1457,7 +1457,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    if (cacheKey != "" && !StoreSettings.Current.DebugMode) SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
+                    if (cacheKey != "" && !StoreSettings.Current.DebugMode) SetModCache(moduleid, ckey, razorTempl); // only save to cache if we pass in a cache key.
                 }
                 else
                 {
@@ -2044,6 +2044,45 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", objprof, controlPath, theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
+        }
+
+        #endregion
+
+        #region "Provider functions"
+
+        public static Dictionary<String, PromoInterface> CreatePromoProviders(int portalId)
+        {
+            Dictionary<String, PromoInterface> ProviderList;
+
+            ProviderList = (Dictionary<String, PromoInterface>)Utils.GetCache("promoproviders_" + portalId);
+            if (ProviderList == null)
+            {
+                ProviderList = new Dictionary<string, PromoInterface>();
+
+                var pluginData = new PluginData(portalId);
+                var l = pluginData.GetPromoProviders();
+
+                foreach (var p in l)
+                {
+                    var prov = p.Value;
+                    ObjectHandle handle = null;
+                    handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                    var objProvider = (PromoInterface) handle.Unwrap();
+                    var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
+                    var lp = 1;
+                    while (ProviderList.ContainsKey(ctrlkey))
+                    {
+                        ctrlkey = ctrlkey + lp.ToString("");
+                        lp += 1;
+                    }
+                    objProvider.ProviderKey = ctrlkey;
+                    ProviderList.Add(ctrlkey, objProvider);
+                }
+
+                Utils.SetCache("promoproviders_" + portalId,ProviderList);
+            }
+
+            return ProviderList;
         }
 
         #endregion

@@ -40,39 +40,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
     {
 
 
+
         #region Event Handlers
-
-        private String _ctrlkey = ""; 
-
-        override protected void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            try
-            {
-                _ctrlkey = (String)HttpContext.Current.Session["nbrightbackofficectrl"];
-
-                #region "load templates"
-
-                var t2 = "discountcodesbody.html";
-
-                // Get Display Body
-                var rpDataTempl = GetTemplateData(t2);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, StoreSettings.Current.Settings(), PortalSettings.HomeDirectory);
-
-                #endregion
-
-
-            }
-            catch (Exception exc)
-            {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
-                var l = new Literal();
-                l.Text = exc.ToString();
-                phData.Controls.Add(l);
-            }
-
-        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -81,7 +50,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 base.OnLoad(e);
                 if (Page.IsPostBack == false)
                 {
-                    PageLoad();
+                    // do razor code
+                    RazorPageLoad();
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -93,40 +63,15 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             }
         }
 
-        private void PageLoad()
+        private void RazorPageLoad()
         {
-                base.DoDetail(rpData);
+            var strOut = NBrightBuyUtils.RazorTemplRender("discountcodes.cshtml", 0, "", null, ControlPath, "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            var lit = new Literal();
+            lit.Text = strOut;
+            phData.Controls.Add(lit);
         }
 
         #endregion
-
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
-
-            switch (e.CommandName.ToLower())
-            {
-                case "cancel":
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-            }
-
-        }
-
-        #endregion
-
-        private String GetTemplateData(String templatename)
-        {
-            var controlMapPath = HttpContext.Current.Server.MapPath("/DesktopModules/NBright/NBrightBuy/Providers/PromoProvider");
-            var templCtrl = new NBrightCore.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config", "");
-            var templ = templCtrl.GetTemplateData(templatename, Utils.GetCurrentCulture());
-            templ = Utils.ReplaceSettingTokens(templ, StoreSettings.Current.Settings());
-            templ = Utils.ReplaceUrlTokens(templ);
-            return templ;
-        }
 
 
 

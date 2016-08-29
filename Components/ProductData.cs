@@ -1167,17 +1167,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var lp = 1;
             foreach (var i in Imgs)
             {
-                if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(_storeSettings.FolderImages))
+                if (!File.Exists(i.GetXmlProperty("genxml/hidden/imagepath"))) // products shared across portals may have different image path.
                 {
-                    var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageurl", _storeSettings.FolderImages.TrimEnd('/') + "/" + iname);
-                    errorcount += 1;
-                }
-                if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(_storeSettings.FolderImagesMapPath))
-                {
-                    var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
-                    DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imagepath", _storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
-                    errorcount += 1;
+                    if (!i.GetXmlProperty("genxml/hidden/imageurl").StartsWith(_storeSettings.FolderImages))
+                    {
+                        var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
+                        DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageurl", _storeSettings.FolderImages.TrimEnd('/') + "/" + iname);
+                        errorcount += 1;
+                    }
+                    if (!i.GetXmlProperty("genxml/hidden/imagepath").StartsWith(_storeSettings.FolderImagesMapPath))
+                    {
+                        var iname = Path.GetFileName(i.GetXmlProperty("genxml/hidden/imagepath"));
+                        DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imagepath", _storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + iname);
+                        errorcount += 1;
+                    }
                 }
                 lp += 1;
             }
@@ -1185,15 +1188,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             lp = 1;
             foreach (var d in Docs)
             {
-                if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(_storeSettings.FolderDocumentsMapPath))
+                if (!File.Exists(d.GetXmlProperty("genxml/hidden/filepath"))) // products shared across portals may have different path.
                 {
-                    var fname = d.GetXmlProperty("genxml/textbox/txtfilename");
-                    if (d.GetXmlProperty("genxml/hidden/filerelpath") != "")
+                    if (!d.GetXmlProperty("genxml/hidden/filepath").StartsWith(_storeSettings.FolderDocumentsMapPath))
                     {
-                        fname = Path.GetFileName("D:" + d.GetXmlProperty("genxml/hidden/filerelpath").Replace("/","\\"));
+                        var fname = d.GetXmlProperty("genxml/textbox/txtfilename");
+                        if (d.GetXmlProperty("genxml/hidden/filerelpath") != "")
+                        {
+                            fname = Path.GetFileName("D:" + d.GetXmlProperty("genxml/hidden/filerelpath").Replace("/", "\\"));
+                        }
+                        DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", _storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + fname);
+                        errorcount += 1;
                     }
-                    DataRecord.SetXmlProperty("genxml/docs/genxml/hidden/filepath", _storeSettings.FolderDocumentsMapPath.TrimEnd('\\') + "\\" + fname);
-                    errorcount += 1;
                 }
                 lp += 1;
             }

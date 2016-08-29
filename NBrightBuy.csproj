@@ -715,6 +715,7 @@
     <Content Include="Themes\config\default\dashordersbody.html" />
     <Content Include="Themes\config\default\dashordersfooter.html" />
     <Content Include="Themes\config\default\dashordersheader.html" />
+    <None Include="Themes\config\default\datepicker.cshtml" />
     <Content Include="Themes\config\default\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Themes\config\default\img\8962691008_7f489395c9_m.jpg" />
     <Content Include="Themes\config\default\img\8985207189_01ea27882d_m.jpg" />

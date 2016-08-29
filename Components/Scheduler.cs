@@ -24,6 +24,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 foreach (var portal in portallist)
                 {
+
+                    // clear down NBStore temp folder
+                    var storeSettings = new StoreSettings(portal.PortalID);
+                    string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
+
+                    foreach (string file in files)
+                    {
+                        FileInfo fi = new FileInfo(file);
+                        if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
+                    }
+
+                    // DO Scheduler Jobs
                     var pluginData = new PluginData(portal.PortalID);
                     var l = pluginData.GetSchedulerProviders();
 
@@ -39,21 +51,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             if (strMsg != "")
                             {
                                 this.ScheduleHistoryItem.AddLogNote(strMsg);
-                                this.ScheduleHistoryItem.Succeeded = true;
                             }
                         }
 
-                        // clear down NBStore temp folder
-                        var storeSettings = new StoreSettings(portal.PortalID);
-                        string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
+                    }
 
-                        foreach (string file in files)
+                    // DO Promotions
+                    var promoList = NBrightBuyUtils.CreatePromoProviders(portal.PortalID);
+                    foreach (var p in promoList)
+                    {
+                        var strMsg = p.Value.SchedulerPromotionCalc(portal.PortalID);
+                        if (strMsg != "")
                         {
-                            FileInfo fi = new FileInfo(file);
-                            if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
+                            this.ScheduleHistoryItem.AddLogNote(strMsg);
                         }
                     }
+
                 }
+
+                this.ScheduleHistoryItem.Succeeded = true;
 
             }
             catch (Exception Ex)

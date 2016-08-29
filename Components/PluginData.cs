@@ -30,8 +30,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private StoreSettings _storeSettings;
         private String _cachekey;
 
+        private int _portalId;
+
         public PluginData(int portalId, Boolean systemlevel = false)
         {
+            _portalId = portalId;
+
             _templCtrl = NBrightBuyUtils.GetTemplateGetter(portalId,"config");
 
             _portallevel = !systemlevel;
@@ -71,6 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (menuplugin != "")
             {
                 var info = new NBrightInfo();
+                info.PortalId = _portalId;
                 info.XMLData = menuplugin;
                 _pluginList = new List<NBrightInfo>();
                 _pluginList = CalcPluginList(info);
@@ -90,6 +95,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (menuplugin != "")
                     {
                         var info = new NBrightInfo();
+                        info.PortalId = _portalId;
                         info.XMLData = menuplugin;
                         _pluginList = new List<NBrightInfo>();
                         _pluginList = CalcPluginList(info);
@@ -369,7 +375,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // get the systemlevel, incase this is an update and we have new system level provider that needs to be added
             // Some systems create their own portal specific menu we assume they don't require new updates from NBS core, so take that if we have one.
-            var menupluginsys = _templCtrl.GetTemplateData("menuplugin" + PortalSettings.Current.PortalId + ".xml", Utils.GetCurrentCulture(), true, true, false, _storeSettings.Settings());
+            var menupluginsys = _templCtrl.GetTemplateData("menuplugin" + _portalId + ".xml", Utils.GetCurrentCulture(), true, true, false, _storeSettings.Settings());
             // if no portal specific menus exist, take the default
             if (menupluginsys == "") menupluginsys = _templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, false, _storeSettings.Settings());
             var infosys = new NBrightInfo();

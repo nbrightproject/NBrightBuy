@@ -83,6 +83,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     case "selectlang":
                         strOut = SaveData(context);
                         break;
+                    case "recalc":
+                        strOut = GetData(context);
+                        break;
                 }
             }
 
@@ -141,13 +144,13 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 {
                     // do edit field data if a itemid has been selected
                     var obj = objCtrl.Get(Convert.ToInt32(selecteditemid), "",editlang);
-                    strOut = NBrightBuyUtils.RazorTemplRenderWithRepeater(typeCode.ToLower() + "fields.cshtml", Convert.ToInt32(moduleid), _lang + itemid + editlang + selecteditemid, obj, templateControl, "config", _lang, StoreSettings.Current.Settings());
+                    strOut = NBrightBuyUtils.RazorTemplRender(typeCode.ToLower() + "fields.cshtml", Convert.ToInt32(moduleid), _lang + itemid + editlang + selecteditemid, obj, templateControl, "config", _lang, StoreSettings.Current.Settings());
                 }
                 else
                 {
                     // Return list of items
                     var l = objCtrl.GetList(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), typeCode, "", " order by [XMLData].value('(genxml/textbox/validuntil)[1]','nvarchar(50)'), ModifiedDate desc", 0, 0, 0, 0, editlang);
-                    strOut = NBrightBuyUtils.RazorTemplRenderWithRepeater(typeCode.ToLower() + "list.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControl, "config",_lang,StoreSettings.Current.Settings());
+                    strOut = NBrightBuyUtils.RazorTemplRenderList(typeCode.ToLower() + "list.cshtml", Convert.ToInt32(moduleid), _lang + editlang, l, templateControl, "config",_lang,StoreSettings.Current.Settings());
                 }
 
                 return strOut;
@@ -170,8 +173,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             nbi.TypeCode = typeCode;
             nbi.ModuleId = Convert.ToInt32(moduleid);
             nbi.ItemID = -1;
-            nbi.SetXmlProperty("genxml/textbox/code", Utils.GetUniqueKey().ToUpper());
-            nbi.GUIDKey = nbi.GetXmlProperty("genxml/textbox/code");
+            if (typeCode == "DISCOUNTCODE")
+            {
+                nbi.SetXmlProperty("genxml/textbox/code", Utils.GetUniqueKey().ToUpper());
+                nbi.GUIDKey = nbi.GetXmlProperty("genxml/textbox/code");
+            }
             var itemId = objCtrl.Update(nbi);
             nbi.ItemID = itemId;
 

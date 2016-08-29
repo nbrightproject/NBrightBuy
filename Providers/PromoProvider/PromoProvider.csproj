@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,6 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryPromo.ascx.cs">
+      <DependentUpon>CategoryPromo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryPromo.ascx.designer.cs">
+      <DependentUpon>CategoryPromo.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="DiscountCodes.ascx.cs">
       <DependentUpon>DiscountCodes.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -77,18 +85,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_LocalResources\DiscountCodes.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="App_LocalResources\DiscountCodes.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Promo.ascx.fr-FR.resx" />
+    <EmbeddedResource Include="App_LocalResources\Promo.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CategoryPromo.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="DiscountCodes.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Themes\config\default\discountcodesbody.html" />
-    <Content Include="Themes\config\js\DiscountCodes.js" />
+    <None Include="Themes\config\default\discountcodes.cshtml" />
+    <None Include="Themes\config\default\categorypromo.cshtml" />
+    <Content Include="Themes\config\js\Promo.js" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Themes\config\default\categorypromofields.cshtml" />
     <None Include="Themes\config\default\discountcodefields.cshtml" />
+    <None Include="Themes\config\default\categorypromolist.cshtml" />
     <None Include="Themes\config\default\discountcodelist.cshtml" />
   </ItemGroup>
   <ItemGroup>
