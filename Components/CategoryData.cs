@@ -228,6 +228,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        public List<NBrightInfo> GetAllArticles()
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.XRefItemId = " + Info.ItemID.ToString(""));
+            var l2 = _objCtrl.GetList(_portalId, -1, "CATCASCADE", " and NB1.XRefItemId = " + Info.ItemID.ToString(""));
+            l.AddRange(l2);
+            return l;
+        }
+
         public List<NBrightInfo> GetDirectArticles()
         {
             var l = _objCtrl.GetList(_portalId, -1, "CATXREF", " and NB1.XRefItemId = " + Info.ItemID.ToString(""));

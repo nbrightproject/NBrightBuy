@@ -408,7 +408,8 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                 }
                 // clear any cache for the product.
-                ProductUtils.RemoveProductDataCache(Convert.ToInt32(productitemid), _lang);
+                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
+
                 var cachekey = "AjaxProductImgs*" + productitemid;
                 Utils.RemoveCache(cachekey);
 
@@ -1070,7 +1071,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                 }
                 // clear any cache for the product.
-                ProductUtils.RemoveProductDataCache(Convert.ToInt32(productitemid), _lang);
+                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
 
             }
         }
@@ -1342,7 +1343,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
                     prodData = ProductUtils.GetProductData(productitemid, _lang);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
@@ -1397,7 +1398,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
                     prodData = ProductUtils.GetProductData(productitemid, _lang);
                     var rtnList = new List<NBrightInfo>();
                     foreach (var k in rtnKeys)
@@ -1455,7 +1456,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     prodData.Save();
-                    ProductUtils.RemoveProductDataCache(itemId, StoreSettings.Current.EditLanguage);
+                    ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
                     prodData = ProductUtils.GetProductData(productitemid, _lang);
 
                     var rtnList = new List<NBrightInfo>();

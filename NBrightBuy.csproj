@@ -254,7 +254,6 @@
     <Compile Include="Components\UserData.cs" />
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />
-    <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Interfaces\TaxInterface.cs" />
     <Compile Include="Components\ItemListData.cs" />
     <Compile Include="Components\DdrMenuInterface.cs" />

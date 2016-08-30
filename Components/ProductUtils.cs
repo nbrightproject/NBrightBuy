@@ -482,24 +482,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	        return null;
 	    }
 
+        [Obsolete("Deprecated, please use RemoveProductDataCache(int portalid, int productId) instead.", true)]
         public static void RemoveProductDataCache(String productId, String lang)
         {
             if (Utils.IsNumeric(productId)) RemoveProductDataCache(Convert.ToInt32(productId), lang);
         }
 
-	    public static void RemoveProductDataCache(int productId, String lang)
-	    {
+        [Obsolete("Deprecated, please use RemoveProductDataCache(int portalid, int productId) instead.", true)]
+        public static void RemoveProductDataCache(int productId, String lang)
+        {
             var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
-	        Utils.RemoveCache(cacheKey);
-	    }
+            Utils.RemoveCache(cacheKey);
+        }
+
+        /// <summary>
+        /// Remove product data cache for all languages in portal
+        /// </summary>
+        /// <param name="portalid"></param>
+        /// <param name="productId"></param>
+        public static void RemoveProductDataCache(int portalid, int productId)
+        {
+            foreach (var lang in DnnUtils.GetCultureCodeList(portalid))
+            {
+                var cacheKey = "NBSProductData*" + productId.ToString("") + "*" + lang;
+                Utils.RemoveCache(cacheKey);
+            }
+        }
 
         public static void RemoveProductDataCache(ProductData product)
         {
-            foreach (var lang in DnnUtils.GetCultureCodeList(product.Info.PortalId))
-            {
-                var cacheKey = "NBSProductData*" + product.Info.ItemID.ToString("") + "*" + lang;
-                Utils.RemoveCache(cacheKey);
-            }
+            RemoveProductDataCache(product.Info.PortalId, product.Info.ItemID);
         }
 
 

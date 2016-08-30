@@ -257,6 +257,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
                 if (Utils.IsNumeric(itemid))
                 {
+                    // run the promo before delete, so we remove any sale prices that may exist.
+                    PromoUtils.CalcGroupPromo(PortalSettings.Current.PortalId,true);
+
                     // delete DB record
                     objCtrl.Delete(Convert.ToInt32(itemid));
 

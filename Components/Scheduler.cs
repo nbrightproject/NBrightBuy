@@ -47,24 +47,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (handle != null)
                         {
                             var objProvider = (SchedulerInterface) handle.Unwrap();
-                            var strMsg = objProvider.DoWork();
+                            var strMsg = objProvider.DoWork(portal.PortalID);
                             if (strMsg != "")
                             {
                                 this.ScheduleHistoryItem.AddLogNote(strMsg);
                             }
                         }
 
-                    }
-
-                    // DO Promotions
-                    var promoList = NBrightBuyUtils.CreatePromoProviders(portal.PortalID);
-                    foreach (var p in promoList)
-                    {
-                        var strMsg = p.Value.SchedulerPromotionCalc(portal.PortalID);
-                        if (strMsg != "")
-                        {
-                            this.ScheduleHistoryItem.AddLogNote(strMsg);
-                        }
                     }
 
                 }

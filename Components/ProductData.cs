@@ -461,7 +461,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Delete()
         {
             // remove any cache
-            ProductUtils.RemoveProductDataCache(DataRecord.ItemID, _lang);
+            ProductUtils.RemoveProductDataCache(DataRecord.PortalId, DataRecord.ItemID);
             //delete and allow DB to cascade delete
             var objCtrl = new NBrightBuyController();
             objCtrl.Delete(DataRecord.ItemID);

@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="DiscountCodesData.cs" />
     <Compile Include="PromoProvider.cs" />
+    <Compile Include="PromoUtils.cs" />
     <Compile Include="PromoXmlConnector.ashx.cs">
       <DependentUpon>PromoXmlConnector.ashx</DependentUpon>
     </Compile>

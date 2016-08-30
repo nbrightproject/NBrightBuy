@@ -2048,45 +2048,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #endregion
 
-        #region "Provider functions"
-
-        public static Dictionary<String, PromoInterface> CreatePromoProviders(int portalId)
-        {
-            Dictionary<String, PromoInterface> ProviderList;
-
-            ProviderList = (Dictionary<String, PromoInterface>)Utils.GetCache("promoproviders_" + portalId);
-            if (ProviderList == null)
-            {
-                ProviderList = new Dictionary<string, PromoInterface>();
-
-                var pluginData = new PluginData(portalId);
-                var l = pluginData.GetPromoProviders();
-
-                foreach (var p in l)
-                {
-                    var prov = p.Value;
-                    ObjectHandle handle = null;
-                    handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
-                    var objProvider = (PromoInterface) handle.Unwrap();
-                    var ctrlkey = prov.GetXmlProperty("genxml/textbox/ctrl");
-                    var lp = 1;
-                    while (ProviderList.ContainsKey(ctrlkey))
-                    {
-                        ctrlkey = ctrlkey + lp.ToString("");
-                        lp += 1;
-                    }
-                    objProvider.ProviderKey = ctrlkey;
-                    ProviderList.Add(ctrlkey, objProvider);
-                }
-
-                Utils.SetCache("promoproviders_" + portalId,ProviderList);
-            }
-
-            return ProviderList;
-        }
-
-        #endregion
-
 
     }
 }
