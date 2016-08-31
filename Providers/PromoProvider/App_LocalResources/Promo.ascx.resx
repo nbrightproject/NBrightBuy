@@ -169,9 +169,9 @@
     <value>Usage Limit</value>
   </data>
   <data name="validfrom.Text" xml:space="preserve">
-    <value>Valid From</value>
+    <value>Valid From (inc.)</value>
   </data>
   <data name="validuntil.Text" xml:space="preserve">
-    <value>Valid Until</value>
+    <value>Valid Until (inc.)</value>
   </data>
 </root>

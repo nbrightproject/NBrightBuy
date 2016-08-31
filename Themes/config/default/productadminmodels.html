@@ -31,7 +31,7 @@
 	        <div class="col-sm-2">[<tag id="chkishidden" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdeleted" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Deleted" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdealeronly" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label></div>
-	        <div class="col-sm-4 text-right"><a class="removemodel btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
+	        <div class="col-sm-2 text-right"><a class="removemodel btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
 		</div>
 	    <div style="margin-top:10px;" class="row stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]">
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Stock" />]</label>[<tag id="txtqtyremaining" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
@@ -43,8 +43,7 @@
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.delay" />]</label>[<tag id="delay" update="save" cssclass="form-control input-sm" type="textbox" />]</div>
             <div class="col-sm-1" style="display:none"><label class="control-label">Model ID:</label> [<tag type="valueof" xpath="genxml/hidden/modelid" />]</div><!-- model id not displayed -->
 	    </div>
-
-	</div>
+      </div>
 </li>
 <!-- Hides and shows row of stock options -->
 <script type="text/javascript">

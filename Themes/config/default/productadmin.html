@@ -206,8 +206,9 @@
 				                &nbsp;[<tag id="chkdisable" type="checkbox" Text=""  />]
 				                <label class="control-label">[<tag type="valueof" resourcekey="General.Disable" />]</label>
 				            </div>
-				            <div class="col-sm-6" style="text-align:right;">
-                				<label class="control-label">[<tag type="valueof" resourcekey="General.nbsref" />] :</label> [<tag type="valueof" xpath="genxml/importref" />] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid" />] :</label> [<tag type="valueof" databind="ItemId" />]
+				            <div class="col-sm-6" style="text-align: right;">
+                                <label class="control-label" [<tag type="if" xpath="genxml/hidden/promoname" testvalue="" display="style='display:none;''" displayelse="" />]>[<tag type="valueof" resourcekey="General.Promotion" />] :</label> [<tag type="valueof" xpath="genxml/hidden/promoname" />]
+				                <label class="control-label">[<tag type="valueof" resourcekey="General.nbsref"/>] :</label> [<tag type="valueof" xpath="genxml/importref"/>] / <label class="control-label">[<tag type="valueof" resourcekey="General.nbsid"/>] :</label> [<tag type="valueof" databind="ItemId"/>]
 				            </div>
 				        </div>
 				    </div>

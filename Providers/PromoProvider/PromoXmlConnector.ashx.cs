@@ -258,7 +258,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 if (Utils.IsNumeric(itemid))
                 {
                     // run the promo before delete, so we remove any sale prices that may exist.
-                    PromoUtils.CalcGroupPromo(PortalSettings.Current.PortalId,true);
+                    PromoUtils.RemoveGroupProductPromo(Convert.ToInt32(itemid));
 
                     // delete DB record
                     objCtrl.Delete(Convert.ToInt32(itemid));

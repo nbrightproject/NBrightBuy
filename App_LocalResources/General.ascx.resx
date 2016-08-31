@@ -1089,4 +1089,7 @@
   <data name="Configuration.Text" xml:space="preserve">
     <value>Configuration</value>
   </data>
+  <data name="Promotion.Text" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
 </root>

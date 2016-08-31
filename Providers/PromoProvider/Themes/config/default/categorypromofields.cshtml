@@ -76,7 +76,14 @@
         </div>
         <div class="col-sm-12">
             <div class="col-sm-5">
-                @CheckBox(info, "genxml/checkbox/disabled", rk3, "disabled")
+                @{
+                    var attr = "disabled";
+                    if (info.GetXmlPropertyBool("genxml/checkbox/disabled"))
+                    {
+                        attr = "";
+                    }
+                }
+                @CheckBox(info, "genxml/checkbox/disabled", rk3, attr)
             </div>
         </div>
         <div class="col-sm-12">
