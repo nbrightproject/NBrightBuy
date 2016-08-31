@@ -22,6 +22,15 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
     }
 
 
+    public class MultiBuyPromoScheudler : Components.Interfaces.SchedulerInterface
+    {
+        public override string DoWork(int portalId)
+        {
+            return PromoUtils.CalcMultiBuyPromo(portalId);
+        }
+
+    }
+
     public class MultiBuyPromoProvider : Components.Interfaces.EventInterface 
     {
         public override NBrightInfo ValidateCartBefore(NBrightInfo cartInfo)

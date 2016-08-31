@@ -83,9 +83,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     case "selectlang":
                         strOut = SaveData(context);
                         break;
-                    case "recalc":
-                        strOut = GetData(context);
-                        break;
                 }
             }
 
@@ -258,7 +255,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 if (Utils.IsNumeric(itemid))
                 {
                     // run the promo before delete, so we remove any sale prices that may exist.
-                    PromoUtils.RemoveGroupProductPromo(Convert.ToInt32(itemid));
+                    PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
 
                     // delete DB record
                     objCtrl.Delete(Convert.ToInt32(itemid));
