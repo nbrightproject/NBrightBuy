@@ -63,6 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiBuyPromo.ascx.cs">
+      <DependentUpon>MultiBuyPromo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MultiBuyPromo.ascx.designer.cs">
+      <DependentUpon>MultiBuyPromo.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="CategoryPromo.ascx.cs">
       <DependentUpon>CategoryPromo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -90,12 +97,18 @@
     <EmbeddedResource Include="App_LocalResources\Promo.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MultiBuyPromo.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="CategoryPromo.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="DiscountCodes.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <None Include="Themes\config\default\multibuypromo.cshtml" />
+    <None Include="Themes\config\default\multibuypromofields.cshtml" />
+    <None Include="Themes\config\default\multibuypromolist.cshtml" />
     <None Include="Themes\config\default\discountcodes.cshtml" />
     <None Include="Themes\config\default\categorypromo.cshtml" />
     <Content Include="Themes\config\js\Promo.js" />
