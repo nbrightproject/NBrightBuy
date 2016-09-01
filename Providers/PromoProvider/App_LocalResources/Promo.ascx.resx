@@ -157,7 +157,7 @@
     <value>Product Group</value>
   </data>
   <data name="helpmsg.Text" xml:space="preserve">
-    <value>Sale prices of products with promotions are calcuated by the scheduler and the new sale price of a product is entered into the product sale price field. &lt;br/&gt;&lt;br/&gt;&lt;b&gt;Ensure the NBS Scheduler is running to enable promotions to work correctly.&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;i&gt;If this is a new promotion there may be a delay between actiavting the promotion and the scheduler recalculating the sale price on the product.&lt;/i&gt;</value>
+    <value>&lt;b&gt;Promotions are calcuated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
   </data>
   <data name="lastcalculated.Text" xml:space="preserve">
     <value>Last Calculated</value>

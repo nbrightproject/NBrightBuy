@@ -416,8 +416,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
-
-        public void Save()
+        /// <summary>
+        /// Save all Product Data
+        /// </summary>
+        /// <param name="triggerevent"> Used to stop infinate loop when Save used in event method</param>
+        public void Save(bool triggerevent = true)
         {
             foreach (var model in Models)
             {
@@ -455,7 +458,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord = objCtrl.Get(productid); 
             DataLangRecord = objCtrl.Get(plangid); 
             
-            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
+            if (triggerevent) NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
         }
 
         public void Delete()
@@ -1559,7 +1562,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Info = objCtrl.Get(productId, _typeLangCode, _lang);
             if (Info != null)
             {
-                _portalId = Info.PortalId;
+                _portalId = PortalSettings.Current.PortalId;
                 _storeSettings = new StoreSettings(_portalId);
                 Exists = true;
                 if (hydrateLists)

@@ -217,6 +217,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     var nbi = objCtrl.Get(Convert.ToInt32(itemid));
                     if (nbi != null)
                     {
+                        var typecode = nbi.TypeCode;
+
                         // get data passed back by ajax
                         var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
                         // update record with ajax data
@@ -225,11 +227,21 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         objCtrl.Update(nbi);
 
                         // do langauge record
-                        nbi = objCtrl.GetDataLang(Convert.ToInt32(itemid), lang);
-                        nbi.UpdateAjax(strIn);
-                        objCtrl.Update(nbi);
+                        var nbi2 = objCtrl.GetDataLang(Convert.ToInt32(itemid), lang);
+                        nbi2.UpdateAjax(strIn);
+                        objCtrl.Update(nbi2);
 
-                        DataCache.ClearCache(); // clear ALL cache, the usagelimit may need to be reset.
+                        DataCache.ClearCache(); // clear ALL cache.
+
+                        // run the promo before delete, so we remove any promo data that may exist.
+                        if (typecode == "CATEGORYPROMO")
+                        {
+                            PromoUtils.CalcGroupPromoItem(nbi);
+                        }
+                        if (typecode == "MULTIBUYPROMO")
+                        {
+                            PromoUtils.CalcMultiBuyPromoItem(nbi);
+                        }
 
                     }
                 }
@@ -254,8 +266,21 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
                 if (Utils.IsNumeric(itemid))
                 {
-                    // run the promo before delete, so we remove any sale prices that may exist.
-                    PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                    var nbi = objCtrl.Get(Convert.ToInt32(itemid));
+                    if (nbi != null)
+                    {
+                        var typecode = nbi.TypeCode;
+
+                        // run the promo before delete, so we remove any promo data that may exist.
+                        if (typecode == "CATEGORYPROMO")
+                        {
+                            PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                        }
+                        if (typecode == "MULTIBUYPROMO")
+                        {
+                            PromoUtils.RemoveMultiBuyProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                        }
+                    }
 
                     // delete DB record
                     objCtrl.Delete(Convert.ToInt32(itemid));

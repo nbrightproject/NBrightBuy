@@ -85,12 +85,19 @@
         </div>
         <div class="col-sm-12">
             <div class="col-sm-5">
-                @CheckBox(info, "genxml/checkbox/disabled", rk3, "")
+                @{
+                    var attr = "disabled";
+                    if (info.GetXmlPropertyBool("genxml/checkbox/disabled"))
+                    {
+                        attr = "";
+                    }
+                }
+                @CheckBox(info, "genxml/checkbox/disabled", rk3, attr)
             </div>
         </div>
-        <div class="col-sm-6">
-            <hr />            
-            <div><i class="fa fa-question-circle-o" aria-hidden="true"></i> @ResourceKey("Promo.helpmutlibuymsg")</div>
+        <div class="col-sm-12">
+            <hr />
+            <div><i class="fa fa-question-circle-o" aria-hidden="true"></i> @ResourceKey("Promo.helpmsg")</div>
         </div>
     </div>
 

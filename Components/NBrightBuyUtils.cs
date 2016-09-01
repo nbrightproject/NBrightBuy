@@ -1054,7 +1054,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static NBrightInfo ProcessEventProvider(EventActions eventaction, NBrightInfo nbrightInfo, string eventinfo)
         {
             var rtnInfo = nbrightInfo;
-            var pluginData = new PluginData(nbrightInfo.PortalId);
+            var portalId = nbrightInfo.PortalId; // can be -1 for categories and products (Shared on all portals)
+            if (portalId < 0 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId; 
+            if (portalId < 0) return rtnInfo;
+
+            var pluginData = new PluginData(portalId);
             var provList = pluginData.GetEventsProviders();
 
             foreach (var d in provList)
