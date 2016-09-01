@@ -31,86 +31,102 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
     }
 
-    public class MultiBuyPromoProvider : Components.Interfaces.EventInterface 
+    public class PromoEvents : Components.Interfaces.EventInterface 
     {
         public override NBrightInfo ValidateCartBefore(NBrightInfo cartInfo)
         {
-            throw new NotImplementedException();
+            return cartInfo;
         }
 
         public override NBrightInfo ValidateCartAfter(NBrightInfo cartInfo)
         {
-            throw new NotImplementedException();
+            return cartInfo;
         }
 
         public override NBrightInfo ValidateCartItemBefore(NBrightInfo cartItemInfo)
         {
-            throw new NotImplementedException();
+            return cartItemInfo;
         }
 
         public override NBrightInfo ValidateCartItemAfter(NBrightInfo cartItemInfo)
         {
-            throw new NotImplementedException();
+            var promotype = cartItemInfo.GetXmlProperty("genxml/productxml/genxml/hidden/promotype");
+            if (promotype == "PROMOMULTIBUY")
+            {
+                var promoid = cartItemInfo.GetXmlPropertyInt("genxml/productxml/genxml/hidden/promoid");
+                var objCtrl = new NBrightBuyController();
+                var promoData = objCtrl.GetData(promoid);
+                if (promoData != null)
+                {
+                    if (!promoData.GetXmlPropertyBool("genxml/checkbox/disabled"))
+                    {
+                        var applymodel = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/applymodel");
+                        var buyqty = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/buyqty");
+                        
+                    }
+                }
+            }
+            return cartItemInfo;
         }
 
         public override NBrightInfo AfterCartSave(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterCategorySave(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterProductSave(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterSavePurchaseData(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo BeforeOrderStatusChange(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterOrderStatusChange(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo BeforePaymentOK(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterPaymentOK(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo BeforePaymentFail(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterPaymentFail(NBrightInfo nbrightInfo)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo BeforeSendEmail(NBrightInfo nbrightInfo, string emailsubjectrexkey)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
 
         public override NBrightInfo AfterSendEmail(NBrightInfo nbrightInfo, string emailsubjectrexkey)
         {
-            throw new NotImplementedException();
+            return nbrightInfo;
         }
     }
 

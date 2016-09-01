@@ -132,9 +132,6 @@
   <data name="applyproperty.Text" xml:space="preserve">
     <value>Apply the discount to the products this property group</value>
   </data>
-  <data name="autoadd.Text" xml:space="preserve">
-    <value>Auto add discounted products to cart</value>
-  </data>
   <data name="buyproperty.Text" xml:space="preserve">
     <value>If the client buys products from this property group</value>
   </data>

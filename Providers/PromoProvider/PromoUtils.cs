@@ -147,7 +147,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
                 if (currentpromoid == 0 || currentpromoid == promoid || overwrite)
                 {
-                    prdData.SetXmlPropertyDouble("genxml/hidden/promotype", "PROMOGROUP");
+                    prdData.SetXmlProperty("genxml/hidden/promotype", "PROMOGROUP");
                     prdData.SetXmlPropertyDouble("genxml/hidden/promoname", promoname);
                     prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
                     prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
@@ -280,7 +280,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
                 if (currentpromoid == 0 || currentpromoid == promoid)
                 {
-                    prdData.SetXmlPropertyDouble("genxml/hidden/promotype", "PROMOMULTIBUY");
+                    prdData.SetXmlProperty("genxml/hidden/promotype", "PROMOMULTIBUY");
                     prdData.SetXmlPropertyDouble("genxml/hidden/promoname", promoname);
                     prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
                     prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
