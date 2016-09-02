@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Web.Hosting;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
@@ -40,6 +41,57 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         public override NBrightInfo ValidateCartAfter(NBrightInfo cartInfo)
         {
+            // loop through cart items
+
+            var cartData = new CartData(cartInfo.PortalId);
+            var cartList = cartData.GetCartItemList();
+
+            var multibuyItems = from c in cartList where c.GetXmlProperty("genxml/productxml/genxml/hidden/promotype") == "PROMOMULTIBUY" select c;
+
+            foreach (var cartItemInfo in multibuyItems)
+            {
+                var promoid = cartItemInfo.GetXmlPropertyInt("genxml/productxml/genxml/hidden/promoid");
+                var objCtrl = new NBrightBuyController();
+                var promoData = objCtrl.GetData(promoid);
+                if (promoData != null)
+                {
+                    if (!promoData.GetXmlPropertyBool("genxml/checkbox/disabled"))
+                    {
+                        var applydiscountto = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/applydiscountto");
+                        var buyqty = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/buyqty");
+                        var validfrom = promoData.GetXmlProperty("genxml/textbox/validfrom");
+                        var validuntil = promoData.GetXmlProperty("genxml/textbox/validuntil");
+                        var propbuygroupid = promoData.GetXmlProperty("genxml/dropdownlist/propbuy");
+                        var propapplygroupid = promoData.GetXmlProperty("genxml/dropdownlist/propapply");
+
+
+                        if (applydiscountto == 1)
+                        { // Applied discount to this single cart item
+
+                            
+                        }
+                        if (applydiscountto == 2)
+                        { // Add assighned products to cart and Apply discount to these.
+
+                            // delete any cart items existing with this promotion
+                            var multibuyAddItems = from c in cartList where c.GetXmlProperty("genxml/productxml/genxml/hidden/promotype") == "PROMOMULTIBUYAPPLY" && cartItemInfo.GetXmlPropertyInt("genxml/productxml/genxml/hidden/promoid") == promoid select c;
+                            foreach (var ca in multibuyAddItems)
+                            {
+                                cartData.RemoveItem(ca.GetXmlProperty("genxml/itemcode"));
+                            }
+                            var gCat = CategoryUtils.GetCategoryData(propapplygroupid, Utils.GetCurrentCulture());
+                            var multibuyAddItems2 = gCat.GetAllArticles();
+                            foreach (var ca in multibuyAddItems2)
+                            {
+                                cartData.AddSingleItem(ca.ParentItemId.ToString(), "firstdefault", "1", new NBrightInfo());
+                            }
+                        }
+
+
+                    }
+                }
+            }
+
             return cartInfo;
         }
 
@@ -50,22 +102,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         public override NBrightInfo ValidateCartItemAfter(NBrightInfo cartItemInfo)
         {
-            var promotype = cartItemInfo.GetXmlProperty("genxml/productxml/genxml/hidden/promotype");
-            if (promotype == "PROMOMULTIBUY")
-            {
-                var promoid = cartItemInfo.GetXmlPropertyInt("genxml/productxml/genxml/hidden/promoid");
-                var objCtrl = new NBrightBuyController();
-                var promoData = objCtrl.GetData(promoid);
-                if (promoData != null)
-                {
-                    if (!promoData.GetXmlPropertyBool("genxml/checkbox/disabled"))
-                    {
-                        var applymodel = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/applymodel");
-                        var buyqty = promoData.GetXmlPropertyInt("genxml/radiobuttonlist/buyqty");
-                        
-                    }
-                }
-            }
             return cartItemInfo;
         }
 

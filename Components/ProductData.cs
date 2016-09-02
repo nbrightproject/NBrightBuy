@@ -192,7 +192,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Models.Count > 0)
             {
                 var obj = Models.Where(i => i.GetXmlProperty("genxml/hidden/modelid") == modelid);
-                if (obj.Any()) return obj.First();                
+                if (obj.Any()) return obj.First();
+                return Models.First(); // assume first is required
             }
             return null;
         }

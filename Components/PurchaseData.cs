@@ -367,6 +367,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (productData.Info == null) return ""; // we may have a invalid productid that has been saved by a cookie, but since has been deleted.
 
+                var modelInfo = productData.GetModel(strmodelId);
+                if (modelInfo == null) return ""; // no valid model
+
                 objInfo.AddSingleNode("productid", strproductid, "genxml");
                 itemcode += strproductid + "-";
 
@@ -380,8 +383,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 objInfo.AddSingleNode("productname", productData.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"), "genxml");
                 objInfo.AddSingleNode("summary", productData.Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"), "genxml");
-
-                var modelInfo = productData.GetModel(strmodelId);
 
                 objInfo.AddSingleNode("modelref", modelInfo.GetXmlProperty("genxml/textbox/txtmodelref"), "genxml");
                 objInfo.AddSingleNode("modeldesc", modelInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname"), "genxml");

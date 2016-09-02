@@ -422,6 +422,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
             if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
+
+            // update product xml data on cart (product may have change via plugin so always replace)
+            cartItemInfo.RemoveXmlNode("genxml/productxml");
+            cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
+
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)
@@ -530,8 +535,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
                     cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
                     cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
-                    cartItemInfo.RemoveXmlNode("genxml/productxml");
-                    cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
                 }
 
 

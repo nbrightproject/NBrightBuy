@@ -124,10 +124,10 @@
     <value>Apply Date Range</value>
   </data>
   <data name="applymodeldata.Text" xml:space="preserve">
-    <value>Apply to ALL models,Apply to cheapest, Apply to most expensive</value>
+    <value> Apply discount to product added to cart, Add other products to cart and apply discount</value>
   </data>
   <data name="applymodelvalue.Text" xml:space="preserve">
-    <value>1,2,3</value>
+    <value>1,2</value>
   </data>
   <data name="applyproperty.Text" xml:space="preserve">
     <value>Apply the discount to the products this property group</value>
@@ -169,7 +169,7 @@
     <value>Percentage (%)</value>
   </data>
   <data name="typedata.Text" xml:space="preserve">
-    <value>Amount,Percentage (%)</value>
+    <value> Amount, Percentage (%)</value>
   </data>
   <data name="typeselect.Text" xml:space="preserve">
     <value>Group Type</value>

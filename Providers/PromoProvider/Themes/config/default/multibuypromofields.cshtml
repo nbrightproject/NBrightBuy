@@ -19,7 +19,7 @@
 <input id="lang" type="hidden" value="@CultureInfo.CurrentCulture"/> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
 
 
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-12 multibuydisplay">
     <div class="form-group">
         <div class="col-sm-12">
             <div class="col-sm-5">
@@ -40,10 +40,6 @@
             <div class="col-sm-2">
                 <label>@ResourceKey("Promo.buyqty")</label>
                 @TextBox(info, "genxml/textbox/buyqty", "class='form-control'","2")
-            </div>
-            <div class="col-sm-5">
-                <label>@ResourceKey("Promo.applyproperty")</label>
-                @PropertyDropDownList(info, "genxml/dropdownlist/propapply", "class='form-control'")
             </div>
         </div>
     </div>
@@ -75,7 +71,18 @@
         </div>
         <div class="col-sm-12">
             <div class="col-sm-6">
-                <label>@RadioButtonList(info, "genxml/radiobuttonlist/applymodel", rk6, rk7, "", "1")</label>
+                <label>@RadioButtonList(info, "genxml/radiobuttonlist/applydiscountto", rk6, rk7, "class='applydiscountto'", "1")</label>
+            </div>
+            <div class="col-sm-5 applyproperty">
+                @{
+                    var attr2 = "";
+                    if (info.GetXmlPropertyInt("genxml/dropdownlist/propapply") > 0 && (info.GetXmlPropertyInt("genxml/dropdownlist/propbuy") != info.GetXmlPropertyInt("genxml/dropdownlist/propapply")))
+                    {
+                        attr2 = "disabled";
+                    }
+                }
+                <label>@ResourceKey("Promo.applyproperty")</label>
+                @PropertyDropDownList(info, "genxml/dropdownlist/propapply", "class='form-control' " + attr2)
             </div>
         </div>
         <div class="col-sm-12">

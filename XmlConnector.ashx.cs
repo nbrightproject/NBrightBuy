@@ -2015,9 +2015,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 foreach (var ajaxInfo in ajaxInfoList)
                 {
                         currentcart.MergeCartInputData(currentcart.GetItemIndex(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode")), ajaxInfo);
-                        currentcart.Save(StoreSettings.Current.DebugMode);
-                        strOut = "OK";
                 }
+                currentcart.Save(StoreSettings.Current.DebugMode);
+                strOut = "OK";
                 return strOut;
             }
             catch (Exception ex)

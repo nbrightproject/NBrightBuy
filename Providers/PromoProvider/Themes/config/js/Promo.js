@@ -131,6 +131,20 @@ function Promo_nbxgetCompleted(e) {
             }
         });
 
+        if ($('input:radio[name=applydiscounttoradio]:checked').val() == "1") {
+            $('.applyproperty').hide();
+        } else {
+            $('.applyproperty').show();
+        }
+
+        $('input:radio[name=applydiscounttoradio]').change(function () {
+            if ($(this).val() == '1') {
+                $('.applyproperty').hide();
+            } else {
+                $('.applyproperty').show();
+            }
+        });
+
         if ($('.applydaterangechk').is(":checked")) {
             $('.applydaterange').show();
         }
@@ -180,4 +194,5 @@ function Promo_ListButtons() {
     $('#cmdreturn').hide();
     $('#addnew').show();
 }
+
 
