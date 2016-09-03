@@ -64,9 +64,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (UserId != UserController.Instance.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.Instance.GetCurrentUserInfo().UserID;
                 PurchaseInfo.UserId = UserId;                
             }
-            _entryId = modCtrl.Update(PurchaseInfo);
 
-            NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);
+            if (PurchaseInfo.TypeCode != null) // if we're using this class to build cart in memory for procesisng only, don;t save to DB.
+            {
+                _entryId = modCtrl.Update(PurchaseInfo);
+                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);
+            }
 
             return _entryId;
         }

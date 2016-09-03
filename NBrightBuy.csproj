@@ -188,6 +188,7 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

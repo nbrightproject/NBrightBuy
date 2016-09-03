@@ -259,6 +259,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double totalweight = 0;
             Double totalunitcost = 0;
 
+            // Calculate Promotions
+            // Calculate first, so if we add items the price is calculated
+            if (PromoInterface.Instance() != null)
+            {
+                PurchaseInfo = PromoInterface.Instance().CalculatePromotion(PortalId, PurchaseInfo);
+                itemList = GetCartItemList(); // get any new items
+            }
+
             var strXml = "<items>";
             foreach (var info in itemList)
             {
@@ -282,7 +290,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             strXml += "</items>";
             PurchaseInfo.RemoveXmlNode("genxml/items");
             PurchaseInfo.AddXmlNode(strXml, "items", "genxml");
-            PopulateItemList();
+            PopulateItemList(); // put changed items and prices back into base class for saving to DB
 
             // calculate totals
 
@@ -295,6 +303,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
             PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, (subtotalcost + totalsalediscount), (subtotaldealercost + totalsalediscount)));
+
 
             // calc any voucher amounts
             var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
@@ -441,10 +450,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var dealercost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
             var saleprice = prdModel.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
 
+            // if we have a promoprice use it as saleprice
+            if (cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") > 0)
+            {
+                saleprice = cartItemInfo.GetXmlPropertyDouble("genxml/promoprice");
+            }
 
             // calc sale price
             var sellcost = unitcost;
             if (saleprice > 0 && saleprice < sellcost) sellcost = saleprice;
+
 
             //stock control
             if (prdModel != null)
