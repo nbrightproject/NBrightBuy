@@ -578,6 +578,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     totaldiscount = salediscount * qty;
                 }
 
+                // if we have a promodiscount use it
+                if (cartItemInfo.GetXmlPropertyDouble("genxml/promodiscount") > 0)
+                {
+                    totaldiscount = cartItemInfo.GetXmlPropertyDouble("genxml/promodiscount");
+                    totalcost = totalcost - totaldiscount;
+                    cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
+                }
+
+
                 var totalsalediscount = salediscount * qty;
                 var totaldealerdiscount = dealerdiscount * qty;
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);

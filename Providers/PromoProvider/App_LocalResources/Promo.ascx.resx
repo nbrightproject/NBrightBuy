@@ -124,7 +124,7 @@
     <value>Apply Date Range</value>
   </data>
   <data name="applymodeldata.Text" xml:space="preserve">
-    <value> Apply discount to product added to cart, Add other products to cart and apply discount</value>
+    <value> Apply discount on the quantity +1 product added, Add other products to cart and apply discount</value>
   </data>
   <data name="applymodelvalue.Text" xml:space="preserve">
     <value>1,2</value>

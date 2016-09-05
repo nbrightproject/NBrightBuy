@@ -14,7 +14,7 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
     var request = $.ajax({ type: "POST",
 		url: cmdupdate,
 		cache: false,
-        timeout: 5000,
+        timeout: 30000,
 		data: { inputxml: encodeURI(values) }		
 	});
 
