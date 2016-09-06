@@ -111,6 +111,7 @@
     <None Include="Themes\config\default\multibuypromolist.cshtml" />
     <None Include="Themes\config\default\discountcodes.cshtml" />
     <None Include="Themes\config\default\categorypromo.cshtml" />
+    <Content Include="plugin.xml" />
     <Content Include="Themes\config\js\Promo.js" />
     <None Include="app.config" />
     <None Include="packages.config" />

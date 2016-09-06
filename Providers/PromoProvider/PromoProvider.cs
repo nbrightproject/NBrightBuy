@@ -186,4 +186,115 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
     }
 
+
+    public class PromoEvents : Components.Interfaces.EventInterface
+    {
+        public override NBrightInfo ValidateCartBefore(NBrightInfo cartInfo)
+        {
+            return cartInfo;
+        }
+
+        public override NBrightInfo ValidateCartAfter(NBrightInfo cartInfo)
+        {
+            return cartInfo;
+        }
+
+        public override NBrightInfo ValidateCartItemBefore(NBrightInfo cartItemInfo)
+        {
+            return cartItemInfo;
+        }
+
+        public override NBrightInfo ValidateCartItemAfter(NBrightInfo cartItemInfo)
+        {
+            return cartItemInfo;
+        }
+
+        public override NBrightInfo AfterCartSave(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterCategorySave(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterProductSave(NBrightInfo nbrightInfo)
+        {
+            var promoid = nbrightInfo.GetXmlPropertyInt("genxml/hidden/promoid");
+            if (promoid > 0)
+            {
+                var prdData = ProductUtils.GetProductData(nbrightInfo.ItemID, nbrightInfo.Lang);
+                var objCtrl = new NBrightBuyController();
+                var promoData = objCtrl.GetData(promoid);
+
+                var catgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/catgroupid");
+                var propgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propgroupid");
+                var propbuygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propbuy");
+                var propapplygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propapply");
+
+                var removepromo = true;
+                foreach (var c in prdData.GetCategories())
+                {
+                    if (c.categoryid == catgroupid) removepromo = false;
+                    if (c.categoryid == propgroupid) removepromo = false;
+                    if (c.categoryid == propbuygroupid) removepromo = false;
+                    if (c.categoryid == propapplygroupid) removepromo = false;
+                }
+
+                if (removepromo)
+                {
+                    PromoUtils.RemoveProductPromoData(nbrightInfo.PortalId, nbrightInfo.ItemID,promoid);
+                    ProductUtils.RemoveProductDataCache(nbrightInfo.PortalId, nbrightInfo.ItemID);
+                }
+            }
+
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterSavePurchaseData(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo BeforeOrderStatusChange(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterOrderStatusChange(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo BeforePaymentOK(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterPaymentOK(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo BeforePaymentFail(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterPaymentFail(NBrightInfo nbrightInfo)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo BeforeSendEmail(NBrightInfo nbrightInfo, string emailsubjectrexkey)
+        {
+            return nbrightInfo;
+        }
+
+        public override NBrightInfo AfterSendEmail(NBrightInfo nbrightInfo, string emailsubjectrexkey)
+        {
+            return nbrightInfo;
+        }
+    }
 }

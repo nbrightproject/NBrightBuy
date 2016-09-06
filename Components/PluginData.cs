@@ -553,6 +553,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void SystemConfigMerge(NBrightInfo info)
         {
             var sysList = new Dictionary<String, NBrightInfo>();
+            var addList = new Dictionary<String, NBrightInfo>();
             var xmlNodeList = info.XMLDoc.SelectNodes("genxml/plugin/*");
             if (xmlNodeList != null)
             {
@@ -563,6 +564,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     newInfo.SetXmlProperty("genxml/hidden/index", sysList.Count.ToString(""));
                     newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                     sysList.Add(newInfo.GUIDKey, newInfo);
+                    addList.Add(newInfo.GUIDKey, newInfo);                    
                 }
 
                 var newpluginList  = new List<NBrightInfo>();
@@ -571,11 +573,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (sysList.ContainsKey(pluginInfo.GUIDKey))
                     {
                         newpluginList.Add(sysList[pluginInfo.GUIDKey]);
+                        addList.Remove(pluginInfo.GUIDKey);
                     }
                     else
                     {
                         newpluginList.Add(pluginInfo);
                     }
+                }
+                foreach (var newplugin in addList)
+                {
+                    newpluginList.Add(addList[newplugin.Key]);
                 }
 
                 _pluginList = newpluginList;

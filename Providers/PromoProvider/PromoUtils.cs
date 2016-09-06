@@ -45,7 +45,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     var runcalc = true;
                     if (Utils.IsDate(lastcalculated))
                     {
-                        if (Convert.ToDateTime(lastcalculated) >= p.ModifiedDate) runcalc = false; // don't run if no change.
+                        if (Convert.ToDateTime(lastcalculated) >= p.ModifiedDate) runcalc = false; // only run if changed 
+                        if (DateTime.Now.Date > Convert.ToDateTime(lastcalculated).Date.AddDays(1)) runcalc = true; // every day just after midnight. (for site performace) 
                     }
                     if (Utils.IsDate(validuntil))
                     {
@@ -228,7 +229,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var runcalc = true;
                 if (Utils.IsDate(lastcalculated))
                 {
-                    if (Convert.ToDateTime(lastcalculated) >= p.ModifiedDate) runcalc = false; // don't run if no change.
+                    if (Convert.ToDateTime(lastcalculated) >= p.ModifiedDate) runcalc = false;  // only run if changed 
+                    if (DateTime.Now.Date > Convert.ToDateTime(lastcalculated).Date.AddDays(1)) runcalc = true; // every day just after midnight. (for site performace) 
                 }
                 if (Utils.IsDate(validuntil))
                 {
@@ -305,7 +307,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 if (currentpromoid == 0 || currentpromoid == promoid)
                 {
                     prdData.SetXmlProperty("genxml/hidden/promotype", promoType);
-                    prdData.SetXmlPropertyDouble("genxml/hidden/promoname", promoname);
+                    prdData.SetXmlProperty("genxml/hidden/promoname", promoname);
                     prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
                     prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
                     objCtrl.Update(prdData);
@@ -364,7 +366,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         #region "Shared"
 
-        private static void RemoveProductPromoData(int portalid, int productId, int promoid)
+        public static void RemoveProductPromoData(int portalid, int productId, int promoid)
         {
             var cultureList = DnnUtils.GetCultureCodeList(portalid);
             var objCtrl = new NBrightBuyController();

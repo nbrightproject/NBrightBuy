@@ -481,6 +481,7 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Plugins\readme.txt" />
     <Content Include="ProductRazorSearch.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -606,6 +607,7 @@
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
     <Content Include="Themes\ClassicRazor\Default\printorder.html" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
+    <None Include="Plugins\v030501-system.configsave" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrill.cshtml" />
