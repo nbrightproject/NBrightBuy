@@ -123,15 +123,6 @@
   <data name="applydaterange.Text" xml:space="preserve">
     <value>Apply Date Range</value>
   </data>
-  <data name="applymodeldata.Text" xml:space="preserve">
-    <value> Apply discount on the quantity +1 product added, Add other products to cart and apply discount</value>
-  </data>
-  <data name="applymodelvalue.Text" xml:space="preserve">
-    <value>1,2</value>
-  </data>
-  <data name="applyproperty.Text" xml:space="preserve">
-    <value>Apply the discount to the products this property group</value>
-  </data>
   <data name="buyproperty.Text" xml:space="preserve">
     <value>If the client buys products from this property group</value>
   </data>
@@ -161,6 +152,9 @@
   </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="nextproduct.Text" xml:space="preserve">
+    <value>Discount to apply to the next product ("Quantity of" +1)</value>
   </data>
   <data name="overwrite.Text" xml:space="preserve">
     <value>Overwrite any existing sale price on selected products.</value>

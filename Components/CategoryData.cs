@@ -298,20 +298,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var imgpath = DataRecord.GetXmlProperty("genxml/hidden/imagepath");
             var imgurl = DataRecord.GetXmlProperty("genxml/hidden/imageurl");
             var imagefilename = Path.GetFileName(imgpath);
-            if (!imgpath.StartsWith(StoreSettings.Current.FolderImagesMapPath))
+            if (StoreSettings.Current != null) // current setting not valid in Scheduler.
             {
+                if (!imgpath.StartsWith(StoreSettings.Current.FolderImagesMapPath))
+                {
                     DataRecord.SetXmlProperty("genxml/hidden/imagepath", StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + imagefilename);
-                errorcount += 1;
-            }
-            if (imagefilename == "")
-            {
-                DataRecord.SetXmlProperty("genxml/hidden/imagepath", "");
-                errorcount += 1;
-            }
-            if (!imgurl.StartsWith(StoreSettings.Current.FolderImages))
-            {
+                    errorcount += 1;
+                }
+                if (imagefilename == "")
+                {
+                    DataRecord.SetXmlProperty("genxml/hidden/imagepath", "");
+                    errorcount += 1;
+                }
+                if (!imgurl.StartsWith(StoreSettings.Current.FolderImages))
+                {
                     DataRecord.SetXmlProperty("genxml/hidden/imageurl", StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + imagefilename);
-                errorcount += 1;
+                    errorcount += 1;
+                }
             }
             if (imagefilename == "")
             {

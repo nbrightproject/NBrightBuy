@@ -583,7 +583,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     totaldiscount = cartItemInfo.GetXmlPropertyDouble("genxml/promodiscount");
                     totalcost = totalcost - totaldiscount;
-                    cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
+                    cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", totalcost);
                 }
 
 

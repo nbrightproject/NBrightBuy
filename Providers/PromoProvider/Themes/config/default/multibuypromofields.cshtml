@@ -48,11 +48,11 @@
         var rk1 = ResourceKey("Promo.typevalue").ToString();
         var rk2 = ResourceKey("Promo.typedata").ToString();
         var rk3 = ResourceKey("Promo.disabled").ToString();
-        var rk4 = ResourceKey("Promo.autoadd").ToString();
-        var rk6 = ResourceKey("Promo.applymodelvalue").ToString();
-        var rk7 = ResourceKey("Promo.applymodeldata").ToString();
     }
     <div class="form-group">
+        <div class="col-sm-12">
+            <label>@ResourceKey("Promo.nextproduct")</label>
+        </div>
         <div class="col-sm-12">
             <div class="col-sm-2">
                 <label>@RadioButtonList(info, "genxml/radiobuttonlist/amounttype", rk1, rk2, "", "1")</label>
@@ -70,22 +70,6 @@
             </div>
         </div>
         <div class="col-sm-12">
-            <div class="col-sm-6">
-                <label>@RadioButtonList(info, "genxml/radiobuttonlist/applydiscountto", rk6, rk7, "class='applydiscountto'", "1")</label>
-            </div>
-            <div class="col-sm-5 applyproperty">
-                @{
-                    var attr2 = "";
-                    if (info.GetXmlPropertyInt("genxml/dropdownlist/propapply") > 0 && (info.GetXmlPropertyInt("genxml/dropdownlist/propbuy") != info.GetXmlPropertyInt("genxml/dropdownlist/propapply")))
-                    {
-                        attr2 = "disabled";
-                    }
-                }
-                <label>@ResourceKey("Promo.applyproperty")</label>
-                @PropertyDropDownList(info, "genxml/dropdownlist/propapply", "class='form-control' " + attr2)
-            </div>
-        </div>
-        <div class="col-sm-12">
             <div class="col-sm-5">
                 @{
                     var attr = "disabled";
@@ -98,9 +82,8 @@
             </div>
         </div>
         <div class="col-sm-12">
-            <hr />
+            <hr/>
             <div><i class="fa fa-question-circle-o" aria-hidden="true"></i> @ResourceKey("Promo.helpmsg")</div>
         </div>
     </div>
-
 </div>

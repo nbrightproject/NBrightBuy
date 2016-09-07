@@ -73,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             if (DateTime.Now.Date > dteU)
                             {
                                 // END Promo
-                                EndProductSalePrice(p.PortalId, prd.ParentItemId, p.ItemID);
+                                RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
                                 p.SetXmlProperty("genxml/checkbox/disabled", "True");
                                 objCtrl.Update(p);
                             }
@@ -106,7 +106,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             foreach (var prd in prdList)
             {
                 // END Promo
-                EndProductSalePrice(portalId,prd.ParentItemId, p.ItemID);
+                RemoveProductPromoData(portalId, prd.ParentItemId, p.ItemID);
                 ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
             }
             return "OK";
@@ -379,6 +379,19 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 prdData.RemoveXmlNode("genxml/hidden/promoname");
                 prdData.RemoveXmlNode("genxml/hidden/promoid");
                 prdData.RemoveXmlNode("genxml/hidden/promocalcdate");
+
+                // remove any sale price amounts that may have been added by group promotion.
+                var l = prdData.XMLDoc.SelectNodes("genxml/models/genxml");
+                if (l != null)
+                {
+                    var lp = 1;
+                    foreach (XmlNode nod in l)
+                    {
+                        prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                        lp += 1;
+                    }
+                }
+
                 objCtrl.Update(prdData);
                 foreach (var lang in cultureList)
                 {
