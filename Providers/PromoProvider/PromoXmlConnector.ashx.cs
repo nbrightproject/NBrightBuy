@@ -18,6 +18,7 @@ using NBrightCore.render;
 using NBrightDNN;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Exceptions;
 using Nevoweb.DNN.NBrightBuy.Components;
 
 namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
@@ -35,58 +36,69 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             #region "Initialize"
 
             var strOut = "";
-
-            var moduleid = Utils.RequestQueryStringParam(context, "mid");
-            var paramCmd = Utils.RequestQueryStringParam(context, "cmd");
-            var lang = Utils.RequestQueryStringParam(context, "lang");
-            var language = Utils.RequestQueryStringParam(context, "language");
-            _itemid = Utils.RequestQueryStringParam(context, "itemid");
-            
-            #region "setup language"
-
-            // because we are using a webservice the system current thread culture might not be set correctly,
-            //  so use the lang/lanaguge param to set it.
-            if (lang == "") lang = language;
-            if (!string.IsNullOrEmpty(lang)) _lang = lang;
-
-            // default to current thread if we have no language.
-            if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_lang);
-
-            #endregion
-
-            #endregion
-
-            #region "Do processing of command"
-
-            strOut = "ERROR!! - No Security rights for current user!";
-            if (CheckRights())
+            try
             {
-                switch (paramCmd)
+
+                var moduleid = Utils.RequestQueryStringParam(context, "mid");
+                var paramCmd = Utils.RequestQueryStringParam(context, "cmd");
+                var lang = Utils.RequestQueryStringParam(context, "lang");
+                var language = Utils.RequestQueryStringParam(context, "language");
+                _itemid = Utils.RequestQueryStringParam(context, "itemid");
+
+                #region "setup language"
+
+                // because we are using a webservice the system current thread culture might not be set correctly,
+                //  so use the lang/lanaguge param to set it.
+                if (lang == "") lang = language;
+                if (!string.IsNullOrEmpty(lang)) _lang = lang;
+
+                // default to current thread if we have no language.
+                if (_lang == "") _lang = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+
+                System.Threading.Thread.CurrentThread.CurrentCulture =
+                    System.Globalization.CultureInfo.CreateSpecificCulture(_lang);
+
+                #endregion
+
+                #endregion
+
+                #region "Do processing of command"
+
+                strOut = "ERROR!! - No Security rights for current user!";
+                if (CheckRights())
                 {
-                    case "test":
-                        strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
-                        break;
-                    case "getdata":
-                        strOut = GetData(context);
-                        break;
-                    case "addnew":
-                        strOut = GetData(context, true);
-                        break;
-                    case "deleterecord":
-                        strOut = DeleteData(context);
-                        break;
-                    case "savedata":
-                        strOut = SaveData(context);
-                        break;
-                    case "selectlang":
-                        strOut = SaveData(context);
-                        break;
+                    switch (paramCmd)
+                    {
+                        case "test":
+                            strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
+                            break;
+                        case "getdata":
+                            strOut = GetData(context);
+                            break;
+                        case "addnew":
+                            strOut = GetData(context, true);
+                            break;
+                        case "deleterecord":
+                            strOut = DeleteData(context);
+                            break;
+                        case "savedata":
+                            strOut = SaveData(context);
+                            break;
+                        case "selectlang":
+                            strOut = SaveData(context);
+                            break;
+                    }
                 }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+                Exceptions.LogException(ex);
             }
 
-            #endregion
 
             #region "return results"
 
@@ -113,8 +125,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         private String GetData(HttpContext context,bool clearCache = false)
         {
-            try
-            {
+
                 var objCtrl = new NBrightBuyController();
                 var strOut = "";
                 //get uploaded params
@@ -151,12 +162,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 }
 
                 return strOut;
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
 
         }
 
@@ -198,8 +203,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         private String SaveData(HttpContext context)
         {
-            try
-            {
                 var objCtrl = new NBrightBuyController();
 
                 //get uploaded params
@@ -246,56 +249,40 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     }
                 }
                 return "";
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
         }
 
         private String DeleteData(HttpContext context)
         {
-            try
-            {
-                var objCtrl = new NBrightBuyController();
+            var objCtrl = new NBrightBuyController();
 
-                //get uploaded params
-                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
-                if (Utils.IsNumeric(itemid))
+            //get uploaded params
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+            if (Utils.IsNumeric(itemid))
+            {
+                var nbi = objCtrl.Get(Convert.ToInt32(itemid));
+                if (nbi != null)
                 {
-                    var nbi = objCtrl.Get(Convert.ToInt32(itemid));
-                    if (nbi != null)
+                    var typecode = nbi.TypeCode;
+
+                    // run the promo before delete, so we remove any promo data that may exist.
+                    if (typecode == "CATEGORYPROMO")
                     {
-                        var typecode = nbi.TypeCode;
-
-                        // run the promo before delete, so we remove any promo data that may exist.
-                        if (typecode == "CATEGORYPROMO")
-                        {
-                            PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
-                        }
-                        if (typecode == "MULTIBUYPROMO")
-                        {
-                            PromoUtils.RemoveMultiBuyProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
-                        }
+                        PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
                     }
-
-                    // delete DB record
-                    objCtrl.Delete(Convert.ToInt32(itemid));
-
-                    NBrightBuyUtils.RemoveModCache(-2);
-
+                    if (typecode == "MULTIBUYPROMO")
+                    {
+                        PromoUtils.RemoveMultiBuyProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                    }
                 }
-                return "";
+
+                // delete DB record
+                objCtrl.Delete(Convert.ToInt32(itemid));
+
+                NBrightBuyUtils.RemoveModCache(-2);
 
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            return "";
         }
 
         #endregion

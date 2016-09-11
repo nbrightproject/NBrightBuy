@@ -101,13 +101,16 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             if (typeselect != "cat") groupid = propgroupid;
 
             gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
-            var prdList = gCat.GetAllArticles();
-
-            foreach (var prd in prdList)
+            if (gCat.Exists)
             {
-                // END Promo
-                RemoveProductPromoData(portalId, prd.ParentItemId, p.ItemID);
-                ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
+                var prdList = gCat.GetAllArticles();
+
+                foreach (var prd in prdList)
+                {
+                    // END Promo
+                    RemoveProductPromoData(portalId, prd.ParentItemId, p.ItemID);
+                    ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
+                }
             }
             return "OK";
         }
@@ -190,8 +193,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     {
                         var p = objCtrl.GetDataLang(promoid, lang);
                         var prdDataLang = objCtrl.GetDataLang(productId, lang);
-                        prdDataLang.SetXmlProperty("genxml/hidden/promodesc", p.GetXmlProperty("genxml/textbox/description"));
-                        objCtrl.Update(prdDataLang);
+                        if (prdDataLang != null)
+                        {
+                            prdDataLang.SetXmlProperty("genxml/hidden/promodesc", p.GetXmlProperty("genxml/textbox/description"));
+                            objCtrl.Update(prdDataLang);
+                        }
                     }
                 }
             }
@@ -317,8 +323,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         {
                             var p = objCtrl.GetDataLang(promoid, lang);
                             var prdDataLang = objCtrl.GetDataLang(productId, lang);
-                            prdDataLang.SetXmlProperty("genxml/hidden/promodesc", p.GetXmlProperty("genxml/textbox/description"));
-                            objCtrl.Update(prdDataLang);
+                            if (prdDataLang != null)
+                            {
+                                prdDataLang.SetXmlProperty("genxml/hidden/promodesc", p.GetXmlProperty("genxml/textbox/description"));
+                                objCtrl.Update(prdDataLang);
+                            }
                         }
                     }
                 }
@@ -335,27 +344,33 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var propapplygroupid = p.GetXmlPropertyInt("genxml/dropdownlist/propapply");
 
             var gCat = CategoryUtils.GetCategoryData(propgroupid, Utils.GetCurrentCulture());
-            var prdList = gCat.GetAllArticles();
-
-            foreach (var prd in prdList)
+            if (gCat.Exists)
             {
-                // END Promo
-                RemoveProductPromoData(portalId, prd.ParentItemId, promoid);
-                ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
+
+                var prdList = gCat.GetAllArticles();
+
+                foreach (var prd in prdList)
+                {
+                    // END Promo
+                    RemoveProductPromoData(portalId, prd.ParentItemId, promoid);
+                    ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
+                }
             }
 
             if (propapplygroupid != propgroupid && propapplygroupid > 0)
             {
                 gCat = CategoryUtils.GetCategoryData(propapplygroupid, Utils.GetCurrentCulture());
-                var prdList2 = gCat.GetAllArticles();
-
-                foreach (var prd in prdList2)
+                if (gCat.Exists)
                 {
-                    // END Promo
-                    RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
-                    ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
-                }
+                    var prdList2 = gCat.GetAllArticles();
 
+                    foreach (var prd in prdList2)
+                    {
+                        // END Promo
+                        RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
+                        ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
+                    }
+                }
             }
 
             return "OK";
@@ -396,8 +411,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 foreach (var lang in cultureList)
                 {
                     var prdDataLang = objCtrl.GetDataLang(productId, lang);
-                    prdDataLang.RemoveXmlNode("genxml/hidden/promodesc");
-                    objCtrl.Update(prdDataLang);
+                    if (prdDataLang != null)
+                    {
+                        prdDataLang.RemoveXmlNode("genxml/hidden/promodesc");
+                        objCtrl.Update(prdDataLang);
+                    }
                 }
             }
         }
