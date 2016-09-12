@@ -68,7 +68,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             if (DateTime.Now.Date >= dteF && DateTime.Now.Date <= dteU)
                             {
                                 // CALC Promo
-                                CalcProductSalePrice(p.PortalId, prd.ParentItemId, amounttype, amount, promoname, p.ItemID, overwrite);
+                                CalcProductSalePrice(p.PortalId, prd.ParentItemId, amounttype, amount, promoname, p.ItemID, overwrite,dteF,dteU);
                             }
                             if (DateTime.Now.Date > dteU)
                             {
@@ -138,7 +138,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             }
         }
 
-        private static void CalcProductSalePrice(int portalid, int productId, string amounttype, double amount, string promoname, int promoid, bool overwrite)
+        private static void CalcProductSalePrice(int portalid, int productId, string amounttype, double amount, string promoname, int promoid, bool overwrite,DateTime dteF, DateTime dteU)
         {
             var cultureList = DnnUtils.GetCultureCodeList(portalid);
             var objCtrl = new NBrightBuyController();
@@ -155,6 +155,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     prdData.SetXmlPropertyDouble("genxml/hidden/promoname", promoname);
                     prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
                     prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
+                    prdData.SetXmlProperty("genxml/hidden/datefrom", dteF.ToString("O"));
+                    prdData.SetXmlProperty("genxml/hidden/dateuntil", dteU.ToString("O"));
 
                     var lp = 1;
                     foreach (XmlNode nod in nodList)
@@ -255,7 +257,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         if (DateTime.Now.Date >= dteF && DateTime.Now.Date <= dteU)
                         {
                             // CALC Promo
-                            FlagProductMultiBuy(p.PortalId, prd.ParentItemId, promoname, p.ItemID, "PROMOMULTIBUY");
+                            FlagProductMultiBuy(p.PortalId, prd.ParentItemId, promoname, p.ItemID, "PROMOMULTIBUY",dteF,dteU);
                         }
                         if (DateTime.Now.Date > dteU)
                         {
@@ -274,7 +276,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             return "OK";
         }
 
-        private static void FlagProductMultiBuy(int portalid,int productId, string promoname, int promoid,String promoType)
+        private static void FlagProductMultiBuy(int portalid,int productId, string promoname, int promoid,String promoType, DateTime dteF, DateTime dteU)
         {
             var cultureList = DnnUtils.GetCultureCodeList(portalid);
             var objCtrl = new NBrightBuyController();
@@ -291,6 +293,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     prdData.SetXmlProperty("genxml/hidden/promoname", promoname);
                     prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
                     prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
+                    prdData.SetXmlProperty("genxml/hidden/datefrom", dteF.ToString("O"));
+                    prdData.SetXmlProperty("genxml/hidden/dateuntil", dteU.ToString("O"));
+
                     objCtrl.Update(prdData);
                     if (promoType == "PROMOMULTIBUY")
                     {
@@ -369,6 +374,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 prdData.RemoveXmlNode("genxml/hidden/promoname");
                 prdData.RemoveXmlNode("genxml/hidden/promoid");
                 prdData.RemoveXmlNode("genxml/hidden/promocalcdate");
+                prdData.RemoveXmlNode("genxml/hidden/datefrom");
+                prdData.RemoveXmlNode("genxml/hidden/dateuntil");
 
                 // remove any sale price amounts that may have been added by group promotion.
                 var l = prdData.XMLDoc.SelectNodes("genxml/models/genxml");
