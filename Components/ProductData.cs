@@ -457,9 +457,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // reload data so it's upto date with new ids
             DataRecord = objCtrl.Get(productid); 
-            DataLangRecord = objCtrl.Get(plangid); 
-            
-            if (triggerevent) NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
+            DataLangRecord = objCtrl.Get(plangid);
+
+            if (triggerevent)
+            {
+                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
+                // reload data so if event has altered data we use that.
+                DataRecord = objCtrl.Get(productid);
+                DataLangRecord = objCtrl.Get(plangid);
+            }
         }
 
         public void Delete()
@@ -1344,6 +1350,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (toLang != _lang)
                 {
                     var dlang = objCtrl.GetDataLang(DataRecord.ItemID, toLang) ?? DataLangRecord;
+                    dlang.Lang = toLang;
                     // product
                         var nodList = DataLangRecord.XMLDoc.SelectNodes("genxml/textbox/*");
                         if (nodList != null)

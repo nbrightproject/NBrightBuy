@@ -147,6 +147,9 @@
   <data name="helpmsg.Text" xml:space="preserve">
     <value>&lt;b&gt;Promotions are calcuated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
   </data>
+  <data name="langerror.Text" xml:space="preserve">
+    <value>ERROR!!!  This promotion has INVALID langauge records.  Delete this promotion and recreate as a new promotion.</value>
+  </data>
   <data name="lastcalculated.Text" xml:space="preserve">
     <value>Last Calculated</value>
   </data>

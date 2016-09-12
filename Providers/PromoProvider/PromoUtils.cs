@@ -223,7 +223,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
         {
             var objCtrl = new NBrightBuyController();
             var propgroupid = p.GetXmlPropertyInt("genxml/dropdownlist/propbuy");
-            var propapplygroupid = p.GetXmlPropertyInt("genxml/dropdownlist/propapply");
             var promoname = p.GetXmlProperty("genxml/textbox/name");
                 var validfrom = p.GetXmlProperty("genxml/textbox/validfrom");
                 var validuntil = p.GetXmlProperty("genxml/textbox/validuntil");
@@ -266,30 +265,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             objCtrl.Update(p);
                         }
                         ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
-                    }
-
-                    if (propapplygroupid != propgroupid && propapplygroupid > 0)
-                    {
-                        gCat = CategoryUtils.GetCategoryData(propapplygroupid, Utils.GetCurrentCulture());
-                        var prdList2 = gCat.GetAllArticles();
-
-                        foreach (var prd in prdList2)
-                        {
-                            if (DateTime.Now.Date >= dteF && DateTime.Now.Date <= dteU)
-                            {
-                                // CALC Promo
-                                FlagProductMultiBuy(p.PortalId, prd.ParentItemId, promoname, p.ItemID, "PROMOMULTIBUYAPPLY");
-                            }
-                            if (DateTime.Now.Date > dteU)
-                            {
-                                // END Promo
-                                RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
-                                p.SetXmlProperty("genxml/checkbox/disabled", "True");
-                                objCtrl.Update(p);
-                            }
-                            ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
-                        }
-
                     }
 
                     p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.

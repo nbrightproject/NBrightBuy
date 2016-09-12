@@ -163,6 +163,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterCategorySave, DataRecord);
+            // reload data so if event has altered data we use that.
+            DataRecord = _objCtrl.Get(DataRecord.ItemID);
+            DataLangRecord = _objCtrl.Get(DataLangRecord.ItemID);
         }
 
         public void Update(NBrightInfo info)
