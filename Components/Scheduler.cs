@@ -27,35 +27,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                     // clear down NBStore temp folder
                     var storeSettings = new StoreSettings(portal.PortalID);
-                    string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
-
-                    foreach (string file in files)
+                    if (Directory.Exists(storeSettings.FolderTempMapPath))
                     {
-                        FileInfo fi = new FileInfo(file);
-                        if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
-                    }
+                        string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
 
-                    // DO Scheduler Jobs
-                    var pluginData = new PluginData(portal.PortalID);
-                    var l = pluginData.GetSchedulerProviders();
-
-                    foreach (var p in l)
-                    {
-                        var prov = p.Value;
-                        ObjectHandle handle = null;
-                        handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
-                        if (handle != null)
+                        foreach (string file in files)
                         {
-                            var objProvider = (SchedulerInterface) handle.Unwrap();
-                            var strMsg = objProvider.DoWork(portal.PortalID);
-                            if (strMsg != "")
-                            {
-                                this.ScheduleHistoryItem.AddLogNote(strMsg);
-                            }
+                            FileInfo fi = new FileInfo(file);
+                            if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
                         }
 
-                    }
+                        // DO Scheduler Jobs
+                        var pluginData = new PluginData(portal.PortalID);
+                        var l = pluginData.GetSchedulerProviders();
 
+                        foreach (var p in l)
+                        {
+                            var prov = p.Value;
+                            ObjectHandle handle = null;
+                            handle = Activator.CreateInstance(prov.GetXmlProperty("genxml/textbox/assembly"), prov.GetXmlProperty("genxml/textbox/namespaceclass"));
+                            if (handle != null)
+                            {
+                                var objProvider = (SchedulerInterface)handle.Unwrap();
+                                var strMsg = objProvider.DoWork(portal.PortalID);
+                                if (strMsg != "")
+                                {
+                                    this.ScheduleHistoryItem.AddLogNote(strMsg);
+                                }
+                            }
+
+                        }
+                    }
                 }
 
                 this.ScheduleHistoryItem.Succeeded = true;
@@ -69,6 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 this.Errored(ref Ex);
             }
         }
+
 
     }
 
