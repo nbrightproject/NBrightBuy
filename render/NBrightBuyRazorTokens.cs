@@ -431,9 +431,9 @@ namespace NBrightBuy.render
                     catid = navigationdata.CategoryId;
                 }
 
-                if (catid > 0) // check we have a catid
+                if (catid <= 0) // check we have a catid
                 {
-                    return null;
+                    return new RawString(""); ;
                 }
 
                 var grpCatCtrl = new GrpCatController(Utils.GetCurrentCulture());
