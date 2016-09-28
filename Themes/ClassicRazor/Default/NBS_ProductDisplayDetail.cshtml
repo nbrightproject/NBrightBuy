@@ -12,7 +12,7 @@
     var info = (NBrightInfo)product.Info;
 }
 
-<div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)ZZZZZZZZZZZZZZZ</div>
+<div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
 
@@ -93,7 +93,7 @@
                 @if (product.IsOnSale)
                 {
                     <span>@ResourceKey("ProductView.onsale") : </span>
-                    if (product.Models.Count >= 1 && product.Options.Count >= 1)
+                    if (product.Models.Count >= 1 || product.Options.Count >= 1)
                     {
                         <span>@ResourceKey("ProductView.from") </span>
                     }
