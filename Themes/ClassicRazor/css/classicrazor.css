@@ -242,7 +242,7 @@ input.quantity {float:left;margin:0 6px;}
 .onsaleflag {background:#757370;color:#FFFFFF;font-size:12px;font-weight:bold;right:0;line-height:24px;padding:0 9px;position:absolute;top:5%;}
 .onsaleflag:after {border-color:#757370 #757370 #757370 transparent;border-style:solid;border-width:12px 7px;content:" ";left:-7px;position:absolute;}
 .addedtobasket {position:absolute;top:5%;width:100%;z-index:9000;text-align:center;}
-.addedtobasket span {background:#e5f6fe;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;padding:5px 8px;font-size:12px;}
+.addedtobasket span {background:#e5f6fe;color:black;-moz-border-radius:7px;-webkit-border-radius:7px;border-radius:7px;padding:15px 24px;font-size:18px;}
 
 /* Advanced Search */
 .advancedsearch{max-width:240px;list-style:none;padding:10px;margin:0;box-sizing:border-box;background:#FFFFFF;}

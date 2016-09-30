@@ -36,7 +36,7 @@
         <!-- show sort order selection -->
         <div>
                 @ResourceKey("General.OrderBy")@SortOrderDropDownList("ResourceKey:ProductView.orderby", Model)
-                @ResourceKey("General.pagesize")@PageSizeDropDownList("4,8,16,32", Model)
+                @ResourceKey("General.pagesize")@PageSizeDropDownList("8,16,32,64,128", Model)
         </div>
 
         <!-- Show category details -->
@@ -86,7 +86,10 @@
 
                             @if (!Model.GetSettingBool("cataloguemode"))
                             {
-                                <a href="javascript:void(0);" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+                                if (product.Models.Count == 1 && product.Options.Count == 0)
+                                {
+                                    <a href="javascript:void(0);" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
+                                }
                             }
 
                             <a href="@EntryUrl(info, Model)">@ResourceKey("ProductView.viewicon-lg")</a>

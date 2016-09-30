@@ -252,7 +252,7 @@
   <data name="viewicon.Text" xml:space="preserve">
     <value>&lt;span title="Information" class="fa-stack"&gt;
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-search fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
   <data name="wishlistadd.Text" xml:space="preserve">
