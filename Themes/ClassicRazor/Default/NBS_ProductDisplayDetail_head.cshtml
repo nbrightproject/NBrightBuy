@@ -65,9 +65,11 @@
 <!-- Lightbox CSS is only used on details page -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/css/imagelightbox.nbb.css" rel="stylesheet">
 
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yourpubid" async="async"></script>
-
+@if (Model.GetSetting("addthispubid") != "")
+{
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=@Model.GetSetting("addthispubid")" async="async"></script>
+}
 <!-- Quantity Input -->
 <script type="text/javascript">
 $(document).ready(function () {

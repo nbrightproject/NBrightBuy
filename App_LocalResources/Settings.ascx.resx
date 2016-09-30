@@ -444,4 +444,7 @@
   <data name="itemlistname.Text" xml:space="preserve">
     <value>Wishlist Name</value>
   </data>
+  <data name="addthispubid.Text" xml:space="preserve">
+    <value>AddThis PubID</value>
+  </data>
 </root>

@@ -1865,7 +1865,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\Classic\js\" />
-    <Folder Include="Themes\Wiseopro\css\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
