@@ -12,6 +12,8 @@
     var info = (NBrightInfo)product.Info;
 }
 
+<div class="addedtobasket" style="display:none;">@ResourceKey("ProductView.addedtobasket")</div>
+
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
@@ -21,8 +23,6 @@
         @if (@product.Imgs.Count >= 1)
         {
             <div class="images">
-
-                <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
                 <div class="image">
 

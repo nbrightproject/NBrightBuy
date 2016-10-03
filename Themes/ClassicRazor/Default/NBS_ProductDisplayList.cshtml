@@ -33,12 +33,6 @@
            <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
         }
 
-        <!-- show sort order selection -->
-        <div>
-                @ResourceKey("General.OrderBy")@SortOrderDropDownList("ResourceKey:ProductView.orderby", Model)
-                @ResourceKey("General.pagesize")@PageSizeDropDownList("8,16,32,64,128", Model)
-        </div>
-
         <!-- Show category details -->
         <div class="categorydetails">
 
@@ -52,6 +46,14 @@
             }
             <i>@(Category("message", Model))</i> @*add the message under title*@
         </div>
+		
+		<div class="productlistheader">
+			<!-- Product sort -->
+			<div class="productsort">
+				<label>@ResourceKey("General.pagesize") :</label>@PageSizeDropDownList("8,16,32,64,128", Model)
+				<label>@ResourceKey("General.OrderBy") :</label>@SortOrderDropDownList("ResourceKey:ProductView.orderby", Model)
+			</div>
+		</div>
 
         <div id="listwrapper" class="productlist">
 
@@ -60,6 +62,9 @@
             @{
                 var lang = "";
             }
+			
+			<div class="addedtobasket" style="display:none;">@ResourceKey("ProductView.addedtobasket")</div>
+			
             @foreach (NBrightInfo info in Model.List)
             {
                 var product = new ProductData(info.ItemID, info.Lang);
@@ -67,8 +72,6 @@
 
                 <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight")); margin-bottom: @(Model.GetSetting("classicitembottommargin"))px">
                     <!-- Product container -->
-
-                    <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
                     <div class="productimg" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
 
@@ -115,7 +118,7 @@
 
                         <div class="price">
 
-                            @if (product.Models.Count >= 1 || product.Options.Count >= 1)
+                            @if (product.Models.Count > 1 || product.Options.Count >= 1)
                             {
                             <span class="from">@ResourceKey("ProductView.from")</span>
                             }
