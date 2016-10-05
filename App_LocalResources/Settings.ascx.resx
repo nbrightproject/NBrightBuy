@@ -447,4 +447,10 @@
   <data name="addthispubid.Text" xml:space="preserve">
     <value>AddThis PubID</value>
   </data>
+  <data name="allowupload.Text" xml:space="preserve">
+    <value>Activate Client File Upload Option </value>
+  </data>
+  <data name="folderclientuploads.Text" xml:space="preserve">
+    <value>Client Upload Folder</value>
+  </data>
 </root>

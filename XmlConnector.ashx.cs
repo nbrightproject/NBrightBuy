@@ -249,6 +249,12 @@ namespace Nevoweb.DNN.NBrightBuy
                             strOut = FileUpload(context);
                         }
                         break;
+                    case "fileclientupload":
+                        if (StoreSettings.Current.GetBool("allowupload") && Utils.IsNumeric(itemId))
+                        {
+                            strOut = FileUpload(context, itemId);
+                        }
+                        break;
                     case "updateproductimages":
                         if (NBrightBuyUtils.CheckRights())
                         {
@@ -471,7 +477,7 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
 
-        private string FileUpload(HttpContext context)
+        private string FileUpload(HttpContext context, string itemid = "")
         {
             try
             {
@@ -484,7 +490,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "POST":
                     case "PUT":
-                        strOut = UploadFile(context);
+                        strOut = UploadFile(context, itemid);
                         break;
                     case "DELETE":
                         break;
@@ -507,27 +513,28 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         // Upload file to the server
-        private String UploadFile(HttpContext context)
+        private String UploadFile(HttpContext context, string itemid = "")
         {
             var statuses = new List<FilesStatus>();
             var headers = context.Request.Headers;
 
             if (string.IsNullOrEmpty(headers["X-File-Name"]))
             {
-                return UploadWholeFile(context, statuses);
+                return UploadWholeFile(context, statuses, itemid);
             }
             else
             {
-                return UploadPartialFile(headers["X-File-Name"], context, statuses);
+                return UploadPartialFile(headers["X-File-Name"], context, statuses, itemid);
             }
         }
 
         // Upload partial file
-        private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses)
+        private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string itemid = "")
         {
+            if (itemid != "") itemid += "_";
             if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
             var inputStream = context.Request.Files[0].InputStream;
-            var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + fileName;
+            var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
 
             using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
             {
@@ -547,13 +554,14 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         // Upload entire file
-        private String UploadWholeFile(HttpContext context, List<FilesStatus> statuses)
+        private String UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string itemid = "")
         {
+            if (itemid != "") itemid += "_";
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + file.FileName);
-                statuses.Add(new FilesStatus(Path.GetFileName(file.FileName), file.ContentLength));
+                file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + itemid + file.FileName);
+                statuses.Add(new FilesStatus(Path.GetFileName(itemid + file.FileName), file.ContentLength));
             }
             return "";
         }
@@ -967,7 +975,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl,"","XMLData","",StoreSettings.Current.Settings());
 
                 return strOut;
 

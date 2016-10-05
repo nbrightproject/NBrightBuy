@@ -98,6 +98,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool Exists { get; private set; }
         public bool IsInStock { get; private set; }
         public bool IsOnSale { get; private set; }
+        public bool ClientFileUpload { get; private set; }
 
 
         public Boolean Disabled
@@ -562,6 +563,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             IsOnSale = CheckIsOnSale();
             IsInStock = CheckIsInStock();
+            ClientFileUpload = CheckCleintFileUpload();
 
         }
 
@@ -1601,7 +1603,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 IsOnSale = CheckIsOnSale();
                 IsInStock = CheckIsInStock();
-
+                ClientFileUpload = CheckCleintFileUpload(); 
             }
             else
             {
@@ -1713,6 +1715,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             if (price == -1) price = 0;
             return price;
+        }
+
+        private bool CheckCleintFileUpload()
+        {
+            return Info.GetXmlPropertyBool("genxml/checkbox/chkfileupload");
         }
 
         #endregion

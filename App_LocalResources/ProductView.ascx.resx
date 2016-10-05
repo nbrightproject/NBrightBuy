@@ -351,4 +351,10 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="articles.Text" xml:space="preserve">
     <value>items</value>
   </data>
+  <data name="clientfileuploadmsg.Text" xml:space="preserve">
+    <value>Please select the file(s) required.</value>
+  </data>
+  <data name="clientfileuploadmsgend.Text" xml:space="preserve">
+    <value>File upload complete</value>
+  </data>
 </root>

@@ -152,40 +152,62 @@
                 <div class="options">
                     <!-- OPTION HERE -->
                     @ProductOptions(product)
+
                 </div>
                 <div class="clearfix"></div>
             }
 
-            @if (Model.GetSetting("cataloguemode") != "True")
+            @if (product.ClientFileUpload)
             {
-                <div class="buy">
-                    @if (@product.IsInStock)
+                <div class="options">
+                    <input id='optionfile' update='save' class="normalFileUpload" type='file' name="files[]" multiple/>
+                    <input id='optiontxtfile' style='display: none;' update='save' type='text'/>
+                    <div id="progressbar">
+                        <div id="progressbarpercent"></div>
+                    </div>
+                    <div id="clientfileuploadmsg">
+                        @ResourceKey("ProductView.clientfileuploadmsg")                        
+                    </div>
+                    <div id="clientfileuploadmsgend" style="display: none;">
+                        @ResourceKey("ProductView.clientfileuploadmsgend")
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            }
+
+
+
+
+                    @if (Model.GetSetting("cataloguemode") != "True")
+                    {
+                        <div class="buy">
+                            @if (@product.IsInStock)
                     {
                         if (Model.GetSetting("modeldisplaytype") != "2")
                         {
-                            <div class="quantityoptions">
-                                <a class="qtyminus" href="javascript:void(0)">-</a>
-                                <!-- "selectedaddqty"" expected by server as name of qty field -->
-                                @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
-                                <a class="qtyplus" href="javascript:void(0)">+</a>
-                            </div>
-                        }
+                                    <div class="quantityoptions">
+                                        <a class="qtyminus" href="javascript:void(0)">-</a>
+                                        <!-- "selectedaddqty"" expected by server as name of qty field -->
+                                        @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
+                                        <a class="qtyplus" href="javascript:void(0)">+</a>
+                                    </div>
+                                }
                             <!-- Buy button HERE -->
-                        <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
-                    }
-                    else
-                    {
-                        <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
-                    }
+                            <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
+                            }
+                            else
+                            {
+                                <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
+                            }
 
-                    <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+                            <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
 
+                        </div>
+                    }
+                    <div>
+                        @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
+                    </div>
                 </div>
-            }
-            <div>
-                @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
-            </div>
-        </div>
         <div class="clearfix"></div>
 
     <!-- Details -->
