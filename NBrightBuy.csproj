@@ -219,6 +219,20 @@
     </Compile>
     <Compile Include="Components\CatMenuRazorBuilder.cs" />
     <Compile Include="Components\Interfaces\EntityTypeInterface.cs" />
+    <Compile Include="OrderRazorAdmin.ascx.cs">
+      <DependentUpon>OrderRazorAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderRazorAdmin.ascx.designer.cs">
+      <DependentUpon>OrderRazorAdmin.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrderRazorAdminSettings.ascx.cs">
+      <DependentUpon>OrderRazorAdminSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderRazorAdminSettings.ascx.designer.cs">
+      <DependentUpon>OrderRazorAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProfileRazorFormSettings.ascx.cs">
       <DependentUpon>ProfileRazorFormSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -494,6 +508,12 @@
     <Content Include="CategoryRazorMenu.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="OrderRazorAdmin.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="OrderRazorAdminSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProfileRazorFormSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -600,7 +620,9 @@
     <Content Include="Themes\ClassicRazor\Default\orderreceiptemail.html" />
     <Content Include="Themes\ClassicRazor\Default\ordershippedemail.html" />
     <Content Include="Themes\ClassicRazor\Default\ordervalidatedemail.html" />
-    <Content Include="Themes\ClassicRazor\Default\NBS_OrderAdmin_head.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminList.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_OrderAdmin.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_OrderAdmin_head.cshtml" />
     <Content Include="Themes\ClassicRazor\Default\paymentFAIL.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
@@ -616,6 +638,8 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLink.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
+    <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
     <Content Include="Themes\ClassicRazor\img\addthis.png" />

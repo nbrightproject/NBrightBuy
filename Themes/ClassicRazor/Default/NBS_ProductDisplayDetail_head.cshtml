@@ -261,16 +261,24 @@
 
     <script type="text/javascript">
         
-        $('.addtobasket').hide();
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
 
+        $(document).ready(function() {
+
+        var uqid = s4(); 
         var filecount = 0;
         var filesdone = 0;
+
+        $('.addtobasket').hide();
+        $('#optionfileprefix').val(uqid);
+        $('input[id*="optionfilelist"]').val('');
 
         $(function () {
             'use strict';
             // Change this to the location of your server-side upload handler:
-            var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileclientupload&itemid=@(info.ItemID)';
-
+            var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileclientupload&itemid=' + uqid;
 
             $('#optionfile').fileupload({
                     url: url,
@@ -283,9 +291,8 @@
                     $('#progressbarpercent').css('width', progress + '%');
                 })
                 .bind('fileuploadadd', function (e, data) {
-                    $('input[id*="optiontxtfile"]').val('');
                     $.each(data.files, function (index, file) {
-                        $('input[id*="optiontxtfile"]').val($('input[id*="optiontxtfile"]').val() + file.name + ',');
+                        $('#optionfilelist').val($('#optionfilelist').val() + file.name + ',');
                         filesdone = filesdone + 1;
                     });
                 }).bind('fileuploadchange', function (e, data) {
@@ -307,6 +314,7 @@
 
         });
 
+        });
 
     </script>
 

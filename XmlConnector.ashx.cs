@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -250,7 +251,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                         break;
                     case "fileclientupload":
-                        if (StoreSettings.Current.GetBool("allowupload") && Utils.IsNumeric(itemId))
+                        if (StoreSettings.Current.GetBool("allowupload"))
                         {
                             strOut = FileUpload(context, itemId);
                         }
@@ -342,6 +343,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "orderby":
                         strOut = DoOrderBy(context);
+                        break;
+                    case "orderadmin_getlist":
+                        strOut = OrderAdminList(context);
                         break;
                 }
 
@@ -531,25 +535,30 @@ namespace Nevoweb.DNN.NBrightBuy
         // Upload partial file
         private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string itemid = "")
         {
-            if (itemid != "") itemid += "_";
-            if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
-            var inputStream = context.Request.Files[0].InputStream;
-            var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
-
-            using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+            Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+            if (fexpr.Match(fileName.ToLower()).Success)
             {
-                var buffer = new byte[1024];
 
-                var l = inputStream.Read(buffer, 0, 1024);
-                while (l > 0)
+                if (itemid != "") itemid += "_";
+                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+                var inputStream = context.Request.Files[0].InputStream;
+                var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
+
+                using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
                 {
-                    fs.Write(buffer, 0, l);
-                    l = inputStream.Read(buffer, 0, 1024);
+                    var buffer = new byte[1024];
+
+                    var l = inputStream.Read(buffer, 0, 1024);
+                    while (l > 0)
+                    {
+                        fs.Write(buffer, 0, l);
+                        l = inputStream.Read(buffer, 0, 1024);
+                    }
+                    fs.Flush();
+                    fs.Close();
                 }
-                fs.Flush();
-                fs.Close();
+                statuses.Add(new FilesStatus(new FileInfo(fullName)));
             }
-            statuses.Add(new FilesStatus(new FileInfo(fullName)));
             return "";
         }
 
@@ -560,8 +569,12 @@ namespace Nevoweb.DNN.NBrightBuy
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + itemid + file.FileName);
-                statuses.Add(new FilesStatus(Path.GetFileName(itemid + file.FileName), file.ContentLength));
+                Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+                if (fexpr.Match(file.FileName.ToLower()).Success)
+                {                    
+                    file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + itemid + file.FileName);
+                    statuses.Add(new FilesStatus(Path.GetFileName(itemid + file.FileName), file.ContentLength));
+                }
             }
             return "";
         }
@@ -2256,6 +2269,30 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
+        #region "Order Admin Methods"
+
+        private String OrderAdminList(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    return GetOrderListData(settings);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
+
+        #endregion
 
         #region "Settings"
 
@@ -2354,6 +2391,92 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
         #region "functions"
+
+        private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
+        {
+            var strOut = "";
+
+            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+            if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
+            if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
+            if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
+            if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
+            if (!settings.ContainsKey("searchdatefrom")) settings.Add("searchdatefrom", "");
+            if (!settings.ContainsKey("searchdateto")) settings.Add("searchdateto", "");
+            if (!settings.ContainsKey("searchorderstatus")) settings.Add("searchorderstatus", "");
+            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+            var razortemplate = settings["razortemplate"];
+            var returnLimit = Convert.ToInt32(settings["returnlimit"]);
+            var pageNumber = Convert.ToInt32(settings["pagenumber"]);
+            var pageSize = Convert.ToInt32(settings["pagesize"]);
+            var portalId = Convert.ToInt32(settings["portalid"]);
+
+            var searchText = settings["searchtext"];
+            var searchdatefrom = settings["searchdatefrom"];
+            var searchdateto = settings["searchdateto"];
+            var searchorderstatus = settings["searchorderstatus"];
+
+            var filter = "";
+            filter += " and (    (([xmldata].value('(genxml/billaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/ordernumber)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))  ) ";
+
+            if (searchdateto != "" && searchdatefrom != "")
+            {
+                filter += " and  ( ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) )  ";
+            }
+            if (searchdateto == "" && searchdatefrom != "")
+            {
+                filter += " and  ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) ";
+            }
+            if (searchdateto != "" && searchdatefrom == "")
+            {
+                filter += " and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') )  ";
+            }
+
+            var recordCount = 0;
+
+            var themeFolder = StoreSettings.Current.ThemeFolder;
+            if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+
+            var objCtrl = new NBrightBuyController();
+
+            if (paging) // get record count for paging
+            {
+                if (pageNumber == 0) pageNumber = 1;
+                if (pageSize == 0) pageSize = 20;
+
+                // get only entity type required
+                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "ORDER", filter);
+
+            }
+
+            var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+            var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
+
+            strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, StoreSettings.Current.Settings());
+
+            // add paging if needed
+            if (paging)
+            {
+                var pg = new NBrightCore.controls.PagingCtrl();
+                strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
+            }
+
+            return strOut;
+        }
+
 
         private String GetProductListData(Dictionary<String, String> settings,bool paging = true)
         {

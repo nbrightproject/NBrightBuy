@@ -161,7 +161,9 @@
             {
                 <div class="options">
                     <input id='optionfile' update='save' class="normalFileUpload" type='file' name="files[]" multiple/>
-                    <input id='optiontxtfile' style='display: none;' update='save' type='text'/>
+                    <input id='optionfilelist' style='display: none;' update='save' type='text'/>
+                    <input id='optionfileprefix' update='save' type='hidden' />
+                    
                     <div id="progressbar">
                         <div id="progressbarpercent"></div>
                     </div>
@@ -182,9 +184,9 @@
                     {
                         <div class="buy">
                             @if (@product.IsInStock)
-                    {
-                        if (Model.GetSetting("modeldisplaytype") != "2")
-                        {
+                            {
+                                if (Model.GetSetting("modeldisplaytype") != "2")
+                                {
                                     <div class="quantityoptions">
                                         <a class="qtyminus" href="javascript:void(0)">-</a>
                                         <!-- "selectedaddqty"" expected by server as name of qty field -->
@@ -192,8 +194,8 @@
                                         <a class="qtyplus" href="javascript:void(0)">+</a>
                                     </div>
                                 }
-                            <!-- Buy button HERE -->
-                            <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
+                                <!-- Buy button HERE -->
+                                <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
                             }
                             else
                             {

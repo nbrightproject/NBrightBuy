@@ -1,0 +1,90 @@
+﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Text
+@using System.Web
+@using System.Web.Razor.Parser
+@using System.Web.Razor.Parser.SyntaxTree
+@using System.Xml
+@using DotNetNuke.Common
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/classicrazor/resx")
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box">
+            <div class="box-content">
+                <div class="form-horizontal dnnForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">@ResourceKey("General.Search")</label>
+                            <div class="col-sm-2">
+                                <input id="OrderAdmin_searchtext" class="form-control" type="text">
+                            </div>
+                            <label class="col-sm-1 control-label">@ResourceKey("General.status")</label>
+                            <div class="col-sm-2">
+                                @OrderStatusDropDownList("OrderAdmin_searchorderstatus", "", "", true)
+                            </div>
+                            <div class="col-sm-2">
+                                <a id="OrderAdmin_cmdSearch" class="btn btn-primary" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i></a>
+                                <a id="OrderAdmin_cmdReset" class="btn btn-default" href="#"><i title="Reset" class="fa fa-refresh fa-fw fa-lg"></i></a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">@ResourceKey("General.From")</label>
+                            <div class="col-sm-2">
+                                <input id="OrderAdmin_datesearchfrom" class="form-control hasDatepicker" datatype="date" type="date">
+                            </div>
+                            <label class="col-sm-1 control-label">@ResourceKey("General.To")</label>
+                            <div class="col-sm-2">
+                                <input id="OrderAdmin_datesearchto" class="form-control hasDatepicker" datatype="date" type="date">
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="orderadmin">
+    <table class="orders">
+        <thead>
+            <tr>
+                <th>@ResourceKey("General.OrderDate")</th>
+                <th class="removecolumn">@ResourceKey("General.Modified")</th>
+                <th>@ResourceKey("General.Number")</th>
+                <th>@ResourceKey("General.Total")</th>
+                <th class="removecolumn">@ResourceKey("General.status")</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        @foreach (NBrightInfo nbi in Model.List)
+        {
+            <tr>
+                <td>@(nbi.GetXmlProperty("genxml/createddate"))</td>
+                <td>@(nbi.GetXmlProperty("genxml/modifieddate"))</td>
+                <td>@(nbi.GetXmlProperty("genxml/ordernumber"))</td>
+                <td>@CurrencyOf(nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</td>
+                <td>
+                    <span class="orderstatus orderstatus@(nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))">@ResourceKey("General.orderstatus" + nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))</span>
+                </td>
+                <td class="nowrap text-right">
+                    <a href='#' class='cmd_vieworder'><i title="View and Edit" class="fa fa-edit fa-fw fa-2x"></i></a>
+                    <a href='#' class='cmd_repeatorder'><i title="Repeat" class="fa fa-repeat fa-fw fa-2x"></i></a>
+                </td>
+            </tr>
+
+        }
+        </tbody>
+    </table>
+
+</div>
+

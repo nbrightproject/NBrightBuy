@@ -74,6 +74,18 @@
                                 </div>
                                 <div class="cartlistoptions">
                                     @{
+                                        XmlNodeList nodClientFileList = nbi.XMLDoc.SelectNodes("genxml/clientfiles/file");
+                                        if (nodClientFileList != null)
+                                        {
+                                            foreach (XmlNode cfilexml in nodClientFileList)
+                                            {
+                                                var nbiClientFile = new NBrightInfo();
+                                                nbiClientFile.XMLData = cfilexml.OuterXml; // use NBrightInfo class, just to make life eaiser.
+                                                <div>
+                                                    @(nbiClientFile.GetXmlProperty("file/name"))
+                                                </div>
+                                            }
+                                        }
 
                                         XmlNodeList nodOptList = nbi.XMLDoc.SelectNodes("genxml/options/option");
                                         if (nodOptList != null)

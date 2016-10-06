@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -506,13 +507,50 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'), "genxml");
 
+                // check if we have a client file upload
+                var clientfileuopload = objInfoIn.GetXmlProperty("genxml/textbox/optionfilelist") != "";
+
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
-                if (nodItem == null)
+                if (nodItem == null || clientfileuopload)
+                {
+                    #region "Client Files"
+
+                    if (clientfileuopload)
+                    {
+                        // client has uploaded files, so save these to client upload folder and create link in cart data.
+                        var flist = objInfoIn.GetXmlProperty("genxml/textbox/optionfilelist").TrimEnd(',');
+                        var fprefix = objInfoIn.GetXmlProperty("genxml/hidden/optionfileprefix") + "_";
+                        var fileXml = "<clientfiles>";
+                        foreach (var f in flist.Split(','))
+                        {
+                            var fullName = StoreSettings.Current.FolderTempMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + fprefix + f;
+                            var extension = Path.GetExtension(fullName);
+                            if (File.Exists(fullName))
+                            {
+                                var newDocFileName = StoreSettings.Current.FolderClientUploadsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Guid.NewGuid() + extension;
+                                File.Copy(fullName, newDocFileName, true);
+                                File.Delete(fullName);
+                                var docurl = StoreSettings.Current.FolderClientUploads.TrimEnd('/') + "/" + Path.GetFileName(newDocFileName);
+                                fileXml += "<file>";
+                                fileXml += "<mappath>" + newDocFileName + "</mappath>";
+                                fileXml += "<url>" + docurl + "</url>";
+                                fileXml += "<name>" + f + "</name>";
+                                fileXml += "<prefix>" + fprefix + "</prefix>";
+                                fileXml += "</file>";
+                            }
+                        }
+                        fileXml += "</clientfiles>";
+                        objInfo.AddXmlNode(fileXml, "clientfiles", "genxml");
+                    }
+
+                    #endregion
+
                     if (replaceIndex >= 0 && replaceIndex < _itemList.Count)
                         _itemList[replaceIndex] = objInfo; //replace
                     else
                         _itemList.Add(objInfo); //add as new item
+                }
                 else
                 {
                     //replace item

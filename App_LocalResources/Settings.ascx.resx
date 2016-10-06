@@ -453,4 +453,7 @@
   <data name="folderclientuploads.Text" xml:space="preserve">
     <value>Client Upload Folder</value>
   </data>
+  <data name="fileregexpr.Text" xml:space="preserve">
+    <value>Accepted File Upload RegEx</value>
+  </data>
 </root>

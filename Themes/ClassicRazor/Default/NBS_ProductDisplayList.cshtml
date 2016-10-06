@@ -89,7 +89,7 @@
 
                             @if (!Model.GetSettingBool("cataloguemode"))
                             {
-                                if (product.Models.Count == 1 && product.Options.Count == 0)
+                                if (product.Models.Count == 1 && product.Options.Count == 0 && !product.ClientFileUpload)
                                 {
                                     <a href="javascript:void(0);" class="addtobasket" itemid="@(info.ItemID)">@ResourceKey("ProductView.addtobasketicon-lg")</a>
                                 }

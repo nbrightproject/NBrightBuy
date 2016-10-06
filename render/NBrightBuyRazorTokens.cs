@@ -924,8 +924,7 @@ namespace NBrightBuy.render
 
 
         #endregion
-
-
+        
         #region "Checkout"
 
         public IEncodedString CountrySelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true)
@@ -1081,8 +1080,50 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        #endregion 
+        #endregion
 
+        #region "OrderAdmin"
+
+
+        public IEncodedString OrderStatusDropDownList(String id, String selectedOrderStatus = "", String cssclass = "",bool allowBlank = false)
+        {
+
+            var strOut = "";
+            var Resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
+            var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", Resxpath, Utils.GetCurrentCulture());
+            var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", Resxpath, Utils.GetCurrentCulture());
+            if (orderstatuscode != null && orderstatustext != null)
+            {
+                if (allowBlank)
+                {
+                    orderstatuscode = "," + orderstatuscode;
+                    orderstatustext = "," + orderstatustext;
+                }
+
+                var aryCode = orderstatuscode.Split(',');
+                var aryText = orderstatustext.Split(',');
+
+                strOut = "<select id='" + id + "' class='orderstatusdropdown" + cssclass + " '>";
+                var c = 0;
+                var s = "";
+                foreach (var t in aryCode)
+                {
+                    var url = "";
+
+                    s = "";
+                    if (selectedOrderStatus == t) s = "selected";
+
+                    strOut += "    <option value='" + t + "' " + s + ">" + aryText[c] + "</option>";
+                    c += 1;
+
+                }
+                strOut += "</select>";
+            }
+            return new RawString(strOut);
+        }
+
+
+        #endregion
 
         #endregion
 
