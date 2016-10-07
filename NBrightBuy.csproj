@@ -595,6 +595,7 @@
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
     <Content Include="Themes\ClassicRazor\Default\NBS_Payment_head.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadminbody.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminDetail.cshtml" />
     <Content Include="Themes\ClassicRazor\Default\orderadmindetail.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadmindetailf.html" />
     <Content Include="Themes\ClassicRazor\Default\orderadmindetailh.html" />

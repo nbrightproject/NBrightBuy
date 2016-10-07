@@ -347,6 +347,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "orderadmin_getlist":
                         strOut = OrderAdminList(context);
                         break;
+                    case "orderadmin_getdetail":
+                        strOut = OrderAdminDetail(context);
+                        break;
+                    case "orderadmin_reorder":
+                        strOut = OrderAdminReOrder(context);
+                        break;                        
                 }
 
                 #endregion
@@ -2287,8 +2293,57 @@ namespace Nevoweb.DNN.NBrightBuy
                 return ex.ToString();
             }
 
+        }
+
+        private String OrderAdminDetail(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    return GetOrderDetailData(settings);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
 
         }
+
+        private String OrderAdminReOrder(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+                    var selecteditemid = settings["selecteditemid"];
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
+                        if (orderData.UserId == UserController.Instance.GetCurrentUserInfo().UserID || NBrightBuyUtils.CheckRights())
+                        {
+                            orderData.CopyToCart(false);
+                        }
+                    }
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
 
 
 
@@ -2392,29 +2447,73 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "functions"
 
-        private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
+        private String GetOrderDetailData(Dictionary<String, String> settings, bool paging = true)
         {
             var strOut = "";
 
+            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+            if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+
+            var selecteditemid = settings["selecteditemid"];
+            var razortemplate = settings["razortemplate"];
+            var portalId = Convert.ToInt32(settings["portalid"]);
+
+            if (!Utils.IsNumeric(selecteditemid)) return "";
+
+
+            var themeFolder = StoreSettings.Current.ThemeFolder;
+            if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+
+            var objCtrl = new NBrightBuyController();
+
+            var ordData = new OrderData(portalId, Convert.ToInt32(selecteditemid));
+
+            // check for user or manager.
+            if (UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
+            {
+                if (!NBrightBuyUtils.CheckRights())
+                {
+                    return "";
+                }
+            }
+
+            strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, StoreSettings.Current.Settings());
+
+
+            return strOut;
+        }
+
+        private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
+        {
+            var strOut = "";
+            
+            if (!settings.ContainsKey("userid")) settings.Add("userid", "-1");
             if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
             if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
             if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
             if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
             if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
-            if (!settings.ContainsKey("searchdatefrom")) settings.Add("searchdatefrom", "");
-            if (!settings.ContainsKey("searchdateto")) settings.Add("searchdateto", "");
+            if (!settings.ContainsKey("dtesearchdatefrom")) settings.Add("dtesearchdatefrom", "");
+            if (!settings.ContainsKey("dtesearchdateto")) settings.Add("dtesearchdateto", "");
             if (!settings.ContainsKey("searchorderstatus")) settings.Add("searchorderstatus", "");
             if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+            if (!Utils.IsNumeric(settings["userid"])) settings["pagenumber"] = "1";
+            if (!Utils.IsNumeric(settings["pagenumber"])) settings["pagenumber"] = "1";
+            if (!Utils.IsNumeric(settings["pagesize"])) settings["pagenumber"] = "20";
+            if (!Utils.IsNumeric(settings["returnlimit"])) settings["returnlimit"] = "50";
 
             var razortemplate = settings["razortemplate"];
             var returnLimit = Convert.ToInt32(settings["returnlimit"]);
             var pageNumber = Convert.ToInt32(settings["pagenumber"]);
             var pageSize = Convert.ToInt32(settings["pagesize"]);
             var portalId = Convert.ToInt32(settings["portalid"]);
+            var userid = settings["userid"];            
 
             var searchText = settings["searchtext"];
-            var searchdatefrom = settings["searchdatefrom"];
-            var searchdateto = settings["searchdateto"];
+            var searchdatefrom = settings["dtesearchdatefrom"];
+            var searchdateto = settings["dtesearchdateto"];
             var searchorderstatus = settings["searchorderstatus"];
 
             var filter = "";
@@ -2442,8 +2541,27 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             if (searchdateto != "" && searchdatefrom == "")
             {
-                filter += " and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') )  ";
+                filter += " and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) ";
             }
+
+            if (searchorderstatus != "")
+            {
+                filter += " and ([xmldata].value('(genxml/dropdownlist/orderstatus)[1]', 'nvarchar(max)') = '" + searchorderstatus + "')   ";
+            }
+
+            // check for user or manager.
+            if (Utils.IsNumeric(userid) && UserController.Instance.GetCurrentUserInfo().UserID == Convert.ToInt32(userid))
+            {
+                filter += " and ( userid = " + userid + ")   ";
+            }
+            else
+            {
+                if (!NBrightBuyUtils.CheckRights())
+                {
+                    return "";
+                }
+            }
+
 
             var recordCount = 0;
 
@@ -2468,7 +2586,7 @@ namespace Nevoweb.DNN.NBrightBuy
             strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, StoreSettings.Current.Settings());
 
             // add paging if needed
-            if (paging)
+            if (paging && (recordCount > pageSize))
             {
                 var pg = new NBrightCore.controls.PagingCtrl();
                 strOut += pg.RenderPager(recordCount, pageSize, pageNumber);

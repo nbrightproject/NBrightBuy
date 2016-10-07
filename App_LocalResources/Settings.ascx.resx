@@ -456,4 +456,7 @@
   <data name="fileregexpr.Text" xml:space="preserve">
     <value>Accepted File Upload RegEx</value>
   </data>
+  <data name="websiteurl.Text" xml:space="preserve">
+    <value>Website URL</value>
+  </data>
 </root>
