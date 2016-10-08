@@ -640,6 +640,10 @@
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
+    <None Include="Themes\config\default\Admin_Orders.cshtml" />
+    <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
+    <None Include="Themes\config\default\Admin_OrdersDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_OrdersList.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
@@ -1201,6 +1205,7 @@
     <Content Include="Themes\config\default\productselectfooter.html" />
     <Content Include="Themes\config\default\productselectheader.html" />
     <Content Include="Themes\config\default\ProductView_Settings.html" />
+    <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
     <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />

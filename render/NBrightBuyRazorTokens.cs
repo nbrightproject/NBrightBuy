@@ -922,9 +922,17 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString RenderRazorInjectTemplate(NBrightInfo info, String razorTemplate, String controlPath = "/DesktopModules/NBright/NBrightBuy", String themeFolder = "config", String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var strOut = NBrightBuyUtils.RazorTemplRender(razorTemplate, 0, "", info, controlPath, themeFolder, lang, StoreSettings.Current.Settings());
+
+            return new RawString(strOut);
+        }
+
 
         #endregion
-        
+
         #region "Checkout"
 
         public IEncodedString CountrySelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true)
@@ -1103,7 +1111,7 @@ namespace NBrightBuy.render
                 var aryCode = orderstatuscode.Split(',');
                 var aryText = orderstatustext.Split(',');
 
-                strOut = "<select id='" + id + "' class='orderstatusdropdown" + cssclass + " '>";
+                strOut = "<select id='" + id + "' class='orderstatusdropdown " + cssclass + " '>";
                 var c = 0;
                 var s = "";
                 foreach (var t in aryCode)

@@ -1,0 +1,139 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+
+@RenderTemplate("/DesktopModules/NBright/NBrightBuy/Themes/config/default/datepicker.cshtml", Model)
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+
+<!-- fields required to send required ajax cart to server -->
+<span id="nbs_orderadminsearch">
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"></input>
+    <input id="razortemplate" type="hidden" value=""></input>
+    <input id="themefolder" type="hidden" value="config"></input>
+    <input id='currentlang' type='hidden' value='@Model.GetUrlParam("language")'></input> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
+    <input id="lang" type="hidden" value="@Model.GetUrlParam("language")"></input> <!-- default to current language -->
+    <input id="pagesize" type="hidden" value="20"></input>
+    <input id="pagenumber" type="hidden" value="1"></input>
+    <input id="searchtext" type="hidden" value=""></input>
+    <input id="dtesearchdatefrom" type="hidden" value="" datatype='date' ></input>
+    <input id="dtesearchdateto" type="hidden" value="" datatype='date'></input>
+    <input id="searchorderstatus" type="hidden" value=""></input>
+    <input id="selecteditemid" type="hidden" value=""></input>    
+</span>
+
+<!-- Scripts to do ajax calls -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js" type="text/javascript"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+            // start load all ajax data, continued by js in product.js file
+            $('.processing').show();
+
+            $('#razortemplate').val('Admin_OrdersList.cshtml');
+            nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+
+            $(document).on("nbxgetcompleted", Admin_Order_nbxgetCompleted); // assign a completed event for the ajax calls
+
+            // function to do actions after an ajax call has been made.
+            function Admin_Order_nbxgetCompleted(e) {
+
+                if (e.cmd == 'orderadmin_getlist') {
+
+                    $("#OrderAdmin_cmdExport").show();
+                    $("#OrderAdmin_cmdSave").hide();
+                    $("#OrderAdmin_cmdReturn").hide();
+
+                    $('#OrderAdmin_searchtext').val($('#searchtext').val());
+                    $('#OrderAdmin_datesearchfrom').val($('#dtesearchdatefrom').val());
+                    $('#OrderAdmin_datesearchto').val($('#dtesearchdateto').val());
+                    $('#OrderAdmin_searchorderstatus').val($('#searchorderstatus').val());
+
+                    // editbutton created by list, so needs to be assigned on each render of list.
+                    $('.cmd_vieworder').click(function() {
+                        $('.processing').show();
+                        $('#razortemplate').val('Admin_OrdersDetail.cshtml');
+                        $('#selecteditemid').val($(this).attr('itemid'));
+                        nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('.cmd_repeatorder').click(function() {
+                        $('.processing').show();
+                        $('#selecteditemid').val($(this).attr('itemid'));
+                        nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('.cmdPg').click(function() {
+                        $('.processing').show();
+                        $('#pagenumber').val($(this).attr('pagenumber'));
+                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('#OrderAdmin_cmdSearch').click(function() {
+                        $('.processing').show();
+                        $('#pagenumber').val('1');
+                        $('#searchtext').val($('#OrderAdmin_searchtext').val());
+                        $('#dtesearchdatefrom').val($('#OrderAdmin_datesearchfrom').val());
+                        $('#dtesearchdateto').val($('#OrderAdmin_datesearchto').val());
+                        $('#searchorderstatus').val($('#OrderAdmin_searchorderstatus').val());
+
+                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('#OrderAdmin_cmdReset').click(function() {
+                        $('.processing').show();
+                        $('#pagenumber').val('1');
+                        $('#searchtext').val('');
+                        $('#dtesearchdatefrom').val('');
+                        $('#dtesearchdateto').val('');
+                        $('#searchorderstatus').val('');
+
+                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+
+                }
+
+                if (e.cmd == 'orderadmin_getdetail') {
+
+                    $("#OrderAdmin_cmdExport").hide();
+                    $("#OrderAdmin_cmdSave").show();
+                    $("#OrderAdmin_cmdReturn").show();
+
+                    $('#OrderAdmin_cmdReturn').click(function() {
+                        $('.processing').show();
+                        $('#razortemplate').val('Admin_OrdersList.cshtml');
+                        $('#selecteditemid').val('');
+                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('#OrderAdmin_cmdRepeat').click(function () {
+                        $('.processing').show();
+                        $('#selecteditemid').val($(this).attr('itemid'));
+                        nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                    });                    
+
+                }
+
+
+                if (e.cmd == 'orderadmin_reorder') {
+                    $('.processing').show();
+                    @{
+                        var redirecturl = Globals.NavigateURL(StoreSettings.Current.CartTabId, "");
+                    }
+                    window.location = "@(redirecturl)";
+                }
+
+            };
+
+        });
+
+    </script>
+

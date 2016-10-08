@@ -156,7 +156,7 @@
                     @if (nbi.GetXmlProperty("genxml/textbox/shippingdate") != "")
                     {
                         <div>
-                            <b>@nbi.GetXmlProperty("genxml/textbox/shippingdate") [< tag type = "valueof" xpath = "genxml/textbox/shippingdate" datatype = 'date' format = 'dd MMM yyyy' />]</b>
+                            <b>@nbi.GetXmlProperty("genxml/textbox/shippingdate") @nbi.GetXmlProperty("genxml/textbox/shippingdate")</b>
                         </div>
                         <div>@nbi.GetXmlProperty("genxml/textbox/shippingdate")</div>
                     }
@@ -236,8 +236,8 @@
                     <th>@ResourceKey("General.Item")</th>
                     <th class="text-center removecolumn">@ResourceKey("General.Code")</th>
                     <th class="text-center removecolumn">@ResourceKey("General.Qty")</th>
-                    <th>@ResourceKey("General.unit")</th>
-                    <th>@ResourceKey("General.Total")</th>
+                    <th class="text-right">@ResourceKey("General.unit")</th>
+                    <th class="text-right">@ResourceKey("General.Total")</th>
                 </tr>
             </thead>
             <tbody>
@@ -282,8 +282,8 @@
                     </td>
                     <td class="text-center removecolumn">@nbiitem.GetXmlProperty("genxml/modelref")</td>
                     <td class="text-center removecolumn">@nbiitem.GetXmlProperty("genxml/qty")</td>
-                    <td>@CurrencyOf(@nbiitem.GetXmlPropertyDouble("genxml/appliedcost"))</td>
-                    <td>@CurrencyOf(@nbiitem.GetXmlPropertyDouble("genxml/appliedtotalcost"))</td>
+                    <td class="text-right">@CurrencyOf(@nbiitem.GetXmlPropertyDouble("genxml/appliedcost"))</td>
+                    <td class="text-right">@CurrencyOf(@nbiitem.GetXmlPropertyDouble("genxml/appliedtotalcost"))</td>
                 </tr>
 
                                 }
@@ -292,31 +292,31 @@
                     <td></td>
                     <td></td>
                     <td colspan="2" class="text-right removecolumn">@ResourceKey("General.Subtotal")</td>
-                    <td>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedsubtotal"))</td>
+                    <td class="text-right">@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedsubtotal"))</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td colspan="2" class="text-right removecolumn">@ResourceKey("General.Discount")</td>
-                    <td>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/applieddiscount"))</td>
+                    <td class="text-right">@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/applieddiscount"))</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td colspan="2" class="text-right removecolumn">@ResourceKey("General.Shipping")</td>
-                    <td>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedshipping"))</td>
+                    <td class="text-right">@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedshipping"))</td>
                 </tr>
                 <tr>
                     <td><small>@ResourceKey("OrderAdmin.VATincluded")</small></td>
                     <td></td>
                     <td colspan="2" class="text-right removecolumn">@ResourceKey("General.Tax")</td>
-                    <td>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/taxcost"))</td>
+                    <td class="text-right">@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/taxcost"))</td>
                 </tr>
             <tr class="active">
                 <td></td>
                 <td></td>
                 <td colspan="2" class="text-right removecolumn"><b>@ResourceKey("General.Total")</b></td>
-                <td><b>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</b></td>
+                <td class="text-right"><b>@CurrencyOf(@nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</b></td>
             </tr>
                 @if (nbi.GetXmlProperty("genxml/extrainfo/genxml/textbox/extramessage") != "")
                 {

@@ -2451,19 +2451,23 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var strOut = "";
 
+            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
             if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
             if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
             if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
 
+            var themeFolder = settings["themefolder"];
             var selecteditemid = settings["selecteditemid"];
             var razortemplate = settings["razortemplate"];
             var portalId = Convert.ToInt32(settings["portalid"]);
 
             if (!Utils.IsNumeric(selecteditemid)) return "";
 
-
-            var themeFolder = StoreSettings.Current.ThemeFolder;
-            if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            if (themeFolder == "")
+            {
+                themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            }
 
             var objCtrl = new NBrightBuyController();
 
@@ -2488,6 +2492,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var strOut = "";
             
+            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
             if (!settings.ContainsKey("userid")) settings.Add("userid", "-1");
             if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
             if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
@@ -2504,6 +2509,7 @@ namespace Nevoweb.DNN.NBrightBuy
             if (!Utils.IsNumeric(settings["pagesize"])) settings["pagenumber"] = "20";
             if (!Utils.IsNumeric(settings["returnlimit"])) settings["returnlimit"] = "50";
 
+            var themeFolder = settings["themefolder"];
             var razortemplate = settings["razortemplate"];
             var returnLimit = Convert.ToInt32(settings["returnlimit"]);
             var pageNumber = Convert.ToInt32(settings["pagenumber"]);
@@ -2565,8 +2571,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var recordCount = 0;
 
-            var themeFolder = StoreSettings.Current.ThemeFolder;
-            if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            if (themeFolder == "")
+            {
+                themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            }
 
             var objCtrl = new NBrightBuyController();
 
