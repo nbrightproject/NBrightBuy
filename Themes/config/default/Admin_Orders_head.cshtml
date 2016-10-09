@@ -26,12 +26,15 @@
     <input id="selecteditemid" type="hidden" value=""></input>    
 </span>
 
+<div style="display: none;" id="actionreturn"></div>
+
 <!-- Scripts to do ajax calls -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js" type="text/javascript"></script>
 
 
-    <script>
+
+<script>
 
         $(document).ready(function() {
             // start load all ajax data, continued by js in product.js file
@@ -118,10 +121,29 @@
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
                         nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+
+                    $('.OrderAdmin_cmdSave').click(function () {
+                        $('.processing').show();
+                        nbxget('orderadmin_save', '#orderadmin', '#actionreturn');
+                    });
+
+                    $('#OrderAdmin_cmdDeleteInvoice').click(function () {
+                        $('.processing').show();
+                        nbxget('orderadmin_removeinvoice', '#orderadmin', '#actionreturn');
                     });                    
 
                 }
 
+                if (e.cmd == 'orderadmin_removeinvoice') {
+                    $('.processing').show();
+                    nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                }
+
+                if (e.cmd == 'orderadmin_save') {
+                    $('.processing').show();
+                    nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                }
 
                 if (e.cmd == 'orderadmin_reorder') {
                     $('.processing').show();
@@ -136,4 +158,9 @@
         });
 
     </script>
+
+    <!-- The basic File Upload plugin -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.fileupload.js"></script>
+
+
 

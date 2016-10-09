@@ -822,6 +822,17 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString DateOf(String rawDate, String dateFormat = "dd MMM yyyy HH:mm")
+        {
+            var strOut = rawDate;
+            if (NBrightCore.common.Utils.IsDate(rawDate))
+            {
+                strOut = Convert.ToDateTime(rawDate).ToString(dateFormat);
+            }
+
+            return new RawString(strOut);
+        }
+
         /// <summary>
         /// Display a Sort order selection on the product list
         /// 

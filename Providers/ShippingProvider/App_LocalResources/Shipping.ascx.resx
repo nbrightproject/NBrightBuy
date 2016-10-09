@@ -138,4 +138,7 @@
   <data name="unit.data" xml:space="preserve">
     <value>By Weight;By Price</value>
   </data>
+  <data name="displayname.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
 </root>

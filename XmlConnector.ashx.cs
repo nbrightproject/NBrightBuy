@@ -352,6 +352,12 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "orderadmin_reorder":
                         strOut = OrderAdminReOrder(context);
+                        break;
+                    case "orderadmin_save":
+                        strOut = OrderAdminSave(context);
+                        break;
+                    case "orderadmin_removeinvoice":
+                        strOut = OrderAdminRemoveInvoice(context);
                         break;                        
                 }
 
@@ -2191,7 +2197,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string RecalculateSummary(HttpContext context)
         {
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
+            var objCtrl = new NBrightBuyController();
+
+            var currentcart = new CartData(PortalSettings.Current.PortalId);
                 var ajaxInfo = GetAjaxInfo(context, true);
                 var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
 
@@ -2200,7 +2208,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider"));
 
-                var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
+            var shipref = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider");
+            var displayanme = "";
+            var shipInfo = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shipref);
+            if (shipInfo != null)
+            {
+                displayanme = shipInfo.GetXmlProperty("genxml/textbox/shippingdisplayname");
+            }
+            if (displayanme == "") displayanme = shipref;
+            currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme", displayanme);
+
+            var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/shippingproductcode", shippingproductcode);
                 var pickuppointref = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointref");
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
@@ -2344,7 +2362,122 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
 
+        private String OrderAdminSave(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (itemId > 0)
+                    {
+                        var ordData = new OrderData(itemId);
+                        if (ordData != null)
+                        {
+                            var newStatusOrder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
+                            if (ordData.OrderStatus != newStatusOrder)
+                            {
+                                ordData.OrderStatus = newStatusOrder;
+                            }
 
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", ajaxInfo.GetXmlProperty("genxml/textbox/shippingdate"), TypeCode.DateTime);
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/trackingcode", ajaxInfo.GetXmlProperty("genxml/textbox/trackingcode"));
+
+                            // do audit notes
+                            if (ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes") != "")
+                            {
+                                ordData.AddAuditMessage(ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes"),"notes", UserController.Instance.GetCurrentUserInfo().Username,"False");
+                            }
+
+                            // save relitive path also
+                            if (ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist") != "")
+                            {
+                                var fname = Path.GetFileName(ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist"));
+
+                                if (File.Exists(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname))
+                                {
+                                    var newfname = Utils.GetUniqueKey();
+                                    // save relitive path also
+                                    if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
+                                    {
+                                        File.Delete(StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    }
+
+                                    File.Copy(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname, StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    File.Delete(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname);
+
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath", StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoiceuploadname", fname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", Path.GetExtension(fname));
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", StoreSettings.Current.FolderUploads + "/" + newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "NBS" + ordData.OrderNumber + Path.GetExtension(fname));
+                                }
+                            }
+
+
+
+                            ordData.Save();
+                        }
+                    }
+
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
+        private String OrderAdminRemoveInvoice(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (itemId > 0)
+                    {
+                        var ordData = new OrderData(itemId);
+                        if (ordData != null)
+                        {
+
+                            // save relitive path also
+                            if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
+                            {
+                                File.Delete(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath"));
+                            }
+
+
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath","");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "");
+                            ordData.AddAuditMessage(NBrightBuyUtils.ResourceKey("OrderAdmin.cmdDeleteInvoice"), "invremove", UserController.Instance.GetCurrentUserInfo().Username, "False");
+
+                            ordData.Save();
+                        }
+                    }
+
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
 
 
         #endregion

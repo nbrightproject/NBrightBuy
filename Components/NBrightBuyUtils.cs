@@ -1320,6 +1320,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return categoryid;
         }
 
+        public static string ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var strOut = "";
+            strOut = DnnUtils.GetResourceString("/DesktopModules/NBright/NBrightBuy/App_LocalResources/", resourceFileKey, resourceExtension, lang);
+            return strOut;
+        }
+
         #region "Razor"
 
         public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder = "config", string lang = "")
