@@ -230,6 +230,10 @@
                         var shipdisplay = nbi.GetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme");
                         if (shipdisplay == "")
                         {
+                            shipdisplay = nbi.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider/@selectedtext");
+                        }
+                        if (shipdisplay == "")
+                        {
                             shipdisplay = nbi.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
                         }
                     }
