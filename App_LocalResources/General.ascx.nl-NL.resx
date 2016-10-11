@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -61,10 +61,10 @@
     <value xml:space="preserve">Barcode</value>
   </data>
   <data name="BillTo.Text">
-    <value xml:space="preserve">Bill aan</value>
+    <value xml:space="preserve">Stuur factuur naar</value>
   </data>
   <data name="Breadcrumb.Text">
-    <value xml:space="preserve">' Breadcrumb '</value>
+    <value xml:space="preserve">Kruimelpad</value>
   </data>
   <data name="Catalogue.Text">
     <value xml:space="preserve">Catalogus</value>
@@ -189,9 +189,6 @@
   <data name="cmdMove.Text">
     <value xml:space="preserve">Verplaatsen</value>
   </data>
-  <data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-credit-card fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
     <value>&lt;i class="fa fa-home fa-lg"&gt;&lt;/i&gt;</value>
   </data>
@@ -232,10 +229,10 @@
     <value xml:space="preserve">Reset zoekcriteria</value>
   </data>
   <data name="cmdReturn.Text">
-    <value xml:space="preserve">Terugkeer</value>
+    <value xml:space="preserve">Terugkeren</value>
   </data>
   <data name="cmdReturn.ToolTip">
-    <value xml:space="preserve">Terugkeer</value>
+    <value xml:space="preserve">Terugkeren</value>
   </data>
   <data name="cmdReturnButton.Text">
     <value xml:space="preserve">&lt;i title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; retourneren</value>
@@ -259,13 +256,13 @@
     <value xml:space="preserve">&lt;i title="Opslaan" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt;Opslaan</value>
   </data>
   <data name="cmdSaveExit.confirm" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">Opslaan uitgang ?</value>
+    <value xml:space="preserve">Opslaan en afsluiten?</value>
   </data>
   <data name="cmdSaveExit.Text">
-    <value xml:space="preserve">Uitgang</value>
+    <value xml:space="preserve">Afsluiten</value>
   </data>
   <data name="cmdSaveExit.ToolTip">
-    <value xml:space="preserve">Uitgang</value>
+    <value xml:space="preserve">Afsluiten</value>
   </data>
   <data name="cmdSaveIcon.Text" lastModified="2014-11-29 12:17:28">
     <value xml:space="preserve">&lt;i title="Opslaan" class="fa fa-save fa-fw fa-2x"&gt;&lt;/i&gt;Opslaan</value>
@@ -403,7 +400,7 @@
     <value xml:space="preserve">E-mail</value>
   </data>
   <data name="Enter.Text">
-    <value xml:space="preserve">Voer</value>
+    <value xml:space="preserve">Voer in</value>
   </data>
   <data name="Export.confirm">
     <value xml:space="preserve">Geselecteerde gegevens exporteren?</value>
@@ -574,7 +571,7 @@
     <value xml:space="preserve">Bestelling</value>
   </data>
   <data name="OrderBy.Text">
-    <value xml:space="preserve">Bestellen door</value>
+    <value xml:space="preserve">Sorteren</value>
   </data>
   <data name="OrderDate.Text">
     <value xml:space="preserve">Datum</value>
@@ -646,7 +643,7 @@
     <value xml:space="preserve">Aantal</value>
   </data>
   <data name="Quantity.Text">
-    <value xml:space="preserve">Hoeveelheid</value>
+    <value xml:space="preserve">Aantal</value>
   </data>
   <data name="Ref.Text">
     <value xml:space="preserve">Ref</value>
@@ -688,7 +685,7 @@
     <value xml:space="preserve">Reset</value>
   </data>
   <data name="SalePrice.Text" lastModified="2014-11-29 12:17:28">
-    <value xml:space="preserve">Verkoop</value>
+    <value xml:space="preserve">Sale prijs</value>
   </data>
   <data name="Sales.Text">
     <value xml:space="preserve">Verkoop</value>
@@ -745,7 +742,7 @@
     <value xml:space="preserve">Belasting</value>
   </data>
   <data name="Taxno.Text">
-    <value xml:space="preserve">Geen belasting</value>
+    <value xml:space="preserve">BTW Nummer</value>
   </data>
   <data name="TaxNumber.Text">
     <value xml:space="preserve">BTW nummer</value>
@@ -809,5 +806,185 @@
   </data>
   <data name="Width.Text">
     <value xml:space="preserve">Breedte</value>
+  </data>
+  <data name="ActiveProducts.Text">
+    <value>Active Products</value>
+  </data>
+  <data name="AreYouSure.Text">
+    <value>Weet je het zeker?</value>
+  </data>
+  <data name="Article.Text">
+    <value>Artikel</value>
+  </data>
+  <data name="attrcode.Text">
+    <value>Attribute Code</value>
+  </data>
+  <data name="AverageRevenue.Text">
+    <value>Gemiddelde opbrengst</value>
+  </data>
+  <data name="basket.Text">
+    <value>Winkelwagen</value>
+  </data>
+  <data name="Cart.Text">
+    <value>Winkelwagen</value>
+  </data>
+  <data name="Clients.Text">
+    <value>Members</value>
+  </data>
+  <data name="cmdAddFiles.Text">
+    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+  </data>
+  <data name="cmdDelete.noText">
+    <value>NOPP</value>
+  </data>
+  <data name="cmdDelete.yesText">
+    <value>YEPPPP</value>
+  </data>
+  <data name="cmdEditIconSmall.Text">
+    <value>&lt;i title="Edit product in store" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdExtLinkSmall.Text">
+    <value>&lt;i title="View product in store" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdFilter.Text">
+    <value>Filter</value>
+  </data>
+  <data name="cmdMoveIcon.Text">
+    <value>&lt;i title="Move to here" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdResetFilters.Text">
+    <value>&amp;lt;i class="fa fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Reset filter(s)</value>
+  </data>
+  <data name="cmdSaveExitButton.Text">
+    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Opslaan en afsluiten</value>
+  </data>
+  <data name="Configuration.Text">
+    <value>Configuratie</value>
+  </data>
+  <data name="CustomerCount.Text">
+    <value>Customer Count</value>
+  </data>
+  <data name="dashsummary.Text">
+    <value>Dashboard</value>
+  </data>
+  <data name="favorites.Text">
+    <value>Favorites</value>
+  </data>
+  <data name="filterkeywords.Text">
+    <value>Keyword(s)</value>
+  </data>
+  <data name="findanorder.Text">
+    <value>Find an order</value>
+  </data>
+  <data name="findaproduct.Text">
+    <value>Find a product</value>
+  </data>
+  <data name="hello.Text">
+    <value>Hi there</value>
+  </data>
+  <data name="HiddenProducts.Text">
+    <value>Hidden Products</value>
+  </data>
+  <data name="History.Text">
+    <value>History</value>
+  </data>
+  <data name="logoff.Text">
+    <value>Log Off</value>
+  </data>
+  <data name="MontlyRevenue.Text">
+    <value>Maandelijkse opbrengst</value>
+  </data>
+  <data name="nbsid.Text">
+    <value>NBS ID</value>
+  </data>
+  <data name="nbsref.Text">
+    <value>NBS Ref.</value>
+  </data>
+  <data name="OrderCount.Text">
+    <value>Order Count</value>
+  </data>
+  <data name="orderstatus010.Text">
+    <value>Incomplete</value>
+  </data>
+  <data name="orderstatus020.Text">
+    <value>Waiting for Bank</value>
+  </data>
+  <data name="orderstatus030.Text">
+    <value>Geannuleerd</value>
+  </data>
+  <data name="orderstatus040.Text">
+    <value>Betaling ok</value>
+  </data>
+  <data name="orderstatus050.Text">
+    <value>Payment Not Verified</value>
+  </data>
+  <data name="orderstatus060.Text">
+    <value>Wacht op betaling</value>
+  </data>
+  <data name="orderstatus070.Text">
+    <value>Waiting for Stock</value>
+  </data>
+  <data name="orderstatus080.Text">
+    <value>Waiting</value>
+  </data>
+  <data name="orderstatus090.Text">
+    <value>Verstuurd</value>
+  </data>
+  <data name="orderstatus100.Text">
+    <value>Completed</value>
+  </data>
+  <data name="orderstatus110.Text">
+    <value>Archived</value>
+  </data>
+  <data name="orderstatus120.Text">
+    <value>Being Manufactured</value>
+  </data>
+  <data name="Owners.Text">
+    <value>Members</value>
+  </data>
+  <data name="pagesize.Text">
+    <value>Aantal weergeven</value>
+  </data>
+  <data name="productswithprop.Text">
+    <value>Products with this property</value>
+  </data>
+  <data name="Promotion.Text">
+    <value>Promotion</value>
+  </data>
+  <data name="propertygroup.Text">
+    <value>Group Type</value>
+  </data>
+  <data name="propertytypes.Text">
+    <value>Property types</value>
+  </data>
+  <data name="relatedproducts.Text">
+    <value>Related products</value>
+  </data>
+  <data name="selectable.Text">
+    <value>Selectable</value>
+  </data>
+  <data name="seoname.Text">
+    <value>SEO Name</value>
+  </data>
+  <data name="seotitle.Text">
+    <value>SEO Title</value>
+  </data>
+  <data name="StatusofOrders.Text">
+    <value>Status of Orders</value>
+  </data>
+  <data name="TotalDiscounts.Text">
+    <value>Total Discounts</value>
+  </data>
+  <data name="TotalProducts.Text">
+    <value>Total Products</value>
+  </data>
+  <data name="TotalRevenue.Text">
+    <value>Total Revenue</value>
+  </data>
+  <data name="TotalShipping.Text">
+    <value>Totale verzendkosten </value>
+  </data>
+  <data name="updated.Text">
+    <value>Updated</value>
   </data>
 </root>

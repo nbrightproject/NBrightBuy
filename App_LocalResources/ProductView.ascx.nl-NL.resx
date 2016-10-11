@@ -121,7 +121,7 @@
     <value>Kopen</value>
   </data>
   <data name="addtobasketicon.Text" xml:space="preserve">
-    <value>&lt;span title="Add to basket" class="fa-stack"&gt;
+    <value>&lt;span title="Toevoegen aan winkelwagen" class="fa-stack"&gt;
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
   &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
@@ -199,13 +199,13 @@
     <value>Normale Retail</value>
   </data>
   <data name="onsale.Text" xml:space="preserve">
-    <value>Verkoop</value>
+    <value>Sale prijs</value>
   </data>
   <data name="onsaleflag.Text" xml:space="preserve">
-    <value>Uitverkoop!</value>
+    <value>Aanbieding!</value>
   </data>
   <data name="orderby.Text" xml:space="preserve">
-    <value>, Van prijs, van prijs aflopend, Product Ref, productnaam</value>
+    <value>,Prijs oplopend,Prijs aflopend,Product Ref,Productnaam</value>
   </data>
   <data name="outofstock.Text" xml:space="preserve">
     <value>Niet op voorraad</value>
@@ -235,7 +235,7 @@
     <value>Detailhandel</value>
   </data>
   <data name="return.Text" xml:space="preserve">
-    <value>Terugkeer</value>
+    <value>Terug</value>
   </data>
   <data name="returnicon.Text" xml:space="preserve">
     <value>&lt;span title="Return to list" class="fa-stack"&gt;
@@ -255,7 +255,7 @@
   <data name="viewicon.Text" xml:space="preserve">
     <value>&lt;span title="Information" class="fa-stack"&gt;
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
-  &lt;i class="fa fa-search fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
   <data name="wishlistadd.Text" xml:space="preserve">
@@ -268,12 +268,69 @@
 &lt;/span&gt;</value>
   </data>
   <data name="wishlistremove.Text" xml:space="preserve">
-    <value>Verwijderen uit de lijst van de wens</value>
+    <value>Verwijderen van wensenlijst</value>
   </data>
   <data name="wishlistremoveicon.Text" xml:space="preserve">
     <value>&lt;span title="Remove from wishlist" class="fa-stack"&gt;
   &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
   &lt;i class="fa fa-heart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="addedtobasket.Text">
+    <value>Toegevoegd aan winkelwagen</value>
+  </data>
+  <data name="addtobasketicon-lg.Text">
+    <value>&lt;span title="Toevoegen aan winkelwagen" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-shopping-cart fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="endoflineflag.Text">
+    <value>End Of Line!</value>
+  </data>
+  <data name="favorites.Text">
+    <value>Favorites</value>
+  </data>
+  <data name="products.Text">
+    <value>products</value>
+  </data>
+  <data name="productunavailable.Text">
+    <value>This product is currently unavailable.</value>
+  </data>
+  <data name="promo.Text">
+    <value>Promotional offer</value>
+  </data>
+  <data name="promoflag.Text">
+    <value>Promotion !</value>
+  </data>
+  <data name="recommend.Text">
+    <value>With this product, we recommend :</value>
+  </data>
+  <data name="references.Text">
+    <value>References</value>
+  </data>
+  <data name="searchresults.Text">
+    <value>Search Results</value>
+  </data>
+  <data name="share.Text">
+    <value>Delen</value>
+  </data>
+  <data name="viewicon-lg.Text">
+    <value>&lt;span title="Bekijk details" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-info fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistaddicon-lg.Text">
+    <value>&lt;span title="Add to favorites" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="wishlistremoveicon-lg.Text">
+    <value>&lt;span title="Remove from favorites" class="fa-stack fa-lg"&gt;
+  &lt;i class="fa fa-stop fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-star fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
 </root>

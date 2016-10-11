@@ -1095,4 +1095,7 @@
   <data name="allowupload.Text" xml:space="preserve">
     <value>Activate Client File Upload</value>
   </data>
+  <data name="ReturnTo.Text" xml:space="preserve">
+    <value>Return To</value>
+  </data>
 </root>

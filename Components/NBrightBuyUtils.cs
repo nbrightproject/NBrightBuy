@@ -36,6 +36,7 @@ using RazorEngine;
 using RazorEngine.Configuration;
 using MailPriority = DotNetNuke.Services.Mail.MailPriority;
 using RazorEngine.Templating;
+using Encoding = System.Text.Encoding;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -592,12 +593,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return msgtempl;
         }
 
-        public static void SendEmailToManager(string templateName, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
+        public static void SendEmailToManager(string emailtype, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
         {
-            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+            var printurl = "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture();
+            var emailBody = RetrieveHttpContent(printurl);
+            NBrightBuyUtils.SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
-        public static void SendEmailOrderToClient(string templateName, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
+        public static void SendEmailOrderToClient(string emailtype, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
         {
             var ordData = new OrderData(orderId);
             var lang = ordData.Lang;
@@ -621,9 +624,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
             ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
-            SendEmail(emailList, templateName, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+
+            var printurl = "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + ordData.PurchaseInfo.ItemID + "&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture();
+            var emailBody = RetrieveHttpContent(printurl);
+            SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 
+        /// <summary>
+        /// legacy function for sending email using tagtoken system
+        /// </summary>
+        /// <param name="toEmail"></param>
+        /// <param name="templateName"></param>
+        /// <param name="dataObj"></param>
+        /// <param name="emailsubjectresxkey"></param>
+        /// <param name="fromEmail"></param>
+        /// <param name="lang"></param>
         public static void SendEmail(string toEmail, string templateName, NBrightInfo dataObj, string emailsubjectresxkey, string fromEmail, string lang)
         {
             dataObj = ProcessEventProvider(EventActions.BeforeSendEmail, dataObj, templateName);
@@ -669,6 +684,60 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         }
+
+        /// <summary>
+        /// Send email as a body of text. (Used for new Order razor API call to printview)
+        /// </summary>
+        /// <param name="emailbody"></param>
+        /// <param name="toEmail"></param>
+        /// <param name="emailtype"></param>
+        /// <param name="dataObj"></param>
+        /// <param name="emailsubjectresxkey"></param>
+        /// <param name="fromEmail"></param>
+        /// <param name="lang"></param>
+        public static void SendEmail(string emailbody, string toEmail, string emailtype, NBrightInfo dataObj, string emailsubjectresxkey, string fromEmail, string lang)
+        {
+            dataObj = ProcessEventProvider(EventActions.BeforeSendEmail, dataObj, emailtype);
+
+            if (!dataObj.GetXmlPropertyBool("genxml/stopprocess"))
+            {
+
+                if (lang == "") lang = Utils.GetCurrentCulture();
+                var emaillist = toEmail;
+                if (emaillist != "")
+                {
+                    var emailsubject = "";
+                    if (emailsubjectresxkey != "")
+                    {
+                        var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/Notification.ascx.resx";
+                        emailsubject = DnnUtils.GetLocalizedString(emailsubjectresxkey, resxpath, lang);
+                        if (emailsubject == null) emailsubject = emailsubjectresxkey;
+                    }
+
+                    // we can't use StoreSettings.Current.Settings(), becuase of external calls from providers to this function, so load in the settings directly  
+                    var modCtrl = new NBrightBuyController();
+                    var storeSettings = modCtrl.GetStoreSettings(dataObj.PortalId);
+
+                    if (fromEmail == "") fromEmail = storeSettings.AdminEmail;
+                    var emailarray = emaillist.Split(',');
+                    emailsubject = storeSettings.Get("storename") + " : " + emailsubject;
+                    foreach (var email in emailarray)
+                    {
+                        if (!string.IsNullOrEmpty(email.Trim()) && Utils.IsEmail(fromEmail.Trim()) && Utils.IsEmail(email.Trim()))
+                        {
+                            // multiple attachments as csv with "|" seperator
+                            DotNetNuke.Services.Mail.Mail.SendMail(fromEmail.Trim(), email.Trim(), "", emailsubject, emailbody, dataObj.GetXmlProperty("genxml/emailattachment"), "HTML", "", "", "", "");
+                        }
+                    }
+                }
+            }
+
+            ProcessEventProvider(EventActions.AfterSendEmail, dataObj, emailtype);
+
+
+        }
+
+
 
         public static List<NBrightInfo> GetCategoryGroups(string lang, Boolean debugMode = false, string groupType = "")
         {
@@ -2056,6 +2125,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", objprof, controlPath, theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }
             return razorTempl;
+        }
+
+        #endregion
+
+        #region "http functions"
+
+        public static string RetrieveHttpContent(string url)
+        {
+            string MergedText = "";
+
+            System.Net.WebClient Http = new System.Net.WebClient();
+            // Download the Web resource and save it into a data buffer.
+            try
+            {
+                byte[] Result = Http.DownloadData(url);
+                MergedText = Encoding.Default.GetString(Result);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            return MergedText;
         }
 
         #endregion

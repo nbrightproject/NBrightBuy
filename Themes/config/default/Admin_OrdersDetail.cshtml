@@ -4,6 +4,7 @@
 @using System.Linq
 @using System.Web.Razor.Parser.SyntaxTree
 @using System.Xml
+@using NBrightCore.common
 @using NBrightDNN
 @using NBrightDNN.render
 @using Nevoweb.DNN.NBrightBuy.Components
@@ -349,7 +350,10 @@
                 {
                     <a id="OrderAdmin_cmdEditOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdEditOrder")</a>
                 }
-                <a id="OrderAdmin_cmdViewClient" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("Clients.cmdViewClientButton")</a>
+                @if (nbi.UserId > 0)
+                {
+                    <a id="OrderAdmin_cmdViewClient" class="btn btn-default" href="/Admin/NBS-Back-Office/uid/@(nbi.UserId)/ctrl/clients">@ResourceKey("Clients.cmdViewClientButton")</a>
+                }
                 <div class="btn-group dropup">
                     <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> @ResourceKey("OrderAdmin.EmailOrder")</button>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -370,9 +374,9 @@
                         <span class="sr-only">@ResourceKey("OrderAdmin.ToggleDropdown")</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a id="OrderAdmin_cmdPrintOrder" href="#">@ResourceKey("OrderAdmin.cmdPrintOrder")</a></li>
-                        <li><a id="OrderAdmin_cmdPrintReceipt" href="#">@ResourceKey("OrderAdmin.cmdPrintReceipt")</a></li>
-                        <li><a id="OrderAdmin_cmdPrintDeliveryLabel" href="#">@ResourceKey("OrderAdmin.cmdPrintDeliveryLabel")</a></li>
+                        <li><a id="OrderAdmin_cmdPrintOrder" href="/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=OrderCreated&language=@(Utils.GetCurrentCulture())" target="_blank">@ResourceKey("OrderAdmin.cmdPrintOrder")</a></li>
+                        <li><a id="OrderAdmin_cmdPrintReceipt" href="/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=OrderReceipt&language=@(Utils.GetCurrentCulture())" target="_blank">@ResourceKey("OrderAdmin.cmdPrintReceipt")</a></li>
+                        <li><a id="OrderAdmin_cmdPrintDeliveryLabel" href="/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=shiplabel&language=@(Utils.GetCurrentCulture())" target="_blank">@ResourceKey("OrderAdmin.cmdPrintDeliveryLabel")</a></li>
                     </ul>
                 </div>
             </div>

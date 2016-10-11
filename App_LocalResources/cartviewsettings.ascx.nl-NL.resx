@@ -31,13 +31,13 @@
     <value xml:space="preserve">Weergavemodus kiezen in minimale minicart, volledige minicart en de volledige checkout-winkelwagentje.</value>
   </data>
   <data name="lblcarttype.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Kar Type: </value>
+    <value xml:space="preserve">Type winkelwagen: </value>
   </data>
   <data name="lblcollectionactive.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Collectie optie activeren: </value>
+    <value xml:space="preserve">Afhalen optie activeren: </value>
   </data>
   <data name="lblcollectiontimes.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Collectie tijden: </value>
+    <value xml:space="preserve">Afhaaltijden: </value>
   </data>
   <data name="lbllistbody.Help" lastModified="2014-11-29 14:00:11">
     <value xml:space="preserve">Sjabloon moet worden gebruikt als kar lichaam, dit wordt herhaald voor elk item kar.</value>
@@ -49,27 +49,33 @@
     <value xml:space="preserve">Sjabloon moet worden gebruikt als kar voettekst.</value>
   </data>
   <data name="lbllistfooter.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Kar voettekst: </value>
+    <value xml:space="preserve">Winkelwagen voettekst: </value>
   </data>
   <data name="lbllistheader.Help" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Sjabloon moet worden gebruikt als de kar kop.</value>
+    <value xml:space="preserve">Sjabloon moet worden gebruikt als de header van de winkelwagen.</value>
   </data>
   <data name="lbllistheader.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Kar Header: </value>
+    <value xml:space="preserve">Winkelwagen header: </value>
   </data>
   <data name="lblPaymentTab.Help" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Pagina die de NBS_Payment module is geplaatst. De kar zal worden doorgestuurd naar deze pagina en verwerking van de bestelling zal worden overgenomen door de NBS_Payment module.</value>
+    <value xml:space="preserve">Pagina die de NBS_Payment module is geplaatst. De winkelwagen zal worden doorgestuurd naar deze pagina en verwerking van de bestelling zal worden overgenomen door de NBS_Payment module.</value>
   </data>
   <data name="lblPaymentTab.Text" lastModified="2014-11-29 14:00:11">
     <value xml:space="preserve">Betalingspagina: </value>
   </data>
   <data name="lbltheme.Help" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Naam van het thema te gebruiken voor deze kar lijst.</value>
+    <value xml:space="preserve">Naam van het thema te gebruiken voor deze winkelwagen lijst.</value>
   </data>
   <data name="lbltheme.Text" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Themagebied: </value>
+    <value xml:space="preserve">Thema: </value>
   </data>
   <data name="lblthemesettings.Text" lastModified="2014-11-29 14:00:11">
     <value xml:space="preserve">Thema-instellingen</value>
+  </data>
+  <data name="lblgroupresults.Help">
+    <value>Cart items will be grouped by product&gt;model</value>
+  </data>
+  <data name="lblgroupresults.Text">
+    <value>Group Cart Items :</value>
   </data>
 </root>

@@ -628,7 +628,7 @@
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
-    <Content Include="Themes\ClassicRazor\Default\printorder.html" />
+    <None Include="Themes\ClassicRazor\Default\printorder.cshtml" />
     <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <None Include="Plugins\v030501-system.configsave" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
@@ -640,6 +640,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
     <None Include="Themes\config\default\Admin_Orders.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersDetail.cshtml" />

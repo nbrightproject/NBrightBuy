@@ -247,7 +247,7 @@
     <value>Address Update</value>
   </data>
   <data name="bankinginstructions.Text" xml:space="preserve">
-    <value>Please make your online banking payment as soon as possible to the account above. Insert the order number in the reference field and include your name as well if it is different from the acccount name.</value>
+    <value>Please make your bank payment as soon as possible to the account below. Insert the order number in the reference field and include your name as well if it is different from the acccount name.</value>
   </data>
   <data name="emailmessage.Text" xml:space="preserve">
     <value>Thank you for your order. We're here to help! Call us during office hours Monday to Friday, or visit us in-store if you have any questions about your order.</value>

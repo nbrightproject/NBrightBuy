@@ -358,6 +358,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "orderadmin_removeinvoice":
                         strOut = OrderAdminRemoveInvoice(context);
+                        break;
+                    case "orderadmin_sendemail":
+                        strOut = OrderAdminEmail(context);
                         break;                        
                 }
 
@@ -2328,8 +2331,6 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 return ex.ToString();
             }
-
-
         }
 
         private String OrderAdminReOrder(HttpContext context)
@@ -2350,6 +2351,24 @@ namespace Nevoweb.DNN.NBrightBuy
                         }
                     }
                     return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private String OrderAdminEmail(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    //get uploaded params
+                    var ajaxInfo = GetAjaxInfo(context);
+                    NBrightBuyUtils.SendEmailOrderToClient(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"));
                 }
                 return "";
             }
@@ -2594,6 +2613,15 @@ namespace Nevoweb.DNN.NBrightBuy
             var razortemplate = settings["razortemplate"];
             var portalId = Convert.ToInt32(settings["portalid"]);
 
+            var passSettings = StoreSettings.Current.Settings();
+            foreach (var s in settings)
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+
             if (!Utils.IsNumeric(selecteditemid)) return "";
 
             if (themeFolder == "")
@@ -2601,8 +2629,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 themeFolder = StoreSettings.Current.ThemeFolder;
                 if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
             }
-
-            var objCtrl = new NBrightBuyController();
 
             var ordData = new OrderData(portalId, Convert.ToInt32(selecteditemid));
 
@@ -2615,7 +2641,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
             }
 
-            strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, StoreSettings.Current.Settings());
+            strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
 
 
             return strOut;
@@ -2725,7 +2751,16 @@ namespace Nevoweb.DNN.NBrightBuy
             var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
             var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
 
-            strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, StoreSettings.Current.Settings());
+            var passSettings = StoreSettings.Current.Settings();
+            foreach (var s in settings)
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+
+            strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
 
             // add paging if needed
             if (paging && (recordCount > pageSize))

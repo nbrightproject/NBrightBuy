@@ -833,6 +833,17 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString WebsiteUrl()
+        {
+            var strOut = "";
+            var strAry = PortalSettings.Current.DefaultPortalAlias.Split('/');
+            if (strAry.Any())
+                strOut = strAry[0]; // Only display base domain, without lanaguge
+            else
+                strOut = PortalSettings.Current.DefaultPortalAlias;
+            return new RawString(strOut);
+        }
+
         /// <summary>
         /// Display a Sort order selection on the product list
         /// 
