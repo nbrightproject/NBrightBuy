@@ -624,18 +624,39 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
             ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
-            var securitycode = Utils.GetUniqueKey(20);
-            ordData.PurchaseInfo.SetXmlProperty("genxml/securitycode", securitycode);
-            ordData.Save();
 
-            var printurl = BaseSiteUrl() + "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + ordData.PurchaseInfo.ItemID + "&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture() + "&scode=" + securitycode;
-            var emailBody = DnnUtils.GetDataResponseAsString(printurl);
-            Utils.SaveFile(StoreSettings.Current.FolderClientUploadsMapPath + "\\testemail.html",emailBody);
+            if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+            {
 
-            ordData.PurchaseInfo.SetXmlProperty("genxml/securitycode", "");
-            ordData.Save();
+                var passSettings = new Dictionary<string, string>();
+                passSettings.Add("emailtype", emailtype);
+                foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                {
+                    if (passSettings.ContainsKey(s.Key))
+                        passSettings[s.Key] = s.Value;
+                    else
+                        passSettings.Add(s.Key, s.Value);
+                }
 
-            //SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+                // check for user or manager.
+                var sendEmailFlag = true;
+                if (UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
+                {
+                    if (!NBrightBuyUtils.CheckRights())
+                    {
+                        sendEmailFlag = false;
+                    }
+                }
+
+                if (sendEmailFlag)
+                {
+                    var emailBody = "";
+                    emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), lang, passSettings);
+                    Utils.SaveFile(StoreSettings.Current.FolderClientUploadsMapPath + "\\testemail.html", emailBody);
+                    //SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+                }
+            }
+
         }
 
         /// <summary>
