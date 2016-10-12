@@ -2613,8 +2613,8 @@ namespace Nevoweb.DNN.NBrightBuy
             var razortemplate = settings["razortemplate"];
             var portalId = Convert.ToInt32(settings["portalid"]);
 
-            var passSettings = StoreSettings.Current.Settings();
-            foreach (var s in settings)
+            var passSettings = settings;
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
             {
                 if (passSettings.ContainsKey(s.Key))
                     passSettings[s.Key] = s.Value;
@@ -2665,7 +2665,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             if (!Utils.IsNumeric(settings["userid"])) settings["pagenumber"] = "1";
             if (!Utils.IsNumeric(settings["pagenumber"])) settings["pagenumber"] = "1";
-            if (!Utils.IsNumeric(settings["pagesize"])) settings["pagenumber"] = "20";
+            if (!Utils.IsNumeric(settings["pagesize"])) settings["pagesize"] = "20";
             if (!Utils.IsNumeric(settings["returnlimit"])) settings["returnlimit"] = "50";
 
             var themeFolder = settings["themefolder"];
@@ -2751,8 +2751,8 @@ namespace Nevoweb.DNN.NBrightBuy
             var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
             var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
 
-            var passSettings = StoreSettings.Current.Settings();
-            foreach (var s in settings)
+            var passSettings = settings;
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
             {
                 if (passSettings.ContainsKey(s.Key))
                     passSettings[s.Key] = s.Value;
