@@ -596,8 +596,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static void SendEmailToManager(string emailtype, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
         {
             var printurl = "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture();
-            var emailBody = RetrieveHttpContent(printurl);
-            NBrightBuyUtils.SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+            //var emailBody = RetrieveHttpContent(printurl);
+            //NBrightBuyUtils.SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
         public static void SendEmailOrderToClient(string emailtype, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
@@ -624,10 +624,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
             ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
+            var securitycode = Utils.GetUniqueKey(20);
+            ordData.PurchaseInfo.SetXmlProperty("genxml/securitycode", securitycode);
+            ordData.Save();
 
-            var printurl = "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + ordData.PurchaseInfo.ItemID + "&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture();
-            var emailBody = RetrieveHttpContent(printurl);
-            SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+            var printurl = BaseSiteUrl() + "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=" + ordData.PurchaseInfo.ItemID + "&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture() + "&scode=" + securitycode;
+            var emailBody = DnnUtils.GetDataResponseAsString(printurl);
+            Utils.SaveFile(StoreSettings.Current.FolderClientUploadsMapPath + "\\testemail.html",emailBody);
+
+            ordData.PurchaseInfo.SetXmlProperty("genxml/securitycode", "");
+            ordData.Save();
+
+            //SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
         }
 
         /// <summary>
@@ -2131,24 +2139,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "http functions"
 
-        public static string RetrieveHttpContent(string url)
+        public static string BaseSiteUrl()
         {
-            string MergedText = "";
-
-            System.Net.WebClient Http = new System.Net.WebClient();
-            // Download the Web resource and save it into a data buffer.
-            try
+            if (HttpContext.Current.Request.ApplicationPath != null)
             {
-                byte[] Result = Http.DownloadData(url);
-                MergedText = Encoding.Default.GetString(Result);
+                var baseUrl = string.Format("{0}://{1}{2}",
+                    HttpContext.Current.Request.Url.Scheme,
+                    HttpContext.Current.Request.ServerVariables["HTTP_HOST"],
+                    (HttpContext.Current.Request.ApplicationPath.Equals("/")) ? string.Empty : HttpContext.Current.Request.ApplicationPath
+                    );
+                return baseUrl;
             }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-            return MergedText;
+            return "";
         }
-
         #endregion
 
 

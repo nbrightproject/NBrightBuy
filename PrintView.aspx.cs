@@ -41,6 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _printcode = "";
         private String _theme = "";
         private String _printtype = "";
+        private String _scode = "";
 
         #region Event Handlers
 
@@ -57,6 +58,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 _printcode = Utils.RequestParam(HttpContext.Current, "printcode");
                 _theme = Utils.RequestParam(HttpContext.Current, "theme");
                 _printtype = Utils.RequestParam(HttpContext.Current, "printtype");
+                _scode = Utils.RequestParam(HttpContext.Current, "scode");
             }
             catch (Exception exc)
             {
@@ -122,7 +124,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (orderData.PurchaseInfo.TypeCode == "ORDER")
                 {
                     strOut = "***ERROR***  Invalid Security";
-                    if (userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
+                    if (_scode == orderData.PurchaseInfo.GetXmlProperty("genxml/securitycode") || userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
                     {
                         //check the payment provider for a print url
                         var shippingprovider = orderData.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
