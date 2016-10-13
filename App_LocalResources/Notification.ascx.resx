@@ -321,4 +321,7 @@
   <data name="onlyleafcat_fail.Text" xml:space="preserve">
     <value>Only end leaf categories can be deleted.</value>
   </data>
+  <data name="emailsent.Text" xml:space="preserve">
+    <value>Email Sent</value>
+  </data>
 </root>

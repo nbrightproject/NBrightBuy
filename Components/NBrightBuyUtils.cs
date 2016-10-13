@@ -593,17 +593,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return msgtempl;
         }
 
-        public static void SendEmailToManager(string emailtype, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
+        public static void SendEmailToManager(string templateName, NBrightInfo dataObj, string emailsubjectresxkey = "", string fromEmail = "")
         {
-            var printurl = "/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(nbi.ItemID)&printcode=printorder&printtype=" + emailtype + "&language=" + Utils.GetCurrentCulture();
-            //var emailBody = RetrieveHttpContent(printurl);
-            //NBrightBuyUtils.SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+            NBrightBuyUtils.SendEmail(StoreSettings.Current.ManagerEmail, templateName, dataObj, emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
         }
 
-        public static void SendEmailOrderToClient(string emailtype, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
+        public static void SendOrderEmail(string emailtype, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
         {
             var ordData = new OrderData(orderId);
-            var lang = ordData.Lang;
+            var lang = ordData.ClientLang;
             if (ordData.GetInfo().UserId > 0)
             {
                 // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
@@ -615,7 +613,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         ordData.EmailAddress = objUser.Email;
                         ordData.SavePurchaseData();
                     }
-                    if (objUser.Profile.PreferredLocale != "") lang = objUser.Profile.PreferredLocale;
+                    lang = ordData.ClientLang; // pickup is the client prefered local has changed.
                 }
             }
             if (lang == "") lang = Utils.GetCurrentCulture();
@@ -623,13 +621,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var emailList = ordData.EmailAddress;
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
-            ordData.PurchaseInfo.SetXmlProperty("genxml/emailmsg", emailmsg);
+
+            // also send to manager is created. 
+            if (emailtype == "OrderCreatedClient")
+            {
+                emailList += "," + StoreSettings.Current.ManagerEmail;
+            }
 
             if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
             {
 
                 var passSettings = new Dictionary<string, string>();
-                passSettings.Add("emailtype", emailtype);
+                passSettings.Add("printtype", emailtype);
+                passSettings.Add("emailmessage", emailmsg);
                 foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
                 {
                     if (passSettings.ContainsKey(s.Key))
@@ -652,8 +656,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var emailBody = "";
                     emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), lang, passSettings);
-                    Utils.SaveFile(StoreSettings.Current.FolderClientUploadsMapPath + "\\testemail.html", emailBody);
-                    //SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+                    if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\testemail.html", emailBody);
+                    SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+                    ordData.AddAuditMessage(emailmsg, "email", UserController.Instance.GetCurrentUserInfo().Username, "False", NBrightBuyUtils.ResourceKey("Notification." + emailsubjectresxkey, StoreSettings.Current.EditLanguage));
+                    ordData.SavePurchaseData();
                 }
             }
 

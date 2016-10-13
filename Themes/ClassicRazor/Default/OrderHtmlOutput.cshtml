@@ -211,7 +211,7 @@
                             <td width="67%" align="left" valign="top" style="line-height:150%">
                                 <h2>@ResourceKey("Notification." + @Model.GetSetting("printtype"))</h2>
                                 <p>@HtmlOf(ResourceKey("Notification.emailmessage").ToString())</p>
-                                <b>@HtmlOf(nbi.GetXmlProperty("genxml/emailmsg"))</b>
+                                <b>@HtmlOf(@Model.GetSetting("emailmessage"))</b>
                             </td>
                             <td width="33%" align="left" valign="top" style="line-height:150%">
                                 <p><b>@ResourceKey("Notification.Contactus")</b></p>
@@ -292,7 +292,7 @@
                                 @if (nbi.GetXmlProperty("genxml/textbox/shippingdate") != "")
                                 {
                                     <div>
-                                        <b>@ResourceKey("General.shippingdate"): </b>@DateOf(nbi.GetXmlPropertyRaw("genxml/textbox/shippingdate"))
+                                        <b>@ResourceKey("General.shippingdate"): </b>@DateOf(nbi.GetXmlPropertyRaw("genxml/textbox/shippingdate"),"dd MMM yyyy")
                                     </div>
                                 }
 

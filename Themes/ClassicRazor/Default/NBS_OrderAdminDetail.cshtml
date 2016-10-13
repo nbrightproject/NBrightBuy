@@ -21,7 +21,7 @@
 
     <div>
         <a id="OrderAdmin_cmdReturn" class="btn btn-default primarybutton" href="#">@ResourceKey("OrderAdmin.cmdReturnButton")</a>
-        <a id="OrderAdmin_cmdRepeat" class="btn btn-default primarybutton" href="#" itemid="@(ordData.GetInfo().ItemID)">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
+        <a id="OrderAdmin_cmdReOrder" class="btn btn-default primarybutton" href="#" itemid="@(ordData.GetInfo().ItemID)">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
         @if (nbi.GetXmlProperty("genxml/hidden/invoicefilename") != "")
         {
             <a class="documentlink btn btn-primary" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbi.GetXmlProperty("genxml/hidden/invoicedownloadname")&filename=@nbi.GetXmlProperty("genxml/hidden/invoicefilerelpath")'>@ResourceKey("OrderAdmin.downloadinvoice")</a>

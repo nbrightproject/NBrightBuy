@@ -85,6 +85,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             InvoiceFileName = "";
             InvoiceFilePath = "";
             PurchaseInfo.SetXmlProperty("genxml/audit","");
+            OrderNumber = "";
 
             var cartId = base.SavePurchaseData(true);
             var cartData = new CartData(PortalId,  "", cartId.ToString("")); //create the client record (cookie)
@@ -275,8 +276,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     // Send emails
                     if (sendEmails)
                     {
-                        NBrightBuyUtils.SendEmailOrderToClient("OrderCreatedClient", PurchaseInfo.ItemID, "ordercreatedemailsubject");
-                        NBrightBuyUtils.SendEmailToManager("ordercreatedemail.html", PurchaseInfo, "ordercreatedemailsubject");
+                        NBrightBuyUtils.SendOrderEmail("OrderCreatedClient", PurchaseInfo.ItemID, "ordercreatedemailsubject");
                     }
                 }
             }

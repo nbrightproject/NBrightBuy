@@ -353,6 +353,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "orderadmin_reorder":
                         strOut = OrderAdminReOrder(context);
                         break;
+                    case "orderadmin_edit":
+                        strOut = OrderAdminEdit(context);
+                        break;
                     case "orderadmin_save":
                         strOut = OrderAdminSave(context);
                         break;
@@ -2360,6 +2363,33 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
+        private String OrderAdminEdit(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+                    var selecteditemid = settings["selecteditemid"];
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
+                        if (NBrightBuyUtils.CheckRights()) 
+                        {
+                            orderData.ConvertToCart(false);
+                        }
+                    }
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         private String OrderAdminEmail(HttpContext context)
         {
             try
@@ -2368,7 +2398,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     //get uploaded params
                     var ajaxInfo = GetAjaxInfo(context);
-                    NBrightBuyUtils.SendEmailOrderToClient(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"));
+                    NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"));
                 }
                 return "";
             }
@@ -2694,6 +2724,7 @@ namespace Nevoweb.DNN.NBrightBuy
             filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
             filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
             filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/productrefs)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
             filter += " or (([xmldata].value('(genxml/ordernumber)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))  ) ";
 
             if (searchdateto != "" && searchdatefrom != "")

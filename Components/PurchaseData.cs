@@ -45,6 +45,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/audit", ""); // remove audit
             }
 
+            // langauge
+            if (Lang == "")
+            {
+                Lang = Utils.GetCurrentCulture();
+            }
+            ClientLang = Lang;
+
             var strXml = "<items>";
             foreach (var info in _itemList)
             {
@@ -63,8 +70,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (UserController.Instance.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
             {
                 if (UserId != UserController.Instance.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.Instance.GetCurrentUserInfo().UserID;
-                PurchaseInfo.UserId = UserId;                
+                PurchaseInfo.UserId = UserId;
+                if (EditMode == "" && !string.IsNullOrEmpty(UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale))
+                {
+                    ClientLang = UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale;
+                }
             }
+
+            // save the product refs of the order to an XML node, so we can search for product ref in the BO Order Admin.
+            var productrefs = "";
+            foreach (var i in GetCartItemList())
+            {
+                productrefs += i.GetXmlProperty("genxml/productxml/genxml/textbox/txtproductref") + ",";
+            }
+            PurchaseInfo.SetXmlProperty("genxml/productrefs", productrefs);
 
             if (PurchaseInfo.TypeCode != null) // if we're using this class to build cart in memory for procesisng only, don;t save to DB.
             {
@@ -106,6 +125,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set
             {
                 PurchaseInfo.SetXmlProperty("genxml/lang", value);
+            }
+        }
+
+        public String ClientLang
+        {
+            get
+            {
+                if (PurchaseInfo.GetXmlProperty("genxml/clientlang") == "") return Lang;
+                return PurchaseInfo.GetXmlProperty("genxml/clientlang");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/clientlang", value);
             }
         }
 

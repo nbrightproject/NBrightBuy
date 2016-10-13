@@ -13,7 +13,7 @@
 <!-- fields required to send required ajax cart to server -->
 <span id="nbs_orderadminsearch">
     <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"/>
-    <input id="razortemplate" type="hidden" value=""/>/
+    <input id="razortemplate" type="hidden" value=""/>
     <input id="themefolder" type="hidden" value="config"/>
     <input id='currentlang' type='hidden' value='@Model.GetUrlParam("language")'/> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
     <input id="lang" type="hidden" value="@Model.GetUrlParam("language")"/> <!-- default to current language -->
@@ -25,7 +25,8 @@
     <input id="searchorderstatus" type="hidden" value=""/>
     <input id="selecteditemid" type="hidden" value=""/>    
     <input id="emailtype" type="hidden" value=""/>
-    <input id="ordercreatedemailsubject" type="hidden" value=""/>    
+    <input id="emailsubject" type="hidden" value=""/>    
+    <input id="emailmessage" type="hidden" value="" />    
 </span>
 
 <div style="display: none;" id="actionreturn"></div>
@@ -119,10 +120,15 @@
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('#OrderAdmin_cmdRepeat').click(function () {
+                    $('#OrderAdmin_cmdReOrder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
                         nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                    });
+                    $('#OrderAdmin_cmdEditOrder').click(function () {
+                        $('.processing').show();
+                        $('#selecteditemid').val($(this).attr('itemid'));
+                        nbxget('orderadmin_edit', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
                     $('.OrderAdmin_cmdSave').click(function () {
@@ -137,10 +143,33 @@
 
                     $('#OrderAdmin_cmdEmailAmended').click(function () {
                         $('.processing').show();
-                        $('#emailtype').val("EmailAmended");
-                        nbxget('orderadmin_sendemail', '#nbs_orderadminsearch', '#actionreturn');
+                        $('#emailtype').val("OrderAmended");
+                        $('#emailsubject').val("orderamended_emailsubject");                       
+                        $('#emailmessage').val($('#emailmsg').val());
+                        nbxget('orderadmin_save', '#orderadmin', '#actionreturn');
                     });
-                    
+                    $('#OrderAdmin_cmdEmailValidated').click(function () {
+                        $('.processing').show();
+                        $('#emailtype').val("OrderValidated");
+                        $('#emailsubject').val("ordervalidated_emailsubject");
+                        $('#emailmessage').val($('#emailmsg').val());
+                        nbxget('orderadmin_save', '#orderadmin', '#actionreturn');
+                    });
+                    $('#OrderAdmin_cmdEmailShipped').click(function () {
+                        $('.processing').show();
+                        $('#emailtype').val("OrderShipped");
+                        $('#emailsubject').val("ordershipped_emailsubject");
+                        $('#emailmessage').val($('#emailmsg').val());
+                        nbxget('orderadmin_save', '#orderadmin', '#actionreturn');
+                    });
+                    $('#OrderAdmin_cmdEmailReceipt').click(function () {
+                        $('.processing').show();
+                        $('#emailtype').val("OrderReceipt");
+                        $('#emailsubject').val("orderreceipt_emailsubject");
+                        $('#emailmessage').val($('#emailmsg').val());
+                        nbxget('orderadmin_save', '#orderadmin', '#actionreturn');
+                    });
+
 
                 }
 
@@ -151,10 +180,20 @@
 
                 if (e.cmd == 'orderadmin_save') {
                     $('.processing').show();
-                    nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                    if ($('#emailtype').val() !== '') {
+                        nbxget('orderadmin_sendemail', '#nbs_orderadminsearch', '#actionreturn');
+                    } else {
+                        nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                    }
+
                 }
 
-                if (e.cmd == 'orderadmin_reorder') {
+                if (e.cmd == 'orderadmin_sendemail') {
+                    $('.processing').hide();
+                    $('#emailtype').val(''); // clear flag
+                }
+
+                if (e.cmd == 'orderadmin_reorder' || e.cmd == 'orderadmin_edit') {
                     $('.processing').show();
                     @{
                         var redirecturl = Globals.NavigateURL(StoreSettings.Current.CartTabId, "");

@@ -171,6 +171,14 @@
                 </div>
             }
 
+            <div class="address">
+                <div>
+                    <b>@ResourceKey("OrderAdmin.clientlanguage")</b>
+                </div>
+                <div><img src="/Images/Flags/@(ordData.ClientLang).gif" /> (@(ordData.ClientLang))</div>
+            </div>
+             
+
         </div>
 
         <div class="col-xs-3 shipaddress">
@@ -345,15 +353,15 @@
         <div class="col-sm col-sm-12 form-inline text-right">
             <hr/>
             <div class="form-group">
-                <a id="OrderAdmin_cmdReOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
-                @if (Model.GetSettingBool("alloweditorder"))
+                    <a id="OrderAdmin_cmdReOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
+                    @if (Model.GetSettingBool("alloweditorder"))
+                    {
+                        <a id="OrderAdmin_cmdEditOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdEditOrder")</a>
+                    }
+                    @if (nbi.UserId > 0)
                 {
-                    <a id="OrderAdmin_cmdEditOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdEditOrder")</a>
-                }
-                @if (nbi.UserId > 0)
-                {
-                    <a id="OrderAdmin_cmdViewClient" class="btn btn-default" href="/Admin/NBS-Back-Office/uid/@(nbi.UserId)/ctrl/clients">@ResourceKey("Clients.cmdViewClientButton")</a>
-                }
+                        <a id="OrderAdmin_cmdViewClient" class="btn btn-default" href="/Admin/NBS-Back-Office/uid/@(nbi.UserId)/ctrl/clients">@ResourceKey("Clients.cmdViewClientButton")</a>
+                    }                    
                 <div class="btn-group dropup">
                     <button type="button" class="btn btn-default"><i class="fa fa-envelope fa-fw fa-lg"></i> @ResourceKey("OrderAdmin.EmailOrder")</button>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

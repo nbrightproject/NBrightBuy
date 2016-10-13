@@ -249,4 +249,7 @@
   <data name="downloadinvoice.Text" xml:space="preserve">
     <value>Download Invoice</value>
   </data>
+  <data name="clientlanguage.Text" xml:space="preserve">
+    <value>Client Language</value>
+  </data>
 </root>
