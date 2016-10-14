@@ -24,7 +24,7 @@
         <a id="OrderAdmin_cmdReOrder" class="btn btn-default primarybutton" href="#" itemid="@(ordData.GetInfo().ItemID)">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
         @if (nbi.GetXmlProperty("genxml/hidden/invoicefilename") != "")
         {
-            <a class="documentlink btn btn-primary" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbi.GetXmlProperty("genxml/hidden/invoicedownloadname")&filename=@nbi.GetXmlProperty("genxml/hidden/invoicefilerelpath")'>@ResourceKey("OrderAdmin.downloadinvoice")</a>
+            <a class="documentlink btn btn-default primarybutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbi.GetXmlProperty("genxml/hidden/invoicedownloadname")&filename=@nbi.GetXmlProperty("genxml/hidden/invoicefilerelpath")'>@ResourceKey("OrderAdmin.downloadinvoice")</a>
         }
     </div>
 
@@ -264,7 +264,29 @@
                     
             <tr>
                     <td class="m-ticker">
-                        <div><b> @nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</b></div>
+                        <div>
+                            <b> @nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</b>
+                        </div>
+
+                            @{
+                                var fileList = new List<NBrightInfo>();
+                                var xmlNodfileList = nbiitem.XMLDoc.SelectNodes("genxml/clientfiles/file");
+                                foreach (XmlNode n in xmlNodfileList)
+                                {
+                                    var nbfile = new NBrightInfo();
+                                    nbfile.XMLData = n.OuterXml;
+                                    fileList.Add(nbfile);
+                                }
+
+                                foreach (NBrightInfo nbifile in fileList)
+                                {
+                                    <div>
+                                        <a class="btn btn-default primarybutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbifile.GetXmlProperty("file/name")&filename=@nbifile.GetXmlProperty("file/url")'>@nbifile.GetXmlProperty("file/name")</a>
+                                    </div>
+                                }
+                            }
+
+
                         <div>
 
                             @{

@@ -1,131 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
 
-    <package name="NBS_ProductView" type="Module" version="3.5.1">
-      <friendlyName>NBS_ProductView</friendlyName>
-      <description>
-        NBrightStore open source e-commerce for DNN.
-      </description>
-      <iconFile />
-      <owner>
-        <name>David Lee</name>
-        <organization>Nevoweb</organization>
-        <url>www.nevoweb.com</url>
-        <email>info@nevoweb.com</email>
-      </owner>
-      <license>
-        New BSD License (BSD)
-
-        Copyright (c) 2015, David Lee
-        All rights reserved.
-
-        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-        * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-        * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-        * Neither the name of Nevoweb nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-      </license>
-      <releaseNotes>
-
-        v3.5.1.
-
-        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.0 system to be installed.
-
-        - Add Group Promotions
-        - Add MultiBuy Promotions
-        - General Improvements.
-
-        NBS_ProductView is a Legacy Module. (package now used to load config on installation only.)
-        Products should be displayed with the NB_ProductDisplay module.
-
-      </releaseNotes>
-      <dependencies>
-        <dependency type="CoreVersion">08.00.00</dependency>
-        <dependency type="managedPackage" version="8.1.0">NBrightTemplateSys</dependency>
-      </dependencies>
-      <components>
-        <component type="Script">
-          <scripts>
-            <basePath>DesktopModules\NBright\NBrightBuy</basePath>
-            <script type="Install">
-              <name>02.06.00.SqlDataProvider</name>
-              <version>02.06.00</version>
-            </script>
-            <script type="Install">
-              <name>03.00.00.SqlDataProvider</name>
-              <version>03.00.00</version>
-            </script>
-            <script type="Install">
-              <name>03.02.00.SqlDataProvider</name>
-              <version>03.02.00</version>
-            </script>
-            <script type="UnInstall">
-              <name>Uninstall.SqlDataProvider</name>
-              <version>03.00.00</version>
-            </script>
-          </scripts>
-        </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>DesktopModules\NBright\NBrightBuy</basePath>
-            <resourceFile>
-              <name>NBrightBuy_Resource.zip</name>
-            </resourceFile>
-          </resourceFiles>
-        </component>
-        <component type="Assembly">
-          <assemblies>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.dll</name>
-              <sourceFileName>NBrightBuy.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.ShippingProvider.dll</name>
-              <sourceFileName>NBrightBuy.ShippingProvider.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.ManualPaymentProvider.dll</name>
-              <sourceFileName>NBrightBuy.ManualPaymentProvider.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.DiscountCodesProvider.dll</name>
-              <sourceFileName>NBrightBuy.DiscountCodesProvider.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.TaxProvider.dll</name>
-              <sourceFileName>NBrightBuy.TaxProvider.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>NBrightBuy.PromoProvider.dll</name>
-              <sourceFileName>NBrightBuy.PromoProvider.dll</sourceFileName>
-            </assembly>
-          </assemblies>
-        </component>
-
-        <component type="Skin">
-          <skinFiles>
-            <skinName>NBrightStoreBO</skinName>
-            <basePath>Portals\_default\Skins\NBrightStoreBO</basePath>
-            <skinFile>
-              <name>NBrightStoreBO.ascx</name>
-            </skinFile>
-          </skinFiles>
-        </component>
-
-
-      </components>
-    </package>
-
     <package name="NBS_ProductDisplay" type="Module" version="3.5.1">
 			<friendlyName>NBS_ProductDisplay</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
@@ -477,7 +352,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 								<moduleControls>
 									<moduleControl>
 										<controlKey />
-										<controlSrc>DesktopModules/NBright/NBrightBuy/OrderAdmin.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/OrderRazorAdmin.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle />
 										<controlType>View</controlType>
@@ -487,7 +362,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									</moduleControl>
 									<moduleControl>
 										<controlKey>Settings</controlKey>
-										<controlSrc>DesktopModules/NBright/NBrightBuy/OrderAdminSettings.ascx</controlSrc>
+										<controlSrc>DesktopModules/NBright/NBrightBuy/OrderRazorAdminSettings.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle>Settings</controlTitle>
 										<controlType>Edit</controlType>

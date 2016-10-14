@@ -160,19 +160,25 @@
             @if (product.ClientFileUpload)
             {
                 <div class="options">
-                    <input id='optionfile' update='save' class="normalFileUpload" type='file' name="files[]" multiple/>
-                    <input id='optionfilelist' style='display: none;' update='save' type='text'/>
-                    <input id='optionfileprefix' update='save' type='hidden' />
-                    
-                    <div id="progressbar">
-                        <div id="progressbarpercent"></div>
-                    </div>
+
                     <div id="clientfileuploadmsg">
-                        @ResourceKey("ProductView.clientfileuploadmsg")                        
+                        @ResourceKey("ProductView.clientfileuploadmsg")
                     </div>
                     <div id="clientfileuploadmsgend" style="display: none;">
                         @ResourceKey("ProductView.clientfileuploadmsgend")
                     </div>
+
+                    <div class="fileUpload dnnSecondaryAction">
+                        <span>@ResourceKey("OrderAdmin.choosefile")</span>
+                        <input id='optionfile' update='save' class="normalFileUpload form-control" type='file' name="files[]" multiple />
+                    </div>
+                    <div id="progressbar" style="display: none;">
+                        <div id="progressbarpercent"></div>
+                    </div>
+
+                    <input id='optionfilelist' style='display: none;' update='save' type='text' />
+                    <input id='optionfileprefix' update='save' type='hidden' />
+
                 </div>
                 <div class="clearfix"></div>
             }

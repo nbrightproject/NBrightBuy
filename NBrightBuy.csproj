@@ -277,34 +277,6 @@
     <Compile Include="Components\NavigationData.cs" />
     <Compile Include="Components\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
-    <Compile Include="CategoryMenu.ascx.cs">
-      <DependentUpon>CategoryMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CategoryMenu.ascx.designer.cs">
-      <DependentUpon>CategoryMenu.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CategoryMenuSettings.ascx.cs">
-      <DependentUpon>CategoryMenuSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CategoryMenuSettings.ascx.designer.cs">
-      <DependentUpon>CategoryMenuSettings.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CartView.ascx.cs">
-      <DependentUpon>CartView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CartView.ascx.designer.cs">
-      <DependentUpon>CartView.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CartViewSettings.ascx.cs">
-      <DependentUpon>CartViewSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CartViewSettings.ascx.designer.cs">
-      <DependentUpon>CartViewSettings.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddressAdmin.ascx.cs">
       <DependentUpon>AddressAdmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -368,13 +340,6 @@
     <Compile Include="ProductRazorViewSettings.ascx.designer.cs">
       <DependentUpon>ProductRazorViewSettings.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductSearch.ascx.cs">
-      <DependentUpon>ProductSearch.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductSearch.ascx.designer.cs">
-      <DependentUpon>ProductSearch.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProductRazorView.ascx.cs">
       <DependentUpon>ProductRazorView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -382,50 +347,8 @@
     <Compile Include="ProductRazorView.ascx.designer.cs">
       <DependentUpon>ProductRazorView.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductViewSettings.ascx.cs">
-      <DependentUpon>ProductViewSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductViewSettings.ascx.designer.cs">
-      <DependentUpon>ProductViewSettings.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProfileForm.ascx.cs">
-      <DependentUpon>ProfileForm.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProfileForm.ascx.designer.cs">
-      <DependentUpon>ProfileForm.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProfileFormSettings.ascx.cs">
-      <DependentUpon>ProfileFormSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProfileFormSettings.ascx.designer.cs">
-      <DependentUpon>ProfileFormSettings.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OrderAdmin.ascx.cs">
-      <DependentUpon>OrderAdmin.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrderAdmin.ascx.designer.cs">
-      <DependentUpon>OrderAdmin.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OrderAdminSettings.ascx.cs">
-      <DependentUpon>OrderAdminSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrderAdminSettings.ascx.designer.cs">
-      <DependentUpon>OrderAdminSettings.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="NBrightThumb.ashx.cs">
       <DependentUpon>NBrightThumb.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="ProductSearchSettings.ascx.cs">
-      <DependentUpon>ProductSearchSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductSearchSettings.ascx.designer.cs">
-      <DependentUpon>ProductSearchSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="render\GenXmlTemplateExt.cs" />
     <Compile Include="Components\DataProvider.cs" />
@@ -434,13 +357,6 @@
     <Compile Include="Components\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Components\NBrightBuyUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProductView.ascx.cs">
-      <DependentUpon>ProductView.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProductView.ascx.designer.cs">
-      <DependentUpon>ProductView.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="render\NBrightBuyRazorTokens.cs" />
     <Compile Include="XmlConnector.ashx.cs">
       <DependentUpon>XmlConnector.ashx</DependentUpon>
@@ -520,16 +436,6 @@
     <Content Include="ProfileRazorForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="CategoryMenu.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="CategoryMenuSettings.ascx" />
-    <Content Include="CartView.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="CartViewSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
     <Content Include="AddressAdmin.ascx" />
     <Content Include="AddressAdminSettings.ascx" />
     <Content Include="Admin\Container.ascx">
@@ -550,19 +456,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProductRazorViewSettings.ascx" />
-    <Content Include="ProductSearch.ascx" />
     <Content Include="ProductRazorView.ascx" />
-    <Content Include="ProductViewSettings.ascx" />
-    <Content Include="ProfileForm.ascx" />
-    <Content Include="ProfileFormSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="OrderAdmin.ascx" />
-    <Content Include="OrderAdminSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="ProductSearchSettings.ascx" />
-    <Content Include="ProductView.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -603,7 +497,6 @@
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
     <None Include="Themes\ClassicRazor\Default\printorder.cshtml" />
-    <Content Include="Themes\ClassicRazor\Default\printreceipt.html" />
     <None Include="Plugins\v030501-system.configsave" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch.cshtml" />

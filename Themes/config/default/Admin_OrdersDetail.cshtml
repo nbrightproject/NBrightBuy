@@ -569,6 +569,25 @@
                             <div>
                                 <b> @nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</b>
                             </div>
+
+                            @{
+                                var fileList = new List<NBrightInfo>();
+                                var xmlNodfileList = nbiitem.XMLDoc.SelectNodes("genxml/clientfiles/file");
+                                foreach (XmlNode n in xmlNodfileList)
+                                {
+                                    var nbfile = new NBrightInfo();
+                                    nbfile.XMLData = n.OuterXml;
+                                    fileList.Add(nbfile);
+                                }
+
+                                foreach (NBrightInfo nbifile in fileList)
+                                {
+                                    <div>
+                                        <a class="btn btn-default primarybutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbifile.GetXmlProperty("file/name")&filename=@nbifile.GetXmlProperty("file/url")'>@nbifile.GetXmlProperty("file/name")</a>
+                                    </div>
+                                }
+                            }
+
                             <div>
 
                                 @{

@@ -19,64 +19,66 @@
   } );
     </script>
 
+<div class="formrow">
     <div class="ordersearch">
         <div>
-            @ResourceKey("General.Search")<br>
-        <input id="OrderAdmin_searchtext" class="form-control" type="text">
-    </div>
-    <div>
-        @ResourceKey("General.From")<br>
-        <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="date">
-    </div>
-    <div>
-        @ResourceKey("General.To")<br>
-        <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="date">
-    </div>
-    <div>
-        <span>&nbsp;</span><br>
-        @OrderStatusDropDownList("OrderAdmin_searchorderstatus", "", "", true)
-    </div>
-    <div>
-        <span>&nbsp;</span><br>
-        <a id="OrderAdmin_cmdSearch" class="btn btn-primary primarybutton" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i> @ResourceKey("General.Search")</a>
-    </div>
-    <div>
-        <span>&nbsp;</span><br>
-        <a id="OrderAdmin_cmdReset" class="btn btn-default secondarybutton" href="#"><i title="Reset" class="fa fa-refresh fa-fw fa-lg"></i> @ResourceKey("General.Reset")</a>
+            @ResourceKey("General.Search")<br/>
+            <input id="OrderAdmin_searchtext" class="form-control" type="text">
+        </div>
+        <div>
+            @ResourceKey("General.From")<br/>
+            <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="date">
+        </div>
+        <div>
+            @ResourceKey("General.To")<br/>
+            <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="date">
+        </div>
+        <div>
+            <span>&nbsp;</span><br/>
+            @OrderStatusDropDownList("OrderAdmin_searchorderstatus", "", "", true)
+        </div>
+        <div>
+            <span>&nbsp;</span><br/>
+            <a id="OrderAdmin_cmdSearch" class="primarybutton" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i> @ResourceKey("General.Search")</a>
+        </div>
+        <div>
+            <span>&nbsp;</span><br/>
+            <a id="OrderAdmin_cmdReset" class="secondarybutton" href="#"><i title="Reset" class="fa fa-refresh fa-fw fa-lg"></i> @ResourceKey("General.Reset")</a>
+        </div>
     </div>
 </div>
 
 
-<div id="orderadmin">
-    <table class="orders">
-        <thead>
-            <tr>
-                <th>@ResourceKey("General.OrderDate")</th>
-                <th>@ResourceKey("General.Number")</th>
-                <th>@ResourceKey("General.Total")</th>
-                <th class="removecolumn">@ResourceKey("General.status")</th>
-                <th> </th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (NBrightInfo nbi in Model.List)
-            {
+    <div id="orderadmin">
+        <table class="orders">
+            <thead>
                 <tr>
-                    <td>@(nbi.GetXmlProperty("genxml/createddate"))</td>
-                    <td>@(nbi.GetXmlProperty("genxml/ordernumber"))</td>
-                    <td>@CurrencyOf(nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</td>
-                    <td>
-                        <span class="orderstatus orderstatus@(nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))">@ResourceKey("General.orderstatus" + nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))</span>
-                    </td>
-                    <td class="nowrap text-right">
-                        <a href='#' class='cmd_vieworder' itemid="@nbi.ItemID" ><i title="View and Edit" class="fa fa-edit fa-fw fa-2x"></i></a>
-                    </td>
+                    <th>@ResourceKey("General.OrderDate")</th>
+                    <th>@ResourceKey("General.Number")</th>
+                    <th>@ResourceKey("General.Total")</th>
+                    <th class="removecolumn">@ResourceKey("General.status")</th>
+                    <th> </th>
                 </tr>
+            </thead>
+            <tbody>
 
-            }
-        </tbody>
-    </table>
+                @foreach (NBrightInfo nbi in Model.List)
+            {
+                    <tr>
+                        <td>@(nbi.GetXmlProperty("genxml/createddate"))</td>
+                        <td>@(nbi.GetXmlProperty("genxml/ordernumber"))</td>
+                        <td>@CurrencyOf(nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</td>
+                        <td>
+                            <span class="orderstatus orderstatus@(nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))">@ResourceKey("General.orderstatus" + nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))</span>
+                        </td>
+                        <td class="nowrap text-right">
+                            <a href='#' class='cmd_vieworder' itemid="@nbi.ItemID"><i title="View and Edit" class="fa fa-edit fa-fw fa-2x"></i></a>
+                        </td>
+                    </tr>
 
-</div>
+                }
+            </tbody>
+        </table>
+
+    </div>
 

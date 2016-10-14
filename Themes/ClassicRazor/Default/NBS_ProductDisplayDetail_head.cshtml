@@ -244,16 +244,35 @@
 {
 
     <style>
-#progressbar {
-  background-color: black;
-  padding: 3px;
+            
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.normalFileUpload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 
-#progressbar > div {
-   background-color: orange;
-   width: 0%; /* Adjust with JavaScript */
-   height: 20px;
-}
+         #progressbar {
+             background-color: gray;
+             padding: 3px;
+         }
+
+        #progressbar > div {
+            background-color: skyblue;
+            width: 0%; /* Adjust with JavaScript */
+            height: 20px;
+        }
     </style>
 
     <!-- The basic File Upload plugin -->
@@ -287,6 +306,8 @@
                     dataType: 'json'
                 }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
                 .bind('fileuploadprogressall', function (e, data) {
+                    $('.fileUpload').hide();
+                    $('#progressbar').show();
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     $('#progressbarpercent').css('width', progress + '%');
                 })
@@ -302,17 +323,26 @@
                     filecount = data.files.length;
                 }).bind('fileuploadstop', function (e) {
                     if (filesdone == filecount) {
-                        $('#optionfile').hide();
                         $('.addtobasket').show();
                         $('#clientfileuploadmsg').hide();
                         $('#clientfileuploadmsgend').show();
-                        
+                                          
                         filesdone = 0;
                     }
                 });
-
-
         });
+
+        $('#minicartdatareturn').change(function () {
+            // the files have been attched to the last item in cart, so reset buy button again.
+            $('.addtobasket').hide();
+            $('.fileUpload').show();
+            $('#progressbar').hide();
+            $('#progressbarpercent').css('width', '0%');
+            $('#clientfileuploadmsg').show();
+            $('#clientfileuploadmsgend').hide();
+            $('#optionfilelist').val('');
+        });
+
 
         });
 
