@@ -73,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
             FolderTempMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\NBSTemp";
-            FolderNBStoreMapPath = Get("homedirectorymappath").TrimEnd('/') + "/NBStore";
+            FolderNBStoreMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\NBStore";
 
             FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
             FolderImages =  Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
