@@ -228,39 +228,42 @@
                                 <!-- Model list -->
                                 @foreach (var m in product.Models)
                                 {
-                                    <tr>
-                                        <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
-                                        <td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
-                                        @if (Model.GetSetting("productcode") == "True")
-                                        {
-                                            if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
-                                            {
-                                                <td>NC</td>
-                                            }
-                                            else
-                                            {
-                                                <td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
-                                            }
-                                        }
-                                        <td>
-                                            @if (product.BestPrice() < product.FromPrice())
-                                            {
-                                                <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
-                                                <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
-                                            }
-                                            else
-                                            {
-                                                <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
-                                            }
-                                        </td>
+					if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")))
+                                	{
+					    <tr>
+						<td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
+						<td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
+						@if (Model.GetSetting("productcode") == "True")
+						{
+						    if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
+						    {
+							<td>NC</td>
+						    }
+						    else
+						    {
+							<td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
+						    }
+						}
+						<td>
+						    @if (product.BestPrice() < product.FromPrice())
+						    {
+							<span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
+							<strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+						    }
+						    else
+						    {
+							<span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+						    }
+						</td>
 
-                                        <td>
-                                            @if (!product.IsInStock)
-                                            {
-                                                <strong>@ResourceKey("ProductView.outofstock")</strong>
-                                            }
-                                        </td>
-                                    </tr>
+						<td>
+						    @if (!product.IsInStock)
+						    {
+							<strong>@ResourceKey("ProductView.outofstock")</strong>
+						    }
+						</td>
+					    </tr>
+					}
                                 }
                             </tbody>
                         </table>
