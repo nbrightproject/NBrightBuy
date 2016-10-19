@@ -69,7 +69,7 @@
                             {
                                 <li class="image@(lp.ToString())">
                                     <a href="@(img.GetXmlProperty("genxml/hidden/imageurl"))" data-imagelightbox="nbb">
-                                        <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=70&amp;h=0" alt="2" title="">
+                                        <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=70&amp;h=0" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" title="">
                                     </a>
                                 </li>
                             }
