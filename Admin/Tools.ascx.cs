@@ -170,6 +170,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'PRDXREF' ";
                     objCtrl.ExecSql(stmt);
+                    stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'USERPRDXREF' ";
+                    objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATCASCADE' ";
                     objCtrl.ExecSql(stmt);
                     stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + PortalId.ToString("") + " and typecode = 'CATXREF' ";
