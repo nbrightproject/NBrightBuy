@@ -341,19 +341,19 @@
                 @foreach (var rp in product.GetRelatedProducts())
                 {
                     var rproduct = new ProductData(rp.ItemID, rp.Lang);
-                    <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
+                    <div class="product" style="width: @Model.GetSetting("relateditemwidth")px; height: @Model.GetSetting("relateditemheight"); margin-bottom: @Model.GetSetting("relateditembottommargin")px">
 
-                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("relateditemimagecontainerheight"))">
 
                             @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                             {
-                                <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
-                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                                <div class="image" style="height: @(Model.GetSetting("relateditemimagecontainerheight"))">
+                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("relatedimagewidth"), Model.GetSetting("relatedimageheight"))">
                                 </div>
                             }
                             else
                             {
-                                <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                <div class="noimage" style="height: @(Model.GetSetting("relateditemimagecontainerheight"))">
                                     @(Model.GetSettingHtmlOf("noimageicon"))
                                 </div>
                             }
