@@ -231,8 +231,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void ImportRecord(XmlDocument xmlFile, String typeCode, Boolean updaterecordsbyref = true)
         {
-            var objCtrlUser = new UserController();
-
             var nodList = xmlFile.SelectNodes("root/item[./typecode='" + typeCode + "']");
             if (nodList != null)
             {
@@ -307,7 +305,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (typeCode == "USERPRDXREF" && updaterecordsbyref)
                     {
-                        var u = objCtrlUser.GetUserByUsername(PortalId, nbi.TextData);
+                        var u = UserController.GetUserByName(PortalId, nbi.TextData);
                         if (u != null)
                         {
                             if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
