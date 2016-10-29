@@ -1337,9 +1337,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 dr3.ParentItemId = newid;
                 dr3.ItemID = -1;
                 dr3.GUIDKey = dr3.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
-                objCtrl.Update(dr);
+                objCtrl.Update(dr3);
             }            
 
+            // copy USERPRDXREF records
+            l = objCtrl.GetList(_portalId, -1, "USERPRDXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            foreach (var dr4 in l)
+            {
+                dr4.ParentItemId = newid;
+                dr4.ItemID = -1;
+                dr4.GUIDKey = dr4.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
+                objCtrl.Update(dr4);
+            }
 
             return newid;
         }
