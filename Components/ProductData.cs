@@ -1319,7 +1319,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 dr3.ParentItemId = newid;
                 dr3.ItemID = -1;
                 dr3.GUIDKey = dr3.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
-                objCtrl.Update(dr);
+                objCtrl.Update(dr3);
             }            
 
 
