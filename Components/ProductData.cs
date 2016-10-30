@@ -1338,6 +1338,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 dr3.ItemID = -1;
                 dr3.GUIDKey = dr3.GUIDKey.Replace("x" + Info.ItemID.ToString(""), "x" + newid.ToString(""));
                 objCtrl.Update(dr3);
+                
+                // create bi-directional relationship
+                var newXrefId = dr3.ParentItemId; var newParentItemId = dr3.XrefItemId;
+                dr3.ParentItemId = newParentItemId;
+                dr3.XrefItemId = newXrefId;
+                dr3.GUIDKey = newid.ToString("") + "x" + dr3.GUIDKey.Replace("x" + newid.ToString(""), "");
+                objCtrl.Update(dr3);
             }            
 
             // copy USERPRDXREF records
