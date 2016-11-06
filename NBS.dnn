@@ -40,6 +40,11 @@
 
         NBS_ProductView is a Legacy Module. (package now used to load config on installation only.)
         Products should be displayed with the NB_ProductDisplay module.
+        
+        UPGRADE NOTES: 
+        The NBS_ProductSearch has been replace with NBS_DisplaySearch. You may get an error is you use the NBS_ProductSearch module, remove the module and replace with NBS_DisplaySearch.
+        
+        
 
       </releaseNotes>
       <dependencies>
