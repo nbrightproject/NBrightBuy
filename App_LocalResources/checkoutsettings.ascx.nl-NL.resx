@@ -19,7 +19,7 @@
     <value xml:space="preserve">Naam van het thema te gebruiken voor deze kar lijst.</value>
   </data>
   <data name="lbltheme.Text" lastModified="2014-11-29 13:59:26">
-    <value xml:space="preserve">Themagebied: </value>
+    <value xml:space="preserve">Thema: </value>
   </data>
   <data name="lblthemesettings.Text" lastModified="2014-11-29 13:59:26">
     <value xml:space="preserve">Thema-instellingen</value>

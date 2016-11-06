@@ -12,6 +12,8 @@
     var info = (NBrightInfo)product.Info;
 }
 
+<div class="addedtobasket" style="display:none;">@ResourceKey("ProductView.addedtobasket")</div>
+
 <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
 
 <div class="nbs">
@@ -21,8 +23,6 @@
         @if (@product.Imgs.Count >= 1)
         {
             <div class="images">
-
-                <div class="addedtobasket addbasketmsg@(info.ItemID)" style="display:none;"><span>@ResourceKey("ProductView.addedtobasket")</span></div>
 
                 <div class="image">
 
@@ -69,7 +69,7 @@
                             {
                                 <li class="image@(lp.ToString())">
                                     <a href="@(img.GetXmlProperty("genxml/hidden/imageurl"))" data-imagelightbox="nbb">
-                                        <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=70&amp;h=0" alt="2" title="">
+                                        <img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=70&amp;h=0" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" title="">
                                     </a>
                                 </li>
                             }
@@ -152,40 +152,70 @@
                 <div class="options">
                     <!-- OPTION HERE -->
                     @ProductOptions(product)
+
                 </div>
                 <div class="clearfix"></div>
             }
 
-            @if (Model.GetSetting("cataloguemode") != "True")
+            @if (product.ClientFileUpload)
             {
-                <div class="buy">
-                    @if (@product.IsInStock)
-                    {
-                        if (Model.GetSetting("modeldisplaytype") != "2")
-                        {
-                            <div class="quantityoptions">
-                                <a class="qtyminus" href="javascript:void(0)">-</a>
-                                <!-- "selectedaddqty"" expected by server as name of qty field -->
-                                @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
-                                <a class="qtyplus" href="javascript:void(0)">+</a>
-                            </div>
-                        }
-                            <!-- Buy button HERE -->
-                        <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
-                    }
-                    else
-                    {
-                        <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
-                    }
+                <div class="options">
 
-                    <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+                    <div id="clientfileuploadmsg">
+                        @ResourceKey("ProductView.clientfileuploadmsg")
+                    </div>
+                    <div id="clientfileuploadmsgend" style="display: none;">
+                        @ResourceKey("ProductView.clientfileuploadmsgend")
+                    </div>
+
+                    <div class="fileUpload dnnSecondaryAction">
+                        <span>@ResourceKey("OrderAdmin.choosefile")</span>
+                        <input id='optionfile' update='save' class="normalFileUpload form-control" type='file' name="files[]" multiple />
+                    </div>
+                    <div id="progressbar" style="display: none;">
+                        <div id="progressbarpercent"></div>
+                    </div>
+
+                    <input id='optionfilelist' style='display: none;' update='save' type='text' />
+                    <input id='optionfileprefix' update='save' type='hidden' />
 
                 </div>
+                <div class="clearfix"></div>
             }
-            <div>
-                @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
-            </div>
-        </div>
+
+
+
+
+                    @if (Model.GetSetting("cataloguemode") != "True")
+                    {
+                        <div class="buy">
+                            @if (@product.IsInStock)
+                            {
+                                if (Model.GetSetting("modeldisplaytype") != "2")
+                                {
+                                    <div class="quantityoptions">
+                                        <a class="qtyminus" href="javascript:void(0)">-</a>
+                                        <!-- "selectedaddqty"" expected by server as name of qty field -->
+                                        @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
+                                        <a class="qtyplus" href="javascript:void(0)">+</a>
+                                    </div>
+                                }
+                                <!-- Buy button HERE -->
+                                <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
+                            }
+                            else
+                            {
+                                <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
+                            }
+
+                            <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+
+                        </div>
+                    }
+                    <div>
+                        @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
+                    </div>
+                </div>
         <div class="clearfix"></div>
 
     <!-- Details -->
@@ -311,19 +341,19 @@
                 @foreach (var rp in product.GetRelatedProducts())
                 {
                     var rproduct = new ProductData(rp.ItemID, rp.Lang);
-                    <div class="product" style="width: @Model.GetSetting("classicitemwidth")px; height: @Model.GetSetting("classicitemheight"); margin-bottom: @Model.GetSetting("classicitembottommargin")px">
+                    <div class="product" style="width: @Model.GetSetting("relateditemwidth")px; height: @Model.GetSetting("relateditemheight"); margin-bottom: @Model.GetSetting("relateditembottommargin")px">
 
-                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("relateditemimagecontainerheight"))">
 
                             @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                             {
-                                <div class="image" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
-                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("classicthumbnailwidth"), Model.GetSetting("classicthumbnailheight"))">
+                                <div class="image" style="height: @(Model.GetSetting("relateditemimagecontainerheight"))">
+                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, Model.GetSetting("relatedimagewidth"), Model.GetSetting("relatedimageheight"))">
                                 </div>
                             }
                             else
                             {
-                                <div class="noimage" style="height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                                <div class="noimage" style="height: @(Model.GetSetting("relateditemimagecontainerheight"))">
                                     @(Model.GetSettingHtmlOf("noimageicon"))
                                 </div>
                             }

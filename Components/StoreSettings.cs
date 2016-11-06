@@ -72,12 +72,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             FolderDocumentsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderdocs");
             FolderImagesMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderimages");
             FolderUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderuploads");
+            FolderClientUploadsMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\" + Get("folderclientuploads");
             FolderTempMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\NBSTemp";
             FolderNBStoreMapPath = Get("homedirectorymappath").TrimEnd('\\') + "\\NBStore";
 
             FolderDocuments = Get("homedirectory").TrimEnd('/') + "/" + Get("folderdocs").Replace("\\", "/");
             FolderImages =  Get("homedirectory").TrimEnd('/') + "/" + Get("folderimages").Replace("\\", "/");
             FolderUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderuploads").Replace("\\", "/");
+            FolderClientUploads = Get("homedirectory").TrimEnd('/') + "/" + Get("folderclientuploads").Replace("\\", "/");
             FolderTemp = Get("homedirectory").TrimEnd('/') + "/NBSTemp";
             FolderNBStore = Get("homedirectory").TrimEnd('/') + "/NBStore";
 
@@ -242,14 +244,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public String FolderImagesMapPath { get; private set; }
         public String FolderDocumentsMapPath { get; private set; }
         public String FolderUploadsMapPath { get; private set; }
+        public String FolderClientUploadsMapPath { get; private set; }
         public String FolderImages { get; private set; }
         public String FolderDocuments { get; private set; }
         public String FolderUploads { get; private set; }
+        public String FolderClientUploads { get; private set; }
         public String FolderTemp { get; private set; }
         public String FolderTempMapPath { get; private set; }
         public String FolderNBStore { get; private set; }
         public String FolderNBStoreMapPath { get; private set; }
-        
+
         #endregion
 
         private void AddToSettingDic(NBrightInfo settings, string xpath)

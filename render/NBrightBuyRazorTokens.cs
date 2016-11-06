@@ -822,6 +822,28 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString DateOf(String rawDate, String dateFormat = "dd MMM yyyy HH:mm")
+        {
+            var strOut = rawDate;
+            if (NBrightCore.common.Utils.IsDate(rawDate))
+            {
+                strOut = Convert.ToDateTime(rawDate).ToString(dateFormat);
+            }
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString WebsiteUrl()
+        {
+            var strOut = "";
+            var strAry = PortalSettings.Current.DefaultPortalAlias.Split('/');
+            if (strAry.Any())
+                strOut = strAry[0]; // Only display base domain, without lanaguge
+            else
+                strOut = PortalSettings.Current.DefaultPortalAlias;
+            return new RawString(strOut);
+        }
+
         /// <summary>
         /// Display a Sort order selection on the product list
         /// 
@@ -922,9 +944,16 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString RenderRazorInjectTemplate(NBrightInfo info, String razorTemplate, String controlPath = "/DesktopModules/NBright/NBrightBuy", String themeFolder = "config", String lang = "")
+        {
+            if (lang == "") lang = Utils.GetCurrentCulture();
+            var strOut = NBrightBuyUtils.RazorTemplRender(razorTemplate, 0, "", info, controlPath, themeFolder, lang, StoreSettings.Current.Settings());
+
+            return new RawString(strOut);
+        }
+
 
         #endregion
-
 
         #region "Checkout"
 
@@ -1081,8 +1110,50 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        #endregion 
+        #endregion
 
+        #region "OrderAdmin"
+
+
+        public IEncodedString OrderStatusDropDownList(String id, String selectedOrderStatus = "", String cssclass = "",bool allowBlank = false)
+        {
+
+            var strOut = "";
+            var Resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
+            var orderstatuscode = DnnUtils.GetLocalizedString("orderstatus.Code", Resxpath, Utils.GetCurrentCulture());
+            var orderstatustext = DnnUtils.GetLocalizedString("orderstatus.Text", Resxpath, Utils.GetCurrentCulture());
+            if (orderstatuscode != null && orderstatustext != null)
+            {
+                if (allowBlank)
+                {
+                    orderstatuscode = "," + orderstatuscode;
+                    orderstatustext = "," + orderstatustext;
+                }
+
+                var aryCode = orderstatuscode.Split(',');
+                var aryText = orderstatustext.Split(',');
+
+                strOut = "<select id='" + id + "' class='orderstatusdropdown " + cssclass + " '>";
+                var c = 0;
+                var s = "";
+                foreach (var t in aryCode)
+                {
+                    var url = "";
+
+                    s = "";
+                    if (selectedOrderStatus == t) s = "selected";
+
+                    strOut += "    <option value='" + t + "' " + s + ">" + aryText[c] + "</option>";
+                    c += 1;
+
+                }
+                strOut += "</select>";
+            }
+            return new RawString(strOut);
+        }
+
+
+        #endregion
 
         #endregion
 

@@ -93,15 +93,15 @@
 
             @if (cart.EditMode != "")
             {
-                if (cart.EditMode != "C")
+                if (cart.EditMode == "C")
                 {
                     <div class="debug">Order being created for client</div>
                 }
-                if (cart.EditMode != "R")
+                if (cart.EditMode == "R")
                 {
                     <div class="debug">Order being re-ordered for client</div>
                 }
-                if (cart.EditMode != "E")
+                if (cart.EditMode == "E")
                 {
                     <div class="debug">Order being edited for client</div>
                 }

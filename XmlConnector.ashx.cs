@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
@@ -249,6 +250,12 @@ namespace Nevoweb.DNN.NBrightBuy
                             strOut = FileUpload(context);
                         }
                         break;
+                    case "fileclientupload":
+                        if (StoreSettings.Current.GetBool("allowupload"))
+                        {
+                            strOut = FileUpload(context, itemId);
+                        }
+                        break;
                     case "updateproductimages":
                         if (NBrightBuyUtils.CheckRights())
                         {
@@ -337,6 +344,27 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "orderby":
                         strOut = DoOrderBy(context);
                         break;
+                    case "orderadmin_getlist":
+                        strOut = OrderAdminList(context);
+                        break;
+                    case "orderadmin_getdetail":
+                        strOut = OrderAdminDetail(context);
+                        break;
+                    case "orderadmin_reorder":
+                        strOut = OrderAdminReOrder(context);
+                        break;
+                    case "orderadmin_edit":
+                        strOut = OrderAdminEdit(context);
+                        break;
+                    case "orderadmin_save":
+                        strOut = OrderAdminSave(context);
+                        break;
+                    case "orderadmin_removeinvoice":
+                        strOut = OrderAdminRemoveInvoice(context);
+                        break;
+                    case "orderadmin_sendemail":
+                        strOut = OrderAdminEmail(context);
+                        break;                        
                 }
 
                 #endregion
@@ -471,7 +499,7 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
 
-        private string FileUpload(HttpContext context)
+        private string FileUpload(HttpContext context, string itemid = "")
         {
             try
             {
@@ -484,7 +512,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "POST":
                     case "PUT":
-                        strOut = UploadFile(context);
+                        strOut = UploadFile(context, itemid);
                         break;
                     case "DELETE":
                         break;
@@ -507,53 +535,64 @@ namespace Nevoweb.DNN.NBrightBuy
         }
 
         // Upload file to the server
-        private String UploadFile(HttpContext context)
+        private String UploadFile(HttpContext context, string itemid = "")
         {
             var statuses = new List<FilesStatus>();
             var headers = context.Request.Headers;
 
             if (string.IsNullOrEmpty(headers["X-File-Name"]))
             {
-                return UploadWholeFile(context, statuses);
+                return UploadWholeFile(context, statuses, itemid);
             }
             else
             {
-                return UploadPartialFile(headers["X-File-Name"], context, statuses);
+                return UploadPartialFile(headers["X-File-Name"], context, statuses, itemid);
             }
         }
 
         // Upload partial file
-        private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses)
+        private String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string itemid = "")
         {
-            if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
-            var inputStream = context.Request.Files[0].InputStream;
-            var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + fileName;
-
-            using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+            Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+            if (fexpr.Match(fileName.ToLower()).Success)
             {
-                var buffer = new byte[1024];
 
-                var l = inputStream.Read(buffer, 0, 1024);
-                while (l > 0)
+                if (itemid != "") itemid += "_";
+                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+                var inputStream = context.Request.Files[0].InputStream;
+                var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
+
+                using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
                 {
-                    fs.Write(buffer, 0, l);
-                    l = inputStream.Read(buffer, 0, 1024);
+                    var buffer = new byte[1024];
+
+                    var l = inputStream.Read(buffer, 0, 1024);
+                    while (l > 0)
+                    {
+                        fs.Write(buffer, 0, l);
+                        l = inputStream.Read(buffer, 0, 1024);
+                    }
+                    fs.Flush();
+                    fs.Close();
                 }
-                fs.Flush();
-                fs.Close();
+                statuses.Add(new FilesStatus(new FileInfo(fullName)));
             }
-            statuses.Add(new FilesStatus(new FileInfo(fullName)));
             return "";
         }
 
         // Upload entire file
-        private String UploadWholeFile(HttpContext context, List<FilesStatus> statuses)
+        private String UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string itemid = "")
         {
+            if (itemid != "") itemid += "_";
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + file.FileName);
-                statuses.Add(new FilesStatus(Path.GetFileName(file.FileName), file.ContentLength));
+                Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+                if (fexpr.Match(file.FileName.ToLower()).Success)
+                {                    
+                    file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + itemid + file.FileName);
+                    statuses.Add(new FilesStatus(Path.GetFileName(itemid + file.FileName), file.ContentLength));
+                }
             }
             return "";
         }
@@ -967,7 +1006,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 //get data
                 var prodData = ProductUtils.GetProductData(productitemid, _lang);
-                var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl);
+                var strOut = GenXmlFunctions.RenderRepeater(prodData.Options, bodyTempl,"","XMLData","",StoreSettings.Current.Settings());
 
                 return strOut;
 
@@ -2164,7 +2203,9 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string RecalculateSummary(HttpContext context)
         {
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
+            var objCtrl = new NBrightBuyController();
+
+            var currentcart = new CartData(PortalSettings.Current.PortalId);
                 var ajaxInfo = GetAjaxInfo(context, true);
                 var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
 
@@ -2173,7 +2214,17 @@ namespace Nevoweb.DNN.NBrightBuy
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider"));
 
-                var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
+            var shipref = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider");
+            var displayanme = "";
+            var shipInfo = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shipref);
+            if (shipInfo != null)
+            {
+                displayanme = shipInfo.GetXmlProperty("genxml/textbox/shippingdisplayname");
+            }
+            if (displayanme == "") displayanme = shipref;
+            currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme", displayanme);
+
+            var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/shippingproductcode", shippingproductcode);
                 var pickuppointref = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointref");
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
@@ -2248,6 +2299,237 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
+        #region "Order Admin Methods"
+
+        private String OrderAdminList(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    return GetOrderListData(settings);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private String OrderAdminDetail(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    return GetOrderDetailData(settings);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private String OrderAdminReOrder(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+                    var selecteditemid = settings["selecteditemid"];
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
+                        if (orderData.UserId == UserController.Instance.GetCurrentUserInfo().UserID || NBrightBuyUtils.CheckRights())
+                        {
+                            orderData.CopyToCart(false);
+                        }
+                    }
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private String OrderAdminEdit(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var settings = GetAjaxFields(context);
+                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+                    var selecteditemid = settings["selecteditemid"];
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
+                        if (NBrightBuyUtils.CheckRights()) 
+                        {
+                            orderData.ConvertToCart(false);
+                        }
+                    }
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private String OrderAdminEmail(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    //get uploaded params
+                    var ajaxInfo = GetAjaxInfo(context);
+                    NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"));
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
+        private String OrderAdminSave(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (itemId > 0)
+                    {
+                        var ordData = new OrderData(itemId);
+                        if (ordData != null)
+                        {
+                            var newStatusOrder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
+                            if (ordData.OrderStatus != newStatusOrder)
+                            {
+                                ordData.OrderStatus = newStatusOrder;
+                            }
+
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", ajaxInfo.GetXmlProperty("genxml/textbox/shippingdate"), TypeCode.DateTime);
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/trackingcode", ajaxInfo.GetXmlProperty("genxml/textbox/trackingcode"));
+
+                            // do audit notes
+                            if (ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes") != "")
+                            {
+                                ordData.AddAuditMessage(ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes"),"notes", UserController.Instance.GetCurrentUserInfo().Username,"False");
+                            }
+
+                            // save relitive path also
+                            if (ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist") != "")
+                            {
+                                var fname = Path.GetFileName(ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist"));
+
+                                if (File.Exists(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname))
+                                {
+                                    var newfname = Utils.GetUniqueKey();
+                                    // save relitive path also
+                                    if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
+                                    {
+                                        File.Delete(StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    }
+
+                                    File.Copy(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname, StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    File.Delete(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname);
+
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath", StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoiceuploadname", fname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", Path.GetExtension(fname));
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", StoreSettings.Current.FolderUploads + "/" + newfname);
+                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "NBS" + ordData.OrderNumber + Path.GetExtension(fname));
+                                }
+                            }
+
+
+
+                            ordData.Save();
+                        }
+                    }
+
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
+        private String OrderAdminRemoveInvoice(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (itemId > 0)
+                    {
+                        var ordData = new OrderData(itemId);
+                        if (ordData != null)
+                        {
+
+                            // save relitive path also
+                            if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
+                            {
+                                File.Delete(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath"));
+                            }
+
+
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath","");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", "");
+                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "");
+                            ordData.AddAuditMessage(NBrightBuyUtils.ResourceKey("OrderAdmin.cmdDeleteInvoice"), "invremove", UserController.Instance.GetCurrentUserInfo().Username, "False");
+
+                            ordData.Save();
+                        }
+                    }
+
+                    return "";
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+
+        #endregion
 
         #region "Settings"
 
@@ -2346,6 +2628,181 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
         #region "functions"
+
+        private String GetOrderDetailData(Dictionary<String, String> settings, bool paging = true)
+        {
+            var strOut = "";
+
+            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
+            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+            if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
+
+            var themeFolder = settings["themefolder"];
+            var selecteditemid = settings["selecteditemid"];
+            var razortemplate = settings["razortemplate"];
+            var portalId = Convert.ToInt32(settings["portalid"]);
+
+            var passSettings = settings;
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+
+            if (!Utils.IsNumeric(selecteditemid)) return "";
+
+            if (themeFolder == "")
+            {
+                themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            }
+
+            var ordData = new OrderData(portalId, Convert.ToInt32(selecteditemid));
+
+            // check for user or manager.
+            if (UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
+            {
+                if (!NBrightBuyUtils.CheckRights())
+                {
+                    return "";
+                }
+            }
+
+            strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
+
+
+            return strOut;
+        }
+
+        private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
+        {
+            var strOut = "";
+            
+            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
+            if (!settings.ContainsKey("userid")) settings.Add("userid", "-1");
+            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+            if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
+            if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
+            if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
+            if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
+            if (!settings.ContainsKey("dtesearchdatefrom")) settings.Add("dtesearchdatefrom", "");
+            if (!settings.ContainsKey("dtesearchdateto")) settings.Add("dtesearchdateto", "");
+            if (!settings.ContainsKey("searchorderstatus")) settings.Add("searchorderstatus", "");
+            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+            if (!Utils.IsNumeric(settings["userid"])) settings["pagenumber"] = "1";
+            if (!Utils.IsNumeric(settings["pagenumber"])) settings["pagenumber"] = "1";
+            if (!Utils.IsNumeric(settings["pagesize"])) settings["pagesize"] = "20";
+            if (!Utils.IsNumeric(settings["returnlimit"])) settings["returnlimit"] = "50";
+
+            var themeFolder = settings["themefolder"];
+            var razortemplate = settings["razortemplate"];
+            var returnLimit = Convert.ToInt32(settings["returnlimit"]);
+            var pageNumber = Convert.ToInt32(settings["pagenumber"]);
+            var pageSize = Convert.ToInt32(settings["pagesize"]);
+            var portalId = Convert.ToInt32(settings["portalid"]);
+            var userid = settings["userid"];            
+
+            var searchText = settings["searchtext"];
+            var searchdatefrom = settings["dtesearchdatefrom"];
+            var searchdateto = settings["dtesearchdateto"];
+            var searchorderstatus = settings["searchorderstatus"];
+
+            var filter = "";
+            filter += " and (    (([xmldata].value('(genxml/billaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/productrefs)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
+            filter += " or (([xmldata].value('(genxml/ordernumber)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))  ) ";
+
+            if (searchdateto != "" && searchdatefrom != "")
+            {
+                filter += " and  ( ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) )  ";
+            }
+            if (searchdateto == "" && searchdatefrom != "")
+            {
+                filter += " and  ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) ";
+            }
+            if (searchdateto != "" && searchdatefrom == "")
+            {
+                filter += " and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) ";
+            }
+
+            if (searchorderstatus != "")
+            {
+                filter += " and ([xmldata].value('(genxml/dropdownlist/orderstatus)[1]', 'nvarchar(max)') = '" + searchorderstatus + "')   ";
+            }
+
+            // check for user or manager.
+            if (Utils.IsNumeric(userid) && UserController.Instance.GetCurrentUserInfo().UserID == Convert.ToInt32(userid))
+            {
+                filter += " and ( userid = " + userid + ")   ";
+            }
+            else
+            {
+                if (!NBrightBuyUtils.CheckRights())
+                {
+                    return "";
+                }
+            }
+
+
+            var recordCount = 0;
+
+            if (themeFolder == "")
+            {
+                themeFolder = StoreSettings.Current.ThemeFolder;
+                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+            }
+
+            var objCtrl = new NBrightBuyController();
+
+            if (paging) // get record count for paging
+            {
+                if (pageNumber == 0) pageNumber = 1;
+                if (pageSize == 0) pageSize = 20;
+
+                // get only entity type required
+                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "ORDER", filter);
+
+            }
+
+            var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+            var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
+
+            var passSettings = settings;
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+
+            strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
+
+            // add paging if needed
+            if (paging && (recordCount > pageSize))
+            {
+                var pg = new NBrightCore.controls.PagingCtrl();
+                strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
+            }
+
+            return strOut;
+        }
+
 
         private String GetProductListData(Dictionary<String, String> settings,bool paging = true)
         {

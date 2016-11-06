@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -44,6 +45,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/audit", ""); // remove audit
             }
 
+            // langauge
+            if (Lang == "")
+            {
+                Lang = Utils.GetCurrentCulture();
+            }
+            ClientLang = Lang;
+
             var strXml = "<items>";
             foreach (var info in _itemList)
             {
@@ -62,8 +70,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (UserController.Instance.GetCurrentUserInfo().UserID != -1)  // This might be updated from out of context (payment provider)
             {
                 if (UserId != UserController.Instance.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.Instance.GetCurrentUserInfo().UserID;
-                PurchaseInfo.UserId = UserId;                
+                PurchaseInfo.UserId = UserId;
+                if (EditMode == "" && !string.IsNullOrEmpty(UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale))
+                {
+                    ClientLang = UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale;
+                }
             }
+
+            // save the product refs of the order to an XML node, so we can search for product ref in the BO Order Admin.
+            var productrefs = "";
+            foreach (var i in GetCartItemList())
+            {
+                productrefs += i.GetXmlProperty("genxml/productxml/genxml/textbox/txtproductref") + ",";
+            }
+            PurchaseInfo.SetXmlProperty("genxml/productrefs", productrefs);
 
             if (PurchaseInfo.TypeCode != null) // if we're using this class to build cart in memory for procesisng only, don;t save to DB.
             {
@@ -105,6 +125,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             set
             {
                 PurchaseInfo.SetXmlProperty("genxml/lang", value);
+            }
+        }
+
+        public String ClientLang
+        {
+            get
+            {
+                if (PurchaseInfo.GetXmlProperty("genxml/clientlang") == "") return Lang;
+                return PurchaseInfo.GetXmlProperty("genxml/clientlang");
+            }
+            set
+            {
+                PurchaseInfo.SetXmlProperty("genxml/clientlang", value);
             }
         }
 
@@ -506,13 +539,50 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 objInfo.AddSingleNode("itemcode", itemcode.TrimEnd('-'), "genxml");
 
+                // check if we have a client file upload
+                var clientfileuopload = objInfoIn.GetXmlProperty("genxml/textbox/optionfilelist") != "";
+
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
-                if (nodItem == null)
+                if (nodItem == null || clientfileuopload)
+                {
+                    #region "Client Files"
+
+                    if (clientfileuopload)
+                    {
+                        // client has uploaded files, so save these to client upload folder and create link in cart data.
+                        var flist = objInfoIn.GetXmlProperty("genxml/textbox/optionfilelist").TrimEnd(',');
+                        var fprefix = objInfoIn.GetXmlProperty("genxml/hidden/optionfileprefix") + "_";
+                        var fileXml = "<clientfiles>";
+                        foreach (var f in flist.Split(','))
+                        {
+                            var fullName = StoreSettings.Current.FolderTempMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + fprefix + f;
+                            var extension = Path.GetExtension(fullName);
+                            if (File.Exists(fullName))
+                            {
+                                var newDocFileName = StoreSettings.Current.FolderClientUploadsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Guid.NewGuid() + extension;
+                                File.Copy(fullName, newDocFileName, true);
+                                File.Delete(fullName);
+                                var docurl = StoreSettings.Current.FolderClientUploads.TrimEnd('/') + "/" + Path.GetFileName(newDocFileName);
+                                fileXml += "<file>";
+                                fileXml += "<mappath>" + newDocFileName + "</mappath>";
+                                fileXml += "<url>" + docurl + "</url>";
+                                fileXml += "<name>" + f + "</name>";
+                                fileXml += "<prefix>" + fprefix + "</prefix>";
+                                fileXml += "</file>";
+                            }
+                        }
+                        fileXml += "</clientfiles>";
+                        objInfo.AddXmlNode(fileXml, "clientfiles", "genxml");
+                    }
+
+                    #endregion
+
                     if (replaceIndex >= 0 && replaceIndex < _itemList.Count)
                         _itemList[replaceIndex] = objInfo; //replace
                     else
                         _itemList.Add(objInfo); //add as new item
+                }
                 else
                 {
                     //replace item

@@ -20,6 +20,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using NBrightCore.common;
 using NBrightCore.render;
+using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
@@ -39,6 +40,8 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _template = "";
         private String _printcode = "";
         private String _theme = "";
+        private String _printtype = "";
+        private String _scode = "";
 
         #region Event Handlers
 
@@ -54,6 +57,8 @@ namespace Nevoweb.DNN.NBrightBuy
                 _template = Utils.RequestParam(HttpContext.Current, "template");
                 _printcode = Utils.RequestParam(HttpContext.Current, "printcode");
                 _theme = Utils.RequestParam(HttpContext.Current, "theme");
+                _printtype = Utils.RequestParam(HttpContext.Current, "printtype");
+                _scode = Utils.RequestParam(HttpContext.Current, "scode");
             }
             catch (Exception exc)
             {
@@ -86,40 +91,23 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void PageLoad()
         {
-            var portalId = ((PortalSettings) HttpContext.Current.Items["PortalSettings"]).PortalId;
+            var portalId = PortalSettings.Current.PortalId;
             var objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            //var settings = new Dictionary<String,String>();
-            //foreach (var item in StoreSettings.Current.Settings())
-            //{
-            //    settings[item.Key] = item.Value;
-            //}
             if (_theme == "") _theme = StoreSettings.Current.Get("emailthemefolder");
-            if (_theme == "") _theme = "Cygnus";
-            //settings.Add("themefolder",_theme);
+            if (_theme == "") _theme = "ClassicRazor";
 
-            if (_template != "")
+            switch (_printcode)
             {
-                switch (_printcode)
+                case "printorder":
                 {
-                    case "printorder":
-                        {
-                            DisplayOrderData(portalId, objUserInfo, _itemid);
-                            break;
-                        }
-                    case "printproduct":
-                        {
-                            DisplayProductData(portalId, _itemid);
-                            break;
-                        }
-                }           
-                
-            }
-            else
-            {
-                var strOut = "***ERROR***  Invalid Template";
-                var l = new Literal();
-                l.Text = strOut;
-                phData.Controls.Add(l);
+                    DisplayOrderData(portalId, objUserInfo, _itemid);
+                    break;
+                }
+                case "printproduct":
+                {
+                    DisplayProductData(portalId, _itemid);
+                    break;
+                }
             }
         }
 
@@ -136,7 +124,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (orderData.PurchaseInfo.TypeCode == "ORDER")
                 {
                     strOut = "***ERROR***  Invalid Security";
-                    if (userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
+                    if (_scode == orderData.PurchaseInfo.GetXmlProperty("genxml/securitycode") || userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
                     {
                         //check the payment provider for a print url
                         var shippingprovider = orderData.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
@@ -145,7 +133,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             var shipprov = ShippingInterface.Instance(shippingprovider);
                             if (shipprov != null)
                             {
-                                if (_template == "printdeliverylabel.html")
+                                if (_printtype == "shiplabel")
                                 {
                                     var printurl = shipprov.GetDeliveryLabelUrl(orderData.PurchaseInfo);
                                     if (printurl != "") Response.Redirect(printurl);                                    
@@ -153,12 +141,16 @@ namespace Nevoweb.DNN.NBrightBuy
                             }
                         }
 
-                        // not provider label, so print template
-                        var templCtrl = NBrightBuyUtils.GetTemplateGetter(_theme);
-                        var strTempl = templCtrl.GetTemplateData(_template, Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
 
-                        strOut = GenXmlFunctions.RenderRepeater(orderData.PurchaseInfo, strTempl, "", "XMLData", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
-                        if (_template.EndsWith(".xsl")) strOut = XslUtils.XslTransInMemory(orderData.PurchaseInfo.XMLData, strOut);                       
+                        // No print label, so print template specified.                        
+                        var obj = new NBrightInfo(true);
+                        obj.PortalId = PortalSettings.Current.PortalId;
+                        obj.ModuleId = 0;
+                        obj.Lang = Utils.GetCurrentCulture();
+                        obj.GUIDKey = _printtype;
+                        obj.ItemID = -1;
+
+                        strOut = NBrightBuyUtils.RazorTemplRender("printorder.cshtml", 0, "", obj, "/DesktopModules/NBright/NBrightBuy", _theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                     }
                 }
             }
