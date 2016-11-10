@@ -424,8 +424,11 @@
                                                                                         <td style="line-height:100%">
                                                                                             <h4>@ResourceKey("Notification.ManualPayment")</h4>
                                                                                             <p>@BreakOf(ResourceKey("Notification.bankinginstructions"))</p>
-                                                                                            <div><b>@ResourceKey("Notification.Bank"): </b>@Model.GetSetting("bankname"), <b>@ResourceKey("Notification.AccountName"): </b>@Model.GetSetting("bankaccountname")</div>
-                                                                                            <div><b>@ResourceKey("Notification.AccountNumber"): </b>@Model.GetSetting("bankaccountnumber"), <b>@ResourceKey("Notification.InsertReference"): </b>@nbi.GetXmlProperty("genxml/ordernumber")</div>
+                                                                                            @if (Model.GetSetting("bankaccountnumber") != "")
+                                                                                            {
+                                                                                                <div><b>@ResourceKey("Notification.Bank"): </b>@Model.GetSetting("bankname"), <b>@ResourceKey("Notification.AccountName"): </b>@Model.GetSetting("bankaccountname")</div>
+                                                                                                <div><b>@ResourceKey("Notification.AccountNumber"): </b>@Model.GetSetting("bankaccountnumber"), <b>@ResourceKey("Notification.InsertReference"): </b>@nbi.GetXmlProperty("genxml/ordernumber")</div>
+                                                                                            }
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>

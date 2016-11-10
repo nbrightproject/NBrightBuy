@@ -145,10 +145,10 @@
     <value>Product Group</value>
   </data>
   <data name="helpmsg.Text" xml:space="preserve">
-    <value>&lt;b&gt;Promotions are calcuated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
+    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
   </data>
   <data name="langerror.Text" xml:space="preserve">
-    <value>ERROR!!!  This promotion has INVALID langauge records.  Delete this promotion and recreate as a new promotion.</value>
+    <value>ERROR!!!  This promotion has INVALID language records.  Delete this promotion and recreate as a new promotion.</value>
   </data>
   <data name="lastcalculated.Text" xml:space="preserve">
     <value>Last Calculated</value>
@@ -181,9 +181,9 @@
     <value>Usage Limit</value>
   </data>
   <data name="validfrom.Text" xml:space="preserve">
-    <value>Valid From (inc.)</value>
+    <value>Valid From (incl.)</value>
   </data>
   <data name="validuntil.Text" xml:space="preserve">
-    <value>Valid Until (inc.)</value>
+    <value>Valid Until (incl.)</value>
   </data>
 </root>

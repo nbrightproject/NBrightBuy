@@ -276,10 +276,4 @@
   <data name="shippingoption2datavalue.Text" xml:space="preserve">
     <value>1,2</value>
   </data>
-  <data name="lblcollectfromstore.Help" xml:space="preserve">
-    <value>Allow a collect from store option</value>
-  </data>
-  <data name="lblcollectfromstore.Text" xml:space="preserve">
-    <value>Collect from Store</value>
-  </data>
 </root>

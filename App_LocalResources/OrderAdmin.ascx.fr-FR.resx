@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdEmailAmended.confirm" xml:space="preserve">
     <value>Envoyer email de commande modifiée au client ?</value>
@@ -236,5 +236,20 @@
   </data>
   <data name="emailmsg.Text" xml:space="preserve">
     <value>Message pour le client (e-mail)</value>
+  </data>
+  <data name="choosefile.Text" xml:space="preserve">
+    <value>Choisir fichier</value>
+  </data>
+  <data name="clientlanguage.Text" xml:space="preserve">
+    <value>Langue du client</value>
+  </data>
+  <data name="cmdEditOrder.confirm" xml:space="preserve">
+    <value>Modifier commande?</value>
+  </data>
+  <data name="cmdEditOrder.Text" xml:space="preserve">
+    <value>&lt;i  title="View and Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Editer</value>
+  </data>
+  <data name="downloadinvoice.Text" xml:space="preserve">
+    <value>Télécharger facture</value>
   </data>
 </root>
