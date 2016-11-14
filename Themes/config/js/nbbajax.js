@@ -19,7 +19,6 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	});
 
 	request.done(function (data) {
-	    $('#loader').hide('');
 	    if (data != 'noaction') {
 	        if (appendreturn == null) {
 	            $(target).children().remove();
@@ -31,15 +30,6 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	            type: "nbxgetcompleted",
 	            cmd: cmd
 	        });
-
-		    //NBS - Tooltips
-		    $('[data-toggle="tooltip"]').tooltip({
-		    animation : 'true',
-		    placement : 'auto top',
-		    viewport: {selector: '#content', padding: 0},
-		    delay: {show: 100, hide: 200}
-		    });
-
 	    }
 
 	});

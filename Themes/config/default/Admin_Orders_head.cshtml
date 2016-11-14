@@ -51,6 +51,17 @@
             // function to do actions after an ajax call has been made.
             function Admin_Order_nbxgetCompleted(e) {
 
+                $('.processing').hide();
+
+                //NBS - Tooltips
+                $('[data-toggle="tooltip"]').tooltip({
+                    animation: 'true',
+                    placement: 'auto top',
+                    viewport: { selector: '#content', padding: 0 },
+                    delay: { show: 100, hide: 200 }
+                });
+
+
                 if (e.cmd == 'orderadmin_getlist') {
 
                     $("#OrderAdmin_cmdExport").show();

@@ -42,6 +42,15 @@
                 $('a[id*="_cmdUpdate"]').unbind('click'); // disable event 
                 eval(hrefction);
             }
+
+            //NBS - Tooltips
+            $('[data-toggle="tooltip"]').tooltip({
+                animation: 'true',
+                placement: 'auto top',
+                viewport: { selector: '#content', padding: 0 },
+                delay: { show: 100, hide: 200 }
+            });
+
         });
 
     });

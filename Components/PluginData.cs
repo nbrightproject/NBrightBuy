@@ -146,18 +146,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (updated)
                     {
                         Save(false); // only update system level
-                        if (ctrlList.Count > 0)
-                        {
-                            // move new plugin to top.
-                            foreach (var p in ctrlList)
-                            {
-                                var topPlugin = GetPlugin(p.Value);
-                                if (topPlugin != null)
-                                {
-                                    MovePlugin(p.Key, topPlugin.GUIDKey, false);
-                                }
-                            }
-                        }
                     }
 
                 }

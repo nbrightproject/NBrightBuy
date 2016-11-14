@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblcatsearchtype.Help" xml:space="preserve">
     <value>Type of search to do on multiple selected categories</value>
@@ -184,7 +184,7 @@
     <value>Module Key of the module that will display the results.</value>
   </data>
   <data name="lbltargetmodulekey.Text" xml:space="preserve">
-    <value>Target Module Key (CSV) : </value>
+    <value>Target Module Key : </value>
   </data>
   <data name="lbltheme.Help" xml:space="preserve">
     <value>Name of the theme to use for this productlist.</value>

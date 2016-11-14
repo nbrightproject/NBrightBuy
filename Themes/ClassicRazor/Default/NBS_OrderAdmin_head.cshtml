@@ -101,6 +101,8 @@
             // function to do actions after an ajax call has been made.
             function NBS_OrderAdmin_nbxgetCompleted(e) {
 
+                $('.processing').hide();
+
                 if (e.cmd == 'orderadmin_getlist') {
 
                     $('#OrderAdmin_searchtext').val($('#searchtext').val());

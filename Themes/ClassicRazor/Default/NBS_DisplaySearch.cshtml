@@ -36,36 +36,38 @@
     <input id="search6" type="hidden" update="save" value="<tag id='search' action='close' />">
 </span>
 <div class='searchreturn' style="display: none;"></div>
-<a id="cmdSimpleSearch" href="javascript:void();" class="postbacklink searchpostbacklink nbssearchgo" style="display: none;"></a>
-<a id="cmdSimpleSearchFake" href="javascript:void();" class="nbssearchgo fakesearchdiv"></a>
+<a id="cmdSimpleSearch" href="javascript:void(0);" class="postbacklink searchpostbacklink nbssearchgo"></a>
 <script>
 
-$('.searchpostbacklink').hide();
-
-$("input[id*='searchtext']").keyup(function (event) {
-  var length = this.value.length;
-  if (length >= 2 && length <= 99) {
-	$('.searchpostbacklink').show();
-	$('.fakesearchdiv').hide();
-    if (event.which == 13) {
-		$('.processing').show();
-		nbxget('dosearch', '.nbssearchinput', '.searchreturn');
-    }
-  }
-  else
-  {
-	$('.searchpostbacklink').hide();
-	$('.fakesearchdiv').show();
-  }
-});
 
 $(document).ready(function() {
 
-    $('.searchpostbacklink').click(function(event) {
-        $('.processing').show();
-        nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+    $("form").submit(function (e) {
+        e.preventDefault();
     });
-    $('.searchreturn').change(function(event) {
+
+    $("input[id*='searchtext']").keyup(function (event) {
+        if (event.which == 13) {
+            var length = this.value.length;
+            if (length >= 2 && length <= 99) {
+                $('.processing').show();
+                nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+            }
+        }
+        return false;
+    });
+
+    $('.searchpostbacklink').click(function(event) {
+        var text = $("input[id*='searchtext']").val();
+        var length = text.length;
+        if (length >= 2 && length <= 99) {
+            $('.processing').show();
+            nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+        }
+    });
+
+    $('.searchreturn').change(function (event) {
+        $('.processing').show();
         window.location.href = "@NBrightBuyUtils.GetSEOLink(info.PortalId, tabid, "", "", "")";
     });
 });
