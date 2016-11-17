@@ -2398,7 +2398,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     //get uploaded params
                     var ajaxInfo = GetAjaxInfo(context);
-                    NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"));
+                    NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"),true);
                 }
                 return "";
             }

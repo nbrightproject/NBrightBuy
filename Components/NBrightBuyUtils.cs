@@ -600,6 +600,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void SendOrderEmail(string emailtype, int orderId, string emailsubjectresxkey = "", string fromEmail = "", string emailmsg = "")
         {
+            SendOrderEmail(emailtype, orderId, emailsubjectresxkey, fromEmail, emailmsg, false);
+        }
+        public static void SendOrderEmail(string emailtype, int orderId, string emailsubjectresxkey, string fromEmail, string emailmsg, bool onlyUserManagerOnly)
+        {
             var ordData = new OrderData(orderId);
             var lang = ordData.ClientLang;
             if (ordData.GetInfo().UserId > 0)
@@ -628,7 +632,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 emailList += "," + StoreSettings.Current.ManagerEmail;
             }
 
-            if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+            if (!onlyUserManagerOnly || UserController.Instance.GetCurrentUserInfo().UserID > 0)
             {
 
                 var passSettings = new Dictionary<string, string>();
@@ -644,7 +648,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 // check for user or manager.
                 var sendEmailFlag = true;
-                if (UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
+                if (onlyUserManagerOnly && UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
                 {
                     if (!NBrightBuyUtils.CheckRights())
                     {
