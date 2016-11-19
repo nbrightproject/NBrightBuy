@@ -43,6 +43,10 @@
                 eval(hrefction);
             }
 
+            if (event.cmd == 'getsettings') {
+                $('#loader').hide('');
+            }
+
             //NBS - Tooltips
             $('[data-toggle="tooltip"]').tooltip({
                 animation: 'true',
