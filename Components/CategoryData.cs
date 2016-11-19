@@ -385,6 +385,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            // update shared product if flagged
+            if (StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0)
+            {
+                DataRecord.PortalId = -1;
+                _objCtrl.Update(DataRecord);
+                if (DataLangRecord != null)
+                {
+                    DataLangRecord.PortalId = -1;
+                    _objCtrl.Update(DataLangRecord);
+                }
+            }
+
 
             return errorcount;
         }

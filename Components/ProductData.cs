@@ -119,6 +119,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public String ProductRef
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/txtproductref"); }
+        }
+
         public String ProductName
         {
             get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"); }
@@ -921,6 +926,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
                 DataLangRecord.AddXmlNode(strXml, "genxml/models/genxml", "genxml/models");
             }
+
+            var modellp = Models.Count + 1;
+            if (DataLangRecord != null && DataLangRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelname") == "")
+            {
+                DataLangRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelname", ProductName);
+            }
+            if (DataRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelref") == "")
+            {
+                DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelref", ProductRef);
+            }
+
+
             return newkey;
         }
 
@@ -1286,6 +1303,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objCtrl.Delete(c.ItemID);
                 errorcount += 1;
             }
+
+
+            // update shared product if flagged
+            var upd = false;
+            if (StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0 ) 
+            {
+                upd = true;
+                DataRecord.PortalId = -1;
+                if (DataLangRecord != null)
+                {
+                    DataLangRecord.PortalId = -1;
+                }
+            }
+
+            // check if we have empty model name ()
+            var modellp = 1;
+            foreach (var m in Models)
+            {
+                if (DataLangRecord != null && DataLangRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelname") == "")
+                {
+                    DataLangRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelname", ProductName);
+                    upd = true;
+                }
+                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelref") == "")
+                {
+                    DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelref", ProductRef);
+                    upd = true;
+                }
+                modellp += 1;
+            }
+
+            if (upd) // update if we've set the update flag.
+            {
+                objCtrl.Update(DataRecord);
+                if (DataLangRecord != null)
+                {
+                    objCtrl.Update(DataLangRecord);
+                }
+            }
+
 
             return errorcount;
         }

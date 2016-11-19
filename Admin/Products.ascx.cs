@@ -187,6 +187,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 prodData.Update(updInfo.XMLData);
                 prodData.Save();
                 prodData.FillEmptyLanguageFields();
+                prodData.Validate();
 
                 if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
 
