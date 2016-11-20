@@ -1167,6 +1167,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int Validate()
         {
             var errorcount = 0;
+            var upd = false;
 
             var objCtrl = new NBrightBuyController();
 
@@ -1190,6 +1191,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataLangRecord.ParentItemId = Info.ItemID;
                 DataLangRecord.Lang = _lang;
                 objCtrl.Update(DataLangRecord);
+            }
+
+            // if we have no images search for a default image matching the product ref.
+            if (ProductRef != "" && Imgs.Count == 0)
+            {
+                if (File.Exists(_storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + ProductRef + ".jpg")) 
+                {
+                    AddNewImage(_storeSettings.FolderImages.TrimEnd('/') + "/" + ProductRef + ".jpg", _storeSettings.FolderImagesMapPath.TrimEnd('\\') + "\\" + ProductRef + ".jpg");
+                    upd = true;
+                }
             }
 
             //Fix image paths
@@ -1306,7 +1317,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
             // update shared product if flagged
-            var upd = false;
             if (StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0 ) 
             {
                 upd = true;
