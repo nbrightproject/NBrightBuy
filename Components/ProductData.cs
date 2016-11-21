@@ -90,6 +90,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             ResetData(productId, lang, hydrateLists, typeCode);
         }
 
+        // overload to support out of http context instantiations ie. when the scheduler runs NBrightDnnIdx
+        public ProductData(int productId, int portalId, String lang, Boolean hydrateLists = true, String typeCode = "PRD")
+        {
+            _portalId = portalId;
+            ResetData(productId, lang, hydrateLists, typeCode);
+        }
+        
         #region "public functions/interface"
 
         /// <summary>
@@ -1588,7 +1595,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Info = objCtrl.Get(productId, _typeLangCode, _lang);
             if (Info != null)
             {
-                _portalId = PortalSettings.Current.PortalId;
+                if(_portalId<0) _portalId = PortalSettings.Current.PortalId;
                 _storeSettings = new StoreSettings(_portalId);
                 Exists = true;
                 if (hydrateLists)
