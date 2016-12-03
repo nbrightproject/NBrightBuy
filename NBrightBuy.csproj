@@ -1028,6 +1028,7 @@
     <Content Include="Themes\config\default\propertyproductbody.html" />
     <Content Include="Themes\config\default\propertyproductfooter.html" />
     <Content Include="Themes\config\default\propertyproductheader.html" />
+    <None Include="Themes\config\default\Admin_Settings.cshtml" />
     <Content Include="Themes\config\default\Tools.html" />
     <Content Include="Themes\config\default\import.html" />
     <Content Include="Themes\config\default\export.html" />
@@ -1064,7 +1065,6 @@
     <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
     <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
-    <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\config\img\amylis_24x24.png" />
     <Content Include="Themes\config\img\flags\16\af-ZA.png" />
     <Content Include="Themes\config\img\flags\16\ar-AE.png" />
