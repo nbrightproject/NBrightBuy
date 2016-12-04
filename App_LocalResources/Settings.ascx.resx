@@ -151,7 +151,7 @@
     <value>Favorites</value>
   </data>
   <data name="manageremail.Help" xml:space="preserve">
-    <value>Email address(es) of the manager(s) of the store (separed by comas).</value>
+    <value>Email address(es) of the manager(s) of the store (CSV).</value>
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager</value>
