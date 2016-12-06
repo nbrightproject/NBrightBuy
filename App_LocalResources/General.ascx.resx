@@ -1098,4 +1098,7 @@
   <data name="ReturnTo.Text" xml:space="preserve">
     <value>Return To</value>
   </data>
+  <data name="Manufacturer.Text" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
 </root>
