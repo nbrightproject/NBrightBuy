@@ -51,7 +51,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var catNods = new Dictionary<int,MenuNode>();
             foreach (var n in nodes)
             {
-				if (n.Text.ToLower() == "[cat]")
+                if (n.Text.ToLower() == "[cat]")
                 {
                     catNods.Add(idx,n);
 					break;
@@ -128,7 +128,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (img != "")
                     {
                         n.LargeImage = img;
-                        n.Icon = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?w=50&amp;h=50&amp;src=/" + img;
+                        n.Icon = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?w=50&h=50&src=/" + img.TrimStart('/');
                     }
                     n.Keywords = obj.metakeywords;
                     n.Description = obj.metadescription;
