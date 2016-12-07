@@ -1668,11 +1668,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService", service);
                 }
                 Engine.Razor = service;
-                var israzorCached = Utils.GetCache(templateKey); // get a cache flag for razor compile.
+                var israzorCached = Utils.GetCache("nbrightbuyrzcache_" + templateKey); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl)
                 {
                     result = Engine.Razor.RunCompile(razorTempl, GetMd5Hash(razorTempl), null, info);
-                    Utils.SetCache(templateKey, razorTempl);
+                    Utils.SetCache("nbrightbuyrzcache_" + templateKey, razorTempl);
                 }
                 else
                 {
