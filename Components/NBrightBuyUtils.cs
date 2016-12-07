@@ -1658,7 +1658,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             try
             {
                 var service = (IRazorEngineService)HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
-                if (service == null || debugMode)
+                if (service == null)
                 {
                     // do razor test
                     var config = new TemplateServiceConfiguration();
@@ -1668,7 +1668,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService", service);
                 }
                 Engine.Razor = service;
-                result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+                var israzorCached = Utils.GetCache(templateKey); // get a cache flag for razor compile.
+                if (israzorCached == null || (string)israzorCached != razorTempl)
+                {
+                    result = Engine.Razor.RunCompile(razorTempl, GetMd5Hash(razorTempl), null, info);
+                    Utils.SetCache(templateKey, razorTempl);
+                }
+                else
+                {
+                    result = Engine.Razor.Run(GetMd5Hash(razorTempl), null, info);
+                }
+
             }
             catch (Exception ex)
             {
@@ -1676,6 +1686,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// work arounf MD5 has for razorengine caching.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static string GetMd5Hash(string input)
+        {
+            var md5 = MD5.Create();
+            var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            var hash = md5.ComputeHash(inputBytes);
+            var sb = new StringBuilder();
+            foreach (byte t in hash)
+            {
+                sb.Append(t.ToString("X2"));
+            }
+            return sb.ToString();
         }
 
         public static void RazorIncludePageHeader(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
