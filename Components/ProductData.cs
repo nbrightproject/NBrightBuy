@@ -105,6 +105,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public bool Exists { get; private set; }
         public bool IsInStock { get; private set; }
         public bool IsOnSale { get; private set; }
+        public bool DealerIsOnSale { get; private set; }
         public bool ClientFileUpload { get; private set; }
 
 
@@ -236,6 +237,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var bestprice = FromPrice();
             if (SalePrice() < bestprice) bestprice = SalePrice();
+            return bestprice;
+        }
+
+        public Double DealerFromPrice()
+        {
+            Double fromprice = 0;
+            foreach (var m in Models)
+            {
+                if ((fromprice == 0) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealercost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+            }
+            return fromprice;
+        }
+
+        public Double DealerSalePrice()
+        {
+            Double saleprice = 0;
+            foreach (var m in Models)
+            {
+                if ((saleprice == 0) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealersale"))) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+            }
+            if (saleprice == 0) saleprice = FromPrice();
+            return saleprice;
+        }
+
+        public Double DealerBestPrice()
+        {
+            var bestprice = DealerFromPrice();
+            if (DealerSalePrice() < bestprice) bestprice = DealerSalePrice();
             return bestprice;
         }
 
@@ -544,9 +573,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    DataRecord.RemoveXmlNode(f);
-                    var xpathDest = f.Split('/');
-                    if (xpathDest.Count() >= 2) DataRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+                    //DataRecord.RemoveXmlNode(f);
+                    //var xpathDest = f.Split('/');
+                    //if (xpathDest.Count() >= 2) DataRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
                     // if we have a image field then we need to create the imageurl field
                     if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
@@ -574,6 +604,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             UpdateDocs(info);
 
             IsOnSale = CheckIsOnSale();
+            DealerIsOnSale = DealerCheckIsOnSale();
             IsInStock = CheckIsInStock();
             ClientFileUpload = CheckClientFileUpload();
 
@@ -1348,6 +1379,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtmodelref", ProductRef);
                     upd = true;
                 }
+                // if sale or dealer disabled, set zero for price
+                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/checkbox/chkdisablesale") == "True")
+                {
+                    if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtsaleprice") > 0)
+                    {
+                        DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtsaleprice", "0");
+                        upd = true;
+                    }
+                }
+                if (DataRecord.GetXmlProperty("genxml/models/genxml[" + modellp + "]/checkbox/chkdisabledealer") == "True")
+                {
+                    if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealercost") > 0)
+                    {
+                        DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtdealercost", "0");
+                        upd = true;
+                    }
+                    if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealersale") > 0)
+                    {
+                        DataRecord.SetXmlProperty("genxml/models/genxml[" + modellp + "]/textbox/txtdealersale", "0");
+                        upd = true;
+                    }
+                }
+
                 modellp += 1;
             }
 
@@ -1692,6 +1746,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _typeLangCode = DataLangRecord.TypeCode;
 
                 IsOnSale = CheckIsOnSale();
+                DealerIsOnSale = DealerCheckIsOnSale();
                 IsInStock = CheckIsInStock();
                 ClientFileUpload = CheckClientFileUpload(); 
             }
@@ -1806,6 +1861,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (price == -1) price = 0;
             return price;
         }
+
+        private Boolean DealerCheckIsOnSale()
+        {
+            var saleprice = GetDealerSalePriceDouble();
+            if (saleprice > 0) return true;
+            return false;
+        }
+
+        public Double GetDealerSalePriceDouble()
+        {
+            Double price = -1;
+            foreach (var m in Models)
+            {
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                if ((s > 0) && (s < price) | (price == -1)) price = s;
+            }
+            if (price == -1) price = 0;
+            return price;
+        }
+
 
         private bool CheckClientFileUpload()
         {

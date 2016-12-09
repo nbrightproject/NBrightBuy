@@ -2957,9 +2957,13 @@ namespace Nevoweb.DNN.NBrightBuy
             var dic = objInfo.ToDictionary();
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
+            if (dic.ContainsKey("editlang") && dic["editlang"] != "") _lang = dic["editlang"];
 
+            var currentlang = Utils.GetCurrentCulture();
+            if (dic.ContainsKey("currentlang") && dic["currentlang"] != "") currentlang = dic["currentlang"];
             // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-            if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+            if (currentlang != "" && currentlang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+
             objInfo.Lang = _lang; // make sure we have the langauge in the object.
 
             return objInfo;

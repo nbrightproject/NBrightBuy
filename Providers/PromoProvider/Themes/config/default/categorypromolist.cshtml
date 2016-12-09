@@ -16,6 +16,7 @@
                             <th>@ResourceKey("Promo.amount")</th>
                             <th>@ResourceKey("Promo.validfrom")</th>
                             <th>@ResourceKey("Promo.validuntil")</th>
+                            <th>@ResourceKey("Promo.processorder")</th>
                             <th>@ResourceKey("Promo.disabled")</th>
                             <th></th>
                         </tr>
@@ -47,7 +48,8 @@
                                 </td>
                                 <td>@x.GetXmlProperty("genxml/textbox/validfrom")</td>
                                 <td>@x.GetXmlProperty("genxml/textbox/validuntil")</td>
-                                <td>
+                                    <td>@x.GetXmlPropertyInt("genxml/dropdownlist/processorder")</td>
+                                    <td>
                                     @{var i = "fa-circle"; if (x.GetXmlPropertyBool("genxml/checkbox/disabled")) { i = "fa-check-circle"; }}
                                 <i class="fa  @i fa-2x"></i>
                             </td>

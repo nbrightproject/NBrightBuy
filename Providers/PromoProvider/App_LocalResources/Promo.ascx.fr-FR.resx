@@ -165,6 +165,12 @@
   <data name="percentage.Text" xml:space="preserve">
     <value>Pourcentage (%)</value>
   </data>
+  <data name="processorder.Text" xml:space="preserve">
+    <value>Séquence du processus</value>
+  </data>
+  <data name="runfreq.Text" xml:space="preserve">
+    <value>Exécuter pour fourchette de dates,Exécuter une fois</value>
+  </data>
   <data name="typedata.Text" xml:space="preserve">
     <value>Montant,Pourcentage (%)</value>
   </data>
@@ -185,5 +191,11 @@
   </data>
   <data name="validuntil.Text" xml:space="preserve">
     <value>Valide jusqu'à (inclus)</value>
+  </data>
+  <data name="whichpricedata.Text" xml:space="preserve">
+    <value>Prix soldé,Prix revendeur,Prix revendeur soldé,Prix soldé revendeur et Prix soldé</value>
+  </data>
+  <data name="whichpricevalue.Text" xml:space="preserve">
+    <value>1,2,3,4</value>
   </data>
 </root>

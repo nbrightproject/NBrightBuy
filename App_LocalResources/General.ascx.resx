@@ -1101,4 +1101,13 @@
   <data name="Manufacturer.Text" xml:space="preserve">
     <value>Manufacturer</value>
   </data>
+  <data name="DealerSale.Text" xml:space="preserve">
+    <value>Dealer Sale</value>
+  </data>
+  <data name="disablesale.Text" xml:space="preserve">
+    <value>Disable Sale price</value>
+  </data>
+  <data name="disabledealer.Text" xml:space="preserve">
+    <value>Disable Dealer</value>
+  </data>
 </root>

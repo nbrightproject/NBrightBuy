@@ -3419,6 +3419,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     var paramlist = new string[4];
                     paramlist[1] = "eid=" + entryid;
                     paramlist[2] = "ctrl=products";
+                    paramlist[2] = "language=" + Utils.GetCurrentCulture();
                     if (_settings != null && _settings.ContainsKey("currenttabid")) paramlist[3] = "rtntab=" + _settings["currenttabid"];
                     if (_settings != null && _settings.ContainsKey("moduleid")) paramlist[3] = "rtnmid=" + _settings["moduleid"];
                     var urlpage = Utils.RequestParam(HttpContext.Current, "page");

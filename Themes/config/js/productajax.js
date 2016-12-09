@@ -33,7 +33,49 @@
         $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
         $(this).children().find('.sortelementUp').click(function () {moveUp($(this).parent()); });
         $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
-		if (!Modernizr.inputtypes.date) $('input[id*="availabledate"]').datepicker();
+        if (!Modernizr.inputtypes.date) $('input[id*="availabledate"]').datepicker();
+
+
+        $('.activatestock input[id*="_chkstockon_"]:not(:checked)').each(function( index ) {
+            $(this).parent().parent().next().hide();
+        });
+
+        $('.activatestock input[id*="_chkstockon_"]').click(function() {
+            if($(this).is(":checked")) {
+                $(this).parent().parent().next().show();
+            } else {
+                $(this).parent().parent().next().hide();
+            }
+        });
+
+        $('input[id*="_chkdisabledealer_"]:checked').each(function( index ) {
+                $(this).prev().attr("disabled", "disabled");;            
+                $(this).parent().next().find('.dealersale').attr("disabled", "disabled");
+        });
+        $('input[id*="_chkdisabledealer_"]').change(function() {
+            if($(this).is(":checked")) {
+                $(this).prev().attr("disabled", "disabled");
+                $(this).parent().next().find('.dealersale').attr("disabled", "disabled");
+                $(this).prev().val(0);
+                $(this).parent().next().find('.dealersale').val(0);
+            } else {
+                $(this).prev().removeAttr("disabled");
+                $(this).parent().next().find('.dealersale').removeAttr("disabled");      
+            }        
+        });
+
+        $('input[id*="_chkdisablesale_"]:checked').each(function( index ) {
+                $(this).prev().attr("disabled", "disabled");;            
+        });
+        $('input[id*="_chkdisablesale_"]').change(function() {
+            if($(this).is(":checked")) {
+                $(this).prev().attr("disabled", "disabled");;
+                $(this).prev().val(0);
+            } else {
+                $(this).prev().removeAttr("disabled");
+            }        
+        });
+
     });
 
     $('#productoptions').change(function () {

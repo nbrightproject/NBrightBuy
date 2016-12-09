@@ -51,6 +51,9 @@
         var rk3 = ResourceKey("Promo.disabled").ToString();
         var rk4 = ResourceKey("Promo.overwrite").ToString();
         var rk5 = ResourceKey("Promo.applydaterange").ToString();
+        var rk6 = ResourceKey("Promo.whichpricevalue").ToString();
+        var rk7 = ResourceKey("Promo.whichpricedata").ToString();
+        var rk8 = ResourceKey("Promo.runfreq").ToString();
     }
     <div class="form-group">
         <div class="col-sm-12">
@@ -58,15 +61,31 @@
                 <label>@RadioButtonList(info, "genxml/radiobuttonlist/amounttype", rk1, rk2, "", "1")</label>
                 @TextBox(info, "genxml/textbox/amount", "class='form-control' datatype='double'")
             </div>
+            <div class="col-sm-3">
+                <label>@ResourceKey("Promo.processorder")</label>
+                @DropDownList(info, "genxml/dropdownlist/processorder", "0,1,2,3,4,5,6,7,8,9", "0,1,2,3,4,5,6,7,8,9")
+            </div>
         </div>
         <div class="col-sm-12">
             <div class="col-sm-2">
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label>@RadioButtonList(info, "genxml/radiobuttonlist/runfreq", "1,2", rk8, " class='runfreq'", "1")</label>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-2 daterange">
                 <label>@ResourceKey("Promo.validfrom")</label>
                 @TextBox(info, "genxml/textbox/validfrom", "class='form-control' datatype='date' autocomplete='off'")
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 daterange">
                 <label>@ResourceKey("Promo.validuntil")</label>
                 @TextBox(info, "genxml/textbox/validuntil", "class='form-control' datatype='date' autocomplete='off'")
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-12">
+                <label>@RadioButtonList(info, "genxml/radiobuttonlist/whichprice", rk6, rk7, "", "1")</label>
             </div>
         </div>
         <div class="col-sm-12">

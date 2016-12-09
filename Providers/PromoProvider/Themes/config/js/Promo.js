@@ -120,7 +120,7 @@ function Promo_nbxgetCompleted(e) {
             $('.catdisplay').hide();
             $('.propdisplay').show();
         }
-
+        
         $('input:radio[name=typeselectradio]').change(function () {
             if ($(this).val() == 'cat') {
                 $('.catdisplay').show();
@@ -142,6 +142,20 @@ function Promo_nbxgetCompleted(e) {
                 $('.applyproperty').hide();
             } else {
                 $('.applyproperty').show();
+            }
+        });
+
+        if ($('input:radio[name=runfreqradio]:checked').val() == '1') {
+            $('.daterange').show();
+        } else {
+            $('.daterange').hide();
+        }
+
+        $('input:radio[name=runfreqradio]').change(function () {
+            if ($(this).val() == '1') {
+                $('.daterange').show();
+            } else {
+                $('.daterange').hide();
             }
         });
 
