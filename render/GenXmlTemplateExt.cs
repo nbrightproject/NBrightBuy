@@ -2902,7 +2902,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
         private String GetItemDisplay(NBrightInfo obj, String templ, Boolean displayPrices)
         {
-            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+            var isDealer = NBrightBuyUtils.IsDealer();
             var outText = templ;
             var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
             var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
@@ -4905,7 +4905,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                 #region "Init"
 
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = NBrightBuyUtils.IsDealer();
 
 
                 #endregion
@@ -5068,7 +5068,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
             var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
-            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
+            if (NBrightBuyUtils.IsDealer())
             {
                 var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
@@ -5094,7 +5094,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                 //check if we really need to add prices (don't if all the same)
                 var holdPrice = "";
                 var holdDealerPrice = "";
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = NBrightBuyUtils.IsDealer();
                 foreach (XmlNode nod in nodList)
                 {
                     var mPrice = nod.SelectSingleNode("textbox/txtunitcost");

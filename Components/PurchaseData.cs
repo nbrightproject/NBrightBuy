@@ -430,8 +430,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objInfo.AddSingleNode("basecost", modelInfo.GetXmlPropertyRaw("genxml/textbox/txtunitcost"), "genxml");
 
                 // flag if dealer
-                var userInfo = UserController.Instance.GetCurrentUserInfo();
-                if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
+                if (NBrightBuyUtils.IsDealer())
                     objInfo.SetXmlProperty("genxml/isdealer", "True");
                 else
                     objInfo.SetXmlProperty("genxml/isdealer", "False");

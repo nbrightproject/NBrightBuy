@@ -439,8 +439,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)
-            var userInfo = UserController.GetUserById(portalId, userId);
-            if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
+            if (NBrightBuyUtils.IsDealer())
                 cartItemInfo.SetXmlProperty("genxml/isdealer", "True");
             else
                 cartItemInfo.SetXmlProperty("genxml/isdealer", "False");
@@ -449,12 +448,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var unitcost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
             var dealercost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
             var saleprice = prdModel.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+            var dealersalecost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
 
-            // if we have a promoprice use it as saleprice
-            if (cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") > 0)
+            // if we have a promoprice use it as saleprice (This is passed in via events provider like "Multi-Buy promotions")
+            if (cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") > 0 && cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") < saleprice)
             {
                 saleprice = cartItemInfo.GetXmlPropertyDouble("genxml/promoprice");
             }
+
+            if (dealersalecost > 0 && dealersalecost < dealercost) dealercost = dealersalecost;
+            if (saleprice > 0 && saleprice < dealercost) dealercost = saleprice;
 
             // calc sale price
             var sellcost = unitcost;
@@ -575,7 +578,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 else
                 {
                     salediscount = (unitcost - saleprice);
+                    dealerdiscount = (unitcost - dealercost);
                     totaldiscount = salediscount * qty;
+                    if (NBrightBuyUtils.IsDealer() && dealerdiscount > salediscount)
+                    {
+                        totaldiscount = dealerdiscount * qty;
+                    }
                 }
 
                 // if we have a promodiscount use it
@@ -589,6 +597,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 var totalsalediscount = salediscount * qty;
                 var totaldealerdiscount = dealerdiscount * qty;
+                if (NBrightBuyUtils.IsDealer() && totaldealerdiscount > totalsalediscount)
+                {
+                    totalsalediscount = totaldealerdiscount;
+                }
+
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/salediscount", totalsalediscount);
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
@@ -618,14 +631,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (cost < 0) cost = 0;
             if (dealercost < 0) dealercost = 0;
-            //always return normal price for non-registered users
-            if (UserController.Instance.GetCurrentUserInfo().UserID == -1) return cost;
-
-            var userInfo = UserController.GetUserById(portalId, userId);
-            if (userInfo != null)
-            {
-                if (userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True") return dealercost;
-            }
+            if (NBrightBuyUtils.IsDealer()) return dealercost;
             return cost;
         }
 

@@ -1751,7 +1751,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 #region "Init"
 
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = NBrightBuyUtils.IsDealer();
 
 
                 #endregion
@@ -1887,7 +1887,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
-            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
+            if (IsDealer())
             {
                 var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
@@ -1913,7 +1913,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //check if we really need to add prices (don't if all the same)
                 var holdPrice = "";
                 var holdDealerPrice = "";
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = IsDealer();
                 foreach (XmlNode nod in nodList)
                 {
                     var mPrice = nod.SelectSingleNode("textbox/txtunitcost");
@@ -1927,6 +1927,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                     if (isDealer)
                     {
+                        var mDealerSalePrice = nod.SelectSingleNode("textbox/txtdealersale");
+                        if (mDealerSalePrice != null)
+                        {
+                            if (Utils.IsNumeric(mDealerSalePrice.InnerText))
+                            {
+                                if (Convert.ToDouble(mDealerSalePrice.InnerText) > 0) return true; // if we have a sale price assume different.
+                            }
+                        }
                         var mDealerPrice = nod.SelectSingleNode("textbox/txtdealercost");
                         if (mDealerPrice != null)
                         {
@@ -1974,7 +1982,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static string GetItemDisplay(NBrightInfo obj, string templ, Boolean displayPrices)
         {
-            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+            var isDealer = IsDealer();
             var outText = templ;
             var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
             var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
@@ -1986,7 +1994,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (displayPrices)
                 {
-                    //[TODO: add promotional calc]
                     var saleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
                     var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
                     var bestprice = price;
@@ -2000,6 +2007,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
                     if (isDealer && dealerprice > 0)
                     {
+                        var dealersaleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+                        if (dealersaleprice > 0 && dealerprice > dealersaleprice) dealerprice = dealersaleprice;
                         strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
                         if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
                         if (dealerprice < bestprice)
@@ -2166,6 +2175,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return false;
         }
+
+        public static Boolean IsDealer()
+        {
+            if (!StoreSettings.Current.GetBool("enabledealer")) return false;
+            if (StoreSettings.Current.DealerRole == "*") return true; // * for all users
+            if (CmsProviderManager.Default.IsInRole(StoreSettings.Current.DealerRole)) return true;
+            return false;
+        }
+
 
         #endregion
 

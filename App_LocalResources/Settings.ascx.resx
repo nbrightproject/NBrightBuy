@@ -459,4 +459,7 @@
   <data name="websiteurl.Text" xml:space="preserve">
     <value>Website URL</value>
   </data>
+  <data name="dealerrole.Text" xml:space="preserve">
+    <value>Dealer Role ( * = Everyone)</value>
+  </data>
 </root>

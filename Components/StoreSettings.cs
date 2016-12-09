@@ -17,8 +17,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public const String ManagerRole = "Manager";
         public const String EditorRole = "Editor";
-        public const String DealerRole = "Dealer";
         public const String ClientEditorRole = "ClientEditor";
+        public String DealerRole { get; private set; }
 
         #region Constructors
         public StoreSettings(int portalId)
@@ -91,7 +91,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!_settingDic.ContainsKey("FolderUploads")) _settingDic.Add("FolderUploads", FolderUploads);
 
             if (!_settingDic.ContainsKey("NBrightBuyPath")) _settingDic.Add("NBrightBuyPath", NBrightBuyPath());
-            
+
+            DealerRole = Get("dealerrole");
+            if (DealerRole == "") DealerRole = "Dealer";
         }
 
         #endregion
