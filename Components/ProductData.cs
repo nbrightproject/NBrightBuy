@@ -1402,6 +1402,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
 
+                // if we have zero sale or dealer or delaersale, clear any promo desc
+                if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealersale") <= 0)
+                {
+                    DataRecord.RemoveXmlNode("genxml/models/genxml[" + modellp + "]/hidden/promodealersaleid");
+                }
+                if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtsaleprice") <= 0)
+                {
+                    DataRecord.RemoveXmlNode("genxml/models/genxml[" + modellp + "]/hidden/promosalepriceid");
+                }
+                if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealercost") <= 0)
+                {
+                    DataRecord.RemoveXmlNode("genxml/models/genxml[" + modellp + "]/hidden/promodealercostid");
+                }
+
+                if (DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealersale") <= 0 && DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtsaleprice") <= 0 && DataRecord.GetXmlPropertyDouble("genxml/models/genxml[" + modellp + "]/textbox/txtdealercost") <= 0)
+                {
+                    // promo removed, so clear and group promo data.
+                    DataRecord.RemoveXmlNode("genxml/hidden/promotype");
+                    DataRecord.RemoveXmlNode("genxml/hidden/promoname");
+                    DataRecord.RemoveXmlNode("genxml/hidden/promoid");
+                    DataRecord.RemoveXmlNode("genxml/hidden/promocalcdate");
+                    DataRecord.RemoveXmlNode("genxml/hidden/datefrom");
+                    DataRecord.RemoveXmlNode("genxml/hidden/dateuntil");
+                }
+
                 modellp += 1;
             }
 

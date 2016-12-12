@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="col-sm-12">
-            <label>@RadioButtonList(info, "genxml/radiobuttonlist/runfreq", "1,2", rk8, " class='runfreq'", "1")</label>
+            <label>@RadioButtonList(info, "genxml/radiobuttonlist/runfreq", "1,2,3,4", rk8, " class='runfreq'", "1")</label>
         </div>
         <div class="col-sm-12">
             <div class="col-sm-2 daterange">
@@ -85,6 +85,10 @@
         </div>
         <div class="col-sm-12">
             <div class="col-sm-12">
+                <div>
+                    <br/>
+                    <label>@ResourceKey("Promo.whichpricemsg")</label>
+                </div>
                 <label>@RadioButtonList(info, "genxml/radiobuttonlist/whichprice", rk6, rk7, "", "1")</label>
             </div>
         </div>
@@ -94,15 +98,7 @@
             </div>
         </div>
         <div class="col-sm-12">
-            <div class="col-sm-5">
-                @{
-                    var attr = "disabled";
-                    if (info.GetXmlPropertyBool("genxml/checkbox/disabled"))
-                    {
-                        attr = "";
-                    }
-                }
-                @CheckBox(info, "genxml/checkbox/disabled", rk3, attr)
+                @CheckBox(info, "genxml/checkbox/disabled", rk3)
             </div>
         </div>
         <div class="col-sm-12">

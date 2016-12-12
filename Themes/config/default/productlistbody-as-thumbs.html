@@ -2,7 +2,7 @@
 <li>
 	<ul class="productlistitem">
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<li class="image"><img src="[<tag type='thumbnail' w='100' h='' />]"></li>
+	<li class="image"><img src="[<tag type='thumbnail' w='100' h='-1' />]"></li>
 	[<tag type="endif" />]
 	[<tag type='testof' settings='placeholderimage' testvalue='True' display='{ON}' displayelse='{OFF}' />]<!-- When no image is present -->
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]

@@ -45,8 +45,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             if (!disabled)
             {
                 var runcalc = true;
-                if (runfreq == 1) // run freq is date range
+                if (runfreq == 1 || runfreq == 3) // run freq is date range
                 {
+                    if (runfreq == 3)
+                    {
+                        // run constantly, set end date to +100 year
+                        validfrom = DateTime.Now.AddYears(-1).ToString("s");
+                        validuntil = DateTime.Now.AddYears(100).ToString("s");
+                    }
                     // run date range
                     if (Utils.IsDate(lastcalculated))
                     {
@@ -78,20 +84,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             if (DateTime.Now.Date > dteU)
                             {
                                 // END Promo
-                                RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
-                                p.SetXmlProperty("genxml/checkbox/disabled", "True");
-                                objCtrl.Update(p);
+                                RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID, whichprice);
                             }
                             ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
                         }
+                        if (DateTime.Now.Date > dteU)
+                        {
+                            // END Promo
+                            p.SetXmlProperty("genxml/checkbox/disabled", "True");
+                        }
 
-                        p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.
-                        objCtrl.Update(p);
                     }
                 }
-                else
-                {
-                    // run Once, do update and disable promo.
+                if (runfreq == 2) // run Once, do update and disable promo.
+                {                    
                     CategoryData gCat;
                     var groupid = catgroupid;
                     if (typeselect != "cat") groupid = propgroupid;
@@ -105,11 +111,26 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         CalcProductSalePrice(p.PortalId, prd.ParentItemId, amounttype, amount, promoname, p.ItemID, whichprice, overwrite, DateTime.Now, DateTime.Now);
                         ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
                     }
-
-                    p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.
                     p.SetXmlProperty("genxml/checkbox/disabled", "True");
-                    objCtrl.Update(p);
                 }
+                if (runfreq == 4) // remove
+                {
+                    var groupid = catgroupid;
+                    if (typeselect != "cat") groupid = propgroupid;
+
+                    var gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
+                    var prdList = gCat.GetAllArticles();
+
+                    foreach (var prd in prdList)
+                    {
+                        RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID, whichprice);
+                        ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
+                    }
+
+                    p.SetXmlProperty("genxml/checkbox/disabled", "True");
+                }
+                p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.
+                objCtrl.Update(p);
             }
             return "OK";
         }
@@ -223,30 +244,39 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             {
                                 case 1:
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid", promoid.ToString());
                                     break;
                                 case 2:
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", newdealeramt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promodealercostid", promoid.ToString());
                                     break;
                                 case 3:
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", newdealersaleamt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promodealersaleid", promoid.ToString());
                                     break;
                                 case 4:
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", newdealersaleamt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promodealersaleid", promoid.ToString());
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid", promoid.ToString());
                                     break;
                                 default:
                                     prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                    prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid", promoid.ToString());
                                     break;
                             }
                         }
                         if (disablesale)
                         {
                             prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", 0);
+                            prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid");
                         }
                         if (disabledealer)
                         {
                             prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", 0);
+                            prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promodealercostid");
                             prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", 0);
+                            prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promodealersaleid");
                         }
 
                         lp += 1;
@@ -423,14 +453,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         #region "Shared"
 
-        public static void RemoveProductPromoData(int portalid, int productId, int promoid)
+        public static void RemoveProductPromoData(int portalid, int productId, int promoid, int whichprice = 1)
         {
             var cultureList = DnnUtils.GetCultureCodeList(portalid);
             var objCtrl = new NBrightBuyController();
             var prdData = objCtrl.GetData(productId);
 
             var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
-            if (currentpromoid == promoid)
+            if (currentpromoid == promoid || currentpromoid == 0) // multiple promo may have been applied and removed.
             {
                 prdData.RemoveXmlNode("genxml/hidden/promotype");
                 prdData.RemoveXmlNode("genxml/hidden/promoname");
@@ -446,7 +476,31 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     var lp = 1;
                     foreach (XmlNode nod in l)
                     {
-                        prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                        switch (whichprice)
+                        {
+                            case 1:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid");
+                                break;
+                            case 2:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promodealercostid");
+                                break;
+                            case 3:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promodealersaleid");
+                                break;
+                            case 4:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promodealersaleid");
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid");
+                                break;
+                            default:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                                prdData.RemoveXmlNode("genxml/models/genxml[" + lp + "]/hidden/promosalepriceid");
+                                break;
+                        }
                         lp += 1;
                     }
                 }

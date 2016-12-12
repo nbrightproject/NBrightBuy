@@ -169,7 +169,7 @@
     <value>Séquence du processus</value>
   </data>
   <data name="runfreq.Text" xml:space="preserve">
-    <value>Exécuter pour fourchette de dates,Exécuter une fois</value>
+    <value>Exécuter pour fourchette de dates,Exécuter une fois,Execute Constantly</value>
   </data>
   <data name="typedata.Text" xml:space="preserve">
     <value>Montant,Pourcentage (%)</value>
@@ -194,6 +194,9 @@
   </data>
   <data name="whichpricedata.Text" xml:space="preserve">
     <value>Prix soldé,Prix revendeur,Prix revendeur soldé,Prix soldé revendeur et Prix soldé</value>
+  </data>
+  <data name="whichpricemsg.Text" xml:space="preserve">
+    <value>Price field to be updated by promotion calculation</value>
   </data>
   <data name="whichpricevalue.Text" xml:space="preserve">
     <value>1,2,3,4</value>
