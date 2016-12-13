@@ -145,7 +145,7 @@
     <value>Catégorie de produits</value>
   </data>
   <data name="helpmsg.Text" xml:space="preserve">
-    <value>&lt;b&gt;Les promotions sont calculées par le planificateur. Assurez-vous que le planificateur de NBStore soit activé.&lt;/b&gt;</value>
+    <value>&lt;b&gt;Les promotions sont calculées par le planificateur. Assurez-vous que le planificateur de NBStore soit activé.&lt;/b&gt;&lt;div&gt;"Exécution entre fourchette de dates" calcule les prix soldés une fois par jour et à la date de fin, les supprime.&lt;br/&gt;"Exécution unique" met à jour le champ prix soldé sélectionné puis ne recalcule plus la remise.&lt;br/&gt;"Exécution permanente" recalcule les prix soldés une fois par jour. &lt;br/&gt; Pour supprimer les prix calculés via l'une de ces méthodes, sélectionner "Suppression des promotions" et exécuter.&lt;/div&gt;</value>
   </data>
   <data name="langerror.Text" xml:space="preserve">
     <value>ERREUR! Cette promotion possède une entrée linguistique invalide. Supprimer cette promotion et la recréer comme une nouvelle promotion.</value>
@@ -169,7 +169,7 @@
     <value>Séquence du processus</value>
   </data>
   <data name="runfreq.Text" xml:space="preserve">
-    <value>Exécuter pour fourchette de dates,Exécuter une fois,Execute Constantly</value>
+    <value>Exécution entre fourchette de dates,Exécution unique,Exécution permanente,Suppression des promotions</value>
   </data>
   <data name="typedata.Text" xml:space="preserve">
     <value>Montant,Pourcentage (%)</value>
@@ -196,7 +196,7 @@
     <value>Prix soldé,Prix revendeur,Prix revendeur soldé,Prix soldé revendeur et Prix soldé</value>
   </data>
   <data name="whichpricemsg.Text" xml:space="preserve">
-    <value>Price field to be updated by promotion calculation</value>
+    <value>Champ prix à mettre à jour lors des calculs de promotions :</value>
   </data>
   <data name="whichpricevalue.Text" xml:space="preserve">
     <value>1,2,3,4</value>

@@ -145,7 +145,7 @@
     <value>Product Group</value>
   </data>
   <data name="helpmsg.Text" xml:space="preserve">
-    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;&lt;div&gt;"Execute Once" will update the selected sale price field and then disactivate.&lt;br/&gt;"Execute Constantly" will conitune to re-calculate the sale price each night. &lt;br/&gt;  To remove any prices added via these methods a "Remove Prmotion" option will need to be ran.&lt;/div&gt;</value>
+    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;&lt;div&gt;"Execute Date Range" will calculate the promotion each night and on the end date it will remove the promotion.&lt;br/&gt; "Execute Once" will update the selected sale price field and then disactivate.&lt;br/&gt;"Execute Constantly" will continue to re-calculate the sale price each night. &lt;br/&gt;  To remove any prices added via these methods a "Remove Promotion" option will need to be executed.&lt;/div&gt;</value>
   </data>
   <data name="langerror.Text" xml:space="preserve">
     <value>ERROR!!!  This promotion has INVALID language records.  Delete this promotion and recreate as a new promotion.</value>
@@ -196,7 +196,7 @@
     <value>Sale Price,Dealer Price,Dealer Sale Price, Dealer Sale Price and Sale Price</value>
   </data>
   <data name="whichpricemsg.Text" xml:space="preserve">
-    <value>Price field to be updated by promotion calculation</value>
+    <value>Price field to be updated by promotion calculation :</value>
   </data>
   <data name="whichpricevalue.Text" xml:space="preserve">
     <value>1,2,3,4</value>
