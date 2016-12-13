@@ -38,13 +38,13 @@
 
             @if (Model.List.Count() == 1)
             {
-                <h3>@Category("categoryname", Model) @(Category("entrycount", Model))  @(ResourceKey("ProductView.article"))</h3> @*change h1 to h3*@
+                <h3>@Category("categoryname", Model) @(Category("entrycount", Model))  @(ResourceKey("ProductView.article"))</h3>
             }
             else
             {
-                <h3>@Category("categoryname", Model) @(Category("entrycount", Model))  @(ResourceKey("ProductView.articles"))</h3> @*change h1 to h3*@
+                <h3>@Category("categoryname", Model) @(Category("entrycount", Model))  @(ResourceKey("ProductView.articles"))</h3> 
             }
-            <i>@(Category("message", Model))</i> @*add the message under title*@
+            <i>@(Category("message", Model))</i>
         </div>
 		
 		<div class="productlistheader">

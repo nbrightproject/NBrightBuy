@@ -205,14 +205,28 @@ namespace Nevoweb.DNN.NBrightBuy
                     {
                         if (metaTokens.ContainsKey("orderby" + _orderbyindex))
                         {
-                            _navigationdata.OrderBy = " Order by " + metaTokens["orderby" + _orderbyindex];
+                            if (metaTokens["orderby"].Contains("{") || metaTokens["orderby"].ToLower().Contains("order by"))
+                            {
+                                _navigationdata.OrderBy = metaTokens["orderby" + _orderbyindex];
+                            }
+                            else
+                            {
+                                _navigationdata.OrderBy = " Order by " + metaTokens["orderby" + _orderbyindex];
+                            }
                         }
                     }
                     else
                     {
                         if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
                         {
-                            _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                            if (metaTokens["orderby"].Contains("{") || metaTokens["orderby"].ToLower().Contains("order by"))
+                            {
+                                _navigationdata.OrderBy = metaTokens["orderby"];
+                            }
+                            else
+                            {
+                                _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                            }
                             _navigationdata.Save();
                         }
                     }
