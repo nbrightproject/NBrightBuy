@@ -1899,7 +1899,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double price = -1;
             foreach (var m in Models)
             {
-                var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
                 if ((s > 0) && (s < price) | (price == -1)) price = s;
             }
             if (price == -1) price = 0;

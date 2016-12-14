@@ -93,7 +93,7 @@
                 @if (product.IsOnSale)
                 {
                     <span>@ResourceKey("ProductView.onsale") : </span>
-                    if (product.Models.Count >= 1 || product.Options.Count >= 1)
+                    if (product.Models.Count > 1)
                     {
                         <span>@ResourceKey("ProductView.from") </span>
                     }
@@ -102,7 +102,7 @@
                 }
                 else
                 {
-                    if (product.Models.Count >= 1 || product.Options.Count >= 1) // has models or options
+                    if (product.Models.Count > 1) // has models or options
                     {
                         <span>@ResourceKey("ProductView.from")</span>
                     }
