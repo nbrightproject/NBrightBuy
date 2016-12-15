@@ -1,3 +1,4 @@
+<root> 
 <genxml>
   <files />
   <hidden>
@@ -331,6 +332,63 @@
   <checkboxlist />
   <radiobuttonlist />
 </genxml>
+<genxml>
+  <files />
+  <hidden>
+    <plugintemplate>
+      <![CDATA[]]>
+    </plugintemplate>
+    <index>25</index>
+  </hidden>
+  <textbox>
+    <ctrl>
+      <![CDATA[promoevents]]>
+    </ctrl>
+    <name>
+      <![CDATA[Promo Events]]>
+    </name>
+    <icon>
+      <![CDATA[]]>
+    </icon>
+    <group>
+      <![CDATA[]]>
+    </group>
+    <path>
+      <![CDATA[]]>
+    </path>
+    <help>
+      <![CDATA[]]>
+    </help>
+    <roles>
+      <![CDATA[]]>
+    </roles>
+    <description>
+      <![CDATA[]]>
+    </description>
+    <assembly>
+      <![CDATA[NBrightBuy.PromoProvider]]>
+    </assembly>
+    <namespaceclass>
+      <![CDATA[Nevoweb.DNN.NBrightBuy.Providers.PromoProvider.PromoEvents]]>
+    </namespaceclass>
+  </textbox>
+  <checkbox>
+    <hidden>
+      <![CDATA[True]]>
+    </hidden>
+    <active>
+      <![CDATA[True]]>
+    </active>
+  </checkbox>
+  <dropdownlist>
+    <providertype selectedtext="Events">
+      <![CDATA[06]]>
+    </providertype>
+  </dropdownlist>
+  <checkboxlist />
+  <radiobuttonlist />
+</genxml>
+</root>
 
 
 
