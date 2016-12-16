@@ -73,7 +73,7 @@
                 <div class="product" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemheight")); margin-bottom: @(Model.GetSetting("classicitembottommargin"))px">
                     <!-- Product container -->
 
-                    <div class="productimg" style="width: @(Model.GetSetting("classicitemwidth"))px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
+                    <div class="productimg" style="width: @(Model.GetSettingInt("classicitemwidth") - 10)px; height: @(Model.GetSetting("classicitemimagecontainerheight"))">
 
                         <div class="productimg-overlay">
 
