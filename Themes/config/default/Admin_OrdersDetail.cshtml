@@ -309,7 +309,7 @@
                 <div>@Model.GetSetting("storeaddressline1")</div>
                 <div>@Model.GetSetting("storeaddressline2")</div>
                 <div>@Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode")</div>
-                <div>@Model.GetSetting("storecountrytext")</div>
+                <div>@Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))</div>
 
                 @if (Model.GetSetting("storetaxnumber") != "")
                 {

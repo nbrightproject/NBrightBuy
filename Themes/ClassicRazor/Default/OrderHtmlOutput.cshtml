@@ -4,6 +4,7 @@
 @using System.Web.Razor.Parser.SyntaxTree
 @using System.Xml
 @using DotNetNuke.Entities.Portals
+@using NBrightCore.common
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components
 
@@ -179,7 +180,7 @@
                         <tr>
                             <td width="50%" align="left" valign="top" style="line-height: 100%">
                             <font size="1">
-                                <b>@ResourceKey("General.ReturnTo"):</b> @Model.GetSetting("storecompany"), @Model.GetSetting("storeaddressline1"), @Model.GetSetting("storeaddressline2"), @Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode"), @Model.GetSetting("storecountrytext")                                
+                                <b>@ResourceKey("General.ReturnTo"):</b> @Model.GetSetting("storecompany"), @Model.GetSetting("storeaddressline1"), @Model.GetSetting("storeaddressline2"), @Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode"), @Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))                                
                             </font>
                             </td>
                         </tr>
@@ -539,7 +540,7 @@
                                                                                                     <div>@Model.GetSetting("storeaddressline1")</div>
                                                                                                     <div>@Model.GetSetting("storeaddressline2")</div>
                                                                                                     <div>@Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode")</div>
-                                                                                                    <div>@Model.GetSetting("storecountrytext")</div>
+                                                                                                    <div>@Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))</div>
 
                                                                                                     @if (Model.GetSetting("storetaxnumber") != "")
                                                                                                     {

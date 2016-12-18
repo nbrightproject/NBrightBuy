@@ -49,7 +49,7 @@
       </releaseNotes>
       <dependencies>
         <dependency type="CoreVersion">08.00.00</dependency>
-        <dependency type="managedPackage" version="8.1.2">NBrightTemplateSys</dependency>
+        <dependency type="managedPackage" version="8.1.3">NBrightTemplateSys</dependency>
       </dependencies>
       <components>
         <component type="Script">
