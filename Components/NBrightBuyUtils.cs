@@ -293,7 +293,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (string.IsNullOrEmpty(title)) title = "Default.aspx";
-                return DotNetNuke.Common.Globals.FriendlyUrl(tabInfo, Path, title);
+
+                var url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tabInfo, "~/Default.aspx?tabid=" + tabInfo.TabID.ToString(""), title);
+                return url;
             }
             return "";
         }

@@ -33,18 +33,8 @@
 
         v3.5.4.
 
-        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.2 system to be installed.
+        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.3 system to be installed.
 
-        - Add Client file upload option
-        - Move Order admin and emails to Razor templates        
-
-        NBS_ProductView is a Legacy Module. (package now used to load config on installation only.)
-        Products should be displayed with the NB_ProductDisplay module.
-        
-        UPGRADE NOTES: 
-        The NBS_ProductSearch has been replace with NBS_DisplaySearch. You may get an error is you use the NBS_ProductSearch module, remove the module and replace with NBS_DisplaySearch.
-        
-        
 
       </releaseNotes>
       <dependencies>

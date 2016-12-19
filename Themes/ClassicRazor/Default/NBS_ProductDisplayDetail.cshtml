@@ -249,7 +249,8 @@
 
                 @if (Model.GetSetting("addthispubid") != "")
                 {
-                    <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="addthis_sharing_toolbox"></div></div>
+                    
+                    <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="sharetoolbox"><div class="addthis_inline_share_toolbox"></div></div></div>
                 }
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")

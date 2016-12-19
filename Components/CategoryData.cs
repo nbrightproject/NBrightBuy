@@ -386,7 +386,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // update shared product if flagged
-            if (StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0)
+            // possible call from scheduler, no storesetting in that case.
+            if ((StoreSettings.Current != null) && StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0)
             {
                 DataRecord.PortalId = -1;
                 _objCtrl.Update(DataRecord);

@@ -19,34 +19,43 @@
   } );
     </script>
 
-<div class="formrow">
-    <div class="ordersearch">
-        <div>
-            @ResourceKey("General.Search")<br/>
-            <input id="OrderAdmin_searchtext" class="form-control" type="text">
-        </div>
-        <div>
-            @ResourceKey("General.From")<br/>
-            <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="date">
-        </div>
-        <div>
-            @ResourceKey("General.To")<br/>
-            <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="date">
-        </div>
-        <div>
-            <span>&nbsp;</span><br/>
-            @OrderStatusDropDownList("OrderAdmin_searchorderstatus", "", "", true)
-        </div>
-        <div>
-            <span>&nbsp;</span><br/>
-            <a id="OrderAdmin_cmdSearch" class="primarybutton" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i> @ResourceKey("General.Search")</a>
-        </div>
-        <div>
-            <span>&nbsp;</span><br/>
-            <a id="OrderAdmin_cmdReset" class="secondarybutton" href="#"><i title="Reset" class="fa fa-refresh fa-fw fa-lg"></i> @ResourceKey("General.Reset")</a>
+<div class="nbs myorders">
+
+    <!-- Client Menu -->
+    <h1>@ResourceKey("Clients.ClientmenuOrders")</h1>
+
+    @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicRazor\\Default\\ClientMenu.cshtml", Model)
+
+</div>
+
+    <div class="formrow">
+        <div class="ordersearch">
+            <div>
+                @ResourceKey("General.Search")<br />
+                <input id="OrderAdmin_searchtext" class="form-control" type="text">
+            </div>
+            <div>
+                @ResourceKey("General.From")<br />
+                <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="date">
+            </div>
+            <div>
+                @ResourceKey("General.To")<br />
+                <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="date">
+            </div>
+            <div>
+                <span>&nbsp;</span><br />
+                @OrderStatusDropDownList("OrderAdmin_searchorderstatus", "", "", true)
+            </div>
+            <div>
+                <span>&nbsp;</span><br />
+                <a id="OrderAdmin_cmdSearch" class="primarybutton" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i> @ResourceKey("General.Search")</a>
+            </div>
+            <div>
+                <span>&nbsp;</span><br />
+                <a id="OrderAdmin_cmdReset" class="secondarybutton" href="#"><i title="Reset" class="fa fa-refresh fa-fw fa-lg"></i> @ResourceKey("General.Reset")</a>
+            </div>
         </div>
     </div>
-</div>
 
 
     <div id="orderadmin">

@@ -785,6 +785,7 @@ namespace Nevoweb.DNN.NBrightBuy
             return strOut;
         }
 
+
         private String CopyAllCatXref(HttpContext context,Boolean moverecords = false)
         {
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
@@ -805,36 +806,15 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     foreach (var obj in objList)
                     {
-                        var strGuid = newcatid + "x" + obj.ParentItemId.ToString("");
-                        var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
-                        if (nbi == null)
-                        {
-                            if (!moverecords) obj.ItemID = -1;
-                            obj.XrefItemId = Convert.ToInt32(newcatid);
-                            obj.GUIDKey = strGuid;
-                            obj.XMLData = null;
-                            obj.TextData = null;
-                            obj.Lang = null;
-                            objCtrl.Update(obj);
-                            //add all cascade xref 
-                            var objGrpCtrl = new GrpCatController(_lang, true);
-                            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(newcatid));
-                            foreach (var p in parentcats.Parents)
-                            {
-                                strGuid = p.ToString("") + "x" + obj.ParentItemId.ToString("");
-                                nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                                if (nbi == null)
-                                {
-                                    obj.XrefItemId = p;
-                                    obj.TypeCode = "CATCASCADE";
-                                    obj.GUIDKey = strGuid;
-                                    objCtrl.Update(obj);
-                                }
-                            }
-                        }
-                    }
+                        var prdData = new ProductData(obj.ParentItemId, PortalSettings.Current.PortalId, Utils.GetCurrentCulture());
 
-                    if (moverecords) DeleteAllCatXref(context);
+                        if (moverecords)
+                        {
+                            prdData.RemoveCategory(obj.XrefItemId);
+                        }
+
+                        prdData.AddCategory(Convert.ToInt32(newcatid));
+                    }
 
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }

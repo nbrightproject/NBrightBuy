@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
         public static string CalcGroupPromo(int portalId)
         {
             var objCtrl = new NBrightBuyController();
-            var l = objCtrl.GetList(portalId, -1, "CATEGORYPROMO", "", " [XMLData].value('(genxml/dropdownlist/processorder)[1]','int') ", 0, 0, 0, 0, Utils.GetCurrentCulture());
+            var l = objCtrl.GetList(portalId, -1, "CATEGORYPROMO", "", " order by [XMLData].value('(genxml/dropdownlist/processorder)[1]','int') ", 0, 0, 0, 0, Utils.GetCurrentCulture());
             foreach (var p in l)
             {
                 CalcGroupPromoItem(p);

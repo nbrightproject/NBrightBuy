@@ -889,7 +889,7 @@ namespace NBrightBuy.render
             }
             strOut += "</select>";
             strOut += "<script>";
-            strOut += "$('.sortorderdropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); });";
+            strOut += "$('.sortorderdropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); $('#loader').show(); });";
             strOut += "</script>";
             return new RawString(strOut);
         }
@@ -938,7 +938,7 @@ namespace NBrightBuy.render
             strOut += "</select>";
 
             strOut += "<script>";
-            strOut += "$('.pagesizedropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); });";
+            strOut += "$('.pagesizedropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl'));  $('#loader').show(); });";
             strOut += "</script>";
 
             return new RawString(strOut);
