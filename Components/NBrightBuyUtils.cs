@@ -628,12 +628,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
 
-            // also send to manager is created. 
-            if (emailtype == "OrderCreatedClient")
-            {
-                emailList += "," + StoreSettings.Current.ManagerEmail;
-            }
-
             if (!onlyUserManagerOnly || UserController.Instance.GetCurrentUserInfo().UserID > 0)
             {
 
@@ -663,7 +657,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var emailBody = "";
                     emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), lang, passSettings);
                     if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\testemail.html", emailBody);
+
                     SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+
+                    // also send to manager is created. 
+                    if (emailtype == "OrderCreatedClient")
+                    {
+                        emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), StoreSettings.Current.Get("merchantculturecode"), passSettings);
+                        SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+                    }
+
+
                     ordData.AddAuditMessage(emailmsg, "email", UserController.Instance.GetCurrentUserInfo().Username, "False", NBrightBuyUtils.ResourceKey("Notification." + emailsubjectresxkey, StoreSettings.Current.EditLanguage));
                     ordData.SavePurchaseData();
                 }
@@ -1576,6 +1580,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbRazor.FullTemplateName = theme + "." + razorTemplName;
                     nbRazor.TemplateName = razorTemplName;
                     nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
 
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
