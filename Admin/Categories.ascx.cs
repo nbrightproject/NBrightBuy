@@ -241,7 +241,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                         if (productidlist.Contains(prodxref.ParentItemId))
                                         {
                                             // delete CATCASCADE record
-                                           ModCtrl.Delete(prodxref.ItemID);   
+                                            if (prodxref.TypeCode == "CATCASCADE") // just check we have correct record. (stop nasty surprises)
+                                            {
+                                                ModCtrl.Delete(prodxref.ItemID);
+                                            }
                                         }                                        
                                     }
                                     
@@ -250,7 +253,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                                 foreach (var dc in delCatData.GetDirectArticles())
                                 {
                                     // delete CATXREF record
-                                    ModCtrl.Delete(dc.ParentItemId);
+                                    if (dc.TypeCode == "CATXREF") // just check we have correct record. (stop nasty surprises)
+                                    {
+                                        ModCtrl.Delete(dc.ItemID);
+                                    }
                                 }
                                 // delete CATEGORY record (constrants remove LANG records.)
                                 ModCtrl.Delete(catid);
