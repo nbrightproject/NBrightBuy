@@ -166,6 +166,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // reload data so if event has altered data we use that.
             DataRecord = _objCtrl.Get(DataRecord.ItemID);
             DataLangRecord = _objCtrl.Get(DataLangRecord.ItemID);
+
+            Utils.RemoveCacheList("category_cachelist");
         }
 
         public void Update(NBrightInfo info)

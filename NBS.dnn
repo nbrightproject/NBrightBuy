@@ -31,15 +31,14 @@
       </license>
       <releaseNotes>
 
-        v3.5.4.
+        v3.5.4.3
 
-        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.3 system to be installed.
-
+        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.4 system to be installed.
 
       </releaseNotes>
       <dependencies>
         <dependency type="CoreVersion">08.00.00</dependency>
-        <dependency type="managedPackage" version="8.1.3">NBrightTemplateSys</dependency>
+        <dependency type="managedPackage" version="8.1.4">NBrightTemplateSys</dependency>
       </dependencies>
       <components>
         <component type="Script">

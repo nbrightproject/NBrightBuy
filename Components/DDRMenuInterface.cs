@@ -11,40 +11,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class DdrMenuInterface : INodeManipulator
     {
         #region Implementation of INodeManipulator
-        String _catid = "";
 		String _tabid = "";
-		String _catguidkey = "";
 
         public List<MenuNode> ManipulateNodes(List<MenuNode> nodes, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             // jump out if we don't have [CAT] token in nodes
             if (nodes.Count(x => x.Text.ToUpper() == "[CAT]") == 0) return nodes;
 
-            var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.Url.Query);
-            _catid = nameValueCollection["catid"];
-			_catguidkey = nameValueCollection["category"];
-            
+            // use cache ()
+            var nodeTabList = "*";
+            foreach (var n in nodes)
+            {
+                nodeTabList += n.Text + n.TabId + "*" + n.Breadcrumb + "*";
+            }
+            var cachekey = "NBrightPL*" + portalSettings.PortalId + "*" + Utils.GetCurrentCulture() + "*" + nodeTabList; // use nodeTablist incase the DDRMenu has a selector.
+            var rtnnodes = (List<MenuNode>)Utils.GetCache(cachekey);
+            if (rtnnodes != null) return rtnnodes;
+           
             _tabid = PortalSettings.Current.ActiveTab.TabID.ToString("");
 
             var defaultListPage = "";
             defaultListPage = StoreSettings.Current.Get("productlisttab");
 
             var catNodeList = GetCatNodeXml(_tabid, 0, true, 0, null, defaultListPage);
-
-            // [TODO: We want to cache this data, but doing so brakes the menu, becuase the cache is by Reference to the object, which is changed on display to fit into the menu.  We can't easily clone the object because MenuNode doesn't support IClone, need to find a way around this.]
-            //const string cacheListKey = "catnodesxml_list"; // keep a list of menu nodes so we can remove them
-            //var cacheKey = "catnodesxml_" + _tabid;
-            //var catNodeList = (List<MenuNode>)Utils.GetCache(cacheKey);
-            //if (catNodeList == null)
-            //{
-            //    catNodeList = GetCatNodeXml(_tabid);
-            //    Utils.SetCache(cacheKey, catNodeList);
-            //    var keylist = (List<String>)Utils.GetCache(cacheListKey) ?? new List<string>();
-            //    keylist.Add(cacheKey);
-            //    Utils.SetCache(cacheListKey, keylist);
-            //}             
-            //if (catNodeList.Count >= 1) catNodeList[0].Parent = null;
-            //Utils.RemoveCache(cacheKey);
 
             // see if we need to merge into the current pages, by searching for marker page [cat]
             int idx = 0;
@@ -77,6 +66,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     insidx += 1;
                 }                
             }
+
+            Utils.SetCacheList(cachekey, nodes, "category_cachelist");
 
             return nodes;
         }
@@ -118,9 +109,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     n.Enabled = true;
                     if (obj.disabled) n.Enabled = false;
                     n.Selected = false;
-                    if (_catid == obj.categoryid.ToString("")) n.Selected = true;
+                    // redundant with caching
+                    //if (_catid == obj.categoryid.ToString("")) n.Selected = true;
                     n.Breadcrumb = false;
-                    if (_catid == obj.categoryid.ToString("")) n.Breadcrumb = true;
+                    //if (_catid == obj.categoryid.ToString("")) n.Breadcrumb = true;
                     n.Separator = false;
                     n.LargeImage = "";
                     n.Icon = "";
