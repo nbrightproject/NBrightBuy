@@ -480,7 +480,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
                             itemcode += optionid + ":" + optionvalueid + "-";
                             strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
-                            strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
+                            strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlPropertyRaw("genxml/textbox/txtaddedcost") + "</optvalcost>";
                             strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                             strXmlIn += "</option>";
                             additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
@@ -500,7 +500,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 strXmlIn += "<optvalueid>" + optionvalueid + "</optvalueid>";
                                 itemcode += optionid + ":" + optionvalueid + "-";
                                 strXmlIn += "<optname>" + optionInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</optname>";
-                                strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlProperty("genxml/textbox/txtaddedcost") + "</optvalcost>";
+                                strXmlIn += "<optvalcost>" + optionValueInfo.GetXmlPropertyRaw("genxml/textbox/txtaddedcost") + "</optvalcost>";
                                 strXmlIn += "<optvaltext>" + optionValueInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtoptionvaluedesc") + "</optvaltext>";
                                 strXmlIn += "</option>";
                                 if (nod.InnerText.ToLower() == "true") additionalCosts += optionValueInfo.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
