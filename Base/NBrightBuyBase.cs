@@ -86,7 +86,13 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             }
         }
 
-
+        protected new int TabId
+        {
+            get
+            {
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
 
 
         #region "Display Methods"
