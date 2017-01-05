@@ -2018,7 +2018,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         if (dealersaleprice > 0 && dealerprice > dealersaleprice) dealerprice = dealersaleprice;
                         strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
                         if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
-                        if (dealerprice < bestprice)
+                        if (bestprice <= 0 || dealerprice < bestprice)
                         {
                             bestprice = dealerprice;
                             strbestprice = NBrightBuyUtils.FormatToStoreCurrency(bestprice);
