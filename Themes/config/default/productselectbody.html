@@ -7,7 +7,7 @@
      [<tag id="xrefitemid" type="hidden" value="{Settings:itemid}" />] <!-- This setting is taken from the ajax params uploaded in calling template -->
 
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<li class="image" data-toggle="tooltip" data-original-title="[<tag type='productname' />]"><img src="[<tag type='thumbnail' w='100' h='0' />]"></li>
+	<li class="image" data-toggle="tooltip" data-original-title="[<tag type='productname' />]"><img src="[<tag type='thumbnail' w='100' h='-1' />]"></li>
 	[<tag type="endif" />]
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
 	<li class="noimage" data-toggle="tooltip" data-original-title="[<tag type='productname' />]">[Settings:bonoimageicon]</li>

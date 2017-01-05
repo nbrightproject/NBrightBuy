@@ -103,6 +103,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord = (NBrightInfo)l[0].Clone();
                     DataLangRecord.ItemID = -1;
                     DataLangRecord.Lang = _lang;
+                    DataLangRecord.SetXmlProperty("genxml/textbox/groupname", DnnUtils.GetResourceString("/DesktopModules/NBright/NBrightBuy/App_LocalResources/", "General." + DataRecord.GUIDKey));
                     DataLangRecord.ValidateXmlFormat();
                     objCtrl.Update(DataLangRecord);
                 }
@@ -132,12 +133,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // fix langauge records
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
             {
+
                 var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "GROUPLANG", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
                     var nbi = (NBrightInfo)DataLangRecord.Clone();
                     nbi.ItemID = -1;
                     nbi.Lang = lang;
+                    if (nbi.GetXmlProperty("genxml/textbox/groupname") == "")
+                    {
+                        nbi.SetXmlProperty("genxml/textbox/groupname", DnnUtils.GetResourceString("/DesktopModules/NBright/NBrightBuy/App_LocalResources/", "General." + DataRecord.GUIDKey));
+                    }
                     objCtrl.Update(nbi);
                     errorcount += 1;
                 }
@@ -148,7 +154,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (nbi2.GetXmlProperty("genxml/textbox/groupname") == "")
                     {
                         // if we have no name, use the default name we found early to update.
-                        nbi2.SetXmlProperty("genxml/textbox/groupname", defaultname);
+                        nbi2.SetXmlProperty("genxml/textbox/groupname", DnnUtils.GetResourceString("/DesktopModules/NBright/NBrightBuy/App_LocalResources/", "General." + DataRecord.GUIDKey));
                         objCtrl.Update(nbi2);
                     }
                 }

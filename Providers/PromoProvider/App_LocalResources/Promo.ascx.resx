@@ -145,13 +145,16 @@
     <value>Product Group</value>
   </data>
   <data name="helpmsg.Text" xml:space="preserve">
-    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
+    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;&lt;div&gt;"Execute Date Range" will calculate the promotion each night and on the end date it will remove the promotion.&lt;br/&gt; "Execute Once" will update the selected sale price field and then disactivate.&lt;br/&gt;"Execute Constantly" will continue to re-calculate the sale price each night. &lt;br/&gt;  To remove any prices added via "Execute Once" or "Execute Constantly" a change and execution of the  "Remove Promotion" option will need to be done.&lt;/div&gt;</value>
   </data>
   <data name="langerror.Text" xml:space="preserve">
     <value>ERROR!!!  This promotion has INVALID language records.  Delete this promotion and recreate as a new promotion.</value>
   </data>
   <data name="lastcalculated.Text" xml:space="preserve">
     <value>Last Calculated</value>
+  </data>
+  <data name="multibuyhelpmsg.Text" xml:space="preserve">
+    <value>&lt;b&gt;Promotions are calculated by the scheduler. Ensure the NBS Scheduler is running.&lt;/b&gt;</value>
   </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
@@ -165,11 +168,20 @@
   <data name="percentage.Text" xml:space="preserve">
     <value>Percentage (%)</value>
   </data>
+  <data name="processorder.Text" xml:space="preserve">
+    <value>Process Sequence</value>
+  </data>
+  <data name="runfreq.Text" xml:space="preserve">
+    <value>Execute for Date Range,Execute Once,Execute Constantly,Remove Promotion</value>
+  </data>
   <data name="typedata.Text" xml:space="preserve">
     <value> Amount, Percentage (%)</value>
   </data>
   <data name="typeselect.Text" xml:space="preserve">
     <value>Group Type</value>
+  </data>
+  <data name="typeselecttext.Text" xml:space="preserve">
+    <value>Category,Property,All</value>
   </data>
   <data name="typevalue.Text" xml:space="preserve">
     <value>1,2</value>
@@ -185,5 +197,14 @@
   </data>
   <data name="validuntil.Text" xml:space="preserve">
     <value>Valid Until (incl.)</value>
+  </data>
+  <data name="whichpricedata.Text" xml:space="preserve">
+    <value>Sale Price,Dealer Price,Dealer Sale Price, Dealer Sale Price and Sale Price</value>
+  </data>
+  <data name="whichpricemsg.Text" xml:space="preserve">
+    <value>Price field to be updated by promotion calculation :</value>
+  </data>
+  <data name="whichpricevalue.Text" xml:space="preserve">
+    <value>1,2,3,4</value>
   </data>
 </root>

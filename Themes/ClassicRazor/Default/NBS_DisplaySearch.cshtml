@@ -27,7 +27,7 @@
     @NBrightTextBox(info, "genxml/textbox/searchtext", "maxlength='150' placeholder='" + @ResourceKey("General.Search") + "' class='NormalTextBox'")        
     <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
     <input id="modulekey" type="hidden" update="save" value="@Model.GetSetting("targetmodulekey")">
-    <input id="navigationmode" update="save" type="hidden" value="s">
+    <input id="navigationmode" update="save" type="hidden" value="f">
     <input id="search1" type="hidden" update="save" value="<tag id='search' action='open' sqloperator='and' />">
     <input id="search2" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' static='%' sqlfield='genxml/lang/genxml/textbox/txtproductname' />">
     <input id="search3" type="hidden" update="save" value="<tag id='search' action='like' search='genxml/textbox/searchtext' sqlfield='genxml/lang/genxml/textbox/description' sqloperator='or' />">
@@ -40,36 +40,45 @@
 <script>
 
 
-$(document).ready(function() {
+    $(document).ready(function () {
 
-    $("form").submit(function (e) {
-        e.preventDefault();
-    });
+        @*
 
-    $("input[id*='searchtext']").keyup(function (event) {
-        if (event.which == 13) {
-            var length = this.value.length;
+    // This script turns off the default "Return" key doing a postback on a page.
+    // If we have no postback button on the page then hitting the return key on the search will work OK.
+    // If we have a postback button on the page, then you can use this script to turn off the default postback,
+    //  this however also has an effect on the postback needed for the payment page, so you cannot use the search and this sciprt on the payemnt page.
+    //
+    //$("form").submit(function (e) {
+    //    e.preventDefault();
+    //});
+
+        *@
+
+        $("input[id*='searchtext']").keyup(function (event) {
+            if (event.which == 13) {
+                var length = this.value.length;
+                if (length >= 2 && length <= 99) {
+                    $('.processing').show();
+                    nbxget('dosearch', '.nbssearchinput', '.searchreturn');
+                }
+            }
+            return false;
+        });
+
+        $('.searchpostbacklink').click(function (event) {
+            var text = $("input[id*='searchtext']").val();
+            var length = text.length;
             if (length >= 2 && length <= 99) {
                 $('.processing').show();
                 nbxget('dosearch', '.nbssearchinput', '.searchreturn');
             }
-        }
-        return false;
-    });
+        });
 
-    $('.searchpostbacklink').click(function(event) {
-        var text = $("input[id*='searchtext']").val();
-        var length = text.length;
-        if (length >= 2 && length <= 99) {
+        $('.searchreturn').change(function (event) {
             $('.processing').show();
-            nbxget('dosearch', '.nbssearchinput', '.searchreturn');
-        }
+            window.location.href = "@HtmlOf(NBrightBuyUtils.GetSEOLink(info.PortalId, tabid, "", "", ""))";
+        });
     });
-
-    $('.searchreturn').change(function (event) {
-        $('.processing').show();
-        window.location.href = "@NBrightBuyUtils.GetSEOLink(info.PortalId, tabid, "", "", "")";
-    });
-});
 
 </script>

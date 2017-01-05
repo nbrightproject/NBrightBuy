@@ -1,1086 +1,1032 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="AccountUpdate.Text" xml:space="preserve">
-    <value>Mise à jour du compte utilisateur</value>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountUpdate.Text">
+    <value xml:space="preserve">Mise à jour du compte utilisateur</value>
   </data>
-	<data name="AccountUpdateMessage.Text" xml:space="preserve">
-    <value>Le profil du compte utilisateur suivant a été mis à jour. Merci de modifier votre registre si nécessaire.</value>
+  <data name="AccountUpdateMessage.Text">
+    <value xml:space="preserve">Le profil du compte utilisateur suivant a été mis à jour. Merci de modifier votre registre si nécessaire.</value>
   </data>
-	<data name="Actions.Text" xml:space="preserve">
-    <value>Actions</value>
+  <data name="Actions.Text">
+    <value xml:space="preserve">Actions</value>
   </data>
-	<data name="ActivateStock.Text" xml:space="preserve">
-    <value>Activer le Stock</value>
+  <data name="ActivateStock.Text">
+    <value xml:space="preserve">Activer le Stock</value>
   </data>
-	<data name="Active.Text" xml:space="preserve">
-    <value>Actif</value>
+  <data name="Active.Text">
+    <value xml:space="preserve">Actif</value>
   </data>
-	<data name="ActiveProducts.Text" xml:space="preserve">
-    <value>Produits activés</value>
+  <data name="ActiveProducts.Text">
+    <value xml:space="preserve">Produits activés</value>
   </data>
-	<data name="Address.Text" xml:space="preserve">
-    <value>Adresse</value>
+  <data name="Address.Text">
+    <value xml:space="preserve">Adresse</value>
   </data>
-	<data name="AddressBook.Text" xml:space="preserve">
-    <value>Carnet d'adresses</value>
+  <data name="AddressBook.Text">
+    <value xml:space="preserve">Carnet d'adresses</value>
   </data>
-	<data name="AddressEditor.Text" xml:space="preserve">
-    <value>Adresse éditeur</value>
+  <data name="AddressEditor.Text">
+    <value xml:space="preserve">Adresse éditeur</value>
   </data>
-	<data name="AdminPin.Text" xml:space="preserve">
-    <value>Administrateur PIN</value>
+  <data name="AdminPin.Text">
+    <value xml:space="preserve">Administrateur PIN</value>
   </data>
-	<data name="Amount.Text" xml:space="preserve">
-    <value>Montant</value>
+  <data name="allowupload.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Activer téléchargement fichier client</value>
   </data>
-	<data name="Any.Text" xml:space="preserve">
-    <value>N'importe</value>
+  <data name="Amount.Text">
+    <value xml:space="preserve">Montant</value>
   </data>
-	<data name="Archived.Text" xml:space="preserve">
-    <value>Archivé</value>
+  <data name="Any.Text">
+    <value xml:space="preserve">N'importe</value>
   </data>
-	<data name="Att.Text" xml:space="preserve">
-    <value>Att</value>
+  <data name="Archived.Text">
+    <value xml:space="preserve">Archivé</value>
   </data>
-	<data name="Authorised.Text" xml:space="preserve">
-    <value>Autorisé</value>
+  <data name="AreYouSure.Text">
+    <value xml:space="preserve">Etes vous sûr ?</value>
   </data>
-	<data name="availabledate.Text" xml:space="preserve">
-    <value>Date disponible</value>
+  <data name="Article.Text">
+    <value xml:space="preserve">Entrée</value>
   </data>
-	<data name="AverageRevenue.Text" xml:space="preserve">
-    <value>Revenu moyen</value>
+  <data name="Att.Text">
+    <value xml:space="preserve">Att</value>
   </data>
-	<data name="Barcode.Text" xml:space="preserve">
-    <value>Code barre</value>
+  <data name="attrcode.Text">
+    <value xml:space="preserve">Code Attribut</value>
   </data>
-	<data name="BillTo.Text" xml:space="preserve">
-    <value>Facturer à</value>
+  <data name="Authorised.Text">
+    <value xml:space="preserve">Autorisé</value>
   </data>
-	<data name="Breadcrumb.Text" xml:space="preserve">
-    <value>Fil d'Ariane</value>
+  <data name="availabledate.Text">
+    <value xml:space="preserve">Date disponible</value>
   </data>
-	<data name="Cart.Text" xml:space="preserve">
-    <value>Panier</value>
+  <data name="AverageRevenue.Text">
+    <value xml:space="preserve">Revenu moyen</value>
   </data>
-	<data name="Catalogue.Text" xml:space="preserve">
-    <value>Catalogue</value>
+  <data name="Barcode.Text">
+    <value xml:space="preserve">Code barre</value>
   </data>
-	<data name="Categories.Text" xml:space="preserve">
-    <value>Catégories</value>
+  <data name="basket.Text">
+    <value xml:space="preserve">Panier</value>
   </data>
-	<data name="Category.Text" xml:space="preserve">
-    <value>Catégorie</value>
+  <data name="BillTo.Text">
+    <value xml:space="preserve">Facturer à</value>
   </data>
-	<data name="ChooseAddress.Text" xml:space="preserve">
-    <value>Insérer une adresse enregistrée</value>
+  <data name="Breadcrumb.Text">
+    <value xml:space="preserve">Fil d'Ariane</value>
   </data>
-	<data name="cmdAdd.Text" xml:space="preserve">
-    <value>Ajouter</value>
+  <data name="Cart.Text">
+    <value xml:space="preserve">Panier</value>
   </data>
-	<data name="cmdAdd.ToolTip" xml:space="preserve">
-    <value>Ajouter</value>
+  <data name="cat.Text">
+    <value xml:space="preserve">Catégories</value>
   </data>
-	<data name="cmdAddButton.Text" xml:space="preserve">
-    <value>&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
+  <data name="Catalogue.Text">
+    <value xml:space="preserve">Catalogue</value>
   </data>
-	<data name="cmdAddFiles.Text" xml:space="preserve">
-    <value>&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
+  <data name="Categories.Text">
+    <value xml:space="preserve">Catégories</value>
   </data>
-	<data name="cmdAddIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  <data name="Category.Text">
+    <value xml:space="preserve">Catégorie</value>
   </data>
-	<data name="cmdAddProducts.Text" xml:space="preserve">
-    <value>Ajouter produits</value>
+  <data name="ChooseAddress.Text">
+    <value xml:space="preserve">Insérer une adresse enregistrée</value>
   </data>
-	<data name="cmdCancel.Text" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="Clients.Text">
+    <value xml:space="preserve">Membres</value>
   </data>
-	<data name="cmdCancel.ToolTip" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="cmdAdd.Text">
+    <value xml:space="preserve">Ajouter</value>
   </data>
-	<data name="cmdCancelButton.Text" xml:space="preserve">
-    <value>&lt;i title="Annuler" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Annuler</value>
+  <data name="cmdAdd.ToolTip">
+    <value xml:space="preserve">Ajouter</value>
   </data>
-	<data name="cmdCancelSelect.Text" xml:space="preserve">
-    <value>Annuler sélection</value>
+  <data name="cmdAddButton.Text">
+    <value xml:space="preserve">&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
   </data>
-	<data name="cmdClear.Text" xml:space="preserve">
-    <value>Effacer</value>
+  <data name="cmdAddFiles.Text">
+    <value xml:space="preserve">&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Ajouter</value>
   </data>
-	<data name="cmdClear.ToolTip" xml:space="preserve">
-    <value>Effacer données</value>
+  <data name="cmdAddIcon.Text">
+    <value xml:space="preserve">&lt;i title="Ajouter" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdDelete.confirm" xml:space="preserve">
-    <value>Confirmer la suppression ?</value>
+  <data name="cmdAddProducts.Text">
+    <value xml:space="preserve">Ajouter produits</value>
   </data>
-	<data name="cmdDelete.Text" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="cmdCancel.Text">
+    <value xml:space="preserve">Annuler</value>
   </data>
-	<data name="cmdDelete.ToolTip" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="cmdCancel.ToolTip">
+    <value xml:space="preserve">Annuler</value>
   </data>
-	<data name="cmdDeleteButton.confirm" xml:space="preserve">
-    <value>Confirmer la suppression ?</value>
+  <data name="cmdCancelButton.Text">
+    <value xml:space="preserve">&lt;i title="Annuler" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Annuler</value>
   </data>
-	<data name="cmdDeleteButton.Text" xml:space="preserve">
-    <value>&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
+  <data name="cmdCancelSelect.Text">
+    <value xml:space="preserve">Annuler sélection</value>
   </data>
-	<data name="cmdDeleteFile.commandname" xml:space="preserve">
-    <value>Supprimer le fichier</value>
+  <data name="cmdClear.Text">
+    <value xml:space="preserve">Effacer</value>
   </data>
-	<data name="cmdDeleteFile.confirm" xml:space="preserve">
-    <value>Supprimer le fichier ?</value>
+  <data name="cmdClear.ToolTip">
+    <value xml:space="preserve">Effacer données</value>
   </data>
-	<data name="cmdDeleteFile.ToolTip" xml:space="preserve">
-    <value>Supprimer le fichier</value>
+  <data name="cmdDelete.confirm">
+    <value xml:space="preserve">Confirmer la suppression ?</value>
   </data>
-	<data name="cmdDeleteIcon.confirm" xml:space="preserve">
-    <value>Supprimer entrée ?</value>
+  <data name="cmdDelete.noText">
+    <value xml:space="preserve">Non</value>
   </data>
-	<data name="cmdDeleteIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdDelete.Text">
+    <value xml:space="preserve">Supprimer</value>
   </data>
-	<data name="cmdDeleteLang.confirm" xml:space="preserve">
-    <value>Confirmer la suppression ?</value>
+  <data name="cmdDelete.ToolTip">
+    <value xml:space="preserve">Supprimer</value>
   </data>
-	<data name="cmdDeleteLang.Text" xml:space="preserve">
-    <value>Confirmer la suppression ?</value>
+  <data name="cmdDelete.yesText">
+    <value xml:space="preserve">Oui</value>
   </data>
-	<data name="cmdDeleteLang.ToolTip" xml:space="preserve">
-    <value>Confirmer la suppression ?</value>
+  <data name="cmdDeleteButton.confirm">
+    <value xml:space="preserve">Confirmer la suppression ?</value>
   </data>
-	<data name="cmdDownloadButton.Text" xml:space="preserve">
-    <value>&lt;i title="Télécharger" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Télécharger</value>
+  <data name="cmdDeleteButton.Text">
+    <value xml:space="preserve">&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
   </data>
-	<data name="cmdEdit.Text" xml:space="preserve">
-    <value>Editer</value>
+  <data name="cmdDeleteFile.commandname">
+    <value xml:space="preserve">Supprimer le fichier</value>
   </data>
-	<data name="cmdEdit.ToolTip" xml:space="preserve">
-    <value>Editer</value>
+  <data name="cmdDeleteFile.confirm">
+    <value xml:space="preserve">Supprimer le fichier ?</value>
   </data>
-	<data name="cmdEditButton.Text" xml:space="preserve">
-    <value>&lt;i title="Modifier" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Modifier</value>
+  <data name="cmdDeleteFile.ToolTip">
+    <value xml:space="preserve">Supprimer le fichier</value>
   </data>
-	<data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Editer" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdDeleteIcon.confirm">
+    <value xml:space="preserve">Supprimer entrée ?</value>
   </data>
-	<data name="cmdEditIconSmall.Text" xml:space="preserve">
-    <value>&lt;i title="Editer le produit dans la boutique" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  <data name="cmdDeleteIcon.Text">
+    <value xml:space="preserve">&lt;i  title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdExit.confirm" xml:space="preserve">
-    <value>Quitter?</value>
+  <data name="cmdDeleteLang.confirm">
+    <value xml:space="preserve">Confirmer la suppression ?</value>
   </data>
-	<data name="cmdExit.Text" xml:space="preserve">
-    <value>Quitter</value>
+  <data name="cmdDeleteLang.Text">
+    <value xml:space="preserve">Confirmer la suppression ?</value>
   </data>
-	<data name="cmdExit.ToolTip" xml:space="preserve">
-    <value>Quitter</value>
+  <data name="cmdDeleteLang.ToolTip">
+    <value xml:space="preserve">Confirmer la suppression ?</value>
   </data>
-	<data name="cmdExport.Text" xml:space="preserve">
-    <value>Exporter</value>
+  <data name="cmdDownloadButton.Text">
+    <value xml:space="preserve">&lt;i title="Télécharger" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Télécharger</value>
   </data>
-	<data name="cmdExport.ToolTip" xml:space="preserve">
-    <value>Exporter les données du module</value>
+  <data name="cmdEdit.Text">
+    <value xml:space="preserve">Editer</value>
   </data>
-	<data name="cmdExtLinkSmall.Text" xml:space="preserve">
-    <value>&lt;i title="Voir le produit dans la boutique" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  <data name="cmdEdit.ToolTip">
+    <value xml:space="preserve">Editer</value>
   </data>
-	<data name="cmdFolder.Text" xml:space="preserve">
-    <value>Dossier</value>
+  <data name="cmdEditButton.Text">
+    <value xml:space="preserve">&lt;i title="Modifier" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Modifier</value>
   </data>
-	<data name="cmdFolderIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Ouvrir" class="fa fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdEditIcon.Text">
+    <value xml:space="preserve">&lt;i  title="Editer" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdMove.Text" xml:space="preserve">
-    <value>Déplacer</value>
+  <data name="cmdEditIconSmall.Text">
+    <value xml:space="preserve">&lt;i title="Editer le produit dans la boutique" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdMoveIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Déplacer ici" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdExit.confirm">
+    <value xml:space="preserve">Quitter?</value>
   </data>
-	<data name="cmdMyAccount.Text" xml:space="preserve">
-    <value>&lt;i title="Mon profil" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdExit.Text">
+    <value xml:space="preserve">Quitter</value>
   </data>
-	<data name="cmdMyAddressBookIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Mes adresses" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdExit.ToolTip">
+    <value xml:space="preserve">Quitter</value>
   </data>
-	<data name="cmdMyOrdersIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Mes commandes" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdExport.Text">
+    <value xml:space="preserve">Exporter</value>
   </data>
-	<data name="cmdOk.Text" xml:space="preserve">
-    <value>OK</value>
+  <data name="cmdExport.ToolTip">
+    <value xml:space="preserve">Exporter les données du module</value>
   </data>
-	<data name="cmdRemove.Text" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="cmdExtLinkSmall.Text">
+    <value xml:space="preserve">&lt;i title="Voir le produit dans la boutique" class="fa fa-external-link fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdRemoveButton.Text" xml:space="preserve">
-    <value>&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
+  <data name="cmdFilter.Text">
+    <value xml:space="preserve">Filtrer</value>
   </data>
-	<data name="cmdRemoveIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdFolder.Text">
+    <value xml:space="preserve">Dossier</value>
   </data>
-	<data name="cmdReset.Text" xml:space="preserve">
-    <value>Réinitialiser</value>
+  <data name="cmdFolderIcon.Text">
+    <value xml:space="preserve">&lt;i title="Ouvrir" class="fa fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdReset.ToolTip" xml:space="preserve">
-    <value>Réinitialiser les données</value>
+  <data name="cmdMove.Text">
+    <value xml:space="preserve">Déplacer</value>
   </data>
-	<data name="cmdResetButton.Text" xml:space="preserve">
-    <value>&lt;i title="Réinitialiser" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Réinitialiser</value>
+  <data name="cmdMoveIcon.Text">
+    <value xml:space="preserve">&lt;i  title="Déplacer ici" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdResetIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Réinitialiser" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  <data name="cmdMyAccount.Text">
+    <value xml:space="preserve">&lt;i title="Mon profil" class="fa fa-user fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdResetSearch.Text" xml:space="preserve">
-    <value>Réinitialiser</value>
+  <data name="cmdMyAddressBookIcon.Text">
+    <value xml:space="preserve">&lt;i title="Mes adresses" class="fa fa-home fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdResetSearch.ToolTip" xml:space="preserve">
-    <value>Réinitialiser les critères de recherche</value>
+  <data name="cmdMyOrdersIcon.Text">
+    <value xml:space="preserve">&lt;i title="Mes commandes" class="fa fa-credit-card fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdReturn.Text" xml:space="preserve">
-    <value>Retour</value>
+  <data name="cmdOk.Text">
+    <value xml:space="preserve">OK</value>
   </data>
-	<data name="cmdReturn.ToolTip" xml:space="preserve">
-    <value>Retour</value>
+  <data name="cmdRemove.Text">
+    <value xml:space="preserve">Supprimer</value>
   </data>
-	<data name="cmdReturnButton.Text" xml:space="preserve">
-    <value>&lt;i title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
+  <data name="cmdRemoveButton.Text">
+    <value xml:space="preserve">&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer</value>
   </data>
-	<data name="cmdReturnIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Retour" class="fa fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Retour</value>
+  <data name="cmdRemoveIcon.Text">
+    <value xml:space="preserve">&lt;i title="Supprimer" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdSave.Text" xml:space="preserve">
-    <value>Enregistrer</value>
+  <data name="cmdReset.Text">
+    <value xml:space="preserve">Réinitialiser</value>
   </data>
-	<data name="cmdSave.ToolTip" xml:space="preserve">
-    <value>Enregistrer</value>
+  <data name="cmdReset.ToolTip">
+    <value xml:space="preserve">Réinitialiser les données</value>
   </data>
-	<data name="cmdSaveAsButton.confirm" xml:space="preserve">
-    <value>Enregistrer comme une nouvelle entrée ?</value>
+  <data name="cmdResetButton.Text">
+    <value xml:space="preserve">&lt;i title="Réinitialiser" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Réinitialiser</value>
   </data>
-	<data name="cmdSaveAsButton.Text" xml:space="preserve">
-    <value>&lt;i title="Enregistrer sous" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer sous</value>
+  <data name="cmdResetFilters.Text">
+    <value xml:space="preserve">&amp;lt;i class="fa fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Supprimer le(s) filtre(s)</value>
   </data>
-	<data name="cmdSaveButton.Text" xml:space="preserve">
-    <value>&lt;i title="Enregistrer" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer</value>
+  <data name="cmdResetIcon.Text">
+    <value xml:space="preserve">&lt;i title="Réinitialiser" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="cmdSaveExit.confirm" xml:space="preserve">
-    <value>Enregistrer et quitter ?</value>
+  <data name="cmdResetSearch.Text">
+    <value xml:space="preserve">Réinitialiser</value>
   </data>
-	<data name="cmdSaveExit.Text" xml:space="preserve">
-    <value>Quitter</value>
+  <data name="cmdResetSearch.ToolTip">
+    <value xml:space="preserve">Réinitialiser les critères de recherche</value>
   </data>
-	<data name="cmdSaveExit.ToolTip" xml:space="preserve">
-    <value>Quitter</value>
+  <data name="cmdReturn.Text">
+    <value xml:space="preserve">Retour</value>
   </data>
-	<data name="cmdSaveExitButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer et quitter</value>
+  <data name="cmdReturn.ToolTip">
+    <value xml:space="preserve">Retour</value>
   </data>
-	<data name="cmdSaveIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Enregistrer" class="fa fa-save fa-fw fa-2x"&gt;&lt;/i&gt; Enregistrer</value>
+  <data name="cmdReturnButton.Text">
+    <value xml:space="preserve">&lt;i title="Retour" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Retour</value>
   </data>
-	<data name="cmdSearch.Text" xml:space="preserve">
-    <value>Rechercher</value>
+  <data name="cmdReturnIcon.Text">
+    <value xml:space="preserve">&lt;i title="Retour" class="fa fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Retour</value>
   </data>
-	<data name="cmdSearch.ToolTip" xml:space="preserve">
-    <value>Rechercher</value>
+  <data name="cmdSave.Text">
+    <value xml:space="preserve">Enregistrer</value>
   </data>
-	<data name="cmdSearchButton.Text" xml:space="preserve">
-    <value>&lt;i title="Rechercher" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Rechercher</value>
+  <data name="cmdSave.ToolTip">
+    <value xml:space="preserve">Enregistrer</value>
   </data>
-	<data name="cmdSearchIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Rechercher" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  <data name="cmdSaveAsButton.confirm">
+    <value xml:space="preserve">Enregistrer comme une nouvelle entrée ?</value>
   </data>
-	<data name="cmdSelect.Text" xml:space="preserve">
-    <value>Sélectionner</value>
+  <data name="cmdSaveAsButton.Text">
+    <value xml:space="preserve">&lt;i title="Enregistrer sous" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer sous</value>
   </data>
-	<data name="cmdSelect.ToolTip" xml:space="preserve">
-    <value>Sélectionner</value>
+  <data name="cmdSaveButton.Text">
+    <value xml:space="preserve">&lt;i title="Enregistrer" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer</value>
   </data>
-	<data name="cmdSort.Text" xml:space="preserve">
-    <value>Organiser</value>
+  <data name="cmdSaveExit.confirm">
+    <value xml:space="preserve">Enregistrer et quitter ?</value>
   </data>
-	<data name="cmdSort.ToolTip" xml:space="preserve">
-    <value>Organiser</value>
+  <data name="cmdSaveExit.Text">
+    <value xml:space="preserve">Quitter</value>
   </data>
-	<data name="cmdUpdateExit.Text" xml:space="preserve">
-    <value>Enregistrer et quitter</value>
+  <data name="cmdSaveExit.ToolTip">
+    <value xml:space="preserve">Quitter</value>
   </data>
-	<data name="cmdUpdateExit.ToolTip" xml:space="preserve">
-    <value>Enregistrer et quitter</value>
+  <data name="cmdSaveExitButton.Text">
+    <value xml:space="preserve">&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Enregistrer et quitter</value>
   </data>
-	<data name="cmdUploadFile.commandname" xml:space="preserve">
-    <value>Charger fichier</value>
+  <data name="cmdSaveIcon.Text">
+    <value xml:space="preserve">&lt;i title="Enregistrer" class="fa fa-save fa-fw fa-2x"&gt;&lt;/i&gt; Enregistrer</value>
   </data>
-	<data name="cmdUploadFile.Text" xml:space="preserve">
-    <value>Télécharger</value>
+  <data name="cmdSearch.Text">
+    <value xml:space="preserve">Rechercher</value>
   </data>
-	<data name="cmdUploadFile.ToolTip" xml:space="preserve">
-    <value>Télécharger fichier</value>
+  <data name="cmdSearch.ToolTip">
+    <value xml:space="preserve">Rechercher</value>
   </data>
-	<data name="cmdUploadFileButton.Text" xml:space="preserve">
-    <value>&lt;i title="Télécharger" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Charger</value>
+  <data name="cmdSearchButton.Text">
+    <value xml:space="preserve">&lt;i title="Rechercher" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Rechercher</value>
   </data>
-	<data name="Code.Text" xml:space="preserve">
-    <value>Référence</value>
+  <data name="cmdSearchIcon.Text">
+    <value xml:space="preserve">&lt;i title="Rechercher" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="Confirm.Text" xml:space="preserve">
-    <value>Confirmer ?</value>
+  <data name="cmdSelect.Text">
+    <value xml:space="preserve">Sélectionner</value>
   </data>
-	<data name="Copy.Text" xml:space="preserve">
-    <value>Copier</value>
+  <data name="cmdSelect.ToolTip">
+    <value xml:space="preserve">Sélectionner</value>
   </data>
-	<data name="copyorderto.Text" xml:space="preserve">
-    <value>Envoyer une copie à </value>
+  <data name="cmdSort.Text">
+    <value xml:space="preserve">Organiser</value>
   </data>
-	<data name="CopyTo.Text" xml:space="preserve">
-    <value>Copier à</value>
+  <data name="cmdSort.ToolTip">
+    <value xml:space="preserve">Organiser</value>
   </data>
-	<data name="CopyToButton.Text" xml:space="preserve">
-    <value>&lt;i title="Copier vers" class="fa fa-copy fa-fw fa-lg"&gt;&lt;/i&gt; Copier vers</value>
+  <data name="cmdUpdateExit.Text">
+    <value xml:space="preserve">Enregistrer et quitter</value>
   </data>
-	<data name="CopyToIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Copier" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="cmdUpdateExit.ToolTip">
+    <value xml:space="preserve">Enregistrer et quitter</value>
   </data>
-	<data name="Cost.Text" xml:space="preserve">
-    <value>Prix d'achat</value>
+  <data name="cmdUploadFile.commandname">
+    <value xml:space="preserve">Charger fichier</value>
   </data>
-	<data name="creditcardpayment.Text" xml:space="preserve">
-    <value>Carte bancaire</value>
+  <data name="cmdUploadFile.Text">
+    <value xml:space="preserve">Télécharger</value>
   </data>
-	<data name="Customer.Text" xml:space="preserve">
-    <value>Client</value>
+  <data name="cmdUploadFile.ToolTip">
+    <value xml:space="preserve">Télécharger fichier</value>
   </data>
-	<data name="CustomerCount.Text" xml:space="preserve">
-    <value>Nombre de clients</value>
+  <data name="cmdUploadFileButton.Text">
+    <value xml:space="preserve">&lt;i title="Télécharger" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Charger</value>
   </data>
-	<data name="DataXML.Text" xml:space="preserve">
-    <value>Fichier XML des données</value>
+  <data name="Code.Text">
+    <value xml:space="preserve">Référence</value>
   </data>
-	<data name="Dealer.Text" xml:space="preserve">
-    <value>Revendeur</value>
+  <data name="Configuration.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Configuration</value>
   </data>
-	<data name="DebugMessage.Text" xml:space="preserve">
-    <value>Le mode débogage est actif - La mise en cache est désactivé</value>
+  <data name="Confirm.Text">
+    <value xml:space="preserve">Confirmer ?</value>
   </data>
-	<data name="DebugMode.Text" xml:space="preserve">
-    <value>Mode débogage</value>
+  <data name="Copy.Text">
+    <value xml:space="preserve">Copier</value>
   </data>
-	<data name="Default.Text" xml:space="preserve">
-    <value>Par défaut</value>
+  <data name="copyorderto.Text">
+    <value xml:space="preserve">Envoyer une copie à </value>
   </data>
-	<data name="delay.Text" xml:space="preserve">
-    <value>Délai</value>
+  <data name="CopyTo.Text">
+    <value xml:space="preserve">Copier à</value>
   </data>
-	<data name="Delete.Text" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="CopyToButton.Text">
+    <value xml:space="preserve">&lt;i title="Copier vers" class="fa fa-copy fa-fw fa-lg"&gt;&lt;/i&gt; Copier vers</value>
   </data>
-	<data name="Deleted.Text" xml:space="preserve">
-    <value>Archiver</value>
+  <data name="CopyToIcon.Text">
+    <value xml:space="preserve">&lt;i title="Copier" class="fa fa-copy fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="Depth.Text" xml:space="preserve">
-    <value>Profondeur</value>
+  <data name="Cost.Text">
+    <value xml:space="preserve">Prix d'achat</value>
   </data>
-	<data name="Description.Text" xml:space="preserve">
-    <value>Description</value>
+  <data name="creditcardpayment.Text">
+    <value xml:space="preserve">Carte bancaire</value>
   </data>
-	<data name="Detail.Text" xml:space="preserve">
-    <value>Détail</value>
+  <data name="Customer.Text">
+    <value xml:space="preserve">Client</value>
   </data>
-	<data name="Details.Text" xml:space="preserve">
-    <value>Détails</value>
+  <data name="CustomerCount.Text">
+    <value xml:space="preserve">Nombre de clients</value>
   </data>
-	<data name="Disable.Text" xml:space="preserve">
-    <value>Désactiver</value>
+  <data name="dashsummary.Text">
+    <value xml:space="preserve">Tableau de bord</value>
   </data>
-	<data name="Discount.Text" xml:space="preserve">
-    <value>Remise</value>
+  <data name="DataXML.Text">
+    <value xml:space="preserve">Fichier XML des données</value>
   </data>
-	<data name="Documents.Text" xml:space="preserve">
-    <value>Documents</value>
+  <data name="Dealer.Text">
+    <value xml:space="preserve">Revendeur</value>
   </data>
-	<data name="DocumentZip.Text" xml:space="preserve">
-    <value>Fichier Zip des documents</value>
+  <data name="DealerSale.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Revendeur soldé</value>
   </data>
-	<data name="Download.Text" xml:space="preserve">
-    <value>Téléchargement</value>
+  <data name="DebugMessage.Text">
+    <value xml:space="preserve">Le mode débogage est actif - La mise en cache est désactivé</value>
   </data>
-	<data name="Downloads.Text" xml:space="preserve">
-    <value>Téléchargements</value>
+  <data name="DebugMode.Text">
+    <value xml:space="preserve">Mode débogage</value>
   </data>
-	<data name="Editor.Text" xml:space="preserve">
-    <value>Editeur</value>
+  <data name="Default.Text">
+    <value xml:space="preserve">Par défaut</value>
   </data>
-	<data name="Email.Text" xml:space="preserve">
-    <value>E-mail</value>
+  <data name="delay.Text">
+    <value xml:space="preserve">Délai</value>
   </data>
-	<data name="Enter.Text" xml:space="preserve">
-    <value>Entrée</value>
+  <data name="Delete.Text">
+    <value xml:space="preserve">Supprimer</value>
   </data>
-	<data name="Export.confirm" xml:space="preserve">
-    <value>Exporter les données sélectionnées?</value>
+  <data name="Deleted.Text">
+    <value xml:space="preserve">Archiver</value>
   </data>
-	<data name="Export.Text" xml:space="preserve">
-    <value>Exporter</value>
+  <data name="Depth.Text">
+    <value xml:space="preserve">Profondeur</value>
   </data>
-	<data name="ExportDocuments.confirm" xml:space="preserve">
-    <value>Exporter les documents?</value>
+  <data name="Description.Text">
+    <value xml:space="preserve">Description</value>
   </data>
-	<data name="ExportDocuments.Text" xml:space="preserve">
-    <value>Exporter les documents</value>
+  <data name="Detail.Text">
+    <value xml:space="preserve">Détail</value>
   </data>
-	<data name="ExportImages.confirm" xml:space="preserve">
-    <value>Exporter les images? </value>
+  <data name="Details.Text">
+    <value xml:space="preserve">Détails</value>
   </data>
-	<data name="ExportImages.Text" xml:space="preserve">
-    <value>Exporter les images</value>
+  <data name="Disable.Text">
+    <value xml:space="preserve">Désactiver</value>
   </data>
-	<data name="Extra.Text" xml:space="preserve">
-    <value>Complément</value>
+  <data name="disabledealer.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Désactiver revendeur</value>
   </data>
-	<data name="ExtraCost.Text" xml:space="preserve">
-    <value>Supplément</value>
+  <data name="disablesale.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Désactiver prix soldé</value>
   </data>
-	<data name="FileName.Text" xml:space="preserve">
-    <value>Nom du fichier</value>
+  <data name="Discount.Text">
+    <value xml:space="preserve">Remise</value>
   </data>
-	<data name="Find.Text" xml:space="preserve">
-    <value>Rechercher</value>
+  <data name="Documents.Text">
+    <value xml:space="preserve">Documents</value>
   </data>
-	<data name="findaproduct.Text" xml:space="preserve">
-    <value>Trouver un produit</value>
+  <data name="DocumentZip.Text">
+    <value xml:space="preserve">Fichier Zip des documents</value>
   </data>
-	<data name="From.Text" xml:space="preserve">
-    <value>De</value>
+  <data name="Download.Text">
+    <value xml:space="preserve">Téléchargement</value>
   </data>
-	<data name="Height.Text" xml:space="preserve">
-    <value>Hauteur</value>
+  <data name="Downloads.Text">
+    <value xml:space="preserve">Téléchargements</value>
   </data>
-	<data name="hello.Text" xml:space="preserve">
-    <value>Salut</value>
+  <data name="Editor.Text">
+    <value xml:space="preserve">Editeur</value>
   </data>
-	<data name="Hidden.Text" xml:space="preserve">
-    <value>Invisible</value>
+  <data name="Email.Text">
+    <value xml:space="preserve">E-mail</value>
   </data>
-	<data name="HiddenProducts.Text" xml:space="preserve">
-    <value>Produits cachés</value>
+  <data name="Enter.Text">
+    <value xml:space="preserve">Entrée</value>
   </data>
-	<data name="History.Text" xml:space="preserve">
-    <value>Historique</value>
+  <data name="Export.confirm">
+    <value xml:space="preserve">Exporter les données sélectionnées?</value>
   </data>
-	<data name="Image.Text" xml:space="preserve">
-    <value>Image</value>
+  <data name="Export.Text">
+    <value xml:space="preserve">Exporter</value>
   </data>
-	<data name="Images.Text" xml:space="preserve">
-    <value>Images</value>
+  <data name="ExportDocuments.confirm">
+    <value xml:space="preserve">Exporter les documents?</value>
   </data>
-	<data name="ImageZip.Text" xml:space="preserve">
-    <value>Fichier Zip des images</value>
+  <data name="ExportDocuments.Text">
+    <value xml:space="preserve">Exporter les documents</value>
   </data>
-	<data name="Import.confirm" xml:space="preserve">
-    <value>Importer les données?</value>
+  <data name="ExportImages.confirm">
+    <value xml:space="preserve">Exporter les images? </value>
   </data>
-	<data name="Import.Text" xml:space="preserve">
-    <value>Importer</value>
+  <data name="ExportImages.Text">
+    <value xml:space="preserve">Exporter les images</value>
   </data>
-	<data name="Invoice.Text" xml:space="preserve">
-    <value>Facture</value>
+  <data name="Extra.Text">
+    <value xml:space="preserve">Complément</value>
   </data>
-	<data name="Item.Text" xml:space="preserve">
-    <value>Article</value>
+  <data name="ExtraCost.Text">
+    <value xml:space="preserve">Supplément</value>
   </data>
-	<data name="Keywords.Text" xml:space="preserve">
-    <value>Mots clés</value>
+  <data name="favorites.Text">
+    <value xml:space="preserve">Favoris</value>
   </data>
-	<data name="lblAddress1.Text" xml:space="preserve">
-    <value>Adresse ligne 1</value>
+  <data name="fea.Text">
+    <value xml:space="preserve">En vedette</value>
   </data>
-	<data name="lblAddress2.Text" xml:space="preserve">
-    <value>Adresse ligne 2</value>
+  <data name="FileName.Text">
+    <value xml:space="preserve">Nom du fichier</value>
   </data>
-	<data name="lblcartlist.Text" xml:space="preserve">
-    <value>Articles au panier</value>
+  <data name="filterkeywords.Text">
+    <value xml:space="preserve">Mot(s) clé(s)</value>
   </data>
-	<data name="lblCity.Text" xml:space="preserve">
-    <value>Ville</value>
+  <data name="Find.Text">
+    <value xml:space="preserve">Rechercher</value>
   </data>
-	<data name="lblcollectionoptions.Text" xml:space="preserve">
-    <value>Options d'enlèvement</value>
+  <data name="findanorder.Text">
+    <value xml:space="preserve">Trouver une commande</value>
   </data>
-	<data name="lblCompany.Text" xml:space="preserve">
-    <value>Société</value>
+  <data name="findaproduct.Text">
+    <value xml:space="preserve">Trouver un produit</value>
   </data>
-	<data name="lblCountry.Text" xml:space="preserve">
-    <value>Pays</value>
+  <data name="From.Text">
+    <value xml:space="preserve">De</value>
   </data>
-	<data name="lblFirstName.Text" xml:space="preserve">
-    <value>Prénom</value>
+  <data name="Height.Text">
+    <value xml:space="preserve">Hauteur</value>
   </data>
-	<data name="lblLastName.Text" xml:space="preserve">
-    <value>Nom</value>
+  <data name="hello.Text">
+    <value xml:space="preserve">Salut</value>
   </data>
-	<data name="lblordersummary.Text" xml:space="preserve">
-    <value>Résumé de commande</value>
+  <data name="Hidden.Text">
+    <value xml:space="preserve">Invisible</value>
   </data>
-	<data name="lblPhone.Text" xml:space="preserve">
-    <value>Tél.</value>
+  <data name="HiddenProducts.Text">
+    <value xml:space="preserve">Produits cachés</value>
   </data>
-	<data name="lblPostCode.Text" xml:space="preserve">
-    <value>Code Postal</value>
+  <data name="History.Text">
+    <value xml:space="preserve">Historique</value>
   </data>
-	<data name="lblRegion.Text" xml:space="preserve">
-    <value>Département</value>
+  <data name="Image.Text">
+    <value xml:space="preserve">Image</value>
   </data>
-	<data name="lblshippingoptions.Text" xml:space="preserve">
-    <value>Options de livraison</value>
+  <data name="Images.Text">
+    <value xml:space="preserve">Images</value>
   </data>
-	<data name="lblspecialinstructions.Text" xml:space="preserve">
-    <value>Instructions spéciales</value>
+  <data name="ImageZip.Text">
+    <value xml:space="preserve">Fichier Zip des images</value>
   </data>
-	<data name="lblTotals.Text" xml:space="preserve">
-    <value>Total</value>
+  <data name="Import.confirm">
+    <value xml:space="preserve">Importer les données?</value>
   </data>
-	<data name="lblTown.Text" xml:space="preserve">
-    <value>Ville</value>
+  <data name="Import.Text">
+    <value xml:space="preserve">Importer</value>
   </data>
-	<data name="List.Text" xml:space="preserve">
-    <value>Liste</value>
+  <data name="Invoice.Text">
+    <value xml:space="preserve">Facture</value>
   </data>
-	<data name="manualpayment.Text" xml:space="preserve">
-    <value>Classique</value>
+  <data name="Item.Text">
+    <value xml:space="preserve">Article</value>
   </data>
-	<data name="Max.Text" xml:space="preserve">
-    <value>Maxi</value>
+  <data name="Keywords.Text">
+    <value xml:space="preserve">Mots clés</value>
   </data>
-	<data name="Message.Text" xml:space="preserve">
-    <value>Message</value>
+  <data name="lblAddress1.Text">
+    <value xml:space="preserve">Adresse ligne 1</value>
   </data>
-	<data name="Meta.Text" xml:space="preserve">
-    <value>Méta</value>
+  <data name="lblAddress2.Text">
+    <value xml:space="preserve">Adresse ligne 2</value>
   </data>
-	<data name="Min.Text" xml:space="preserve">
-    <value>Mini</value>
+  <data name="lblcartlist.Text">
+    <value xml:space="preserve">Articles au panier</value>
   </data>
-	<data name="Models.Text" xml:space="preserve">
-    <value>Modèles</value>
+  <data name="lblCity.Text">
+    <value xml:space="preserve">Ville</value>
   </data>
-	<data name="modelstatus.Code" xml:space="preserve">
-    <value>010,020,030,040,050</value>
+  <data name="lblcollectionoptions.Text">
+    <value xml:space="preserve">Options d'enlèvement</value>
   </data>
-	<data name="modelstatus.Text" xml:space="preserve">
-    <value>Disponible,En rupture de Stock,En Stock Chez le Fournisseur,Pré-Commande,Spécial</value>
+  <data name="lblCompany.Text">
+    <value xml:space="preserve">Société</value>
   </data>
-	<data name="Modified.Text" xml:space="preserve">
-    <value>Modifié</value>
+  <data name="lblCountry.Text">
+    <value xml:space="preserve">Pays</value>
   </data>
-	<data name="MontlyRevenue.Text" xml:space="preserve">
-    <value>Revenu mensuel</value>
+  <data name="lblFirstName.Text">
+    <value xml:space="preserve">Prénom</value>
   </data>
-	<data name="MoveTo.Text" xml:space="preserve">
-    <value>Déplacer vers</value>
+  <data name="lblLastName.Text">
+    <value xml:space="preserve">Nom</value>
   </data>
-	<data name="MoveToButton.Text" xml:space="preserve">
-    <value>&lt;i title="Déplacer vers" class="fa fa-cut fa-fw fa-lg"&gt;&lt;/i&gt; Déplacer vers</value>
+  <data name="lblordersummary.Text">
+    <value xml:space="preserve">Résumé de commande</value>
   </data>
-	<data name="Name.Text" xml:space="preserve">
-    <value>Nom</value>
+  <data name="lblPhone.Text">
+    <value xml:space="preserve">Tél.</value>
   </data>
-	<data name="seoname.Text" xml:space="preserve">
-    <value>Nom SEO</value>
+  <data name="lblPostCode.Text">
+    <value xml:space="preserve">Code Postal</value>
   </data>
-	<data name="New.Text" xml:space="preserve">
-    <value>Nouveau</value>
+  <data name="lblRegion.Text">
+    <value xml:space="preserve">Département</value>
   </data>
-	<data name="Number.Text" xml:space="preserve">
-    <value>Numéro</value>
+  <data name="lblshippingoptions.Text">
+    <value xml:space="preserve">Options de livraison</value>
   </data>
-	<data name="OptionalAddress.Text" xml:space="preserve">
-    <value>Adresse facultative</value>
+  <data name="lblspecialinstructions.Text">
+    <value xml:space="preserve">Instructions spéciales</value>
   </data>
-	<data name="Options.Text" xml:space="preserve">
-    <value>Options</value>
+  <data name="lblTotals.Text">
+    <value xml:space="preserve">Total</value>
   </data>
-	<data name="Order.Text" xml:space="preserve">
-    <value>Commande</value>
+  <data name="lblTown.Text">
+    <value xml:space="preserve">Ville</value>
   </data>
-	<data name="findanorder.Text" xml:space="preserve">
-    <value>Trouver une commande</value>
+  <data name="List.Text">
+    <value xml:space="preserve">Liste</value>
   </data>
-	<data name="OrderBy.Text" xml:space="preserve">
-    <value>Trier par</value>
+  <data name="logoff.Text">
+    <value xml:space="preserve">Déconnexion</value>
   </data>
-	<data name="OrderCount.Text" xml:space="preserve">
-    <value>Nombre de commandes</value>
+  <data name="man.Text">
+    <value xml:space="preserve">Fabriquant</value>
   </data>
-	<data name="OrderDate.Text" xml:space="preserve">
-    <value>Date</value>
+  <data name="manualpayment.Text">
+    <value xml:space="preserve">Classique</value>
   </data>
-	<data name="OrderNumber.Text" xml:space="preserve">
-    <value>Numéro de commande</value>
+  <data name="Manufacturer.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Fabricant</value>
   </data>
-	<data name="Orders.Text" xml:space="preserve">
-    <value>Commandes</value>
+  <data name="Max.Text">
+    <value xml:space="preserve">Maxi</value>
   </data>
-	<data name="orderstatus.Code" xml:space="preserve">
-    <value>010,020,030,040,050,060,070,080,120,090,100,110</value>
+  <data name="Message.Text">
+    <value xml:space="preserve">Message</value>
   </data>
-	<data name="orderstatus.Text" xml:space="preserve">
-    <value>Incomplète,En attente de la banque,Annulée,Paiement confirmé,Paiement non vérifié,En attente de paiement,En attente de stock,En cours de traitement,En cours de fabrication,En cours de livraison,Terminée,Archivée</value>
+  <data name="Meta.Text">
+    <value xml:space="preserve">Méta</value>
   </data>
-	<data name="orderstatus010.Text" xml:space="preserve">
-    <value>Incomplète</value>
+  <data name="Min.Text">
+    <value xml:space="preserve">Mini</value>
   </data>
-	<data name="orderstatus020.Text" xml:space="preserve">
-    <value>En attente de la banque</value>
+  <data name="Models.Text">
+    <value xml:space="preserve">Modèles</value>
   </data>
-	<data name="orderstatus030.Text" xml:space="preserve">
-    <value>Annulée</value>
+  <data name="modelstatus.Code">
+    <value xml:space="preserve">010,020,030,040,050</value>
   </data>
-	<data name="orderstatus040.Text" xml:space="preserve">
-    <value>Paiement confirmé</value>
+  <data name="modelstatus.Text">
+    <value xml:space="preserve">Disponible,En rupture de Stock,En Stock Chez le Fournisseur,Pré-Commande,Spécial</value>
   </data>
-	<data name="orderstatus050.Text" xml:space="preserve">
-    <value>Paiement non vérifié</value>
+  <data name="Modified.Text">
+    <value xml:space="preserve">Modifié</value>
   </data>
-	<data name="orderstatus060.Text" xml:space="preserve">
-    <value>En attente de paiement</value>
+  <data name="MontlyRevenue.Text">
+    <value xml:space="preserve">Revenu mensuel</value>
   </data>
-	<data name="orderstatus070.Text" xml:space="preserve">
-    <value>En attente de stock</value>
+  <data name="MoveTo.Text">
+    <value xml:space="preserve">Déplacer vers</value>
   </data>
-	<data name="orderstatus080.Text" xml:space="preserve">
-    <value>En cours de traitement</value>
+  <data name="MoveToButton.Text">
+    <value xml:space="preserve">&lt;i title="Déplacer vers" class="fa fa-cut fa-fw fa-lg"&gt;&lt;/i&gt; Déplacer vers</value>
   </data>
-	<data name="orderstatus090.Text" xml:space="preserve">
-    <value>En cours de livraison</value>
+  <data name="Name.Text">
+    <value xml:space="preserve">Nom</value>
   </data>
-	<data name="orderstatus100.Text" xml:space="preserve">
-    <value>Terminée</value>
+  <data name="nbsid.Text">
+    <value xml:space="preserve">ID NBS</value>
   </data>
-	<data name="orderstatus110.Text" xml:space="preserve">
-    <value>Archivée</value>
+  <data name="nbsref.Text">
+    <value xml:space="preserve">Réf. NBS</value>
   </data>
-	<data name="orderstatus120.Text" xml:space="preserve">
-    <value>En cours de fabrication</value>
+  <data name="New.Text">
+    <value xml:space="preserve">Nouveau</value>
   </data>
-	<data name="Parent.Text" xml:space="preserve">
-    <value>Parente</value>
+  <data name="Number.Text">
+    <value xml:space="preserve">Numéro</value>
   </data>
-	<data name="Password.Text" xml:space="preserve">
-    <value>Mot de Passe</value>
+  <data name="OptionalAddress.Text">
+    <value xml:space="preserve">Adresse facultative</value>
   </data>
-	<data name="Percentage.Text" xml:space="preserve">
-    <value>Pourcentage</value>
+  <data name="Options.Text">
+    <value xml:space="preserve">Options</value>
   </data>
-	<data name="Ph.Text" xml:space="preserve">
-    <value>Tél.</value>
+  <data name="Order.Text">
+    <value xml:space="preserve">Commande</value>
   </data>
-	<data name="PickupAddress.Text" xml:space="preserve">
-    <value>Adresse Relais Colis</value>
+  <data name="OrderBy.Text">
+    <value xml:space="preserve">Trier par</value>
   </data>
-	<data name="PickupReference.Text" xml:space="preserve">
-    <value>Référence Relais Colis</value>
+  <data name="OrderCount.Text">
+    <value xml:space="preserve">Nombre de commandes</value>
   </data>
-	<data name="Price.Text" xml:space="preserve">
-    <value>Prix</value>
+  <data name="OrderDate.Text">
+    <value xml:space="preserve">Date</value>
   </data>
-	<data name="PrimaryAddress.Text" xml:space="preserve">
-    <value>Adresse principale</value>
+  <data name="OrderNumber.Text">
+    <value xml:space="preserve">Numéro de commande</value>
   </data>
-	<data name="PrimaryAddressMessage.Text" xml:space="preserve">
-    <value>Veuillez vous assurer que votre adresse principale est toujours correcte et à jour.</value>
+  <data name="Orders.Text">
+    <value xml:space="preserve">Commandes</value>
   </data>
-	<data name="Processing.Text" xml:space="preserve">
-    <value>En cours</value>
+  <data name="orderstatus.Code">
+    <value xml:space="preserve">010,020,030,040,050,060,070,080,120,090,100,110</value>
   </data>
-	<data name="ProcessingDiv.Text" xml:space="preserve">
-    <value>&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
+  <data name="orderstatus.Text">
+    <value xml:space="preserve">Incomplète,En attente de la banque,Annulée,Paiement confirmé,Paiement non vérifié,En attente de paiement,En attente de stock,En cours de traitement,En cours de fabrication,En cours de livraison,Terminée,Archivée</value>
   </data>
-	<data name="Product.Text" xml:space="preserve">
-    <value>Produit</value>
+  <data name="orderstatus010.Text">
+    <value xml:space="preserve">Incomplète</value>
   </data>
-	<data name="Products.Text" xml:space="preserve">
-    <value>Produits</value>
+  <data name="orderstatus020.Text">
+    <value xml:space="preserve">En attente de la banque</value>
   </data>
-	<data name="PromotionalCode.Text" xml:space="preserve">
-    <value>Code promotionnel</value>
+  <data name="orderstatus030.Text">
+    <value xml:space="preserve">Annulée</value>
   </data>
-	<data name="Properties.Text" xml:space="preserve">
-    <value>Propriétés</value>
+  <data name="orderstatus040.Text">
+    <value xml:space="preserve">Paiement confirmé</value>
   </data>
-	<data name="Property.Text" xml:space="preserve">
-    <value>Propriété</value>
+  <data name="orderstatus050.Text">
+    <value xml:space="preserve">Paiement non vérifié</value>
   </data>
-	<data name="Purchase.Text" xml:space="preserve">
-    <value>Achat</value>
+  <data name="orderstatus060.Text">
+    <value xml:space="preserve">En attente de paiement</value>
   </data>
-	<data name="Qty.Text" xml:space="preserve">
-    <value>Qté</value>
+  <data name="orderstatus070.Text">
+    <value xml:space="preserve">En attente de stock</value>
   </data>
-	<data name="Quantity.Text" xml:space="preserve">
-    <value>Quantité</value>
+  <data name="orderstatus080.Text">
+    <value xml:space="preserve">En cours de traitement</value>
   </data>
-	<data name="Ref.Text" xml:space="preserve">
-    <value>Réf.</value>
+  <data name="orderstatus090.Text">
+    <value xml:space="preserve">En cours de livraison</value>
   </data>
-	<data name="Refresh.Text" xml:space="preserve">
-    <value>Actualiser</value>
+  <data name="orderstatus100.Text">
+    <value xml:space="preserve">Terminée</value>
   </data>
-	<data name="Register.Text" xml:space="preserve">
-    <value>Enregistrer</value>
+  <data name="orderstatus110.Text">
+    <value xml:space="preserve">Archivée</value>
   </data>
-	<data name="Related.Text" xml:space="preserve">
-    <value>Associés</value>
+  <data name="orderstatus120.Text">
+    <value xml:space="preserve">En cours de fabrication</value>
   </data>
-	<data name="Remove.Text" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="Owners.Text">
+    <value xml:space="preserve">Membres</value>
   </data>
-	<data name="RemoveAll.confirm" xml:space="preserve">
-    <value>Attention. Tous les articles seront supprimés. Si vous acceptez, cliquez sur Valider. Pour revenir au panier, cliquez sur Annuler</value>
+  <data name="pagesize.Text">
+    <value xml:space="preserve">Taille de la page</value>
   </data>
-	<data name="RemoveAll.Text" xml:space="preserve">
-    <value>Supprimer tout</value>
+  <data name="Parent.Text">
+    <value xml:space="preserve">Parente</value>
   </data>
-	<data name="RemoveAllButton.Text" xml:space="preserve">
-    <value>&lt;i title="Supprimer tout" class="fa fa-eraser fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer tout</value>
+  <data name="Password.Text">
+    <value xml:space="preserve">Mot de Passe</value>
   </data>
-	<data name="RemovefromStore.confirm" xml:space="preserve">
-    <value>Effacer TOUTES les données sélectionnées de la boutique. Etes-vous sûr?</value>
+  <data name="Percentage.Text">
+    <value xml:space="preserve">Pourcentage</value>
   </data>
-	<data name="RemovefromStore.Text" xml:space="preserve">
-    <value>Supprimer de la boutique</value>
+  <data name="Ph.Text">
+    <value xml:space="preserve">Tél.</value>
   </data>
-	<data name="RequiredField.errormessage" xml:space="preserve">
-    <value>Champs obligatoire</value>
+  <data name="PickupAddress.Text">
+    <value xml:space="preserve">Adresse Relais Colis</value>
   </data>
-	<data name="RequiredField.Text" xml:space="preserve">
-    <value>Obligatoire</value>
+  <data name="PickupReference.Text">
+    <value xml:space="preserve">Référence Relais Colis</value>
   </data>
-	<data name="Reset.Text" xml:space="preserve">
-    <value>Réinitialiser</value>
+  <data name="Price.Text">
+    <value xml:space="preserve">Prix</value>
   </data>
-	<data name="SalePrice.Text" xml:space="preserve">
-    <value>Prix soldé</value>
+  <data name="PrimaryAddress.Text">
+    <value xml:space="preserve">Adresse principale</value>
   </data>
-	<data name="Sales.Text" xml:space="preserve">
-    <value>Ventes</value>
+  <data name="PrimaryAddressMessage.Text">
+    <value xml:space="preserve">Veuillez vous assurer que votre adresse principale est toujours correcte et à jour.</value>
   </data>
-	<data name="Save.Text" xml:space="preserve">
-    <value>Enregistrer</value>
+  <data name="Processing.Text">
+    <value xml:space="preserve">En cours</value>
   </data>
-	<data name="SaveChanges.Text" xml:space="preserve">
-    <value>Enregistrer les modifications</value>
+  <data name="ProcessingDiv.Text">
+    <value xml:space="preserve">&lt;i class="fa fa-cog fa-spin fa-4x"&gt;&lt;/i&gt;</value>
   </data>
-	<data name="Search.Text" xml:space="preserve">
-    <value>Rechercher</value>
+  <data name="Product.Text">
+    <value xml:space="preserve">Produit</value>
   </data>
-	<data name="SEO.Text" xml:space="preserve">
-    <value>SEO</value>
+  <data name="Products.Text">
+    <value xml:space="preserve">Produits</value>
   </data>
-	<data name="Settings.Text" xml:space="preserve">
-    <value>Paramètres</value>
+  <data name="productswithprop.Text">
+    <value xml:space="preserve">Produits avec cette propriété</value>
   </data>
-	<data name="Shipping.Text" xml:space="preserve">
-    <value>Livraison</value>
+  <data name="promo.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Promotions</value>
   </data>
-	<data name="shippingdate.Text" xml:space="preserve">
-    <value>Date de livraison</value>
+  <data name="Promotion.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Promotion</value>
   </data>
-	<data name="shippingmethods.Text" xml:space="preserve">
-    <value>Méthodes de livraison</value>
+  <data name="PromotionalCode.Text">
+    <value xml:space="preserve">Code promotionnel</value>
   </data>
-	<data name="ShipTo.Text" xml:space="preserve">
-    <value>Expédier à</value>
+  <data name="Properties.Text">
+    <value xml:space="preserve">Propriétés</value>
   </data>
-	<data name="status.Text" xml:space="preserve">
-    <value>Statut</value>
+  <data name="Property.Text">
+    <value xml:space="preserve">Propriété</value>
   </data>
-	<data name="StatusofOrders.Text" xml:space="preserve">
-    <value>Statuts des commandes</value>
+  <data name="propertygroup.Text">
+    <value xml:space="preserve">Type de groupe</value>
   </data>
-	<data name="Stock.Text" xml:space="preserve">
-    <value>Stock</value>
+  <data name="propertytypes.Text">
+    <value xml:space="preserve">Types de propriétés</value>
   </data>
-	<data name="Submit.Text" xml:space="preserve">
-    <value>Soumettre</value>
+  <data name="Purchase.Text">
+    <value xml:space="preserve">Achat</value>
   </data>
-	<data name="Subtotal.Text" xml:space="preserve">
-    <value>Sous-total</value>
+  <data name="Qty.Text">
+    <value xml:space="preserve">Qté</value>
   </data>
-	<data name="Summary.Text" xml:space="preserve">
-    <value>Résumé</value>
+  <data name="Quantity.Text">
+    <value xml:space="preserve">Quantité</value>
   </data>
-	<data name="Support.Text" xml:space="preserve">
-    <value>Contact technique</value>
+  <data name="Ref.Text">
+    <value xml:space="preserve">Réf.</value>
   </data>
-	<data name="Tags.Text" xml:space="preserve">
-    <value>Tags</value>
+  <data name="Refresh.Text">
+    <value xml:space="preserve">Actualiser</value>
   </data>
-	<data name="Tax.Text" xml:space="preserve">
-    <value>TVA</value>
+  <data name="Register.Text">
+    <value xml:space="preserve">Enregistrer</value>
   </data>
-	<data name="Taxno.Text" xml:space="preserve">
-    <value>N° TVA</value>
+  <data name="Related.Text">
+    <value xml:space="preserve">Associés</value>
   </data>
-	<data name="TaxNumber.Text" xml:space="preserve">
-    <value>N° TVA</value>
+  <data name="relatedproducts.Text">
+    <value xml:space="preserve">Produits associés</value>
   </data>
-	<data name="Templates.Text" xml:space="preserve">
-    <value>Gabarits</value>
+  <data name="Remove.Text">
+    <value xml:space="preserve">Supprimer</value>
   </data>
-	<data name="Title.Text" xml:space="preserve">
-    <value>Titre</value>
+  <data name="RemoveAll.confirm">
+    <value xml:space="preserve">Attention. Tous les articles seront supprimés. Si vous acceptez, cliquez sur Valider. Pour revenir au panier, cliquez sur Annuler</value>
   </data>
-	<data name="seotitle.Text" xml:space="preserve">
-    <value>Titre SEO</value>
+  <data name="RemoveAll.Text">
+    <value xml:space="preserve">Supprimer tout</value>
   </data>
-	<data name="To.Text" xml:space="preserve">
-    <value>A</value>
+  <data name="RemoveAllButton.Text">
+    <value xml:space="preserve">&lt;i title="Supprimer tout" class="fa fa-eraser fa-fw fa-lg"&gt;&lt;/i&gt; Supprimer tout</value>
   </data>
-	<data name="Tools.Text" xml:space="preserve">
-    <value>Outils</value>
+  <data name="RemovefromStore.confirm">
+    <value xml:space="preserve">Effacer TOUTES les données sélectionnées de la boutique. Etes-vous sûr?</value>
   </data>
-	<data name="Total.Text" xml:space="preserve">
-    <value>Total</value>
+  <data name="RemovefromStore.Text">
+    <value xml:space="preserve">Supprimer de la boutique</value>
   </data>
-	<data name="TotalDiscounts.Text" xml:space="preserve">
-    <value>Total remises</value>
+  <data name="RequiredField.errormessage">
+    <value xml:space="preserve">Champs obligatoire</value>
   </data>
-	<data name="TotalProducts.Text" xml:space="preserve">
-    <value>Nombre de produits</value>
+  <data name="RequiredField.Text">
+    <value xml:space="preserve">Obligatoire</value>
   </data>
-	<data name="TotalRevenue.Text" xml:space="preserve">
-    <value>Revenu total</value>
+  <data name="Reset.Text">
+    <value xml:space="preserve">Réinitialiser</value>
   </data>
-	<data name="TotalShipping.Text" xml:space="preserve">
-    <value>Total frais de livraison</value>
+  <data name="ReturnTo.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Retourner à</value>
   </data>
-	<data name="trackingcode.Text" xml:space="preserve">
-    <value>Code de suivi</value>
+  <data name="SalePrice.Text">
+    <value xml:space="preserve">Prix soldé</value>
   </data>
-	<data name="Type.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="Sales.Text">
+    <value xml:space="preserve">Ventes</value>
   </data>
-	<data name="Undo.Text" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="Save.Text">
+    <value xml:space="preserve">Enregistrer</value>
   </data>
-	<data name="UndoButton.Text" xml:space="preserve">
-    <value>&lt;i title="Annuler" class="fa fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Annuler</value>
+  <data name="SaveChanges.Text">
+    <value xml:space="preserve">Enregistrer les modifications</value>
   </data>
-	<data name="UndoIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Annuler" class="fa fa-undo fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  <data name="Search.Text">
+    <value xml:space="preserve">Rechercher</value>
   </data>
-	<data name="unit.Text" xml:space="preserve">
-    <value>Unité</value>
+  <data name="searchfilter.Text">
+    <value xml:space="preserve">Filtre de recherche</value>
   </data>
-	<data name="Update.Text" xml:space="preserve">
-    <value>Mettre à jour</value>
+  <data name="selectable.Text">
+    <value xml:space="preserve">Sélectionnable</value>
   </data>
-	<data name="Upload.Text" xml:space="preserve">
-    <value>Charger</value>
+  <data name="SEO.Text">
+    <value xml:space="preserve">SEO</value>
   </data>
-	<data name="UploadImage.Text" xml:space="preserve">
-    <value>Charger image</value>
+  <data name="seoname.Text">
+    <value xml:space="preserve">Nom SEO</value>
   </data>
-	<data name="Username.Text" xml:space="preserve">
-    <value>Nom d'utilisateur</value>
+  <data name="seotitle.Text">
+    <value xml:space="preserve">Titre SEO</value>
   </data>
-	<data name="Value.Text" xml:space="preserve">
-    <value>Valeur</value>
+  <data name="Settings.Text">
+    <value xml:space="preserve">Paramètres</value>
   </data>
-	<data name="Voucher.Text" xml:space="preserve">
-    <value>Coupon</value>
+  <data name="Shipping.Text">
+    <value xml:space="preserve">Livraison</value>
   </data>
-	<data name="Web.Text" xml:space="preserve">
-    <value>Site Internet</value>
+  <data name="shippingdate.Text">
+    <value xml:space="preserve">Date de livraison</value>
   </data>
-	<data name="Weight.Text" xml:space="preserve">
-    <value>Poids</value>
+  <data name="shippingmethods.Text">
+    <value xml:space="preserve">Méthodes de livraison</value>
   </data>
-	<data name="Width.Text" xml:space="preserve">
-    <value>Largeur</value>
+  <data name="ShipTo.Text">
+    <value xml:space="preserve">Expédier à</value>
   </data>
-	<data name="dashsummary.Text" xml:space="preserve">
-    <value>Tableau de bord</value>
+  <data name="spec.Text">
+    <value xml:space="preserve">Spécificité</value>
   </data>
-	<data name="basket.Text" xml:space="preserve">
-    <value>Panier</value>
+  <data name="status.Text">
+    <value xml:space="preserve">Statut</value>
   </data>
-	<data name="favorites.Text" xml:space="preserve">
-    <value>Favoris</value>
+  <data name="StatusofOrders.Text">
+    <value xml:space="preserve">Statuts des commandes</value>
   </data>
-	<data name="nbsref.Text" xml:space="preserve">
-    <value>Réf. NBS</value>
+  <data name="Stock.Text">
+    <value xml:space="preserve">Stock</value>
   </data>
-	<data name="nbsid.Text" xml:space="preserve">
-    <value>ID NBS</value>
+  <data name="Submit.Text">
+    <value xml:space="preserve">Soumettre</value>
   </data>
-	<data name="relatedproducts.Text" xml:space="preserve">
-    <value>Produits associés</value>
+  <data name="Subtotal.Text">
+    <value xml:space="preserve">Sous-total</value>
   </data>
-	<data name="propertytypes.Text" xml:space="preserve">
-    <value>Types de propriétés</value>
+  <data name="Summary.Text">
+    <value xml:space="preserve">Résumé</value>
   </data>
-	<data name="productswithprop.Text" xml:space="preserve">
-    <value>Produits avec cette propriété</value>
+  <data name="supp.Text">
+    <value xml:space="preserve">Fournisseur</value>
   </data>
-	<data name="cmdDelete.noText" xml:space="preserve">
-		<value>Non</value>
-	</data>
-	<data name="cmdDelete.yesText" xml:space="preserve">
-		<value>Oui</value>
-	</data>
-	<data name="pagesize.Text" xml:space="preserve">
-		<value>Taille de la page</value>
-	</data>
-	<data name="logoff.Text" xml:space="preserve">
-		<value>Déconnexion</value>
-	</data>
-	<data name="Owners.Text" xml:space="preserve">
-		<value>Membres</value>
-	</data>
-	<data name="AreYouSure.Text" xml:space="preserve">
-		<value>Etes vous sûr ?</value>
-	</data>
-	<data name="attrcode.Text" xml:space="preserve">
-		<value>Code Attribut</value>
-	</data>
-	<data name="cmdFilter.Text" xml:space="preserve">
-		<value>Filtrer</value>
-	</data>
-	<data name="cmdResetFilters.Text" xml:space="preserve">
-		<value>&amp;lt;i class="fa fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Supprimer le(s) filtre(s)</value>
-	</data>
-	<data name="filterkeywords.Text" xml:space="preserve">
-		<value>Mot(s) clé(s)</value>
-	</data>
-	<data name="propertygroup.Text" xml:space="preserve">
-		<value>Type de groupe</value>
-	</data>
-	<data name="selectable.Text" xml:space="preserve">
-		<value>Sélectionnable</value>
-	</data>
-	<data name="Clients.Text" xml:space="preserve">
-		<value>Membres</value>
-	</data>
-	<data name="Article.Text" xml:space="preserve">
-		<value>Entrée</value>
-	</data>
+  <data name="Support.Text">
+    <value xml:space="preserve">Contact technique</value>
+  </data>
+  <data name="Tags.Text">
+    <value xml:space="preserve">Tags</value>
+  </data>
+  <data name="Tax.Text">
+    <value xml:space="preserve">TVA</value>
+  </data>
+  <data name="Taxno.Text">
+    <value xml:space="preserve">N° TVA</value>
+  </data>
+  <data name="TaxNumber.Text">
+    <value xml:space="preserve">N° TVA</value>
+  </data>
+  <data name="temp.Text">
+    <value xml:space="preserve">Temporaire</value>
+  </data>
+  <data name="Templates.Text">
+    <value xml:space="preserve">Gabarits</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">Titre</value>
+  </data>
+  <data name="To.Text">
+    <value xml:space="preserve">A</value>
+  </data>
+  <data name="Tools.Text">
+    <value xml:space="preserve">Outils</value>
+  </data>
+  <data name="Total.Text">
+    <value xml:space="preserve">Total</value>
+  </data>
+  <data name="TotalDiscounts.Text">
+    <value xml:space="preserve">Total remises</value>
+  </data>
+  <data name="TotalProducts.Text">
+    <value xml:space="preserve">Nombre de produits</value>
+  </data>
+  <data name="TotalRevenue.Text">
+    <value xml:space="preserve">Revenu total</value>
+  </data>
+  <data name="TotalShipping.Text">
+    <value xml:space="preserve">Total frais de livraison</value>
+  </data>
+  <data name="trackingcode.Text">
+    <value xml:space="preserve">Code de suivi</value>
+  </data>
+  <data name="Type.Text">
+    <value xml:space="preserve">Type</value>
+  </data>
+  <data name="Undo.Text">
+    <value xml:space="preserve">Annuler</value>
+  </data>
+  <data name="UndoButton.Text">
+    <value xml:space="preserve">&lt;i title="Annuler" class="fa fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Annuler</value>
+  </data>
+  <data name="UndoIcon.Text">
+    <value xml:space="preserve">&lt;i title="Annuler" class="fa fa-undo fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="unit.Text">
+    <value xml:space="preserve">Unité</value>
+  </data>
+  <data name="Update.Text">
+    <value xml:space="preserve">Mettre à jour</value>
+  </data>
+  <data name="updated.Text" lastModified="2016-12-15 16:44:06">
+    <value xml:space="preserve">Mis à jour</value>
+  </data>
+  <data name="Upload.Text">
+    <value xml:space="preserve">Charger</value>
+  </data>
+  <data name="UploadImage.Text">
+    <value xml:space="preserve">Charger image</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Nom d'utilisateur</value>
+  </data>
+  <data name="Value.Text">
+    <value xml:space="preserve">Valeur</value>
+  </data>
+  <data name="Voucher.Text">
+    <value xml:space="preserve">Coupon</value>
+  </data>
+  <data name="Web.Text">
+    <value xml:space="preserve">Site Internet</value>
+  </data>
+  <data name="Weight.Text">
+    <value xml:space="preserve">Poids</value>
+  </data>
+  <data name="Width.Text">
+    <value xml:space="preserve">Largeur</value>
+  </data>
 </root>

@@ -1014,7 +1014,6 @@
     <Content Include="Themes\config\default\extrashippingdata.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
-    <Content Include="Themes\config\default\productfields.html" />
     <Content Include="Themes\config\default\productlistbody-as-thumbs.html" />
     <Content Include="Themes\config\default\productlistfooter-as-thumbs.html" />
     <Content Include="Themes\config\default\productlistheader-as-thumbs.html" />

@@ -236,7 +236,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
                         DataCache.ClearCache(); // clear ALL cache.
 
-                        // run the promo before delete, so we remove any promo data that may exist.
+                        // run the promo now.
                         if (typecode == "CATEGORYPROMO")
                         {
                             PromoUtils.CalcGroupPromoItem(nbi);

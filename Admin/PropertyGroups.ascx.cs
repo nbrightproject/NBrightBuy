@@ -71,7 +71,16 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (UserId > 0) // only logged in users can see data on this module.
             {
-                rpData.DataSource = NBrightBuyUtils.GetCategoryGroups(EditLanguage,true);
+                var levelList = NBrightBuyUtils.GetCategoryGroups(EditLanguage, true);
+
+                // validate language record for list
+                foreach (var nbi in levelList)
+                {
+                    var gp = new GroupData(nbi.ItemID,EditLanguage);
+                    gp.Validate();
+                }
+
+                rpData.DataSource = levelList;
                 rpData.DataBind();
             }
 

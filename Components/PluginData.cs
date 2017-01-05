@@ -130,7 +130,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             {
                                 var nbi = new NBrightInfo();
                                 nbi.XMLData = datain;
-                                AddPlugin(nbi);
+                                // check if we are injecting multiple
+                                var nodlist = nbi.XMLDoc.SelectNodes("root/genxml");
+                                if (nodlist != null && nodlist.Count == 0)
+                                {
+                                    AddPlugin(nbi);
+                                }
+                                else
+                                {
+                                    foreach (XmlNode nod in nodlist)
+                                    {
+                                        var nbi2 = new NBrightInfo();
+                                        nbi2.XMLData = nod.OuterXml;
+                                        AddPlugin(nbi2);
+                                    }
+                                }
+
+
                                 ctrlList.Add(nbi.GetXmlProperty("genxml/textbox/ctrl"), nbi.GetXmlPropertyInt("genxml/hidden/index"));
 
                                 updated = true;

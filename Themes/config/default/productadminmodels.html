@@ -5,20 +5,21 @@
     <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="modelid" type="hidden" value="" />] <!-- required modelid to link to checkout selected-->
-    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/dropdownlist/taxrate,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtsaleprice,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay" />] <!-- update fields -->
+    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/dropdownlist/taxrate,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtsaleprice,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay,genxml/checkbox/chkdisablesale,genxml/checkbox/chkdisabledealer,genxml/textbox/txtdealersale" />] <!-- update fields -->
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtmodelname,genxml/textbox/txtextra" />] <!-- update localized fields -->
 
 	<div class="col-sm-12 form-horizontal">
 	    <div class="row">
-	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />][<tag id="txtmodelname" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
+	        <div class="col-sm-5"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />][<tag id="txtmodelname" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Code" />]</label>[<tag id="txtmodelref" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
 	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Price" />]</label>[<tag id="txtunitcost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.SalePrice" />]</label>[<tag id="txtsaleprice" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
-	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.SalePrice" />]</label>[<tag id="txtsaleprice" update="save" type="textbox" cssclass="form-control input-sm saleprice" maxlength="250" Text="0.00" datatype="double" />][<tag id="chkdisablesale" update="save" type="checkbox" Text="" />][<tag type="valueof" resourcekey="General.Disable" />]</div>
+	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label>[<tag id="txtdealercost" update="save" type="textbox" cssclass="form-control input-sm dealercost" maxlength="250" Text="0.00" datatype="double" />][<tag id="chkdisabledealer" update="save" type="checkbox" Text="" />][<tag type="valueof" resourcekey="General.Disable" />]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.DealerSale" />]</label>[<tag id="txtdealersale" update="save" type="textbox" cssclass="form-control input-sm dealersale" maxlength="250" Text="0.00" datatype="double" />]</div>
 	        <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Cost" />]</label>[<tag id="txtpurchasecost" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0.00" datatype="double" />]</div>
 		</div>
 		<div class="row">
-	        <div class="col-sm-4"><label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag type="editflag" />][<tag id="txtextra" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]</div>
+	        <div class="col-sm-3"><label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag type="editflag" />][<tag id="txtextra" update="lang" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Tax" />]</label>[<tag id="taxrate" update="save" type="taxdropdown" cssclass="form-control input-sm" />]</div>
 	        <div class="col-sm-2"><label class="control-label">[<tag type="valueof" resourcekey="General.Barcode" />]</label>[<tag id="txtbarcode" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Weight" />]</label>[<tag id="weight" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
@@ -27,13 +28,13 @@
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Height" />]</label>[<tag id="height" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
 		</div>
 	    <div class="row form-group">
-	        <div class="col-sm-2 activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />]">[<tag id="chkstockon" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
+	        <div class="col-sm-2 activatestock">[<tag id="chkstockon" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkishidden" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Hidden" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdeleted" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Deleted" />]</label></div>
 	        <div class="col-sm-2">[<tag id="chkdealeronly" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.Dealer" />]</label></div>
-	        <div class="col-sm-2 text-right"><a class="removemodel btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
+            <div class="col-sm-2 text-right"><a class="removemodel btn btn-danger">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- class required for ajax -->
 		</div>
-	    <div style="margin-top:10px;" class="row stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]">
+	    <div style="margin-top:10px;" class="row stockoptions">
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Stock" />]</label>[<tag id="txtqtyremaining" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Min" />]</label>[<tag id="txtqtyminstock" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Max" />]</label>[<tag id="txtqtystockset" update="save" type="textbox" cssclass="form-control input-sm" maxlength="250" Text="0" datatype="double" />]</div>
@@ -45,16 +46,3 @@
 	    </div>
       </div>
 </li>
-<!-- Hides and shows row of stock options -->
-<script type="text/javascript">
-$(document).ready(function() {
-if ($('.activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />] input[[id*="_chkstockon_"]]:checked').val()  === undefined) $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").hide();
-$('.activatestock[<tag type='valueof' xpath='genxml/hidden/modelid' />] input[[id*="_chkstockon_"]]').click(function() {
-    if($(this).is(":checked")) {
-        $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").show();
-    } else {
-        $(".stockoptions[<tag type='valueof' xpath='genxml/hidden/modelid' />]").hide();
-    }
-});
-});
-</script>

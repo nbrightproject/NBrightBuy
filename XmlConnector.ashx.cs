@@ -785,6 +785,7 @@ namespace Nevoweb.DNN.NBrightBuy
             return strOut;
         }
 
+
         private String CopyAllCatXref(HttpContext context,Boolean moverecords = false)
         {
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
@@ -805,36 +806,15 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     foreach (var obj in objList)
                     {
-                        var strGuid = newcatid + "x" + obj.ParentItemId.ToString("");
-                        var nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATXREF", strGuid);
-                        if (nbi == null)
-                        {
-                            if (!moverecords) obj.ItemID = -1;
-                            obj.XrefItemId = Convert.ToInt32(newcatid);
-                            obj.GUIDKey = strGuid;
-                            obj.XMLData = null;
-                            obj.TextData = null;
-                            obj.Lang = null;
-                            objCtrl.Update(obj);
-                            //add all cascade xref 
-                            var objGrpCtrl = new GrpCatController(_lang, true);
-                            var parentcats = objGrpCtrl.GetCategory(Convert.ToInt32(newcatid));
-                            foreach (var p in parentcats.Parents)
-                            {
-                                strGuid = p.ToString("") + "x" + obj.ParentItemId.ToString("");
-                                nbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
-                                if (nbi == null)
-                                {
-                                    obj.XrefItemId = p;
-                                    obj.TypeCode = "CATCASCADE";
-                                    obj.GUIDKey = strGuid;
-                                    objCtrl.Update(obj);
-                                }
-                            }
-                        }
-                    }
+                        var prdData = new ProductData(obj.ParentItemId, PortalSettings.Current.PortalId, Utils.GetCurrentCulture());
 
-                    if (moverecords) DeleteAllCatXref(context);
+                        if (moverecords)
+                        {
+                            prdData.RemoveCategory(obj.XrefItemId);
+                        }
+
+                        prdData.AddCategory(Convert.ToInt32(newcatid));
+                    }
 
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }
@@ -2957,9 +2937,13 @@ namespace Nevoweb.DNN.NBrightBuy
             var dic = objInfo.ToDictionary();
             // set langauge if we have it passed.
             if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
+            if (dic.ContainsKey("editlang") && dic["editlang"] != "") _lang = dic["editlang"];
 
+            var currentlang = Utils.GetCurrentCulture();
+            if (dic.ContainsKey("currentlang") && dic["currentlang"] != "") currentlang = dic["currentlang"];
             // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-            if (_lang != "" && _lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+            if (currentlang != "" && currentlang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
+
             objInfo.Lang = _lang; // make sure we have the langauge in the object.
 
             return objInfo;

@@ -293,7 +293,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (string.IsNullOrEmpty(title)) title = "Default.aspx";
-                return DotNetNuke.Common.Globals.FriendlyUrl(tabInfo, Path, title);
+
+                var url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tabInfo, "~/Default.aspx?tabid=" + tabInfo.TabID.ToString(""), title);
+                return url;
             }
             return "";
         }
@@ -626,12 +628,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!emailList.Contains(ordData.EmailShippingAddress) && Utils.IsEmail(ordData.EmailShippingAddress)) emailList += "," + ordData.EmailShippingAddress;
             if (!emailList.Contains(ordData.EmailBillingAddress) && Utils.IsEmail(ordData.EmailBillingAddress)) emailList += "," + ordData.EmailBillingAddress;
 
-            // also send to manager is created. 
-            if (emailtype == "OrderCreatedClient")
-            {
-                emailList += "," + StoreSettings.Current.ManagerEmail;
-            }
-
             if (!onlyUserManagerOnly || UserController.Instance.GetCurrentUserInfo().UserID > 0)
             {
 
@@ -661,7 +657,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var emailBody = "";
                     emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), lang, passSettings);
                     if (StoreSettings.Current.DebugModeFileOut) Utils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\testemail.html", emailBody);
+
                     SendEmail(emailBody, emailList, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, lang);
+
+                    // also send to manager is created. 
+                    if (emailtype == "OrderCreatedClient")
+                    {
+                        emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), StoreSettings.Current.Get("merchantculturecode"), passSettings);
+                        SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+                    }
+
+
                     ordData.AddAuditMessage(emailmsg, "email", UserController.Instance.GetCurrentUserInfo().Username, "False", NBrightBuyUtils.ResourceKey("Notification." + emailsubjectresxkey, StoreSettings.Current.EditLanguage));
                     ordData.SavePurchaseData();
                 }
@@ -1574,6 +1580,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbRazor.FullTemplateName = theme + "." + razorTemplName;
                     nbRazor.TemplateName = razorTemplName;
                     nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
 
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
@@ -1658,7 +1665,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             try
             {
                 var service = (IRazorEngineService)HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
-                if (service == null || debugMode)
+                if (service == null)
                 {
                     // do razor test
                     var config = new TemplateServiceConfiguration();
@@ -1668,7 +1675,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService", service);
                 }
                 Engine.Razor = service;
-                result = Engine.Razor.RunCompile(razorTempl, templateKey, null, info);
+                var israzorCached = Utils.GetCache("nbrightbuyrzcache_" + templateKey); // get a cache flag for razor compile.
+                if (israzorCached == null || (string)israzorCached != razorTempl)
+                {
+                    result = Engine.Razor.RunCompile(razorTempl, GetMd5Hash(razorTempl), null, info);
+                    Utils.SetCache("nbrightbuyrzcache_" + templateKey, razorTempl);
+                }
+                else
+                {
+                    result = Engine.Razor.Run(GetMd5Hash(razorTempl), null, info);
+                }
+
             }
             catch (Exception ex)
             {
@@ -1676,6 +1693,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// work arounf MD5 has for razorengine caching.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static string GetMd5Hash(string input)
+        {
+            var md5 = MD5.Create();
+            var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            var hash = md5.ComputeHash(inputBytes);
+            var sb = new StringBuilder();
+            foreach (byte t in hash)
+            {
+                sb.Append(t.ToString("X2"));
+            }
+            return sb.ToString();
         }
 
         public static void RazorIncludePageHeader(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
@@ -1723,7 +1758,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 #region "Init"
 
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = NBrightBuyUtils.IsDealer();
 
 
                 #endregion
@@ -1859,7 +1894,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var saleprice = GetSalePriceDouble(dataItemObj);
             if (saleprice < 0) saleprice = fromprice; // sale price might not exists.
 
-            if (CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole))
+            if (IsDealer())
             {
                 var dealerprice = Convert.ToDouble(GetDealerPrice(dataItemObj), CultureInfo.GetCultureInfo("en-US"));
                 if (dealerprice <= 0) dealerprice = fromprice; // check for valid dealer price.
@@ -1885,7 +1920,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 //check if we really need to add prices (don't if all the same)
                 var holdPrice = "";
                 var holdDealerPrice = "";
-                var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+                var isDealer = IsDealer();
                 foreach (XmlNode nod in nodList)
                 {
                     var mPrice = nod.SelectSingleNode("textbox/txtunitcost");
@@ -1899,6 +1934,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                     if (isDealer)
                     {
+                        var mDealerSalePrice = nod.SelectSingleNode("textbox/txtdealersale");
+                        if (mDealerSalePrice != null)
+                        {
+                            if (Utils.IsNumeric(mDealerSalePrice.InnerText))
+                            {
+                                if (Convert.ToDouble(mDealerSalePrice.InnerText) > 0) return true; // if we have a sale price assume different.
+                            }
+                        }
                         var mDealerPrice = nod.SelectSingleNode("textbox/txtdealercost");
                         if (mDealerPrice != null)
                         {
@@ -1946,7 +1989,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static string GetItemDisplay(NBrightInfo obj, string templ, Boolean displayPrices)
         {
-            var isDealer = CmsProviderManager.Default.IsInRole(StoreSettings.DealerRole);
+            var isDealer = IsDealer();
             var outText = templ;
             var stockOn = obj.GetXmlPropertyBool("genxml/checkbox/chkstockon");
             var stock = obj.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
@@ -1958,7 +2001,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 if (displayPrices)
                 {
-                    //[TODO: add promotional calc]
                     var saleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
                     var price = obj.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
                     var bestprice = price;
@@ -1972,9 +2014,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var dealerprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
                     if (isDealer && dealerprice > 0)
                     {
+                        var dealersaleprice = obj.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+                        if (dealersaleprice > 0 && dealerprice > dealersaleprice) dealerprice = dealersaleprice;
                         strdealerprice = NBrightBuyUtils.FormatToStoreCurrency(dealerprice);
                         if (!outText.Contains("{dealerprice}") && (price > dealerprice)) strprice = strdealerprice;
-                        if (dealerprice < bestprice)
+                        if (bestprice <= 0 || dealerprice < bestprice)
                         {
                             bestprice = dealerprice;
                             strbestprice = NBrightBuyUtils.FormatToStoreCurrency(bestprice);
@@ -2138,6 +2182,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return false;
         }
+
+        public static Boolean IsDealer()
+        {
+            if (!StoreSettings.Current.GetBool("enabledealer")) return false;
+            if (StoreSettings.Current.DealerRole == "*") return true; // * for all users
+            if (CmsProviderManager.Default.IsInRole(StoreSettings.Current.DealerRole)) return true;
+            return false;
+        }
+
 
         #endregion
 

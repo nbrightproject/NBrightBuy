@@ -93,7 +93,7 @@
                 @if (product.IsOnSale)
                 {
                     <span>@ResourceKey("ProductView.onsale") : </span>
-                    if (product.Models.Count >= 1 || product.Options.Count >= 1)
+                    if (product.Models.Count > 1)
                     {
                         <span>@ResourceKey("ProductView.from") </span>
                     }
@@ -102,7 +102,7 @@
                 }
                 else
                 {
-                    if (product.Models.Count >= 1 || product.Options.Count >= 1) // has models or options
+                    if (product.Models.Count > 1) // has models or options
                     {
                         <span>@ResourceKey("ProductView.from")</span>
                     }
@@ -249,7 +249,8 @@
 
                 @if (Model.GetSetting("addthispubid") != "")
                 {
-                    <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="addthis_sharing_toolbox"></div></div>
+                    
+                    <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="sharetoolbox"><div class="addthis_inline_share_toolbox"></div></div></div>
                 }
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")

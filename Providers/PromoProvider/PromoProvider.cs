@@ -152,31 +152,51 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
         public override NBrightInfo AfterProductSave(NBrightInfo nbrightInfo)
         {
-            var promoid = nbrightInfo.GetXmlPropertyInt("genxml/hidden/promoid");
-            if (promoid > 0)
+            var promoid = nbrightInfo.GetXmlPropertyInt("genxml/hidden/promoid"); // legacy promo flag
+            if (nbrightInfo.GetXmlPropertyBool("genxml/hidden/promoflag") || promoid > 0)
             {
                 var prdData = ProductUtils.GetProductData(nbrightInfo.ItemID, nbrightInfo.Lang);
-                var objCtrl = new NBrightBuyController();
-                var promoData = objCtrl.GetData(promoid);
-
-                var catgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/catgroupid");
-                var propgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propgroupid");
-                var propbuygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propbuy");
-                var propapplygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propapply");
-
-                var removepromo = true;
-                foreach (var c in prdData.GetCategories())
+                // loop on models to get all promoid at model level.
+                var modelpromoids = new List<int>();
+                if (promoid > 0) modelpromoids.Add(promoid);
+                var lp = 1;
+                foreach (var m in prdData.Models)
                 {
-                    if (c.categoryid == catgroupid) removepromo = false;
-                    if (c.categoryid == propgroupid) removepromo = false;
-                    if (c.categoryid == propbuygroupid) removepromo = false;
-                    if (c.categoryid == propapplygroupid) removepromo = false;
+                    var modelPromoId = prdData.Info.GetXmlPropertyInt("genxml/promo/salepriceid" + lp);
+                    if (modelPromoId > 0 && !modelpromoids.Contains(modelPromoId)) modelpromoids.Add(modelPromoId);
+                    modelPromoId = prdData.Info.GetXmlPropertyInt("genxml/promo/dealercostid" + lp);
+                    if (modelPromoId > 0 && !modelpromoids.Contains(modelPromoId)) modelpromoids.Add(modelPromoId);
+                    modelPromoId = prdData.Info.GetXmlPropertyInt("genxml/promo/dealersaleid" + lp);
+                    if (modelPromoId > 0 && !modelpromoids.Contains(modelPromoId)) modelpromoids.Add(modelPromoId);
+                    lp += 1;
                 }
 
-                if (removepromo)
+                // multiple promotions, remove from each model.
+                foreach (var mpid in modelpromoids)
                 {
-                    PromoUtils.RemoveProductPromoData(nbrightInfo.PortalId, nbrightInfo.ItemID,promoid);
-                    ProductUtils.RemoveProductDataCache(nbrightInfo.PortalId, nbrightInfo.ItemID);
+                    var objCtrl = new NBrightBuyController();
+                    var promoData = objCtrl.GetData(mpid);
+
+                    var catgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/catgroupid");
+                    var propgroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propgroupid");
+                    var propbuygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propbuy");
+                    var propapplygroupid = promoData.GetXmlPropertyInt("genxml/dropdownlist/propapply");
+
+                    var removepromo = true;
+                    foreach (var c in prdData.GetCategories())
+                    {
+                        if (c.categoryid == catgroupid) removepromo = false;
+                        if (c.categoryid == propgroupid) removepromo = false;
+                        if (c.categoryid == propbuygroupid) removepromo = false;
+                        if (c.categoryid == propapplygroupid) removepromo = false;
+                    }
+
+                    if (removepromo)
+                    {
+                        PromoUtils.RemoveProductPromoData(nbrightInfo.PortalId, nbrightInfo.ItemID, mpid);
+                        ProductUtils.RemoveProductDataCache(nbrightInfo.PortalId, nbrightInfo.ItemID);
+                    }
+
                 }
             }
 

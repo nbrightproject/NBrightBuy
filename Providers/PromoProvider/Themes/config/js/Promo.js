@@ -120,8 +120,9 @@ function Promo_nbxgetCompleted(e) {
             $('.catdisplay').hide();
             $('.propdisplay').show();
         }
-
+        
         $('input:radio[name=typeselectradio]').change(function () {
+            $('.typeselectdiv').show();
             if ($(this).val() == 'cat') {
                 $('.catdisplay').show();
                 $('.propdisplay').hide();
@@ -145,6 +146,20 @@ function Promo_nbxgetCompleted(e) {
             }
         });
 
+        if ($('input:radio[name=runfreqradio]:checked').val() == '1') {
+            $('.daterange').show();
+        } else {
+            $('.daterange').hide();
+        }
+
+        $('input:radio[name=runfreqradio]').change(function () {
+            if ($(this).val() == '1') {
+                $('.daterange').show();
+            } else {
+                $('.daterange').hide();
+            }
+        });
+
         if ($('.applydaterangechk').is(":checked")) {
             $('.applydaterange').show();
         }
@@ -163,6 +178,18 @@ function Promo_nbxgetCompleted(e) {
                 Promo_nbxget('recalc', '#selectparams', '#editdata'); // do ajax call to get edit form
             }
         });
+
+        if ($('input:radio[name=typeselectradio]:checked').val() == 'all') {
+            $('.typeselectdiv').hide();
+        }
+
+        $('input:radio[name=typeselectradio]').change(function () {
+            if ($(this).val() == 'all') {                
+                $('.typeselectdiv').hide();
+            }
+        });
+
+
 
     } else {
         //PROCESS LIST

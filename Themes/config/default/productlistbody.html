@@ -2,7 +2,7 @@
 
 <tr>
 	[<tag type="if" function="imgexists" testvalue="1" display="{ON}" displayelse="{OFF}" />]<!-- Image -->
-	<td class="image centered"><a target="_blank" href="[<tag type='editurl' />]"><img src="[<tag type='thumbnail' w='80' h='68' />]"></a></td>
+	<td class="image centered"><a target="_blank" href="[<tag type='editurl' />]"><img src="[<tag type='thumbnail' w='80' h='-1' />]"></a></td>
 	[<tag type="endif" />]
 	[<tag type="if" function="imgexists" testvalue="1" display="{OFF}" displayelse="{ON}" />]<!-- When no image is present -->
 	<td class="noimage centered"><a target="_blank" href="[<tag type='editurl' />]">[Settings:bonoimageicon]</a></td>

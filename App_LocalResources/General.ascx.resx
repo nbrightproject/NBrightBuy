@@ -1098,4 +1098,40 @@
   <data name="ReturnTo.Text" xml:space="preserve">
     <value>Return To</value>
   </data>
+  <data name="Manufacturer.Text" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="DealerSale.Text" xml:space="preserve">
+    <value>Dealer Sale</value>
+  </data>
+  <data name="disablesale.Text" xml:space="preserve">
+    <value>Disable Sale price</value>
+  </data>
+  <data name="disabledealer.Text" xml:space="preserve">
+    <value>Disable Dealer</value>
+  </data>
+  <data name="searchfilter.Text" xml:space="preserve">
+    <value>Display Search Filter</value>
+  </data>
+  <data name="fea.Text" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="promo.Text" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="spec.Text" xml:space="preserve">
+    <value>Specifications</value>
+  </data>
+  <data name="supp.Text" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="temp.Text" xml:space="preserve">
+    <value>Temp</value>
+  </data>
+  <data name="cat.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="man.Text" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
 </root>

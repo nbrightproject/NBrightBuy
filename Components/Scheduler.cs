@@ -34,7 +34,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         foreach (string file in files)
                         {
                             FileInfo fi = new FileInfo(file);
-                            if (fi.LastAccessTime < DateTime.Now.AddHours(-3)) fi.Delete();
+                            if (fi.LastAccessTime < DateTime.Now.AddHours(-1)) fi.Delete();
                         }
 
                         // DO Scheduler Jobs

@@ -3,6 +3,8 @@
 @using System.Linq
 @using System.Web.Razor.Parser.SyntaxTree
 @using System.Xml
+@using DotNetNuke.Common.Utilities
+@using NBrightCore.common
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components
 
@@ -22,6 +24,8 @@
     <div>
         <a id="OrderAdmin_cmdReturn" class="btn btn-default primarybutton" href="#">@ResourceKey("OrderAdmin.cmdReturnButton")</a>
         <a id="OrderAdmin_cmdReOrder" class="btn btn-default primarybutton" href="#" itemid="@(ordData.GetInfo().ItemID)">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
+        <a id="OrderAdmin_cmdPrint" class="btn btn-default primarybutton" target="_blank" href="/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(ordData.GetInfo().ItemID)&printcode=printorder&printtype=OrderCreated&language=@(Utils.GetCurrentCulture())">@ResourceKey("OrderAdmin.PrintOrder")</a>       
+
         @if (nbi.GetXmlProperty("genxml/hidden/invoicefilename") != "")
         {
             <a class="documentlink btn btn-default primarybutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbi.GetXmlProperty("genxml/hidden/invoicedownloadname")&filename=@nbi.GetXmlProperty("genxml/hidden/invoicefilerelpath")'>@ResourceKey("OrderAdmin.downloadinvoice")</a>
@@ -215,7 +219,7 @@
                     <div>@Model.GetSetting("storeaddressline1")</div>
                     <div>@Model.GetSetting("storeaddressline2")</div>
                     <div>@Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode")</div>
-                    <div>@Model.GetSetting("storecountrytext")</div>
+                    <div>@Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))</div>
 
                     @if (Model.GetSetting("storetaxnumber") != "")
                 {

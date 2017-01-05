@@ -21,27 +21,18 @@
 
 <div class="col-xs-12 col-sm-12">
     <div class="form-group">
+        <div class="col-sm-5">
+            <label>@ResourceKey("Promo.name")</label>
+            @TextBox(info, "genxml/textbox/name", "class='form-control'")
+        </div>
         <div class="col-sm-12">
-            <div class="col-sm-2">
-                <label>@ResourceKey("Promo.typeselect")</label>
-                @{
-                    var typelst = ResourceKey("General.Category") + "," + ResourceKey("General.Property");
-                }
-                @RadioButtonList(info, "genxml/radiobuttonlist/typeselect", "cat,prop", typelst, "", "cat")
-            </div>
-            <div class="col-sm-5">
-                <label>@ResourceKey("Promo.groupselect")</label>
-                @CategoryDropDownList(info, "genxml/dropdownlist/catgroupid", "class='form-control catdisplay' style='display:none;'")
-                @PropertyDropDownList(info, "genxml/dropdownlist/propgroupid", "class='form-control propdisplay'  style='display:none;'")
-            </div>
-            <div class="col-sm-5">
-                <label>@ResourceKey("Promo.name")</label>
-                @TextBox(info, "genxml/textbox/name", "class='form-control'")
-            </div>
-            <div class="col-sm-12">
-                <label>@ResourceKey("Promo.description")</label><img src='/Images/Flags/@(info.Lang).gif' width='16px'/>
-                @TextBox(info, "genxml/lang/genxml/textbox/description", "class='form-control' maxlength='250' ")
-            </div>
+            <label>@ResourceKey("Promo.description")</label><img src='/Images/Flags/@(info.Lang).gif' width='16px'/>
+            @TextBox(info, "genxml/lang/genxml/textbox/description", "class='form-control' maxlength='250' ")
+        </div>
+        <hr/>
+        <div class="col-sm-5">
+            <label>@ResourceKey("Promo.processorder")</label>
+            @DropDownList(info, "genxml/dropdownlist/processorder", "0,1,2,3,4,5,6,7,8,9", "0,1,2,3,4,5,6,7,8,9")
         </div>
     </div>
     <hr/>
@@ -51,50 +42,75 @@
         var rk3 = ResourceKey("Promo.disabled").ToString();
         var rk4 = ResourceKey("Promo.overwrite").ToString();
         var rk5 = ResourceKey("Promo.applydaterange").ToString();
+        var rk6 = ResourceKey("Promo.whichpricevalue").ToString();
+        var rk7 = ResourceKey("Promo.whichpricedata").ToString();
+        var rk8 = ResourceKey("Promo.runfreq").ToString();
     }
     <div class="form-group">
         <div class="col-sm-12">
-            <div class="col-sm-2">
-                <label>@RadioButtonList(info, "genxml/radiobuttonlist/amounttype", rk1, rk2, "", "1")</label>
-                @TextBox(info, "genxml/textbox/amount", "class='form-control' datatype='double'")
+            <label>@RadioButtonList(info, "genxml/radiobuttonlist/amounttype", rk1, rk2, "", "1")</label>
+            @TextBox(info, "genxml/textbox/amount", "class='form-control' datatype='double'")
+        </div>
+    </div>
+    <hr/>
+    <div class="form-group">
+            <div class="col-sm-12">
+                <label>@RadioButtonList(info, "genxml/radiobuttonlist/runfreq", "1,2,3,4", rk8, " class='runfreq'", "1")</label>
+            </div>
+            <div class="col-sm-12">
+                <div class="col-sm-2 daterange">
+                    <label>@ResourceKey("Promo.validfrom")</label>
+                    @TextBox(info, "genxml/textbox/validfrom", "class='form-control' datatype='date' autocomplete='off'")
+                </div>
+                <div class="col-sm-2 daterange">
+                    <label>@ResourceKey("Promo.validuntil")</label>
+                    @TextBox(info, "genxml/textbox/validuntil", "class='form-control' datatype='date' autocomplete='off'")
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div>
+                    <br />
+                    <label>@ResourceKey("Promo.whichpricemsg")</label>
+                </div>
+                <label>@RadioButtonList(info, "genxml/radiobuttonlist/whichprice", rk6, rk7, "", "1")</label>
+            </div>
+            <div class="col-sm-12">
+                <div class="col-sm-5">
+                    @CheckBox(info, "genxml/checkbox/overwrite", rk4, "", true)
+                </div>
             </div>
         </div>
-        <div class="col-sm-12">
+    <h4>Applies To:</h4>
+    <div class="form-group">
             <div class="col-sm-2">
-                <label>@ResourceKey("Promo.validfrom")</label>
-                @TextBox(info, "genxml/textbox/validfrom", "class='form-control' datatype='date' autocomplete='off'")
-            </div>
-            <div class="col-sm-2">
-                <label>@ResourceKey("Promo.validuntil")</label>
-                @TextBox(info, "genxml/textbox/validuntil", "class='form-control' datatype='date' autocomplete='off'")
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="col-sm-5">
-                @CheckBox(info, "genxml/checkbox/overwrite", rk4, "",true)
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="col-sm-5">
+                <label>@ResourceKey("Promo.typeselect")</label>
                 @{
-                    var attr = "disabled";
-                    if (info.GetXmlPropertyBool("genxml/checkbox/disabled"))
-                    {
-                        attr = "";
-                    }
+                    var typeselecttext = ResourceKey("Promo.typeselecttext").ToString();
                 }
-                @CheckBox(info, "genxml/checkbox/disabled", rk3, attr)
+                @RadioButtonList(info, "genxml/radiobuttonlist/typeselect", "cat,prop,all", typeselecttext, "", "cat")
+            </div>
+            <div class="col-sm-5 typeselectdiv">
+                <label>@ResourceKey("Promo.groupselect")</label>
+                @CategoryDropDownList(info, "genxml/dropdownlist/catgroupid", "class='form-control catdisplay' style='display:none;'")
+                @PropertyDropDownList(info, "genxml/dropdownlist/propgroupid", "class='form-control propdisplay'  style='display:none;'")
+            </div>
+    </div>
+    <hr/>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <div>
+                @CheckBox(info, "genxml/checkbox/disabled", rk3)
             </div>
         </div>
         <div class="col-sm-12">
             <div class="col-sm-5">
-                <label>@ResourceKey("Promo.lastcalculated") : @info.GetXmlProperty("genxml/hidden/lastcalculated")</label> 
+                <label>@ResourceKey("Promo.lastcalculated") : @info.GetXmlProperty("genxml/hidden/lastcalculated")</label>
             </div>
-        </div>        
+        </div>
         <div class="col-sm-12">
-            <hr />            
+            <hr />
             <div><i class="fa fa-question-circle-o" aria-hidden="true"></i> @ResourceKey("Promo.helpmsg")</div>
         </div>
     </div>
-
 </div>
+

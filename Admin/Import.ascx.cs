@@ -361,7 +361,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     var newitemid = ModCtrl.Update(nbi);
                     if (newitemid > 0) _recordXref.Add(olditemid, newitemid);
-                    if (typeCode == "PRD") _productList.Add(newitemid, typeCode);
+                    if (typeCode == "PRD" && !_productList.ContainsKey(newitemid)) _productList.Add(newitemid, typeCode);
 
                     // Add any provider data types
                     foreach (var prov in provList)

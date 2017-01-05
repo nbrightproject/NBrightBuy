@@ -44,6 +44,21 @@ namespace Nevoweb.DNN.NBrightBuy
                 var obj = NBrightBuyUtils.GetSettings(PortalId,ModuleId);
                 obj.ModuleId = base.ModuleId; // need to pass the moduleid here, becuase it doesn;t exists in url for settings and on new settings it needs it.
 
+                // check the moduleref is unique, if not the module have been copied, so create new moduleref
+                var objCtrl = new NBrightBuyController();
+                var moduleKey = obj.GetXmlProperty("genxml/hidden/modref");
+                if (!String.IsNullOrEmpty(moduleKey))
+                {
+                    var modl = objCtrl.GetDataListCount(PortalId, -1, "SETTINGS", " and [XMLData].value('(genxml/hidden/modref)[1]','nvarchar(max)') = '" + moduleKey + "'","","",false,false);
+                    if (modl > 1)
+                    {
+                        // we have multiple refs, reset this one.
+                        obj.SetXmlProperty("genxml/hidden/modref",Utils.GetUniqueKey(10));
+                        objCtrl.Update(obj);
+                    }
+                }
+
+
                 if (String.IsNullOrEmpty(SettingsTemplate)) SettingsTemplate = ModuleConfiguration.DesktopModule.ModuleName + "settings.cshtml"; // default to name of module
 
                 var strOut = NBrightBuyUtils.RazorTemplRender(SettingsTemplate, ModuleId, "", obj, ControlPath, "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());

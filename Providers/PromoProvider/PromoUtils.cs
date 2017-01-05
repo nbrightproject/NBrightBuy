@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
         public static string CalcGroupPromo(int portalId)
         {
             var objCtrl = new NBrightBuyController();
-            var l = objCtrl.GetList(portalId, -1, "CATEGORYPROMO", "", "", 0, 0, 0, 0, Utils.GetCurrentCulture());
+            var l = objCtrl.GetList(portalId, -1, "CATEGORYPROMO", "", " order by [XMLData].value('(genxml/dropdownlist/processorder)[1]','int') ", 0, 0, 0, 0, Utils.GetCurrentCulture());
             foreach (var p in l)
             {
                 CalcGroupPromoItem(p);
@@ -28,21 +28,46 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
         public static string CalcGroupPromoItem(NBrightInfo p)
         {
             var objCtrl = new NBrightBuyController();
-                var typeselect = p.GetXmlProperty("genxml/radiobuttonlist/typeselect");
-                var catgroupid = p.GetXmlProperty("genxml/dropdownlist/catgroupid");
-                var propgroupid = p.GetXmlProperty("genxml/dropdownlist/propgroupid");
-                var promoname = p.GetXmlProperty("genxml/textbox/name");
-                var amounttype = p.GetXmlProperty("genxml/radiobuttonlist/amounttype");
-                var amount = p.GetXmlPropertyDouble("genxml/textbox/amount");
-                var validfrom = p.GetXmlProperty("genxml/textbox/validfrom");
-                var validuntil = p.GetXmlProperty("genxml/textbox/validuntil");
-                var overwrite = p.GetXmlPropertyBool("genxml/checkbox/overwrite");
-                var disabled = p.GetXmlPropertyBool("genxml/checkbox/disabled");
-                var lastcalculated = p.GetXmlProperty("genxml/hidden/lastcalculated");
+            var typeselect = p.GetXmlProperty("genxml/radiobuttonlist/typeselect");
+            var catgroupid = p.GetXmlProperty("genxml/dropdownlist/catgroupid");
+            var propgroupid = p.GetXmlProperty("genxml/dropdownlist/propgroupid");
+            var promoname = p.GetXmlProperty("genxml/textbox/name");
+            var amounttype = p.GetXmlProperty("genxml/radiobuttonlist/amounttype");
+            var amount = p.GetXmlPropertyDouble("genxml/textbox/amount");
+            var validfrom = p.GetXmlProperty("genxml/textbox/validfrom");
+            var validuntil = p.GetXmlProperty("genxml/textbox/validuntil");
+            var overwrite = p.GetXmlPropertyBool("genxml/checkbox/overwrite");
+            var disabled = p.GetXmlPropertyBool("genxml/checkbox/disabled");
+            var lastcalculated = p.GetXmlProperty("genxml/hidden/lastcalculated");
+            var whichprice = p.GetXmlPropertyInt("genxml/radiobuttonlist/whichprice");
+            var runfreq = p.GetXmlPropertyInt("genxml/radiobuttonlist/runfreq");
 
-                if (!disabled)
+            if (!disabled)
+            {
+                var prdList = new List<NBrightInfo>();
+                if (typeselect == "all")
                 {
-                    var runcalc = true;
+                    prdList = objCtrl.GetList(p.PortalId, -1, "PRD");
+                }
+                else
+                {
+                    CategoryData gCat;
+                    var groupid = catgroupid;
+                    if (typeselect != "cat") groupid = propgroupid;
+                    gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
+                    if (gCat != null) prdList = gCat.GetAllArticles();
+                }
+
+                var runcalc = true;
+                if (runfreq == 1 || runfreq == 3) // run freq is date range
+                {
+                    if (runfreq == 3)
+                    {
+                        // run constantly, set end date to +100 year
+                        validfrom = DateTime.Now.AddYears(-1).ToString("s");
+                        validuntil = DateTime.Now.AddYears(100).ToString("s");
+                    }
+                    // run date range
                     if (Utils.IsDate(lastcalculated))
                     {
                         if (Convert.ToDateTime(lastcalculated) >= p.ModifiedDate) runcalc = false; // only run if changed 
@@ -56,34 +81,60 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     {
                         var dteF = Convert.ToDateTime(validfrom).Date;
                         var dteU = Convert.ToDateTime(validuntil).Date;
-                        CategoryData gCat;
-                        var groupid = catgroupid;
-                        if (typeselect != "cat") groupid = propgroupid;
-
-                        gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
-                        var prdList = gCat.GetAllArticles();
 
                         foreach (var prd in prdList)
                         {
+                            var productid = prd.ParentItemId;
+                            if (typeselect == "all") productid = prd.ItemID;
+
                             if (DateTime.Now.Date >= dteF && DateTime.Now.Date <= dteU)
                             {
                                 // CALC Promo
-                                CalcProductSalePrice(p.PortalId, prd.ParentItemId, amounttype, amount, promoname, p.ItemID, overwrite,dteF,dteU);
+                                CalcProductSalePrice(p.PortalId, productid, amounttype, amount, p.ItemID, whichprice, overwrite);
                             }
                             if (DateTime.Now.Date > dteU)
                             {
                                 // END Promo
-                                RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
-                                p.SetXmlProperty("genxml/checkbox/disabled", "True");
-                                objCtrl.Update(p);
+                                RemoveProductPromoData(p.PortalId, productid, p.ItemID);
                             }
-                            ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
+                            ProductUtils.RemoveProductDataCache(p.PortalId, productid);
+                        }
+                        if (DateTime.Now.Date > dteU)
+                        {
+                            // END Promo
+                            p.SetXmlProperty("genxml/checkbox/disabled", "True");
                         }
 
-                        p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.
-                        objCtrl.Update(p);
                     }
                 }
+                if (runfreq == 2) // run Once, do update and disable promo.
+                {                    
+                    foreach (var prd in prdList)
+                    {
+                        var productid = prd.ParentItemId;
+                        if (typeselect == "all") productid = prd.ItemID;
+                        // CALC Promo
+                        CalcProductSalePrice(p.PortalId, productid, amounttype, amount, p.ItemID, whichprice, overwrite);
+                        ProductUtils.RemoveProductDataCache(p.PortalId, productid);
+                    }
+                    p.SetXmlProperty("genxml/checkbox/disabled", "True");
+                }
+                if (runfreq == 4) // remove
+                {
+
+                    foreach (var prd in prdList)
+                    {
+                        var productid = prd.ParentItemId;
+                        if (typeselect == "all") productid = prd.ItemID;
+                        RemoveProductPromoData(p.PortalId, productid, p.ItemID);
+                        ProductUtils.RemoveProductDataCache(p.PortalId, productid);
+                    }
+
+                    p.SetXmlProperty("genxml/checkbox/disabled", "True");
+                }
+                p.SetXmlProperty("genxml/hidden/lastcalculated", DateTime.Now.AddSeconds(10).ToString("O")); // Add 10 sec to time so we don't get exact clash with update time.
+                objCtrl.Update(p);
+            }
             return "OK";
         }
 
@@ -96,21 +147,27 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var catgroupid = p.GetXmlProperty("genxml/dropdownlist/catgroupid");
             var propgroupid = p.GetXmlProperty("genxml/dropdownlist/propgroupid");
 
-            CategoryData gCat;
-            var groupid = catgroupid;
-            if (typeselect != "cat") groupid = propgroupid;
-
-            gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
-            if (gCat.Exists)
+            var prdList = new List<NBrightInfo>();
+            if (typeselect == "all")
             {
-                var prdList = gCat.GetAllArticles();
+                prdList = objCtrl.GetList(p.PortalId, -1, "PRD");
+            }
+            else
+            {
+                CategoryData gCat;
+                var groupid = catgroupid;
+                if (typeselect != "cat") groupid = propgroupid;
+                gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
+                if (gCat != null) prdList = gCat.GetAllArticles();
+            }
+            foreach (var prd in prdList)
+            {
+                var productid = prd.ParentItemId;
+                if (typeselect == "all") productid = prd.ItemID;
 
-                foreach (var prd in prdList)
-                {
-                    // END Promo
-                    RemoveProductPromoData(portalId, prd.ParentItemId, p.ItemID);
-                    ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
-                }
+                // END Promo
+                RemoveProductPromoData(portalId, productid, p.ItemID);
+                ProductUtils.RemoveProductDataCache(prd.PortalId, productid);
             }
             return "OK";
         }
@@ -138,7 +195,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             }
         }
 
-        private static void CalcProductSalePrice(int portalid, int productId, string amounttype, double amount, string promoname, int promoid, bool overwrite,DateTime dteF, DateTime dteU)
+        private static void CalcProductSalePrice(int portalid, int productId, string amounttype, double amount, int promoid,int whichprice , bool overwrite)
         {
             var cultureList = DnnUtils.GetCultureCodeList(portalid);
             var objCtrl = new NBrightBuyController();
@@ -147,63 +204,135 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var nodList = prdData.XMLDoc.SelectNodes("genxml/models/genxml");
             if (nodList != null)
             {
-
-                var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
-                if (currentpromoid == 0 || currentpromoid == promoid || overwrite)
+                prdData.SetXmlProperty("genxml/hidden/promoflag","True"); // set flag, so we can identify products with promo for product save event removal.
+                if (prdData.GetXmlProperty("genxml/promo") == "") prdData.SetXmlProperty("genxml/promo", "");
+                var lp = 1;
+                foreach (XmlNode nod in nodList)
                 {
-                    prdData.SetXmlProperty("genxml/hidden/promotype", "PROMOGROUP");
-                    prdData.SetXmlPropertyDouble("genxml/hidden/promoname", promoname);
-                    prdData.SetXmlProperty("genxml/hidden/promoid", promoid.ToString());
-                    prdData.SetXmlProperty("genxml/hidden/promocalcdate", DateTime.Now.ToString("O"));
-                    prdData.SetXmlProperty("genxml/hidden/datefrom", dteF.ToString("O"));
-                    prdData.SetXmlProperty("genxml/hidden/dateuntil", dteU.ToString("O"));
-
-                    var lp = 1;
-                    foreach (XmlNode nod in nodList)
+                    var currentpromoid = GetCurrentPromoId(prdData, whichprice, lp);
+                    var nbi = new NBrightInfo();
+                    nbi.XMLData = nod.OuterXml;
+                    var disablesale = nbi.GetXmlPropertyBool("genxml/checkbox/chkdisablesale");
+                    var disabledealer = nbi.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer");
+                    var unitcost = nbi.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    var dealercost = nbi.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                    Double newamt = 0;
+                    Double newdealersaleamt = 0;
+                    Double newdealeramt = 0;
+                    if (amounttype == "1")
                     {
-                        var nbi = new NBrightInfo();
-                        nbi.XMLData = nod.OuterXml;
-                        var unitcost = nbi.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
-                        Double newamt = 0;
-                        if (amounttype == "1")
-                        {
-                            newamt = unitcost - amount;
-                        }
-                        else
-                        {
-                            newamt = unitcost - ((unitcost/100)*amount);
-                        }
-
-                        if (newamt < 0) newamt = 0;
-
-                        var currentprice = prdData.GetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice");
-
-                        if (!overwrite)
-                        {
-                            if (currentprice == 0) overwrite = true;
-                            if (currentpromoid == promoid) overwrite = true;
-                        }
-                        if (overwrite)
-                        {
-                            prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
-                        }
-                        lp += 1;
+                        newamt = unitcost - amount;
+                        newdealersaleamt = dealercost - amount;
                     }
-                    objCtrl.Update(prdData);
-
-                    foreach (var lang in cultureList)
+                    else
                     {
-                        var p = objCtrl.GetDataLang(promoid, lang);
-                        var prdDataLang = objCtrl.GetDataLang(productId, lang);
-                        if (prdDataLang != null)
+                        newamt = unitcost - ((unitcost/100)*amount);
+                        newdealersaleamt = dealercost - ((dealercost/100)*amount);
+                    }
+                    newdealeramt = newamt;
+                    if (newamt < 0) newamt = 0;
+                    if (newdealersaleamt < 0) newdealersaleamt = 0;
+
+                    var currentprice = GetCurrentPromoPrice(prdData,whichprice,lp);
+                    if (!overwrite)
+                    {
+                        if (currentprice == 0) overwrite = true;
+                        if (currentpromoid == promoid) overwrite = true;
+                    }
+                    if (overwrite)
+                    {
+                        switch (whichprice)
                         {
-                            prdDataLang.SetXmlProperty("genxml/hidden/promodesc", p.GetXmlProperty("genxml/textbox/description"));
-                            objCtrl.Update(prdDataLang);
+                            case 1:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                prdData.SetXmlProperty("genxml/promo/salepriceid" + lp, promoid.ToString());
+                                break;
+                            case 2:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", newdealeramt);
+                                prdData.SetXmlProperty("genxml/promo/dealercostid" + lp, promoid.ToString());
+                                break;
+                            case 3:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", newdealersaleamt);
+                                prdData.SetXmlProperty("genxml/promo/dealersaleid" + lp, promoid.ToString());
+                                break;
+                            case 4:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", newdealersaleamt);
+                                prdData.SetXmlProperty("genxml/promo/dealersaleid" + lp, promoid.ToString());
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                prdData.SetXmlProperty("genxml/promo/salepriceid" + lp, promoid.ToString());
+                                break;
+                            default:
+                                prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", newamt);
+                                prdData.SetXmlProperty("genxml/promo/salepriceid" + lp, promoid.ToString());
+                                break;
                         }
+                    }
+                    if (disablesale)
+                    {
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", 0);
+                        prdData.RemoveXmlNode("genxml/promo/salepriceid" + lp);
+                    }
+                    if (disabledealer)
+                    {
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", 0);
+                        prdData.RemoveXmlNode("genxml/promo/dealercostid" + lp);
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", 0);
+                        prdData.RemoveXmlNode("genxml/promo/dealersaleid" + lp);
+                    }
+
+                    lp += 1;
+                }
+                objCtrl.Update(prdData);
+
+                foreach (var lang in cultureList)
+                {
+                    var promodesc = "";
+                    var p = objCtrl.GetDataLang(promoid, lang);
+                    if (p != null)
+                    {
+                        promodesc = p.GetXmlProperty("genxml/textbox/description");
+                    }
+                    var prdDataLang = objCtrl.GetDataLang(productId, lang);
+                    if (prdDataLang != null)
+                    {
+                        prdDataLang.SetXmlProperty("genxml/hidden/promodesc", promodesc);
+                        objCtrl.Update(prdDataLang);
                     }
                 }
             }
+        }
 
+        private static int GetCurrentPromoId(NBrightInfo prdData,  int whichprice, int modIndex)
+        {
+            switch (whichprice)
+            {
+                case 1:
+                    return prdData.GetXmlPropertyInt("genxml/models/genxml[" + modIndex + "]/hidden/promosalepriceid");
+                case 2:
+                    return prdData.GetXmlPropertyInt("genxml/models/genxml[" + modIndex + "]/hidden/promodealercostid");
+                case 3:
+                    return prdData.GetXmlPropertyInt("genxml/models/genxml[" + modIndex + "]/hidden/promodealersaleid");
+                case 4:
+                    return prdData.GetXmlPropertyInt("genxml/models/genxml[" + modIndex + "]/hidden/promodealersaleid");
+                default:
+                    return prdData.GetXmlPropertyInt("genxml/models/genxml[" + modIndex + "]/hidden/promosalepriceid");
+            }
+        }
+        private static Double GetCurrentPromoPrice(NBrightInfo prdData, int whichprice, int modIndex)
+        {
+            switch (whichprice)
+            {
+                case 1:
+                    return prdData.GetXmlPropertyDouble("genxml/models/genxml[" + modIndex + "]/textbox/txtsaleprice");
+                case 2:
+                    return prdData.GetXmlPropertyDouble("genxml/models/genxml[" + modIndex + "]/textbox/txtdealercost");
+                case 3:
+                    return prdData.GetXmlPropertyDouble("genxml/models/genxml[" + modIndex + "]/textbox/txtdealersale");
+                case 4:
+                    return prdData.GetXmlPropertyDouble("genxml/models/genxml[" + modIndex + "]/textbox/txtdealersale");
+                default:
+                    return prdData.GetXmlPropertyDouble("genxml/models/genxml[" + modIndex + "]/textbox/txtsaleprice");
+            }
         }
 
         #endregion
@@ -367,8 +496,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var objCtrl = new NBrightBuyController();
             var prdData = objCtrl.GetData(productId);
 
+            // (legacy) remove fields for old promo
             var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
-            if (currentpromoid == promoid)
+            if (currentpromoid != 0) // 
             {
                 prdData.RemoveXmlNode("genxml/hidden/promotype");
                 prdData.RemoveXmlNode("genxml/hidden/promoname");
@@ -376,20 +506,55 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 prdData.RemoveXmlNode("genxml/hidden/promocalcdate");
                 prdData.RemoveXmlNode("genxml/hidden/datefrom");
                 prdData.RemoveXmlNode("genxml/hidden/dateuntil");
+            }
 
-                // remove any sale price amounts that may have been added by group promotion.
-                var l = prdData.XMLDoc.SelectNodes("genxml/models/genxml");
-                if (l != null)
+            // remove any sale price amounts that may have been added by group promotion.
+            var l = prdData.XMLDoc.SelectNodes("genxml/models/genxml");
+            if (l != null)
+            {
+                var promoexist = false;
+                var lp = 1;
+                foreach (XmlNode nod in l)
                 {
-                    var lp = 1;
-                    foreach (XmlNode nod in l)
+                    var promodealersaleid = prdData.GetXmlPropertyInt("genxml/promo/dealersaleid" + lp );
+                    var promosalepriceid = prdData.GetXmlPropertyInt("genxml/promo/salepriceid" + lp );
+                    var promodealercostid = prdData.GetXmlPropertyInt("genxml/promo/dealercostid" + lp );
+
+                    if (promosalepriceid == promoid)
                     {
-                        prdData.SetXmlProperty("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
-                        lp += 1;
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtsaleprice", "0");
+                        prdData.RemoveXmlNode("genxml/promo/salepriceid" + lp);
+                        promosalepriceid = 0;
                     }
+                    if (promodealercostid == promoid)
+                    {
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealercost", "0");
+                        prdData.RemoveXmlNode("genxml/promo/dealercostid" + lp );
+                        promodealercostid = 0;
+                    }
+                    if (promodealersaleid == promoid)
+                    {
+                        prdData.SetXmlPropertyDouble("genxml/models/genxml[" + lp + "]/textbox/txtdealersale", "0");
+                        prdData.RemoveXmlNode("genxml/promo/dealersaleid" + lp );
+                        promodealersaleid = 0;
+                    }
+
+                    if (promodealersaleid > 0 || promosalepriceid > 0 || promodealercostid > 0)
+                    {
+                        promoexist = true;
+                    }
+
+                    lp += 1;
                 }
 
-                objCtrl.Update(prdData);
+                if (!promoexist)
+                {
+                    prdData.RemoveXmlNode("genxml/hidden/promoflag");
+                    prdData.RemoveXmlNode("genxml/promo");
+                }
+
+                // promo description only at product level, thi sis not correct for multiple price promoiton.
+                // but this is a rare use case issue.
                 foreach (var lang in cultureList)
                 {
                     var prdDataLang = objCtrl.GetDataLang(productId, lang);
@@ -399,7 +564,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         objCtrl.Update(prdDataLang);
                     }
                 }
+
             }
+
+            objCtrl.Update(prdData);
+
         }
 
         #endregion

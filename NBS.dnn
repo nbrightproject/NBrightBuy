@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
 
-    <package name="NBS_ProductView" type="Module" version="3.5.3">
+    <package name="NBS_ProductView" type="Module" version="3.5.4">
       <friendlyName>NBS_ProductView</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
@@ -31,25 +31,14 @@
       </license>
       <releaseNotes>
 
-        v3.5.3.
+        v3.5.4.3
 
-        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.2 system to be installed.
-
-        - Add Client file upload option
-        - Move Order admin and emails to Razor templates        
-
-        NBS_ProductView is a Legacy Module. (package now used to load config on installation only.)
-        Products should be displayed with the NB_ProductDisplay module.
-        
-        UPGRADE NOTES: 
-        The NBS_ProductSearch has been replace with NBS_DisplaySearch. You may get an error is you use the NBS_ProductSearch module, remove the module and replace with NBS_DisplaySearch.
-        
-        
+        NOTE: NBSv3.5 requires the NBrightTemplate v8.1.4 system to be installed.
 
       </releaseNotes>
       <dependencies>
         <dependency type="CoreVersion">08.00.00</dependency>
-        <dependency type="managedPackage" version="8.1.2">NBrightTemplateSys</dependency>
+        <dependency type="managedPackage" version="8.1.4">NBrightTemplateSys</dependency>
       </dependencies>
       <components>
         <component type="Script">
@@ -130,7 +119,7 @@
       </components>
     </package>
 
-    <package name="NBS_ProductDisplay" type="Module" version="3.5.3">
+    <package name="NBS_ProductDisplay" type="Module" version="3.5.4">
 			<friendlyName>NBS_ProductDisplay</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Front office product list and detail. (supports DNN7.2+)
@@ -203,7 +192,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-    <package name="NBS_DisplaySearch" type="Module" version="3.5.3">
+    <package name="NBS_DisplaySearch" type="Module" version="3.5.4">
       <friendlyName>NBS_DisplaySearch</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
@@ -284,7 +273,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       </components>
     </package>
 
-    <package name="NBS_AddressAdmin" type="Module" version="3.5.3">
+    <package name="NBS_AddressAdmin" type="Module" version="3.5.4">
 			<friendlyName>NBS_AddressAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Admin for clients addresses from the front office.
@@ -359,7 +348,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_Payment" type="Module" version="3.5.3">
+		<package name="NBS_Payment" type="Module" version="3.5.4">
 			<friendlyName>NBS_Payment</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Process payment of orders.
@@ -433,7 +422,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_OrderAdmin" type="Module" version="3.5.3">
+		<package name="NBS_OrderAdmin" type="Module" version="3.5.4">
 
 			<friendlyName>NBS_OrderAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
@@ -509,7 +498,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_ProfileForm" type="Module" version="3.5.3">
+		<package name="NBS_ProfileForm" type="Module" version="3.5.4">
 			<friendlyName>NBS_ProfileForm</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   This module creates a profile form that links to the DNN profile and NBS address.
@@ -585,7 +574,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		</package>
 
 		
-				<package name="NBS_Checkout" type="Module" version="3.5.3">
+				<package name="NBS_Checkout" type="Module" version="3.5.4">
 			<friendlyName>NBS_Checkout</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Checkout process.
 			</description>
@@ -659,7 +648,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_MiniCart" type="Module" version="3.5.3">
+				<package name="NBS_MiniCart" type="Module" version="3.5.4">
 			<friendlyName>NBS_MiniCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Mini cart view.
 			</description>
@@ -733,7 +722,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_FullCart" type="Module" version="3.5.3">
+				<package name="NBS_FullCart" type="Module" version="3.5.4">
 			<friendlyName>NBS_FullCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. full cart view.
 			</description>
@@ -807,7 +796,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-    <package name="NBS_CategoryMenu" type="Module" version="3.5.3">
+    <package name="NBS_CategoryMenu" type="Module" version="3.5.4">
       <friendlyName>NBS_CategoryMenu</friendlyName>
       <description>
         NBS_CategoryMenu Display 

@@ -250,11 +250,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var itemList = GetCartItemList();
             Double subtotalcost = 0;
-            Double subtotaldealercost = 0;
             Double totaldealerbonus = 0;
             Double totaldiscount = 0;
             Double totalsalediscount = 0;
-            Double totaldealerdiscount = 0;
             Double totalqty = 0;
             Double totalweight = 0;
             Double totalunitcost = 0;
@@ -278,11 +276,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     strXml += cartItem.XMLData;
                     totalunitcost += info.GetXmlPropertyDouble("genxml/unitcost");
                     subtotalcost += info.GetXmlPropertyDouble("genxml/totalcost");
-                    subtotaldealercost += info.GetXmlPropertyDouble("genxml/totaldealercost");
                     totaldealerbonus += info.GetXmlPropertyDouble("genxml/totaldealerbonus");
                     totaldiscount += info.GetXmlPropertyDouble("genxml/totaldiscount");
                     totalsalediscount += info.GetXmlPropertyDouble("genxml/salediscount");
-                    totaldealerdiscount += info.GetXmlPropertyDouble("genxml/totaldealerdiscount");
                     totalqty += info.GetXmlPropertyDouble("genxml/qty");
                     totalweight += info.GetXmlPropertyDouble("genxml/totalweight"); 
                 }
@@ -300,9 +296,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight);
             PurchaseInfo.SetXmlPropertyDouble("genxml/totalunitcost", totalunitcost);
             PurchaseInfo.SetXmlPropertyDouble("genxml/subtotalcost", subtotalcost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotaldealercost", subtotaldealercost);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotal", AppliedCost(PortalId, UserId, subtotalcost, subtotaldealercost));
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", AppliedCost(PortalId, UserId, (subtotalcost + totalsalediscount), (subtotaldealercost + totalsalediscount)));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/subtotal", subtotalcost);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedsubtotal", (subtotalcost + totalsalediscount));
 
 
             // calc any voucher amounts
@@ -315,11 +310,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             promototaldiscount += voucherDiscount;
             totaldiscount += voucherDiscount;
-            totaldealerdiscount += voucherDiscount;
 
-            PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
-            var applieddiscount = AppliedCost(PortalId, UserId, totaldiscount, totaldealerdiscount);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", applieddiscount);
+            PurchaseInfo.SetXmlPropertyDouble("genxml/applieddiscount", totaldiscount);
 
             PurchaseInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", totaldealerbonus);
 
@@ -380,7 +372,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     shippingcost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingcost");
                     shippingdealercost = PurchaseInfo.GetXmlPropertyDouble("genxml/shippingdealercost");
                 }
-                PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(PortalId, UserId, shippingcost, shippingdealercost));
+                PurchaseInfo.SetXmlPropertyDouble("genxml/appliedshipping", AppliedCost(shippingcost, shippingdealercost));
             }
             else
             {
@@ -400,13 +392,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             //cart full total
-            var dealertotal = (subtotaldealercost + shippingdealercost + appliedtax) - promototaldiscount;
-            if (dealertotal < 0) dealertotal = 0;
             var total = (subtotalcost + shippingcost + appliedtax) - promototaldiscount;
             if (total < 0) total = 0;
-            PurchaseInfo.SetXmlPropertyDouble("genxml/dealertotal", dealertotal);
             PurchaseInfo.SetXmlPropertyDouble("genxml/total", total);
-            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", AppliedCost(PortalId, UserId, total, dealertotal));
+            PurchaseInfo.SetXmlPropertyDouble("genxml/appliedtotal", total);
 
             if (PurchaseInfo.GetXmlProperty("genxml/clientmode") == "True")
             {
@@ -421,6 +410,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private NBrightInfo ValidateCartItem(int portalId, int userId, NBrightInfo cartItemInfo,Boolean removeZeroQtyItems = false)
         {
+            #region "get cart values"
             cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemBefore, cartItemInfo);
 
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
@@ -439,8 +429,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prdModel = prd.GetModel(modelid);
             if (prdModel == null) return null; // Invalid Model remove from cart
             // check if dealer (for tax calc)
-            var userInfo = UserController.GetUserById(portalId, userId);
-            if (userInfo != null && userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True")
+            if (NBrightBuyUtils.IsDealer())
                 cartItemInfo.SetXmlProperty("genxml/isdealer", "True");
             else
                 cartItemInfo.SetXmlProperty("genxml/isdealer", "False");
@@ -449,21 +438,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var unitcost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
             var dealercost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
             var saleprice = prdModel.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+            var dealersalecost = prdModel.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
 
-            // if we have a promoprice use it as saleprice
-            if (cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") > 0)
+            // always make sale price best price
+            if (unitcost > 0 && (unitcost < saleprice || saleprice <= 0)) saleprice = unitcost;
+            // if we have a promoprice use it as saleprice (This is passed in via events provider like "Multi-Buy promotions")
+            if (cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") > 0 && cartItemInfo.GetXmlPropertyDouble("genxml/promoprice") < saleprice)
             {
                 saleprice = cartItemInfo.GetXmlPropertyDouble("genxml/promoprice");
             }
 
-            // calc sale price
+            // always assign the dealercost the best price.
+            if (dealersalecost > 0 && dealersalecost < dealercost) dealercost = dealersalecost;
+            if (saleprice > 0 && (saleprice < dealercost || dealercost <= 0)) dealercost = saleprice;
+            if (unitcost > 0 && (unitcost < dealercost || dealercost <= 0)) dealercost = unitcost;
+
+
+
+            // calc sell price
+            // sellcost = the calculated cost of the item.  
             var sellcost = unitcost;
             if (saleprice > 0 && saleprice < sellcost) sellcost = saleprice;
+            if (NBrightBuyUtils.IsDealer())
+            {
+                if (dealercost > 0 && dealercost < sellcost) sellcost = dealercost;
+            }
+            // --------------------------------------------
+            #endregion
 
-
-            //stock control
             if (prdModel != null)
             {
+                #region "Stock Control"
                 var stockon = prdModel.GetXmlPropertyBool("genxml/checkbox/chkstockon");
                 var stocklevel = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining");
                 var minStock = prdModel.GetXmlPropertyDouble("genxml/textbox/txtqtyminstock");
@@ -490,7 +495,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         cartItemInfo.SetXmlPropertyDouble("genxml/qty", qty.ToString(""));
                     }
                 }
+                #endregion
 
+                #region "Addtional options costs"
                 Double additionalCosts = 0;
                 var optNods = cartItemInfo.XMLDoc.SelectNodes("genxml/options/*");
                 if (optNods != null)
@@ -539,63 +546,59 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (saleprice > 0) saleprice += (additionalCosts / qty); // zero turns off
                     sellcost += (additionalCosts / qty);
                 }
+                #endregion
 
-                var totalcost = qty * sellcost;
-                var totaldealercost = qty * dealercost;
+                var totalcost = qty * unitcost;
+                var totalsellcost = qty * sellcost;
                 var totalweight = weight * qty;
 
-
-                if (unitcost != cartItemInfo.GetXmlPropertyDouble("genxml/unitcost") || dealercost != cartItemInfo.GetXmlPropertyDouble("genxml/dealercost") || saleprice != cartItemInfo.GetXmlPropertyDouble("genxml/saleprice"))
-                {
-                    cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
-                    cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
-                    cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
-                }
-
+                cartItemInfo.SetXmlPropertyDouble("genxml/unitcost", unitcost);
+                cartItemInfo.SetXmlPropertyDouble("genxml/dealercost", dealercost);
+                cartItemInfo.SetXmlPropertyDouble("genxml/saleprice", saleprice);
 
                 cartItemInfo.SetXmlPropertyDouble("genxml/totalweight", totalweight.ToString(""));
                 cartItemInfo.SetXmlPropertyDouble("genxml/totalcost", totalcost);
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldealercost", totaldealercost);
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - totaldealercost));
+                cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerbonus", (totalcost - (qty * dealercost)));
 
                 Double salediscount = 0;
-                Double dealerdiscount = 0;
                 Double discountcodeamt = 0;
                 Double totaldiscount = 0;
 
                 //add update genxml/discountcodeamt
-                if (saleprice == 0) // discount codes are only valid for items not on sale
+                var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
+                if (discountcode != "") 
                 {
-                    var discountcode = PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/promocode");
                     cartItemInfo = DiscountCodeInterface.UpdateItemPercentDiscountCode(PortalId, UserId, cartItemInfo, discountcode);
                     discountcodeamt = cartItemInfo.GetXmlPropertyDouble("genxml/discountcodeamt");
                     if (discountcodeamt > 0) PurchaseInfo.SetXmlProperty("genxml/discountprocessed", "False");
-                    totaldiscount = discountcodeamt;
+                }
+
+                if (NBrightBuyUtils.IsDealer())
+                {
+                    salediscount = (unitcost - dealercost);
                 }
                 else
                 {
                     salediscount = (unitcost - saleprice);
-                    totaldiscount = salediscount * qty;
                 }
+                totaldiscount = (salediscount * qty) + discountcodeamt; // add on any promo code amount
+                if (totaldiscount < 0) totaldiscount = 0;
 
                 // if we have a promodiscount use it
                 if (cartItemInfo.GetXmlPropertyDouble("genxml/promodiscount") > 0)
                 {
                     totaldiscount = cartItemInfo.GetXmlPropertyDouble("genxml/promodiscount");
                     totalcost = totalcost - totaldiscount;
+                    if (totalcost < 0) totalcost = 0;
                     cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", totalcost);
                 }
 
 
-                var totalsalediscount = salediscount * qty;
-                var totaldealerdiscount = dealerdiscount * qty;
                 cartItemInfo.SetXmlPropertyDouble("genxml/totaldiscount", totaldiscount);
-                cartItemInfo.SetXmlPropertyDouble("genxml/salediscount", totalsalediscount);
-                cartItemInfo.SetXmlPropertyDouble("genxml/totaldealerdiscount", totaldealerdiscount);
 
-                // if product is on sale then we need to display the sale price in hte cart, and any discount codes don;t show at this cart item level, only on the order total.
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", AppliedCost(portalId, userId, totalcost, totaldealercost)); 
-                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", AppliedCost(portalId, userId, sellcost, dealercost)); 
+                // if product is on sale then we need to display the sale price in the cart, and any discount codes don;t show at this cart item level, only on the order total.
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedtotalcost", totalsellcost); 
+                cartItemInfo.SetXmlPropertyDouble("genxml/appliedcost", sellcost); 
 
 
                 // calc tax for item
@@ -614,19 +617,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return cartItemInfo;
         }
 
-        private Double AppliedCost(int portalId, int userId, Double cost, Double dealercost)
+        private Double AppliedCost(Double cost, Double dealercost)
         {
             if (cost < 0) cost = 0;
             if (dealercost < 0) dealercost = 0;
-            //always return normal price for non-registered users
-            if (UserController.Instance.GetCurrentUserInfo().UserID == -1) return cost;
-
-            var userInfo = UserController.GetUserById(portalId, userId);
-            if (userInfo != null)
+            var rtncost = cost;
+            if (NBrightBuyUtils.IsDealer())
             {
-                if (userInfo.IsInRole(StoreSettings.DealerRole) && StoreSettings.Current.Get("enabledealer") == "True") return dealercost;
+                if (dealercost > 0 && dealercost < cost) rtncost = dealercost;
             }
-            return cost;
+            return rtncost;
         }
 
 

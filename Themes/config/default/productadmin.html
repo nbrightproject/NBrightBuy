@@ -146,8 +146,7 @@
 
         <!-- Required for update: fields,localizedfields -->
         [<tag id="fields" type="postback" value="genxml/textbox/txtproductref,genxml/checkbox/chkishidden,genxml/checkbox/chkdisable,genxml/checkbox/chkfileupload" />]
-        [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description" />]
-
+        [<tag id="localizedfields" type="postback" value="genxml/textbox/txtproductname,genxml/textbox/txtsummary,genxml/textbox/txtseoname,genxml/textbox/txtseopagetitle,genxml/textbox/txttagwords,genxml/edt/description,genxml/textbox/manufacturer,genxml/textbox/extrafield" />]
 
 
 <div class="row">
@@ -174,6 +173,12 @@
 			                        [<tag id="txtsummary" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine"/>]
 			                    </div>
 			                </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <label class="control-label">[<tag type="valueof" resourcekey="General.Manufacturer" />]</label>[<tag type="editflag" />]
+                                    [<tag id="manufacturer" cssclass="form-control" type="textbox" maxlength="250" />]
+                                </div>
+                            </div>
 			            </div>
 			            <div class="col-sm-6">
 			                <div class="form-group">
@@ -192,7 +197,14 @@
 			                        [<tag id="txttagwords" cssclass="form-control" type="textbox" height="100" maxlength="200" textmode="MultiLine"/>]
 			                    </div>
 			                </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <label class="control-label">[<tag type="valueof" resourcekey="General.Extra" />]</label>[<tag type="editflag" />]
+                                    [<tag id="extrafield" cssclass="form-control" type="textbox" maxlength="250" />]
+                                </div>
+                            </div>
 			            </div>
+
 			            <div class="col-sm-12">
 			                <div class="form-group">
 			                    [Template:productfields.html]
