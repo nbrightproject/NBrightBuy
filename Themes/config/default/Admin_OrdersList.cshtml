@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
     $(function () {
-        $('input[type=date]').datepicker();
+        $('input[datatype=date]').datepicker();
     });
 </script>
 
@@ -58,11 +58,11 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">@ResourceKey("General.From")</label>
                         <div class="col-sm-2">
-                            <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="date">
+                            <input id="OrderAdmin_datesearchfrom" class="form-control" datatype="date" type="text">
                         </div>
                         <label class="col-sm-1 control-label">@ResourceKey("General.To")</label>
                         <div class="col-sm-2">
-                            <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="date">
+                            <input id="OrderAdmin_datesearchto" class="form-control" datatype="date" type="text">
                         </div>
                     </div>
                 </div>

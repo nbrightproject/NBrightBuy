@@ -365,7 +365,7 @@ a.entryurl{color:#333;display:block;}
 .orders select.aspNetDisabled.form-control::-ms-expand{display:none;}
 .orders .dropdown-menu > li > a{display:inline-block;width:100%;}
 /* The default DNN input styling is not applied to date inputs - fixed here but only for default skin */
-.ordersearch input[type=date]{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #bfbfbf;border-radius:0;box-shadow:0 1px 0 0 rgba(255, 255, 255, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.1) inset;color:#666666;font-size:13px;margin-bottom:20px;padding:9px;}
+.ordersearch input[datatype=date]{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #bfbfbf;border-radius:0;box-shadow:0 1px 0 0 rgba(255, 255, 255, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.1) inset;color:#666666;font-size:13px;margin-bottom:20px;padding:9px;}
 
 /* Profile Manager */
 #profileinput .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea{box-sizing:border-box;width:100%;margin:0 0 15px;}

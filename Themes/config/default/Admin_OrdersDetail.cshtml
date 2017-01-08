@@ -72,7 +72,7 @@
 <script type="text/javascript">
 
     $(function () {
-        $('input[type=date]').datepicker();
+        $('input[datatype=date]').datepicker();
     });
 
     $(document).ready(function() {
@@ -435,7 +435,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">@ResourceKey("General.shippingdate")</label>
                                 <div class="col-sm-5">
-                                    @NBrightTextBox(nbi, "genxml/textbox/shippingdate", " class='form-control' datatype='date' type='date' ")
+                                    @NBrightTextBox(nbi, "genxml/textbox/shippingdate", " class='form-control' datatype='date' type='text' ")
                                     <input id="dteshippingdate" type="hidden" value="" datatype="date"/>
                                 </div>
                             </div>
