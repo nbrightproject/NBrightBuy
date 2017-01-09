@@ -134,6 +134,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 case "save":
                     Update();
+                    ShareProducts();
                     param[0] = "ctrl=settings";
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
@@ -159,6 +160,93 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         #endregion
 
+        private void ShareProducts()
+        {
+            var settings = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SETTINGS", "NBrightBuySettings");
+            if (settings != null)
+            {
+                StoreSettings.Refresh(); // make sure we pickup changes.
+                var shareproducts = StoreSettings.Current.GetBool("shareproducts");
+                var sharedproductsflag = StoreSettings.Current.GetBool("sharedproductsflag");
+                if (shareproducts) 
+                {
+                    // we only want to do this if the shareproducts has changed, so use a flag.
+                    if (!sharedproductsflag) 
+                    {
+                        var l = ModCtrl.GetList(PortalId, -1, "PRD");
+                        foreach (var i in l)
+                        {
+                            SharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
+                        foreach (var i in l)
+                        {
+                            SharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
+                        foreach (var i in l)
+                        {
+                            SharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG");
+                        foreach (var i in l)
+                        {
+                            SharedRecord(i);
+                        }
+
+                        settings.SetXmlProperty("genxml/checkbox/sharedproductsflag", "True"); // set flag
+                        ModCtrl.Update(settings);
+                    }
+                }
+                else
+                {
+                    // test if want to reverse the share products, by using the flag.
+                    if (sharedproductsflag)
+                    {
+                        var l = ModCtrl.GetList(PortalId, -1, "PRD");
+                        foreach (var i in l)
+                        {
+                            UnSharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
+                        foreach (var i in l)
+                        {
+                            UnSharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
+                        foreach (var i in l)
+                        {
+                            UnSharedRecord(i);
+                        }
+                        l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG");
+                        foreach (var i in l)
+                        {
+                            UnSharedRecord(i);
+                        }
+
+                        settings.SetXmlProperty("genxml/checkbox/sharedproductsflag", "False"); // set flag
+                        ModCtrl.Update(settings);
+                    }
+                }
+            }
+        }
+
+        private void SharedRecord(NBrightInfo i)
+        {
+            var createdportalid = i.PortalId;
+            if (createdportalid == -1) createdportalid = PortalSettings.Current.PortalId; // previously shared record, so defualt to current.
+            i.SetXmlProperty("genxml/createdportalid", createdportalid.ToString(""));
+            i.PortalId = -1;
+            ModCtrl.Update(i);
+        }
+        private void UnSharedRecord(NBrightInfo i)
+        {
+            var createdportalid = PortalSettings.Current.PortalId; // default previously shared record to this portal.
+            if (Utils.IsNumeric(i.GetXmlProperty("genxml/createdportalid"))) createdportalid = i.GetXmlPropertyInt("genxml/createdportalid"); 
+            i.PortalId = createdportalid;
+            ModCtrl.Update(i);
+        }
+
         private void Update()
         {
             var settings = ModCtrl.GetByGuidKey(PortalSettings.Current.PortalId, 0, "SETTINGS", "NBrightBuySettings");
@@ -173,6 +261,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 settings.TypeCode = "SETTINGS";
                 settings.GUIDKey = "NBrightBuySettings";
             }
+
+            var sharedflag = settings.GetXmlProperty("genxml/checkbox/sharedproductsflag"); //maintain shared flag
+
             settings.XMLData = GenXmlFunctions.GetGenXml(rpData,"",StoreSettings.Current.FolderImagesMapPath);
 
             if (settings.GetXmlProperty("genxml/hidden/hidemaillogo") != "")
@@ -183,7 +274,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
 
             settings.SetXmlProperty("genxml/hidden/backofficetabid", PortalSettings.Current.ActiveTab.TabID.ToString(""));
-            
+
+            settings.SetXmlProperty("genxml/checkbox/sharedproductsflag", sharedflag); //maintain shared flag
+
             ModCtrl.Update(settings);
 
             if (StoreSettings.Current.DebugModeFileOut) settings.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "\\debug_Settings.xml");

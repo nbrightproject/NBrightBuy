@@ -410,6 +410,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
                     else
                     {
+                        var catDirectList = catData.GetDirectArticles();
+                        var oldparentitemId = catData.ParentItemId;
+                        if (parentitemid != oldparentitemId)
+                        {
+                            // remove articles for category, so we realign the cascade records.                            
+                            foreach (var p in catDirectList)
+                            {
+                                var prdData = new ProductData(p.ParentItemId, p.PortalId,p.Lang);
+                                prdData.RemoveCategory(catData.CategoryId);
+                            }
+                        }
 
                         catData.Update(objInfo);
 
@@ -451,6 +462,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                             CategoryUtils.ValidateLangaugeRef(PortalId, Convert.ToInt32(settings["itemid"])); // do validate so we update all refs and children refs
                             NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
                         }
+
+                        if (parentitemid != oldparentitemId)
+                        {
+                            // all all articles for category. so we realign the cascade records.                            
+                            foreach (var p in catDirectList)
+                            {
+                                var prdData = new ProductData(p.ParentItemId, p.PortalId, p.Lang);
+                                prdData.AddCategory(catData.CategoryId);
+                            }
+                        }
+
                         NBrightBuyUtils.SetNotfiyMessage(ModuleId, "categoryactionsave", NotifyCode.ok);
                     }
                 }

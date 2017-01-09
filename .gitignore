@@ -210,3 +210,10 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+Themes/Alternatief/
+App_LocalResources/Notification.ascx.Portal-0.resx
+App_LocalResources/Notification.ascx.fr-FR.Portal-2.resx
+App_LocalResources/Notification.ascx.fr-FR.Portal-3.resx
+App_LocalResources/Notification.ascx.nl-NL.Portal-0.resx
+Installation/NBrightStore_03.05.04.00_DNN8_Install.zip
+Themes/config/default/menuplugin.xml

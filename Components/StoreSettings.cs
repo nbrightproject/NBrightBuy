@@ -112,7 +112,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get { return NBrightBuyController.GetCurrentPortalData(); }
         }
-        
+
+        public static void Refresh()
+        {
+            HttpContext.Current.Items.Remove("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            Utils.RemoveCache("NBBStoreSettings" + PortalSettings.Current.PortalId.ToString(""));
+            DnnUtils.ClearPortalCache(PortalSettings.Current.PortalId);
+        }
+
+
         public Dictionary<string, string> Settings()
         {
             // redo the edit langauge for backoffice.

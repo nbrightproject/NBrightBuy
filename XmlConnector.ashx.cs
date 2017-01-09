@@ -792,29 +792,13 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var settings = GetAjaxFields(context);
-                var strFilter = " and XrefItemId = {Settings:itemid} ";
-
-                strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
-
                 var newcatid = "";
                 if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"];
 
                 if (Utils.IsNumeric(newcatid) && settings.ContainsKey("itemid"))
                 {
-                    var objCtrl = new NBrightBuyController();
-                    var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
 
-                    foreach (var obj in objList)
-                    {
-                        var prdData = new ProductData(obj.ParentItemId, PortalSettings.Current.PortalId, Utils.GetCurrentCulture());
-
-                        if (moverecords)
-                        {
-                            prdData.RemoveCategory(obj.XrefItemId);
-                        }
-
-                        prdData.AddCategory(Convert.ToInt32(newcatid));
-                    }
+                    NBrightBuyUtils.CopyAllCatXref(Convert.ToInt32(settings["itemid"]), Convert.ToInt32(newcatid), moverecords);
 
                     strOut = NBrightBuyUtils.GetResxMessage();
                 }

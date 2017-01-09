@@ -611,7 +611,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (ordData.GetInfo().UserId > 0)
             {
                 // this order is linked to a DNN user, so get the order email from the DNN profile (so if it's updated since the order, we pickup the new one)
-                var objUser = UserController.GetUserById(ordData.PortalId, ordData.GetInfo().UserId);
+                var createdportalid = PortalSettings.Current.PortalId; // May be a shared order, but default to this portal.
+                if (Utils.IsNumeric(ordData.PurchaseInfo.GetXmlProperty("genxml/createdportalid"))) createdportalid = ordData.PurchaseInfo.GetXmlPropertyInt("genxml/createdportalid");
+                var objUser = UserController.GetUserById(createdportalid, ordData.GetInfo().UserId);
                 if (objUser != null)
                 {
                     if (ordData.EmailAddress != objUser.Email)
@@ -2238,6 +2240,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
         #endregion
 
+        public static String CopyAllCatXref(int categoryId,int newCategoryId, Boolean moverecords = false)
+        {
+            var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
+            try
+            {
+                var strFilter = " and XrefItemId = " + categoryId.ToString("") + " ";
+
+                if (newCategoryId >= 0 && categoryId >= 0)
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
+
+                    foreach (var obj in objList)
+                    {
+                        var prdData = new ProductData(obj.ParentItemId, PortalSettings.Current.PortalId, Utils.GetCurrentCulture());
+
+                        if (moverecords)
+                        {
+                            prdData.RemoveCategory(obj.XrefItemId);
+                        }
+
+                        prdData.AddCategory(newCategoryId);
+                    }
+
+                    strOut = NBrightBuyUtils.GetResxMessage();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            return strOut;
+        }
 
     }
 }

@@ -80,7 +80,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (base.PurchaseInfo.GetXmlProperty("genxml/ordernumber") == "") base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
 
                 Save();
-                var ordData = new OrderData(PortalId, base.PurchaseInfo.ItemID);
+                var orderPortalId = PortalId;
+                if (StoreSettings.Current.GetBool("shareorders")) orderPortalId = -1;
+                var ordData = new OrderData(orderPortalId, base.PurchaseInfo.ItemID);
+                if (orderPortalId == -1)
+                {
+                    // shared order, so save the orginal portal
+                    ordData.PurchaseInfo.SetXmlProperty("genxml/createdportalid", PortalId.ToString(""));
+                }
+
                 ordData.OrderStatus = "010";
                 if (ordData.EditMode == "") // don't update if we are in edit mode, we dont; want manager email to be altered.
                 {
