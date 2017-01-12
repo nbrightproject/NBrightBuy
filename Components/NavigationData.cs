@@ -261,6 +261,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+
             return disabledList;
         }
 

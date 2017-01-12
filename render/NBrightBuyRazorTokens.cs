@@ -530,6 +530,43 @@ namespace NBrightBuy.render
         #endregion
 
         #region "properties"
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="xpath"></param>
+        /// <param name="propertytype">type of property using propertygroup ref  (e.g. "man" = manufacturer)</param>
+        /// <param name="attributes"></param>
+        /// <param name="showHidden"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public IEncodedString PropertyCheckboxList(NBrightInfo info, String xpath, string propertytype, String attributes = "", Boolean showHidden = false, string lang = "")
+        {
+            var objCtrl = new NBrightBuyController();
+            var parentnbi = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "GROUP", propertytype);
+            var rtnList = NBrightBuyUtils.BuildCatList(1, showHidden, true, parentnbi.ItemID, "", "",false, showHidden, propertytype, "", lang);
+
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            strOut = "<ul id='" + id + "' " + upd + " " + attributes + ">";
+            var s = "";
+            var lp = 0;
+            foreach (var tItem in rtnList)
+            {
+                var checkedvar = "";
+                if (info.GetXmlPropertyBool("genxml/checkboxlist/" + id + "/chk[" + (lp + 1) + "]/@value")) checkedvar = " checked ";
+                strOut += "   <li><input type='checkbox' " + checkedvar + " name='" + id + "$" + lp + "' id='" + id + "_" + lp + "' value='" + tItem.Key + "'/><label for='" + id + "_" +  lp + "'>" + tItem.Value + "</label></li>";
+                lp += 1;
+            }
+            strOut += "</ul>";
+
+            return new RawString(strOut);
+        }
+
 
         /// <summary>
         /// Get property values

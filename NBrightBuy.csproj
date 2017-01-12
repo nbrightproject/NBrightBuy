@@ -488,6 +488,8 @@
     <Content Include="Themes\ClassicRazor\Default\addressadminheader.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
     <Content Include="Themes\ClassicRazor\Default\NBS_Payment_head.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_DisplayAdvSearch.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_DisplayAdvSearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminDetail.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminList.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdmin.cshtml" />
