@@ -558,7 +558,9 @@ namespace NBrightBuy.render
             foreach (var tItem in rtnList)
             {
                 var checkedvar = "";
-                if (info.GetXmlPropertyBool("genxml/checkboxlist/" + id + "/chk[" + (lp + 1) + "]/@value")) checkedvar = " checked ";
+                if (info.GetXmlPropertyBool("genxml/checkboxlist/" + id + "/chk[" + (lp + 1) + "]/@value")) checkedvar = " checked='checked' ";
+                if (info.GetXmlProperty("genxml/checkboxlist/" + id + "/chk[" + (lp + 1) + "]/@value") == "") checkedvar = " checked='checked' "; // no value so default to checked
+
                 strOut += "   <li><input type='checkbox' " + checkedvar + " name='" + id + "$" + lp + "' id='" + id + "_" + lp + "' value='" + tItem.Key + "'/><label for='" + id + "_" +  lp + "'>" + tItem.Value + "</label></li>";
                 lp += 1;
             }
