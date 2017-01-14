@@ -1572,7 +1572,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                     razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
                 }
-                if (razorTempl != "")
+                if (razorTempl != "" &&  razorTemplName.EndsWith(".cshtml"))
                 {
                     if (obj == null) obj = new NBrightInfo(true);
                     var l = new List<object>();
