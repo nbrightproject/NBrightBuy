@@ -221,7 +221,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Double fromprice = -1;
             foreach (var m in Models)
             {
-                if ((fromprice == -1) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                var f = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                if ((fromprice == -1) || (fromprice > f)) fromprice = f;
             }
             if ((fromprice < 0)) fromprice = 0;
             return fromprice;
@@ -238,7 +239,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisablesale"))
                 {
-                    if ((saleprice == -1) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") && m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") > 0)) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                    var s = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                    if ((saleprice == -1) || (saleprice > s && s > 0)) saleprice = s;
                 }
             }
             if (saleprice < 0) saleprice = 0;
@@ -276,7 +278,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
                 {
-                    if ((fromprice == -1) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealercost"))) fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                    var f = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                    if ((fromprice == -1) || (fromprice > f)) fromprice = f;
                 }
             }
             if ((fromprice < 0)) fromprice = 0;
@@ -294,7 +297,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
                 {
-                    if ((saleprice == -1) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") && m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") > 0)) saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+                    var s = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+                    if ((saleprice == -1) || (saleprice > s && s > 0)) saleprice = s;
                 }
             }
             if (saleprice < 0) saleprice = 0;
@@ -338,7 +342,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return 0;
         }
-
+        public Double PercentageDiscountBest()
+        {
+            if (DataRecord.GetXmlProperty("genxml/calcdiscountpercentall") != "")
+            {
+                return DataRecord.GetXmlPropertyDouble("genxml/calcdiscountpercentall");
+            }
+            return 0;
+        }
+        public Double PercentageDiscountDealer()
+        {
+            if (DataRecord.GetXmlProperty("genxml/calcdealerdiscountpercent") != "")
+            {
+                return DataRecord.GetXmlPropertyDouble("genxml/calcdealerdiscountpercent");
+            }
+            return 0;
+        }
+        public Double PercentageDiscount()
+        {
+            if (DataRecord.GetXmlProperty("genxml/calcdiscountpercent") != "")
+            {
+                return DataRecord.GetXmlPropertyDouble("genxml/calcdiscountpercent");
+            }
+            return 0;
+        }
 
 
         public void AdjustModelQtyBy(String modelid,Double qty)
@@ -590,96 +617,113 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void UpdateDisplayCalcPrices()
         {
-            // Calc Display Prices
-            Models = GetEntityList("models");
-            Double fromprice = -1;
-            Double frompriceunitqty = 1;
-            Double saleprice = -1;
-            Double salepriceunitqty = 1;
-            Double dealerfromprice = -1;
-            Double dealerfrompriceunitqty = 1;
-            Double dealersaleprice = -1;
-            Double dealersalepriceunitqty = 1;
-            int lp = 0;
-            foreach (var m in Models)
+            try
             {
-                if ((fromprice == -1) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtunitcost")))
-                {
-                    fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
-                    frompriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
-                    if (frompriceunitqty <= 0) frompriceunitqty = 1;
-                }
-                if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisablesale"))
-                {
-                    if ((saleprice == -1) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") && m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") > 0))
-                    {
-                        saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
-                        salepriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
-                        if (salepriceunitqty <= 0) salepriceunitqty = 1;
-                    }
-                }
-                if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
-                {
-                    if ((dealerfromprice == -1) || (dealerfromprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealercost")))
-                    {
-                        dealerfromprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
-                        dealerfrompriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
-                        if (dealerfrompriceunitqty <= 0) dealerfrompriceunitqty = 1;
-                    }
-                }
-                if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
-                {
-                    if ((dealersaleprice == -1) || (dealersaleprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") && m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") > 0))
-                    {
-                        dealersaleprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
-                        dealersalepriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
-                        if (dealersalepriceunitqty <= 0) dealersalepriceunitqty = 1;
-                    }
-                }
-                lp += 1;
-            }
-            if ((fromprice < 0)) fromprice = 0;
-            if (saleprice < 0) saleprice = 0;
-            if ((dealerfromprice < 0)) dealerfromprice = 0;
-            if (dealersaleprice < 0) dealersaleprice = 0;
-            DataRecord.SetXmlPropertyDouble("genxml/calcfromprice", fromprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcsaleprice", saleprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealerfromprice", dealerfromprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealersaleprice", dealersaleprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcfrompriceunit", Math.Round((fromprice / frompriceunitqty), 2));
-            DataRecord.SetXmlPropertyDouble("genxml/calcsalepriceunit", Math.Round((saleprice / salepriceunitqty), 2));
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealerfrompriceunit", Math.Round((dealerfromprice / dealerfrompriceunitqty), 2));
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealersalepriceunit", Math.Round((dealersaleprice / dealersalepriceunitqty), 2));
 
-            var bestprice = fromprice;
-            var bestpriceunit = Math.Round((fromprice / frompriceunitqty), 2);
-            if (saleprice > 0 && fromprice > saleprice)
-            {
-                bestprice = saleprice;
-                bestpriceunit = Math.Round((saleprice / salepriceunitqty), 2);
-            }
-            DataRecord.SetXmlPropertyDouble("genxml/calcbestprice", bestprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceunit", bestpriceunit);
+                // Calc Display Prices
+                Models = GetEntityList("models");
+                Double fromprice = -1;
+                Double frompriceunitqty = 1;
+                Double saleprice = -1;
+                Double salepriceunitqty = 1;
+                Double dealerfromprice = -1;
+                Double dealerfrompriceunitqty = 1;
+                Double dealersaleprice = -1;
+                Double dealersalepriceunitqty = 1;
+                int lp = 0;
+                foreach (var m in Models)
+                {
+                    if ((fromprice == -1) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtunitcost")))
+                    {
+                        fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                        frompriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
+                        if (frompriceunitqty <= 0) frompriceunitqty = 1;
+                    }
+                    if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisablesale"))
+                    {
+                        if ((saleprice == -1) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") && m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") > 0))
+                        {
+                            saleprice = m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice");
+                            salepriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
+                            if (salepriceunitqty <= 0) salepriceunitqty = 1;
+                        }
+                    }
+                    if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
+                    {
+                        if ((dealerfromprice == -1) || (dealerfromprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealercost")))
+                        {
+                            dealerfromprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                            dealerfrompriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
+                            if (dealerfrompriceunitqty <= 0) dealerfrompriceunitqty = 1;
+                        }
+                    }
+                    if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisabledealer"))
+                    {
+                        if ((dealersaleprice == -1) || (dealersaleprice > m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") && m.GetXmlPropertyDouble("genxml/textbox/txtdealersale") > 0))
+                        {
+                            dealersaleprice = m.GetXmlPropertyDouble("genxml/textbox/txtdealersale");
+                            dealersalepriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
+                            if (dealersalepriceunitqty <= 0) dealersalepriceunitqty = 1;
+                        }
+                    }
+                    lp += 1;
+                }
+                if ((fromprice < 0)) fromprice = 0;
+                if (saleprice < 0) saleprice = 0;
+                if ((dealerfromprice < 0)) dealerfromprice = 0;
+                if (dealersaleprice < 0) dealersaleprice = 0;
+                DataRecord.SetXmlPropertyDouble("genxml/calcfromprice", fromprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcsaleprice", saleprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealerfromprice", dealerfromprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealersaleprice", dealersaleprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcfrompriceunit", Math.Round((fromprice/frompriceunitqty), 2));
+                DataRecord.SetXmlPropertyDouble("genxml/calcsalepriceunit", Math.Round((saleprice/salepriceunitqty), 2));
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealerfrompriceunit", Math.Round((dealerfromprice/dealerfrompriceunitqty), 2));
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealersalepriceunit", Math.Round((dealersaleprice/dealersalepriceunitqty), 2));
 
-            var dealerbestprice = dealerfromprice;
-            var dealerbestpriceunit = Math.Round((dealerfromprice / dealerfrompriceunitqty), 2);
-            if (dealersaleprice > 0 && dealerfromprice > dealersaleprice)
-            {
-                dealerbestprice = dealersaleprice;
-                dealerbestpriceunit = Math.Round((dealersaleprice / dealersalepriceunitqty), 2);
-            }
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealerbestprice", dealerbestprice);
-            DataRecord.SetXmlPropertyDouble("genxml/calcdealerbestpriceunit", dealerbestpriceunit);
+                var bestprice = fromprice;
+                var bestpriceunit = Math.Round((fromprice/frompriceunitqty), 2);
+                if (saleprice > 0 && fromprice > saleprice)
+                {
+                    bestprice = saleprice;
+                    bestpriceunit = Math.Round((saleprice/salepriceunitqty), 2);
+                }
+                DataRecord.SetXmlPropertyDouble("genxml/calcbestprice", bestprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceunit", bestpriceunit);
 
-            if (dealerbestprice > 0 && dealerbestprice < bestprice)
-            {
-                DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceall", dealerbestprice);
-                DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceallunit", dealerbestpriceunit);
+                var dealerbestprice = dealerfromprice;
+                var dealerbestpriceunit = Math.Round((dealerfromprice/dealerfrompriceunitqty), 2);
+                if (dealersaleprice > 0 && dealerfromprice > dealersaleprice)
+                {
+                    dealerbestprice = dealersaleprice;
+                    dealerbestpriceunit = Math.Round((dealersaleprice/dealersalepriceunitqty), 2);
+                }
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealerbestprice", dealerbestprice);
+                DataRecord.SetXmlPropertyDouble("genxml/calcdealerbestpriceunit", dealerbestpriceunit);
+
+                if (dealerbestprice > 0 && dealerbestprice < bestprice)
+                {
+                    DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceall", dealerbestprice);
+                }
+                else
+                {
+                    DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceall", bestprice);
+                }
+                if (dealerbestpriceunit < bestpriceunit)
+                {
+                    DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceallunit", dealerbestpriceunit);
+                }
+                else
+                {
+                    DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceallunit", bestpriceunit);
+                }
+
+
             }
-            else
+            catch (Exception ex)
             {
-                DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceall", bestprice);
-                DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceallunit", bestpriceunit);
+                // this should never happen unless we have incorrect data, trap here so the processing doesn't stop.  
+                DataRecord.SetXmlProperty("genxml/calcpricerrorr", ex.ToString());
             }
         }
 
@@ -1386,13 +1430,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             SetGuidKey();
             objCtrl.Update(DataRecord);
 
-            // See if we need to calc the display prices
-            if (DataRecord.GetXmlProperty("genxml/calcfromprice") == "")
-            {
-                UpdateDisplayCalcPrices();
-                upd = true;
-            }
-
             DataRecord.ValidateXmlFormat();
             if (DataLangRecord == null)
             {
@@ -1608,6 +1645,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
                 modellp += 1;
+            }
+
+            // See if we need to calc the display prices
+            if (DataRecord.GetXmlProperty("genxml/calcfromprice") == "")
+            {
+                UpdateDisplayCalcPrices();
+                upd = true;
             }
 
             if (upd) // update if we've set the update flag.
@@ -2050,13 +2094,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private Boolean CheckIsOnSale()
         {
-            var saleprice = GetSalePriceDouble();
+            var saleprice = SalePrice();
             if (saleprice > 0) return true;
             return false;
         }
 
+        [Obsolete("GetSalePriceDouble() is deprecated, please use SalePrice() instead.")]
         public Double GetSalePriceDouble()
         {
+            if (DataRecord.GetXmlProperty("genxml/calcsaleprice") != "")
+            {
+                return DataRecord.GetXmlPropertyDouble("genxml/calcsaleprice");
+            }
             Double price = -1;
             foreach (var m in Models)
             {
@@ -2072,13 +2121,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private Boolean DealerCheckIsOnSale()
         {
-            var saleprice = GetDealerSalePriceDouble();
+            var saleprice = DealerSalePrice();
             if (saleprice > 0) return true;
             return false;
         }
 
+        [Obsolete("GetDealerSalePriceDouble() is deprecated, please use DealerSalePrice() instead.")]
         public Double GetDealerSalePriceDouble()
         {
+            if (DataRecord.GetXmlProperty("genxml/calcdealersaleprice") != "")
+            {
+                return DataRecord.GetXmlPropertyDouble("genxml/calcdealersaleprice");
+            }
+
             Double price = -1;
             foreach (var m in Models)
             {

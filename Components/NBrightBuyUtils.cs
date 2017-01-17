@@ -2275,6 +2275,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return strOut;
         }
 
+        public static int CalcPricePercentageDiff(double originalprice,double newprice,int fractionaldigits = 0)
+        {
+           return (int)Math.Round(((originalprice - newprice) / originalprice) *100, fractionaldigits);
+        }
+
     }
 }
 

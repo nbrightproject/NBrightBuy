@@ -166,12 +166,13 @@ namespace NBrightBuy.render
             var v = "";
             foreach (var obj in objL)
             {
-                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);
+                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);                                  
                 var value = obj.GetXmlProperty("genxml/hidden/modelid");
                 if (value == v || (v == "" && defaultIndex == c))
                     s = "checked";
                 else
                     s = "";
+                if (text == "") attributes = attributes + " style='display:none;' "; // no stock so don;t display.
                 strOut += "<div " + attributes + "><input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label></div>";
                 c += 1;
 
@@ -203,7 +204,10 @@ namespace NBrightBuy.render
                 else
                     s = "";
 
-                strOut += "    <option value='" + value + "' " + s + ">" + text + "</option>";
+                if (text != "")  // no stock so don;t display.
+                {
+                    strOut += "    <option value='" + value + "' " + s + ">" + text + "</option>";
+                }
                 c += 1;
             }
             strOut += "</select>";
