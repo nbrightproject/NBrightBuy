@@ -342,27 +342,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return 0;
         }
-        public Double PercentageDiscountBest()
+        public Double HighUnitPrice()
         {
-            if (DataRecord.GetXmlProperty("genxml/calcdiscountpercentall") != "")
+            if (DataRecord.GetXmlProperty("genxml/calchighunitprice") != "")
             {
-                return DataRecord.GetXmlPropertyDouble("genxml/calcdiscountpercentall");
+                return DataRecord.GetXmlPropertyDouble("genxml/calchighunitprice");
             }
             return 0;
         }
-        public Double PercentageDiscountDealer()
+        public Double HighDealerUnitPrice()
         {
-            if (DataRecord.GetXmlProperty("genxml/calcdealerdiscountpercent") != "")
+            if (DataRecord.GetXmlProperty("genxml/calchighdealerunitprice") != "")
             {
-                return DataRecord.GetXmlPropertyDouble("genxml/calcdealerdiscountpercent");
-            }
-            return 0;
-        }
-        public Double PercentageDiscount()
-        {
-            if (DataRecord.GetXmlProperty("genxml/calcdiscountpercent") != "")
-            {
-                return DataRecord.GetXmlPropertyDouble("genxml/calcdiscountpercent");
+                return DataRecord.GetXmlPropertyDouble("genxml/calchighdealerunitprice");
             }
             return 0;
         }
@@ -623,6 +615,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 // Calc Display Prices
                 Models = GetEntityList("models");
                 Double fromprice = -1;
+                Double highunitprice = -1;
+                Double highdealerunitprice = -1;
                 Double frompriceunitqty = 1;
                 Double saleprice = -1;
                 Double salepriceunitqty = 1;
@@ -633,12 +627,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 int lp = 0;
                 foreach (var m in Models)
                 {
+                    var unitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
+                    var unitcost = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
+                    var unitprice = (unitcost / unitqty);
+                    var dealerunitcost = m.GetXmlPropertyDouble("genxml/textbox/txtdealercost");
+                    var dealerunitprice = (dealerunitcost / unitqty);
+
+                    if ((highunitprice == -1) || (highunitprice < unitprice))
+                    {
+                        highunitprice = unitprice;
+                    }
+                    if ((highdealerunitprice == -1) || (highdealerunitprice < dealerunitprice))
+                    {
+                        highdealerunitprice = dealerunitprice;
+                    }
+
                     if ((fromprice == -1) || (fromprice > m.GetXmlPropertyDouble("genxml/textbox/txtunitcost")))
                     {
                         fromprice = m.GetXmlPropertyDouble("genxml/textbox/txtunitcost");
                         frompriceunitqty = m.GetXmlPropertyDouble("genxml/textbox/unitqty");
                         if (frompriceunitqty <= 0) frompriceunitqty = 1;
-                    }
+                    }                    
+
                     if (!m.GetXmlPropertyBool("genxml/checkbox/chkdisablesale"))
                     {
                         if ((saleprice == -1) || (saleprice > m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") && m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") > 0))
@@ -672,6 +682,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (saleprice < 0) saleprice = 0;
                 if ((dealerfromprice < 0)) dealerfromprice = 0;
                 if (dealersaleprice < 0) dealersaleprice = 0;
+                if (highunitprice < 0) highunitprice = 0;
+                if (highdealerunitprice < 0) highdealerunitprice = 0;
                 DataRecord.SetXmlPropertyDouble("genxml/calcfromprice", fromprice);
                 DataRecord.SetXmlPropertyDouble("genxml/calcsaleprice", saleprice);
                 DataRecord.SetXmlPropertyDouble("genxml/calcdealerfromprice", dealerfromprice);
@@ -680,6 +692,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord.SetXmlPropertyDouble("genxml/calcsalepriceunit", Math.Round((saleprice/salepriceunitqty), 2));
                 DataRecord.SetXmlPropertyDouble("genxml/calcdealerfrompriceunit", Math.Round((dealerfromprice/dealerfrompriceunitqty), 2));
                 DataRecord.SetXmlPropertyDouble("genxml/calcdealersalepriceunit", Math.Round((dealersaleprice/dealersalepriceunitqty), 2));
+                DataRecord.SetXmlPropertyDouble("genxml/calchighunitprice", Math.Round(highunitprice, 2));
+                DataRecord.SetXmlPropertyDouble("genxml/calchighdealerunitprice", Math.Round(highdealerunitprice, 2));
 
                 var bestprice = fromprice;
                 var bestpriceunit = Math.Round((fromprice/frompriceunitqty), 2);
@@ -718,6 +732,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataRecord.SetXmlPropertyDouble("genxml/calcbestpriceallunit", bestpriceunit);
                 }
 
+                
 
             }
             catch (Exception ex)
