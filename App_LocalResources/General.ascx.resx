@@ -1134,4 +1134,7 @@
   <data name="man.Text" xml:space="preserve">
     <value>Manufacturer</value>
   </data>
+  <data name="QtyUnits.Text" xml:space="preserve">
+    <value>Unit Qty</value>
+  </data>
 </root>

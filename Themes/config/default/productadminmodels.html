@@ -5,7 +5,7 @@
     <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="modelid" type="hidden" value="" />] <!-- required modelid to link to checkout selected-->
-    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/dropdownlist/taxrate,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtsaleprice,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay,genxml/checkbox/chkdisablesale,genxml/checkbox/chkdisabledealer,genxml/textbox/txtdealersale" />] <!-- update fields -->
+    [<tag id="fields" type="hidden" value="genxml/textbox/availabledate,genxml/dropdownlist/modelstatus,genxml/dropdownlist/taxrate,genxml/textbox/txtqtyminstock,genxml/checkbox/chkstockon, genxml/hidden/modelid,genxml/textbox/txtmodelref,genxml/checkbox/chkishidden,genxml/checkbox/chkdeleted,genxml/checkbox/chkdealeronly,genxml/textbox/txtunitcost,genxml/textbox/txtsaleprice,genxml/textbox/txtbarcode,genxml/textbox/txtqtyremaining,genxml/textbox/txtqtystockset,genxml/textbox/txtdealercost,genxml/textbox/txtpurchasecost,genxml/textbox/weight,genxml/textbox/depth,genxml/textbox/width,genxml/textbox/height,genxml/textbox/unit,genxml/textbox/delay,genxml/checkbox/chkdisablesale,genxml/checkbox/chkdisabledealer,genxml/textbox/txtdealersale,genxml/textbox/unitqty" />] <!-- update fields -->
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtmodelname,genxml/textbox/txtextra" />] <!-- update localized fields -->
 
 	<div class="col-sm-12 form-horizontal">
@@ -26,6 +26,7 @@
             <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Depth" />]</label>[<tag id="depth" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Width" />]</label>[<tag id="width" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
 		    <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.Height" />]</label>[<tag id="height" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="0" datatype="double" />]</div>
+            <div class="col-sm-1"><label class="control-label">[<tag type="valueof" resourcekey="General.QtyUnits" />]</label>[<tag id="unitqty" update="save" type="textbox" cssclass="form-control input-sm" maxlength="10" Text="1" datatype="double" />]</div>
 		</div>
 	    <div class="row form-group">
 	        <div class="col-sm-2 activatestock">[<tag id="chkstockon" update="save" type="checkbox" Text="" />]<label class="control-label">[<tag type="valueof" resourcekey="General.ActivateStock" />]</label></div>
