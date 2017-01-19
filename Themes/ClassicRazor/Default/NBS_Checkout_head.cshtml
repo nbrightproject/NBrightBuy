@@ -62,6 +62,7 @@
 
         $('#cmdRecalcCart').click(function () {
             $('.processing').show();
+            $('#cmdNext').show();
             nbxget('recalculatecart', '.cartdatarow', '#checkoutdatareturnlist', '.quantitycolumn');
         });
 
@@ -77,7 +78,6 @@
             $('#cartstep').val(cartstep);
             processCartStep('prev');
         });
-
 
         // Ajax redirect action return, redirect to payment
         $('#checkoutpayredirectreturn').change(function () {
@@ -113,9 +113,20 @@
         });
 
         // cart list loaded
-        $('#checkoutdisplaylist').change(function() {
+        $('#checkoutdisplaylist').change(function () {
+
             // Create UI spinner for quantity fields http://api.jqueryui.com/spinner/
-            $(".quantity").spinner({ min: 0, numberFormat: "n", step: 1 });
+            $('.quantity').unbind();
+            $(".quantity").spinner({
+                min: 0, numberFormat: "n", step: 1,
+                spin: function( event, ui ) {}
+            });
+
+            // hide next button is Qty field altered. (force user to click recalc)
+            $(".quantity").on("spin", function (event, ui) { $('#cmdNext').hide(); });
+            $('.quantity').keypress(function () {
+                $('#cmdNext').hide();
+            });
 
             $('.removeitem').unbind();
             $('.removeitem').click(function() {

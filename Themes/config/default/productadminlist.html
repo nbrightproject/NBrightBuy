@@ -2,9 +2,23 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
 <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js" type="text/javascript"></script>
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/productajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/js.cookie.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+
+        var searchtext = Cookies.get('NBS_productadminsearchtext');
+        var searchcategory = Cookies.get('NBS_productadminsearchcategory');
+
+        if (searchtext != 'undefined') {
+            $('input[[id*="txtSearch"]]').val(searchtext);
+            $('input[[id*="searchtext"]]').val(searchtext);
+        }
+        if (searchcategory != 'undefined') {
+            $('select[[id*="ddllistsearchcategory"]]').val(searchcategory);
+            $('input[[id*="searchcategory"]]').val(searchcategory);
+        }
+
         // start load all ajax data, continued by js in product.js file
         nbxget('getproductlist', '#productselectparams', '#productlist');
 

@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -180,6 +181,74 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             }
 
             return shippingAmt;
+        }
+        /// <summary>
+        /// Calc shipping by postcode value.
+        /// </summary>
+        /// <param name="postCode"></param>
+        /// <param name="rangeValue"></param>
+        /// <param name="total"></param>
+        /// <returns>the price of shipping, or -1 if no matching range is found.</returns>
+        public Double CalculateShippingByPC(String postCode, Double rangeValue, Double total)
+        {
+            postCode = postCode.Replace(" ", "");
+
+            // calc if we have free shipping limit
+            var freeShipAmt = Info.GetXmlPropertyDouble("genxml/textbox/freeshiplimit");
+            if (total >= freeShipAmt)
+            {
+                var freeShipRefs = Info.GetXmlProperty("genxml/textbox/freeshipcountrycodes");
+                var freerefs = freeShipRefs.Split(',');
+                foreach (var r in freerefs)
+                {
+                    var checkref = r.Replace(" ", "");
+                    if (WildCardCheck(postCode, checkref)) return 0;
+                }
+            }
+
+            // calc range date
+            Double shippingAmt = -1;
+            foreach (var i in _rangeData)
+            {
+                var shiprefs = i.RefCsv.Split(',');
+                foreach (var r in shiprefs)
+                {
+                    var checkref = r.Replace(" ", "");
+                    if (WildCardCheck(postCode, checkref))
+                    {
+                        if (rangeValue >= i.RangeLow && rangeValue < i.RangeHigh && shippingAmt < i.Cost) shippingAmt = i.Cost;
+                    }
+                }
+            }
+
+            return shippingAmt;
+        }
+        /// <summary>
+        /// Simple wildcard check.  Check if wildcardpattern matches input.  using wildcard. (* or ?)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="wildcardpattern"></param>
+        /// <returns></returns>
+        private Boolean WildCardCheck(string input, string wildcardpattern)
+        {
+            var pattern = WildcardToRegex(wildcardpattern);
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            if (regex.IsMatch(input))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static string WildcardToRegex(string pattern)
+        {
+            return "^" + Regex.Escape(pattern)
+                              .Replace(@"\*", ".*")
+                              .Replace(@"\?", ".")
+                       + "$";
         }
 
         #endregion

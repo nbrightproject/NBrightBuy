@@ -2029,7 +2029,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                         currentcart.MergeCartInputData(currentcart.GetItemIndex(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode")), ajaxInfo);
                 }
-                currentcart.Save(StoreSettings.Current.DebugMode);
+                currentcart.Save(StoreSettings.Current.DebugMode,true);
                 strOut = "OK";
                 return strOut;
         }
@@ -2197,7 +2197,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 currentcart.Lang = ajaxInfo.Lang;  // set lang so we can send emails in same language the order was made in.
 
-                currentcart.Save();
+                currentcart.Save(StoreSettings.Current.DebugMode,true);
 
                 return "OK";
         }

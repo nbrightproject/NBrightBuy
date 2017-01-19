@@ -23,26 +23,32 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var countrycode = "";
             var regioncode = "";
             var regionkey = "";
+            var postCode = "";
             var total = cartInfo.GetXmlPropertyDouble("genxml/appliedsubtotal");
             switch (shipoption)
             {
                 case "1":
                     countrycode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country");
                     regionkey = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
+                    postCode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/textbox/postalcode");
                     break;
                 case "2":
                     countrycode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country");
-                    regionkey = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");                    
+                    regionkey = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region");
+                    postCode = cartInfo.GetXmlProperty("genxml/shipaddress/genxml/textbox/postalcode");
                     break;
             }
 
-            if (regionkey != "")
+            var shippingcost = shipData.CalculateShippingByPC(postCode, rangeValue, total);
+            if (shippingcost == -1)
             {
-                var rl = regionkey.Split(':');
-                if (rl.Count() == 2) regioncode = rl[1];
+                if (regionkey != "")
+                {
+                    var rl = regionkey.Split(':');
+                    if (rl.Count() == 2) regioncode = rl[1];
+                }
+                shippingcost = shipData.CalculateShipping(countrycode, regioncode, rangeValue, total);
             }
-
-            var shippingcost = shipData.CalculateShipping(countrycode, regioncode, rangeValue, total);
             var shippingdealercost = shippingcost;
             cartInfo.SetXmlPropertyDouble("genxml/shippingcost", shippingcost);
             cartInfo.SetXmlPropertyDouble("genxml/shippingdealercost", shippingdealercost);

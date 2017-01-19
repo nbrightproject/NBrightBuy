@@ -207,11 +207,17 @@
     $('#listsearch').click(function () {
         $('input[id*="searchtext"]').val($('input[id*="txtSearch"]').val());
         $('input[id*="searchcategory"]').val($('select[id*="ddllistsearchcategory"]').val());
+
+        Cookies.set('NBS_productadminsearchtext', $('input[id*="txtSearch"]').val());
+        Cookies.set('NBS_productadminsearchcategory', $('select[id*="ddllistsearchcategory"]').val());
+
         nbxget('getproductlist', '#productselectparams', '#productlist');
     });
 
     // select search reset
     $('#listreset').click(function () {
+        Cookies.remove('NBS_productadminsearchtext');
+        Cookies.remove('NBS_productadminsearchcategory');
         $('input[id*="txtSearch"]').val('');
         $('select[id*="ddllistsearchcategory"]').val('');
         $('input[id*="searchtext"]').val('');
