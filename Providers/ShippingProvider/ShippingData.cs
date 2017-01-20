@@ -168,7 +168,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             // calc if we have free shipping limit
             var freeShipAmt = Info.GetXmlPropertyDouble("genxml/textbox/freeshiplimit");
             var freeShipRefs = Info.GetXmlProperty("genxml/textbox/freeshipcountrycodes");
-            if (total >= freeShipAmt && ("," + freeShipRefs + ",").Contains("," + countryRef + ",")) return 0;
 
             // calc range date
             Double shippingAmt = 0;
@@ -179,6 +178,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     if (rangeValue >= i.RangeLow && rangeValue < i.RangeHigh && shippingAmt < i.Cost) shippingAmt = i.Cost;
                 }                
             }
+
+            // after so we can assign values.
+            if (total >= freeShipAmt && ("," + freeShipRefs + ",").Contains("," + countryRef + ",")) return 0;
 
             return shippingAmt;
         }
@@ -192,19 +194,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public Double CalculateShippingByPC(String postCode, Double rangeValue, Double total)
         {
             postCode = postCode.Replace(" ", "");
-
-            // calc if we have free shipping limit
-            var freeShipAmt = Info.GetXmlPropertyDouble("genxml/textbox/freeshiplimit");
-            if (total >= freeShipAmt)
-            {
-                var freeShipRefs = Info.GetXmlProperty("genxml/textbox/freeshipcountrycodes");
-                var freerefs = freeShipRefs.Split(',');
-                foreach (var r in freerefs)
-                {
-                    var checkref = r.Replace(" ", "");
-                    if (WildCardCheck(postCode, checkref)) return 0;
-                }
-            }
 
             // calc range date
             Double shippingAmt = -1;
@@ -220,6 +209,20 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     }
                 }
             }
+
+            // calc if we have free shipping limit (after full calc, so we can assign values and then only clear when above total required.)
+            var freeShipAmt = Info.GetXmlPropertyDouble("genxml/textbox/freeshiplimit");
+            if (total >= freeShipAmt)
+            {
+                var freeShipRefs = Info.GetXmlProperty("genxml/textbox/freeshipcountrycodes");
+                var freerefs = freeShipRefs.Split(',');
+                foreach (var r in freerefs)
+                {
+                    var checkref = r.Replace(" ", "");
+                    if (WildCardCheck(postCode, checkref)) return 0;
+                }
+            }
+
 
             return shippingAmt;
         }
