@@ -32,7 +32,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="itemId"></param>
         public override void Delete(int itemId)
         {
-            DataProvider.Instance().Delete(itemId);
+            if (itemId > 0)
+            {
+                DataProvider.Instance().Delete(itemId);
+            }
         }
 
         /// <summary>

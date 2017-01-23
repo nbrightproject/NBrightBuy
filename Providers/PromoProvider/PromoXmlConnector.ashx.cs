@@ -268,16 +268,17 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     // run the promo before delete, so we remove any promo data that may exist.
                     if (typecode == "CATEGORYPROMO")
                     {
-                        PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                        PromoUtils.RemoveGroupProductPromo(PortalSettings.Current.PortalId, nbi.ItemID);
                     }
                     if (typecode == "MULTIBUYPROMO")
                     {
-                        PromoUtils.RemoveMultiBuyProductPromo(PortalSettings.Current.PortalId, Convert.ToInt32(itemid));
+                        PromoUtils.RemoveMultiBuyProductPromo(PortalSettings.Current.PortalId, nbi.ItemID);
                     }
-                }
 
-                // delete DB record
-                objCtrl.Delete(Convert.ToInt32(itemid));
+                    // delete DB record
+                    objCtrl.Delete(nbi.ItemID);
+
+                }
 
                 NBrightBuyUtils.RemoveModCache(-2);
 
