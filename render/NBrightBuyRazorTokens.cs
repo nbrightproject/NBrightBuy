@@ -1071,8 +1071,13 @@ namespace NBrightBuy.render
 
         public IEncodedString AddressSelectList(NBrightInfo info, String xpath, String formselector, String datafields, String attributes = "", Boolean allowEmpty = true)
         {
-            var usr = UserController.Instance.GetCurrentUserInfo();
-            var addressData = new AddressData(usr.UserID.ToString(""));
+            var usrid = info.UserId;
+            if (usrid <= 0)
+            {
+                var usr = UserController.Instance.GetCurrentUserInfo();
+                usrid = usr.UserID;
+            }
+            var addressData = new AddressData(usrid.ToString(""));
 
             var rtnList = addressData.GetAddressList();
 
