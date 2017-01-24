@@ -220,10 +220,14 @@
 
     <!-- Details -->
         @{
-            var modeltableclass = "tab-content tab-hide";
+            var tabbedcontent = true;
+            if (Model.GetSetting("tabbedcontent") == "False") { tabbedcontent = false; }
+            var modeltableclass = tabbedcontent == true ? "tab-content tab-hide" : "";
         }
             <div class="details">
 
+                @if (tabbedcontent)
+                {
                 <ul class="nav-tabs">
                     @if (info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
                     {
@@ -246,6 +250,7 @@
                         <li><a href="#tab-3">@ResourceKey("ProductView.documentation")</a></li><!-- Document downloads -->
                     }
                 </ul>
+                }
 
                 @if (Model.GetSetting("addthispubid") != "")
                 {
@@ -255,7 +260,7 @@
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
             {
-                <div id="tab-1" class="tab-content tab-active">
+                <div id="tab-1" @if (tabbedcontent) {<text>class="tab-content tab-active"</text>}>
                     <h3>@ResourceKey("ProductView.description")</h3>
                     @HtmlOf(info, "genxml/lang/genxml/edt/description")
                 </div>
@@ -316,7 +321,7 @@
             }
             @if (@product.Docs.Count >= 1)
             {
-                <div id="tab-3" class="tab-content tab-hide">
+                <div id="tab-3" @if (tabbedcontent) {<text>class="tab-content tab-hide"</text>}>
                     <h3>@ResourceKey("ProductView.documentation")</h3>
                     <ul class="documents">
                         <!-- documents HERE -->
