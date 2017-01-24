@@ -594,7 +594,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (triggerevent)
             {
-                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, DataRecord);
+                NBrightBuyUtils.ProcessEventProvider(EventActions.AfterProductSave, Info); // use info, so we pass lang
                 // reload data so if event has altered data we use that.
                 DataRecord = objCtrl.Get(productid);
                 DataLangRecord = objCtrl.Get(plangid);
