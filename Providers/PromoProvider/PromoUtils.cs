@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using DotNetNuke.Entities.Portals;
 using NBrightCore.common;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
@@ -44,6 +45,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
             if (!disabled)
             {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(p.PortalId);
+                var lang = portalsettings.DefaultLanguage;
+
                 var prdList = new List<NBrightInfo>();
                 if (typeselect == "all")
                 {
@@ -54,7 +58,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     CategoryData gCat;
                     var groupid = catgroupid;
                     if (typeselect != "cat") groupid = propgroupid;
-                    gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
+                    gCat = CategoryUtils.GetCategoryData(groupid, lang);
                     if (gCat != null) prdList = gCat.GetAllArticles();
                 }
 
@@ -98,7 +102,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                                 RemoveProductPromoData(p.PortalId, productid, p.ItemID);
                             }
                             ProductUtils.RemoveProductDataCache(p.PortalId, productid);
-                            var productData = ProductUtils.GetProductData(productid, Utils.GetCurrentCulture());
+                            var productData = ProductUtils.GetProductData(productid, lang);
                             productData.Save(); // recalc any new prices.
                         }
                         if (DateTime.Now.Date > dteU)
@@ -118,7 +122,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         // CALC Promo
                         CalcProductSalePrice(p.PortalId, productid, amounttype, amount, p.ItemID, whichprice, overwrite);
                         ProductUtils.RemoveProductDataCache(p.PortalId, productid);
-                        var productData = ProductUtils.GetProductData(productid, Utils.GetCurrentCulture());
+                        var productData = ProductUtils.GetProductData(productid, lang);
                         productData.Save(); // recalc any new prices.
                     }
                     p.SetXmlProperty("genxml/checkbox/disabled", "True");
@@ -132,7 +136,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         if (typeselect == "all") productid = prd.ItemID;
                         RemoveProductPromoData(p.PortalId, productid, p.ItemID);
                         ProductUtils.RemoveProductDataCache(p.PortalId, productid);
-                        var productData = ProductUtils.GetProductData(productid, Utils.GetCurrentCulture());
+                        var productData = ProductUtils.GetProductData(productid, lang);
                         productData.Save(); // recalc any new prices.
                     }
 
@@ -153,6 +157,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var catgroupid = p.GetXmlProperty("genxml/dropdownlist/catgroupid");
             var propgroupid = p.GetXmlProperty("genxml/dropdownlist/propgroupid");
 
+            var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(p.PortalId);
+            var lang = portalsettings.DefaultLanguage;
+
             var prdList = new List<NBrightInfo>();
             if (typeselect == "all")
             {
@@ -163,7 +170,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 CategoryData gCat;
                 var groupid = catgroupid;
                 if (typeselect != "cat") groupid = propgroupid;
-                gCat = CategoryUtils.GetCategoryData(groupid, Utils.GetCurrentCulture());
+                gCat = CategoryUtils.GetCategoryData(groupid, lang);
                 if (gCat != null) prdList = gCat.GetAllArticles();
             }
             foreach (var prd in prdList)
@@ -174,7 +181,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 // END Promo
                 RemoveProductPromoData(portalId, productid, p.ItemID);
                 ProductUtils.RemoveProductDataCache(prd.PortalId, productid);
-                var productData = ProductUtils.GetProductData(productid, Utils.GetCurrentCulture());
+                var productData = ProductUtils.GetProductData(productid, lang);
                 productData.Save(); // recalc any new prices.
             }
             return "OK";
@@ -191,6 +198,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                 var currentpromoid = prdData.GetXmlPropertyInt("genxml/hidden/promoid");
                 if (currentpromoid == promoid)
                 {
+                    var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(portalId);
+                    var lang = portalsettings.DefaultLanguage;
+
                     var lp = 1;
                     foreach (XmlNode nod in nodList)
                     {
@@ -199,7 +209,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     }
                     objCtrl.Update(prdData);
                     RemoveProductPromoData(portalId, productId, promoid);
-                    var productData = ProductUtils.GetProductData(productId, Utils.GetCurrentCulture());
+                    var productData = ProductUtils.GetProductData(productId, lang);
                     productData.Save(); // recalc any new prices.
                 }
             }
@@ -372,6 +382,9 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
 
             if (!disabled)
             {
+                var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(p.PortalId);
+                var lang = portalsettings.DefaultLanguage;
+
                 var runcalc = true;
                 if (Utils.IsDate(lastcalculated))
                 {
@@ -388,7 +401,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     var dteU = Convert.ToDateTime(validuntil).Date;
                     CategoryData gCat;
 
-                    gCat = CategoryUtils.GetCategoryData(propgroupid, Utils.GetCurrentCulture());
+                    gCat = CategoryUtils.GetCategoryData(propgroupid, lang);
                     var prdList = gCat.GetAllArticles();
 
                     foreach (var prd in prdList)
@@ -406,7 +419,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                             objCtrl.Update(p);
                         }
                         ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
-                        var productData = ProductUtils.GetProductData(prd.ParentItemId, Utils.GetCurrentCulture());
+                        var productData = ProductUtils.GetProductData(prd.ParentItemId, lang);
                         productData.Save(); // recalc any new prices.
                     }
 
@@ -464,10 +477,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             var propgroupid = p.GetXmlPropertyInt("genxml/dropdownlist/propbuy");
             var propapplygroupid = p.GetXmlPropertyInt("genxml/dropdownlist/propapply");
 
-            var gCat = CategoryUtils.GetCategoryData(propgroupid, Utils.GetCurrentCulture());
+            var portalsettings = NBrightDNN.DnnUtils.GetPortalSettings(p.PortalId);
+            var lang = portalsettings.DefaultLanguage;
+
+
+            var gCat = CategoryUtils.GetCategoryData(propgroupid, lang);
             if (gCat.Exists)
             {
-
+                
                 var prdList = gCat.GetAllArticles();
 
                 foreach (var prd in prdList)
@@ -475,14 +492,14 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                     // END Promo
                     RemoveProductPromoData(portalId, prd.ParentItemId, promoid);
                     ProductUtils.RemoveProductDataCache(prd.PortalId, prd.ParentItemId);
-                    var productData = ProductUtils.GetProductData(prd.ParentItemId, Utils.GetCurrentCulture());
+                    var productData = ProductUtils.GetProductData(prd.ParentItemId, lang);
                     productData.Save(); // recalc any new prices.
                 }
             }
 
             if (propapplygroupid != propgroupid && propapplygroupid > 0)
             {
-                gCat = CategoryUtils.GetCategoryData(propapplygroupid, Utils.GetCurrentCulture());
+                gCat = CategoryUtils.GetCategoryData(propapplygroupid, lang);
                 if (gCat.Exists)
                 {
                     var prdList2 = gCat.GetAllArticles();
@@ -492,7 +509,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
                         // END Promo
                         RemoveProductPromoData(p.PortalId, prd.ParentItemId, p.ItemID);
                         ProductUtils.RemoveProductDataCache(p.PortalId, prd.ParentItemId);
-                        var productData = ProductUtils.GetProductData(prd.ParentItemId, Utils.GetCurrentCulture());
+                        var productData = ProductUtils.GetProductData(prd.ParentItemId, lang);
                         productData.Save(); // recalc any new prices.
                     }
                 }
