@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using DotNetNuke.Common
+@using DotNetNuke.Entities.Portals
 @using DotNetNuke.Entities.Users
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components
@@ -14,7 +15,7 @@
 
 <!-- fields required to send required ajax cart to server -->
 <span id="nbs_orderadminsearch">
-    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"></input>
+    <input id="userid" type="hidden" value="@Model.GetSetting("userid")"></input>
     <input id="razortemplate" type="hidden" value=""></input>
     <input id='currentlang' type='hidden' value='@Model.GetUrlParam("language")'></input> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
     <input id="lang" type="hidden" value="@Model.GetUrlParam("language")"></input> <!-- default to current language -->
@@ -152,7 +153,6 @@
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-
                 }
 
                 if (e.cmd == 'orderadmin_getdetail') {
@@ -164,7 +164,7 @@
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('#OrderAdmin_cmdRepeat').click(function () {
+                    $('#OrderAdmin_cmdReOrder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
                         nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
