@@ -382,7 +382,7 @@
     <value>Default List module</value>
   </data>
   <data name="displaytype.Help" xml:space="preserve">
-    <value>Type of list to display (Normal, normla product list. Search, Search Results of porducts. Selected List, Favorite list.  )</value>
+    <value>Type of list to display (Normal, normal product list. Search, Search Results of products. Selected List, Favorite list.  )</value>
   </data>
   <data name="displaytype.Text" xml:space="preserve">
     <value>Display Type</value>
