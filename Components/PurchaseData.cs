@@ -97,7 +97,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void TurnOffEditMode()
         {
             var modCtrl = new NBrightBuyController();
-            EditMode = "";
+            EditMode = "X"; // make X so we keep any userid
             _entryId = modCtrl.Update(PurchaseInfo);
         }
 
@@ -1116,6 +1116,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     PurchaseInfo.UserId = UserController.Instance.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
                     EditMode = "";
                 }
+            }
+            else
+            {
+                EditMode = PurchaseInfo.GetXmlProperty("genxml/carteditmode"); // keep edit mode, so user doesn't get changed.
             }
             PurchaseTypeCode = PurchaseInfo.TypeCode;
             UserId = PurchaseInfo.UserId; //retain theuserid, if created by a manager for a client.

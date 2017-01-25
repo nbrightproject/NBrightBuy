@@ -424,10 +424,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var modelid = cartItemInfo.GetXmlProperty("genxml/modelid");
             var prdid = cartItemInfo.GetXmlPropertyInt("genxml/productid");
             var qty = cartItemInfo.GetXmlPropertyDouble("genxml/qty");
+            var lang = cartItemInfo.GetXmlProperty("genxml/lang");
 
             if (removeZeroQtyItems && qty == 0) return null; // Remove zero qty item
 
-            var prd = ProductUtils.GetProductData(prdid, Utils.GetCurrentCulture());
+            var prd = ProductUtils.GetProductData(prdid, lang);
             if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
 
             // update product xml data on cart (product may have change via plugin so always replace)

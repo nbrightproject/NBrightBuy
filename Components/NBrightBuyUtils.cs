@@ -1578,6 +1578,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var l = new List<object>();
                     l.Add(obj);
                     if (settings == null) settings = new Dictionary<string, string>();
+                    if (!settings.ContainsKey("userid")) settings.Add("userid", UserController.Instance.GetCurrentUserInfo().UserID.ToString());
                     var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
                     nbRazor.FullTemplateName = theme + "." + razorTemplName;
                     nbRazor.TemplateName = razorTemplName;

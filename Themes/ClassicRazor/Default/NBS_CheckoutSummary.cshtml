@@ -95,15 +95,11 @@
             {
                 if (cart.EditMode == "C")
                 {
-                    <div class="debug">Order being created for client</div>
-                }
-                if (cart.EditMode == "R")
-                {
-                    <div class="debug">Order being re-ordered for client</div>
+                    <div class="debug">@ResourceKey("CartView.editmodeC")</div>
                 }
                 if (cart.EditMode == "E")
                 {
-                    <div class="debug">Order being edited for client</div>
+                    <div class="debug">@ResourceKey("CartView.editmodeE")</div>
                 }
             }
         </div>

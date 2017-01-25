@@ -35,6 +35,7 @@
 
         $('#cmdRecalcCart').click(function () {
             $('.processing').show();
+            $('#cmdGoCheckout').show();
             nbxget('recalculatecart', '.cartdatarow', '#fullcartdatareturn', '.quantitycolumn');
         });
 
@@ -59,6 +60,14 @@
         $('#checkoutitemlist').change(function () {
             // Create UI spinner for quantity fields http://api.jqueryui.com/spinner/
             $(".quantity").spinner({ min: 0, numberFormat: "n", step: 1 });
+
+
+            // hide next button is Qty field altered. (force user to click recalc)
+            $(".quantity").on("spin", function (event, ui) { $('#cmdNext').hide(); });
+            $('.quantity').keypress(function () {
+                $('#cmdGoCheckout').hide();
+            });
+
 
             $('.removeitem').unbind();
             $('.removeitem').click(function () {

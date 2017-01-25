@@ -276,4 +276,10 @@
   <data name="shippingoption2datavalue.Text" xml:space="preserve">
     <value>1,2</value>
   </data>
+  <data name="editmodeC.Text" xml:space="preserve">
+    <value>Commande en cours de creation</value>
+  </data>
+  <data name="editmodeE.Text" xml:space="preserve">
+    <value>Commande en cours de modification</value>
+  </data>
 </root>
