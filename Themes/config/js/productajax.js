@@ -210,6 +210,7 @@
 
         Cookies.set('NBS_productadminsearchtext', $('input[id*="txtSearch"]').val());
         Cookies.set('NBS_productadminsearchcategory', $('select[id*="ddllistsearchcategory"]').val());
+        Cookies.set('NBS_productadminsearchcascade', $('input[id*="_cascade_"]').val());
 
         nbxget('getproductlist', '#productselectparams', '#productlist');
     });
@@ -218,10 +219,15 @@
     $('#listreset').click(function () {
         Cookies.remove('NBS_productadminsearchtext');
         Cookies.remove('NBS_productadminsearchcategory');
+        Cookies.remove('NBS_productadminsearchcascade');
+
         $('input[id*="txtSearch"]').val('');
         $('select[id*="ddllistsearchcategory"]').val('');
         $('input[id*="searchtext"]').val('');
         $('input[id*="searchcategory"]').val('');
+        $('input[id*="_cascade_"]').val('True');
+        $('input[id*="_chkcascaderesults_"]').prop('checked', true);
+
         nbxget('getproductlist', '#productselectparams', '#productlist');
     });
     // END: -------------------------------------------------------

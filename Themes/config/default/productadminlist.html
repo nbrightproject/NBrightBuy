@@ -9,6 +9,7 @@
 
         var searchtext = Cookies.get('NBS_productadminsearchtext');
         var searchcategory = Cookies.get('NBS_productadminsearchcategory');
+        var searchcascade = Cookies.get('NBS_productadminsearchcascade');
 
         if (searchtext != 'undefined') {
             $('input[[id*="txtSearch"]]').val(searchtext);
@@ -18,9 +19,27 @@
             $('select[[id*="ddllistsearchcategory"]]').val(searchcategory);
             $('input[[id*="searchcategory"]]').val(searchcategory);
         }
+        if (searchcascade != 'undefined') {
+            if (searchcascade == 'False') {
+                $('input[[id*="_chkcascaderesults_"]]').prop('checked', false);
+                $('input[[id*="_cascade_"]]').val('False');
+            } else {
+                $('input[[id*="_chkcascaderesults_"]]').prop('checked', true);
+                $('input[[id*="_cascade_"]]').val('True');
+            }
+        }
 
         // start load all ajax data, continued by js in product.js file
         nbxget('getproductlist', '#productselectparams', '#productlist');
+
+
+        $('input[[id*="_chkcascaderesults_"]]').click(function () {
+            if ($(this).is(':checked')) {
+                $('input[[id*="_cascade_"]]').val('True');
+            } else {
+                $('input[[id*="_cascade_"]]').val('False');
+            }
+        });
 
         $('#productlist').change(function() {
             $('.editlink').unbind();
@@ -89,13 +108,17 @@
 							[<tag id="txtSearch" cssclass="form-control" type="textbox" />]
 						</div>
 						<label class="col-sm-1 control-label">[<tag type="valueof" resourcekey="General.Category" />]</label>
-						<div class="col-sm-4">
-							[<tag id="ddllistsearchcategory" cssclass="s2_with_tag populate placeholder" type="catdropdown" groupref="cat" allowblank="true" showhidden="true" />]
-						</div>
-						<div class="col-sm-3">
-						<a class="btn btn-primary" href="#" id="listsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
-						    <a class="btn btn-default" href="#" id="listreset">[<tag type="htmlof" resourcekey="General.cmdResetIcon" />]</a>
-						</div>
+					    <div class="col-sm-3">
+					        [<tag id="ddllistsearchcategory" cssclass="s2_with_tag populate placeholder" type="catdropdown" groupref="cat" allowblank="true" showhidden="true"/>]
+					    </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-primary" href="#" id="listsearch">[<tag type="htmlof" resourcekey="General.cmdSearchIcon" />]</a>
+                            <a class="btn btn-default" href="#" id="listreset">[<tag type="htmlof" resourcekey="General.cmdResetIcon" />]</a>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label">[<tag type="valueof" resourcekey="ProductViewSettings.lblcascaderesults" />]</label>
+                            [<tag class="chkcascaderesults" id="chkcascaderesults" type="checkbox" Text="" checked="True"/>]
+                        </div>
 					</div>
 				</div>
 			</div>
