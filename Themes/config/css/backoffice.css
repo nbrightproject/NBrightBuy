@@ -194,6 +194,7 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .selectrelated .selectlistitem .selectproduct .fa{color: #DDDDDD;}
 .selectrelated .selectlistitem .selectproduct .fa:hover{color: #51A3C4;}
 #productlist .NBrightPagingDiv{}
+#productmodels li.modelitem label {white-space:nowrap;}
 
 /* Category and Property Lists */
 .categorylist td{vertical-align: middle !important;}
