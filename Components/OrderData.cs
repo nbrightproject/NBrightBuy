@@ -289,10 +289,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
             {
-                ReleaseModelTransQty();
-                OrderStatus = orderStatus;
-                PurchaseTypeCode = "CART";
-                SavePurchaseData();                
+                // only move back to cart, if we've not processed payment already.
+                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030")
+                {
+                    ReleaseModelTransQty();
+                    OrderStatus = orderStatus;
+                    PurchaseTypeCode = "CART";
+                    SavePurchaseData();
+                }
             }
 
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentFail, PurchaseInfo);
