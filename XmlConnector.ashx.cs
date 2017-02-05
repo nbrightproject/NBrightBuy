@@ -279,12 +279,22 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "addcookietobasket":
                         break;
                     case "docdownload":
+
                         var fname = Utils.RequestQueryStringParam(context, "filename");
-                        strOut = fname; // return this is error.
-                        var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
-                        var fpath = HttpContext.Current.Server.MapPath(fname);
-                        if (downloadname == "") downloadname = Path.GetFileName(fname);
-                        Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                        var filekey = Utils.RequestQueryStringParam(context, "filekey");
+                        if (filekey != "")
+                        {
+                            var uData = new UserData();
+                            if (uData.HasPurchasedDoc(filekey)) fname = uData.GetPurchasedFileName(filekey);
+                        }
+                        if (fname != "")
+                        {
+                            strOut = fname; // return this is error.
+                            var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
+                            var fpath = HttpContext.Current.Server.MapPath(fname);
+                            if (downloadname == "") downloadname = Path.GetFileName(fname);
+                            Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                        }
                         break;
                     case "printproduct":
                         break;

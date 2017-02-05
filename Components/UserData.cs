@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -21,6 +22,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         public NBrightInfo Info;
         private UserInfo _userInfo;
+        private Dictionary<string,NBrightInfo> _docList;
 
         public UserData()
         {
@@ -32,6 +34,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulateData(userId);
         }
 
+        public void AddNewPurchasedDoc(string key, string downloadfilename, string filerelpath, string filename)
+        {
+            var strXml = "<genxml><downloadfilename>" + downloadfilename + "</downloadfilename><filerelpath>" + filerelpath + "</filerelpath><filename>" + filename + "</filename></genxml>";
+            var nbi = new NBrightInfo();
+            nbi.GUIDKey = key;
+            nbi.XMLData = strXml;
+            _docList.Add(key,nbi);
+        }
+
+        public void RemovePurchasedDoc(string key)
+        {
+            if (_docList != null && _docList.ContainsKey(key)) _docList.Remove(key);
+        }
+        public bool HasPurchasedDoc(string key)
+        {
+            if (_docList != null && _docList.ContainsKey(key)) return true;
+            return false;
+        }
+        public string GetPurchasedFileName(string key)
+        {
+            if (_docList != null && _docList.ContainsKey(key))
+            {
+                return _docList[key].GetXmlProperty("genxml/filename");
+            }
+            return "";
+        }
+
+
         /// <summary>
         /// Save cart
         /// </summary>
@@ -39,6 +69,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (Info != null)
             {
+                Info.SetXmlProperty("genxml/purchaseddocs","");
+                var strDocs = "<docs>";
+                foreach (var d in _docList)
+                {
+                    var nbi = d.Value;
+                    if (nbi.XMLData != "") strDocs += nbi.XMLData;
+                }
+                strDocs += "</docs>";
+                Info.SetXmlProperty("genxml/purchaseddocs", strDocs);
+
                 var modCtrl = new NBrightBuyController();
                 Info.ItemID = modCtrl.Update(Info);
                 if (StoreSettings.Current.DebugModeFileOut) Info.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_userdata.xml");
@@ -89,6 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void PopulateData(String userId)
         {
+            _docList = new Dictionary<string, NBrightInfo>();
             Exists = false;
             if (Utils.IsNumeric(userId))
                 _userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
@@ -112,6 +153,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 else
                     Exists = true;
+
+                var nodlist = Info.XMLDoc.SelectNodes("genxml/purchaseddocs/docs");
+                if (nodlist != null)
+                {
+                    foreach (XmlNode nod in nodlist)
+                    {
+                        var nbi = new NBrightInfo();
+                        nbi.XMLData = nod.OuterXml;
+                        _docList.Add(nbi.GUIDKey, nbi);
+                    }
+                }
+
             }
         }
 

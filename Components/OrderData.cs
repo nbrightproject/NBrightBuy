@@ -278,10 +278,48 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     {
                         NBrightBuyUtils.SendOrderEmail("OrderCreatedClient", PurchaseInfo.ItemID, "ordercreatedemailsubject");
                     }
+
+                    // add purchased docs to user.
+                    var udata = new UserData();
+                    if (udata != null)
+                    {
+                        foreach (var docitem in GetPurchaseDocs())
+                        {
+                            udata.AddNewPurchasedDoc(Utils.GetUniqueKey(20), docitem.GetXmlProperty("genxml/textbox/txtfilename"), docitem.GetXmlProperty("genxml/hidden/filerelpath"),docitem.GetXmlProperty("genxml/hidden/filename"));    
+                        }
+                    }
+
                 }
             }
             NBrightBuyUtils.ProcessEventProvider(EventActions.AfterPaymentOK, PurchaseInfo);
         }
+
+        public List<NBrightInfo> GetPurchaseDocs()
+        {
+            var rtnList = new List<NBrightInfo>();
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var xmlNodeList2 = carNod.SelectNodes("genxml/productxml/docs");
+                    if (xmlNodeList2 != null)
+                    {
+                        foreach (XmlNode docNod in xmlNodeList2)
+                        {
+                            var newDocInfo = new NBrightInfo { XMLData = docNod.OuterXml };
+                            if (newDocInfo.GetXmlPropertyBool("genxml/checkbox/chkpurchase"))
+                            {
+                                rtnList.Add(newDocInfo);
+                            }
+                        }
+                    }
+
+                }
+            }
+            return rtnList;
+        }
+
 
         public void PaymentFail(String orderStatus = "010")
         {
