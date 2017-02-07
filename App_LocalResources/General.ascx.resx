@@ -1143,4 +1143,7 @@
   <data name="txtitems.Text" xml:space="preserve">
     <value>item sub-total</value>
   </data>
+  <data name="pleaseselect.Text" xml:space="preserve">
+    <value>Please Select</value>
+  </data>
 </root>

@@ -223,9 +223,11 @@ namespace NBrightBuy.render
 
             if (objL.Count > index)
             {
+                var requiredattr = "";
                 var obj = objL[index];
                 var optid = obj.GetXmlProperty("genxml/hidden/optionid");
                 var optvalList = productdata.GetOptionValuesById(optid);
+                if (obj.GetXmlPropertyBool("genxml/checkbox/optrequired")) required = true;
 
                 strOut += "<div  class='option option" + (index + 1) + "' " + attributes + ">";
                 strOut += "<span class='optionname optionname" + (index + 1) + "'>" + obj.GetXmlProperty("genxml/lang/genxml/textbox/txtoptiondesc") + "</span>";
@@ -233,8 +235,14 @@ namespace NBrightBuy.render
 
                 if (optvalList.Count > 1)
                 {
+                    if (required) requiredattr = " required='' name='optionddl" + (index + 1) + "'"; // name also needs to be added for JQuery Validation to work correctly
                     //dropdown
-                    strOut += "<select id='optionddl" + (index + 1) + "' update='save'>";
+                    strOut += "<select id='optionddl" + (index + 1) + "' " + requiredattr + " update='save'>";
+                    if (required)
+                    {
+                        strOut += "    <option value=''>" + NBrightBuyUtils.ResourceKey("General.pleaseselect") + "</option>";
+                    }
+
                     foreach (var optval in optvalList)
                     {
                         var addcost = optval.GetXmlPropertyDouble("genxml/textbox/txtaddedcost");
@@ -267,7 +275,6 @@ namespace NBrightBuy.render
                 if (optvalList.Count == 0)
                 {
                     // textbox
-                    var requiredattr = "";
                     if (required) requiredattr = " required='' name='optiontxt" + (index + 1) + "'"; // name also needs to be added for JQuery Validation to work correctly
                     strOut += "<input id='optiontxt" + (index + 1) + "' " + requiredattr + " update='save' type='text' />";
                 }
