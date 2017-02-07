@@ -4949,7 +4949,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                                 if (addSalePrices)
                                 {
-                                    var uInfo = UserController.GetCurrentUserInfo();
+                                    var uInfo = UserController.Instance.GetCurrentUserInfo();
                                     if (uInfo != null)
                                     {
                                         o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)

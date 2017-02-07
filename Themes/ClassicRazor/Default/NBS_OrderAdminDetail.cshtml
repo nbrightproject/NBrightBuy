@@ -325,6 +325,34 @@
                             }
 
                         </div>
+                        @{
+                            var docList = new List<NBrightInfo>();
+                            var xmldocNodList = nbiitem.XMLDoc.SelectNodes("genxml/productxml/genxml/docs/*");
+                            foreach (XmlNode n in xmldocNodList)
+                            {
+                                var nb = new NBrightInfo();
+                                nb.XMLData = n.OuterXml;
+                                docList.Add(nb);
+                            }
+                            if (docList.Count >= 1)
+                            {
+                                foreach (var doc in docList)
+                                {
+                                    var uData = new UserData();
+                                     <ul>
+                                         @if (uData.HasPurchasedDocByFileName(doc.GetXmlProperty("genxml/hidden/filename")))
+                                         {
+                                         <li>
+                                             <i class='fa fa-file-text fa-2x'>@ResourceKey("ProductView.filebullets")</i><span class="documentname">@doc.GetXmlProperty("genxml/textbox/txttitle")</span><span class="documentdescription">@doc.GetXmlProperty("genxml/textbox/txtdocdesc")</span>
+                                             <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&key=@uData.GetPurchasedKey(doc.GetXmlProperty("genxml/hidden/filename"))'>@ResourceKey("ProductView.download")</a>
+                                         </li>
+                                         }
+                                     </ul>
+                                 }
+                            }
+
+
+                        }
                     </td>
                     <td class="text-center removecolumn">@nbiitem.GetXmlProperty("genxml/modelref")</td>
                     <td class="text-center removecolumn">@nbiitem.GetXmlProperty("genxml/qty")</td>

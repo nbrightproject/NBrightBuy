@@ -281,11 +281,12 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "docdownload":
 
                         var fname = Utils.RequestQueryStringParam(context, "filename");
-                        var filekey = Utils.RequestQueryStringParam(context, "filekey");
+                        var filekey = Utils.RequestQueryStringParam(context, "key");
                         if (filekey != "")
                         {
                             var uData = new UserData();
-                            if (uData.HasPurchasedDoc(filekey)) fname = uData.GetPurchasedFileName(filekey);
+                            if (uData.HasPurchasedDocByKey(filekey)) fname = uData.GetPurchasedFileName(filekey);
+                            fname = StoreSettings.Current.FolderDocuments + "/" + fname;
                         }
                         if (fname != "")
                         {

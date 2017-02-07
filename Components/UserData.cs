@@ -22,7 +22,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
         public NBrightInfo Info;
         private UserInfo _userInfo;
-        private Dictionary<string,NBrightInfo> _docList;
+        public Dictionary<string,NBrightInfo> DocList;
+        private Dictionary<string, string> _fileKeyXref;
+
 
         public UserData()
         {
@@ -34,29 +36,66 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulateData(userId);
         }
 
-        public void AddNewPurchasedDoc(string key, string downloadfilename, string filerelpath, string filename)
+        public void AddNewPurchasedDoc(string key, string filename, string productId)
         {
-            var strXml = "<genxml><downloadfilename>" + downloadfilename + "</downloadfilename><filerelpath>" + filerelpath + "</filerelpath><filename>" + filename + "</filename></genxml>";
-            var nbi = new NBrightInfo();
-            nbi.GUIDKey = key;
-            nbi.XMLData = strXml;
-            _docList.Add(key,nbi);
+            if (!_fileKeyXref.ContainsKey(filename))
+            {
+                var strXml = "<genxml><key>" + key + "</key><productid>" + productId + "</productid><filename>" + filename + "</filename></genxml>";
+                var nbi = new NBrightInfo();
+                nbi.GUIDKey = key;
+                nbi.XMLData = strXml;
+                DocList.Add(key, nbi);
+                _fileKeyXref.Add(filename, nbi.GUIDKey);
+            }
         }
 
         public void RemovePurchasedDoc(string key)
         {
-            if (_docList != null && _docList.ContainsKey(key)) _docList.Remove(key);
+            if (DocList != null && DocList.ContainsKey(key)) DocList.Remove(key);
         }
-        public bool HasPurchasedDoc(string key)
+        public bool HasPurchasedDocByKey(string key)
         {
-            if (_docList != null && _docList.ContainsKey(key)) return true;
+            if (DocList != null && DocList.ContainsKey(key)) return true;
             return false;
         }
+
+        public bool HasPurchasedDocByFileName(string filename)
+        {
+            if (_fileKeyXref != null && _fileKeyXref.ContainsKey(filename)) return true;
+            return false;
+        }
+        public NBrightInfo GetPurchasedInfoByKey(string key)
+        {
+            if (DocList != null && DocList.ContainsKey(key))
+            {
+                return DocList[key];
+            }
+            return new NBrightInfo();
+        }
+        public NBrightInfo GetPurchasedInfoByFileName(string filename)
+        {
+            if (_fileKeyXref != null && _fileKeyXref.ContainsKey(filename))
+            {
+                var key = _fileKeyXref[filename];
+                return GetPurchasedInfoByKey(key);
+            }
+            return new NBrightInfo();
+        }
+
+        public string GetPurchasedKey(string filename)
+        {
+            if (_fileKeyXref != null && _fileKeyXref.ContainsKey(filename))
+            {
+                return _fileKeyXref[filename];
+            }
+            return "";
+        }
+
         public string GetPurchasedFileName(string key)
         {
-            if (_docList != null && _docList.ContainsKey(key))
+            if (DocList != null && DocList.ContainsKey(key))
             {
-                return _docList[key].GetXmlProperty("genxml/filename");
+                return DocList[key].GetXmlProperty("genxml/filename");
             }
             return "";
         }
@@ -69,15 +108,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (Info != null)
             {
-                Info.SetXmlProperty("genxml/purchaseddocs","");
+                Info.RemoveXmlNode("genxml/docs");
                 var strDocs = "<docs>";
-                foreach (var d in _docList)
+                foreach (var d in DocList)
                 {
                     var nbi = d.Value;
                     if (nbi.XMLData != "") strDocs += nbi.XMLData;
                 }
                 strDocs += "</docs>";
-                Info.SetXmlProperty("genxml/purchaseddocs", strDocs);
+                Info.AddXmlNode(strDocs,"docs","genxml");
 
                 var modCtrl = new NBrightBuyController();
                 Info.ItemID = modCtrl.Update(Info);
@@ -129,7 +168,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void PopulateData(String userId)
         {
-            _docList = new Dictionary<string, NBrightInfo>();
+            DocList = new Dictionary<string, NBrightInfo>();
+            _fileKeyXref = new Dictionary<string, string>();
+
             Exists = false;
             if (Utils.IsNumeric(userId))
                 _userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
@@ -154,14 +195,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 else
                     Exists = true;
 
-                var nodlist = Info.XMLDoc.SelectNodes("genxml/purchaseddocs/docs");
+                var nodlist = Info.XMLDoc.SelectNodes("genxml/docs/*");
                 if (nodlist != null)
                 {
                     foreach (XmlNode nod in nodlist)
                     {
-                        var nbi = new NBrightInfo();
-                        nbi.XMLData = nod.OuterXml;
-                        _docList.Add(nbi.GUIDKey, nbi);
+                        if (nod.SelectSingleNode("filename") != null && !_fileKeyXref.ContainsKey(nod.SelectSingleNode("filename").InnerXml))
+                        {
+                            var nbi = new NBrightInfo();
+                            nbi.XMLData = nod.OuterXml;
+                            nbi.GUIDKey = nbi.GetXmlProperty("genxml/key");
+                            DocList.Add(nbi.GetXmlProperty("genxml/key"), nbi);
+                            _fileKeyXref.Add(nbi.GetXmlProperty("genxml/filename"), nbi.GUIDKey);
+                        }
                     }
                 }
 

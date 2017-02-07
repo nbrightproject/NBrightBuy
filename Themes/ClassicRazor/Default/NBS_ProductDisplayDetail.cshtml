@@ -334,6 +334,21 @@
                                     <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&filename=@doc.GetXmlProperty("genxml/hidden/filerelpath")'>@ResourceKey("ProductView.download")</a>
                                 </li>
                             }
+                            else
+                            {
+                                var uData = new UserData();
+                                if (uData.HasPurchasedDocByFileName(doc.GetXmlProperty("genxml/hidden/filename")))
+                                {
+                                    <li>
+                                        <i class='fa fa-file-text fa-2x'>@ResourceKey("ProductView.filebullets")</i><span class="documentname">@doc.GetXmlProperty("genxml/textbox/txttitle")</span><span class="documentdescription">@doc.GetXmlProperty("genxml/textbox/txtdocdesc")</span>
+                                        <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&key=@uData.GetPurchasedKey(doc.GetXmlProperty("genxml/hidden/filename"))'>@ResourceKey("ProductView.download")</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    @ResourceKey("ProductView.downloadableproduct")
+                                }
+                            }
                         }
                     </ul>
                 </div>
