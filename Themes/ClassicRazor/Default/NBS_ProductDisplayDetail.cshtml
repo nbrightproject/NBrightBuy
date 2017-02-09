@@ -115,7 +115,7 @@
             {
                 <div itemprop="description" class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
             }
-			
+
             @if (@product.Models.Count >= 2)
             {
                 var c = 0;
@@ -183,57 +183,55 @@
                 <div class="clearfix"></div>
             }
 
-
-
-
-                    @if (Model.GetSetting("cataloguemode") != "True")
+            @if (Model.GetSetting("cataloguemode") != "True")
+            {
+                <div class="buy">
+                    @if (@product.IsInStock)
                     {
-                        <div class="buy">
-                            @if (@product.IsInStock)
-                            {
-                                if (Model.GetSetting("modeldisplaytype") != "2")
-                                {
-                                    <div class="quantityoptions">
-                                        <a class="qtyminus" href="javascript:void(0)">-</a>
-                                        <!-- "selectedaddqty"" expected by server as name of qty field -->
-                                        @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
-                                        <a class="qtyplus" href="javascript:void(0)">+</a>
-                                    </div>
-                                }
+                        if (Model.GetSetting("modeldisplaytype") != "2")
+                        {
+                            <div class="quantityoptions">
+                                <a class="qtyminus" href="javascript:void(0)">-</a>
+                                <!-- "selectedaddqty"" expected by server as name of qty field -->
+                                @TextBox(info, "genxml/textbox/selectedaddqty", "class='quantity selectedaddqty' style='width:21px'", "1")
+                                <a class="qtyplus" href="javascript:void(0)">+</a>
+                            </div>
+                        }
                                 <!-- Buy button HERE -->
-                                <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
-                            }
-                            else
-                            {
-                                <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
-                            }
-
-                            <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
-
-                        </div>
+                        <a class="addtobasket classicbutton" itemid="@(info.ItemID)" href="javascript:void(0)">@ResourceKey("ProductView.addtobasket")</a>
                     }
-                    <div>
-                        @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
-                    </div>
+                    else
+                    {
+                        <span class="outofstock">@ResourceKey("ProductView.outofstock")</span>
+                    }
+
+                    <span class="return"><a href="@EntryReturnUrl(Model)" class="classicbutton">@ResourceKey("ProductView.return")</a></span>
+
                 </div>
+            }
+            <div>
+                @HtmlOf(product.Info, "genxml/lang/genxml/hidden/promodesc")
+            </div>
+        </div>
         <div class="clearfix"></div>
 
-    <!-- Details -->
+        <!-- Details -->
         @{
             var tabbedcontent = true;
             if (Model.GetSetting("tabbedcontent") == "False") { tabbedcontent = false; }
             var modeltableclass = tabbedcontent == true ? "tab-content tab-hide" : "";
+            var modelstable = Model.GetSetting("modelstable") == "False" ? false : true;
         }
-            <div class="details">
+        <div class="details">
 
-                @if (tabbedcontent)
-                {
+            @if (tabbedcontent)
+            {
                 <ul class="nav-tabs">
                     @if (info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
                     {
                         <li class="tab-active"><a href="#tab-1">@ResourceKey("ProductView.description")</a></li><!-- Product description -->
                     }
-                    @if (product.Models.Count > 1) // has models
+                    @if (modelstable && product.Models.Count > 1) // has models
                     {
                         if (info.GetXmlProperty("genxml/lang/genxml/edt/description") == "")
                         {
@@ -250,25 +248,23 @@
                         <li><a href="#tab-3">@ResourceKey("ProductView.documentation")</a></li><!-- Document downloads -->
                     }
                 </ul>
-                }
+            }
 
-                @if (Model.GetSetting("addthispubid") != "")
-                {
-                    
-                    <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="sharetoolbox"><div class="addthis_inline_share_toolbox"></div></div></div>
-                }
+            @if (Model.GetSetting("addthispubid") != "")
+            {
+
+                <div class="sharingwidget"><div class="share">@ResourceKey("ProductView.share") :</div><div class="sharetoolbox"><div class="addthis_inline_share_toolbox"></div></div></div>
+            }
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
             {
-                <div id="tab-1" @if (tabbedcontent) {<text>class="tab-content tab-active"</text>}>
+                <div id="tab-1" @if (tabbedcontent) { <text> class="tab-content tab-active" </text> }>
                     <h3>@ResourceKey("ProductView.description")</h3>
                     @HtmlOf(info, "genxml/lang/genxml/edt/description")
                 </div>
             }
-            @if (@product.Models.Count > 1) // has models
+            @if (modelstable && @product.Models.Count > 1) // has models & models table is enabled
             {
-
-
                 <div id="tab-2" class="@(modeltableclass)">
                     <h3>@ResourceKey("ProductView.models")</h3>
                     <div class="models">
@@ -277,42 +273,42 @@
                                 <!-- Model list -->
                                 @foreach (var m in product.Models)
                                 {
-					if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")))
-                                	{
-					    <tr>
-						<td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
-						<td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
-						@if (Model.GetSetting("productcode") == "True")
-						{
-						    if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
-						    {
-							<td>NC</td>
-						    }
-						    else
-						    {
-							<td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
-						    }
-						}
-						<td>
-						    @if (product.BestPrice() < product.FromPrice())
-						    {
-							<span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
-							<strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
-						    }
-						    else
-						    {
-							<span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
-						    }
-						</td>
+                                    if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")))
+                                    {
+                                        <tr>
+                                            <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
+                                            <td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
+                                            @if (Model.GetSetting("productcode") == "True")
+                                            {
+                                                if (m.GetXmlProperty("genxml/textbox/txtmodelref") == "")
+                                                {
+                                                    <td>NC</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
+                                                }
+                                            }
+                                            <td>
+                                                @if (product.BestPrice() < product.FromPrice())
+                                                {
+                                                    <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
+                                                    <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+                                                }
+                                                else
+                                                {
+                                                    <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+                                                }
+                                            </td>
 
-						<td>
-						    @if (!product.IsInStock)
-						    {
-							<strong>@ResourceKey("ProductView.outofstock")</strong>
-						    }
-						</td>
-					    </tr>
-					}
+                                            <td>
+                                                @if (!product.IsInStock)
+                                                {
+                                                    <strong>@ResourceKey("ProductView.outofstock")</strong>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -321,7 +317,7 @@
             }
             @if (@product.Docs.Count >= 1)
             {
-                <div id="tab-3" @if (tabbedcontent) {<text>class="tab-content tab-hide"</text>}>
+                <div id="tab-3" @if (tabbedcontent) { <text> class="tab-content tab-hide" </text> }>
                     <h3>@ResourceKey("ProductView.documentation")</h3>
                     <ul class="documents">
                         <!-- documents HERE -->
@@ -370,31 +366,31 @@
 
                             @*<div class="price">
 
-                                @if (product.IsOnSale)
+                                    @if (product.IsOnSale)
+                                    {
+                                        if (product.Models.Count > 1)
+                                        {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.SalePrice()))</span>
+                                    }
+                                    else
+                                    {
+                                        if (product.Models.Count > 1) // has models or options
+                                        {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))
+
+                                    }
+
+                                </div>
+
+                                @if (rproduct.IsOnSale)
                                 {
-                                    if (product.Models.Count > 1)
-                                    {<span class="from">@ResourceKey("ProductView.from")</span>}<span class="old">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))</span><span class="sale">@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.SalePrice()))</span>
+                                    <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
                                 }
-                                else
+
+                                @if (!rproduct.IsInStock)
                                 {
-                                    if (product.Models.Count > 1) // has models or options
-                                    {<span class="from">@ResourceKey("ProductView.from")</span>}@(NBrightBuyUtils.FormatToStoreCurrency(rproduct.FromPrice()))
-
+                                    <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
                                 }
 
-                            </div>
-
-                            @if (rproduct.IsOnSale)
-                            {
-                                <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
-                            }
-
-                            @if (!rproduct.IsInStock)
-                            {
-                                <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
-                            }
-
-                            <a href="@EntryUrl(rp, Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>*@
+                                <a href="@EntryUrl(rp, Model)" class="classicbutton entryurl">@ResourceKey("ProductView.view")</a>*@
 
                         </div>
 
