@@ -2654,6 +2654,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
         {
+            if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
+
             var strOut = "";
             
             if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
@@ -2726,17 +2728,9 @@ namespace Nevoweb.DNN.NBrightBuy
             // check for user or manager.
             if (!NBrightBuyUtils.CheckRights())
             {
-                if (Utils.IsNumeric(userid) && UserController.Instance.GetCurrentUserInfo().UserID == Convert.ToInt32(userid))
-                {
-                    filter += " and ( userid = " + userid + ")   ";
-                }
-                else
-                {
-                    return "";
-                }
+                    filter += " and ( userid = " + UserController.Instance.GetCurrentUserInfo().UserID + ")   ";
             }
-
-
+            
             var recordCount = 0;
 
             if (themeFolder == "")

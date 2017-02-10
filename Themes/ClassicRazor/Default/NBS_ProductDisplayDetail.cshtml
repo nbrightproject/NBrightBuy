@@ -336,18 +336,20 @@
                             }
                             else
                             {
-                                var uData = new UserData();
-                                if (uData.HasPurchasedDocByFileName(doc.GetXmlProperty("genxml/hidden/filename")))
-                                {
-                                    <li>
-                                        <i class='fa fa-file-text fa-2x'>@ResourceKey("ProductView.filebullets")</i><span class="documentname">@doc.GetXmlProperty("genxml/textbox/txttitle")</span><span class="documentdescription">@doc.GetXmlProperty("genxml/textbox/txtdocdesc")</span>
-                                        <a class="documentlink classicbutton" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@doc.GetXmlProperty("genxml/textbox/txtfilename")&key=@uData.GetPurchasedKey(doc.GetXmlProperty("genxml/hidden/filename"))'>@ResourceKey("ProductView.download")</a>
-                                    </li>
-                                }
-                                else
-                                {
+                                <li>
                                     @ResourceKey("ProductView.downloadableproduct")
-                                }
+                                    @{
+                                        var uData = new UserData();
+                                        if (uData.HasPurchasedDocByFileName(doc.GetXmlProperty("genxml/hidden/filename")))
+                                        {
+                                            if (Model.GetSettingBool("enablemyorders"))
+                                            {
+                                                var ordermanagertabid = Model.GetSetting("ordermanagertab");
+                                                <a class="primarybutton" href="/tabid/@(ordermanagertabid)"><i class="fa fa-shopping-cart fa-lg"></i>@ResourceKey("Clients.ClientmenuOrders")</a>
+                                            }
+                                        }
+                                    }
+                                </li>
                             }
                         }
                     </ul>
