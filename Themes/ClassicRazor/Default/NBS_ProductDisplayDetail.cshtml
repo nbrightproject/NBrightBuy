@@ -273,7 +273,7 @@
                                 <!-- Model list -->
                                 @foreach (var m in product.Models)
                                 {
-                                    if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")))
+                                    if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")) && !bool.Parse(m.GetXmlProperty("genxml/checkbox/chkdeleted")))
                                     {
                                         <tr>
                                             <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
