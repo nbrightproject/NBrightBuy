@@ -487,7 +487,8 @@
     <Content Include="Themes\ClassicRazor\Default\addressadminfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminheader.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
-    <Content Include="Themes\ClassicRazor\Default\NBS_Payment_head.html" />
+    <None Include="Installation\03.05.08.SqlDataProvider" />
+    <None Include="Themes\ClassicRazor\Default\NBS_Payment_head.cshtml" />
     <None Include="Installation\03.05.06.SqlDataProvider" />
     <None Include="Installation\03.05.07.SqlDataProvider" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplayAdvSearch.cshtml" />

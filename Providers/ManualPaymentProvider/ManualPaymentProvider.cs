@@ -26,7 +26,12 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string RedirectForPayment(OrderData orderData)
         {
-            orderData.OrderStatus = "020";
+            var info = ProviderUtils.GetProviderSettings("manualpayment");
+            var settings = info.ToDictionary();
+            var neworderstatus = "020";
+            if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];
+            if (neworderstatus == "") neworderstatus = "020";
+            orderData.OrderStatus = neworderstatus;
             orderData.SavePurchaseData();
             var param = new string[3];
             param[0] = "orderid=" + orderData.PurchaseInfo.ItemID.ToString("D");

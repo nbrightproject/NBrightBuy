@@ -107,6 +107,7 @@
                 <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/street")</div>
                 <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/city")</div>
                 <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/region")</div>
+                <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region/@selectedtext")</div>
                 <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/postalcode")</div>
                 <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country/@selectedtext")</div>
             </div>
@@ -194,6 +195,7 @@
                         <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/textbox/street")</div>
                         <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/textbox/city")</div>
                         <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/textbox/region")</div>
+                        <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region/@selectedtext")</div>
                         <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/textbox/postalcode")</div>
                         <div>@nbi.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/country/@selectedtext")</div>
                     </div>
@@ -215,6 +217,7 @@
                         <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/street")</div>
                         <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/city")</div>
                         <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/region")</div>
+                        <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region/@selectedtext")</div>
                         <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/textbox/postalcode")</div>
                         <div>@nbi.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/country/@selectedtext")</div>
                     </div>
@@ -567,7 +570,7 @@
                     <tr>
                         <td class="m-ticker">
                             <div>
-                                <b> @nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</b>
+                                <b> <a href="@EntryUrl(nbiitem,Model)">@nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</a></b>
                             </div>
 
                             @{

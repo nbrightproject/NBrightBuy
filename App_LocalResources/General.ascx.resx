@@ -1137,4 +1137,13 @@
   <data name="QtyUnits.Text" xml:space="preserve">
     <value>Unit Qty</value>
   </data>
+  <data name="txtemptybasket.Text" xml:space="preserve">
+    <value>Your cart is Empty</value>
+  </data>
+  <data name="txtitems.Text" xml:space="preserve">
+    <value>item sub-total</value>
+  </data>
+  <data name="pleaseselect.Text" xml:space="preserve">
+    <value>Please Select</value>
+  </data>
 </root>

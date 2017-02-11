@@ -5,16 +5,21 @@
     <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
     
     [<tag id="optionid" type="hidden" value="" />]
-    [<tag id="fields" type="hidden" value="genxml/hidden/optionid" />]
+    [<tag id="fields" type="hidden" value="genxml/hidden/optionid,genxml/checkbox/optrequired" />]
     [<tag id="localizedfields" type="hidden" value="genxml/textbox/txtoptiondesc" />]
 
-	<div class="col-sm-12 form-horizontal">
-		<div class="row">
-	        <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Name" />]</label>[<tag type="editflag" />][<tag id="txtoptiondesc" type="textbox" cssclass="form-control input-sm" maxlength="250" />]</div>
-	        <div class="col-sm-6"><label class="control-label">&nbsp;</label><br><a class="selectoption btn btn-success input-sm" itemid="[<tag type='valueof' xpath='genxml/hidden/optionid' />]">[<tag type="htmlof" resourcekey="General.cmdEditButton" />]</a><!-- required: class="selectoption" -->
-	        <label class="control-label">&nbsp;</label><a class="removeoption btn btn-danger input-sm">[<tag type="htmlof" resourcekey="General.cmdRemoveButton" />]</a></div><!-- required: class="removeoption" -->
-	        <span style="display:none">[<tag type="valueof" xpath="genxml/hidden/optionid" />]</span>
-		</div>
-	</div>
+    <div class="col-sm-12 form-horizontal">
+        <div class="row">
+            <div class="col-sm-6"><label class="control-label">[<tag type="valueof" resourcekey="General.Name"/>]</label>[<tag type="editflag"/>]&nbsp;
+                [<tag id="optrequired" type="checkbox" Text="" update="save" />]<label class="control-label">[<tag type="valueof" resourcekey="General.RequiredField" />]</label>
+                
+            [<tag id="txtoptiondesc" type="textbox" cssclass="form-control input-sm" maxlength="250"/>]
+            </div>
+            <div class="col-sm-6"><label class="control-label">&nbsp;</label><br><a class="selectoption btn btn-success input-sm" itemid="[<tag type='valueof' xpath='genxml/hidden/optionid' />]">[<tag type="htmlof" resourcekey="General.cmdEditButton"/>]</a><!-- required: class="selectoption" -->
+                <label class="control-label">&nbsp;</label><a class="removeoption btn btn-danger input-sm">[<tag type="htmlof" resourcekey="General.cmdRemoveButton"/>]</a>
+            </div><!-- required: class="removeoption" -->
+            <span style="display: none">[<tag type="valueof" xpath="genxml/hidden/optionid" />]</span>
+        </div>
+    </div>
 </li>
 

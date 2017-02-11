@@ -87,6 +87,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (PurchaseInfo.TypeCode != null) // if we're using this class to build cart in memory for procesisng only, don;t save to DB.
             {
+                AddPurchasedDocs(); // only update the userdata if we're saving data.
                 _entryId = modCtrl.Update(PurchaseInfo);
                 NBrightBuyUtils.ProcessEventProvider(EventActions.AfterSavePurchaseData, PurchaseInfo);
             }
@@ -1090,9 +1091,65 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
 
-    #endregion
+        public List<NBrightInfo> GetPurchaseDocs()
+        {
+            var rtnList = new List<NBrightInfo>();
+            var xmlNodeList = PurchaseInfo.XMLDoc.SelectNodes("genxml/items/*");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode carNod in xmlNodeList)
+                {
+                    var xmlNodeList2 = carNod.SelectNodes("productxml/genxml/docs");
+                    if (xmlNodeList2 != null)
+                    {
+                        foreach (XmlNode docNod in xmlNodeList2)
+                        {
+                            var newDocInfo = new NBrightInfo { XMLData = docNod.InnerXml };
+                            if (newDocInfo.GetXmlPropertyBool("genxml/checkbox/chkpurchase"))
+                            {
+                                if (carNod.SelectSingleNode("productid") != null)
+                                {
+                                    newDocInfo.SetXmlProperty("genxml/productid", carNod.SelectSingleNode("productid").InnerText);
+                                }
+                                rtnList.Add(newDocInfo);
+                            }
+                        }
+                    }
+
+                }
+            }
+            return rtnList;
+        }
+
+
+        #endregion
 
         #region "private methods/functions"
+
+
+        /// <summary>
+        /// Check for any purchased download documents in cartitem and add any to USERDATA record.
+        /// </summary>
+        private void AddPurchasedDocs()
+        {
+            if (PurchaseInfo.GetXmlProperty("genxml/dropdownlist/orderstatus") == "040") // only add docs when payment OK.
+            {
+                // add purchased docs to user.
+                var udata = new UserData(PurchaseInfo.UserId.ToString());
+                var upd = false;
+                foreach (var docitem in GetPurchaseDocs())
+                {
+                    if (!udata.HasPurchasedDocByFileName(docitem.GetXmlProperty("genxml/hidden/filename")))
+                    {
+                        udata.AddNewPurchasedDoc(Utils.GetUniqueKey(20), docitem.GetXmlProperty("genxml/hidden/filename"), docitem.GetXmlProperty("genxml/productid"));
+                        upd = true;
+                    }
+                }
+                if (upd) udata.Save();
+
+            }
+        }
+
 
         /// <summary>
         /// Get CartID from cookie or session

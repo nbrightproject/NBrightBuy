@@ -196,7 +196,7 @@
     <value>Yes</value>
   </data>
   <data name="downloadableproduct.Text" xml:space="preserve">
-    <value>This is a downloadable product. Retrieve it from this page after purchase, or via a link in the purchase notification.</value>
+    <value>This is a downloadable product. Retrieve it from your account orders page after purchase.</value>
   </data>
   <data name="model.Text" xml:space="preserve">
     <value>Model</value>

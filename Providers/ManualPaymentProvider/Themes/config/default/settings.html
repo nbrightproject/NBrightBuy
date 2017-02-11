@@ -48,13 +48,21 @@
 							[<tag id="buttontext" cssclass="form-control" type="textbox" resourcekeysave="ManualPayment.Continue" maxlength="150" Text="" lang="{Settings:editlanguage}"  />]
 						</div>
 					</div>
-				
+
                     <div class="form-group">
-						<label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="ManualPayment.checkouttemplate" />]</label>
-						<div class="col-sm-5">
-							[<tag id="checkouttemplate" cssclass="form-control" type="textbox" Text="methodselection.html" />]
-						</div>
-					</div>
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="ManualPayment.checkouttemplate"/>]</label>
+                        <div class="col-sm-5">
+                            [<tag id="checkouttemplate" cssclass="form-control" type="textbox" Text="methodselection.html"/>]
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">[<tag type="valueof" resourcekey="ManualPayment.movetostatus" />]</label>
+                        <div class="col-sm-5">
+                            [<tag id="orderstatus" cssclass="form-control" enabled="true" type="orderstatus" />]
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

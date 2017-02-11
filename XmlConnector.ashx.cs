@@ -279,12 +279,23 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "addcookietobasket":
                         break;
                     case "docdownload":
+
                         var fname = Utils.RequestQueryStringParam(context, "filename");
-                        strOut = fname; // return this is error.
-                        var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
-                        var fpath = HttpContext.Current.Server.MapPath(fname);
-                        if (downloadname == "") downloadname = Path.GetFileName(fname);
-                        Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                        var filekey = Utils.RequestQueryStringParam(context, "key");
+                        if (filekey != "")
+                        {
+                            var uData = new UserData();
+                            if (uData.HasPurchasedDocByKey(filekey)) fname = uData.GetPurchasedFileName(filekey);
+                            fname = StoreSettings.Current.FolderDocuments + "/" + fname;
+                        }
+                        if (fname != "")
+                        {
+                            strOut = fname; // return this is error.
+                            var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
+                            var fpath = HttpContext.Current.Server.MapPath(fname);
+                            if (downloadname == "") downloadname = Path.GetFileName(fname);
+                            Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                        }
                         break;
                     case "printproduct":
                         break;
@@ -2643,6 +2654,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
         {
+            if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
+
             var strOut = "";
             
             if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
@@ -2715,17 +2728,9 @@ namespace Nevoweb.DNN.NBrightBuy
             // check for user or manager.
             if (!NBrightBuyUtils.CheckRights())
             {
-                if (Utils.IsNumeric(userid) && UserController.Instance.GetCurrentUserInfo().UserID == Convert.ToInt32(userid))
-                {
-                    filter += " and ( userid = " + userid + ")   ";
-                }
-                else
-                {
-                    return "";
-                }
+                    filter += " and ( userid = " + UserController.Instance.GetCurrentUserInfo().UserID + ")   ";
             }
-
-
+            
             var recordCount = 0;
 
             if (themeFolder == "")
