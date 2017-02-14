@@ -1762,7 +1762,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 #region "Init"
 
                 var isDealer = NBrightBuyUtils.IsDealer();
-
+                var uInfo = addSalePrices == true ? UserController.Instance.GetCurrentUserInfo() : null;
 
                 #endregion
 
@@ -1804,8 +1804,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 #region "Prices"
 
                                 if (addSalePrices)
-                                {
-                                    var uInfo = UserController.Instance.GetCurrentUserInfo();
+                                {                                    
                                     if (uInfo != null)
                                     {
                                         o.SetXmlPropertyDouble("genxml/hidden/saleprice", "-1"); // set to -1 so unitcost is displayed (turns off saleprice)
