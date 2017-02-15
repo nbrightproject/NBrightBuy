@@ -164,16 +164,21 @@ namespace NBrightBuy.render
             var id = info.ItemID + "_rblmodelsel";
             var s = "";
             var v = "";
+            var atts = "";
+            var attributeshidden = attributes + " style='display:none;' ";
+
             foreach (var obj in objL)
             {
-                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);                                  
+                var text = NBrightBuyUtils.GetItemDisplay(obj, template, displayprice);
                 var value = obj.GetXmlProperty("genxml/hidden/modelid");
                 if (value == v || (v == "" && defaultIndex == c))
                     s = "checked";
                 else
                     s = "";
-                if (text == "") attributes = attributes + " style='display:none;' "; // no stock so don;t display.
-                strOut += "<div " + attributes + "><input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label></div>";
+
+                atts = (text == "") ? attributeshidden : attributes;
+
+                strOut += "<div " + atts + "><input id='" + id + "_" + c.ToString("") + "' update='save' name='" + id + "' type='radio' value='" + value + "'  " + s + "/><label>" + text + "</label></div>";
                 c += 1;
 
             }

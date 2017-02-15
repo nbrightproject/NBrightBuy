@@ -273,7 +273,7 @@
                                 <!-- Model list -->
                                 @foreach (var m in product.Models)
                                 {
-                                    if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")))
+                                    if (!bool.Parse(m.GetXmlProperty("genxml/checkbox/chkishidden")) && !bool.Parse(m.GetXmlProperty("genxml/checkbox/chkdeleted")))
                                     {
                                         <tr>
                                             <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
@@ -365,7 +365,7 @@
                     var rproduct = new ProductData(rp.ItemID, rp.Lang);
                     <div class="product" style="width: @Model.GetSetting("relateditemwidth")px; height: @Model.GetSetting("relateditemheight"); margin-bottom: @Model.GetSetting("relateditembottommargin")px">
 
-                        <div class="productimg" style="width: 294px; height: @(Model.GetSetting("relateditemimagecontainerheight"))">
+                        <div class="productimg" style="height: @(Model.GetSetting("relateditemimagecontainerheight"))">
 
                             @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                             {
