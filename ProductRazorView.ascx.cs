@@ -356,6 +356,8 @@ namespace Nevoweb.DNN.NBrightBuy
                             else
                                 strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + catseo + ") ";
                         }
+                        // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                        if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" + _catid;
                     }
                     else
                     {
