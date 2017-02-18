@@ -1468,6 +1468,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
                     nbRazor.ModuleId = moduleid;
+                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                    nbRazor.TemplateName = razorTemplName;
+                    nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
+
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, ckey, razorTempl); // only save to cache if we pass in a cache key.
@@ -1488,6 +1493,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
                     nbRazor.ModuleId = moduleid;
+                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                    nbRazor.TemplateName = razorTemplName;
+                    nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
+
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
                     razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
                     if (cacheKey != "") SetModCache(moduleid, cachekey, razorTempl); // only save to cache if we pass in a cache key.
@@ -1518,6 +1528,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 modRazor.FullTemplateName = theme + "." + razorTemplName;
                 modRazor.TemplateName = razorTemplName;
                 modRazor.ThemeFolder = theme;
+                modRazor.Lang = lang;
                 try
                 {
                     // do razor and cache preprocessmetadata

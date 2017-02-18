@@ -41,7 +41,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
             {
-                var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                var strCacheKey = "NBS_GrpList_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);
+                strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + PortalSettings.Current.PortalId;
+                NBrightBuyUtils.RemoveCache(strCacheKey);
+                strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
                 strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);                
@@ -435,17 +439,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _objCtrl = new NBrightBuyController();
             _lang = lang;
 
-            // get groups
-            GroupList = NBrightBuyUtils.GetCategoryGroups(_lang, true);
-
-            GroupsDictionary = new Dictionary<String, String>();
-            foreach (var g in GroupList)
+            var strCacheKey = "NBS_GrpList_" + lang + "_" + PortalSettings.Current.PortalId;
+            GroupList = (List<NBrightInfo>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (GroupList == null || debugMode)
             {
-                if (!GroupsDictionary.ContainsKey(g.GetXmlProperty("genxml/textbox/groupref"))) GroupsDictionary.Add(g.GetXmlProperty("genxml/textbox/groupref"), g.GetXmlProperty("genxml/lang/genxml/textbox/groupname"));
+                // get groups
+                GroupList = NBrightBuyUtils.GetCategoryGroups(_lang, true);
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, GroupList);
+            }
+
+            strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + PortalSettings.Current.PortalId;
+            GroupsDictionary = (Dictionary<string,string>)NBrightBuyUtils.GetModCache(strCacheKey);
+            if (GroupsDictionary == null || debugMode)
+            {
+                GroupsDictionary = new Dictionary<String, String>();
+                foreach (var g in GroupList)
+                {
+                    if (!GroupsDictionary.ContainsKey(g.GetXmlProperty("genxml/textbox/groupref"))) GroupsDictionary.Add(g.GetXmlProperty("genxml/textbox/groupref"), g.GetXmlProperty("genxml/lang/genxml/textbox/groupname"));
+                }
+                NBrightBuyUtils.SetModCache(-1, strCacheKey, GroupsDictionary);
             }
 
             // build group category list
-            var strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GrpCategoryList == null || debugMode)
             {

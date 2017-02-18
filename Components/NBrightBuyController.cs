@@ -385,11 +385,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (l == null)
             {
                 l = GetList(portalId, moduleId, entityTypeCode, strFilters, strOrderBy, returnLimit, pageNumber, pageSize, recordCount, entityTypeCodeLang, cultureCode);
-                //add rowcount, so we can use databind RowCount in the templates
-                foreach (var i in l)
-                {
-                    i.RowCount = l.IndexOf(i) + 1;
-                }
                 if (debugMode == false) NBrightBuyUtils.SetModCache(moduleId, strCacheKey, l);
             }
             return l;
