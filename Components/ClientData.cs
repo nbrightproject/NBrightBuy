@@ -331,7 +331,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-    #endregion
+        #endregion
+
+        #region "itemlists"
+
+        public void UpdateItemList(string listname, string listcsv = "")
+        {
+            if (DataRecord.XMLDoc.SelectSingleNode("genxml/itemlists") == null)
+            {
+                DataRecord.SetXmlProperty("genxml/itemlists", "");
+            }
+            DataRecord.SetXmlProperty("genxml/itemlists/" + Utils.CleanInput(listname).Replace(" ","-"), listcsv);
+        }
+
+        public string GetItemList(string listname)
+        {
+            return DataRecord.GetXmlProperty("genxml/itemlists/" + Utils.CleanInput(listname).Replace(" ", "-"));
+        }
+
+        public Dictionary<string,string> GetItemListNames()
+        {
+            var l = new Dictionary<string, string>();
+            var nodList = DataRecord.XMLDoc.SelectNodes("genxml/itemlists/*");
+            foreach (XmlNode n in nodList)
+            {
+                l.Add(n.Name,n.Name.Replace("-"," "));
+            }
+            return l;
+        } 
+
+        #endregion
+
 
         #region "private methods/functions"
 

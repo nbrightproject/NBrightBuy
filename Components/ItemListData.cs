@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Xml;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -47,6 +49,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (ItemList != "") _cookie["ItemList"] = ItemList;
             _cookie.Expires = DateTime.Now.AddDays(1d);
             _response.Cookies.Add(_cookie);
+
+            // if user then get from clientdata
+            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            if (currentUserId > 0)
+            {
+                var clientData = new ClientData(PortalSettings.Current.PortalId, currentUserId);
+                if (clientData.Exists)
+                {
+                    clientData.UpdateItemList(CookieName, ItemList);
+                }
+            }
+
+
             Exists = true;
         }
 
@@ -66,6 +81,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     ItemList = _cookie.Value;
                 }
+
+                // if user then get from clientdata
+            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            if (currentUserId > 0)
+            {
+                var clientData = new ClientData(PortalSettings.Current.PortalId, currentUserId);
+                if (clientData.Exists)
+                {
+                    var l = clientData.GetItemList(CookieName);
+                    if (l == "")
+                    {
+                        // save current cookie list to clientdata (client registered after cookie)
+                        clientData.UpdateItemList(CookieName,ItemList);
+                    }
+                    else
+                    {
+                        ItemList = l;
+                    }
+                }
+            }
+
 
             if (ItemList == "") // "Exist" property not used for paging data
                 Exists = false;

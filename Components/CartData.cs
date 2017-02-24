@@ -93,12 +93,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (ordData.EditMode == "") // don't update if we are in edit mode, we dont; want manager email to be altered.
                 {
                     // if the client has updated the email address, link this back to DNN profile. (We assume they alway place there current email address on th order.)
-                    var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
-                    if (objUser != null && objUser.Email != ordData.EmailAddress)
-                    {
-                        var clientData = new ClientData(PortalId, ordData.UserId);
-                        clientData.UpdateEmail(ordData.EmailAddress);
-                    }
+                    //var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, ordData.UserId);
+                    //if (objUser != null && objUser.Email != ordData.EmailAddress)
+                    //{
+                    //    var clientData = new ClientData(PortalId, ordData.UserId);
+                    //    clientData.UpdateEmail(ordData.EmailAddress);
+                    //}
+                    // ++++++ Assumption Wrong!!! never assume!!  ++++++++++
+                    // This also leads to problem is using the email form the username, 
+                    //   people don;t understand why their login isn't working when they haven't specificlly change the email address on the site!!
+
+
                     var addrData = new AddressData(ordData.UserId.ToString());
                     var billAddr = ordData.GetBillingAddress();
                     var selectedbilladdrIdx = billAddr.GetXmlProperty("genxml/dropdownlist/selectaddress");
