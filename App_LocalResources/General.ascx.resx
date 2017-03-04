@@ -421,10 +421,10 @@
     <value>Last Name</value>
   </data>
   <data name="lblAddress1.Text" xml:space="preserve">
-    <value>Address line 1</value>
+    <value>Unit</value>
   </data>
   <data name="lblAddress2.Text" xml:space="preserve">
-    <value>Address line 2</value>
+    <value>Address</value>
   </data>
   <data name="lblTown.Text" xml:space="preserve">
     <value>Town</value>
