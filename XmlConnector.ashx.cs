@@ -2725,12 +2725,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 filter += " and ([xmldata].value('(genxml/dropdownlist/orderstatus)[1]', 'nvarchar(max)') = '" + searchorderstatus + "')   ";
             }
 
-            // check for user or manager.
-            if (!NBrightBuyUtils.CheckRights())
+            // check for admins, editors or managers (not clienteditors).  
+            if (!NBrightBuyUtils.CheckRights() || UserController.Instance.GetCurrentUserInfo().IsInRole(StoreSettings.ClientEditorRole))
             {
-                    filter += " and ( userid = " + UserController.Instance.GetCurrentUserInfo().UserID + ")   ";
+                filter += " and ( userid = " + UserController.Instance.GetCurrentUserInfo().UserID + ")   ";
             }
-            
+
             var recordCount = 0;
 
             if (themeFolder == "")
