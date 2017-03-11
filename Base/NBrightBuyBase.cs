@@ -41,7 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             ModCtrl = new NBrightBuyController();
             DebugMode = StoreSettings.Current.DebugMode;
 
-		    base.OnInit(e);
+            base.OnInit(e);
 
             #region "Get all Settings for module"
             //get Model Level Settings
@@ -53,6 +53,24 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
             if (EnablePaging)
             {
+                // SET NOINDEX if we are paging product list
+                try
+                {
+                    var page = Utils.RequestQueryStringParam(Context, "page");
+                    if (page != "")
+                    {
+                        var metarobots = (System.Web.UI.HtmlControls.HtmlMeta)BasePage.Header.FindControl("MetaRobots");
+                        if (metarobots != null)
+                        {
+                            metarobots.Content = "NOINDEX";
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+
                 CtrlPaging = new NBrightCore.controls.PagingCtrl();
                 this.Controls.Add(CtrlPaging);
                 CtrlPaging.PageChanged += new RepeaterCommandEventHandler(PagingClick);

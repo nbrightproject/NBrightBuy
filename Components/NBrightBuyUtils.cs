@@ -188,6 +188,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
 
+            // make sure we have the correct culturecode, fo OpenUrlrewriter
+            objTabInfo.CultureCode = Utils.GetCurrentCulture();
+
             var rdModId = "";
             if (modulekey != "") rdModId = "&modkey=" + modulekey;
 
@@ -293,6 +296,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     }
                 }
                 if (string.IsNullOrEmpty(title)) title = "Default.aspx";
+
+                // make sure we have the correct culturecode, fo OpenUrlrewriter
+                tabInfo.CultureCode = Utils.GetCurrentCulture();
 
                 var url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(tabInfo, "~/Default.aspx?tabid=" + tabInfo.TabID.ToString(""), title);
                 return url;
