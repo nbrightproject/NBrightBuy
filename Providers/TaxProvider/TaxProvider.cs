@@ -149,7 +149,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             Double taxtotal = 0;
 
             var totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/totalcost");
-            if (cartItemInfo.GetXmlPropertyBool("genxml/isdealer")) totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/totaldealercost");
+            // check if dealer and if dealertotal cost exists. ()
+            if (cartItemInfo.GetXmlPropertyBool("genxml/isdealer")) totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/dealercost");
             var taxratecode = cartItemInfo.GetXmlProperty("genxml/taxratecode");
             if (!Utils.IsNumeric(taxratecode)) taxratecode = "0";
             if (!rateDic.ContainsKey(taxratecode)) taxratecode = "0";
