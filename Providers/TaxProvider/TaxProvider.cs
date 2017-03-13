@@ -151,7 +151,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/totalcost");
             if (cartItemInfo.GetXmlPropertyBool("genxml/isdealer")) totalcost = cartItemInfo.GetXmlPropertyDouble("genxml/totaldealercost");
             var taxratecode = cartItemInfo.GetXmlProperty("genxml/taxratecode");
-            if (taxratecode == "") taxratecode = "0";
+            if (!Utils.IsNumeric(taxratecode)) taxratecode = "0";
             if (!rateDic.ContainsKey(taxratecode)) taxratecode = "0";
             Double taxrate = 0;
             if (rateDic.ContainsKey(taxratecode)) taxrate = rateDic[taxratecode]; // Can happen is no default tax added.
