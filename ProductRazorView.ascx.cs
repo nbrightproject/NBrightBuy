@@ -18,6 +18,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content.Common;
@@ -60,9 +61,18 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _print = "";
         private String _printtemplate = "";
         private String _guidkey = "";
+        private Boolean _404code = false;
 
         #region Event Handlers
 
+        protected override void Render(HtmlTextWriter writer)
+        {
+            base.Render(writer);
+            if (_404code)
+            {
+                Response.StatusCode = 404;
+            }
+        }
 
         override protected void OnInit(EventArgs e)
         {
@@ -597,7 +607,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var productData = ProductUtils.GetProductData(Convert.ToInt32(entryId), Utils.GetCurrentCulture(),true,EntityTypeCode);
 
             if (productData.Exists)
-        {
+            {
 
                 if (PortalSettings.HomeTabId == TabId)
                     PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
@@ -626,7 +636,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 phData.Controls.Add(lit);
 
                 #endregion
+            }
+            else
+            {
+                _404code = true;
 
+                var lit = new Literal();
+                lit.Text = "NO PRODUCT";
+                phData.Controls.Add(lit);
 
             }
 
