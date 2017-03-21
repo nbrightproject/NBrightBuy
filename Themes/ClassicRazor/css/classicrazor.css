@@ -224,6 +224,8 @@ input.quantity {float:left;margin:0 6px;}
 /* Related Items */
 #relatedwrapper {margin-top:20px;}
 #relatedwrapper .image {border:none;}
+#relatedwrapper .productimg{width:194px;}
+#relatedwrapper .product .description h2{margin: 0px 5px 0 5px}
 
 /* Currency Convertor */
 .ccwrapper{border-collapse:collapse;display:table;table-layout:fixed;}
