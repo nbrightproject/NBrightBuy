@@ -1119,6 +1119,12 @@ namespace Nevoweb.DNN.NBrightBuy.render
                     pagename = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(catid)) + ".aspx";
                     catparam = "&catid=" + catid;
                 }
+                var catref = Utils.RequestParam(HttpContext.Current, "catref");
+                if (catref != "")
+                {
+                    catparam = "&catref=" + catref;
+                    pagename = "";
+                }
                 var url = DotNetNuke.Services.Url.FriendlyUrl.FriendlyUrlProvider.Instance().FriendlyUrl(PortalSettings.Current.ActiveTab, "~/Default.aspx?tabid=" + PortalSettings.Current.ActiveTab.TabID.ToString("") + catparam + "&page=" + Convert.ToString(DataBinder.Eval(container.DataItem, "PageNumber")) + "&pagemid=" + l.Text, pagename);
                 l.Text = "<a href=\"" + url + "\">" + Convert.ToString(DataBinder.Eval(container.DataItem, "Text")) + "</a>";
             }
