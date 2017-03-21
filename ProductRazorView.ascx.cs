@@ -604,7 +604,11 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void RazorDisplayDataEntry(String entryId)
         {
-            var productData = ProductUtils.GetProductData(Convert.ToInt32(entryId), Utils.GetCurrentCulture(),true,EntityTypeCode);
+            var productData = new ProductData();
+            if (Utils.IsNumeric(entryId))
+            {
+                productData = ProductUtils.GetProductData(Convert.ToInt32(entryId), Utils.GetCurrentCulture(), true, EntityTypeCode);
+            }
 
             if (productData.Exists)
             {
@@ -640,9 +644,9 @@ namespace Nevoweb.DNN.NBrightBuy
             else
             {
                 _404code = true;
-
+                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
-                lit.Text = "NO PRODUCT";
+                lit.Text = strOut;
                 phData.Controls.Add(lit);
 
             }

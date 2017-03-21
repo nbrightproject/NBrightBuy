@@ -502,6 +502,7 @@
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound.cshtml" />
     <None Include="Themes\ClassicRazor\Default\printorder.cshtml" />
     <None Include="Plugins\v030501-system.configsave" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
