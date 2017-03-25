@@ -133,13 +133,13 @@
     <value>Image URL</value>
   </data>
   <data name="ManualPaymentMethod.Text" xml:space="preserve">
-    <value>Payment by Cheque or Transfer</value>
+    <value>Payment by Check or Transfer</value>
   </data>
   <data name="Continue.Text" xml:space="preserve">
     <value>Continue</value>
   </data>
   <data name="ManualPayment.Text" xml:space="preserve">
-    <value>Cheque or Transfer</value>
+    <value>Check or Transfer</value>
   </data>
   <data name="buttontext.Text" xml:space="preserve">
     <value>Button Text</value>
