@@ -142,7 +142,7 @@
     <value>Template to be used as header.</value>
   </data>
 	<data name="lbllistheader.Text" xml:space="preserve">
-    <value>Order List  Header : </value>
+    <value>Order List Header : </value>
   </data>
 	<data name="lbltheme.Help" xml:space="preserve">
     <value>Name of the theme to use for this cart list.</value>
@@ -160,7 +160,7 @@
     <value>Template to be used as  body</value>
   </data>
 	<data name="lbldetailbody.Text" xml:space="preserve">
-    <value>Order  Detail Body : </value>
+    <value>Order Detail Body : </value>
   </data>
 	<data name="lbldetailfooter.Help" xml:space="preserve">
     <value>Template to be used as footer.</value>
@@ -172,16 +172,16 @@
     <value>Template to be used as header.</value>
   </data>
 	<data name="lbldetailheader.Text" xml:space="preserve">
-    <value>Order Detail  Header : </value>
+    <value>Order Detail Header : </value>
   </data>
 	<data name="listtemplates.Text" xml:space="preserve">
     <value>List Templates</value>
   </data>
 	<data name="lblitemdetailbody.Help" xml:space="preserve">
-    <value>Template to be used as  item list body</value>
+    <value>Template to be used as item list body</value>
   </data>
 	<data name="lblitemdetailbody.Text" xml:space="preserve">
-    <value>Order  Detail Item List Body : </value>
+    <value>Order Detail Item List Body : </value>
   </data>
 	<data name="lblitemdetailfooter.Help" xml:space="preserve">
     <value>Template to be used as footer.</value>
@@ -193,6 +193,6 @@
     <value>Template to be used as header.</value>
   </data>
 	<data name="lblitemdetailheader.Text" xml:space="preserve">
-    <value>Order Detail  Item List Header : </value>
+    <value>Order Detail Item List Header : </value>
   </data>
 </root>

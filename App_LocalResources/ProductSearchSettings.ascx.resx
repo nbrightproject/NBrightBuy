@@ -154,7 +154,7 @@
     <value>Turn on the Manufacturer text search</value>
   </data>
   <data name="lbltxtmanufacturer.Text" xml:space="preserve">
-    <value> Manufacturer Text Search</value>
+    <value>Manufacturer Text Search</value>
   </data>
   <data name="lbltxtseoname.Help" xml:space="preserve">
     <value>Turn on the SEO name text search</value>
@@ -175,10 +175,10 @@
     <value>Summary Text Search</value>
   </data>
   <data name="lbltxttagwords.Help" xml:space="preserve">
-    <value>Turn on the tag words  text search</value>
+    <value>Turn on the tag words text search</value>
   </data>
   <data name="lbltxttagwords.Text" xml:space="preserve">
-    <value> Tag Words Text Search</value>
+    <value>Tag Words Text Search</value>
   </data>
   <data name="lbltargetmodulekey.Help" xml:space="preserve">
     <value>Module Key of the module that will display the results.</value>

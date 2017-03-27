@@ -256,10 +256,10 @@
     <value>Allow client to Edit assigned articles</value>
   </data>
   <data name="cmdUnAuthoriseUser.confirm" xml:space="preserve">
-    <value>Remove Authorisation for User and stop website login access?</value>
+    <value>Remove Authorization for User and stop website login access?</value>
   </data>
   <data name="cmdUnAuthoriseUser.Text" xml:space="preserve">
-    <value>Remove Authorisation</value>
+    <value>Remove Authorization</value>
   </data>
   <data name="cmdRestoreUser.confirm" xml:space="preserve">
     <value>Restore User?</value>
