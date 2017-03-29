@@ -249,7 +249,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                         var itemref = nbi.GetXmlProperty("genxml/textbox/txtproductref");
                         if (itemref != "")
                         {
-                            var l = ModCtrl.GetList(PortalId, -1, "PRD", " and NB3.ProductRef = '" + itemref.Replace("'", "''") + "' ");
+                            var l = ModCtrl.GetList(PortalId, -1, "PRD", " and NB1.XmlData.value('(genxml/textbox/txtproductref)[1]','nvarchar(max)') = '" + itemref.Replace("'", "''") + "' ");
                             if (l.Count > 0) nbi.ItemID = l[0].ItemID;
                         }
                     }

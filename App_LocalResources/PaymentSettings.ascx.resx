@@ -136,7 +136,7 @@
     <value>Summary Footer Template : </value>
   </data>
 	<data name="lblpaymentoktemplate.Help" xml:space="preserve">
-    <value>Template displayed when the payment has been successful. if no payment providers exist then the order is automatically processed and this template is displayed directly.</value>
+    <value>Template displayed when the payment has been successful. If no payment providers exist then the order is automatically processed and this template is displayed directly.</value>
   </data>
 	<data name="lblpaymentoktemplate.Text" xml:space="preserve">
     <value>Payment Successful template : </value>

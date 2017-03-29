@@ -226,7 +226,7 @@
     <value>Target Module key :</value>
   </data>
   <data name="lbltreeidentclass.Help" xml:space="preserve">
-    <value>Identifying CSS class name to be placed onto the root "ul" of the tree structure.  This will be used to identify the Tree to the Javascipt.</value>
+    <value>Identifying CSS class name to be placed onto the root "ul" of the tree structure.  This will be used to identify the Tree to the Javascript.</value>
   </data>
   <data name="lbltreeidentclass.Text" xml:space="preserve">
     <value>Identifying Css Class : </value>
