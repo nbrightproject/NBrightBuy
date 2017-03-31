@@ -514,12 +514,10 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", toParentItemid.ToString(""));
                     selData.DataRecord.ParentItemId = toParentItemid;
                     selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
-                    var strneworder = movData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                    var selorder = selData.DataRecord.GetXmlProperty("genxml/hidden/recordsortorder");
-                    if (!Utils.IsNumeric(strneworder)) strneworder = "1";
-                    if (!Utils.IsNumeric(selorder)) selorder = "1";
+                    var strneworder = movData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                    var selorder = selData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
                     var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
-                    if (Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US")) < Convert.ToDouble(selorder, CultureInfo.GetCultureInfo("en-US")))
+                    if (strneworder < selorder)
                         neworder = neworder - 0.5;
                     else
                         neworder = neworder + 0.5;
