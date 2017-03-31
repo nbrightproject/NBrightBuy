@@ -536,38 +536,50 @@ namespace Nevoweb.DNN.NBrightBuy
                     // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
                     NBrightCore.common.Cookie.SetCookieValue(PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
 
-                    strFilter += " and (NB3.Visible = 1) "; // get only visible products
 
-                    var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, EntityTypeCode, strFilter, EntityTypeCodeLang, Utils.GetCurrentCulture(), DebugMode);
-
-                    _navigationdata.RecordCount = recordCount.ToString("");
-                    _navigationdata.Save();
-
-                    if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
-
-                    // **** check if we already have the template cached, if so no need for DB call or razor call ****
-                    // get same cachekey used for DB return, and use for razor.
-                    var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-                    var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + PortalId.ToString();
-                    var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
-                    if (strOut == null || StoreSettings.Current.DebugMode)
+                    if (strFilter.Trim() == "")
                     {
-                        var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-                        strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                        // if at this point we have no filter, then assume we're using urlrewriter and a 404 url has been entered.
+                        // rather than display all visible products in a list with no default.
+                        // redirect to the product display function, so we can display a 404 and product not found.
+                        RazorDisplayDataEntry(_eid);
                     }
-
-                    var lit = new Literal();
-                    lit.Text = strOut;
-                    phData.Controls.Add(lit);
-
-                    if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
-
-                    if (pageSize > 0)
+                    else
                     {
-                        CtrlPaging.PageSize = pageSize;
-                        CtrlPaging.CurrentPage = pageNumber;
-                        CtrlPaging.TotalRecords = recordCount;
-                        CtrlPaging.BindPageLinks();
+
+                        strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
+                        var recordCount = ModCtrl.GetDataListCount(PortalId, ModuleId, EntityTypeCode, strFilter, EntityTypeCodeLang, Utils.GetCurrentCulture(), DebugMode);
+
+                        _navigationdata.RecordCount = recordCount.ToString("");
+                        _navigationdata.Save();
+
+                        if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
+
+                        // **** check if we already have the template cached, if so no need for DB call or razor call ****
+                        // get same cachekey used for DB return, and use for razor.
+                        var razorcachekey = ModCtrl.GetDataListCacheKey(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                        var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + PortalId.ToString();
+                        var strOut = (String) NBrightBuyUtils.GetModCache(cachekey);
+                        if (strOut == null || StoreSettings.Current.DebugMode)
+                        {
+                            var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                            strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                        }
+
+                        var lit = new Literal();
+                        lit.Text = strOut;
+                        phData.Controls.Add(lit);
+
+                        if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
+
+                        if (pageSize > 0)
+                        {
+                            CtrlPaging.PageSize = pageSize;
+                            CtrlPaging.CurrentPage = pageNumber;
+                            CtrlPaging.TotalRecords = recordCount;
+                            CtrlPaging.BindPageLinks();
+                        }
                     }
 
                 }

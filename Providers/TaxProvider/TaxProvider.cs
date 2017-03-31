@@ -59,8 +59,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 var enabletaxnumber = info.GetXmlPropertyBool("genxml/checkbox/enabletaxnumber");
                 if (enabletaxnumber)
                 {
-                    var taxnumber = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber");
-                    var storetaxnumber = StoreSettings.Current.Get("storetaxnumber");
+                    var taxnumber = cartInfo.GetXmlProperty("genxml/extrainfo/genxml/textbox/taxnumber").Trim();
+                    var storetaxnumber = StoreSettings.Current.Get("storetaxnumber").Trim();
                     if (storetaxnumber.Length >= 2) storetaxnumber = storetaxnumber.Substring(0, 2).ToUpper();
                     if (taxnumber.Length >= 2) taxnumber = taxnumber.Substring(0, 2).ToUpper();
                     if (taxnumber != storetaxnumber && taxnumber != "")
@@ -107,8 +107,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (taxexemptregions != "" && taxcountry == storecountry)
                 {
                     taxexemptregions = "," + taxexemptregions.ToUpper().Replace(" ","") + ",";
-                    var taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region");
-                    if (taxregioncode == "") taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/textbox/txtregion");
+                    var taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region").Trim();
+                    if (taxregioncode == "") taxregioncode = cartInfo.GetXmlProperty("genxml/billaddress/genxml/textbox/txtregion").Trim();
                     if (taxregioncode != "")
                     {
                         if (!taxexemptregions.Contains("," + taxregioncode.ToUpper().Replace(" ", "") + ","))
