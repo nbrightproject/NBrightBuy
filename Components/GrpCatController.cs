@@ -344,6 +344,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         #endregion
 
         #region "breadcrumbs"
+
+        public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
+        {
+            return GetBreadCrumb(categoryid, shortLength, separator, aslist, false);
+        }
         /// <summary>
         /// Get category breadcrumb, using controller langauge
         /// </summary>
@@ -351,8 +356,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="shortLength">0 = unlimited</param>
         /// <param name="separator"></param>
         /// <param name="aslist">if true brings html list as return string</param>
+        /// <param name="useSEO">if true uses the SEO Name if entered</param>
         /// <returns></returns>
-        public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist)
+        public String GetBreadCrumb(int categoryid, int shortLength, string separator, bool aslist, bool useSEO)
         {
             var breadCrumb = "";
             var checkDic = new Dictionary<int, int>();
@@ -365,6 +371,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (l.Any())
                 {
                     var crumbText = l.First().categoryname;
+                    if (useSEO && l.First().seoname != "") crumbText = l.First().seoname;
                     if (crumbText != null)
                     {
                         if (shortLength > 0)
@@ -390,8 +397,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             return "";
         }
-
         public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist)
+        {
+            return GetBreadCrumbWithLinks(categoryid, tabId, shortLength, separator, aslist, false);
+        }
+        public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist, bool useSEO)
         {
             var breadCrumb = "";
             var checkDic = new Dictionary<int, int>();
@@ -404,6 +414,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (l.Any())
                 {
                     var crumbText = l.First().categoryname;
+                    if (useSEO && l.First() != null && l.First().seoname != "") crumbText = l.First().seoname;
                     if (crumbText != null)
                     {
                         if (shortLength > 0)

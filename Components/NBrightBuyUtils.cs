@@ -215,10 +215,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (!strurl.Contains("catref="))
                     {
                         var defcat = prdData.GetDefaultCategory();
-                        if (defcat != null && defcat.categoryref != "" && !strurl.EndsWith("?"))
+                        if (defcat != null && defcat.categoryrefGUIDKey != "" && !strurl.EndsWith("?"))
                         {
                             strurl += "&";
-                            strurl += "catref=" + defcat.categoryref;
+                            strurl += "catref=" + defcat.categoryrefGUIDKey;
                         }
                     }
                     if (!strurl.EndsWith("?")) strurl += "&";

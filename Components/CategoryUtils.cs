@@ -73,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var objCtrl = new NBrightBuyController();
                 var parentCatData = GetCategoryData(categoryId, lang);
                 var grpCatCtrl = new GrpCatController(lang);
-                var newGuidKey = grpCatCtrl.GetBreadCrumb(categoryId, 0, "-", false);
+                var newGuidKey = grpCatCtrl.GetBreadCrumb(categoryId, 0, "-", false,true);
                 if (newGuidKey != "") newGuidKey = GetUniqueGuidKey(portalId, categoryId, Utils.UrlFriendly(newGuidKey)).ToLower();
                 if (parentCatData.DataLangRecord.GUIDKey != newGuidKey)
                 {

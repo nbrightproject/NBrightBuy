@@ -819,6 +819,7 @@ namespace NBrightBuy.render
 
         public IEncodedString EntryUrl(NBrightInfo info, NBrightRazor model, Boolean relative = true, String categoryref = "")
         {
+            categoryref = ""; // legacy
             var url = "";
             try
             {
