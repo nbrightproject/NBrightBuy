@@ -19,6 +19,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private NBrightBuyController _objCtrl;
 
         private String _lang = "";
+        private int _portalId = -1;
         public List<GroupCategoryData> GrpCategoryList;
         public List<GroupCategoryData> CategoryList;
         public List<NBrightInfo> GroupList;
@@ -26,6 +27,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public GrpCatController(String lang,Boolean debugMode = false)
         {
+            _portalId = PortalSettings.Current.PortalId;
+            Load(lang, debugMode);
+        }
+
+        public GrpCatController(String lang,int portalId, Boolean debugMode = false)
+        {
+            _portalId = portalId;
             Load(lang, debugMode);
         }
 
@@ -39,15 +47,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ClearCache()
         {
-            foreach (var lang in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+            foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                var strCacheKey = "NBS_GrpList_" + lang + "_" + PortalSettings.Current.PortalId;
+                var strCacheKey = "NBS_GrpList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + PortalSettings.Current.PortalId;
+                strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+                strCacheKey = "NBS_CategoryList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);                
             }
         }
@@ -450,7 +458,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _objCtrl = new NBrightBuyController();
             _lang = lang;
 
-            var strCacheKey = "NBS_GrpList_" + lang + "_" + PortalSettings.Current.PortalId;
+            var strCacheKey = "NBS_GrpList_" + lang + "_" + _portalId;
             GroupList = (List<NBrightInfo>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GroupList == null || debugMode)
             {
@@ -459,7 +467,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, GroupList);
             }
 
-            strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + PortalSettings.Current.PortalId;
+            strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + _portalId;
             GroupsDictionary = (Dictionary<string,string>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GroupsDictionary == null || debugMode)
             {
@@ -472,7 +480,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // build group category list
-            strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + _portalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GrpCategoryList == null || debugMode)
             {
@@ -481,7 +489,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // build cateogry list for navigation from group category list
-            strCacheKey = "NBS_CategoryList_" + lang + "_" + PortalSettings.Current.PortalId;
+            strCacheKey = "NBS_CategoryList_" + lang + "_" + _portalId;
             CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (CategoryList == null || debugMode)
             {
@@ -539,10 +547,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
             var grpcatList = new List<GroupCategoryData>();
 
-            var l = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
-            var lg = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
-            var lx = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
-            var lx2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
+            var l = objCtrl.GetList(_portalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
+            var lg = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
+            var lx = objCtrl.GetList(_portalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
+            var lx2 = objCtrl.GetList(_portalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
             lx.AddRange(lx2);
             foreach (var i in l)
             {
@@ -607,12 +615,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void AddCatCascadeRecord(int categoryid,int productid)
         {
             var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
-            var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+            var nbi = _objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid);
             if (nbi == null)
             {
                 nbi = new NBrightInfo();
                 nbi.ItemID = -1;
-                nbi.PortalId = PortalSettings.Current.PortalId;
+                nbi.PortalId = _portalId;
                 nbi.ModuleId = -1;
                 nbi.TypeCode = "CATCASCADE";
                 nbi.XrefItemId = categoryid;
@@ -664,11 +672,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var subCats = GetSubCategoryList(catList, categoryid);
                 foreach (var c in subCats)
                 {
-                    xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
+                    xrefList = _objCtrl.GetList(_portalId, -1, "CATXREF", " and xrefitemid = " + c.categoryid.ToString(""));
                     prodItemIdList.AddRange(xrefList.Select(r => r.ParentItemId));
                 }
                 //Get the current catascade records
-                xrefList = _objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
+                xrefList = _objCtrl.GetList(_portalId, -1, "CATCASCADE", " and xrefitemid = " + categoryid.ToString(""));
                 var casacdeProdItemIdList = xrefList.Select(r => r.ParentItemId).ToList();
 
                 //Update the catcascade records.
@@ -681,7 +689,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (var productid in casacdeProdItemIdList)
                 {
                     var strGuid = categoryid.ToString("") + "x" + productid.ToString("");
-                    var nbi = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CATCASCADE", strGuid);
+                    var nbi = _objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid);
                     if (nbi != null) _objCtrl.Delete(nbi.ItemID);
                 }
             }

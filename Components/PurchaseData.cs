@@ -1099,12 +1099,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 foreach (XmlNode carNod in xmlNodeList)
                 {
-                    var xmlNodeList2 = carNod.SelectNodes("productxml/genxml/docs");
+                    var xmlNodeList2 = carNod.SelectNodes("productxml/genxml/docs/*");
                     if (xmlNodeList2 != null)
                     {
                         foreach (XmlNode docNod in xmlNodeList2)
                         {
-                            var newDocInfo = new NBrightInfo { XMLData = docNod.InnerXml };
+                            var newDocInfo = new NBrightInfo { XMLData = docNod.OuterXml };
                             if (newDocInfo.GetXmlPropertyBool("genxml/checkbox/chkpurchase"))
                             {
                                 if (carNod.SelectSingleNode("productid") != null)
