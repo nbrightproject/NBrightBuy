@@ -2297,6 +2297,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
            return (int)Math.Round(((originalprice - newprice) / originalprice) *100, fractionaldigits);
         }
 
+        /// <summary>
+        /// Set thread langauge to correct langauge to match html page.
+        /// uses ajaxInfo.GetXmlProperty("genxml/hidden/currentlang"); param
+        /// </summary>
+        /// <param name="context"></param>
+        public static void SetContextLangauge(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
+        }
+
+        public static void SetContextLangauge(NBrightInfo ajaxInfo = null)
+        {
+            // NOTE: "genxml/hidden/lang" should be set in the template for langauge to work OK.
+            // set langauge if we have it passed.
+            if (ajaxInfo == null) ajaxInfo = new NBrightInfo(true);
+            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "langauge"); // fallbacl
+            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallbacl
+            if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
+            // set the context  culturecode, so any DNN functions use the correct culture 
+            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+
+        }
     }
 }
 
