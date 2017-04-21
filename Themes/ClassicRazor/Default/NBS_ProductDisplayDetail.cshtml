@@ -300,7 +300,7 @@
                                                     <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
                                                 }
                                             </td>
-                                            @if (bool.Parse(Model.GetSetting("showstock"))) {
+                                            @if (Model.GetSettingBool("showstock")) {
                                             <td>
                                                 @if (!product.IsInStock)
                                                 {
