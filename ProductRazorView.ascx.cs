@@ -70,7 +70,8 @@ namespace Nevoweb.DNN.NBrightBuy
             base.Render(writer);
             if (_404code)
             {
-                Response.StatusCode = 404;
+               // Commented out becuase this can give a page not found error page on IIS, depending on settings.
+               // Response.StatusCode = 404;
             }
         }
 
