@@ -300,13 +300,18 @@
                                                     <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
                                                 }
                                             </td>
-
+                                            @if (bool.Parse(Model.GetSetting("showstock"))) {
                                             <td>
                                                 @if (!product.IsInStock)
                                                 {
                                                     <strong>@ResourceKey("ProductView.outofstock")</strong>
                                                 }
+                                                else
+                                                {
+                                                    <span>@m.GetXmlProperty("genxml/textbox/txtqtyremaining")</span>
+                                                }
                                             </td>
+                                            }
                                         </tr>
                                     }
                                 }
