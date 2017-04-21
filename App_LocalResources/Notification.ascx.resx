@@ -265,7 +265,7 @@
     <value>Contact us</value>
   </data>
   <data name="ManualPayment.Text" xml:space="preserve">
-    <value>Chque and Bank Payment</value>
+    <value>Check and Bank Payment</value>
   </data>
   <data name="Bank.Text" xml:space="preserve">
     <value>Bank</value>
