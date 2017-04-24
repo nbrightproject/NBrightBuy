@@ -153,4 +153,10 @@
   <data name="resetportalmenu.Text" xml:space="preserve">
     <value>Reset Portal Back Office Menu</value>
   </data>
+  <data name="purgeimages.Text" xml:space="preserve">
+    <value>Purge Unused Images</value>
+  </data>
+  <data name="purgeimageswarn.Text" xml:space="preserve">
+    <value>Purging Images will DELETE all images not linked to a product or category.  If any plugins use the NBSstore\images folder, these images will be deleted.</value>
+  </data>
 </root>

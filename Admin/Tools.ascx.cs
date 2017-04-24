@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -137,6 +138,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     ResetPortalMenu();
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "purgeimages":
+                    param[0] = "";
+                    PurgeImages();
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;                    
                 case "cancel":
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
@@ -303,6 +309,65 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 NBrightBuyUtils.SetNotfiyMessage(ModuleId, "nopin", NotifyCode.fail);
             }
+        }
+
+        /// <summary>
+        /// Remove all unsed images.  (DELETE any NBS images NOT linked to Categories or Products)
+        /// </summary>
+        private void PurgeImages()
+        {
+            var pass = GenXmlFunctions.GetField(rpData, "txtclearpass");
+            if (pass == StoreSettings.Current.Get("adminpin") && pass != "")
+            {
+
+                var objCtrl = new NBrightBuyController();
+                var imgdblist = new List<string>();
+
+                // get DB filenames
+                var prdlist = objCtrl.GetList(PortalId, -1, "PRD");
+                foreach (var nbi in prdlist)
+                {
+                    var nodlist = nbi.XMLDoc.SelectNodes("genxml/imgs/*");
+                    if (nodlist != null)
+                    {
+                        foreach (XmlNode nod in nodlist)
+                        {
+                            var pnod = nod.SelectSingleNode("hidden/imagepath");
+                            if (pnod != null)
+                            {
+                                var fname = Path.GetFileName(pnod.InnerText);
+                                if (fname != "" && !imgdblist.Contains(fname)) imgdblist.Add(fname);
+                            }
+                        }
+                    }
+                }
+                var itemlist = objCtrl.GetList(PortalId, -1, "CATEGORY");
+                foreach (var nbi in itemlist)
+                {
+                    var p = nbi.GetXmlProperty("genxml/hidden/imagepath");
+                    if (p != "")
+                    {
+                        imgdblist.Add(Path.GetFileName(p));
+                    }
+                }
+
+                // get fileystem filenames and remove if not in DB.
+                var filelist = Directory.GetFiles(StoreSettings.Current.FolderImagesMapPath);
+                foreach (var f in filelist)
+                {
+                    if (!imgdblist.Contains(Path.GetFileName(f)))
+                    {
+                        // delete img
+                        File.Delete(f);
+                    }
+                }
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+            }
+            else
+            {
+                NBrightBuyUtils.SetNotfiyMessage(ModuleId, "nopin", NotifyCode.fail);
+            }
+
         }
 
     }
