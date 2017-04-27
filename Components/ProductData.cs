@@ -765,8 +765,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objCtrl.Delete(DataRecord.ItemID);
         }
 
-        public void Update(String xmlData)
+        public string Update(String xmlData)
         {
+            var rtnstatuscode = "";
+
             var info = new NBrightInfo();
             info.ItemID = -1;
             info.TypeCode = "UPDATEDATA";
@@ -835,25 +837,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // update Models
             var strXml = info.GetXmlProperty("genxml/hidden/xmlupdatemodeldata");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            UpdateModels(strXml);
-            // update Options
-            strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptions");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            UpdateOptions(strXml);
-            // update Options
-            strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            UpdateOptionValues(strXml);
-            // update images
-            UpdateImages(info);
-            // update docs
-            UpdateDocs(info);
+            rtnstatuscode = UpdateModels(strXml);
+            if (rtnstatuscode == "")
+            {
+                // update Options
+                strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptions");
+                strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+                UpdateOptions(strXml);
+                // update Options
+                strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
+                strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+                UpdateOptionValues(strXml);
+                // update images
+                UpdateImages(info);
+                // update docs
+                UpdateDocs(info);
 
-            IsOnSale = CheckIsOnSale();
-            DealerIsOnSale = DealerCheckIsOnSale();
-            IsInStock = CheckIsInStock();
-            ClientFileUpload = CheckClientFileUpload();
+                IsOnSale = CheckIsOnSale();
+                DealerIsOnSale = DealerCheckIsOnSale();
+                IsInStock = CheckIsInStock();
+                ClientFileUpload = CheckClientFileUpload();
+            }
 
+            return rtnstatuscode;
         }
 
         public void UpdateDocs(NBrightInfo info)
@@ -962,9 +968,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public void UpdateModels(String xmlAjaxData)
+        public string UpdateModels(String xmlAjaxData)
         {
+            var rtnstatuscode = "";
             var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+
+            if (!modelList.Any())
+            {
+                // must have at least 1 model, error in return data if no models.
+                rtnstatuscode = "01";
+                return rtnstatuscode;
+            }
 
             // build xml for data records
             var strXml = "<genxml><models>";
@@ -1007,6 +1021,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ReplaceXmlNode(strXml, "genxml/models", "genxml");
             DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/models", "genxml");
 
+            return rtnstatuscode;
         }
 
         public void UpdateOptions(String xmlAjaxData)

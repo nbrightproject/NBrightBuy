@@ -357,4 +357,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="clientfileuploadmsgend.Text" xml:space="preserve">
     <value>File upload complete</value>
   </data>
+  <data name="article.Text" xml:space="preserve">
+    <value>item</value>
+  </data>
 </root>

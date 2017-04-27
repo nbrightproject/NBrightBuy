@@ -184,10 +184,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
                 }
 
-                prodData.Update(updInfo.XMLData);
-                prodData.Save();
-                prodData.FillEmptyLanguageFields();
-                prodData.Validate();
+                var statuscode = prodData.Update(updInfo.XMLData);
+                if (statuscode == "")
+                {
+                    prodData.Save();
+                    prodData.FillEmptyLanguageFields();
+                    prodData.Validate();
+                }
+                else
+                {
+                    NBrightBuyUtils.SetNotfiyMessage(-1, "product" + statuscode, NotifyCode.fail);
+                }
 
                 if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
 

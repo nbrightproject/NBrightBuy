@@ -324,4 +324,7 @@
   <data name="onlyleafcat_fail.Text" xml:space="preserve">
     <value>Seulement les catégories en fin d'arborescence peuvent être supprimées.</value>
   </data>
+  <data name="product01_fail.Text" xml:space="preserve">
+    <value>Erreur de communication : Mise à jour a échoué. (Nombre de modèle non valide)</value>
+  </data>
 </root>

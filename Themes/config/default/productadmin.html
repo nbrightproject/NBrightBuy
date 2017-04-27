@@ -65,7 +65,7 @@
 <div id="recyclebin" style="display:none;"></div>
 
 <div id="nbsnotify"></div>
-<div id="loader" class="processing" style="display:none;">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
+<div id="loader" class="processing">[<tag type="label" resourcekey="General.ProcessingDiv" />]</div>
 
 
 <script type="text/javascript">
@@ -95,7 +95,6 @@
 [<tag id="xmlupdateproductdocs" type="postback" value=""/>]
 [<tag id="xmlupdateproductrelated" type="postback" value=""/>]
 [<tag id="xmlupdateproductclients" type="postback" value=""/>]
-
 
 <div id="pageactionssource"><!-- Page actions are moved into header bar - also exist at page bottom-->
 	<div class="col-xs-9 col-sm-9">
@@ -150,7 +149,7 @@
 
 
 <div class="row">
-	<div class="col-xs-12 col-sm-12">
+	<div class="col-xs-12 col-sm-12 productdatadisplay" style="display:none;">
 			<div class="box" id="accordion">
 			
 				<h3>[<tag type="valueof" resourcekey="General.Product" />] : [<tag type="valueof" xpath="genxml/lang/genxml/textbox/txtproductname" />]</h3>
@@ -229,11 +228,28 @@
 			            </div>
 			        </div>
 			    </div>
-			    <div class="clearfix"></div>
-			</div>
+			        <div class="clearfix"></div>
+
+                    <h4>[<tag type="valueof" resourcekey="General.Models" />]</h4>
+                    <div class="box-content editmodels">
+                        <div class="form-horizontal dnnForm">
+                            <div class="col-sm-12">
+                                <div class="form-group form-inline">
+                                    <a class="btn btn-primary" id="addmodels">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
+                                    [<tag id="txtaddmodelqty" cssclass="form-control onedigit text-center" type="textbox" maxlength="2" text="1" />]
+                                    <a class="btn btn-warning" id="undomodel" style="display: none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
+                                </div>
+                                <ul id="productmodels"><li></li></ul>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+			    </div>
 
 
-                            <h3>[<tag type="valueof" resourcekey="General.Description" />]</h3>
+
+			<h3>[<tag type="valueof" resourcekey="General.Description" />]</h3>
                             <div class="box-content productdescription">
                                 <div class="form-horizontal dnnForm">
                                     <div class="col-md-12">
@@ -248,20 +264,6 @@
                                 <div class="clearfix"></div>
                             </div>
 
-                            <h3><span class="modelheader">[<tag type="valueof" resourcekey="General.Models" />]</span></h3>
-                            <div class="box-content editmodels">
-                                <div class="form-horizontal dnnForm">
-                                    <div class="col-sm-12">
-                                        <div class="form-group form-inline">
-                                            <a class="btn btn-primary" id="addmodels">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
-                                            [<tag id="txtaddmodelqty" cssclass="form-control onedigit text-center" type="textbox" maxlength="2" text="1" />]
-                                            <a class="btn btn-warning" id="undomodel" style="display:none;">[<tag type="htmlof" resourcekey="General.UndoButton" />]</a>
-                                        </div>
-                                        <ul id="productmodels"></ul>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
                             <h3><span class="optionheader">[<tag type="valueof" resourcekey="General.Options" />]</span></h3>
                             <div class="box-content editoptions">
                                 <div class="form-horizontal dnnForm">

@@ -6,6 +6,7 @@
     }).bind("ajaxComplete", function () {
         $("#loading").hide();
         $('.processing').hide();
+        $('.productdatadisplay').show();
     });
 
 

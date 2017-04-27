@@ -324,4 +324,7 @@
   <data name="emailsent.Text" xml:space="preserve">
     <value>Email Sent</value>
   </data>
+  <data name="product01_fail.Text" xml:space="preserve">
+    <value>Communication Error: Product Save Failed.  (Invalid Model Count)</value>
+  </data>
 </root>
