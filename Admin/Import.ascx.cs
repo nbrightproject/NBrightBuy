@@ -297,12 +297,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     }
 
 
-                    if (typeCode == "PRDXREF" && updaterecordsbyref)
+                    if ((typeCode == "PRDXREF" || typeCode == "CATXREF" || typeCode == "CATCASCADE") && updaterecordsbyref)
                     {
                         if (_recordXref.ContainsKey(nbi.XrefItemId)) nbi.XrefItemId = _recordXref[nbi.XrefItemId];
                         if (_recordXref.ContainsKey(nbi.ParentItemId)) nbi.ParentItemId = _recordXref[nbi.ParentItemId];
 
-                        var l = ModCtrl.GetList(PortalId, -1, "PRDXREF", " AND nb1.XrefItemId = " + nbi.XrefItemId + " AND nb1.ParentItemId=" + nbi.ParentItemId);
+                        var l = ModCtrl.GetList(PortalId, -1, typeCode, " AND nb1.XrefItemId = " + nbi.XrefItemId + " AND nb1.ParentItemId=" + nbi.ParentItemId);
                         if (l.Count > 0) return;
                     }
 
