@@ -126,6 +126,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 RemoveClientEditorRole();
             }
 
+            // save client data fields.
+            var clientXml = GenXmlFunctions.GetGenXml(rpData);
+            var objCtrl = new NBrightBuyController();
+            DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", _userInfo.UserID.ToString(""));
+            DataRecord.XMLData = clientXml;
+            DataRecord.RemoveXmlNode("genxml/hidden/xmlupdatediscountcodedata");
+            DataRecord.RemoveXmlNode("genxml/hidden/xmlupdatevouchercodedata");
+            objCtrl.Update(DataRecord);
+
             // update Discount codes
             var strXml = GenXmlFunctions.GetField(rpData, "xmlupdatediscountcodedata");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
@@ -383,8 +392,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (propertyInfo.CanRead)
                     {
-                        var pv = propertyInfo.GetValue(_userInfo, null);
-                        if (pv == null) pv = "";
+                        object pv = null;
+                        try
+                        {
+                            pv = propertyInfo.GetValue(_userInfo, null);
+                            if (pv == null) pv = "";
+                        }
+                        catch (Exception)
+                        {
+                            pv = "";
+                        }
                         _clientInfo.SetXmlProperty("genxml/textbox/" + propertyInfo.Name.ToLower(), pv.ToString());
                     }
                 }
