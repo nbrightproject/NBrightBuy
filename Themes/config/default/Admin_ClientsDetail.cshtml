@@ -74,14 +74,6 @@
             nbxget('addclientvouchercode', '#clientselectparams', '#clientvouchercodes', null, 'true');
         });
 
-        // save form with postback
-        $('a[id*="cmdSave"]').click(function () {
-            //move data to update postback field
-            $('input[id*="xmlupdatediscountcodedata"]').val($.fn.genxmlajaxitems('#clientdiscountcodes', '.discountcode'));
-            //move data to update postback field
-            $('input[id*="xmlupdatevouchercodedata"]').val($.fn.genxmlajaxitems('#clientvouchercodes', '.vouchercode'));
-        });
-
         function removeelement(elementtoberemoved) {
             $(elementtoberemoved).remove();
         }
@@ -103,9 +95,9 @@
         </div>
 
         <!-- postback fields to keep ajax populated data for update -->
-        <input id="xmlupdatediscountcodedata" type="hidden" value="" />
-        <input id="xmlupdatevouchercodedata" type="hidden" value="" />
-
+        <input id="xmlupdatediscountcodedata" type="postback" value="" />
+        <input id="xmlupdatevouchercodedata" type="postback" value="" />
+        
         <div class="row customerdetails">
             <div class="col-xs-12">
                 <div class="box">
@@ -263,6 +255,7 @@
             </div>
         </div>
 
+        
     </span>
 
 

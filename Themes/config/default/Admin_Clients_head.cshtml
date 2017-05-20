@@ -124,6 +124,10 @@
                     $('.clientAdmin_cmdSave').unbind("click");
                     $('.clientAdmin_cmdSave').click(function () {
                         $('.processing').show();
+                        //move data to update postback field
+                        $('#xmlupdatediscountcodedata').val($.fn.genxmlajaxitems('#clientdiscountcodes', '.discountcode'));
+                        //move data to update postback field
+                        $('#xmlupdatevouchercodedata').val($.fn.genxmlajaxitems('#clientvouchercodes', '.vouchercode'));
                         nbxget('clientadmin_save', '#clientdatasection', '#actionreturn');
                     });
                 }

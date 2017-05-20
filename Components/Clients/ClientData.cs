@@ -135,10 +135,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objCtrl.Update(DataRecord);
 
             // update Discount codes
-            var strXml = updateInfo.GetXmlProperty("genxml/textbox/xmlupdatediscountcodedata");
+            var strXml = updateInfo.GetXmlProperty("genxml/hidden/xmlupdatediscountcodedata");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
             UpdateDiscountCodes(strXml);
-            strXml = updateInfo.GetXmlProperty("genxml/textbox/xmlupdatevouchercodedata");
+            strXml = updateInfo.GetXmlProperty("genxml/hidden/xmlupdatevouchercodedata");
             strXml = GenXmlFunctions.DecodeCDataTag(strXml);
             UpdateVoucherCodes(strXml);
 
