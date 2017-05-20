@@ -23,80 +23,19 @@ using Nevoweb.DNN.NBrightBuy.Components;
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ViewNBrightGen class displays the content
-    /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class Clients : NBrightBuyAdminBase
     {
-
-        private GenXmlTemplate _templSearch; 
-        private String _entryid = "";
-        private Boolean _displayentrypage = false;
-        private String _page = "";
-
         #region Event Handlers
-
 
         override protected void OnInit(EventArgs e)
         {
-            _page = Utils.RequestParam(Context, "page");
-            EnablePaging = true; 
-
             base.OnInit(e);
-
-            CtrlPaging.Visible = true;
-            CtrlPaging.UseListDisplay = true;
-            try
-            {
-                #region "set templates based on entry id (eid) from url"
-
-                _entryid = Utils.RequestQueryStringParam(Context, "uid");
-
-                if (_entryid != "") _displayentrypage = true;
-
-                #endregion
-
-                #region "load templates"
-
-                // Get Search
-                var rpSearchTempl = ModCtrl.GetTemplateData(ModSettings, "clientssearch.html", Utils.GetCurrentCulture(), DebugMode);
-                _templSearch = NBrightBuyUtils.GetGenXmlTemplate(rpSearchTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpSearch.ItemTemplate = _templSearch;
-
-                var t1 = "clientsheader.html";
-                var t2 = "clientsbody.html";
-                var t3 = "clientsfooter.html";
-
-                if (Utils.IsNumeric(_entryid))
-                {
-                    t1 = "clientsdetailheader.html";
-                    t2 = "clientsdetail.html";
-                    t3 = "clientsdetailfooter.html";
-                }
-
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, t1, Utils.GetCurrentCulture(), DebugMode);
-                rpDataH.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, t3, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                #endregion
-
-
-            }
-            catch (Exception exc)
-            {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
-                var l = new Literal();
-                l.Text = exc.ToString();
-                phData.Controls.Add(l);
-            }
+            // inject any pageheader we need
+            var nbi = new NBrightInfo();
+            nbi.Lang = Utils.GetCurrentCulture();
+            nbi.PortalId = PortalId;
+            var pageheaderTempl = NBrightBuyUtils.RazorTemplRender("Admin_Clients_head.cshtml", 0, "", nbi, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            PageIncludes.IncludeTextInHeader(Page, pageheaderTempl);
 
         }
 
@@ -105,6 +44,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
                 base.OnLoad(e);
+
                 if (Page.IsPostBack == false)
                 {
                     PageLoad();
@@ -112,252 +52,38 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
             catch (Exception exc) //Module failed to load
             {
-                //remove the navigation data, it could be causing the error.
-                var navigationData = new NavigationData(PortalId, "ClientAdmin");
-                navigationData.Delete();
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                //display the error on the template (don't want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
-                phData.Controls.Add(l);
+                Controls.Add(l);
             }
         }
 
         private void PageLoad()
         {
 
-            #region "Data Repeater"
-            if (UserId > 0) // only logged in users can see data on this module.
+            if (NBrightBuyUtils.CheckRights()) // limit module data to NBS security roles
             {
+                RazorTemplate = "Admin_Clients.cshtml";
 
-                if (_displayentrypage)
-                {
-                    DisplayDataEntryRepeater(_entryid);
-                }
-                else
-                {
-                    var navigationData = new NavigationData(PortalId, "ClientsAdmin");
-                    
-                    //setup paging
-                    var pagesize = StoreSettings.Current.GetInt("pagesize");
-                    var pagenumber = 1;
-                    var strpagenumber = Utils.RequestParam(Context, "page");
-                    if (Utils.IsNumeric(strpagenumber)) pagenumber = Convert.ToInt32(strpagenumber);
-                    var recordcount = 0;
+                // new data record so set defaults.
+                var obj = new NBrightInfo(true);
+                obj.PortalId = PortalId;
+                obj.ModuleId = 0;
+                obj.Lang = Utils.GetCurrentCulture();
+                obj.GUIDKey = RazorTemplate;
+                obj.ItemID = -1;
 
-                    // get search data
-                    var sInfo = new NBrightInfo();
-                    sInfo.XMLData = navigationData.XmlData;
+                var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", obj, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
 
-                    // display search
-                    base.DoDetail(rpSearch, sInfo);
-
-                    if (Utils.IsNumeric(navigationData.RecordCount))
-                    {
-                        recordcount = Convert.ToInt32(navigationData.RecordCount);
-                    }
-                    else
-                    {
-                        recordcount = ModCtrl.GetDnnUsersCount(PortalId, "%" + sInfo.GetXmlProperty("genxml/textbox/txtsearch") + "%");
-                        navigationData.RecordCount = recordcount.ToString("");
-                    }
-
-                    //display list, with search filter
-                    var userlist = ModCtrl.GetDnnUsers(PortalId, "%" + sInfo.GetXmlProperty("genxml/textbox/txtsearch") + "%", 0,pagenumber,pagesize,recordcount);
-                    rpData.DataSource = userlist;
-                    rpData.DataBind();
-
-
-                    if (pagesize > 0)
-                    {
-                        CtrlPaging.PageSize = pagesize;
-                        CtrlPaging.CurrentPage = pagenumber;
-                        CtrlPaging.TotalRecords = recordcount;
-                        CtrlPaging.BindPageLinks();
-                    }
-
-                }
             }
-
-            #endregion
-
-            // display header (Do header after the data return so the productcount works)
-            base.DoDetail(rpDataH);
-
-            // display footer
-            base.DoDetail(rpDataF);
 
         }
 
         #endregion
-
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
-            var navigationData = new NavigationData(PortalId, "ClientsAdmin");
-
-            switch (e.CommandName.ToLower())
-            {
-                case "entrydetail":
-                    param[0] = "uid=" + cArg;
-                    if (_page != "") param[1] = "page=" + _page;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "return":
-                    param[0] = "";
-                    if (_page != "") param[1] = "page=" + _page;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "search":
-                    navigationData.XmlData = GenXmlFunctions.GetGenXml(rpSearch,"","");
-                    navigationData.Save();
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "resetsearch":
-                    // clear cookie info
-                    navigationData.Delete();
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "unlockuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.UnlockUser();
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "deleteuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.DeleteUser();
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "restoreuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.RestoreUser();
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "removeuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        var ok = clientData.RemoveUser();
-                        if (!ok)
-                        {
-                            NBrightBuyUtils.SetNotfiyMessage(ModuleId,"removeuser", NotifyCode.fail);
-                            param[0] = "uid=" + cArg;
-                        }
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "validateuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.AuthoriseClient();
-                        clientData.AddClientEditorRole();
-                        if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();                            
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "unauthoriseuser":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.UnAuthoriseClient();
-                        clientData.RemoveClientEditorRole();
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "resetpass":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        clientData.ResetPassword();
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "viewaddressbook":
-                    param[0] = "";
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        param[0] = "ctrl=addressbook";
-                        param[1] = "uid=" + cArg;
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "vieworders":
-                    param[0] = "";
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        param[0] = "ctrl=orders";
-                        param[1] = "uid=" + cArg;
-                    }
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "createorder":
-                    param[0] = "";
-                    var tabId = TabId;
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var cart = new CartData(PortalId);
-                        cart.UserId = Convert.ToInt32(cArg);
-                        cart.EditMode = "C";
-                        cart.Save();
-                        tabId = StoreSettings.Current.GetInt("productlisttab");
-                        if (tabId==0) tabId = TabId;
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
-                    break;
-                case "save":
-                    if (Utils.IsNumeric(cArg))
-                    {
-                        var clientData = new ClientData(PortalId, Convert.ToInt32(cArg));
-                        if (clientData.Exists)
-                        {
-                            clientData.Update(rpData);
-                            clientData.Save();                            
-                        }
-                    }
-                    param[0] = "uid=" + cArg;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-            }
-
-        }
-
-
-
-        #endregion
-
-
-        private void DisplayDataEntryRepeater(String entryId)
-        {
-            if (Utils.IsNumeric(entryId) && entryId != "0")
-            {
-                var clientData = new ClientData(PortalId, Convert.ToInt32(entryId));
-
-                clientData.OutputDebugFile("debug_client.xml");
-                
-                //render the detail page
-                base.DoDetail(rpData, clientData.GetInfo());
-
-            }
-        }
-
 
     }
 

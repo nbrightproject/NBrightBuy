@@ -26,6 +26,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using NBrightBuy.render;
 using NBrightCore.images;
+using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using RazorEngine.Compilation.ImpromptuInterface;
 
@@ -355,6 +356,9 @@ namespace Nevoweb.DNN.NBrightBuy
                     case "orderby":
                         strOut = DoOrderBy(context);
                         break;
+
+                        #region "ORDERS_ADMIN"
+
                     case "orderadmin_getlist":
                         strOut = OrderAdminList(context);
                         break;
@@ -375,7 +379,22 @@ namespace Nevoweb.DNN.NBrightBuy
                         break;
                     case "orderadmin_sendemail":
                         strOut = OrderAdminEmail(context);
-                        break;                        
+                        break;
+                        
+                        #endregion
+                    
+                        #region "CLIENT_ADMIN"
+                    case "clientadmin_getlist":
+                        strOut = ClientFunctions.ClientAdminList(context);
+                        break;
+                    case "clientadmin_getdetail":
+                        strOut = ClientFunctions.ClientAdminDetail(context);
+                        break;
+                    case "clientadmin_save":
+                        strOut = ClientFunctions.ClientAdminSave(context);
+                        break;
+                        #endregion
+
                 }
 
                 #endregion
@@ -413,7 +432,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void UpdateProductImages(HttpContext context)
         {
             //get uploaded params
-            var settings = GetAjaxFields(context);
+            var settings = NBrightBuyUtils.GetAjaxDictionary(context);
             if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
             var productitemid = settings["itemid"];
             var imguploadlist = settings["imguploadlist"];
@@ -671,7 +690,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
 
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
 
                 strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
@@ -693,7 +712,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
@@ -725,7 +744,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
@@ -750,7 +769,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
 
                 if (settings.ContainsKey("itemid"))
                 {
@@ -780,7 +799,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var newcatid = "";
                 if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"];
 
@@ -802,7 +821,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetGroupCategoryListBox(HttpContext context)
         {
-            var settings = GetAjaxFields(context);
+            var settings = NBrightBuyUtils.GetAjaxDictionary(context);
             var groupref = "";
             if (settings.ContainsKey("selectedgroupref")) groupref = settings["selectedgroupref"];
             var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory form-control' type='catlistbox' groupref='" + groupref + "' lang='" + _lang + "'/>]";
@@ -818,7 +837,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
 
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
 
                 return GetProductListData(settings);
 
@@ -837,7 +856,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
 
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("moveproductid")) settings.Add("moveproductid", "0");
                 var moveproductid = settings["moveproductid"];
                 if (!settings.ContainsKey("movetoproductid")) settings.Add("movetoproductid", "0");
@@ -867,7 +886,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -889,7 +908,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 
@@ -918,7 +937,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -947,7 +966,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -976,7 +995,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1009,7 +1028,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1046,7 +1065,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void UpdateProductDocs(HttpContext context)
         {
             //get uploaded params
-            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var settings = ajaxInfo.ToDictionary();
 
             if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
@@ -1107,7 +1126,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1136,7 +1155,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 if (!settings.ContainsKey("categoryref")) settings.Add("categoryref", "0");
@@ -1167,7 +1186,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1196,7 +1215,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1225,7 +1244,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1254,7 +1273,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1283,7 +1302,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 if (!settings.ContainsKey("header")) settings.Add("header", "");
@@ -1326,7 +1345,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 var productitemid = settings["itemid"];
@@ -1381,7 +1400,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 var productitemid = settings["itemid"];
@@ -1436,7 +1455,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 if (!settings.ContainsKey("selectedoptionid")) return "";
@@ -1493,7 +1512,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1517,7 +1536,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1541,7 +1560,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1565,7 +1584,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1589,7 +1608,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1613,7 +1632,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selectedrelatedid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1637,7 +1656,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selectedrelatedid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1666,7 +1685,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selecteduserid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1694,7 +1713,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selecteduserid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1725,7 +1744,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 //get uploaded params
                 var strOut = "";
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("userid")) settings.Add("userid", "");
                 var userid = settings["userid"];
                 if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
@@ -1761,7 +1780,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strOut = "Missing data ('userid', 'portalid' hidden fields needed on input form)";
 
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 if (!settings.ContainsKey("userid")) settings.Add("userid", "");
                 var userid = settings["userid"];
@@ -1813,7 +1832,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 //get uploaded params
                 var strOut = "";
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("userid")) settings.Add("userid", "");
                 var userid = settings["userid"];
                 if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
@@ -1849,7 +1868,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var strOut = "Missing data ('userid', 'portalid' hidden fields needed on input form)";
 
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 if (!settings.ContainsKey("userid")) settings.Add("userid", "");
                 var userid = settings["userid"];
@@ -1903,7 +1922,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String RenderCart(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
             if (carttemplate == "") carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
@@ -1936,7 +1955,7 @@ namespace Nevoweb.DNN.NBrightBuy
         /// <returns></returns>
         private String RenderPostData(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
@@ -1956,7 +1975,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var strOut = "";
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var settings = ajaxInfo.ToDictionary();
 
                 if (settings.ContainsKey("productid"))
@@ -1983,7 +2002,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var strOut = "";
-                var ajaxInfoList = GetAjaxInfoList(context);
+                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
 
                 foreach (var ajaxInfo in ajaxInfoList)
                 {
@@ -2012,7 +2031,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string RecalculateCart(HttpContext context)
         {
                 var strOut = "";
-                var ajaxInfoList = GetAjaxInfoList(context);
+                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 foreach (var ajaxInfo in ajaxInfoList)
                 {
@@ -2025,7 +2044,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string UpdateProfile(HttpContext context)
         {
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var profileData = new ProfileData();
                 profileData.UpdateProfileAjax(ajaxInfo.XMLData, StoreSettings.Current.DebugMode);
 
@@ -2035,7 +2054,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string ResetSearch(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.Delete();
 
@@ -2045,7 +2064,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string DoSearch(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var tagList = new List<string>();
                 var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/hidden/*");
                 foreach (XmlNode nod in nodList)
@@ -2069,7 +2088,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string DoOrderBy(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.OrderByIdx = ajaxInfo.GetXmlProperty("genxml/hidden/orderbyidx");
                 navData.OrderBy = " order by " + ajaxInfo.GetXmlProperty("genxml/hidden/orderby" + navData.OrderByIdx);
@@ -2081,7 +2100,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string UpdateCartAddress(HttpContext context,String addresstype = "")
         {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = GetAjaxInfo(context,true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context,true);
 
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
 
@@ -2159,7 +2178,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var objCtrl = new NBrightBuyController();
 
             var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
 
                 currentcart.AddExtraInfo(ajaxInfo);
@@ -2193,7 +2212,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string RemoveFromCart(HttpContext context)
         {
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 currentcart.RemoveItem(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode"));
                 currentcart.Save(StoreSettings.Current.DebugMode);
@@ -2203,7 +2222,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetShippingProviderTemplates(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var activeprovider = ajaxInfo.GetXmlProperty("genxml/hidden/shippingprovider");
             var currentcart = new CartData(PortalSettings.Current.PortalId);
 
@@ -2260,7 +2279,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
-                    var settings = GetAjaxFields(context);
+                    var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     return GetOrderListData(settings);
                 }
                 return "";
@@ -2278,7 +2297,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
-                    var settings = GetAjaxFields(context);
+                    var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     return GetOrderDetailData(settings);
                 }
                 return "";
@@ -2295,7 +2314,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
-                    var settings = GetAjaxFields(context);
+                    var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
                     var selecteditemid = settings["selecteditemid"];
                     if (Utils.IsNumeric(selecteditemid))
@@ -2322,7 +2341,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
-                    var settings = GetAjaxFields(context);
+                    var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
                     var selecteditemid = settings["selecteditemid"];
                     if (Utils.IsNumeric(selecteditemid))
@@ -2350,7 +2369,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
                     //get uploaded params
-                    var ajaxInfo = GetAjaxInfo(context);
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                     NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"),true);
                 }
                 return "";
@@ -2370,7 +2389,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                     var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
                     if (itemId > 0)
                     {
@@ -2443,7 +2462,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                     var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
                     if (itemId > 0)
                     {
@@ -2492,7 +2511,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var strOut = "";
                 //get uploaded params
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
@@ -2524,7 +2543,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var objCtrl = new NBrightBuyController();
 
                 //get uploaded params
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 if (Utils.IsNumeric(moduleid))
@@ -2869,86 +2888,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
             return strOut;
         }
-
-        private Dictionary<String, String> GetAjaxFields(HttpContext context)
-        {
-            var objInfo = GetAjaxInfo(context);
-            var dic =  objInfo.ToDictionary();
-            return dic;
-        }
-
-        /// <summary>
-        /// Put Ajax data into a NBrightInfo class for processing
-        /// </summary>
-        /// <param name="context">Http context</param>
-        /// <param name="updatefields">If true only fields marked with update attribute are returned.</param>
-        /// <returns></returns>
-        private NBrightInfo GetAjaxInfo(HttpContext context, Boolean updatefields = false)
-        {
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-
-            var objInfo = new NBrightInfo();
-
-            objInfo.ItemID = -1;
-            objInfo.TypeCode = "AJAXDATA";
-            objInfo.PortalId = PortalSettings.Current.PortalId;
-            if (updatefields)
-            {
-                objInfo.UpdateAjax(strIn);
-            }
-            else
-            {
-                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
-                objInfo.XMLData = xmlData;
-            }
-            var dic = objInfo.ToDictionary();
-            // set langauge if we have it passed.
-            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-            if (dic.ContainsKey("editlang") && dic["editlang"] != "") _lang = dic["editlang"];
-
-            var currentlang = Utils.GetCurrentCulture();
-            if (dic.ContainsKey("currentlang") && dic["currentlang"] != "") currentlang = dic["currentlang"];
-            // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-            if (currentlang != "" && currentlang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
-
-            objInfo.Lang = _lang; // make sure we have the langauge in the object.
-
-            return objInfo;
-        }
-
-        private List<NBrightInfo> GetAjaxInfoList(HttpContext context)
-        {
-            var rtnList = new List<NBrightInfo>();
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            var xmlDoc1 = new XmlDocument();
-            if (!String.IsNullOrEmpty(strIn))
-            {
-
-                xmlDoc1.LoadXml(strIn);
-
-                var xmlNodeList = xmlDoc1.SelectNodes("root/*");
-                if (xmlNodeList != null)
-                {
-                    foreach (XmlNode nod in xmlNodeList)
-                    {
-                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "");
-                        var objInfo = new NBrightInfo();
-
-                        objInfo.ItemID = -1;
-                        objInfo.TypeCode = "AJAXDATA";
-                        objInfo.PortalId = PortalSettings.Current.PortalId;
-            objInfo.XMLData = xmlData;
-                        var dic = objInfo.ToDictionary();
-            // set langauge if we have it passed.
-            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-                        rtnList.Add(objInfo);
-                    }
-                }
-            }
-            return rtnList;
-        }
-
-
 
 
         #endregion

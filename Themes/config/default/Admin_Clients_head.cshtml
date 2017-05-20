@@ -1,0 +1,143 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+
+<!-- fields required to send required ajax cart to server -->
+<span id="nbs_clientadminsearch">
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"/>
+    <input id="razortemplate" type="hidden" value=""/>
+    <input id="themefolder" type="hidden" value="config"/>
+    <input id='currentlang' type='hidden' value='@Model.GetUrlParam("language")'/> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
+    <input id="lang" type="hidden" value="@Model.GetUrlParam("language")"/> <!-- default to current language -->
+    <input id="pagesize" type="hidden" value="20"/>
+    <input id="pagenumber" type="hidden" value="1"/>
+    <input id="searchtext" type="hidden" value=""/>
+    <input id="selecteditemid" type="hidden" value=""/>    
+    <input id="emailtype" type="hidden" value=""/>
+    <input id="emailsubject" type="hidden" value=""/>    
+    <input id="emailmessage" type="hidden" value="" />    
+</span>
+
+<div style="display: none;" id="actionreturn"></div>
+
+<!-- Needed for CKEditor -->
+<script src="//cdn.ckeditor.com/4.5.5/full/ckeditor.js"></script>
+
+<!-- Scripts to do ajax calls -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js" type="text/javascript"></script>
+
+
+
+<script>
+
+        $(document).ready(function() {
+            // start load all ajax data, continued by js in product.js file
+            $('.processing').show();
+
+            $('#razortemplate').val('Admin_ClientsList.cshtml');
+            nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+
+            $(document).on("nbxgetcompleted", Admin_client_nbxgetCompleted); // assign a completed event for the ajax calls
+
+            // function to do actions after an ajax call has been made.
+            function Admin_client_nbxgetCompleted(e) {
+
+                $('.processing').hide();
+
+                //NBS - Tooltips
+                $('[data-toggle="tooltip"]').tooltip({
+                    animation: 'true',
+                    placement: 'auto top',
+                    viewport: { selector: '#content', padding: 0 },
+                    delay: { show: 100, hide: 200 }
+                });
+
+
+                if (e.cmd == 'clientadmin_getlist') {
+
+                    $("#clientAdmin_cmdSave").hide();
+                    $("#clientAdmin_cmdReturn").hide();
+
+                    $('#clientAdmin_searchtext').val($('#searchtext').val());
+
+                    // editbutton created by list, so needs to be assigned on each render of list.
+                    $('.cmd_viewclient').unbind("click");
+                    $('.cmd_viewclient').click(function () {
+                        $('.processing').show();
+                        $('#razortemplate').val('Admin_clientsDetail.cshtml');
+                        $('#selecteditemid').val($(this).attr('itemid'));
+                        nbxget('clientadmin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
+                    });
+
+                    $('.cmdPg').unbind("click");
+                    $('.cmdPg').click(function () {
+                        $('.processing').show();
+                        $('#pagenumber').val($(this).attr('pagenumber'));
+                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                    });
+
+                    $('#clientAdmin_cmdSearch').unbind("click");
+                    $('#clientAdmin_cmdSearch').click(function () {
+                        $('.processing').show();
+                        $('#pagenumber').val('1');
+                        $('#searchtext').val($('#clientAdmin_searchtext').val());
+                        $('#dtesearchdatefrom').val($('#clientAdmin_datesearchfrom').val());
+                        $('#dtesearchdateto').val($('#clientAdmin_datesearchto').val());
+                        $('#searchclientstatus').val($('#clientAdmin_searchclientstatus').val());
+
+                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                    });
+
+                    $('#clientAdmin_cmdReset').unbind("click");
+                    $('#clientAdmin_cmdReset').click(function () {
+                        $('.processing').show();
+                        $('#pagenumber').val('1');
+                        $('#searchtext').val('');
+                        $('#dtesearchdatefrom').val('');
+                        $('#dtesearchdateto').val('');
+                        $('#searchclientstatus').val('');
+
+                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                    });
+
+                }
+
+                if (e.cmd == 'clientadmin_getdetail') {
+
+                    $("#clientAdmin_cmdSave").show();
+                    $("#clientAdmin_cmdReturn").show();
+
+                    $('#clientAdmin_cmdReturn').unbind("click");
+                    $('#clientAdmin_cmdReturn').click(function () {
+                        $('.processing').show();
+                        $('#razortemplate').val('Admin_clientsList.cshtml');
+                        $('#selecteditemid').val('');
+                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                    });
+
+                    $('.clientAdmin_cmdSave').unbind("click");
+                    $('.clientAdmin_cmdSave').click(function () {
+                        $('.processing').show();
+                        nbxget('clientadmin_save', '#clientdatasection', '#actionreturn');
+                    });
+                }
+
+                if (e.cmd == 'clientadmin_save') {
+                    //$('.processing').show();
+                    //nbxget('clientadmin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
+                }
+
+            };
+
+        });
+
+    </script>
+
+
+

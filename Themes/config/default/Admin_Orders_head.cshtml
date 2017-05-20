@@ -129,7 +129,7 @@
                     $("#OrderAdmin_cmdSave").show();
                     $("#OrderAdmin_cmdReturn").show();
 
-                    $('#OrderAdmin_cmdReOrder').unbind("click");
+                    $('#OrderAdmin_cmdReturn').unbind("click");
                     $('#OrderAdmin_cmdReturn').click(function () {
                         $('.processing').show();
                         $('#razortemplate').val('Admin_OrdersList.cshtml');
