@@ -608,7 +608,7 @@
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
     <Content Include="Themes\config\default\categoryproductheader.html" />
-    <Content Include="Themes\config\default\clientfields.html" />
+    <None Include="Themes\config\default\clientfields.cshtml" />
     <Content Include="Themes\config\default\clientsbody.html" />
     <Content Include="Themes\config\default\clientsdetail.html" />
     <Content Include="Themes\config\default\clientsdetailfooter.html" />

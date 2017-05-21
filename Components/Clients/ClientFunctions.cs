@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore.common;
@@ -16,6 +17,185 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
     public static class ClientFunctions
     {
         #region "Client Admin Methods"
+
+        public static string ProcessCommand(string paramCmd,HttpContext context)
+        {
+            var strOut = "CLIENT - ERROR!! - No Security rights for current user!";
+            if (NBrightBuyUtils.CheckManagerRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
+
+                switch (paramCmd)
+                {
+                    case "client.admin_getlist":
+                        strOut = ClientFunctions.ClientAdminList(context);
+                        break;
+                    case "client.admin_getdetail":
+                        strOut = ClientFunctions.ClientAdminDetail(context);
+                        break;
+                    case "client.admin_save":
+                        strOut = ClientFunctions.ClientAdminSave(context);
+                        break;
+                    case "client.discountcodes":
+                        strOut = ClientFunctions.GetClientDiscountCodes(context);
+                        break;
+                    case "client.adddiscountcode":
+                        strOut = ClientFunctions.AddClientDiscountCodes(context);
+                        break;
+                    case "client.vouchercodes":
+                        strOut = ClientFunctions.GetClientVoucherCodes(context);
+                        break;
+                    case "client.addvouchercode":
+                        strOut = ClientFunctions.AddClientVoucherCodes(context);
+                        break;
+                    case "unlockuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.UnlockUser();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "deleteuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.DeleteUser();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "restoreuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.RestoreUser();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "removeuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.RemoveUser();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "validateuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.AuthoriseClient();
+                                clientData.AddClientEditorRole();
+                                if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "unauthoriseuser":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.UnAuthoriseClient();
+                                clientData.RemoveClientEditorRole();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "resetpass":
+                        if (userId > 0)
+                        {
+                            var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
+                            if (clientData.Exists)
+                            {
+                                clientData.ResetPassword();
+                                return ClientFunctions.ClientAdminDetail(context);
+                            }
+                        }
+                        break;
+                    case "viewaddressbook":
+                        //param[0] = "";
+
+                        //if (Utils.IsNumeric(cArg))
+
+                        //{
+
+                        //    param[0] = "ctrl=addressbook";
+
+                        //    param[1] = "uid=" + cArg;
+
+                        //}
+
+                        //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+
+                        break;
+
+                    case "vieworders":
+
+                        //param[0] = "";
+
+                        //if (Utils.IsNumeric(cArg))
+
+                        //{
+
+                        //    param[0] = "ctrl=orders";
+
+                        //    param[1] = "uid=" + cArg;
+
+                        //}
+
+                        //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+
+                        break;
+
+                    case "createorder":
+
+                        //param[0] = "";
+
+                        //var tabId = TabId;
+
+                        //if (Utils.IsNumeric(cArg))
+
+                        //{
+
+                        //    var cart = new CartData(PortalId);
+
+                        //    cart.UserId = Convert.ToInt32(cArg);
+
+                        //    cart.EditMode = "C";
+
+                        //    cart.Save();
+
+                        //    tabId = StoreSettings.Current.GetInt("productlisttab");
+
+                        //    if (tabId == 0) tabId = TabId;
+
+                        //}
+
+                        //Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
+
+                        break;
+                }
+            }
+            return strOut;
+        }
+
 
         public static String ClientAdminList(HttpContext context)
         {

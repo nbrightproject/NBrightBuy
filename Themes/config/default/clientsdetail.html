@@ -14,8 +14,8 @@
         $('.customerdiscount div.box-content').toggle();
         $('.customervoucher div.box-content').toggle();
 
-        nbxget('clientdiscountcodes', '#clientselectparams', '#clientdiscountcodes'); // load discounts
-        nbxget('clientvouchercodes', '#clientselectparams', '#clientvouchercodes'); // load discounts
+        nbxget('client.discountcodes', '#clientselectparams', '#clientdiscountcodes'); // load discounts
+        nbxget('client.vouchercodes', '#clientselectparams', '#clientvouchercodes'); // load discounts
 
         $('#clientdiscountcodes').change(function () {
             $('.removediscountcode').click(function () { removeelement($(this).parent().parent().parent().parent()); });
@@ -28,7 +28,7 @@
 
         $('#adddiscountcode').click(function () {
             $('input[[id*="addqty"]]').val($('input[[id*="txtadddiscountcodeqty"]]').val());
-            nbxget('addclientdiscountcode', '#clientselectparams', '#clientdiscountcodes', null, 'true');
+            nbxget('client.adddiscountcode', '#clientselectparams', '#clientdiscountcodes', null, 'true');
         });
         $('#addvouchercode').click(function () {
             $('input[[id*="addqty"]]').val($('input[[id*="txtaddvouchercodeqty"]]').val());

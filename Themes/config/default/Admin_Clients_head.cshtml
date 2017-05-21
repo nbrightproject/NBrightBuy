@@ -41,7 +41,7 @@
             $('.processing').show();
 
             $('#razortemplate').val('Admin_ClientsList.cshtml');
-            nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+            nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
 
             $(document).on("nbxgetcompleted", Admin_client_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -59,7 +59,7 @@
                 });
 
 
-                if (e.cmd == 'clientadmin_getlist') {
+                if (e.cmd == 'client.admin_getlist') {
 
                     $("#clientAdmin_cmdSave").hide();
                     $("#clientAdmin_cmdReturn").hide();
@@ -72,14 +72,14 @@
                         $('.processing').show();
                         $('#razortemplate').val('Admin_clientsDetail.cshtml');
                         $('#selecteditemid').val($(this).attr('itemid'));
-                        nbxget('clientadmin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
+                        nbxget('client.admin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
                     });
 
                     $('.cmdPg').unbind("click");
                     $('.cmdPg').click(function () {
                         $('.processing').show();
                         $('#pagenumber').val($(this).attr('pagenumber'));
-                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                        nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
                     });
 
                     $('#clientAdmin_cmdSearch').unbind("click");
@@ -91,7 +91,7 @@
                         $('#dtesearchdateto').val($('#clientAdmin_datesearchto').val());
                         $('#searchclientstatus').val($('#clientAdmin_searchclientstatus').val());
 
-                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                        nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
                     });
 
                     $('#clientAdmin_cmdReset').unbind("click");
@@ -103,12 +103,12 @@
                         $('#dtesearchdateto').val('');
                         $('#searchclientstatus').val('');
 
-                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                        nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
                     });
 
                 }
 
-                if (e.cmd == 'clientadmin_getdetail') {
+                if (e.cmd == 'client.admin_getdetail') {
 
                     $("#clientAdmin_cmdSave").show();
                     $("#clientAdmin_cmdReturn").show();
@@ -118,23 +118,24 @@
                         $('.processing').show();
                         $('#razortemplate').val('Admin_clientsList.cshtml');
                         $('#selecteditemid').val('');
-                        nbxget('clientadmin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+                        nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
                     });
 
-                    $('.clientAdmin_cmdSave').unbind("click");
-                    $('.clientAdmin_cmdSave').click(function () {
+                    $('#clientAdmin_cmdSave').unbind("click");
+                    $('#clientAdmin_cmdSave').click(function () {
                         $('.processing').show();
                         //move data to update postback field
                         $('#xmlupdatediscountcodedata').val($.fn.genxmlajaxitems('#clientdiscountcodes', '.discountcode'));
                         //move data to update postback field
                         $('#xmlupdatevouchercodedata').val($.fn.genxmlajaxitems('#clientvouchercodes', '.vouchercode'));
-                        nbxget('clientadmin_save', '#clientdatasection', '#actionreturn');
+                        alert($('#xmlupdatevouchercodedata').val());
+                        nbxget('client.admin_save', '#clientdatasection', '#actionreturn');
                     });
                 }
 
-                if (e.cmd == 'clientadmin_save') {
+                if (e.cmd == 'client.admin_save') {
                     //$('.processing').show();
-                    //nbxget('clientadmin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
+                    //nbxget('client.admin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
                 }
 
             };

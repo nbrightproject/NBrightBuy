@@ -135,11 +135,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             objCtrl.Update(DataRecord);
 
             // update Discount codes
-            var strXml = updateInfo.GetXmlProperty("genxml/hidden/xmlupdatediscountcodedata");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            var strXml = Utils.UnCode(updateInfo.GetXmlProperty("genxml/hidden/xmlupdatediscountcodedata"));
             UpdateDiscountCodes(strXml);
-            strXml = updateInfo.GetXmlProperty("genxml/hidden/xmlupdatevouchercodedata");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            strXml = Utils.UnCode(updateInfo.GetXmlProperty("genxml/hidden/xmlupdatevouchercodedata"));
             UpdateVoucherCodes(strXml);
 
         }
@@ -209,6 +207,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void UpdateDiscountCodes(String xmlAjaxData)
         {
+            xmlAjaxData = GenXmlFunctions.DecodeCDataTag(xmlAjaxData);
             var discountcodesList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
             // build xml for data records
             var strXml = "<genxml><discountcodes>";
@@ -261,6 +260,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void UpdateVoucherCodes(String xmlAjaxData)
         {
+            xmlAjaxData = GenXmlFunctions.DecodeCDataTag(xmlAjaxData);
             var vouchercodesList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
             // build xml for data records
             var strXml = "<genxml><vouchercodes>";
@@ -387,7 +387,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 DataRecord = new NBrightInfo(true);
                 DataRecord.ItemID = -1;
-                DataRecord.UserId = _userInfo.UserID;
+                DataRecord.UserId = userId;
                 DataRecord.PortalId = PortalId;
                 DataRecord.ModuleId = -1;
                 DataRecord.TypeCode = "CLIENT";

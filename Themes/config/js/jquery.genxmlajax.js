@@ -204,7 +204,19 @@
                     values += '<f t="txt" ' + strUpdate + ' id="' + shortID + '" dt="' + element.attr("datatype") + '"><![CDATA[' + element.val() + ']]></f>';
                 }
             } else if (element.attr("type") == 'hidden') {
-                values += '<f t="hid" ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+
+                if (element.attr("datatype") == 'coded') {
+                    var coded = '';
+                    var str = element.val();
+                    for (var i = 0; i < str.length; i++) {
+                        coded = coded + str.charCodeAt(i) + '.';
+                    }
+                    values += '<f t="hid" ' + strUpdate + ' id="' + shortID + '" dt="' + element.attr("datatype") + '">' + coded + '</f>';
+                } else {
+                    values += '<f t="hid" ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
+                }
+
+
             } else {
                 values += '<f ' + strUpdate + ' id="' + shortID + '"><![CDATA[' + element.val() + ']]></f>';
             }
