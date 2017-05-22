@@ -138,7 +138,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
         private void DoExport()
         {
-            
+
+            FixUniqueRef("PRD", "genxml/textbox/txtproductref");
+            FixUniqueRef("GROUP", "genxml/textbox/groupref");
+            FixUniqueRef("CATEGORY", "genxml/textbox/txtcategoryref");
+
             var strXml = new StringBuilder("<root>");
             var objCtrlUser = new UserController();
 
@@ -338,6 +342,35 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             DnnUtils.Zip(StoreSettings.Current.FolderUploadsMapPath + "\\exportdocs.zip", fileMapPathList);
 
             Utils.ForceDocDownload(StoreSettings.Current.FolderUploadsMapPath + "\\exportdocs.zip", PortalSettings.PortalAlias.HTTPAlias + "_exportdocs.zip", Response);
+        }
+
+        /// <summary>
+        /// Ref MUST be unique to import products, this function checks and fixes any duplicates.
+        /// </summary>
+        /// <param name="typeCode"></param>
+        /// <param name="refxpath"></param>
+        private void FixUniqueRef(string typeCode,string refxpath)
+        {
+            var refList = new List<string>();
+            var l = ModCtrl.GetList(PortalId, -1, typeCode);
+            foreach (var i in l)
+            {
+                var currentRef = i.GetXmlProperty(refxpath);
+                if (refList.Contains(currentRef))
+                {
+                    var nbi = ModCtrl.Get(i.ItemID);
+                    var newref = currentRef + ":" + i.ItemID;
+                    nbi.SetXmlProperty(refxpath, newref);
+                    ModCtrl.Update(nbi);
+                    refList.Add(newref);
+                }
+                else
+                {
+                    refList.Add(currentRef);
+                }
+            }
+
+
         }
     }
 
