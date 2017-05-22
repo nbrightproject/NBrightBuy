@@ -24,10 +24,13 @@
     <input id="dtesearchdateto" type="hidden" value="" datatype='date'/>
     <input id="searchorderstatus" type="hidden" value=""/>
     <input id="selecteditemid" type="hidden" value=""/>    
+    <input id="selecteduserid" type="hidden" value="" />
     <input id="emailtype" type="hidden" value=""/>
     <input id="emailsubject" type="hidden" value=""/>    
     <input id="emailmessage" type="hidden" value="" />    
 </span>
+
+<input id="useridparam" type="hidden" value="@Model.GetUrlParam("uid")" /> <!-- uid param, diplay detail -->
 
 <div style="display: none;" id="actionreturn"></div>
 
@@ -42,6 +45,11 @@
         $(document).ready(function() {
             // start load all ajax data, continued by js in product.js file
             $('.processing').show();
+
+            // if we pass uid as url param, select only that user orders.
+            if ($('#useridparam').val() != '') {
+                $('#selecteduserid').val($('#useridparam').val());
+            }
 
             $('#razortemplate').val('Admin_OrdersList.cshtml');
             nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');

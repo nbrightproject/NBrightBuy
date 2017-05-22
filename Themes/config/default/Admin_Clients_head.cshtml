@@ -23,6 +23,8 @@
     <input id="emailmessage" type="hidden" value="" />    
 </span>
 
+<input id="useridparam" type="hidden" value="@Model.GetUrlParam("uid")" /> <!-- uid param, diplay detail -->
+
 <div style="display: none;" id="actionreturn"></div>
 
 <!-- Needed for CKEditor -->
@@ -40,8 +42,14 @@
             // start load all ajax data, continued by js in product.js file
             $('.processing').show();
 
-            $('#razortemplate').val('Admin_ClientsList.cshtml');
-            nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+            if ($('#useridparam').val() != '') {
+                $('#razortemplate').val('Admin_clientsDetail.cshtml');
+                $('#selecteditemid').val($('#useridparam').val());
+                nbxget('client.admin_getdetail', '#nbs_clientadminsearch', '#datadisplay');
+            } else {
+                $('#razortemplate').val('Admin_ClientsList.cshtml');
+                nbxget('client.admin_getlist', '#nbs_clientadminsearch', '#datadisplay');
+            }
 
             $(document).on("nbxgetcompleted", Admin_client_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -108,7 +116,8 @@
 
                 }
 
-                if (e.cmd == 'client.admin_getdetail') {
+                if (e.cmd == 'client.admin_getdetail' || e.cmd == 'client.validateuser' || e.cmd == 'client.unauthoriseuser' || e.cmd == 'client.resetpass'
+                    || e.cmd == 'client.unlockuser' || e.cmd == 'client.deleteuser' || e.cmd == 'client.removeuser' || e.cmd == 'client.restoreuser') {
 
                     $("#clientAdmin_cmdSave").show();
                     $("#clientAdmin_cmdReturn").show();
@@ -131,6 +140,46 @@
                         alert($('#xmlupdatevouchercodedata').val());
                         nbxget('client.admin_save', '#clientdatasection', '#actionreturn');
                     });
+
+                    $('#cmdValidateUser').unbind("click");
+                    $('#cmdValidateUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.validateuser', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdUnAuthoriseUser').unbind("click");
+                    $('#cmdUnAuthoriseUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.unauthoriseuser', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdResetPass').unbind("click");
+                    $('#cmdResetPass').click(function () {
+                        $('.processing').show();
+                        nbxget('client.resetpass', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdUnlockUser').unbind("click");
+                    $('#cmdUnlockUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.unlockuser', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdDeleteUser').unbind("click");
+                    $('#cmdDeleteUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.deleteuser', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdRemoveUser').unbind("click");
+                    $('#cmdRemoveUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.removeuser', '#clientselectparams', '#datadisplay');
+                    });
+                    $('#cmdRestoreUser').unbind("click");
+                    $('#cmdRestoreUser').click(function () {
+                        $('.processing').show();
+                        nbxget('client.restoreuser', '#clientselectparams', '#datadisplay');
+                    });
+                    
+
+
+
                 }
 
                 if (e.cmd == 'client.admin_save') {

@@ -4,6 +4,8 @@
 @using System.Linq
 @using System.Web.Razor.Parser.SyntaxTree
 @using System.Xml
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Portals
 @using NBrightCore.common
 @using NBrightDNN
 @using NBrightDNN.render
@@ -16,6 +18,8 @@
 @{
     var clientData = (ClientData)Model.List.First();
     var info = clientData.GetInfo();
+    var param = new string[3];
+
 }
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -92,6 +96,11 @@
             <input id="userid" type="hidden" value="@info.UserId" />
             <input id="addqty" type="hidden" value="" />
             <input id="lang" type="hidden" value="@info.Lang" />
+            <input id="razortemplate" type="hidden" value="Admin_clientsDetail.cshtml" />
+            <input id="themefolder" type="hidden" value="config" />
+            <input id="selecteditemid" type="hidden" value="@info.UserId" />
+            <input id='currentlang' type='hidden' value='@Model.GetUrlParam("language")' /> <!-- get the current culture and pass to the ajax server side, so it knows what language is -->
+            <input id="lang" type="hidden" value="@Model.GetUrlParam("language")" /> <!-- default to current language -->
         </div>
 
         <!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
@@ -279,16 +288,41 @@
 					<p class="page-header">@ResourceKey("Clients.Ordering")</p>
 					<div class="form-group">
 					    <div class="col-sm-4">
-                            <a id="cmdViewOrders" class="btn btn-default btn-block" href="#">@ResourceKey("Clients.cmdViewOrders")</a>
+                            @{
+                                param[0] = "";
+                                param[0] = "ctrl=orders";
+                                param[1] = "uid=" + info.UserId;
+                                param[2] = "";
+                                var viewOrderUrl = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", param);
+                            }					        
+					        <a id="cmdViewOrders" class="btn btn-default btn-block" href="@viewOrderUrl">@ResourceKey("Clients.cmdViewOrders")</a>
 					    </div>
-						<div class="col-sm-4">
-                            <a id="cmdCreateOrder" class="btn btn-default btn-block" href="#">@ResourceKey("Clients.cmdCreateOrder")</a>
-						</div>
+					    <div class="col-sm-4">
+					        @{
+                                var cart = new CartData(PortalSettings.Current.PortalId);
+                                cart.UserId = info.UserId;
+                                cart.EditMode = "C";
+                                cart.Save();
+
+                                param[0] = "";
+                                param[1] = "";
+                                param[2] = "";
+                                var createOrderUrl = Globals.NavigateURL(StoreSettings.Current.GetInt("productlisttab"), "", param);
+                            }
+					        <a id="cmdCreateOrder" class="btn btn-default btn-block" href="@createOrderUrl">@ResourceKey("Clients.cmdCreateOrder")</a>
+					    </div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-4">
-                            <a id="cmdViewAddressBook" class="btn btn-default btn-block" href="#">@ResourceKey("Clients.cmdViewAddressBook")</a>
-						</div>
+					    <div class="col-sm-4">
+					        @{
+                                param[0] = "";
+                                param[0] = "ctrl=addressbook";
+                                param[1] = "uid=" + info.UserId;
+                                param[2] = "";
+                                var viewAddrUrl = Globals.NavigateURL(StoreSettings.Current.GetInt("backofficetabid"), "", param);
+					        }
+					        <a id="cmdViewAddressBook" class="btn btn-default btn-block" href="@viewAddrUrl">@ResourceKey("Clients.cmdViewAddressBook")</a>
+					    </div>
 					</div>
 					</div>
 					<div class="col-sm col-sm-6">
@@ -297,11 +331,11 @@
 					    <div class="col-sm-4">
                             @if (info.GetXmlPropertyBool("genxml/membership/approved"))
                             {
-                                <a id="cmdValidateUser" class="btn btn-success btn-block" href="#">@ResourceKey("Clients.cmdValidateUser")</a>
+                                <a id="cmdUnAuthoriseUser" class="btn btn-danger btn-block" href="#">@ResourceKey("Clients.cmdUnAuthoriseUser")</a>
                             }
                             else
-                            { 
-                                <a id="cmdUnAuthoriseUser" class="btn btn-danger btn-block" href="#">@ResourceKey("Clients.cmdUnAuthoriseUser")</a>
+                            {
+                                <a id="cmdValidateUser" class="btn btn-success btn-block" href="#">@ResourceKey("Clients.cmdValidateUser")</a>
                             }
 					    </div>
 						<div class="col-sm-4">

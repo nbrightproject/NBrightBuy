@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
+    <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

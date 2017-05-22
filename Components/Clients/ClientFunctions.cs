@@ -49,7 +49,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     case "client.addvouchercode":
                         strOut = ClientFunctions.AddClientVoucherCodes(context);
                         break;
-                    case "unlockuser":
+                    case "client.unlockuser":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -60,7 +60,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "deleteuser":
+                    case "client.deleteuser":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -71,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "restoreuser":
+                    case "client.restoreuser":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -82,7 +82,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "removeuser":
+                    case "client.removeuser":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -93,7 +93,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "validateuser":
+                    case "client.validateuser":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -106,8 +106,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "unauthoriseuser":
-                        if (userId > 0)
+                    case "client.unauthoriseuser":
+                        if (userId > 0 && UserController.Instance.GetCurrentUserInfo()?.UserID != userId)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
                             if (clientData.Exists)
@@ -118,7 +118,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "resetpass":
+                    case "client.resetpass":
                         if (userId > 0)
                         {
                             var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
@@ -129,64 +129,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             }
                         }
                         break;
-                    case "viewaddressbook":
-                        //param[0] = "";
+                    case "client.createorder":
 
-                        //if (Utils.IsNumeric(cArg))
+                        var cart = new CartData(PortalSettings.Current.PortalId);
+                        cart.UserId = userId;
+                        cart.EditMode = "C";
+                        cart.Save();
+                        return "";
 
-                        //{
-
-                        //    param[0] = "ctrl=addressbook";
-
-                        //    param[1] = "uid=" + cArg;
-
-                        //}
-
-                        //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-
-                        break;
-
-                    case "vieworders":
-
-                        //param[0] = "";
-
-                        //if (Utils.IsNumeric(cArg))
-
-                        //{
-
-                        //    param[0] = "ctrl=orders";
-
-                        //    param[1] = "uid=" + cArg;
-
-                        //}
-
-                        //Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-
-                        break;
-
-                    case "createorder":
-
-                        //param[0] = "";
-
-                        //var tabId = TabId;
-
-                        //if (Utils.IsNumeric(cArg))
-
-                        //{
-
-                        //    var cart = new CartData(PortalId);
-
-                        //    cart.UserId = Convert.ToInt32(cArg);
-
-                        //    cart.EditMode = "C";
-
-                        //    cart.Save();
 
                         //    tabId = StoreSettings.Current.GetInt("productlisttab");
 
-                        //    if (tabId == 0) tabId = TabId;
-
-                        //}
 
                         //Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
 
@@ -309,6 +262,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                     var themeFolder = settings["themefolder"];
                     var selecteditemid = settings["selecteditemid"];
+                    if (selecteditemid == "")
+                    {
+                        if (!settings.ContainsKey("userid")) settings.Add("userid", "");
+                        selecteditemid = settings["userid"];
+                    }
                     var razortemplate = settings["razortemplate"];
                     var portalId = Convert.ToInt32(settings["portalid"]);
 
