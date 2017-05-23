@@ -38,16 +38,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         strOut = ClientFunctions.ClientAdminSave(context);
                         break;
                     case "client.discountcodes":
-                        strOut = ClientFunctions.GetClientDiscountCodes(context);
+                        //strOut = ClientFunctions.GetClientDiscountCodes(context);
                         break;
                     case "client.adddiscountcode":
-                        strOut = ClientFunctions.AddClientDiscountCodes(context);
+                        AddClientDiscountCodes(context);
+                        strOut = ClientFunctions.ClientAdminDetail(context);
                         break;
                     case "client.vouchercodes":
-                        strOut = ClientFunctions.GetClientVoucherCodes(context);
+                        //strOut = ClientFunctions.GetClientVoucherCodes(context);
                         break;
                     case "client.addvouchercode":
-                        strOut = ClientFunctions.AddClientVoucherCodes(context);
+                        AddClientVoucherCodes(context);
+                        strOut = ClientFunctions.ClientAdminDetail(context);
                         break;
                     case "client.unlockuser":
                         if (userId > 0)
@@ -56,7 +58,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             if (clientData.Exists)
                             {
                                 clientData.UnlockUser();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -67,7 +69,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             if (clientData.Exists)
                             {
                                 clientData.DeleteUser();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -78,7 +80,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             if (clientData.Exists)
                             {
                                 clientData.RestoreUser();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -89,7 +91,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             if (clientData.Exists)
                             {
                                 clientData.RemoveUser();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -102,7 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                                 clientData.AuthoriseClient();
                                 clientData.AddClientEditorRole();
                                 if (StoreSettings.Current.Get("resetpasswordonclientvalidate") == "True") clientData.ResetPassword();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -114,7 +116,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             {
                                 clientData.UnAuthoriseClient();
                                 clientData.RemoveClientEditorRole();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
@@ -125,24 +127,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             if (clientData.Exists)
                             {
                                 clientData.ResetPassword();
-                                return ClientFunctions.ClientAdminDetail(context);
+                                strOut = ClientFunctions.ClientAdminDetail(context);
                             }
                         }
                         break;
                     case "client.createorder":
-
                         var cart = new CartData(PortalSettings.Current.PortalId);
                         cart.UserId = userId;
                         cart.EditMode = "C";
                         cart.Save();
-                        return "";
-
-
-                        //    tabId = StoreSettings.Current.GetInt("productlisttab");
-
-
-                        //Response.Redirect(NBrightBuyUtils.AdminUrl(tabId, param), true);
-
+                        strOut = DnnUtils.GetResourceString("/DesktopModules/NBright/NBrightBuy/App_LocalResources/", "General.Processing");
                         break;
                 }
             }
@@ -393,21 +387,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (lp > 10) break; // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     clientData.Save();
-                    var modelcount2 = clientData.DiscountCodes.Count;
-                    var rtnList = new List<NBrightInfo>();
-                    for (var i = modelcount; i < modelcount2; i++)
-                    {
-                        rtnList.Add(clientData.DiscountCodes[i]);
-                    }
-
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
-
-                    //get data
-                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
                 return strOut;
             }
@@ -481,21 +460,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (lp > 10) break; // we don;t want to create a stupid amount, it will slow the system!!!
                     }
                     clientData.Save();
-                    var modelcount2 = clientData.VoucherCodes.Count;
-                    var rtnList = new List<NBrightInfo>();
-                    for (var i = modelcount; i < modelcount2; i++)
-                    {
-                        rtnList.Add(clientData.VoucherCodes[i]);
-                    }
-
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientvouchercodes.html", Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
-
-                    //get data
-                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
                 }
                 return strOut;
             }
