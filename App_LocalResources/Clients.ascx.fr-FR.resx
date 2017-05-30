@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -19,19 +19,19 @@
     <value xml:space="preserve">Montant utilisé</value>
   </data>
   <data name="ClientmenuAddresses.Text">
-    <value xml:space="preserve">Mes adresses</value>
+    <value xml:space="preserve">Carnet d'adresses</value>
   </data>
   <data name="ClientmenuManage.Text">
-    <value xml:space="preserve">Gestion du compte</value>
+    <value xml:space="preserve">C’est ici que vous pouvez suivre vos commandes et mettre à jour toutes les informations vous concernant.</value>
   </data>
   <data name="ClientmenuOrders.Text">
-    <value xml:space="preserve">Mes commandes</value>
+    <value xml:space="preserve">Commandes</value>
   </data>
   <data name="ClientmenuProfile.Text">
-    <value xml:space="preserve">Mon profil</value>
+    <value xml:space="preserve">Identifiants</value>
   </data>
   <data name="ClientmenuTitle.Text">
-    <value xml:space="preserve">Mon compte</value>
+    <value xml:space="preserve">Bienvenue dans votre compte !</value>
   </data>
   <data name="cmdAddClientEditorRole.Text" lastModified="2016-12-15 16:41:55">
     <value xml:space="preserve">Permettre au client d'éditer les produits assignés</value>
@@ -161,5 +161,8 @@
   </data>
   <data name="VoucherAmount.Text" lastModified="2016-12-15 16:41:55">
     <value xml:space="preserve">Coupon</value>
+  </data>
+  <data name="CreateAddress.Text" xml:space="preserve">
+    <value>Créer une nouvelle adresse</value>
   </data>
 </root>

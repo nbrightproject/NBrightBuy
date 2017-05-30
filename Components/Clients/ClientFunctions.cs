@@ -323,40 +323,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         }
 
 
-        public static String GetClientDiscountCodes(HttpContext context)
-        {
-            try
-            {
-                //get uploaded params
-                var strOut = "";
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
-                var userid = settings["userid"];
-                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
-                var portalid = settings["portalid"];
-                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
-                {
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
-                    bodyTempl = Utils.ReplaceSettingTokens(bodyTempl, StoreSettings.Current.Settings());
-                    //get data
-                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
-                    strOut = GenXmlFunctions.RenderRepeater(clientData.DiscountCodes, bodyTempl);
-                }
-
-                return strOut;
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
         public static String AddClientDiscountCodes(HttpContext context)
         {
 
