@@ -27,8 +27,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public GrpCatController(String lang,Boolean debugMode = false)
         {
-            _portalId = PortalSettings.Current.PortalId;
-            Load(lang, debugMode);
+            if (PortalSettings.Current != null)
+            {
+                _portalId = PortalSettings.Current.PortalId;
+                Load(lang, debugMode);
+            }
         }
 
         public GrpCatController(String lang,int portalId, Boolean debugMode = false)

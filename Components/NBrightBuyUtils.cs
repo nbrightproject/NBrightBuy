@@ -1352,54 +1352,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return -1;
         }
 
-        /// <summary>
-        /// Get a list of Ajax XML for each item posted as a list of ajax records. 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public static List<string> GetAjaxXmlFieldsList(HttpContext context)
-        {
-            var rtnList = new List<string>();
-            var xmlAjaxData = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            // get each returned xml root node
-            var xmlDoc1 = new XmlDocument();
-            if (!string.IsNullOrEmpty(xmlAjaxData))
-            {
-                xmlDoc1.LoadXml(xmlAjaxData);
-                var xmlNodeList = xmlDoc1.SelectNodes("root/root");
-                if (xmlNodeList != null)
-                {
-                    foreach (XmlNode nod in xmlNodeList)
-                    {
-                        rtnList.Add(nod.OuterXml);
-                    }
-                }
-            }
-            return rtnList;
-        }
-
-        /// <summary>
-        /// Return data from Ajax in ajax string format
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public static string GetAjaxXmlFields(HttpContext context)
-        {
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            return strIn;
-        }
-
-        public static NBrightInfo GetAjaxFields(HttpContext context)
-        {
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
-            var objInfo = new NBrightInfo();
-
-            objInfo.ItemID = -1;
-            objInfo.TypeCode = "AJAXDATA";
-            objInfo.XMLData = xmlData;
-            return objInfo;
-        }
 
         public static int GetEntryIdFromUrl(int portalId, System.Web.HttpRequest request)
         {
@@ -2314,13 +2266,137 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // set langauge if we have it passed.
             if (ajaxInfo == null) ajaxInfo = new NBrightInfo(true);
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
-            if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "langauge"); // fallbacl
-            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallbacl
+            if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "language"); // fallback
+            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallback
+            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang"); // fallback
             if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
             // set the context  culturecode, so any DNN functions use the correct culture 
             if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
         }
+
+        #region "AJAX functions"
+
+        public static Dictionary<String, String> GetAjaxDictionary(HttpContext context)
+        {
+            var objInfo = GetAjaxInfo(context);
+            var dic = objInfo.ToDictionary();
+            return dic;
+        }
+
+        /// <summary>
+        /// Put Ajax data into a NBrightInfo class for processing
+        /// </summary>
+        /// <param name="context">Http context</param>
+        /// <param name="updatefields">If true only fields marked with update attribute are returned.</param>
+        /// <returns></returns>
+        public static NBrightInfo GetAjaxInfo(HttpContext context, Boolean updatefields = false)
+        {
+            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+
+            var objInfo = new NBrightInfo();
+
+            objInfo.ItemID = -1;
+            objInfo.TypeCode = "AJAXDATA";
+            objInfo.PortalId = PortalSettings.Current.PortalId;
+            if (updatefields)
+            {
+                objInfo.UpdateAjax(strIn);
+            }
+            else
+            {
+                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+                objInfo.XMLData = xmlData;
+            }
+            if (objInfo.Lang == "") objInfo.Lang = objInfo.GetXmlProperty("genxml/hidden/editlang");
+            if (objInfo.Lang == "") objInfo.Lang = Utils.GetCurrentCulture(); // make sure we have the langauge in the object.
+            return objInfo;
+        }
+
+        public static List<NBrightInfo> GetAjaxInfoList(HttpContext context)
+        {
+            var rtnList = new List<NBrightInfo>();
+            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            var xmlDoc1 = new XmlDocument();
+            if (!String.IsNullOrEmpty(strIn))
+            {
+
+                xmlDoc1.LoadXml(strIn);
+
+                var xmlNodeList = xmlDoc1.SelectNodes("root/*");
+                if (xmlNodeList != null)
+                {
+                    foreach (XmlNode nod in xmlNodeList)
+                    {
+                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "");
+                        var objInfo = new NBrightInfo();
+
+                        objInfo.ItemID = -1;
+                        objInfo.TypeCode = "AJAXDATA";
+                        objInfo.PortalId = PortalSettings.Current.PortalId;
+                        objInfo.XMLData = xmlData;
+                        if (objInfo.Lang == "") objInfo.Lang = objInfo.GetXmlProperty("genxml/hidden/editlang");
+                        if (objInfo.Lang == "") objInfo.Lang = Utils.GetCurrentCulture(); // make sure we have the langauge in the object.
+                        rtnList.Add(objInfo);
+                    }
+                }
+            }
+            return rtnList;
+        }
+
+        /// <summary>
+        /// Get a list of Ajax XML for each item posted as a list of ajax records. 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static List<string> GetAjaxXmlFieldsList(HttpContext context)
+        {
+            var rtnList = new List<string>();
+            var xmlAjaxData = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            // get each returned xml root node
+            var xmlDoc1 = new XmlDocument();
+            if (!string.IsNullOrEmpty(xmlAjaxData))
+            {
+                xmlDoc1.LoadXml(xmlAjaxData);
+                var xmlNodeList = xmlDoc1.SelectNodes("root/root");
+                if (xmlNodeList != null)
+                {
+                    foreach (XmlNode nod in xmlNodeList)
+                    {
+                        rtnList.Add(nod.OuterXml);
+                    }
+                }
+            }
+            return rtnList;
+        }
+
+        /// <summary>
+        /// Return data from Ajax in ajax string format
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetAjaxXmlFields(HttpContext context)
+        {
+            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            return strIn;
+        }
+
+        public static NBrightInfo GetAjaxFields(HttpContext context)
+        {
+            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+            var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
+            var objInfo = new NBrightInfo();
+
+            objInfo.ItemID = -1;
+            objInfo.TypeCode = "AJAXDATA";
+            objInfo.XMLData = xmlData;
+            return objInfo;
+        }
+
+
+        #endregion
+
+
     }
 }
 

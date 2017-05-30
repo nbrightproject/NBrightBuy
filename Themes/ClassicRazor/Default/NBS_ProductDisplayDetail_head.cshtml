@@ -290,7 +290,7 @@
         var filecount = 0;
         var filesdone = 0;
 
-        $('.addtobasket').hide();
+        //$('.addtobasket').hide();
         $('#optionfileprefix').val(uqid);
         $('input[id*="optionfilelist"]').val('');
 
@@ -301,7 +301,7 @@
 
             $('#optionfile').fileupload({
                     url: url,
-                    maxFileSize: 5000000,
+                    maxFileSize: 20000000,
                     acceptFileTypes: /(\.|\/)(pdf|zip|gif|jpe?g|png)$/i,
                     dataType: 'json'
                 }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
@@ -323,7 +323,7 @@
                     filecount = data.files.length;
                 }).bind('fileuploadstop', function (e) {
                     if (filesdone == filecount) {
-                        $('.addtobasket').show();
+                        //$('.addtobasket').show();
                         $('#clientfileuploadmsg').hide();
                         $('#clientfileuploadmsgend').show();
                                           
@@ -334,7 +334,7 @@
 
         $('#minicartdatareturn').change(function () {
             // the files have been attched to the last item in cart, so reset buy button again.
-            $('.addtobasket').hide();
+            //$('.addtobasket').hide();
             $('.fileUpload').show();
             $('#progressbar').hide();
             $('#progressbarpercent').css('width', '0%');

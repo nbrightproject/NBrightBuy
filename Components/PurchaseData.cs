@@ -292,6 +292,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (strmodelId == "") strmodelId = ajaxInfo.GetXmlProperty("genxml/hidden/modeldefault");
                 if (strmodelId == "")
                 {
+                    if (ajaxInfo.Lang == null) ajaxInfo.Lang = Utils.GetCurrentCulture();
                     var p = ProductUtils.GetProductData(strproductid,ajaxInfo.Lang);
                     strmodelId = p.Models[0].GetXmlProperty("genxml/hidden/modelid");
                 }

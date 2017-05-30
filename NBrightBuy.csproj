@@ -188,7 +188,9 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
+    <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,7 +254,7 @@
     <Compile Include="Components\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
-    <Compile Include="Components\ClientData.cs" />
+    <Compile Include="Components\Clients\ClientData.cs" />
     <Compile Include="Components\CategoryData.cs" />
     <Compile Include="Components\CatProdXref.cs" />
     <Compile Include="Components\GroupData.cs" />
@@ -263,7 +265,7 @@
     <Compile Include="Components\ProfileData.cs" />
     <Compile Include="Components\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
-    <Compile Include="Components\OrderData.cs" />
+    <Compile Include="Components\Orders\OrderData.cs" />
     <Compile Include="Components\RequestForm.cs" />
     <Compile Include="Components\Scheduler.cs" />
     <Compile Include="Components\UserData.cs" />
@@ -516,10 +518,14 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\config\default\Admin_Clients.cshtml" />
     <None Include="Themes\config\default\Admin_Orders.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
+    <None Include="Themes\config\default\Admin_ClientsDetail.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_ClientsList.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersList.cshtml" />
+    <None Include="Themes\config\default\Admin_Clients_head.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
@@ -603,15 +609,8 @@
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
     <Content Include="Themes\config\default\categoryproductheader.html" />
-    <Content Include="Themes\config\default\clientsbody.html" />
-    <Content Include="Themes\config\default\clientsdetail.html" />
-    <Content Include="Themes\config\default\clientsdetailfooter.html" />
-    <Content Include="Themes\config\default\clientsdetailheader.html" />
-    <Content Include="Themes\config\default\clientsfooter.html" />
-    <Content Include="Themes\config\default\clientsheader.html" />
-    <Content Include="Themes\config\default\clientssearch.html" />
+    <None Include="Themes\config\default\clientfields.cshtml" />
     <Content Include="Themes\config\default\clientdiscountcodes.html" />
-    <Content Include="Themes\config\default\clientvouchercodes.html" />
     <Content Include="Themes\config\default\clientselectbody.html" />
     <Content Include="Themes\config\default\clientselectfooter.html" />
     <Content Include="Themes\config\default\clientselectheader.html" />
@@ -1022,6 +1021,7 @@
     <Content Include="Themes\config\default\extrashippingdata.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
+    <Content Include="Themes\config\default\productfields.html" />
     <Content Include="Themes\config\default\productlistbody-as-thumbs.html" />
     <Content Include="Themes\config\default\productlistfooter-as-thumbs.html" />
     <Content Include="Themes\config\default\productlistheader-as-thumbs.html" />

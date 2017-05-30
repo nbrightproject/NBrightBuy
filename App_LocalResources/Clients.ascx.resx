@@ -267,4 +267,7 @@
   <data name="cmdRestoreUser.Text" xml:space="preserve">
     <value>Restore User</value>
   </data>
+  <data name="CreateAddress.Text" xml:space="preserve">
+    <value>Create a new address</value>
+  </data>
 </root>

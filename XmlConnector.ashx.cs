@@ -26,7 +26,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using NBrightBuy.render;
 using NBrightCore.images;
+using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using Nevoweb.DNN.NBrightBuy.Components.Orders;
 using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -80,302 +82,275 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 #region "Do processing of command"
 
-                var intModuleId = 0;
-                if (Utils.IsNumeric(moduleId)) intModuleId = Convert.ToInt32(moduleId);
-
-                var objCtrl = new NBrightBuyController();
-
-                var uInfo = new UserDataInfo(UserController.Instance.GetCurrentUserInfo().PortalID, intModuleId, objCtrl,
-                    ctlType);
-                strOut = "ERROR!! - No Security rights for current user!";
-                switch (paramCmd)
+                if (paramCmd.StartsWith("client."))
                 {
-                    case "test":
-                        strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
-                        break;
-                    case "setdata":
-                        break;
-                    case "deldata":
-                        break;
-                    //case "setcategoryadminform":
-                    //    if (NBrightBuyUtils.CheckRights()) strOut = SetCategoryForm(context);
-                    //    break;
-                    case "getdata":
-                        strOut = GetReturnData(context);
-                        break;
-                    case "additemlist":
-                        if (Utils.IsNumeric(itemId))
-                        {
-                            var cw = new ItemListData(itemListName);
-                            cw.Add(itemId);
-                            strOut = cw.ItemList;
-                        }
-                        break;
-                    case "removeitemlist":
-                        if (Utils.IsNumeric(itemId))
-                        {
-                            var cw1 = new ItemListData(itemListName);
-                            cw1.Remove(itemId);
-                            strOut = cw1.ItemList;
-                        }
-                        break;
-                    case "deleteitemlist":
-                        var cw2 = new ItemListData(itemListName);
-                        cw2.Delete();
-                        strOut = "deleted";
-                        break;
-                    case "getproductselectlist":
-                        strOut = GetProductList(context);
-                        break;
-                    case "getproductlist":
-                        strOut = GetProductList(context);
-                        break;
-                    case "getcategoryproductlist":
-                        strOut = GetCategoryProductList(context);
-                        break;
-                    case "setdefaultcategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = SetDefaultCategory(context);
-                        break;
-                    case "deletecatxref":
-                        if (NBrightBuyUtils.CheckRights()) strOut = DeleteCatXref(context);
-                        break;
-                    case "selectcatxref":
-                        if (NBrightBuyUtils.CheckRights()) strOut = SelectCatXref(context);
-                        break;
-                    case "deleteallcatxref":
-                        if (NBrightBuyUtils.CheckRights()) strOut = DeleteAllCatXref(context);
-                        break;
-                    case "copyallcatxref":
-                        if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context);
-                        break;
-                    case "moveallcatxref":
-                        if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context, true);
-                        break;
-                    case "editproduct":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductGeneralData(context);
-                        break;
-                    case "productdescription":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductDescription(context);
-                        break;
-                    case "productmodels":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
-                        break;
-                    case "productoptions":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptions(context);
-                        break;
-                    case "productoptionvalues":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptionValues(context);
-                        break;
-                    case "productimages":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductImages(context);
-                        break;
-                    case "productdocs":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductDocs(context);
-                        break;
-                    case "productrelatedproducts":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
-                        break;
-                    case "productcategories":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductCategories(context);
-                        break;
-                    case "productisincategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = ProductIsInCategory(context).ToString();
-                        break;
-                    case "productgroupcategories":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductGroupCategories(context);
-                        break;
-                    case "productrelated":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductRelated(context);
-                        break;
-                    case "productclients":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetProductClients(context);
-                        break;
-                    case "getclientselectlist":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetClientSelectList(context);
-                        break;
-                    case "addproductmodels":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductModels(context);
-                        break;
-                    case "addproductoptions":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptions(context);
-                        break;
-                    case "addproductoptionvalues":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptionValues(context);
-                        break;
-                    case "addproductcategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductCategory(context);
-                        break;
-                    case "addproductgroupcategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductGroupCategory(context);
-                        break;
-                    case "removeproductcategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductCategory(context);
-                        break;
-                    case "removeproductgroupcategory":
-                        if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductGroupCategory(context);
-                        break;
-                    case "populatecategorylist":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetGroupCategoryListBox(context);
-                        break;
-                    case "addrelatedproduct":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddRelatedProduct(context);
-                        break;
-                    case "removerelatedproduct":
-                        if (NBrightBuyUtils.CheckRights()) strOut = RemoveRelatedProduct(context);
-                        break;
-                    case "addproductclient":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddProductClient(context);
-                        break;
-                    case "removeproductclient":
-                        if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductClient(context);
-                        break;
-                    case "clientdiscountcodes":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetClientDiscountCodes(context);
-                        break;
-                    case "addclientdiscountcode":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddClientDiscountCodes(context);
-                        break;
-                    case "clientvouchercodes":
-                        if (NBrightBuyUtils.CheckRights()) strOut = GetClientVoucherCodes(context);
-                        break;
-                    case "addclientvouchercode":
-                        if (NBrightBuyUtils.CheckRights()) strOut = AddClientVoucherCodes(context);
-                        break;
-                    case "moveproductadmin":
-                        if (NBrightBuyUtils.CheckRights()) strOut = MoveProductAdmin(context);
-                        break;
-                    case "fileupload":
-                        if (NBrightBuyUtils.CheckRights() && Utils.IsNumeric(itemId))
-                        {
-                            strOut = FileUpload(context);
-                        }
-                        break;
-                    case "fileclientupload":
-                        if (StoreSettings.Current.GetBool("allowupload"))
-                        {
-                            strOut = FileUpload(context, itemId);
-                        }
-                        break;
-                    case "updateproductimages":
-                        if (NBrightBuyUtils.CheckRights())
-                        {
-                            UpdateProductImages(context);
-                            strOut = GetProductImages(context);
-                        }
-                        break;
-                    case "updateproductdocs":
-                        if (NBrightBuyUtils.CheckRights())
-                        {
-                            UpdateProductDocs(context);
-                            strOut = GetProductDocs(context);
-                        }
-                        break;
-                    case "addtobasket":
-                        strOut = AddToBasket(context);
-                        break;
-                    case "addalltobasket":
-                        strOut = AddAllToBasket(context);
-                        break;
-                    case "addcookietobasket":
-                        break;
-                    case "docdownload":
+                    strOut = ClientFunctions.ProcessCommand(paramCmd, context);
+                }
+                else if (paramCmd.StartsWith("orderadmin_"))
+                {
+                    strOut = OrderFunctions.ProcessCommand(paramCmd, context);
+                }
+                else
+                {
 
-                        var fname = Utils.RequestQueryStringParam(context, "filename");
-                        var filekey = Utils.RequestQueryStringParam(context, "key");
-                        if (filekey != "")
-                        {
-                            var uData = new UserData();
-                            if (uData.HasPurchasedDocByKey(filekey)) fname = uData.GetPurchasedFileName(filekey);
-                            fname = StoreSettings.Current.FolderDocuments + "/" + fname;
-                        }
-                        if (fname != "")
-                        {
-                            strOut = fname; // return this is error.
-                            var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
-                            var fpath = HttpContext.Current.Server.MapPath(fname);
-                            if (downloadname == "") downloadname = Path.GetFileName(fname);
-                            Utils.ForceDocDownload(fpath, downloadname, context.Response);
-                        }
-                        break;
-                    case "printproduct":
-                        break;
-                    case "removefromcart":
-                        RemoveFromCart(context);
-                        strOut = "removefromcart";
-                        break;
-                    case "recalculatecart":
-                        RecalculateCart(context);
-                        strOut = "recalculatecart";
-                        break;
-                    case "recalculatesummary":
-                        RecalculateSummary(context);
-                        strOut = "recalculatecart";
-                        break;
-                    case "redirecttopayment":
-                        strOut = RedirectToPayment(context);
-                        break;
-                    case "updatebilladdress":
-                        strOut = UpdateCartAddress(context, "bill");
-                        break;
-                    case "updateshipaddress":
-                        strOut = UpdateCartAddress(context, "ship");
-                        break;
-                    case "updateshipoption":
-                        strOut = UpdateCartAddress(context, "shipoption");
-                        break;
-                    case "rendercart":
-                        strOut = RenderCart(context);
-                        break;
-                    case "renderpostdata":
-                        strOut = RenderPostData(context);
-                        break;
-                    case "clearcart":
-                        var currentcart = new CartData(PortalSettings.Current.PortalId);
-                        currentcart.DeleteCart();
-                        strOut = "clearcart";
-                        break;
-                    case "shippingprovidertemplate":
-                        strOut = GetShippingProviderTemplates(context);
-                        break;
-                    case "getsettings":
-                        strOut = GetSettings(context);
-                        break;
-                    case "savesettings":
-                        if (NBrightBuyUtils.CheckRights()) strOut = SaveSettings(context);
-                        break;
-                    case "updateprofile":
-                        strOut = UpdateProfile(context);
-                        break;
-                    case "dosearch":
-                        strOut = DoSearch(context);
-                        break;
-                    case "resetsearch":
-                        strOut = ResetSearch(context);
-                        break;
-                    case "orderby":
-                        strOut = DoOrderBy(context);
-                        break;
-                    case "orderadmin_getlist":
-                        strOut = OrderAdminList(context);
-                        break;
-                    case "orderadmin_getdetail":
-                        strOut = OrderAdminDetail(context);
-                        break;
-                    case "orderadmin_reorder":
-                        strOut = OrderAdminReOrder(context);
-                        break;
-                    case "orderadmin_edit":
-                        strOut = OrderAdminEdit(context);
-                        break;
-                    case "orderadmin_save":
-                        strOut = OrderAdminSave(context);
-                        break;
-                    case "orderadmin_removeinvoice":
-                        strOut = OrderAdminRemoveInvoice(context);
-                        break;
-                    case "orderadmin_sendemail":
-                        strOut = OrderAdminEmail(context);
-                        break;                        
+                    strOut = "ERROR!! - No Security rights for current user!";
+                    switch (paramCmd)
+                    {
+                        case "test":
+                            strOut = "<root>" + UserController.Instance.GetCurrentUserInfo().Username + "</root>";
+                            break;
+                        case "setdata":
+                            break;
+                        case "deldata":
+                            break;
+                        //case "setcategoryadminform":
+                        //    if (NBrightBuyUtils.CheckRights()) strOut = SetCategoryForm(context);
+                        //    break;
+                        case "getdata":
+                            strOut = GetReturnData(context);
+                            break;
+                        case "additemlist":
+                            if (Utils.IsNumeric(itemId))
+                            {
+                                var cw = new ItemListData(itemListName);
+                                cw.Add(itemId);
+                                strOut = cw.ItemList;
+                            }
+                            break;
+                        case "removeitemlist":
+                            if (Utils.IsNumeric(itemId))
+                            {
+                                var cw1 = new ItemListData(itemListName);
+                                cw1.Remove(itemId);
+                                strOut = cw1.ItemList;
+                            }
+                            break;
+                        case "deleteitemlist":
+                            var cw2 = new ItemListData(itemListName);
+                            cw2.Delete();
+                            strOut = "deleted";
+                            break;
+                        case "getproductselectlist":
+                            strOut = GetProductList(context);
+                            break;
+                        case "getproductlist":
+                            strOut = GetProductList(context);
+                            break;
+                        case "getcategoryproductlist":
+                            strOut = GetCategoryProductList(context);
+                            break;
+                        case "setdefaultcategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = SetDefaultCategory(context);
+                            break;
+                        case "deletecatxref":
+                            if (NBrightBuyUtils.CheckRights()) strOut = DeleteCatXref(context);
+                            break;
+                        case "selectcatxref":
+                            if (NBrightBuyUtils.CheckRights()) strOut = SelectCatXref(context);
+                            break;
+                        case "deleteallcatxref":
+                            if (NBrightBuyUtils.CheckRights()) strOut = DeleteAllCatXref(context);
+                            break;
+                        case "copyallcatxref":
+                            if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context);
+                            break;
+                        case "moveallcatxref":
+                            if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context, true);
+                            break;
+                        case "editproduct":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductGeneralData(context);
+                            break;
+                        case "productdescription":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductDescription(context);
+                            break;
+                        case "productmodels":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
+                            break;
+                        case "productoptions":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptions(context);
+                            break;
+                        case "productoptionvalues":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductOptionValues(context);
+                            break;
+                        case "productimages":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductImages(context);
+                            break;
+                        case "productdocs":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductDocs(context);
+                            break;
+                        case "productrelatedproducts":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductModels(context);
+                            break;
+                        case "productcategories":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductCategories(context);
+                            break;
+                        case "productisincategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = ProductIsInCategory(context).ToString();
+                            break;
+                        case "productgroupcategories":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductGroupCategories(context);
+                            break;
+                        case "productrelated":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductRelated(context);
+                            break;
+                        case "productclients":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetProductClients(context);
+                            break;
+                        case "getclientselectlist":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetClientSelectList(context);
+                            break;
+                        case "addproductmodels":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductModels(context);
+                            break;
+                        case "addproductoptions":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptions(context);
+                            break;
+                        case "addproductoptionvalues":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptionValues(context);
+                            break;
+                        case "addproductcategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductCategory(context);
+                            break;
+                        case "addproductgroupcategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductGroupCategory(context);
+                            break;
+                        case "removeproductcategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductCategory(context);
+                            break;
+                        case "removeproductgroupcategory":
+                            if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductGroupCategory(context);
+                            break;
+                        case "populatecategorylist":
+                            if (NBrightBuyUtils.CheckRights()) strOut = GetGroupCategoryListBox(context);
+                            break;
+                        case "addrelatedproduct":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddRelatedProduct(context);
+                            break;
+                        case "removerelatedproduct":
+                            if (NBrightBuyUtils.CheckRights()) strOut = RemoveRelatedProduct(context);
+                            break;
+                        case "addproductclient":
+                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductClient(context);
+                            break;
+                        case "removeproductclient":
+                            if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductClient(context);
+                            break;
+                        case "moveproductadmin":
+                            if (NBrightBuyUtils.CheckRights()) strOut = MoveProductAdmin(context);
+                            break;
+                        case "fileupload":
+                            if (NBrightBuyUtils.CheckRights() && Utils.IsNumeric(itemId))
+                            {
+                                strOut = FileUpload(context);
+                            }
+                            break;
+                        case "fileclientupload":
+                            if (StoreSettings.Current.GetBool("allowupload"))
+                            {
+                                strOut = FileUpload(context, itemId);
+                            }
+                            break;
+                        case "updateproductimages":
+                            if (NBrightBuyUtils.CheckRights())
+                            {
+                                UpdateProductImages(context);
+                                strOut = GetProductImages(context);
+                            }
+                            break;
+                        case "updateproductdocs":
+                            if (NBrightBuyUtils.CheckRights())
+                            {
+                                UpdateProductDocs(context);
+                                strOut = GetProductDocs(context);
+                            }
+                            break;
+                        case "addtobasket":
+                            strOut = AddToBasket(context);
+                            break;
+                        case "addalltobasket":
+                            strOut = AddAllToBasket(context);
+                            break;
+                        case "addcookietobasket":
+                            break;
+                        case "docdownload":
+
+                            var fname = Utils.RequestQueryStringParam(context, "filename");
+                            var filekey = Utils.RequestQueryStringParam(context, "key");
+                            if (filekey != "")
+                            {
+                                var uData = new UserData();
+                                if (uData.HasPurchasedDocByKey(filekey)) fname = uData.GetPurchasedFileName(filekey);
+                                fname = StoreSettings.Current.FolderDocuments + "/" + fname;
+                            }
+                            if (fname != "")
+                            {
+                                strOut = fname; // return this is error.
+                                var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
+                                var fpath = HttpContext.Current.Server.MapPath(fname);
+                                if (downloadname == "") downloadname = Path.GetFileName(fname);
+                                Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                            }
+                            break;
+                        case "printproduct":
+                            break;
+                        case "removefromcart":
+                            RemoveFromCart(context);
+                            strOut = "removefromcart";
+                            break;
+                        case "recalculatecart":
+                            RecalculateCart(context);
+                            strOut = "recalculatecart";
+                            break;
+                        case "recalculatesummary":
+                            RecalculateSummary(context);
+                            strOut = "recalculatecart";
+                            break;
+                        case "redirecttopayment":
+                            strOut = RedirectToPayment(context);
+                            break;
+                        case "updatebilladdress":
+                            strOut = UpdateCartAddress(context, "bill");
+                            break;
+                        case "updateshipaddress":
+                            strOut = UpdateCartAddress(context, "ship");
+                            break;
+                        case "updateshipoption":
+                            strOut = UpdateCartAddress(context, "shipoption");
+                            break;
+                        case "rendercart":
+                            strOut = RenderCart(context);
+                            break;
+                        case "renderpostdata":
+                            strOut = RenderPostData(context);
+                            break;
+                        case "clearcart":
+                            var currentcart = new CartData(PortalSettings.Current.PortalId);
+                            currentcart.DeleteCart();
+                            strOut = "clearcart";
+                            break;
+                        case "shippingprovidertemplate":
+                            strOut = GetShippingProviderTemplates(context);
+                            break;
+                        case "getsettings":
+                            strOut = GetSettings(context);
+                            break;
+                        case "savesettings":
+                            if (NBrightBuyUtils.CheckRights()) strOut = SaveSettings(context);
+                            break;
+                        case "updateprofile":
+                            strOut = UpdateProfile(context);
+                            break;
+                        case "dosearch":
+                            strOut = DoSearch(context);
+                            break;
+                        case "resetsearch":
+                            strOut = ResetSearch(context);
+                            break;
+                        case "orderby":
+                            strOut = DoOrderBy(context);
+                            break;
+
+                    }
                 }
 
                 #endregion
@@ -413,7 +388,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void UpdateProductImages(HttpContext context)
         {
             //get uploaded params
-            var settings = GetAjaxFields(context);
+            var settings = NBrightBuyUtils.GetAjaxDictionary(context);
             if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
             var productitemid = settings["itemid"];
             var imguploadlist = settings["imguploadlist"];
@@ -671,7 +646,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
 
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
 
                 strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
@@ -693,7 +668,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
@@ -725,7 +700,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
@@ -750,7 +725,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
 
                 if (settings.ContainsKey("itemid"))
                 {
@@ -780,7 +755,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var newcatid = "";
                 if (settings.ContainsKey("selectedcatid")) newcatid = settings["selectedcatid"];
 
@@ -802,7 +777,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetGroupCategoryListBox(HttpContext context)
         {
-            var settings = GetAjaxFields(context);
+            var settings = NBrightBuyUtils.GetAjaxDictionary(context);
             var groupref = "";
             if (settings.ContainsKey("selectedgroupref")) groupref = settings["selectedgroupref"];
             var templ = "[<tag id='selectgroupcategory' cssclass='selectgroupcategory form-control' type='catlistbox' groupref='" + groupref + "' lang='" + _lang + "'/>]";
@@ -818,7 +793,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
 
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
 
                 return GetProductListData(settings);
 
@@ -837,7 +812,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
 
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("moveproductid")) settings.Add("moveproductid", "0");
                 var moveproductid = settings["moveproductid"];
                 if (!settings.ContainsKey("movetoproductid")) settings.Add("movetoproductid", "0");
@@ -867,7 +842,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -889,7 +864,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 
@@ -918,7 +893,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -947,7 +922,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -976,7 +951,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1009,7 +984,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1046,7 +1021,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void UpdateProductDocs(HttpContext context)
         {
             //get uploaded params
-            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var settings = ajaxInfo.ToDictionary();
 
             if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
@@ -1107,7 +1082,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1136,7 +1111,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 if (!settings.ContainsKey("categoryref")) settings.Add("categoryref", "0");
@@ -1167,7 +1142,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1196,7 +1171,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1225,7 +1200,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1254,7 +1229,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
 
@@ -1283,7 +1258,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 var productitemid = settings["itemid"];
                 if (!settings.ContainsKey("header")) settings.Add("header", "");
@@ -1326,7 +1301,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 var productitemid = settings["itemid"];
@@ -1381,7 +1356,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 var productitemid = settings["itemid"];
@@ -1436,7 +1411,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 //get uploaded params
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
                 if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
                 if (!settings.ContainsKey("selectedoptionid")) return "";
@@ -1493,7 +1468,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1517,7 +1492,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1541,7 +1516,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1565,7 +1540,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1589,7 +1564,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var parentitemid = "";
                 var xrefitemid = "";
                 if (settings.ContainsKey("itemid")) parentitemid = settings["itemid"];
@@ -1613,7 +1588,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selectedrelatedid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1637,7 +1612,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selectedrelatedid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1666,7 +1641,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selecteduserid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1694,7 +1669,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = GetAjaxFields(context);
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                 var productid = "";
                 var selecteduserid = "";
                 if (settings.ContainsKey("itemid")) productid = settings["itemid"];
@@ -1719,183 +1694,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "clients"
 
-        private String GetClientDiscountCodes(HttpContext context)
-        {
-            try
-            {
-                //get uploaded params
-                var strOut = "";
-                var settings = GetAjaxFields(context);
-                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
-                var userid = settings["userid"];
-                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
-                var portalid = settings["portalid"];
-                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
-                {
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", _lang, true, true, true, StoreSettings.Current.Settings());
-                    bodyTempl = Utils.ReplaceSettingTokens(bodyTempl, StoreSettings.Current.Settings());
-                    //get data
-                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
-                    strOut = GenXmlFunctions.RenderRepeater(clientData.DiscountCodes, bodyTempl);                    
-                }
-
-                return strOut;
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        private String AddClientDiscountCodes(HttpContext context)
-        {
-
-            try
-            {
-                var strOut = "Missing data ('userid', 'portalid' hidden fields needed on input form)";
-
-                //get uploaded params
-                var settings = GetAjaxFields(context);
-                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
-                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
-                var userid = settings["userid"];
-                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
-                var portalid = settings["portalid"];
-                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
-                {
-                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
-
-                    var qty = settings["addqty"];
-                    if (!Utils.IsNumeric(qty)) qty = "1";
-
-                       var lp = 1;
-                       var modelcount = clientData.DiscountCodes.Count;
-                        while (lp <= Convert.ToInt32(qty))
-                        {
-                            clientData.AddNewDiscountCode();
-                            lp += 1;
-                            if (lp > 10) break; // we don;t want to create a stupid amount, it will slow the system!!!
-                        }
-                        clientData.Save();
-                        var modelcount2 = clientData.DiscountCodes.Count;
-                        var rtnList = new List<NBrightInfo>();
-                        for (var i = modelcount; i < modelcount2; i++)
-                        {
-                            rtnList.Add(clientData.DiscountCodes[i]);
-                        }
-
-                        // get template
-                        var themeFolder = StoreSettings.Current.ThemeFolder;
-                        if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                        var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                        var bodyTempl = templCtrl.GetTemplateData("clientdiscountcodes.html", _lang, true, true, true, StoreSettings.Current.Settings());
-
-                        //get data
-                        strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
-                }
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String GetClientVoucherCodes(HttpContext context)
-        {
-            try
-            {
-                //get uploaded params
-                var strOut = "";
-                var settings = GetAjaxFields(context);
-                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
-                var userid = settings["userid"];
-                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
-                var portalid = settings["portalid"];
-                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
-                {
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientvouchercodes.html", _lang, true, true, true, StoreSettings.Current.Settings());
-                    bodyTempl = Utils.ReplaceSettingTokens(bodyTempl, StoreSettings.Current.Settings());
-                    //get data
-                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
-                    strOut = GenXmlFunctions.RenderRepeater(clientData.VoucherCodes, bodyTempl);
-                }
-
-                return strOut;
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        private String AddClientVoucherCodes(HttpContext context)
-        {
-
-            try
-            {
-                var strOut = "Missing data ('userid', 'portalid' hidden fields needed on input form)";
-
-                //get uploaded params
-                var settings = GetAjaxFields(context);
-                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
-                if (!settings.ContainsKey("userid")) settings.Add("userid", "");
-                var userid = settings["userid"];
-                if (!settings.ContainsKey("portalid")) settings.Add("portalid", "");
-                var portalid = settings["portalid"];
-                if (Utils.IsNumeric(portalid) && Utils.IsNumeric(userid))
-                {
-                    var clientData = new ClientData(Convert.ToInt32(portalid), Convert.ToInt32(userid));
-
-                    var qty = settings["addqty"];
-                    if (!Utils.IsNumeric(qty)) qty = "1";
-
-                    var lp = 1;
-                    var modelcount = clientData.VoucherCodes.Count;
-                    while (lp <= Convert.ToInt32(qty))
-                    {
-                        clientData.AddNewVoucherCode();
-                        lp += 1;
-                        if (lp > 10) break; // we don;t want to create a stupid amount, it will slow the system!!!
-                    }
-                    clientData.Save();
-                    var modelcount2 = clientData.VoucherCodes.Count;
-                    var rtnList = new List<NBrightInfo>();
-                    for (var i = modelcount; i < modelcount2; i++)
-                    {
-                        rtnList.Add(clientData.VoucherCodes[i]);
-                    }
-
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("clientvouchercodes.html", _lang, true, true, true, StoreSettings.Current.Settings());
-
-                    //get data
-                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
-                }
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-
 
         #endregion
 
@@ -1903,7 +1701,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String RenderCart(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
             if (carttemplate == "") carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
@@ -1936,7 +1734,7 @@ namespace Nevoweb.DNN.NBrightBuy
         /// <returns></returns>
         private String RenderPostData(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
             var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
@@ -1956,7 +1754,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var strOut = "";
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var settings = ajaxInfo.ToDictionary();
 
                 if (settings.ContainsKey("productid"))
@@ -1983,7 +1781,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 var strOut = "";
-                var ajaxInfoList = GetAjaxInfoList(context);
+                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
 
                 foreach (var ajaxInfo in ajaxInfoList)
                 {
@@ -2012,7 +1810,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string RecalculateCart(HttpContext context)
         {
                 var strOut = "";
-                var ajaxInfoList = GetAjaxInfoList(context);
+                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 foreach (var ajaxInfo in ajaxInfoList)
                 {
@@ -2025,7 +1823,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string UpdateProfile(HttpContext context)
         {
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var profileData = new ProfileData();
                 profileData.UpdateProfileAjax(ajaxInfo.XMLData, StoreSettings.Current.DebugMode);
 
@@ -2035,7 +1833,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string ResetSearch(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.Delete();
 
@@ -2045,7 +1843,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string DoSearch(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var tagList = new List<string>();
                 var nodList = ajaxInfo.XMLDoc.SelectNodes("genxml/hidden/*");
                 foreach (XmlNode nod in nodList)
@@ -2069,7 +1867,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string DoOrderBy(HttpContext context)
         {
                 // take all input and created a SQL select with data and save for processing on search list.
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var navData = new NavigationData(ajaxInfo.PortalId, ajaxInfo.GetXmlProperty("genxml/hidden/modulekey"));
                 navData.OrderByIdx = ajaxInfo.GetXmlProperty("genxml/hidden/orderbyidx");
                 navData.OrderBy = " order by " + ajaxInfo.GetXmlProperty("genxml/hidden/orderby" + navData.OrderByIdx);
@@ -2081,7 +1879,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private string UpdateCartAddress(HttpContext context,String addresstype = "")
         {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = GetAjaxInfo(context,true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context,true);
 
                 currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
 
@@ -2159,7 +1957,7 @@ namespace Nevoweb.DNN.NBrightBuy
             var objCtrl = new NBrightBuyController();
 
             var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = GetAjaxInfo(context, true);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
                 var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
 
                 currentcart.AddExtraInfo(ajaxInfo);
@@ -2193,7 +1991,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private string RemoveFromCart(HttpContext context)
         {
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 currentcart.RemoveItem(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode"));
                 currentcart.Save(StoreSettings.Current.DebugMode);
@@ -2203,7 +2001,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private String GetShippingProviderTemplates(HttpContext context)
         {
-            var ajaxInfo = GetAjaxInfo(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var activeprovider = ajaxInfo.GetXmlProperty("genxml/hidden/shippingprovider");
             var currentcart = new CartData(PortalSettings.Current.PortalId);
 
@@ -2252,238 +2050,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
-        #region "Order Admin Methods"
-
-        private String OrderAdminList(HttpContext context)
-        {
-            try
-            {
-                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
-                {
-                    var settings = GetAjaxFields(context);
-                    return GetOrderListData(settings);
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        private String OrderAdminDetail(HttpContext context)
-        {
-            try
-            {
-                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
-                {
-                    var settings = GetAjaxFields(context);
-                    return GetOrderDetailData(settings);
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String OrderAdminReOrder(HttpContext context)
-        {
-            try
-            {
-                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
-                {
-                    var settings = GetAjaxFields(context);
-                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
-                    var selecteditemid = settings["selecteditemid"];
-                    if (Utils.IsNumeric(selecteditemid))
-                    {
-                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
-                        if (orderData.UserId == UserController.Instance.GetCurrentUserInfo().UserID || NBrightBuyUtils.CheckRights())
-                        {
-                            orderData.CopyToCart(false);
-                        }
-                    }
-                    return "";
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String OrderAdminEdit(HttpContext context)
-        {
-            try
-            {
-                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
-                {
-                    var settings = GetAjaxFields(context);
-                    if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
-                    var selecteditemid = settings["selecteditemid"];
-                    if (Utils.IsNumeric(selecteditemid))
-                    {
-                        var orderData = new OrderData(PortalSettings.Current.PortalId, Convert.ToInt32(selecteditemid));
-                        if (NBrightBuyUtils.CheckRights()) 
-                        {
-                            orderData.ConvertToCart(false);
-                        }
-                    }
-                    return "";
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String OrderAdminEmail(HttpContext context)
-        {
-            try
-            {
-                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
-                {
-                    //get uploaded params
-                    var ajaxInfo = GetAjaxInfo(context);
-                    NBrightBuyUtils.SendOrderEmail(ajaxInfo.GetXmlProperty("genxml/hidden/emailtype"), ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), ajaxInfo.GetXmlProperty("genxml/hidden/emailsubject"),"", ajaxInfo.GetXmlProperty("genxml/hidden/emailmessage"),true);
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
-
-        private String OrderAdminSave(HttpContext context)
-        {
-            try
-            {
-                if (NBrightBuyUtils.CheckManagerRights())
-                {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-                    if (itemId > 0)
-                    {
-                        var ordData = new OrderData(itemId);
-                        if (ordData != null)
-                        {
-                            var newStatusOrder = ajaxInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
-                            if (ordData.OrderStatus != newStatusOrder)
-                            {
-                                ordData.OrderStatus = newStatusOrder;
-                            }
-
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/shippingdate", ajaxInfo.GetXmlProperty("genxml/textbox/shippingdate"), TypeCode.DateTime);
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/textbox/trackingcode", ajaxInfo.GetXmlProperty("genxml/textbox/trackingcode"));
-
-                            // do audit notes
-                            if (ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes") != "")
-                            {
-                                ordData.AddAuditMessage(ajaxInfo.GetXmlProperty("genxml/textbox/auditnotes"),"notes", UserController.Instance.GetCurrentUserInfo().Username,"False");
-                            }
-
-                            // save relitive path also
-                            if (ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist") != "")
-                            {
-                                var fname = Path.GetFileName(ajaxInfo.GetXmlProperty("genxml/hidden/optionfilelist"));
-
-                                if (File.Exists(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname))
-                                {
-                                    var newfname = Utils.GetUniqueKey();
-                                    // save relitive path also
-                                    if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
-                                    {
-                                        File.Delete(StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
-                                    }
-
-                                    File.Copy(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname, StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
-                                    File.Delete(StoreSettings.Current.FolderTempMapPath.TrimEnd('\\') + "\\" + fname);
-
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath", StoreSettings.Current.FolderUploadsMapPath.TrimEnd('\\') + "\\" + newfname);
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", newfname);
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoiceuploadname", fname);
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", Path.GetExtension(fname));
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", StoreSettings.Current.FolderUploads + "/" + newfname);
-                                    ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "NBS" + ordData.OrderNumber + Path.GetExtension(fname));
-                                }
-                            }
-
-
-
-                            ordData.Save();
-                        }
-                    }
-
-                    return "";
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
-
-        private String OrderAdminRemoveInvoice(HttpContext context)
-        {
-            try
-            {
-                if (NBrightBuyUtils.CheckManagerRights())
-                {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                    var itemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-                    if (itemId > 0)
-                    {
-                        var ordData = new OrderData(itemId);
-                        if (ordData != null)
-                        {
-
-                            // save relitive path also
-                            if (File.Exists(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath")))
-                            {
-                                File.Delete(ordData.PurchaseInfo.GetXmlProperty("genxml/hidden/invoicefilepath"));
-                            }
-
-
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilepath","");
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilename", "");
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefileext", "");
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicefilerelpath", "");
-                            ordData.PurchaseInfo.SetXmlProperty("genxml/hidden/invoicedownloadname", "");
-                            ordData.AddAuditMessage(NBrightBuyUtils.ResourceKey("OrderAdmin.cmdDeleteInvoice"), "invremove", UserController.Instance.GetCurrentUserInfo().Username, "False");
-
-                            ordData.Save();
-                        }
-                    }
-
-                    return "";
-                }
-                return "";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
-
-        #endregion
-
         #region "Settings"
 
         private String GetSettings(HttpContext context, bool clearCache = false)
@@ -2492,7 +2058,7 @@ namespace Nevoweb.DNN.NBrightBuy
             {
                 var strOut = "";
                 //get uploaded params
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
@@ -2524,7 +2090,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var objCtrl = new NBrightBuyController();
 
                 //get uploaded params
-                var ajaxInfo = GetAjaxInfo(context);
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
                 var moduleid = ajaxInfo.GetXmlProperty("genxml/hidden/moduleid");
                 if (Utils.IsNumeric(moduleid))
@@ -2581,177 +2147,6 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
         #region "functions"
-
-        private String GetOrderDetailData(Dictionary<String, String> settings, bool paging = true)
-        {
-            var strOut = "";
-
-            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
-            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
-            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-            if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
-
-            var themeFolder = settings["themefolder"];
-            var selecteditemid = settings["selecteditemid"];
-            var razortemplate = settings["razortemplate"];
-            var portalId = Convert.ToInt32(settings["portalid"]);
-
-            var passSettings = settings;
-            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
-            {
-                if (passSettings.ContainsKey(s.Key))
-                    passSettings[s.Key] = s.Value;
-                else
-                    passSettings.Add(s.Key, s.Value);
-            }
-
-            if (!Utils.IsNumeric(selecteditemid)) return "";
-
-            if (themeFolder == "")
-            {
-                themeFolder = StoreSettings.Current.ThemeFolder;
-                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-            }
-
-            var ordData = new OrderData(portalId, Convert.ToInt32(selecteditemid));
-
-            // check for user or manager.
-            if (UserController.Instance.GetCurrentUserInfo().UserID != ordData.UserId)
-            {
-                if (!NBrightBuyUtils.CheckRights())
-                {
-                    return "";
-                }
-            }
-
-            strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
-
-
-            return strOut;
-        }
-
-        private String GetOrderListData(Dictionary<String, String> settings, bool paging = true)
-        {
-            if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
-
-            var strOut = "";
-            
-            if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
-            if (!settings.ContainsKey("userid")) settings.Add("userid", "-1");
-            if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
-            if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
-            if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
-            if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
-            if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
-            if (!settings.ContainsKey("dtesearchdatefrom")) settings.Add("dtesearchdatefrom", "");
-            if (!settings.ContainsKey("dtesearchdateto")) settings.Add("dtesearchdateto", "");
-            if (!settings.ContainsKey("searchorderstatus")) settings.Add("searchorderstatus", "");
-            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-
-            if (!Utils.IsNumeric(settings["userid"])) settings["pagenumber"] = "1";
-            if (!Utils.IsNumeric(settings["pagenumber"])) settings["pagenumber"] = "1";
-            if (!Utils.IsNumeric(settings["pagesize"])) settings["pagesize"] = "20";
-            if (!Utils.IsNumeric(settings["returnlimit"])) settings["returnlimit"] = "50";
-
-            var themeFolder = settings["themefolder"];
-            var razortemplate = settings["razortemplate"];
-            var returnLimit = Convert.ToInt32(settings["returnlimit"]);
-            var pageNumber = Convert.ToInt32(settings["pagenumber"]);
-            var pageSize = Convert.ToInt32(settings["pagesize"]);
-            var portalId = Convert.ToInt32(settings["portalid"]);
-            var userid = settings["userid"];            
-
-            var searchText = settings["searchtext"];
-            var searchdatefrom = settings["dtesearchdatefrom"];
-            var searchdateto = settings["dtesearchdateto"];
-            var searchorderstatus = settings["searchorderstatus"];
-
-            var filter = "";
-            if (searchText != "")
-            {
-                filter += " and (    (([xmldata].value('(genxml/billaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/billaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/firstname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/lastname)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/unit)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/street)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/postalcode)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/shipaddress/genxml/textbox/email)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/productrefs)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))";
-                filter += " or (([xmldata].value('(genxml/ordernumber)[1]', 'nvarchar(max)') like '%" + searchText + "%' collate sql_latin1_general_cp1_ci_ai ))  ) ";
-            }
-
-            if (searchdateto != "" && searchdatefrom != "")
-            {
-                filter += " and  ( ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) )  ";
-            }
-            if (searchdateto == "" && searchdatefrom != "")
-            {
-                filter += " and  ([xmldata].value('(genxml/createddate)[1]', 'datetime') >= convert(datetime,'" + searchdatefrom + "') ) ";
-            }
-            if (searchdateto != "" && searchdatefrom == "")
-            {
-                filter += " and ([xmldata].value('(genxml/createddate)[1]', 'datetime') <= convert(datetime,'" + searchdateto + "') ) ";
-            }
-
-            if (searchorderstatus != "")
-            {
-                filter += " and ([xmldata].value('(genxml/dropdownlist/orderstatus)[1]', 'nvarchar(max)') = '" + searchorderstatus + "')   ";
-            }
-
-            // check for user or manager.
-            if (!NBrightBuyUtils.CheckRights())
-            {
-                    filter += " and ( userid = " + UserController.Instance.GetCurrentUserInfo().UserID + ")   ";
-            }
-            
-            var recordCount = 0;
-
-            if (themeFolder == "")
-            {
-                themeFolder = StoreSettings.Current.ThemeFolder;
-                if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-            }
-
-            var objCtrl = new NBrightBuyController();
-
-            if (paging) // get record count for paging
-            {
-                if (pageNumber == 0) pageNumber = 1;
-                if (pageSize == 0) pageSize = 20;
-
-                // get only entity type required
-                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "ORDER", filter);
-
-            }
-
-            var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
-            var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
-
-            var passSettings = settings;
-            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
-            {
-                if (passSettings.ContainsKey(s.Key))
-                    passSettings[s.Key] = s.Value;
-                else
-                    passSettings.Add(s.Key, s.Value);
-            }
-
-            strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _lang, passSettings);
-
-            // add paging if needed
-            if (paging && (recordCount > pageSize))
-            {
-                var pg = new NBrightCore.controls.PagingCtrl();
-                strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
-            }
-
-            return strOut;
-        }
 
 
         private String GetProductListData(Dictionary<String, String> settings,bool paging = true)
@@ -2869,86 +2264,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
             return strOut;
         }
-
-        private Dictionary<String, String> GetAjaxFields(HttpContext context)
-        {
-            var objInfo = GetAjaxInfo(context);
-            var dic =  objInfo.ToDictionary();
-            return dic;
-        }
-
-        /// <summary>
-        /// Put Ajax data into a NBrightInfo class for processing
-        /// </summary>
-        /// <param name="context">Http context</param>
-        /// <param name="updatefields">If true only fields marked with update attribute are returned.</param>
-        /// <returns></returns>
-        private NBrightInfo GetAjaxInfo(HttpContext context, Boolean updatefields = false)
-        {
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-
-            var objInfo = new NBrightInfo();
-
-            objInfo.ItemID = -1;
-            objInfo.TypeCode = "AJAXDATA";
-            objInfo.PortalId = PortalSettings.Current.PortalId;
-            if (updatefields)
-            {
-                objInfo.UpdateAjax(strIn);
-            }
-            else
-            {
-                var xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "");
-                objInfo.XMLData = xmlData;
-            }
-            var dic = objInfo.ToDictionary();
-            // set langauge if we have it passed.
-            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-            if (dic.ContainsKey("editlang") && dic["editlang"] != "") _lang = dic["editlang"];
-
-            var currentlang = Utils.GetCurrentCulture();
-            if (dic.ContainsKey("currentlang") && dic["currentlang"] != "") currentlang = dic["currentlang"];
-            // set the context  culturecode, so any DNN functions use the correct culture (entryurl tag token)
-            if (currentlang != "" && currentlang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(_lang);
-
-            objInfo.Lang = _lang; // make sure we have the langauge in the object.
-
-            return objInfo;
-        }
-
-        private List<NBrightInfo> GetAjaxInfoList(HttpContext context)
-        {
-            var rtnList = new List<NBrightInfo>();
-            var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
-            var xmlDoc1 = new XmlDocument();
-            if (!String.IsNullOrEmpty(strIn))
-            {
-
-                xmlDoc1.LoadXml(strIn);
-
-                var xmlNodeList = xmlDoc1.SelectNodes("root/*");
-                if (xmlNodeList != null)
-                {
-                    foreach (XmlNode nod in xmlNodeList)
-                    {
-                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "");
-                        var objInfo = new NBrightInfo();
-
-                        objInfo.ItemID = -1;
-                        objInfo.TypeCode = "AJAXDATA";
-                        objInfo.PortalId = PortalSettings.Current.PortalId;
-            objInfo.XMLData = xmlData;
-                        var dic = objInfo.ToDictionary();
-            // set langauge if we have it passed.
-            if (dic.ContainsKey("lang") && dic["lang"] != "") _lang = dic["lang"];
-                        rtnList.Add(objInfo);
-                    }
-                }
-            }
-            return rtnList;
-        }
-
-
 
 
         #endregion
