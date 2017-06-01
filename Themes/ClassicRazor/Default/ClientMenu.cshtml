@@ -8,25 +8,25 @@
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/classicrazor/resx")
 
-        <div class="clientmenu">
-            <div class="clientmenuheader">@ResourceKey("Clients.ClientmenuManage")</div>
+<div class="clientmenuwrapper">
 
-            <div>
-                @if (Model.GetSettingBool("enablemyorders"))
-                {
-                    var ordermanagertabid = Model.GetSetting("ordermanagertab");
-                    <a class="primarybutton" href="/tabid/@(ordermanagertabid)"><i class="fa fa-shopping-cart fa-lg"></i>@ResourceKey("Clients.ClientmenuOrders")</a>
-                }
-                @if (Model.GetSettingBool("enablemyaddress"))
-                {
-                    var addressestabid = Model.GetSetting("addressestab");
-                    <a class="primarybutton" href="/tabid/@(addressestabid)"><i class="fa fa-book fa-lg"></i>@ResourceKey("Clients.ClientmenuAddresses")</a>
-                }
-                @if (Model.GetSettingBool("enablemyprofile"))
-                {
-                    var profiletabid = Model.GetSetting("profiletab");
-                    <a class="primarybutton" href="/tabid/@(profiletabid)"><i class="fa fa-user fa-lg"></i>@ResourceKey("Clients.ClientmenuProfile")</a>
-                }
-            </div>
+<ul class="clientmenu">
+  <li><a href="/Activity-Feed">@ResourceKey("Clients.ClientmenuAccount")</a></li>
+  @if (Model.GetSettingBool("enablemyorders"))
+  {
+  var ordermanagertabid = Model.GetSetting("ordermanagertab");
+  <li><a href="/tabid/@(ordermanagertabid)">@ResourceKey("Clients.ClientmenuOrders")</a></li>
+  }
+  @if (Model.GetSettingBool("enablemyaddress"))
+  {
+  var addressestabid = Model.GetSetting("addressestab");
+  <li><a href="/tabid/@(addressestabid)">@ResourceKey("Clients.ClientmenuAddresses")</a></li>
+  }
+  @if (Model.GetSettingBool("enablemyprofile"))
+  {
+  var profiletabid = Model.GetSetting("profiletab");
+  <li><a href="/tabid/@(profiletabid)">@ResourceKey("Clients.ClientmenuProfile")</a></li>
+  }
+</ul>
 
-        </div>
+</div>

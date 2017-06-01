@@ -229,7 +229,7 @@
     <value>User Locked Out</value>
   </data>
   <data name="ClientmenuTitle.Text" xml:space="preserve">
-    <value>My account</value>
+    <value>Welcome in your account !</value>
   </data>
   <data name="ClientmenuManage.Text" xml:space="preserve">
     <value>Manage account</value>
@@ -242,6 +242,9 @@
   </data>
   <data name="ClientmenuOrders.Text" xml:space="preserve">
     <value>My orders</value>
+  </data>
+  <data name="ClientmenuAccount.Text" xml:space="preserve">
+    <value>My account</value>
   </data>
   <data name="customerinfos.Text" xml:space="preserve">
     <value>Customer informations</value>

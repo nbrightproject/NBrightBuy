@@ -30,6 +30,9 @@
   <data name="ClientmenuProfile.Text">
     <value xml:space="preserve">Identifiants</value>
   </data>
+  <data name="ClientmenuAccount.Text" xml:space="preserve">
+    <value xml:space="preserve">Mon compte</value>
+  </data>
   <data name="ClientmenuTitle.Text">
     <value xml:space="preserve">Bienvenue dans votre compte !</value>
   </data>

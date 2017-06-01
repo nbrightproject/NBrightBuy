@@ -35,7 +35,7 @@
     $(document).ready(function () {
             $('.processing').show();
 
-            $('#razortemplate').val('OrderHtmlOutput.cshtml');
+            $('#razortemplate').val('OrderPrintOutput.cshtml');
             nbxget('orderadmin_getdetail', '#nbs_orderprint', '#datadisplay');
 
             $(document).on("nbxgetcompleted", OrderPrint_nbxgetCompleted); // assign a completed event for the ajax calls

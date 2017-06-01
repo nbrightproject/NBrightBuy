@@ -466,7 +466,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (GroupList == null || debugMode)
             {
                 // get groups
-                GroupList = NBrightBuyUtils.GetCategoryGroups(_lang, true);
+                GroupList = NBrightBuyUtils.GetCategoryGroups(_portalId, _lang, true);
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, GroupList);
             }
 

@@ -15,92 +15,34 @@
 var info = (NBrightInfo)Model.List.First();
 }
 
+<!-- Client Menu -->
+@RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicRazor\\Default\\ClientMenu.cshtml", Model)
+
 <div class="nbs myprofile">
 
-        <!-- Client Menu -->
-        <h1>@ResourceKey("Clients.ClientmenuTitle")</h1>
-
-        @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicRazor\\Default\\ClientMenu.cshtml",Model)
-
-        <!-- This function not ready yet -->
+        <h1>@ResourceKey("Clients.ClientmenuProfile")</h1>
 
         <div id="profileinputform">
 
             <div class="updatedform" style="display:none;"><span>@ResourceKey("General.updated")</span></div>
 
-            <div id="profileinput" class="panel">
+            <div id="profileinput" class="dnnForm">
 
-                <div class="formrow">
-                    <div class="leftside">
-                        <h6>@ResourceKey("General.lblFirstName")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/firstname")
-                    </div>
-                    <div class="rightside">
-                        <h6>@ResourceKey("General.lblLastName")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/lastname")
-                    </div>
-                </div>
+                <h2 class="dnnFormSectionHead"><span>@ResourceKey("Clients.lblUserName")</span></h2>
 
-                <div class="formrow">
-                    <div class="leftside">
-                        <h6>@ResourceKey("General.lblPhone")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/telephone")
-                    </div>
-                    <div class="rightside">
-                        <h6>@ResourceKey("General.Email")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/email", "required name='profileemail' class='required' type='email' datatype='email'")
-                    </div>
-                </div>
-
-                <div class="formrow">
-                    <h6>@ResourceKey("General.lblCompany")</h6>
-                    @NBrightTextBox(info, "genxml/textbox/company")
-                </div>
-
-                <div class="formrow">
-                    <h6>@ResourceKey("General.lblAddress1")</h6>
-                    @NBrightTextBox(info, "genxml/textbox/unit")
-                </div>
-
-                <div class="formrow">
-                    <h6>@ResourceKey("General.lblAddress2")</h6>
-                    @NBrightTextBox(info, "genxml/textbox/street")
-                </div>
-
-                <div class="formrow">
-                    <div class="leftside">
-                        <h6>@ResourceKey("General.lblCity")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/city")
-                    </div>
-                    <div class="rightside">
-                        <h6>@ResourceKey("General.lblPostCode")</h6>
-                        @NBrightTextBox(info, "genxml/textbox/postalcode", "")
-                    </div>
-                </div>
-
-                <div class="formrow">
-                    <div class="leftside profileformcountrydiv">
-                        <h6>@ResourceKey("General.lblCountry")</h6>
-                        @CountrySelectList(info, "genxml/dropdownlist/country", "class='profileformcountry'")
-                        <!-- hidden data field required to render ajax region update -->
-                        <input id="carttemplate" type="hidden" value="NBS_CheckoutRegion.cshtml">
-                        <input id="carttheme" type="hidden" value="classicrazor">
-                        <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
-                        <input id="region" type="hidden" value="@info.GetXmlProperty("genxml/dropdownlist/region")">
-                        <input id="xpath" type="hidden" value="genxml/dropdownlist/region">
-                    </div>
-                    <div class="rightside profileformregiondiv">
-                        <h6>@ResourceKey("General.lblRegion")</h6>
-                        @RegionSelect(info, "genxml/dropdownlist/region", "", "")
-                    </div>
+                <div class="dnnFormItem">
+                  <div class="dnnLabel"><label>@ResourceKey("General.Email") :</label></div>
+                  @NBrightTextBox(info, "genxml/textbox/email", "required name='profileemail' class='required' type='email' datatype='email'")
                 </div>
 
             </div>
 
             <div class="formrow clearfix">
-                <a href="javascript:void(0)" class='profilesubmit primarybutton'>@ResourceKey("General.Submit")</a>
+              <a href="javascript:void(0)" class='profilesubmit primarybutton'>@ResourceKey("General.Save")</a>
             </div>
 
         </div>
 
 </div>
+
+<div class="clearfix"></div>

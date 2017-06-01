@@ -791,13 +791,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-
         public static List<NBrightInfo> GetCategoryGroups(string lang, Boolean debugMode = false, string groupType = "")
+        {
+            return GetCategoryGroups(PortalSettings.Current.PortalId,lang,debugMode,groupType);
+        }
+
+        public static List<NBrightInfo> GetCategoryGroups(int portalId, string lang, Boolean debugMode = false, string groupType = "")
         {
             var filter = "";
             if (groupType != "") filter = " and [XMLData].value('(genxml/dropdownlist/grouptype)[1]','nvarchar(max)') = '" + groupType + "' ";
             var objCtrl = new NBrightBuyController();
-            var levelList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "GROUP", "GROUPLANG", lang, filter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", debugMode);
+            var levelList = objCtrl.GetDataList(portalId, -1, "GROUP", "GROUPLANG", lang, filter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", debugMode);
             return levelList;
         }
 

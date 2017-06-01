@@ -1,26 +1,25 @@
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/css/ClientAccount.css" rel="stylesheet">
 
+<!-- Client Menu -->
+<div class="clientmenuwrapper">
+<ul class="clientmenu">
+  <li><a href="/Activity-Feed">[<tag type="valueof" resourcekey="Clients.ClientmenuAccount" />]</a></li>
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:addressestab]">[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:profiletab]">[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a></li>
+[<tag type="endif"  />]
+</ul>
+</div>
+
 <div class="nbs myaddresses">
 
 <div id="addressbook">
 
-<!-- Client Menu -->
-<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuTitle" />]</h1>
-<div class="clientmenu">
-<div class="clientmenuheader">[<tag type="valueof" resourcekey="Clients.ClientmenuManage" />]</div>
-[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
-<a class="primarybutton" href="/tabid/[Settings:ordermanagertab]"><i class="fa fa-shopping-cart fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a>
-[<tag type="endif"  />]
-[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
-<a class="primarybutton" href="/tabid/[Settings:addressestab]"><i class="fa fa-book fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a>
-[<tag type="endif"  />]
-[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
-<a class="primarybutton" href="/tabid/[Settings:profiletab]"><i class="fa fa-user fa-lg"></i>[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a>
-[<tag type="endif"  />]
-</div>
-
-<div class="formrow addbutton">
-[<tag id="cmdNewAddress" type="linkbutton" cssclass="primarybutton" resourcekey="General.cmdAdd" commandname="newaddress" />] 
-</div>
+<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</h1>
 
 <ul id="checkoutselectaddress">

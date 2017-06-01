@@ -1,25 +1,32 @@
+[<tag type="if" xpath="genxml/hidden/default" testvalue="True" display="{ON}" />]
+<li class="defaultaddress">
+<div class="addresstype">
+  <h3>[<tag type='valueof' resourcekey='General.PrimaryAddress' />]</h3>
+</div>
+[<tag type="endif" />]
+
+[<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]
 <li>
-<div><strong>[<tag type='valueof' xpath='genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/textbox/lastname' />]</strong></div>
-<div>[<tag type='valueof' xpath='genxml/textbox/telephone' />]</div>
-<div>[<tag type='valueof' xpath='genxml/textbox/email' />]</div>
-<hr />
+<div class="addresstype">
+  <h3>[<tag type='valueof' resourcekey='General.OptionalAddress' />]</h3>
+</div>
+[<tag type="endif" />]
+
+<div>[<tag type='valueof' xpath='genxml/textbox/firstname' />] [<tag type='valueof' xpath='genxml/textbox/lastname' />]</div>
 <div>[<tag type='valueof' xpath='genxml/textbox/company' />]</div>
 <div>[<tag type='valueof' xpath='genxml/textbox/unit' />]</div>
 <div>[<tag type='valueof' xpath='genxml/textbox/street' />]</div>
-<div>[<tag type='valueof' xpath='genxml/textbox/city' />] [<tag type='valueof' xpath='genxml/textbox/postalcode' />]</div>
-<div>[<tag type='valueof' xpath='genxml/dropdownlist/country/@selectedtext' />]</div>
+<div>[<tag type='valueof' xpath='genxml/textbox/postalcode' />] [<tag type='valueof' xpath='genxml/textbox/city' />]</div>
 <div>[<tag type='valueof' xpath='genxml/textbox/region' />]</div>
-<div class="addresstype">
-[<tag type="if" xpath="genxml/hidden/default" testvalue="True" display="{ON}" />]
-[<tag type='valueof' resourcekey='General.PrimaryAddress' />]
-[<tag type="endif" />]
-[<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]
-[<tag type='valueof' resourcekey='General.OptionalAddress' />]
-[<tag type="endif" />]
-<div class="addressbuttons">[<tag id="cmdEditAddress" type="linkbutton" cssclass="editaddress" resourcekey="General.cmdEditIcon" commandname="editaddress" />]
+<div>[<tag type='valueof' xpath='genxml/dropdownlist/country/@selectedtext' />]</div>
+<div>[<tag type='valueof' xpath='genxml/textbox/telephone' />]</div>
+<div>[<tag type='valueof' xpath='genxml/textbox/email' />]</div>
+
+<div class="addressbuttons">
+[<tag id="cmdEditAddress" type="linkbutton" cssclass="secondarybutton" resourcekey="General.cmdEdit" commandname="editaddress" />]
 [<tag type="if" xpath="genxml/hidden/default" testvalue="False" display="{ON}" />]<!-- Disallow deletion of default address -->
-[<tag id="cmdDelAddress" type="linkbutton" cssclass="deleteaddress" resourcekey="General.cmdDeleteIcon" commandname="deleteaddress" />]
+  [<tag id="cmdDelAddress" type="linkbutton" cssclass="warningbutton" resourcekey="General.cmdDelete" commandname="deleteaddress" />]
 [<tag type="endif" />]
 </div>
-</div>
+
 </li>
