@@ -29,6 +29,7 @@ using NBrightCore.images;
 using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using Nevoweb.DNN.NBrightBuy.Components.Orders;
+using Nevoweb.DNN.NBrightBuy.Components.Payments;
 using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -89,6 +90,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 else if (paramCmd.StartsWith("orderadmin_"))
                 {
                     strOut = OrderFunctions.ProcessCommand(paramCmd, context);
+                }
+                else if (paramCmd.StartsWith("payment_"))
+                {
+                    strOut = PaymentFunctions.ProcessCommand(paramCmd, context);
                 }
                 else
                 {

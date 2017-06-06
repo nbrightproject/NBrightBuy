@@ -109,26 +109,30 @@
                     $('#OrderAdmin_searchorderstatus').val($('#searchorderstatus').val());
 
                     // editbutton created by list, so needs to be assigned on each render of list.
-                    $('.cmd_vieworder').click(function() {
+                    $('.cmd_vieworder').unbind("click");
+                    $('.cmd_vieworder').click(function () {
                         $('.processing').show();
                         $('#razortemplate').val('NBS_OrderAdminDetail.cshtml');
                         $('#selecteditemid').val($(this).attr('itemid'));
                         nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('.cmd_repeatorder').click(function() {
+                    $('.cmd_repeatorder').unbind("click");
+                    $('.cmd_repeatorder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
                         nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('.cmdPg').click(function() {
+                    $('.cmdPg').unbind("click");
+                    $('.cmdPg').click(function () {
                         $('.processing').show();
                         $('#pagenumber').val($(this).attr('pagenumber'));
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('#OrderAdmin_cmdSearch').click(function() {
+                    $('#OrderAdmin_cmdSearch').unbind("click");
+                    $('#OrderAdmin_cmdSearch').click(function () {
                         $('.processing').show();
                         $('#pagenumber').val('1');
                         $('#searchtext').val($('#OrderAdmin_searchtext').val());
@@ -139,7 +143,8 @@
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
-                    $('#OrderAdmin_cmdReset').click(function() {
+                    $('#OrderAdmin_cmdReset').unbind("click");
+                    $('#OrderAdmin_cmdReset').click(function () {
                         $('.processing').show();
                         $('#pagenumber').val('1');
                         $('#searchtext').val('');
@@ -154,13 +159,15 @@
 
                 if (e.cmd == 'orderadmin_getdetail') {
 
-                    $('#OrderAdmin_cmdReturn').click(function() {
+                    $('#OrderAdmin_cmdReturn').unbind("click");
+                    $('#OrderAdmin_cmdReturn').click(function () {
                         $('.processing').show();
                         $('#razortemplate').val('NBS_OrderAdminList.cshtml');
                         $('#selecteditemid').val('');
                         nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
                     });
 
+                    $('#OrderAdmin_cmdReOrder').unbind("click");
                     $('#OrderAdmin_cmdReOrder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));

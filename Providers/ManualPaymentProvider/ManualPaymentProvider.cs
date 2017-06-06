@@ -19,8 +19,18 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string GetTemplate(NBrightInfo cartInfo)
         {
+            var templ = "";
             var info = ProviderUtils.GetProviderSettings("manualpayment");
-            var templ = ProviderUtils.GetTemplateData(info.GetXmlProperty("genxml/textbox/checkouttemplate"),info);
+            var templateName = info.GetXmlProperty("genxml/textbox/checkouttemplate");
+            if (templateName.EndsWith(".html"))
+            {
+                templ = ProviderUtils.GetTemplateData(templateName, info);
+            }
+            else
+            {
+                templ = NBrightBuyUtils.RazorTemplRender(templateName, 0, "",info, "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            }
+
             return templ;
         }
 
