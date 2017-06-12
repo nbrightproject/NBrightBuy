@@ -50,6 +50,82 @@ namespace NBrightBuy.render
             return new RawString(info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
         }
 
+
+        public IEncodedString TaxRateDropDown(NBrightInfo info,string xpath,string providerkey, String attributes = "",bool allowblank = true)
+        {
+            try
+            {
+                var strOut = "";
+                var id = getIdFromXpath(xpath);
+                strOut = "<select id=" + id + " class='taxratedropdown"  + attributes + " '>";
+                var tList = TaxInterface.Instance(providerkey).GetName();
+                foreach (var tItem in tList)
+                {
+                    var s = "";
+                    if (tItem.Key == info.GetXmlProperty(xpath)) s = "selected";
+
+                    strOut += "    <option value='" + tItem.Value + "' " + s + " >" + tItem.Key + "</option>";
+                }
+                if (allowblank)
+                {
+                    strOut += "    <option value='' ></option>";
+                }
+
+                strOut += "</select>";
+                return new RawString(strOut);
+            }
+            catch (Exception e)
+            {
+                return new RawString(e.ToString());
+            }
+        }
+
+
+        public IEncodedString ModelStatusDropDown(NBrightInfo info, string xpath, string attributes = "", bool allowblank = true)
+        {
+            try
+            {
+
+                var resxpath = StoreSettings.NBrightBuyPath() + "/App_LocalResources/General.ascx.resx";
+                var orderstatuscode = DnnUtils.GetLocalizedString("modelstatus.Code", resxpath, Utils.GetCurrentCulture());
+                var orderstatustext = DnnUtils.GetLocalizedString("modelstatus.Text", resxpath, Utils.GetCurrentCulture());
+                if (orderstatuscode != null && orderstatustext != null)
+                {
+                    if (allowblank)
+                    {
+                        orderstatuscode = "," + orderstatuscode;
+                        orderstatustext = "," + orderstatustext;
+                    }
+                }
+
+                var strOut = "";
+                var id = getIdFromXpath(xpath);
+                strOut = "<select id=" + id + " class='modelstatusdropdown" + attributes + " '>";
+
+                var aryCode = orderstatuscode.Split(',');
+                var aryText = orderstatustext.Split(',');
+
+                var lp = 0;
+                foreach (var c in aryCode)
+                {
+                    var s = "";
+                    if (c == info.GetXmlProperty(xpath)) s = "selected";
+                    strOut += "    <option value='" + c + "' " + s + " >" + aryText[lp] + "</option>";
+                    lp += 1;
+                }
+
+
+                strOut += "</select>";
+                return new RawString(strOut);
+            }
+            catch (Exception e)
+            {
+                return new RawString(e.ToString());
+            }
+
+        }
+
+
         /// <summary>
         /// Thumbnail image
         /// </summary>
@@ -889,6 +965,12 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString LangFlag()
+        {
+            var strOut = "<img src = '/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/16/" + Utils.GetCurrentCulture() + ".png' />"; ;
+            return new RawString(strOut);
+        }
+        
         public IEncodedString WebsiteUrl()
         {
             var strOut = "";

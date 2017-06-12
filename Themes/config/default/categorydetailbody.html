@@ -182,15 +182,19 @@
 			<div class="box-content">
 				<div class="form-horizontal dnnForm">
 					<div class="form-group">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							<a id="productselect" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton" />]</a>
 							<a id="removeall" class="btn btn-danger">[<tag type="htmlof" resourcekey="General.RemoveAllButton" />]</a>
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-6">
 							<a id="moveto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="htmlof" resourcekey="General.MoveToButton" />]</a>
 							<a id="copyto" class="btn btn-default" confirm="[<tag type='valueof' resourcekey='General.Confirm' />]">[<tag type="htmlof" resourcekey="General.CopyToButton" />]</a>
 							[<tag id="selectcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" width="300" allowblank="true" showhidden="True" groupref="cat" showall="true" />]<!-- Use groupref="cat" to restrict list to categories -->
 						</div>
+					    <div class="col-sm-3">
+                            [<tag id="taxrate" update="save" type="taxdropdown" cssclass="input-sm" />]
+					        <a id="producttax" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</a>
+					    </div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">

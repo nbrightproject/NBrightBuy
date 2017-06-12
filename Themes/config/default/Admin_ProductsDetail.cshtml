@@ -1,0 +1,591 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Web.Razor.Parser.SyntaxTree
+@using System.Xml
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Portals
+@using NBrightCore.common
+@using NBrightDNN
+@using NBrightDNN.render
+@using Nevoweb.DNN.NBrightBuy.Components
+
+
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/classicrazor/resx")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+    var prdData = new ProductData(info.ItemID,info.PortalId, Utils.GetCurrentCulture());
+
+}
+
+<script>
+
+    // file upload  (Needs to be in template to get itemid from token)
+
+    var filecount = 0;
+    var filesdone = 0;
+
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload&itemid=@info.ItemID';
+        $('#fileupload').fileupload({
+            url: url,
+            maxFileSize: 5000000,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            dataType: 'json'
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
+            .bind('fileuploadprogressall', function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css('width', progress + '%');
+            })
+            .bind('fileuploadadd', function (e, data) {
+                $.each(data.files, function (index, file) {
+                    $('input[id*="imguploadlist"]').val($('input[id*="imguploadlist"]').val() + file.name + ',');
+                    filesdone = filesdone + 1;
+                });
+            })
+            .bind('fileuploadchange', function (e, data) {
+                filecount = data.files.length;
+                $('.processing').show();
+            })
+            .bind('fileuploaddrop', function (e, data) {
+                filecount = data.files.length;
+                $('.processing').show();
+            })
+            .bind('fileuploadstop', function (e) {
+                if (filesdone == filecount) {
+                    nbxget('updateproductimages', '#productselectparams', '#productimages'); // load images
+                    filesdone = 0;
+                    $('input[id*="imguploadlist"]').val('');
+                }
+
+            });
+
+    });
+</script>
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box" id="accordion">
+
+            <h3>@ResourceKey("General.Product") : @info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</h3>
+            <div class="box-content editdetails">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag()
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtproductname", "class='form-control' maxlength='250'")
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="control-label">@ResourceKey("General.Code")</label>
+                                @TextBox(info, "genxml/textbox/txtproductref", "class='form-control' maxlength='250'")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.Summary")</label>@LangFlag()
+                                @TextArea(info, "genxml/lang/genxml/textbox/txtsummary", "class='form-control' height='100' maxlength='200' textmode='MultiLine'")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.Manufacturer")</label>
+                                @TextBox(info, "genxml/textbox/manufacturer", "class='form-control' maxlength='250'")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.seoname")</label>@LangFlag()
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtseoname", "class='form-control' maxlength='250'")
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.seotitle")</label>@LangFlag()
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtseopagetitle", "class='form-control' maxlength='250'")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.Tags")</label>@LangFlag()
+                                @TextArea(info, "genxml/lang/genxml/textbox/txttagwords", "class='form-control' height='100' maxlength='200' textmode='MultiLine'")
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag()
+                                @TextBox(info, "genxml/lang/genxml/textbox/extrafield", "class='form-control' maxlength='250'")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @RenderRazorInjectTemplate(info, "productfields.cshtml")
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                @CheckBox(info, "genxml/checkbox/chkishidden","")
+                                <label class="control-label">@ResourceKey("General.Hidden")</label>
+                                &nbsp;@CheckBox(info, "genxml/checkbox/chkdisable","")
+                                <label class="control-label">@ResourceKey("General.Disable")</label>
+                                &nbsp;
+                                @if (StoreSettings.Current.GetBool("allowupload"))
+                                {
+                                    <span class="">
+                                        @CheckBox(info, "genxml/checkbox/chkfileupload","")<label class="control-label">@ResourceKey("General.allowupload")</label>
+                                    </span>
+                                }
+
+                            </div>
+                            <div class="col-sm-4" style="text-align: right;">
+                                @if (info.GetXmlProperty("genxml/hidden/promoname") != "")
+                                {
+                                    <label class="control-label">@ResourceKey("General.Promotion") :</label> @info.GetXmlProperty("genxml/hidden/promoname")
+                                }
+                                <label class="control-label">@ResourceKey("General.nbsref") :</label> @info.GetXmlProperty("genxml/importref") / <label class="control-label">@ResourceKey("General.nbsid") :</label> @info.ItemID
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <h4>@ResourceKey("General.Models")</h4>
+                <div class="box-content editmodels">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-sm-12">
+                            <div class="form-group form-inline">
+                                <a class="btn btn-primary" id="addmodels">@ResourceKey("General.cmdAddButton")</a>
+                                @TextBox(info, "genxml/textbox/txtaddmodelqty", "class='form-control onedigit text-center'","1")
+                                <a class="btn btn-warning" id="undomodel" style="display: none;">@ResourceKey("General.UndoButton")</a>
+                            </div>
+                            <ul id="productmodels">
+
+                                @foreach (var nbiModel in prdData.Models)
+                                {
+                                    <li class="modelitem form-group">
+                                        <!-- class="modelitem" is needed for JS postback update -->
+                                        <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                                        <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+
+                                        <input id="modelid" type="hidden" value="" />
+
+                                        <div class="col-sm-12 form-horizontal">
+                                            <div class="row">
+                                                <div class="col-sm-5"><label class="control-label">@ResourceKey("General.Name")</label>@LangFlag()@TextBox(nbiModel, "genxml/lang/genxml/textbox/txtmodelname", "class='form-control input-sm' maxlength='250' update='lang'", "")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.Code")</label>@TextBox(nbiModel, "genxml/textbox/txtmodelref", "class='form-control input-sm' maxlength='250' update='save'", "")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Price")</label>@TextBox(nbiModel, "genxml/textbox/txtunitcost", "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0.00")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.SalePrice")</label>
+                                                @TextBox(nbiModel, "genxml/textbox/txtsaleprice", "class='form-control input-sm saleprice' maxlength='250' update='save' datatype='double'", "0.00")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkdisablesale", "ResourceKey:General.Disable", "update='save'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Dealer")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtdealercost", "class='form-control input-sm saleprice' maxlength='250' update='save' datatype='double'", "0.00")
+                                                    @CheckBox(nbiModel, "genxml/checkbox/chkdisabledealer", "ResourceKey:General.Disable", "update='save'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.DealerSale")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtdealersale", "class='form-control input-sm dealersale' maxlength='250' update='save' datatype='double'", "0.00")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Cost")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtpurchasecost", "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0.00")
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3"><label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag()
+                                                    @TextBox(nbiModel, "genxml/textbox/txtextra", "class='form-control input-sm' maxlength='250' update='save'")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.Tax")</label>
+                                                    @TaxRateDropDown(nbiModel, "genxml/dropdownlist/taxrate", "")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.Barcode")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtbarcode", "class='form-control input-sm' maxlength='250' update='save'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Weight")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/weight", "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Depth")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/depth", "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Width")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/width", "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Height")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/height", "class='form-control input-sm' maxlength='10' update='save' datatype='double'","0")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.QtyUnits")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/unitqty", "class='form-control input-sm' maxlength='10' update='save' datatype='double'", "1")
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-2 activatestock">
+                                                    @CheckBox(nbiModel, "genxml/checkbox/chkstockon", "ResourceKey:General.ActivateStock", "update='save'")
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    @CheckBox(nbiModel, "genxml/checkbox/chkishidden", "ResourceKey:General.Hidden", "update='save'")
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    @CheckBox(nbiModel, "genxml/checkbox/chkdeleted", "ResourceKey:General.Deleted", "update='save'")
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    @CheckBox(nbiModel, "genxml/checkbox/chkdealeronly", "ResourceKey:General.Dealer", "update='save'")
+                                               </div>
+                                                <div class="col-sm-2 text-right"><a class="removemodel btn btn-danger">
+                                                        @ResourceKey("General.cmdRemoveButton")
+                                                    </a >
+                                                </div >
+                                            </div>
+                                            <div style = "margin-top: 10px;" class="row stockoptions">
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Stock")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtqtyremaining", "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Min")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtqtyminstock", "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.Max")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/txtqtystockset", "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                </div>
+                                                <div class="col-sm-1"><label class="control-label">@ResourceKey("General.unit")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/unit", "class='form-control input-sm' update='save' ")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.status")</label>
+                                                    @ModelStatusDropDown(nbiModel, "genxml/textbox/modelstatus")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.availabledate")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/availabledate", "class='form-control input-sm' update='save' datatype='date'")
+                                                </div>
+                                                <div class="col-sm-2"><label class="control-label">@ResourceKey("General.delay")</label>
+                                                    @TextBox(nbiModel, "genxml/textbox/delay", "class='form-control input-sm' update='save'")
+                                                </div>
+                                                <div class="col-sm-1" style="display: none"><label class="control-label">Model ID:</label>
+                                                    @nbiModel.ItemID
+                                                </div><!-- model id not displayed -->
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @RenderRazorInjectTemplate(info, "modelfields.cshtml")
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <h3>@ResourceKey("General.Description")</h3>
+            <div class="box-content productdescription">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label sr-only">@ResourceKey("General.Description")</label>@LangFlag()
+                                @CkEditor(info,"genxml/textbox/description","class='form-control' height='400' width='100%'")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <h3><span class="optionheader">@ResourceKey("General.Options")</span></h3>
+        <div class="box-content editoptions">
+            @foreach (var nbiOptions in prdData.Options)
+            {
+
+                <div class="form-horizontal dnnForm">
+                    <div class="col-sm-6">
+                        <div class="form-group form-inline">
+                            <a class="btn btn-primary" id="addopt">@ResourceKey("General.cmdAddButton")</a>
+                            @TextBox(nbiOptions, "genxml/textbox/txtaddoptqty", "class='form-control twodigit text-center' update='save' maxlength='2'","1")
+                            <a class="btn btn-warning" id="undooption" style="display: none;">@ResourceKey("General.UndoButton")</a>
+                        </div>
+                        <ul id="productoptions"></ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group form-inline">
+                            <div id="optionvaluecontrol" style="display: none;">
+                                <a class="btn btn-primary" id="addoptvalues">@ResourceKey("General.cmdAddButton")</a>
+                                @TextBox(nbiOptions, "genxml/textbox/txtaddoptvalueqty", "class='form-control twodigit text-center' update='save' maxlength='2'", "1")
+                                <a class="btn btn-warning" id="undooptionvalue" style="display: none;">@ResourceKey("General.UndoButton")</a>
+                            </div>
+                        </div>
+                        <ul id="productoptionvalues"></ul>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"></div>
+        </div>
+
+            <h3>@ResourceKey("General.Images")</h3>
+            <div class="box-content editimages">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+
+                                <a class="btn btn-success fileinput-button">
+                                    @ResourceKey("General.cmdAddFiles")
+                                    <!-- The file input field used as target for the file upload widget -->
+                                    <input id="fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
+                                </a>
+
+                                <br /><br />
+
+                                <a class="btn btn-warning" id="undoimage" style="display: none;">@ResourceKey("General.UndoButton")</a>
+                                <!-- The global progress bar -->
+                                <div id="progress" class="progress">
+                                    <div class="progress-bar progress-bar-success"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <ul id="productimages"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <h3>@ResourceKey("General.Documents") &amp; @ResourceKey("General.Downloads")</h3>
+            <div class="box-content editdocuments">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <a class="btn btn-default" id="cmdSaveDoc">@ResourceKey("General.cmdUploadFileButton")</a>
+                                <a class="btn btn-warning" id="undodoc" style="display: none;">@ResourceKey("General.UndoButton")</a>
+                            </div>
+                            <div class="col-md-12">
+                                <ul id="productdocs"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <h3>@ResourceKey("General.Categories")</h3>
+            <div class="box-content editcategories">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-3 fixlist">
+                                @CategorySelectList(info, "genxml/dropdownlist/selectcategory", "class='selectcategory form-control'",true,20,true,false,0,"","",false,true,"",">","")
+                            </div>
+                            <div class="col-md-9">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@ResourceKey("General.Category")</th>
+                                            <th style="width:100%">@ResourceKey("General.Breadcrumb")</th>
+                                            <th>@ResourceKey("General.Default")</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productcategories"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <h3>@ResourceKey("General.Properties")</h3>
+            <div class="box-content editproperties">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-3 fixlist">
+                                [<tag id="selectgrouptype" cssclass='selectgrouptype form-control' type="grouplistbox")
+                                <div id="groupcategorylist"></div>
+                            </div>
+                            <div class="col-md-9">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@ResourceKey("General.Property")</th>
+                                            <th style="width:100%">@ResourceKey("General.Value")</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productgroupcategories"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <h3>@ResourceKey("General.relatedproducts")</h3>
+            <div class="box-content editrelated">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <a class="btn btn-primary" id="productselect">@ResourceKey("General.cmdAddButton")</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <ul id="productrelated" class="productrelated"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>@ResourceKey("General.Clients")</h3>
+            <div class="box-content editclients">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <a class="btn btn-primary" id="clientselect">@ResourceKey("General.cmdAddButton")</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@ResourceKey("General.Client")</th>
+                                            <th>@ResourceKey("General.Email")</th>
+                                            <th>@ResourceKey("General.Username")</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productclients"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<!-- All "id" for the divs/ul are required for ajax in this section -->
+<div id="productselectsection" style="display:none;">
+    <div class="row selectrelated">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i><span>@ResourceKey("General.Related") @ResourceKey("General.Products")</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-down"></i>
+                        </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+                        <a class="close-link"><i class="fa fa-times"></i></a>
+                    </div>
+                    <div class="no-move">
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">@ResourceKey("General.Search")</label>
+                                <div class="col-sm-3">
+                                    [<tag id="txtSearch" cssclass="form-control" type="textbox")
+                                </div>
+                                <label class="col-sm-1 control-label">@ResourceKey("General.Category")</label>
+                                <div class="col-sm-3">
+                                    @CategoryDropDownList(info, "genxml/dropdownlist/ddlsearchcategory", "class='s2_with_tag populate placeholder'",true,20,true,false,0,"","",false,true,"",">","")ict list to categories -->
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary" href="#" id="selectsearch">@ResourceKey("General.cmdSearchIcon")</a>
+                                    <a class="btn btn-default" href="#" id="selectreset">@ResourceKey("General.cmdResetIcon")</a>
+                                    <a class="btn btn-default" href="#" id="returnfromselect">@ResourceKey("General.cmdReturnButton")</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="productselectlist"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- All "id" for the divs/ul are required for ajax in this section -->
+<div id="clientselectsection" style="display:none;">
+    <div class="row selectrelated">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i><span>@ResourceKey("General.Related") @ResourceKey("General.Clients")</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-down"></i>
+                        </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+                        <a class="close-link"><i class="fa fa-times"></i></a>
+                    </div>
+                    <div class="no-move">
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="form-horizontal dnnForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">@ResourceKey("General.Search")</label>
+                                <div class="col-sm-3">
+                                    @TextBox(info, "genxml/textbox/txtclientsearch", "class='form-control' update='save'")
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary" href="#" id="clientlistsearch">@ResourceKey("General.cmdSearchIcon")</a>
+                                    <a class="btn btn-default" href="#" id="returnfromclientselect">@ResourceKey("General.cmdReturnButton")</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="clientselectlist"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
