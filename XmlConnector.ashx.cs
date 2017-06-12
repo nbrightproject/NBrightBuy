@@ -90,6 +90,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     strOut = OrderFunctions.ProcessCommand(paramCmd, context);
                 }
+                else if (paramCmd.StartsWith("product_"))
+                {
+                    strOut = ProductFunctions.ProcessCommand(paramCmd, context);
+                }
                 else
                 {
 
@@ -129,12 +133,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             var cw2 = new ItemListData(itemListName);
                             cw2.Delete();
                             strOut = "deleted";
-                            break;
-                        case "getproductselectlist":
-                            strOut = GetProductList(context);
-                            break;
-                        case "getproductlist":
-                            strOut = GetProductList(context);
                             break;
                         case "getcategoryproductlist":
                             strOut = GetCategoryProductList(context);
@@ -234,9 +232,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             break;
                         case "removeproductclient":
                             if (NBrightBuyUtils.CheckRights()) strOut = RemoveProductClient(context);
-                            break;
-                        case "moveproductadmin":
-                            if (NBrightBuyUtils.CheckRights()) strOut = MoveProductAdmin(context);
                             break;
                         case "fileupload":
                             if (NBrightBuyUtils.CheckRights() && Utils.IsNumeric(itemId))
@@ -653,7 +648,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
                 if (!settings.ContainsKey("filter")) settings.Add("filter", strFilter);
-                return GetProductListData(settings);
+                return ProductFunctions.ProductAdminList(context);
 
             }
             catch (Exception ex)
@@ -787,54 +782,6 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
         #region "Product Methods"
-
-        private String GetProductList(HttpContext context)
-        {
-            try
-            {
-
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-
-                return GetProductListData(settings);
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
-
-        private String MoveProductAdmin(HttpContext context)
-        {
-            try
-            {
-
-                //get uploaded params
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                if (!settings.ContainsKey("moveproductid")) settings.Add("moveproductid", "0");
-                var moveproductid = settings["moveproductid"];
-                if (!settings.ContainsKey("movetoproductid")) settings.Add("movetoproductid", "0");
-                var movetoproductid = settings["movetoproductid"];
-                if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "0");
-                var searchcategory = settings["searchcategory"];
-
-                var objCtrl = new NBrightBuyController();
-                objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
-
-                DataCache.ClearCache();
-
-                return GetProductListData(settings);
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
 
 
         private String GetProductDescription(HttpContext context)
@@ -2149,121 +2096,6 @@ namespace Nevoweb.DNN.NBrightBuy
         #region "functions"
 
 
-        private String GetProductListData(Dictionary<String, String> settings,bool paging = true)
-        {
-            var strOut = "";
-
-            if (!settings.ContainsKey("header")) settings.Add("header", "");
-            if (!settings.ContainsKey("body")) settings.Add("body", "");
-            if (!settings.ContainsKey("footer")) settings.Add("footer", "");
-            if (!settings.ContainsKey("filter")) settings.Add("filter", "");
-            if (!settings.ContainsKey("orderby")) settings.Add("orderby", "");
-            if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
-            if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
-            if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
-            if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
-            if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
-            if (!settings.ContainsKey("cascade")) settings.Add("cascade", "False");
-
-            // select a specific entity data type for the product (used by plugins)
-            if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
-            if (!settings.ContainsKey("entitytypecodelang")) settings.Add("entitytypecodelang", "PRDLANG");
-            var entitytypecodelang = settings["entitytypecodelang"];
-            var entitytypecode = settings["entitytypecode"];
-
-            var header = settings["header"];
-            var body = settings["body"];
-            var footer = settings["footer"];
-            var filter = settings["filter"];
-            var orderby = settings["orderby"];
-            var returnLimit = Convert.ToInt32(settings["returnlimit"]);    
-            var pageNumber = Convert.ToInt32(settings["pagenumber"]);            
-            var pageSize = Convert.ToInt32(settings["pagesize"]);
-            var cascade = Convert.ToBoolean(settings["cascade"]);
-
-            var searchText = settings["searchtext"];
-            var searchCategory = settings["searchcategory"];
-
-            if (searchText != "") filter += " and (NB3.[ProductName] like '%" + searchText + "%' or NB3.[ProductRef] like '%" + searchText + "%' or NB3.[Summary] like '%" + searchText + "%' ) ";
-
-            if (Utils.IsNumeric(searchCategory))
-            {
-                if (orderby == "{bycategoryproduct}") orderby += searchCategory;
-                var objQual = DataProvider.Instance().ObjectQualifier;
-                var dbOwner = DataProvider.Instance().DatabaseOwner;
-                if (!cascade)
-                    filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
-                else
-                    filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") or (typecode = 'CATCASCADE' and XrefItemId = " + searchCategory + ")) ";
-            }
-            else
-            {
-                if (orderby == "{bycategoryproduct}") orderby = " order by NB3.productname ";                
-            }
-
-            // logic for client list of products
-            if (NBrightBuyUtils.IsClientOnly())
-            {
-                filter += " and NB1.ItemId in (select ParentItemId from dbo.[NBrightBuy] as NBclient where NBclient.TypeCode = 'USERPRDXREF' and NBclient.UserId = " + UserController.Instance.GetCurrentUserInfo().UserID.ToString("") + ") ";
-            }
-
-
-            var recordCount = 0;
-
-            var themeFolder = StoreSettings.Current.ThemeFolder;
-            if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-            var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-
-            if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-
-            var objCtrl = new NBrightBuyController();
-
-            var headerTempl = templCtrl.GetTemplateData(header, _lang, true, true, true, StoreSettings.Current.Settings());
-            var bodyTempl = templCtrl.GetTemplateData(body, _lang, true, true, true, StoreSettings.Current.Settings());
-            var footerTempl = templCtrl.GetTemplateData(footer, _lang, true, true, true, StoreSettings.Current.Settings());
-
-            // replace any settings tokens (This is used to place the form data into the SQL)
-            headerTempl = Utils.ReplaceSettingTokens(headerTempl, settings);
-            headerTempl = Utils.ReplaceUrlTokens(headerTempl);
-            bodyTempl = Utils.ReplaceSettingTokens(bodyTempl, settings);
-            bodyTempl = Utils.ReplaceUrlTokens(bodyTempl);
-            footerTempl = Utils.ReplaceSettingTokens(footerTempl, settings);
-            footerTempl = Utils.ReplaceUrlTokens(footerTempl);
-
-            var obj = new NBrightInfo(true);
-            strOut = GenXmlFunctions.RenderRepeater(obj, headerTempl);
-
-            // This is data created by plugins into the NBS data tables.
-            var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var provList = pluginData.GetEntityTypeProviders();
-
-            if (paging) // get record count for paging
-            {
-                if (pageNumber == 0) pageNumber = 1;
-                if (pageSize == 0) pageSize = StoreSettings.Current.GetInt("pagesize");
-
-                // get only entity type required
-                recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter, entitytypecodelang, _lang);
-
-
-            }
-
-            // get selected entitytypecode.
-            var objList = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode, entitytypecodelang, _lang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
-
-            strOut += GenXmlFunctions.RenderRepeater(objList, bodyTempl);
-
-            strOut += GenXmlFunctions.RenderRepeater(obj, footerTempl);
-
-            // add paging if needed
-            if (paging)
-            {
-                var pg = new NBrightCore.controls.PagingCtrl();
-                strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
-            }
-
-            return strOut;
-        }
 
 
         #endregion

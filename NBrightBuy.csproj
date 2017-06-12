@@ -191,6 +191,7 @@
     <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Orders\OrderFunctions.cs" />
+    <Compile Include="Components\Product\ProductFunctions.cs" />
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -277,7 +278,7 @@
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
     <Compile Include="Components\NavigationData.cs" />
-    <Compile Include="Components\ProductData.cs" />
+    <Compile Include="Components\Product\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
     <Compile Include="AddressAdmin.ascx.cs">
       <DependentUpon>AddressAdmin.ascx</DependentUpon>
@@ -355,7 +356,7 @@
     <Compile Include="render\GenXmlTemplateExt.cs" />
     <Compile Include="Components\DataProvider.cs" />
     <Compile Include="Components\NBrightBuyController.cs" />
-    <Compile Include="Components\ProductUtils.cs" />
+    <Compile Include="Components\Product\ProductUtils.cs" />
     <Compile Include="Components\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Components\NBrightBuyUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -518,7 +519,12 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\config\default\Admin_Products.cshtml" />
     <None Include="Themes\config\default\Admin_Clients.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsSearch.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsList.cshtml" />
+    <None Include="Themes\config\default\Admin_Products_head.cshtml" />
     <None Include="Themes\config\default\Admin_Orders.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
     <None Include="Themes\config\default\Admin_ClientsDetail.cshtml" />
@@ -1021,6 +1027,8 @@
     <Content Include="Themes\config\default\extrashippingdata.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
+    <None Include="Themes\config\default\modelfields.cshtml" />
+    <None Include="Themes\config\default\productfields.cshtml" />
     <Content Include="Themes\config\default\productfields.html" />
     <Content Include="Themes\config\default\productlistbody-as-thumbs.html" />
     <Content Include="Themes\config\default\productlistfooter-as-thumbs.html" />
@@ -1501,6 +1509,7 @@
     <Content Include="Themes\config\js\nbbajax.js" />
     <Content Include="Themes\config\js\nbbitemlist.js" />
     <Content Include="Themes\config\js\nbbqtycookie.js" />
+    <Content Include="Themes\config\js\admin_product.js" />
     <Content Include="Themes\config\js\productajax.js" />
     <Content Include="Themes\Cygnus\css\cygnus.css" />
     <Content Include="Themes\Cygnus\css\global.css" />

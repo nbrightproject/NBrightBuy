@@ -22,13 +22,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin {
         protected global::System.Web.UI.WebControls.PlaceHolder notifymsg;
         
         /// <summary>
-        /// rpData control.
+        /// phSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpData;
+        protected global::System.Web.UI.WebControls.PlaceHolder phSearch;
         
         /// <summary>
         /// phData control.
@@ -38,5 +38,14 @@ namespace Nevoweb.DNN.NBrightBuy.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phData;
+        
+        /// <summary>
+        /// phPaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
     }
 }

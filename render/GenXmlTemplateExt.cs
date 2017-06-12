@@ -1307,6 +1307,14 @@ namespace Nevoweb.DNN.NBrightBuy.render
 
                     ddl.Items.Add(li);
                 }
+                if (xmlNod.Attributes != null && (xmlNod.Attributes["blank"] != null))
+                {
+                    var li = new ListItem();
+                    li.Text = "";
+                    li.Value = "";
+
+                    ddl.Items.Add(li);
+                }
 
                 ddl.DataBinding += DdListDataBinding;
                 container.Controls.Add(ddl);

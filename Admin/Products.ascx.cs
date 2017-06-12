@@ -21,25 +21,17 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     public partial class Products : NBrightBuyAdminBase
     {
 
-        private int _eid = 0;
-        private String _page = "";
+        #region Event Handlers
 
-        #region Load Event Handlers
-
-        protected override void OnInit(EventArgs e)
+        override protected void OnInit(EventArgs e)
         {
-
-            _page = Utils.RequestParam(Context, "page");
-            if (Utils.IsNumeric(Utils.RequestParam(Context, "eid"))) _eid = Convert.ToInt32(Utils.RequestParam(Context, "eid"));
-
             base.OnInit(e);
-
-            var t2 = "productadminlist.html";
-            if (_eid > 0) t2 = "productadmin.html";
-
-            // Get Display Body
-            var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, t2, Utils.GetCurrentCulture(), DebugMode);
-            rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
+            // inject any pageheader we need
+            var nbi = new NBrightInfo();
+            nbi.Lang = Utils.GetCurrentCulture();
+            nbi.PortalId = PortalId;
+            var pageheaderTempl = NBrightBuyUtils.RazorTemplRender("Admin_Products_head.cshtml", 0, "", nbi, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            PageIncludes.IncludeTextInHeader(Page, pageheaderTempl);
 
         }
 
@@ -48,6 +40,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             try
             {
                 base.OnLoad(e);
+
                 if (Page.IsPostBack == false)
                 {
                     PageLoad();
@@ -55,192 +48,43 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
             catch (Exception exc) //Module failed to load
             {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                //display the error on the template (don't want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
-                phData.Controls.Add(l);
+                Controls.Add(l);
             }
         }
 
         private void PageLoad()
         {
-            if (UserId > 0) // only logged in users can see data on this module.
+
+            if (NBrightBuyUtils.CheckRights()) // limit module data to NBS security roles
             {
-                var prodData = ProductUtils.GetProductData(_eid, StoreSettings.Current.EditLanguage);
-                if (UserInfo.IsInRole(StoreSettings.ClientEditorRole) && (!UserInfo.IsInRole(StoreSettings.EditorRole) && !UserInfo.IsInRole(StoreSettings.ManagerRole) && !UserInfo.IsInRole("Administrators")) )
-                {
-                    //Client User Only, clients can only alter products they are linked to, so test 
-                    if (prodData.HasClient(UserId))
-                    {
-                        base.DoDetail(rpData, prodData.Info);
-                    }
-                    else
-                    {
-                        if (_eid > 0)
-                        {
-                            // has no right to access, throw error page.
-                            Response.Redirect("~/Error.aspx", true);
-                        }
-                        else
-                        {
-                            // we need list so process for client user, logic to restircit list is in XmlConnector>getproductlist
-                            base.DoDetail(rpData, prodData.Info);
-                        }
-                    }
-                }
-                else
-                {
-                    base.DoDetail(rpData, prodData.Info);
-                }
+                RazorTemplate = "Admin_Products.cshtml";
+
+                // new data record so set defaults.
+                var obj = new NBrightInfo(true);
+                obj.PortalId = PortalId;
+                obj.ModuleId = 0;
+                obj.Lang = Utils.GetCurrentCulture();
+                obj.GUIDKey = RazorTemplate;
+                obj.ItemID = -1;
+
+                var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", obj, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductsSearch.cshtml", 0, "", obj, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                lit = new Literal();
+                lit.Text = strOut;
+                phSearch.Controls.Add(lit);
+
             }
+
         }
 
         #endregion
-
-        #region "Event handlers"
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var rtntab = Utils.RequestQueryStringParam(Request, "rtntab");
-            var rtneid = Utils.RequestQueryStringParam(Request, "rtneid");
-
-            var param = new string[3];
-
-            switch (e.CommandName.ToLower())
-            {
-                case "delete":
-                    Delete(cArg);
-                    param[0] = "";
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "save":
-                    Update(_eid);
-                    param[0] = "eid=" + cArg;
-                    if (rtntab != "") param[1] = "rtntab=" + rtntab;
-                    if (rtneid != "") param[2] = "rtneid=" + rtneid;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "copy":
-                    if (_eid > 0 && Utils.IsNumeric(cArg))
-                    {
-                        var newid = Copy(cArg);
-                        param[0] = "eid=" + newid;
-                    }
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "saveexit":
-                    Update(_eid);
-                    if (rtntab != "") param[0] = "tabid=" + rtntab;
-                    if (rtneid != "") param[1] = "eid=" + rtneid;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "edit":
-                    param[0] = "eid=" + cArg;
-                    if (_page != "") param[1] = "page=" + _page;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "return":
-                    if (rtntab != "") param[0] = "tabid=" + rtntab;
-                    if (rtneid != "") param[1] = "eid=" + rtneid;
-                    if (_page != "") param[2] = "page=" + _page;
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "addnew":
-                    param[0] = "eid=" + AddNew();
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-
-            }
-
-        }
-
-
-        #endregion
-
-        private String AddNew()
-        {
-            var prodData = ProductUtils.GetProductData(-1, StoreSettings.Current.EditLanguage);
-            return prodData.Info.ItemID.ToString("");
-        }
-
-        private void Update(int productid)
-        {
-            if (productid > 0)
-            {
-                var prodData = ProductUtils.GetProductData(productid, StoreSettings.Current.EditLanguage);
-                var strXml = GenXmlFunctions.GetGenXml(rpData);
-                var updInfo = new NBrightInfo(true);
-                updInfo.XMLData = strXml;
-
-                GenXmlFunctions.UploadFile(rpData, "document", StoreSettings.Current.FolderDocumentsMapPath);
-                var ctrl = ((HtmlGenericControl) rpData.Items[0].FindControl("hiddocument"));
-                if (ctrl != null)
-                {
-                    var fName = ctrl.Attributes["value"];
-                    updInfo.SetXmlProperty("genxml/hidden/hiddocument", fName);
-
-                    var docCtrl = (FileUpload) rpData.Items[0].FindControl("document");
-                    updInfo.SetXmlProperty("genxml/hidden/posteddocumentname", docCtrl.PostedFile.FileName);
-                }
-
-                var statuscode = prodData.Update(updInfo.XMLData);
-                if (statuscode == "")
-                {
-                    prodData.Save();
-                    prodData.FillEmptyLanguageFields();
-                    prodData.Validate();
-                }
-                else
-                {
-                    NBrightBuyUtils.SetNotfiyMessage(-1, "product" + statuscode, NotifyCode.fail);
-                }
-
-                if (StoreSettings.Current.DebugModeFileOut) prodData.OutputDebugFile(PortalSettings.HomeDirectoryMapPath + "debug_productupdate.xml");
-
-                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
-                ProductUtils.RemoveProductDataCache(prodData);
-                
-            }
-        }
-
-        private void Delete( String productId)
-        {
-            if (Utils.IsNumeric(productId) && Convert.ToInt32(productId) > 0)
-            {
-                var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
-                prodData.Delete();
-                NBrightBuyUtils.RemoveModCachePortalWide(PortalId);
-                ProductUtils.RemoveProductDataCache(prodData);
-            }
-        }
-
-        private String Copy(String productId)
-        {
-            if (Utils.IsNumeric(productId) && Convert.ToInt32(productId) > 0)
-            {
-                var prodData = ProductUtils.GetProductData(Convert.ToInt32(productId), StoreSettings.Current.EditLanguage);
-                var newid = prodData.Copy();
-                Update(newid);
-                prodData = ProductUtils.GetProductData(Convert.ToInt32(newid), StoreSettings.Current.EditLanguage);
-                // update modelid, so it's unique
-                var nodList = prodData.DataRecord.XMLDoc.SelectNodes("genxml/models/genxml");
-                if (nodList != null)
-                {
-                    var lp = 1;
-                    foreach (var nod in nodList)
-                    {
-                        prodData.DataRecord.SetXmlProperty("genxml/models/genxml[" + lp.ToString("") + "]/hidden/modelid", Utils.GetUniqueKey());
-                        lp += 1;
-                    }
-                }
-                prodData.Save();
-                ProductUtils.RemoveProductDataCache(prodData);
-                return newid.ToString("");
-            }
-            return "";
-        }
-
 
     }
 
