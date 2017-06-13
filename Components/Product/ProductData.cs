@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
@@ -980,6 +982,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return rtnstatuscode;
             }
 
+            var model = modelList.First();
+            var baselocalizedfields = NBrightBuyUtils.GetLangFieldList(model);
+            var basefields = NBrightBuyUtils.GetFieldList(model);
+
             // build xml for data records
             var strXml = "<genxml><models>";
             var strXmlLang = "<genxml><models>";
@@ -988,7 +994,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var objInfo = new NBrightInfo(true);
                 var objInfoLang = new NBrightInfo(true);
 
-                var localfields = modelInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                var localfields = baselocalizedfields.Split(',');
                 foreach (var f in localfields.Where(f => f != ""))
                 {
                     var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
@@ -1001,7 +1007,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 strXmlLang += objInfoLang.XMLData;
 
-                var fields = modelInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                var fields = basefields.Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
                     var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
@@ -1023,6 +1029,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             return rtnstatuscode;
         }
+
+
 
         public void UpdateOptions(String xmlAjaxData)
         {

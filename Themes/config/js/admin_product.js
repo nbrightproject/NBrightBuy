@@ -123,14 +123,160 @@
         }
 
 
-        if (e.cmd == 'product_admin_getdetail') {
+        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_admin_save') {
             $('.processing').hide();
+
+            // ---------------------------------------------------------------------------
+            // STOCK CONTROL
+            // ---------------------------------------------------------------------------
+            $('.chkstockon:not(:checked)').each(function (index) {
+                $(this).parent().parent().next().hide();
+            });
+
+            $('.selectrecord').unbind("click");
+            $('.chkstockon').click(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parent().parent().next().show();
+                } else {
+                    $(this).parent().parent().next().hide();
+                }
+            });
+
+
+            // ---------------------------------------------------------------------------
+            // MODELS
+            // ---------------------------------------------------------------------------
+            $('.removemodel').unbind("click");
+            $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
+            $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+            $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
+            $('input[id*="availabledate"]').datepicker();
+
+            //Add models
+            $('#addmodels').unbind("click");
+            $('#addmodels').click(function () {
+                $('.processing').show();
+                $('#addqty').val($('#txtaddmodelqty').val());
+                nbxget('product_addproductmodels', '#nbs_productadminsearch', '#datadisplay'); // load models
+            });
+
+            $('#undomodel').unbind("click");
+            $('#undomodel').click(function() {
+                 undoremove('.modelitem', '#productmodels');
+            });
+            $('.chkdisabledealer:checked').each(function (index) {
+                $(this).prev().attr("disabled", "disabled");;
+                $(this).parent().next().find('.dealersale').attr("disabled", "disabled");
+            });
+            $('.chkdisabledealer').unbind("change");
+            $('.chkdisabledealer').change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).prev().attr("disabled", "disabled");
+                    $(this).parent().next().find('.dealersale').attr("disabled", "disabled");
+                    $(this).prev().val(0);
+                    $(this).parent().next().find('.dealersale').val(0);
+                } else {
+                    $(this).prev().removeAttr("disabled");
+                    $(this).parent().next().find('.dealersale').removeAttr("disabled");
+                }
+            });
+
+            $('.chkdisablesale:checked').each(function (index) {
+                $(this).prev().attr("disabled", "disabled");;
+            });
+            $('.chkdisablesale').unbind("change");
+            $('.chkdisablesale').change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).prev().attr("disabled", "disabled");;
+                    $(this).prev().val(0);
+                } else {
+                    $(this).prev().removeAttr("disabled");
+                }
+            });
+
+            $("#productAdmin_cmdSave").show();
+            $("#productAdmin_cmdReturn").show();
+
+            $('#productAdmin_cmdReturn').unbind("click");
+            $('#productAdmin_cmdReturn').click(function () {
+                $('.processing').show();
+                $('#razortemplate').val('Admin_ProductsList.cshtml');
+                $('#selecteditemid').val('');
+                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+            });
+
+            $('#productAdmin_cmdSave').unbind("click");
+            $('#productAdmin_cmdSave').click(function () {
+                $('.processing').show();
+                //move data to update postback field
+                $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+                nbxget('product_admin_save', '#productdatasection', '#actionreturn');
+            });
+
+
 
         }
 
     };
 
-  
+    // ---------------------------------------------------------------------------
+    // FUNCTIONS
+    // ---------------------------------------------------------------------------
+    function moveUp(item) {
+        var prev = item.prev();
+        if (prev.length == 0)
+            return;
+        prev.css('z-index', 999).css('position', 'relative').animate({ top: item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + prev.height() }, 300, function () {
+            prev.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertBefore(prev);
+        });
+    }
+    function moveDown(item) {
+        var next = item.next();
+        if (next.length == 0)
+            return;
+        next.css('z-index', 999).css('position', 'relative').animate({ top: '-' + item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: next.height() }, 300, function () {
+            next.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertAfter(next);
+        });
+    }
+
+    function removeelement(elementtoberemoved) {
+        if ($('#recyclebin').length > 0) {
+            $('#recyclebin').append($(elementtoberemoved));
+        } else { $(elementtoberemoved).remove(); }
+        if ($(elementtoberemoved).hasClass('modelitem')) $('#undomodel').show();
+        if ($(elementtoberemoved).hasClass('optionitem')) $('#undooption').show();
+        if ($(elementtoberemoved).hasClass('optionvalueitem')) $('#undooptionvalue').show();
+        if ($(elementtoberemoved).hasClass('imageitem')) $('#undoimage').show();
+        if ($(elementtoberemoved).hasClass('docitem')) $('#undodoc').show();
+        if ($(elementtoberemoved).hasClass('categoryitem')) $('#undocategory').show();
+        if ($(elementtoberemoved).hasClass('relateditem')) $('#undorelated').show();
+        if ($(elementtoberemoved).hasClass('clientitem')) $('#undoclient').show();
+    }
+    function undoremove(itemselector, destinationselector) {
+        if ($('#recyclebin').length > 0) {
+            $(destinationselector).append($('#recyclebin').find(itemselector).last());
+        }
+        if ($('#recyclebin').children(itemselector).length == 0) {
+            if (itemselector == '.modelitem') $('#undomodel').hide();
+            if (itemselector == '.optionitem') $('#undooption').hide();
+            if (itemselector == '.optionvalueitem') $('#undooptionvalue').hide();
+            if (itemselector == '.imageitem') $('#undoimage').hide();
+            if (itemselector == '.docitem') $('#undodoc').hide();
+            if (itemselector == '.categoryitem') $('#undocategory').hide();
+            if (itemselector == '.relateditem') $('#undorelated').hide();
+            if (itemselector == '.clientitem') $('#undoclient').hide();
+        }
+    }
+
+
+    // ---------------------------------------------------------------------------
+
 });
 
 

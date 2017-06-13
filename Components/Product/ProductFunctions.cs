@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 {
     public static class ProductFunctions
     {
-        #region "Client Admin Methods"
+        #region "product Admin Methods"
 
         public static string ProcessCommand(string paramCmd,HttpContext context)
         {
@@ -44,7 +44,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     case "product_moveproductadmin":
                         strOut = ProductFunctions.MoveProductAdmin(context);
                         break;
-                        
+                    case "product_addproductmodels":
+                        strOut = ProductFunctions.AddModel(context);
+                        break;                      
+
                 }
             }
             return strOut;
@@ -111,16 +114,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                    var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
-                    if (userId > 0)
+                    var itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (itemid > 0)
                     {
-                        var clientData = new ClientData(PortalSettings.Current.PortalId, userId);
-                        if (clientData.Exists)
-                        {
-                            clientData.Update(ajaxInfo);
-                            clientData.Save();
-                            return "";
-                        }
+                        var prdData = new ProductData(itemid, Utils.GetCurrentCulture());
+                        var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata"); 
+                        var productXml = ajaxInfo.XMLData;
+
+                        prdData.UpdateModels(modelXml);
+                        prdData.Update(productXml);
+
+                        prdData.Save();
                     }
                 }
                 return "";
@@ -129,8 +134,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 return ex.ToString();
             }
-
-
         }
 
         public static String ProductAdminList(HttpContext context, bool paging = true)
@@ -291,6 +294,71 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return ex.ToString();
             }
         }
+
+
+        public static String AddModel(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var strOut = "";
+                    var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                        var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                        var portalId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+                        var addqty = ajaxInfo.GetXmlPropertyInt("genxml/hidden/addqty");
+
+                        var passSettings = ajaxInfo.ToDictionary();
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        if (!Utils.IsNumeric(selecteditemid)) return "";
+
+
+                        var itemId = Convert.ToInt32(selecteditemid);
+                        var prodData = ProductUtils.GetProductData(itemId, Utils.GetCurrentCulture());
+                        var lp = 1;
+                        var rtnKeys = new List<String>();
+                        while (lp <= addqty)
+                        {
+                            rtnKeys.Add(prodData.AddNewModel());
+                            lp += 1;
+                            if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
+                        }
+                        prodData.Save();
+                        ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
+                        NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+
+                        if (themeFolder == "")
+                        {
+                            themeFolder = StoreSettings.Current.ThemeFolder;
+                            if (ajaxInfo.GetXmlProperty("genxml/hidden/themefolder") != "") themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                        }
+
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", Utils.GetCurrentCulture());
+
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+                    }
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         #endregion
 

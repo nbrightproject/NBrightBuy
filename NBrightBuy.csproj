@@ -192,6 +192,9 @@
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="Components\Payments\PaymentFunctions.cs" />
+    <Compile Include="Components\Product\ProductData.cs" />
+    <Compile Include="Components\Product\ProductFunctions.cs" />
+    <Compile Include="Components\Product\ProductUtils.cs" />
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -278,7 +281,6 @@
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
     <Compile Include="Components\NavigationData.cs" />
-    <Compile Include="Components\ProductData.cs" />
     <Compile Include="Components\StoreSettings.cs" />
     <Compile Include="AddressAdmin.ascx.cs">
       <DependentUpon>AddressAdmin.ascx</DependentUpon>
@@ -356,7 +358,6 @@
     <Compile Include="render\GenXmlTemplateExt.cs" />
     <Compile Include="Components\DataProvider.cs" />
     <Compile Include="Components\NBrightBuyController.cs" />
-    <Compile Include="Components\ProductUtils.cs" />
     <Compile Include="Components\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Components\NBrightBuyUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -444,7 +445,7 @@
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Installation\menuplugin.xml" />
+    <Content Include="Components\Installation\menuplugin.xml" />
     <Content Include="Payment.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -490,12 +491,12 @@
     <Content Include="Themes\ClassicRazor\Default\addressadminfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadminheader.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
-    <None Include="Installation\03.05.10.SqlDataProvider" />
-    <None Include="Installation\03.05.09.SqlDataProvider" />
-    <None Include="Installation\03.05.08.SqlDataProvider" />
+    <None Include="Components\Installation\03.05.10.SqlDataProvider" />
+    <None Include="Components\Installation\03.05.09.SqlDataProvider" />
+    <None Include="Components\Installation\03.05.08.SqlDataProvider" />
     <None Include="Themes\ClassicRazor\Default\NBS_Payment_head.cshtml" />
-    <None Include="Installation\03.05.06.SqlDataProvider" />
-    <None Include="Installation\03.05.07.SqlDataProvider" />
+    <None Include="Components\Installation\03.05.06.SqlDataProvider" />
+    <None Include="Components\Installation\03.05.07.SqlDataProvider" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplayAdvSearch.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplayAdvSearch_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminDetail.cshtml" />
@@ -527,6 +528,12 @@
     <None Include="Themes\config\default\Admin_ClientsList.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersList.cshtml" />
     <None Include="Themes\config\default\Admin_Clients_head.cshtml" />
+    <None Include="Themes\config\default\Admin_Products.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsList.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductsSearch.cshtml" />
+    <None Include="Themes\config\default\Admin_Products_head.cshtml" />
+    <None Include="Themes\config\default\modelfields.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
@@ -575,7 +582,7 @@
     <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
-    <None Include="Installation\03.02.00.SqlDataProvider" />
+    <None Include="Components\Installation\03.02.00.SqlDataProvider" />
     <None Include="packages.config" />
     <None Include="Plugins\menu.config" />
     <None Include="Themes\Classic\Default\list.cshtml" />
@@ -645,6 +652,7 @@
     <Content Include="Themes\config\default\js\devoops-nbb.js" />
     <Content Include="Themes\config\default\js\devoops.js" />
     <Content Include="Themes\config\default\js\devoops.min.js" />
+    <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\config\default\ordersexport.html" />
     <Content Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.css" />
     <Content Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.js" />
@@ -1488,6 +1496,7 @@
     <Content Include="Themes\config\img\flags\32\zh-SG.png" />
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
     <Content Include="Themes\config\img\nb-store_24x24.png" />
+    <Content Include="Themes\config\js\admin_product.js" />
     <Content Include="Themes\config\js\categoryajax.js" />
     <Content Include="Themes\config\js\js.cookie.js" />
     <Content Include="Themes\config\js\nbsfavoritescookie.js" />
@@ -1710,10 +1719,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Installation\02.06.00.SqlDataProvider" />
-    <None Include="Installation\03.00.00.SqlDataProvider" />
+    <None Include="Components\Installation\02.06.00.SqlDataProvider" />
+    <None Include="Components\Installation\03.00.00.SqlDataProvider" />
     <None Include="NBS.dnn" />
-    <None Include="Installation\Uninstall.SqlDataProvider" />
+    <None Include="Components\Installation\Uninstall.SqlDataProvider" />
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />
     <None Include="Themes\Classic\Default\pageheaderlist.cshtml" />
@@ -1749,6 +1758,7 @@
     <None Include="Themes\config\default\plugins\xcharts\LICENSE" />
     <None Include="Themes\config\default\plugins\xcharts\README.md" />
     <None Include="Themes\config\default\NBS_MiniCartsettings.cshtml" />
+    <None Include="Themes\config\default\productfields.cshtml" />
     <None Include="Themes\config\default\productviewsettings.cshtml" />
     <None Include="Themes\config\default\settingspageheader.cshtml" />
     <None Include="Themes\config\img\flags\16\Thumbs.db" />
