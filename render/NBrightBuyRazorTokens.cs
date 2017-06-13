@@ -29,6 +29,7 @@ using NBrightCore.images;
 using System.IO;
 using DotNetNuke.Entities.Users;
 using Nevoweb.DNN.NBrightBuy;
+using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace NBrightBuy.render
@@ -50,6 +51,12 @@ namespace NBrightBuy.render
             return new RawString(info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname"));
         }
 
+
+        public IEncodedString SelectLangaugeButton()
+        {
+            var cmd = new EditLanguage();
+            return new RawString(cmd.ToString());
+        }
 
         public IEncodedString TaxRateDropDown(NBrightInfo info,string xpath,string providerkey, String attributes = "",bool allowblank = true)
         {
