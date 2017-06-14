@@ -27,6 +27,7 @@ using RazorEngine.Text;
 using System.Drawing.Imaging;
 using NBrightCore.images;
 using System.IO;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using Nevoweb.DNN.NBrightBuy;
 using Nevoweb.DNN.NBrightBuy.Admin;
@@ -52,10 +53,27 @@ namespace NBrightBuy.render
         }
 
 
-        public IEncodedString SelectLangaugeButton()
+        public IEncodedString EditLangaugeButton(int size = 32)
         {
-            var cmd = new EditLanguage();
-            return new RawString(cmd.ToString());
+            try
+            {
+                var strOut1 = "";
+                //NOTE: We need to recreate dynamically created controls on postback for them to pickup the event. 
+                var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+                strOut1 = "<ul class='editlanguage'>";
+                foreach (var l in enabledlanguages)
+                {
+                    strOut1 += "<li class='selectlang' editlang='" + l.Value.Code + "'>";
+                    strOut1 += "<img src='" + StoreSettings.NBrightBuyPath() + "/Themes/config/img/flags/" + size + "/" + l.Value.Code + ".png' alt='" + l.Value.EnglishName + "' />";
+                    strOut1 += "</li>";
+                }
+                strOut1 += "</ul>";
+                return new RawString(strOut1);
+            }
+            catch (Exception e)
+            {
+                return new RawString(e.ToString());
+            }
         }
 
         public IEncodedString TaxRateDropDown(NBrightInfo info,string xpath,string providerkey, String attributes = "",bool allowblank = true)
@@ -64,7 +82,7 @@ namespace NBrightBuy.render
             {
                 var strOut = "";
                 var id = getIdFromXpath(xpath);
-                strOut = "<select id=" + id + " class='taxratedropdown"  + attributes + " '>";
+                strOut = "<select id=" + id + " "  + attributes + " >";
                 var tList = TaxInterface.Instance(providerkey).GetName();
                 foreach (var tItem in tList)
                 {
@@ -972,9 +990,14 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString LangFlag()
+        public IEncodedString LangFlag(string lang)
         {
-            var strOut = "<img src = '/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/16/" + Utils.GetCurrentCulture() + ".png' />"; ;
+            return LangFlag(lang,16);
+        }
+
+        public IEncodedString LangFlag(string lang, int size)
+        {
+            var strOut = "<img src = '/DesktopModules/NBright/NBrightBuy/Themes/config/img/flags/" + size + "/" + lang + ".png' />"; ;
             return new RawString(strOut);
         }
         

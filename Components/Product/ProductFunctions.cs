@@ -12,6 +12,7 @@ using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Admin;
 
 namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 {
@@ -19,9 +20,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
     {
         #region "product Admin Methods"
 
-        public static string ProcessCommand(string paramCmd,HttpContext context)
+        private static string _editlang = "";
+
+        public static string ProcessCommand(string paramCmd,HttpContext context,string editlang = "")
         {
-            var strOut = "CLIENT - ERROR!! - No Security rights for current user!";
+            _editlang = editlang;
+            if (_editlang == "") _editlang = Utils.GetCurrentCulture();
+
+            var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
             if (NBrightBuyUtils.CheckManagerRights())
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
@@ -93,9 +99,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", Utils.GetCurrentCulture());
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
                     return strOut;
                 }
@@ -117,7 +123,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
                     if (itemid > 0)
                     {
-                        var prdData = new ProductData(itemid, Utils.GetCurrentCulture());
+                        var prdData = new ProductData(itemid, _editlang);
                         var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata"); 
                         var productXml = ajaxInfo.XMLData;
@@ -231,12 +237,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (pageSize == 0) pageSize = 20;
 
                         // get only entity type required
-                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter, entitytypecodelang, Utils.GetCurrentCulture());
+                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter, entitytypecodelang, _editlang);
 
                     }
 
                     // get selected entitytypecode.
-                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode, entitytypecodelang, Utils.GetCurrentCulture(), filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
+                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode, entitytypecodelang, _editlang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
 
                     var passSettings = settings;
                     foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
@@ -247,7 +253,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             passSettings.Add(s.Key, s.Value);
                     }
 
-                    strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+                    strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
 
                     // add paging if needed
                     if (paging && (recordCount > pageSize))
@@ -325,7 +331,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
 
                         var itemId = Convert.ToInt32(selecteditemid);
-                        var prodData = ProductUtils.GetProductData(itemId, Utils.GetCurrentCulture());
+                        var prodData = ProductUtils.GetProductData(itemId, _editlang);
                         var lp = 1;
                         var rtnKeys = new List<String>();
                         while (lp <= addqty)
@@ -345,9 +351,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", Utils.GetCurrentCulture());
+                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
                     return strOut;
                 }

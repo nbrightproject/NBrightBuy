@@ -41,6 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy
     {
         private readonly JavaScriptSerializer _js = new JavaScriptSerializer();
         private String _lang = "";
+        private String _editlang = "";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -72,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy
             #region "setup language"
 
             // because we are using a webservice the system current thread culture might not be set correctly,
-            NBrightBuyUtils.SetContextLangauge(context);
+            _editlang = NBrightBuyUtils.SetContextLangauge(context);
 
             #endregion
 
@@ -97,7 +98,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else if (paramCmd.StartsWith("product_"))
                 {
-                    strOut = ProductFunctions.ProcessCommand(paramCmd, context);
+                    strOut = ProductFunctions.ProcessCommand(paramCmd, context, _editlang);
                 }
                 else
                 {

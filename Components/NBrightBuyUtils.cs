@@ -2258,13 +2258,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// uses ajaxInfo.GetXmlProperty("genxml/hidden/currentlang"); param
         /// </summary>
         /// <param name="context"></param>
-        public static void SetContextLangauge(HttpContext context)
+        public static string SetContextLangauge(HttpContext context)
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-            SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
+            return SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
         }
 
-        public static void SetContextLangauge(NBrightInfo ajaxInfo = null)
+        public static string SetContextLangauge(NBrightInfo ajaxInfo = null)
         {
             // NOTE: "genxml/hidden/lang" should be set in the template for langauge to work OK.
             // set langauge if we have it passed.
@@ -2277,6 +2277,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // set the context  culturecode, so any DNN functions use the correct culture 
             if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
+            return lang;
         }
 
         #region "AJAX functions"

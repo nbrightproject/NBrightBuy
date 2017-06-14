@@ -12,14 +12,29 @@
             <i class="fa fa-bars"></i>
         </a>
         <div class="actionbuttonwrapper">
-            <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary primarybutton ProductAdmin_cmdSave " href="#">@ResourceKey("General.cmdSaveButton")</a>
+            <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary primarybutton" href="#">@ResourceKey("General.cmdSaveButton")</a>
             <a id="productAdmin_cmdReturn" style="display: none;" class="btn btn-default primarydefault" href="#">@ResourceKey("General.cmdReturnButton")</a>
         </div>
-        <div>
-            @SelectLangaugeButton()
-        </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 top-panel-right">
+        @EditLangaugeButton()
     </div>
 </div>
+
+<script>
+    
+    $('.selectlang').unbind("click");
+    $(".selectlang").click(function () {
+        $("#editlang").val($(this).attr("editlang"));
+        if ($("#razortemplate").val() == 'Admin_ProductsDetail.cshtml') {
+            nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
+        } else {
+            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+        }
+    });
+
+
+</script>
 
 <div id="datadisplay"></div>
 

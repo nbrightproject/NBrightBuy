@@ -86,8 +86,8 @@
             $('#productAdmin_searchtext').val($('#searchtext').val());
 
             // editbutton created by list, so needs to be assigned on each render of list.
-            $('#productAdmin_cmdEdit').unbind("click");
-            $('#productAdmin_cmdEdit').click(function() {
+            $('.productAdmin_cmdEdit').unbind("click");
+            $('.productAdmin_cmdEdit').click(function() {
                 $('.processing').show();
                 $('#razortemplate').val('Admin_ProductsDetail.cshtml');
                 $('#selecteditemid').val($(this).attr('itemid'));
