@@ -2253,11 +2253,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
            return (int)Math.Round(((originalprice - newprice) / originalprice) *100, fractionaldigits);
         }
 
+
         /// <summary>
         /// Set thread langauge to correct langauge to match html page.
         /// uses ajaxInfo.GetXmlProperty("genxml/hidden/currentlang"); param
+        /// returns the edit culture code from the "editlang" param.
         /// </summary>
         /// <param name="context"></param>
+        /// <returns>editlang</returns>
         public static string SetContextLangauge(HttpContext context)
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
@@ -2278,6 +2281,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
             if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang1") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang1");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang2") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang2");
             if (ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
             return lang;
         }
@@ -2402,58 +2407,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         #endregion
-
-
-        public static string GetLangFieldList(NBrightInfo info)
-        {
-            var baselocalizedfields = CalcFields(info, "genxml/hidden/*", "lang");
-            baselocalizedfields = CalcFields(info, "genxml/textbox/*", "lang") + "," + baselocalizedfields;
-            baselocalizedfields = CalcFields(info, "genxml/dropdownlist/*", "lang") + "," + baselocalizedfields;
-            baselocalizedfields = CalcFields(info, "genxml/checkbox/*", "lang") + "," + baselocalizedfields;
-            baselocalizedfields = CalcFields(info, "genxml/checkboxlist/*", "lang") + "," + baselocalizedfields;
-            baselocalizedfields = CalcFields(info, "genxml/radiobuttonlist/*", "lang") + "," + baselocalizedfields;
-            return baselocalizedfields;
-        }
-        public static string GetFieldList(NBrightInfo info)
-        {
-            var basefields = CalcFields(info, "genxml/hidden/*", "save");
-            basefields = CalcFields(info, "genxml/textbox/*", "save") + "," + basefields;
-            basefields = CalcFields(info, "genxml/dropdownlist/*", "save") + "," + basefields;
-            basefields = CalcFields(info, "genxml/checkbox/*", "save") + "," + basefields;
-            basefields = CalcFields(info, "genxml/checkboxlist/*", "save") + "," + basefields;
-            basefields = CalcFields(info, "genxml/radiobuttonlist/*", "save") + "," + basefields;
-            return basefields;
-        }
-
-        /// <summary>
-        /// Calculate the fields to update the NBrightInfo object
-        /// </summary>
-        /// <param name="info">NBrightInfo</param>
-        /// <param name="xpathselect">selection xpath for the fied types</param>
-        /// <param name="updateValue">value to check for: "save" or "lang"</param>
-        /// <returns></returns>
-        public static string CalcFields(NBrightInfo info, string xpathselect, string updateValue)
-        {
-            var fields = "";
-            XmlNodeList elemList = info.XMLDoc.SelectNodes(xpathselect);
-            foreach (XmlNode xmlNod in elemList)
-            {
-                if (xmlNod.Attributes.Count > 0 && xmlNod.Attributes["update"] != null)
-                {
-
-                    string attrVal = xmlNod.Attributes["update"].Value;
-                    if (attrVal != null)
-                    {
-                        if (attrVal == updateValue)
-                        {
-                            fields += xpathselect.Replace("*","") + xmlNod.Name + ",";
-                        }
-                    }
-                }
-            }
-            return fields.Trim(',');
-        }
-
 
     }
 }

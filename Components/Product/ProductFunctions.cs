@@ -99,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), _editlang);
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid),"PRDLANG", _editlang);
 
                         strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
@@ -128,10 +128,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata"); 
                         var productXml = ajaxInfo.XMLData;
 
-                        prdData.UpdateModels(modelXml);
                         prdData.Update(productXml);
-
+                        prdData.UpdateModels(modelXml,_editlang);
                         prdData.Save();
+
+                        // remove save GetData cache
+                        var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                        Utils.RemoveCache(strCacheKey);
                     }
                 }
                 return "";

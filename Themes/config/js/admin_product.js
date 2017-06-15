@@ -1,5 +1,18 @@
 ﻿$(document).ready(function() {
 
+
+    $('.selectlang').unbind("click");
+    $(".selectlang").click(function() {
+        $("#nextlang").val($(this).attr("editlang"));
+        if ($("#razortemplate").val() == 'Admin_ProductsDetail.cshtml') {
+            $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+            nbxget('product_admin_save', '#productdatasection', '#actionreturn');
+        } else {
+            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+        }
+    });
+
+
     $(document).on("nbxgetcompleted", Admin_product_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // start load all ajax data, continued by js in product.js file
@@ -122,8 +135,13 @@
 
         }
 
+        if (e.cmd == 'product_admin_save') {
+            $("#editlang").val($("#nextlang").val());
+            $("#editlanguage").val($("#nextlang").val());
+            nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
+        };
 
-        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_admin_save') {
+        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels') {
             $('.processing').hide();
 
             // ---------------------------------------------------------------------------

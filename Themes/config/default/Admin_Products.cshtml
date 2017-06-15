@@ -1,7 +1,33 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Entities.Users
 @using NBrightDNN
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+
+<!-- fields required to send required ajax cart to server -->
+<span id="nbs_productadminsearch">
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
+    <input id="razortemplate" type="hidden" value="" />
+    <input id="themefolder" type="hidden" value="config" />
+    <input id='currentlang' type='hidden' value='@Model.Lang' />
+    <input id="lang" type="hidden" value="@Model.Lang" />
+    <input id="pagesize" type="hidden" value="20" />
+    <input id="pagenumber" type="hidden" value="1" />
+    <input id="searchtext" type="hidden" value="" />
+    <input id="selecteditemid" type="hidden" value="" />
+    <input id="emailtype" type="hidden" value="" />
+    <input id="emailsubject" type="hidden" value="" />
+    <input id="emailmessage" type="hidden" value="" />
+    <input id="moveproduct" type="hidden" value="" />
+    <input id="movetoproductid" type="hidden" value="" />
+    <input id="searchcategory" type="hidden" value="" />
+    <input id="cascade" type="hidden" value="True" />
+    <input id="addqty" type="hidden" value="1" />
+    <input id="editlang" type="hidden" value="@Model.Lang" />
+    <input id="nextlang" type="hidden" value="@Model.Lang" /> <!-- editlanguage to be used after save.  editlang, must stay the same during save. -->
+</span>
+
 
 <div id="loader" class="processing" style="display:none;">@ResourceKey("General.ProcessingDiv")</div>
 
@@ -20,21 +46,6 @@
         @EditLangaugeButton()
     </div>
 </div>
-
-<script>
-    
-    $('.selectlang').unbind("click");
-    $(".selectlang").click(function () {
-        $("#editlang").val($(this).attr("editlang"));
-        if ($("#razortemplate").val() == 'Admin_ProductsDetail.cshtml') {
-            nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
-        } else {
-            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
-        }
-    });
-
-
-</script>
 
 <div id="datadisplay"></div>
 

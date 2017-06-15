@@ -780,25 +780,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataRecord.ValidateXmlFormat();
             DataLangRecord.ValidateXmlFormat();
 
+
             var updatefields = new List<String>();
-            var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-            foreach (var f in localfields) { updatefields.Add(f); }
-            // merge custom field into update
-            var localproductfields = info.GetXmlProperty("genxml/hidden/localizedproductfields").Split(',');
-            foreach (var f in localproductfields){updatefields.Add(f);}
+
+            // build list of xpath fields that need processing.
+            var filedList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in filedList)
+            {
+                if (info.GetXmlProperty(xpath + "/@update") == "lang")
+                {
+                    updatefields.Add(xpath);
+                }
+            }
 
             foreach (var f in updatefields)
             {
                 if (f != "")
                 {
-                    if (f == "genxml/edt/description")
+                    var id = f.Split('/').Last();
+                    if (id == "description")
                     {
+                        var xpath = f.Replace("textbox", "edt");
                         // special processing for editor, to place code in standard place.
                         if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
                         if (info.GetXmlProperty("genxml/textbox/description") == "")
-                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/edt/description"));
+                            DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/description"));
                         else
-                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
+                            DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
                     }
                     else
                     {
@@ -806,18 +814,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         var xpathDest = f.Split('/');
                         if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
                     }
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
 
                     DataRecord.RemoveXmlNode(f);
                 }
             }
 
+            // build list of xpath fields that need processing.
             updatefields = new List<String>();
-            var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
-            foreach (var f in fields) { updatefields.Add(f); }
-            // merge custom field into update
-            var productfields = info.GetXmlProperty("genxml/hidden/productfields").Split(',');
-            foreach (var f in productfields) { updatefields.Add(f); }
+            filedList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in filedList)
+            {
+                var id = xpath.Split('/').Last();
+                if (info.GetXmlProperty(xpath + "/@update") == "save")
+                {
+                    updatefields.Add(xpath);
+                }
+            }
 
             foreach (var f in updatefields)
             {
@@ -837,29 +850,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // update Models
-            var strXml = info.GetXmlProperty("genxml/hidden/xmlupdatemodeldata");
-            strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            rtnstatuscode = UpdateModels(strXml);
-            if (rtnstatuscode == "")
-            {
-                // update Options
-                strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptions");
-                strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-                UpdateOptions(strXml);
-                // update Options
-                strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
-                strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-                UpdateOptionValues(strXml);
-                // update images
-                UpdateImages(info);
-                // update docs
-                UpdateDocs(info);
+            //var strXml = info.GetXmlProperty("genxml/hidden/xmlupdatemodeldata");
+            //strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            //rtnstatuscode = UpdateModels(strXml);
+            //if (rtnstatuscode == "")
+            //{
+            //    // update Options
+            //    strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptions");
+            //    strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            //    UpdateOptions(strXml);
+            //    // update Options
+            //    strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
+            //    strXml = GenXmlFunctions.DecodeCDataTag(strXml);
+            //    UpdateOptionValues(strXml);
+            //    // update images
+            //    UpdateImages(info);
+            //    // update docs
+            //    UpdateDocs(info);
 
-                IsOnSale = CheckIsOnSale();
-                DealerIsOnSale = DealerCheckIsOnSale();
-                IsInStock = CheckIsInStock();
-                ClientFileUpload = CheckClientFileUpload();
-            }
+            //    IsOnSale = CheckIsOnSale();
+            //    DealerIsOnSale = DealerCheckIsOnSale();
+            //    IsInStock = CheckIsInStock();
+            //    ClientFileUpload = CheckClientFileUpload();
+            //}
 
             return rtnstatuscode;
         }
@@ -970,10 +983,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public string UpdateModels(String xmlAjaxData)
+        public string UpdateModels(String xmlAjaxData, string editlang)
         {
             var rtnstatuscode = "";
-            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            var modelList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "", editlang);
 
             if (!modelList.Any())
             {
@@ -982,15 +995,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return rtnstatuscode;
             }
 
-            var model = modelList.First();
-            var baselocalizedfields = NBrightBuyUtils.GetLangFieldList(model);
-            var basefields = NBrightBuyUtils.GetFieldList(model);
+            var baselocalizedfields = "";
+            var basefields = "";
 
             // build xml for data records
             var strXml = "<genxml><models>";
             var strXmlLang = "<genxml><models>";
             foreach (var modelInfo in modelList)
             {
+
+                // build list of xpath fields that need processing.
+                var filedList = NBrightBuyUtils.GetAllFieldxPaths(modelInfo);
+                foreach (var xpath in filedList)
+                {
+                    var id = xpath.Split('/').Last();
+                    if (modelInfo.GetXmlProperty(xpath + "/@update") == "lang")
+                    {
+                        baselocalizedfields += xpath + ",";
+                    }
+                    else
+                    {
+                        basefields += xpath + ",";
+                    }
+                }
+
                 var objInfo = new NBrightInfo(true);
                 var objInfoLang = new NBrightInfo(true);
 
