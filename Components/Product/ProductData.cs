@@ -1029,7 +1029,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
+                        objInfoLang.SetXmlPropertyDouble(f, modelInfo.GetXmlProperty(f));
                     else
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -1042,7 +1042,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (datatype == "date")
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlPropertyDouble(f).ToString(""), TypeCode.Double);
+                        objInfo.SetXmlPropertyDouble(f, modelInfo.GetXmlProperty(f));
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -1060,19 +1060,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
 
-        public void UpdateOptions(String xmlAjaxData)
+        public void UpdateOptions(String xmlAjaxData, string editlang)
         {
-            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "", editlang);
+            var baselocalizedfields = "";
+            var basefields = "";
 
             // build xml for data records
             var strXml = "<genxml><options>";
             var strXmlLang = "<genxml><options>";
             foreach (var objDataInfo in objList)
             {
+                // build list of xpath fields that need processing.
+                var filedList = NBrightBuyUtils.GetAllFieldxPaths(objDataInfo);
+                foreach (var xpath in filedList)
+                {
+                    var id = xpath.Split('/').Last();
+                    if (objDataInfo.GetXmlProperty(xpath + "/@update") == "lang")
+                    {
+                        baselocalizedfields += xpath + ",";
+                    }
+                    else
+                    {
+                        basefields += xpath + ",";
+                    }
+                }
+
                 var objInfo = new NBrightInfo(true);
                 var objInfoLang = new NBrightInfo(true);
 
-                var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                var localfields = baselocalizedfields.Split(',');
                 foreach (var f in localfields.Where(f => f != ""))
                 {
                     var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
@@ -1085,7 +1102,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 strXmlLang += objInfoLang.XMLData;
 
-                var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                var fields = basefields.Split(',');
                 foreach (var f in fields.Where(f => f != ""))
                 {
                     var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
@@ -1106,9 +1123,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/options", "genxml");        
         }
 
-        public void UpdateOptionValues(String xmlAjaxData)
+        public void UpdateOptionValues(String xmlAjaxData, string editlang)
         {
-            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "");
+            var objList = NBrightBuyUtils.GetGenXmlListByAjax(xmlAjaxData, "", editlang);
             if (objList != null)
             {
                 if (objList.Count == 0)
@@ -1141,6 +1158,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 o.GetXmlProperty("genxml/hidden/optionid"));
                     }
 
+                    var baselocalizedfields = "";
+                    var basefields = "";
+
                     foreach (var optid in distinctOptionIds.Keys)
                     {
                         // build xml for data records
@@ -1148,12 +1168,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         var strXmlLang = "<genxml><optionvalues optionid='" + optid + "'>";
                         foreach (var objDataInfo in objList)
                         {
+
+                            // build list of xpath fields that need processing.
+                            var filedList = NBrightBuyUtils.GetAllFieldxPaths(objDataInfo);
+                            foreach (var xpath in filedList)
+                            {
+                                var id = xpath.Split('/').Last();
+                                if (objDataInfo.GetXmlProperty(xpath + "/@update") == "lang")
+                                {
+                                    baselocalizedfields += xpath + ",";
+                                }
+                                else
+                                {
+                                    basefields += xpath + ",";
+                                }
+                            }
+
+
                             if (objDataInfo.GetXmlProperty("genxml/hidden/optionid") == optid)
                             {
                                 var objInfo = new NBrightInfo(true);
                                 var objInfoLang = new NBrightInfo(true);
 
-                                var localfields = objDataInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
+                                var localfields = baselocalizedfields.Split(',');
                                 foreach (var f in localfields.Where(f => f != ""))
                                 {
                                     var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
@@ -1166,7 +1203,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                 }
                                 strXmlLang += objInfoLang.XMLData;
 
-                                var fields = objDataInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
+                                var fields = basefields.Split(',');
                                 foreach (var f in fields.Where(f => f != ""))
                                 {
                                     var datatype = objDataInfo.GetXmlProperty(f + "/@datatype");
@@ -1185,8 +1222,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                         // replace  xml 
                         DataRecord.ReplaceXmlNode(strXml, "genxml/optionvalues[@optionid='" + optid + "']", "genxml");
-                        DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']",
-                            "genxml");
+                        DataLangRecord.ReplaceXmlNode(strXmlLang, "genxml/optionvalues[@optionid='" + optid + "']","genxml");
                     }
 
                     // tidy up any invlid option values (usually created in a migration phase)

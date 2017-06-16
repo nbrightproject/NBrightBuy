@@ -26,6 +26,11 @@
     <input id="addqty" type="hidden" value="1" />
     <input id="editlang" type="hidden" value="@Model.Lang" />
     <input id="nextlang" type="hidden" value="@Model.Lang" /> <!-- editlanguage to be used after save.  editlang, must stay the same during save. -->
+    <input id="selectedoptionid" type="hidden" value="" />
+    <input id="selectedgroupref" type="hidden" value="" />
+    <input id="selectedrelatedid" type="hidden" value="" />
+    <input id="selecteduserid" type="hidden" value="" />
+    <input id="imguploadlist" type="hidden" value="" />
 </span>
 
 
@@ -38,8 +43,11 @@
             <i class="fa fa-bars"></i>
         </a>
         <div class="actionbuttonwrapper">
-            <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary primarybutton" href="#">@ResourceKey("General.cmdSaveButton")</a>
-            <a id="productAdmin_cmdReturn" style="display: none;" class="btn btn-default primarydefault" href="#">@ResourceKey("General.cmdReturnButton")</a>
+            <a id="productAdmin_cmdSaveExit" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveExitButton")</a>
+            <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
+            <a id="productAdmin_cmdSaveAs" style="display: none;" class="btn btn-warning " href="#">@ResourceKey("General.cmdSaveAsButton")</a>
+            <a id="productAdmin_cmdDelete" style="display: none;" class="btn btn-danger " href="#">@ResourceKey("General.cmdDeleteButton")</a>
+            <a id="productAdmin_cmdReturn" style="display: none;" class="btn btn-default " href="#">@ResourceKey("General.cmdReturnButton")</a>
         </div>
     </div>
     <div class="col-xs-3 col-sm-3 top-panel-right">

@@ -19,7 +19,6 @@
 @{
     var info = (NBrightInfo)Model.List.First();
     var prdData = new ProductData(info.ItemID, info.PortalId, info.Lang);
-
 }
 
 <script>
@@ -80,6 +79,8 @@
 
     <!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
     <input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
+    <input id="xmlupdateoptiondata" type="hidden" datatype="coded" value="" />
+    <input id="xmlupdateoptionvaluedata" type="hidden" datatype="coded" value="" />
 
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -214,84 +215,84 @@
                                     <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
                                     <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
 
-                                    <input id="modelid" type="hidden" value="" />
+                                    <input id="modelid" type="hidden" value=""/>
 
                                     <div class="col-sm-12 form-horizontal">
                                         <div class="row">
                                             <div class="col-sm-5">
-                                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)@TextBox(nbiModel, "genxml/lang/genxml/textbox/txtmodelname_" + lp1, "class='form-control input-sm' maxlength='250' update='lang'", "")
+                                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)@TextBox(nbiModel, "genxml/lang/genxml/textbox/txtmodelname_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
                                             </div>
                                             <div class="col-sm-2">
-                                                <label class="control-label">@ResourceKey("General.Code")</label>@TextBox(nbiModel, "genxml/textbox/txtmodelref_" + lp1, "class='form-control input-sm' maxlength='250' update='save'", "")
+                                                <label class="control-label">@ResourceKey("General.Code")</label>@TextBox(nbiModel, "genxml/textbox/txtmodelref_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
                                             </div>
                                             <div class="col-sm-1">
-                                                <label class="control-label">@ResourceKey("General.Price")</label>@TextBox(nbiModel, "genxml/textbox/txtunitcost_" + lp1, "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0.00")
+                                                <label class="control-label">@ResourceKey("General.Price")</label>@TextBox(nbiModel, "genxml/textbox/txtunitcost_" + lp1, "class='form-control input-sm' maxlength='250'  datatype='double'", "0.00")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.SalePrice")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtsaleprice_" + lp1, "class='form-control input-sm saleprice' maxlength='250' update='save' datatype='double'", "0.00")
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkdisablesale_" + lp1, "ResourceKey:General.Disable", " class='chkdisabledealer' update='save'")
+                                                @TextBox(nbiModel, "genxml/textbox/txtsaleprice_" + lp1, "class='form-control input-sm saleprice' maxlength='250'  datatype='double'", "0.00")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkdisablesale_" + lp1, "ResourceKey:General.Disable", " class='chkdisabledealer' ")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Dealer")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtdealercost_" + lp1, "class='form-control input-sm saleprice' maxlength='250' update='save' datatype='double'", "0.00")
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkdisabledealer_" + lp1, "ResourceKey:General.Disable", " class='chkdisabledealer' update='save'")
+                                                @TextBox(nbiModel, "genxml/textbox/txtdealercost_" + lp1, "class='form-control input-sm saleprice' maxlength='250'  datatype='double'", "0.00")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkdisabledealer_" + lp1, "ResourceKey:General.Disable", " class='chkdisabledealer' ")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.DealerSale")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtdealersale_" + lp1, "class='form-control input-sm dealersale' maxlength='250' update='save' datatype='double'", "0.00")
+                                                @TextBox(nbiModel, "genxml/textbox/txtdealersale_" + lp1, "class='form-control input-sm dealersale' maxlength='250'  datatype='double'", "0.00")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Cost")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtpurchasecost_" + lp1, "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0.00")
+                                                @TextBox(nbiModel, "genxml/textbox/txtpurchasecost_" + lp1, "class='form-control input-sm' maxlength='250'  datatype='double'", "0.00")
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag(info.Lang)
-                                                @TextBox(nbiModel, "genxml/lang/genxml/textbox/txtextra_" + lp1, "class='form-control input-sm' maxlength='250'  update='lang'")
+                                                @TextBox(nbiModel, "genxml/lang/genxml/textbox/txtextra_" + lp1, "class='form-control input-sm' maxlength='250'  ")
                                             </div>
                                             <div class="col-sm-2">
-                                                <label class="control-label">@ResourceKey("General.Tax")</label><br />
+                                                <label class="control-label">@ResourceKey("General.Tax")</label><br/>
                                                 @TaxRateDropDown(nbiModel, "genxml/dropdownlist/taxrate_" + lp1, "tax", "class='taxratedropdown'")
                                             </div>
                                             <div class="col-sm-2">
                                                 <label class="control-label">@ResourceKey("General.Barcode")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtbarcode_" + lp1, "class='form-control input-sm' maxlength='250' update='save'")
+                                                @TextBox(nbiModel, "genxml/textbox/txtbarcode_" + lp1, "class='form-control input-sm' maxlength='250' ")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Weight")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/weight_" + lp1, "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                @TextBox(nbiModel, "genxml/textbox/weight_" + lp1, "class='form-control input-sm' maxlength='10'  datatype='double'")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Depth")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/depth_" + lp1, "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                @TextBox(nbiModel, "genxml/textbox/depth_" + lp1, "class='form-control input-sm' maxlength='10'  datatype='double'")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Width")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/width_" + lp1, "class='form-control input-sm' maxlength='10' update='save' datatype='double'")
+                                                @TextBox(nbiModel, "genxml/textbox/width_" + lp1, "class='form-control input-sm' maxlength='10'  datatype='double'")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Height")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/height_" + lp1, "class='form-control input-sm' maxlength='10' update='save' datatype='double'", "0")
+                                                @TextBox(nbiModel, "genxml/textbox/height_" + lp1, "class='form-control input-sm' maxlength='10'  datatype='double'", "0")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.QtyUnits")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/unitqty_" + lp1, "class='form-control input-sm' maxlength='10' update='save' datatype='double'", "1")
+                                                @TextBox(nbiModel, "genxml/textbox/unitqty_" + lp1, "class='form-control input-sm' maxlength='10'  datatype='double'", "1")
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-sm-2 activatestock">
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkstockon_" + lp1, "ResourceKey:General.ActivateStock", "class='chkstockon' update='save'")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkstockon_" + lp1, "ResourceKey:General.ActivateStock", "class='chkstockon' ")
                                             </div>
                                             <div class="col-sm-2">
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkishidden_" + lp1, "ResourceKey:General.Hidden", "update='save'")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkishidden_" + lp1, "ResourceKey:General.Hidden", "")
                                             </div>
                                             <div class="col-sm-2">
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkdeleted_" + lp1, "ResourceKey:General.Deleted", "update='save'")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkdeleted_" + lp1, "ResourceKey:General.Deleted", "")
                                             </div>
                                             <div class="col-sm-2">
-                                                @CheckBox(nbiModel, "genxml/checkbox/chkdealeronly_" + lp1, "ResourceKey:General.Dealer", "update='save'")
+                                                @CheckBox(nbiModel, "genxml/checkbox/chkdealeronly_" + lp1, "ResourceKey:General.Dealer", "")
                                             </div>
                                             <div class="col-sm-2 text-right">
                                                 <a class="removemodel btn btn-danger">
@@ -302,31 +303,31 @@
                                         <div style="margin-top: 10px;" class="row stockoptions">
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Stock")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtqtyremaining_" + lp1, "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                @TextBox(nbiModel, "genxml/textbox/txtqtyremaining_" + lp1, "class='form-control input-sm' maxlength='250'  datatype='double'", "0")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Min")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtqtyminstock_" + lp1, "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                @TextBox(nbiModel, "genxml/textbox/txtqtyminstock_" + lp1, "class='form-control input-sm' maxlength='250'  datatype='double'", "0")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.Max")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/txtqtystockset_" + lp1, "class='form-control input-sm' maxlength='250' update='save' datatype='double'", "0")
+                                                @TextBox(nbiModel, "genxml/textbox/txtqtystockset_" + lp1, "class='form-control input-sm' maxlength='250'  datatype='double'", "0")
                                             </div>
                                             <div class="col-sm-1">
                                                 <label class="control-label">@ResourceKey("General.unit")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/unit_" + lp1, "class='form-control input-sm' update='save' ")
+                                                @TextBox(nbiModel, "genxml/textbox/unit_" + lp1, "class='form-control input-sm'  ")
                                             </div>
                                             <div class="col-sm-2">
                                                 <label class="control-label">@ResourceKey("General.status")</label>
-                                                @ModelStatusDropDown(nbiModel, "genxml/textbox/modelstatus_" + lp1)
+                                                @ModelStatusDropDown(nbiModel, "genxml/dropdownlist/modelstatus_" + lp1, "")
                                             </div>
                                             <div class="col-sm-2">
                                                 <label class="control-label">@ResourceKey("General.availabledate")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/availabledate_" + lp1, "class='form-control input-sm' update='save' datatype='date'")
+                                                @TextBox(nbiModel, "genxml/textbox/availabledate_" + lp1, "class='form-control input-sm'  datatype='date'")
                                             </div>
                                             <div class="col-sm-2">
                                                 <label class="control-label">@ResourceKey("General.delay")</label>
-                                                @TextBox(nbiModel, "genxml/textbox/delay_" + lp1, "class='form-control input-sm' update='save'")
+                                                @TextBox(nbiModel, "genxml/textbox/delay_" + lp1, "class='form-control input-sm' ")
                                             </div>
                                             <div class="col-sm-1" style="display: none">
                                                 <label class="control-label">Model ID:</label>
@@ -334,16 +335,20 @@
                                             </div><!-- model id not displayed -->
                                         </div>
                                     </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            @{
+                                                nbiModel.SetXmlProperty("genxml/lp", lp1.ToString(""));
+                                            }
+                                            @RenderRazorInjectTemplate(nbiModel, "modelfields.cshtml")
+                                        </div>
+                                    </div>
                                 </li>
+
+
                                 lp1 += 1;
                             }
                         </ul>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        @RenderRazorInjectTemplate(info, "modelfields.cshtml")
                     </div>
                 </div>
 
@@ -351,30 +356,93 @@
 
         <h3><span class="optionheader">@ResourceKey("General.Options")</span></h3>
         <div class="box-content editoptions">
-            @foreach (var nbiOptions in prdData.Options)
-            {
 
                 <div class="form-horizontal dnnForm">
                     <div class="col-sm-6">
                         <div class="form-group form-inline">
                             <a class="btn btn-primary" id="addopt">@ResourceKey("General.cmdAddButton")</a>
-                            @TextBox(nbiOptions, "genxml/textbox/txtaddoptqty", "class='form-control twodigit text-center' update='save' maxlength='2'", "1")
+                            @TextBox(info, "genxml/textbox/txtaddoptqty", "class='form-control twodigit text-center'  maxlength='2'", "1")
                             <a class="btn btn-warning" id="undooption" style="display: none;">@ResourceKey("General.UndoButton")</a>
                         </div>
-                        <ul id="productoptions"></ul>
+                        <ul id="productoptions">
+                            @{
+                                var lp2 = 1;
+                            }
+                            @foreach (var nbiOptions in prdData.Options)
+                            {
+                                <li class="optionitem form-group">
+                                    <!-- class="optionitem" is needed for JS postback update -->
+                                    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                                    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+
+                                    <input id="optionid" type="hidden" value="@nbiOptions.GetXmlProperty("genxml/hidden/optionid")"/>
+
+                                    <div class="col-sm-12 form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)&nbsp;
+                                                @CheckBox(nbiOptions, "genxml/checkbox/optrequired_" + lp2, "", "")
+                                                <label class="control-label">@ResourceKey("General.RequiredField")</label>
+                                                @TextBox(nbiOptions, "genxml/textbox/txtoptiondesc_" + lp2, "class='form-control input-sm' maxlength='250' ", "")
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="control-label">&nbsp;</label><br><a class="selectoption btn btn-success input-sm" itemid="@nbiOptions.GetXmlProperty("genxml/hidden/optionid")">@ResourceKey("General.cmdEditButton")</a>
+                                                <label class="control-label">&nbsp;</label><a class="removeoption btn btn-danger input-sm">@ResourceKey("General.cmdRemoveButton")</a>
+                                            </div >
+                                        </div>
+                                    </div>
+                                </li>
+                                lp2 += 1;
+                            }
+                        </ul>
+
+
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group form-inline">
-                            <div id="optionvaluecontrol" style="display: none;">
+                            <div id = "optionvaluecontrol" style="display: none;">
                                 <a class="btn btn-primary" id="addoptvalues">@ResourceKey("General.cmdAddButton")</a>
-                                @TextBox(nbiOptions, "genxml/textbox/txtaddoptvalueqty", "class='form-control twodigit text-center' update='save' maxlength='2'", "1")
+                                @TextBox(info, "genxml/textbox/txtaddoptvalueqty", "class='form-control twodigit text-center'  maxlength='2'", "1")
                                 <a class="btn btn-warning" id="undooptionvalue" style="display: none;">@ResourceKey("General.UndoButton")</a>
                             </div>
                         </div>
-                        <ul id="productoptionvalues"></ul>
+                        <ul id="productoptionvalues">
+                            @{
+                                var lp3 = 1;
+                            }
+                            @foreach (var nbiOptionValues in prdData.OptionValues)
+                            {
+
+                                <li class="optionvalueitem @nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid") form-group">
+                                    <!-- class="optionvalueitem" is needed for JS postback update -->
+                                    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                                    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+
+                                    <input id="optionid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid")" />
+                                    <input id="optionvalueid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionvalueid")" />
+
+                                    <div class="col-sm-12 form-horizontal">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">@ResourceKey("General.Value") </label>@LangFlag(info.Lang)
+                                                @TextBox(nbiOptionValues, "genxml/textbox/txtoptionvaluedesc_" + lp3, "class='form-control input-sm' maxlength='250' ", "")
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="control-label">@ResourceKey("General.ExtraCost")</label>
+                                                @TextBox(nbiOptionValues, "genxml/textbox/txtaddedcost_" + lp3, "class='form-control input-sm' maxlength='50' datatype='double' ", "")
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="control-label">&nbsp;</label><br><a class="removeoptionvalue btn btn-danger input-sm">@ResourceKey("General.cmdRemoveButton")</a>
+                                            </div>
+                                            <span style="display: none">@nbiOptionValues.GetXmlProperty("genxml/hidden/optionid")] - @nbiOptionValues.GetXmlProperty("genxml/hidden/optionvalueid")</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                lp3 += 1;
+                            }
+                        </ul>
                     </div>
                 </div>
-            }
             <div class="clearfix"></div>
         </div>
 
@@ -388,14 +456,14 @@
                             <a class="btn btn-success fileinput-button">
                                 @ResourceKey("General.cmdAddFiles")
                                 <!-- The file input field used as target for the file upload widget -->
-                                <input id="fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
+                                <input id = "fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
                             </a>
 
                             <br /><br />
 
                             <a class="btn btn-warning" id="undoimage" style="display: none;">@ResourceKey("General.UndoButton")</a>
                             <!-- The global progress bar -->
-                            <div id="progress" class="progress">
+                            <div id = "progress" class="progress">
                                 <div class="progress-bar progress-bar-success"></div>
                             </div>
 
@@ -403,7 +471,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <ul id="productimages"></ul>
+                            <ul id = "productimages" ></ul>
                         </div>
                     </div>
                 </div>
@@ -421,7 +489,7 @@
                             <a class="btn btn-warning" id="undodoc" style="display: none;">@ResourceKey("General.UndoButton")</a>
                         </div>
                         <div class="col-md-12">
-                            <ul id="productdocs"></ul>
+                            <ul id = "productdocs" ></ ul >
                         </div>
                     </div>
                 </div>
@@ -442,12 +510,12 @@
                                 <thead>
                                     <tr>
                                         <th>@ResourceKey("General.Category")</th>
-                                        <th style="width:100%">@ResourceKey("General.Breadcrumb")</th>
-                                        <th>@ResourceKey("General.Default")</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productcategories"></tbody>
+                                        <th style = "width:100%" > @ResourceKey("General.Breadcrumb") </ th >
+                                        < th > @ResourceKey("General.Default") </ th >
+                                        < th ></ th >
+                                    </ tr >
+                                </ thead >
+                                < tbody id="productcategories"></tbody>
                             </table>
                         </div>
                     </div>
@@ -602,7 +670,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">@ResourceKey("General.Search")</label>
                                 <div class="col-sm-3">
-                                    @TextBox(info, "genxml/textbox/txtclientsearch", "class='form-control' update='save'")
+                                    @TextBox(info, "genxml/textbox/txtclientsearch", "class='form-control' ")
                                 </div>
                                 <div class="col-md-4">
                                     <a class="btn btn-primary" href="#" id="clientlistsearch">@ResourceKey("General.cmdSearchIcon")</a>

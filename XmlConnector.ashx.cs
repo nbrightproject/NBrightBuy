@@ -212,9 +212,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         case "addproductoptions":
                             if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptions(context);
                             break;
-                        case "addproductoptionvalues":
-                            if (NBrightBuyUtils.CheckRights()) strOut = AddProductOptionValues(context);
-                            break;
                         case "addproductcategory":
                             if (NBrightBuyUtils.CheckRights()) strOut = AddProductCategory(context);
                             break;
@@ -1342,65 +1339,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
                     var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
                     var bodyTempl = templCtrl.GetTemplateData("productadminoptions.html", _lang, true, true, true, StoreSettings.Current.Settings());
-
-                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
-
-                    //get data
-                    strOut = GenXmlFunctions.RenderRepeater(rtnList, bodyTempl);
-                }
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        private String AddProductOptionValues(HttpContext context)
-        {
-
-            try
-            {
-                //get uploaded params
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
-                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
-                if (!settings.ContainsKey("selectedoptionid")) return "";
-
-                var optionid = settings["selectedoptionid"];
-                var productitemid = settings["itemid"];
-                var qty = settings["addqty"];
-                if (!Utils.IsNumeric(qty)) qty = "1";
-
-                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
-                if (Utils.IsNumeric(productitemid))
-                {
-                    var itemId = Convert.ToInt32(productitemid);
-                    var prodData = ProductUtils.GetProductData(itemId, _lang);
-                    var lp = 1;
-                    var rtnKeys = new List<String>();
-                    while (lp <= Convert.ToInt32(qty))
-                    {
-                        rtnKeys.Add(prodData.AddNewOptionValue(optionid));
-                        lp += 1;
-                        if (lp > 50) break;  // we don;t want to create a stupid amount, it will slow the system!!!
-                    }
-                    prodData.Save();
-                    ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
-                    prodData = ProductUtils.GetProductData(productitemid, _lang);
-
-                    var rtnList = new List<NBrightInfo>();
-                    foreach (var k in rtnKeys)
-                    {
-                        rtnList.Add(prodData.GetOptionValue(optionid, k));
-                    }
-                    
-                    // get template
-                    var themeFolder = StoreSettings.Current.ThemeFolder;
-                    if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
-                    var templCtrl = NBrightBuyUtils.GetTemplateGetter(themeFolder);
-                    var bodyTempl = templCtrl.GetTemplateData("productadminoptionvalues.html", _lang, true, true, true, StoreSettings.Current.Settings());
 
                     NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
 

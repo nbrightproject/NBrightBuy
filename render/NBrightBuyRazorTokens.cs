@@ -82,18 +82,18 @@ namespace NBrightBuy.render
             {
                 var strOut = "";
                 var id = getIdFromXpath(xpath);
-                strOut = "<select id=" + id + " "  + attributes + " >";
+                strOut = "<select id='" + id + "' "  + attributes + " >";
                 var tList = TaxInterface.Instance(providerkey).GetName();
-                foreach (var tItem in tList)
-                {
-                    var s = "";
-                    if (tItem.Key == info.GetXmlProperty(xpath)) s = "selected";
-
-                    strOut += "    <option value='" + tItem.Value + "' " + s + " >" + tItem.Key + "</option>";
-                }
                 if (allowblank)
                 {
                     strOut += "    <option value='' ></option>";
+                }
+                foreach (var tItem in tList)
+                {
+                    var s = "";
+                    if (tItem.Value == info.GetXmlProperty(xpath)) s = "selected";
+
+                    strOut += "    <option value='" + tItem.Value + "' " + s + " >" + tItem.Key + "</option>";
                 }
 
                 strOut += "</select>";
@@ -118,14 +118,14 @@ namespace NBrightBuy.render
                 {
                     if (allowblank)
                     {
-                        orderstatuscode = "," + orderstatuscode;
+                        orderstatuscode = "000," + orderstatuscode;
                         orderstatustext = "," + orderstatustext;
                     }
                 }
 
                 var strOut = "";
                 var id = getIdFromXpath(xpath);
-                strOut = "<select id=" + id + " class='modelstatusdropdown" + attributes + " '>";
+                strOut = "<select id='" + id + "' class='modelstatusdropdown' " + attributes + " >";
 
                 var aryCode = orderstatuscode.Split(',');
                 var aryText = orderstatustext.Split(',');

@@ -52,8 +52,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                     case "product_addproductmodels":
                         strOut = ProductFunctions.AddModel(context);
-                        break;                      
-
+                        break;
+                    case "product_addproductoptions":
+                        strOut = ProductFunctions.AddOption(context);
+                        break;
+                    case "product_addproductoptionvalues":
+                        strOut = ProductFunctions.AddOptionValues(context);
+                        break;
+                    case "product_admin_delete":
+                        strOut = ProductFunctions.DeleteProduct(context);
+                        break;
                 }
             }
             return strOut;
@@ -125,11 +133,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     {
                         var prdData = new ProductData(itemid, _editlang);
                         var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata"); 
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                        var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
+                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluedata"));
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluedata");
+
                         var productXml = ajaxInfo.XMLData;
 
                         prdData.Update(productXml);
                         prdData.UpdateModels(modelXml,_editlang);
+                        prdData.UpdateOptions(optionXml, _editlang);
+                        prdData.UpdateOptionValues(optionvalueXml, _editlang);
                         prdData.Save();
 
                         // remove save GetData cache
@@ -359,6 +374,163 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
                     return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        public static String AddOption(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var strOut = "";
+                    var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                        var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                        var portalId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+                        var addqty = ajaxInfo.GetXmlPropertyInt("genxml/hidden/addqty");
+
+                        var passSettings = ajaxInfo.ToDictionary();
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        if (!Utils.IsNumeric(selecteditemid)) return "";
+
+
+                        var itemId = Convert.ToInt32(selecteditemid);
+                        var prodData = ProductUtils.GetProductData(itemId, _editlang);
+                        var lp = 1;
+                        var rtnKeys = new List<String>();
+                        while (lp <= addqty)
+                        {
+                            rtnKeys.Add(prodData.AddNewOption());
+                            lp += 1;
+                            if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
+                        }
+                        prodData.Save();
+                        ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
+                        NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+
+                        if (themeFolder == "")
+                        {
+                            themeFolder = StoreSettings.Current.ThemeFolder;
+                            if (ajaxInfo.GetXmlProperty("genxml/hidden/themefolder") != "") themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                        }
+
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", _editlang);
+
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
+                    }
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        public static String AddOptionValues(HttpContext context)
+        {
+
+            try
+            {
+                //get uploaded params
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
+                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                if (!settings.ContainsKey("selectedoptionid")) return "";
+
+                var optionid = settings["selectedoptionid"];
+                var productitemid = settings["selecteditemid"];
+                var qty = settings["addqty"];
+                if (!Utils.IsNumeric(qty)) qty = "1";
+
+                var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
+                if (Utils.IsNumeric(productitemid) )
+                {
+                    var itemId = Convert.ToInt32(productitemid);
+                    if (itemId > 0)
+                    {
+
+                        var prodData = ProductUtils.GetProductData(itemId, _editlang);
+
+
+                        var passSettings = settings;
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        var lp = 1;
+                        var rtnKeys = new List<String>();
+                        while (lp <= Convert.ToInt32(qty))
+                        {
+                            rtnKeys.Add(prodData.AddNewOptionValue(optionid));
+                            lp += 1;
+                            if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
+                        }
+                        prodData.Save();
+                        ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
+                        prodData = ProductUtils.GetProductData(productitemid, _editlang);
+
+                        var rtnList = new List<NBrightInfo>();
+                        foreach (var k in rtnKeys)
+                        {
+                            rtnList.Add(prodData.GetOptionValue(optionid, k));
+                        }
+
+                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", prodData.Info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
+
+                        NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    }
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String DeleteProduct(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                    if (itemid > 0)
+                    {
+                        var prdData = new ProductData(itemid, _editlang);
+                        prdData.Delete();
+                        ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemid);
+                        NBrightBuyUtils.RemoveModCachePortalWide(ajaxInfo.PortalId);
+                        return "OK";
+                   }
                 }
                 return "";
             }

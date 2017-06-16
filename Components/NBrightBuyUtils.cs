@@ -816,7 +816,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (nodList != null)
                     foreach (XmlNode nod in nodList)
                     {
-                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "");
+                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "","genxml",false,false,lang);
                         var objInfo = new NBrightInfo();
                         objInfo.ItemID = -1;
                         objInfo.TypeCode = "AJAXDATA";
@@ -2280,11 +2280,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // set the context  culturecode, so any DNN functions use the correct culture 
             if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
 
-            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang1") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang1");
-            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang2") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlang2");
-            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage") != "") return ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
-            return lang;
+            var editlang = lang;
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang1") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang1");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang2") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang2");
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
+
+            return editlang;
         }
 
         #region "AJAX functions"
