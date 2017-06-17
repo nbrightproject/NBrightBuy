@@ -136,7 +136,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
                         var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
-                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluedata"));
+                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
 
                         var productXml = ajaxInfo.XMLData;
