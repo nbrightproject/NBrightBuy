@@ -407,39 +407,7 @@
                             </div>
                         </div>
                         <ul id="productoptionvalues">
-                            @{
-                                var lp3 = 1;
-                            }
-                            @foreach (var nbiOptionValues in prdData.OptionValues)
-                            {
-
-                                <li class="optionvalueitem @nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid") form-group">
-                                    <!-- class="optionvalueitem" is needed for JS postback update -->
-                                    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
-                                    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
-
-                                    <input id="optionid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid")" />
-                                    <input id="optionvalueid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionvalueid")" />
-
-                                    <div class="col-sm-12 form-horizontal">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label class="control-label">@ResourceKey("General.Value") </label>@LangFlag(info.Lang)
-                                                @TextBox(nbiOptionValues, "genxml/textbox/txtoptionvaluedesc_" + lp3, "class='form-control input-sm' maxlength='250' ", "")
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="control-label">@ResourceKey("General.ExtraCost")</label>
-                                                @TextBox(nbiOptionValues, "genxml/textbox/txtaddedcost_" + lp3, "class='form-control input-sm' maxlength='50' datatype='double' ", "")
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="control-label">&nbsp;</label><br><a class="removeoptionvalue btn btn-danger input-sm">@ResourceKey("General.cmdRemoveButton")</a>
-                                            </div>
-                                            <span style="display: none">@nbiOptionValues.GetXmlProperty("genxml/hidden/optionid")] - @nbiOptionValues.GetXmlProperty("genxml/hidden/optionvalueid")</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                lp3 += 1;
-                            }
+                            @RenderRazorInjectTemplate(info, "Admin_ProductOptionValues.cshtml")
                         </ul>
                     </div>
                 </div>
@@ -471,7 +439,10 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <ul id = "productimages" ></ul>
+                            <ul id="productimages">
+                                @RenderRazorInjectTemplate(info, "Admin_ProductImages.cshtml")
+                                
+                            </ul>
                         </div>
                     </div>
                 </div>

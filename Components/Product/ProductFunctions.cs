@@ -369,7 +369,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", _editlang);
+                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRDLANG", _editlang);
 
                         strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
@@ -433,7 +433,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRD", _editlang);
+                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRDLANG", _editlang);
 
                         strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
@@ -484,24 +484,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var lp = 1;
-                        var rtnKeys = new List<String>();
                         while (lp <= Convert.ToInt32(qty))
                         {
-                            rtnKeys.Add(prodData.AddNewOptionValue(optionid));
+                            prodData.AddNewOptionValue(optionid);
                             lp += 1;
                             if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
                         }
                         prodData.Save();
                         ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
-                        prodData = ProductUtils.GetProductData(productitemid, _editlang);
 
-                        var rtnList = new List<NBrightInfo>();
-                        foreach (var k in rtnKeys)
-                        {
-                            rtnList.Add(prodData.GetOptionValue(optionid, k));
-                        }
 
-                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", prodData.Info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
 
                         NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     }

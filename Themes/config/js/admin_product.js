@@ -151,7 +151,7 @@
             nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
         };
 
-        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_addproductoptions') {
+        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_addproductoptions' || e.cmd == 'product_addproductoptionvalues') {
             $('.processing').hide();
 
             $("#productAdmin_cmdSaveExit").show();
@@ -279,6 +279,7 @@
             $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
             $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
 
+            $('.removeoption').unbind("click");
             $('.removeoption').click(function () {
                 removeelement($(this).parent().parent().parent().parent());
                 if ($(this).parent().parent().parent().parent().hasClass('selected')) {
@@ -287,6 +288,7 @@
                 }
             });
 
+            $('.selectoption').unbind("click");
             $('.selectoption').click(function () {
                 $('#selectedoptionid').val($(this).attr('itemid'));
                 $(this).parent().parent().parent().parent().parent().children().removeClass('selected');
@@ -295,22 +297,30 @@
             });
 
             //Add optionvalues
+            $('#addoptvalues').unbind("click");
             $('#addoptvalues').click(function () {
                 $('.processing').show();
                 $('#addqty').val($('#txtaddoptvalueqty').val());
                 nbxget('product_addproductoptionvalues', '#nbs_productadminsearch', '#productoptionvalues');
             });
 
-            $('.removeoptionvalue').click(function() {
+            $('.removeoptionvalue').unbind("click");
+            $('.removeoptionvalue').click(function () {
                  removeelement($(this).parent().parent().parent().parent());
             });
 
-            $('#undooptionvalue').click(function() {
+            $('#undooptionvalue').unbind("click");
+            $('#undooptionvalue').click(function () {
                  undoremove('.optionvalueitem', '#productoptionvalues');
             });
 
             //trigger select option, to display correct option values
             $('.selectoption').last().trigger('click');
+
+
+            // ---------------------------------------------------------------------------
+            // IMAGES
+            // ---------------------------------------------------------------------------
 
 
         }

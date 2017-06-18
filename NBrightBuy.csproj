@@ -528,6 +528,8 @@
     <None Include="Themes\config\default\Admin_ClientsList.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersList.cshtml" />
     <None Include="Themes\config\default\Admin_Clients_head.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductImages.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductOptionValues.cshtml" />
     <None Include="Themes\config\default\Admin_Products.cshtml" />
     <None Include="Themes\config\default\Admin_ProductsDetail.cshtml" />
     <None Include="Themes\config\default\Admin_ProductsList.cshtml" />
