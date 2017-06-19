@@ -21,53 +21,6 @@
     var prdData = new ProductData(info.ItemID, info.PortalId, info.Lang);
 }
 
-<script>
-
-    // file upload  (Needs to be in template to get itemid from token)
-
-    var filecount = 0;
-    var filesdone = 0;
-
-    $(function () {
-        'use strict';
-        // Change this to the location of your server-side upload handler:
-        var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload&itemid=@info.ItemID';
-        $('#fileupload').fileupload({
-            url: url,
-            maxFileSize: 5000000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            dataType: 'json'
-        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
-            .bind('fileuploadprogressall', function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css('width', progress + '%');
-            })
-            .bind('fileuploadadd', function (e, data) {
-                $.each(data.files, function (index, file) {
-                    $('input[id*="imguploadlist"]').val($('input[id*="imguploadlist"]').val() + file.name + ',');
-                    filesdone = filesdone + 1;
-                });
-            })
-            .bind('fileuploadchange', function (e, data) {
-                filecount = data.files.length;
-                $('.processing').show();
-            })
-            .bind('fileuploaddrop', function (e, data) {
-                filecount = data.files.length;
-                $('.processing').show();
-            })
-            .bind('fileuploadstop', function (e) {
-                if (filesdone == filecount) {
-                    nbxget('updateproductimages', '#productselectparams', '#productimages'); // load images
-                    filesdone = 0;
-                    $('input[id*="imguploadlist"]').val('');
-                }
-
-            });
-
-    });
-</script>
-
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
@@ -81,6 +34,7 @@
     <input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
     <input id="xmlupdateoptiondata" type="hidden" datatype="coded" value="" />
     <input id="xmlupdateoptionvaluesdata" type="hidden" datatype="coded" value="" />
+    <input id="xmlupdateproductimages" type="hidden" datatype="coded" value="" />
 
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -424,10 +378,8 @@
                             <a class="btn btn-success fileinput-button">
                                 @ResourceKey("General.cmdAddFiles")
                                 <!-- The file input field used as target for the file upload widget -->
-                                <input id = "fileupload" class="normalFileUpload" type="file" name="files[[]]" multiple>
+                                <input id="fileupload" class="normalFileUpload" type="file" name="files[]" multiple>
                             </a>
-
-                            <br /><br />
 
                             <a class="btn btn-warning" id="undoimage" style="display: none;">@ResourceKey("General.UndoButton")</a>
                             <!-- The global progress bar -->
@@ -440,8 +392,7 @@
                     <div class="form-group">
                         <div class="col-sm-12">
                             <ul id="productimages">
-                                @RenderRazorInjectTemplate(info, "Admin_ProductImages.cshtml")
-                                
+                                @RenderRazorInjectTemplate(info, "Admin_ProductImages.cshtml")                                
                             </ul>
                         </div>
                     </div>
@@ -456,11 +407,17 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <a class="btn btn-default" id="cmdSaveDoc">@ResourceKey("General.cmdUploadFileButton")</a>
+                            <a class="btn btn-success fileinput-button">
+                                @ResourceKey("General.cmdAddFiles")
+                                <!-- The file input field used as target for the file upload widget -->
+                                <input id="cmdSaveDoc" class="normalFileUpload" type="file" name="files[]" multiple>
+                            </a>
                             <a class="btn btn-warning" id="undodoc" style="display: none;">@ResourceKey("General.UndoButton")</a>
                         </div>
                         <div class="col-md-12">
-                            <ul id = "productdocs" ></ ul >
+                            <ul id="productdocs">
+                                @RenderRazorInjectTemplate(info, "Admin_ProductDocs.cshtml")                                
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -481,12 +438,12 @@
                                 <thead>
                                     <tr>
                                         <th>@ResourceKey("General.Category")</th>
-                                        <th style = "width:100%" > @ResourceKey("General.Breadcrumb") </ th >
-                                        < th > @ResourceKey("General.Default") </ th >
-                                        < th ></ th >
-                                    </ tr >
-                                </ thead >
-                                < tbody id="productcategories"></tbody>
+                                        <th style = "width:100%" > @ResourceKey("General.Breadcrumb") </th>
+                                        <th> @ResourceKey("General.Default") </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productcategories"></tbody>
                             </table>
                         </div>
                     </div>

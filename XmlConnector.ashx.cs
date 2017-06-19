@@ -243,7 +243,7 @@ namespace Nevoweb.DNN.NBrightBuy
                             if (NBrightBuyUtils.CheckRights()) strOut = MoveProductAdmin(context);
                             break;
                         case "fileupload":
-                            if (NBrightBuyUtils.CheckRights() && Utils.IsNumeric(itemId))
+                            if (NBrightBuyUtils.CheckRights())
                             {
                                 strOut = FileUpload(context);
                             }
@@ -252,20 +252,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             if (StoreSettings.Current.GetBool("allowupload"))
                             {
                                 strOut = FileUpload(context, itemId);
-                            }
-                            break;
-                        case "updateproductimages":
-                            if (NBrightBuyUtils.CheckRights())
-                            {
-                                UpdateProductImages(context);
-                                strOut = GetProductImages(context);
-                            }
-                            break;
-                        case "updateproductdocs":
-                            if (NBrightBuyUtils.CheckRights())
-                            {
-                                UpdateProductDocs(context);
-                                strOut = GetProductDocs(context);
                             }
                             break;
                         case "addtobasket":
@@ -1021,65 +1007,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
 
         }
-
-        private void UpdateProductDocs(HttpContext context)
-        {
-            //get uploaded params
-            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-            var settings = ajaxInfo.ToDictionary();
-
-            if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
-            var productitemid = settings["itemid"];
-            var docuploadlist = settings["docuploadlist"];
-
-            if (Utils.IsNumeric(productitemid))
-            {
-                var docs = docuploadlist.Split(',');
-                foreach (var doc in docs)
-                {
-                    if (doc != "")
-                    {
-                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + doc;
-                        var extension = Path.GetExtension(fullName);
-                        if ((extension.ToLower() == ".pdf" || extension.ToLower() == ".zip"))
-                        {
-                            if (File.Exists(fullName))
-                            {
-                                var newDocFileName = StoreSettings.Current.FolderDocumentsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Guid.NewGuid() + extension;
-                                File.Copy(fullName, newDocFileName, true);
-                                var docurl = StoreSettings.Current.FolderDocuments.TrimEnd('/') + "/" + Path.GetFileName(newDocFileName);
-                                AddNewDoc(Convert.ToInt32(productitemid), newDocFileName, doc);
-                            }
-                        }
-                    }
-                }
-                // clear any cache for the product.
-                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
-
-            }
-        }
-
-        private void AddNewDoc(int itemId, String filepath, String orginalfilename)
-        {
-            var objCtrl = new NBrightBuyController();
-            var dataRecord = objCtrl.Get(itemId);
-            if (dataRecord != null)
-            {
-                var fileext = Path.GetExtension(orginalfilename);
-                var strXml = "<genxml><docs><genxml><hidden><filepath>" + filepath + "</filepath><fileext>" + fileext + "</fileext></hidden><textbox><txtfilename>" + orginalfilename + "</txtfilename></textbox></genxml></docs></genxml>";
-                if (dataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
-                {
-                    dataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");
-                }
-                else
-                {
-                    dataRecord.AddXmlNode(strXml, "genxml/docs/genxml", "genxml/docs");
-                }
-                objCtrl.Update(dataRecord);
-            }
-        }
-
-
 
         private String GetProductDocs(HttpContext context)
         {

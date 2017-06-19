@@ -1,6 +1,7 @@
 ﻿$(document).ready(function() {
 
 
+
     $('.selectlang').unbind("click");
     $(".selectlang").click(function() {
         $("#nextlang").val($(this).attr("editlang"));
@@ -31,7 +32,6 @@
             viewport: { selector: '#content', padding: 0 },
             delay: { show: 100, hide: 200 }
         });
-
 
         if (e.cmd == 'product_admin_getlist') {
 
@@ -151,14 +151,64 @@
             nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
         };
 
-        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_addproductoptions' || e.cmd == 'product_addproductoptionvalues') {
+        if (e.cmd == 'product_admin_getdetail' || e.cmd == 'product_addproductmodels' || e.cmd == 'product_addproductoptions' || e.cmd == 'product_addproductoptionvalues' || e.cmd == 'product_updateproductimages') {
             $('.processing').hide();
 
+            
             $("#productAdmin_cmdSaveExit").show();
             $("#productAdmin_cmdSave").show();
             $("#productAdmin_cmdSaveAs").show();
             $("#productAdmin_cmdDelete").show();
             $("#productAdmin_cmdReturn").show();
+
+            $('#datadisplay').children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
+            $('#datadisplay').children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
+
+
+            // ---------------------------------------------------------------------------
+            // FILE UPLOAD
+            // ---------------------------------------------------------------------------
+            var filecount = 0;
+            var filesdone = 0;
+            $(function () {
+                'use strict';
+                var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload';
+                $('#fileupload, #cmdSaveDoc').unbind("fileupload");
+                $('#fileupload, #cmdSaveDoc').fileupload({
+                    url: url,
+                    maxFileSize: 5000000,
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf)$/i,
+                    dataType: 'json'
+                }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
+                    .bind('fileuploadprogressall', function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .progress-bar').css('width', progress + '%');
+                    })
+                    .bind('fileuploadadd', function (e, data) {
+                        $.each(data.files, function (index, file) {
+                            $('input[id*="imguploadlist"]').val($('input[id*="imguploadlist"]').val() + file.name + ',');
+                            filesdone = filesdone + 1;
+                        });
+                    })
+                    .bind('fileuploadchange', function (e, data) {
+                        filecount = data.files.length;
+                        $('.processing').show();
+                    })
+                    .bind('fileuploaddrop', function (e, data) {
+                        filecount = data.files.length;
+                        $('.processing').show();
+                    })
+                    .bind('fileuploadstop', function (e) {
+                        if (filesdone == filecount) {
+                            nbxget('product_updateproductimages', '#nbs_productadminsearch', '#productimages'); // load images
+                            filesdone = 0;
+                            $('input[id*="imguploadlist"]').val('');
+                            $('.processing').hide();
+                            $('#progress .progress-bar').css('width', '0');
+                        }
+                    });
+            });
+
 
             // ---------------------------------------------------------------------------
             // ACTION BUTTONS
@@ -178,6 +228,7 @@
                 $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
                 $('#xmlupdateoptiondata').val($.fn.genxmlajaxitems('#productoptions', '.optionitem'));
                 $('#xmlupdateoptionvaluesdata').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem'));
+                $('#xmlupdateproductimages').val($.fn.genxmlajaxitems('#productimages', '.imageitem'));
                 nbxget('product_admin_save', '#productdatasection', '#actionreturn');
             });
 
@@ -213,8 +264,7 @@
             // ---------------------------------------------------------------------------
             $('.removemodel').unbind("click");
             $('.removemodel').click(function () { removeelement($(this).parent().parent().parent().parent()); });
-            $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
-            $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
+
             $('input[id*="availabledate"]').datepicker();
 
             //Add models
@@ -276,9 +326,6 @@
                 undoremove('.optionitem', '#productoptions');
             });
 
-            $(this).children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
-            $(this).children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
-
             $('.removeoption').unbind("click");
             $('.removeoption').click(function () {
                 removeelement($(this).parent().parent().parent().parent());
@@ -322,6 +369,14 @@
             // IMAGES
             // ---------------------------------------------------------------------------
 
+            $('.removeimage').unbind("click");
+            $('.removeimage').click(function () {
+                removeelement($(this).parent().parent().parent().parent());
+            });
+
+            $('#undoimage').click(function() {
+                 undoremove('.imageitem', '#productimages');
+            });
 
         }
 
@@ -395,6 +450,4 @@
     // ---------------------------------------------------------------------------
 
 });
-
-
 

@@ -784,8 +784,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var updatefields = new List<String>();
 
             // build list of xpath fields that need processing.
-            var filedList = NBrightBuyUtils.GetAllFieldxPaths(info);
-            foreach (var xpath in filedList)
+            var fieldList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in fieldList)
             {
                 if (info.GetXmlProperty(xpath + "/@update") == "lang")
                 {
@@ -822,8 +822,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // build list of xpath fields that need processing.
             updatefields = new List<String>();
-            filedList = NBrightBuyUtils.GetAllFieldxPaths(info);
-            foreach (var xpath in filedList)
+            fieldList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in fieldList)
             {
                 var id = xpath.Split('/').Last();
                 if (info.GetXmlProperty(xpath + "/@update") == "save")
@@ -934,10 +934,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         }
 
-        public void UpdateImages(NBrightInfo info)
+        public void UpdateImages(NBrightInfo info, string editlang = "")
         {
+            if (editlang == "") editlang = "en-US";
             var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductimages");
-            strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
+            strAjaxXml = Utils.UnCode(strAjaxXml);
             var imgList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");
             UpdateImages(imgList);
 
@@ -960,15 +961,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var objInfo = new NBrightInfo(true);
                 var objInfoLang = new NBrightInfo(true);
 
-                var localfields = imgInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-                foreach (var f in localfields.Where(f => f != ""))
+                // build list of xpath fields that need processing.
+                var updatefields = new List<String>();
+                var fieldList = NBrightBuyUtils.GetAllFieldxPaths(imgInfo);
+                foreach (var xpath in fieldList)
+                {
+                    if (imgInfo.GetXmlProperty(xpath + "/@update") == "lang")
+                    {
+                        updatefields.Add(xpath);
+                    }
+                }
+
+                foreach (var f in updatefields.Where(f => f != ""))
                 {
                     objInfoLang.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
 
-                var fields = imgInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                foreach (var f in fields.Where(f => f != ""))
+                // build list of xpath fields that need processing.
+                updatefields = new List<String>();
+                fieldList = NBrightBuyUtils.GetAllFieldxPaths(imgInfo);
+                foreach (var xpath in fieldList)
+                {
+                    if (imgInfo.GetXmlProperty(xpath + "/@update") == "save")
+                    {
+                        updatefields.Add(xpath);
+                    }
+                }
+
+                foreach (var f in updatefields.Where(f => f != ""))
                 {
                     objInfo.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
                 }

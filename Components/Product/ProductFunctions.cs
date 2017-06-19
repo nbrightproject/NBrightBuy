@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Script.Serialization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore.common;
+using NBrightCore.images;
 using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
@@ -19,7 +23,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
     public static class ProductFunctions
     {
         #region "product Admin Methods"
-
         private static string _editlang = "";
 
         public static string ProcessCommand(string paramCmd,HttpContext context,string editlang = "")
@@ -61,6 +64,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                     case "product_admin_delete":
                         strOut = ProductFunctions.DeleteProduct(context);
+                        break;
+                    case "product_updateproductimages":
+                        strOut = ProductFunctions.UpdateProductImages(context);
+                        break;
+                    case "product_updateproductdocs":
+                        strOut = ProductFunctions.UpdateProductDocs(context);
                         break;
                 }
             }
@@ -133,23 +142,28 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     {
                         var prdData = new ProductData(itemid, _editlang);
                         var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
                         var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
-                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
-
-                        var productXml = ajaxInfo.XMLData;
-
-                        prdData.Update(productXml);
+                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));                
+ 
                         prdData.UpdateModels(modelXml,_editlang);
                         prdData.UpdateOptions(optionXml, _editlang);
                         prdData.UpdateOptionValues(optionvalueXml, _editlang);
+                        prdData.UpdateImages(ajaxInfo);
+
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateproductimages");
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                        var productXml = ajaxInfo.XMLData;
+
+                        prdData.Update(productXml);
                         prdData.Save();
 
                         // remove save GetData cache
                         var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
                         Utils.RemoveCache(strCacheKey);
+                        DataCache.ClearCache();
+
                     }
                 }
                 return "";
@@ -536,6 +550,267 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
+
+        #region "fileupload"
+
+        public static string UpdateProductImages(HttpContext context)
+        {
+            //get uploaded params
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var imguploadlist = ajaxInfo.GetXmlProperty("genxml/hidden/imguploadlist");
+            var strOut = "";
+
+            if (Utils.IsNumeric(productitemid))
+            {
+                var imgs = imguploadlist.Split(',');
+                foreach (var img in imgs)
+                {
+                    if (ImgUtils.IsImageFile(Path.GetExtension(img)) && img != "")
+                    {
+                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + img;
+                        if (File.Exists(fullName))
+                        {
+                            var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
+                            if (imgResize == 0) imgResize = 800;
+                            var imagepath = ResizeImage(fullName, imgResize);
+                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
+                            AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);
+                        }
+                    }
+                }
+                // clear any cache for the product.
+                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
+
+                var cachekey = "AjaxProductImgs*" + productitemid;
+                Utils.RemoveCache(cachekey);
+
+
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductImages.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+            }
+            return strOut;
+        }
+
+        public static String ResizeImage(String fullName, int imgSize = 640)
+        {
+            if (ImgUtils.IsImageFile(Path.GetExtension(fullName)))
+            {
+                var extension = Path.GetExtension(fullName);
+                var newImageFileName = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Utils.GetUniqueKey() + extension;
+                if (extension != null && extension.ToLower() == ".png")
+                {
+                    newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
+                }
+                else
+                {
+                    newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
+                }
+                Utils.DeleteSysFile(fullName);
+
+                return newImageFileName;
+
+            }
+            return "";
+        }
+
+
+        public static void AddNewImage(int itemId, String imageurl, String imagepath)
+        {
+            var objCtrl = new NBrightBuyController();
+            var dataRecord = objCtrl.Get(itemId);
+            if (dataRecord != null)
+            {
+                var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" + imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
+                if (dataRecord.XMLDoc.SelectSingleNode("genxml/imgs") == null)
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/imgs", "genxml");
+                }
+                else
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/imgs/genxml", "genxml/imgs");
+                }
+                objCtrl.Update(dataRecord);
+            }
+        }
+
+
+        public static string FileUpload(HttpContext context, string itemid = "")
+        {
+            try
+            {
+
+                var strOut = "";
+                switch (context.Request.HttpMethod)
+                {
+                    case "HEAD":
+                    case "GET":
+                        break;
+                    case "POST":
+                    case "PUT":
+                        strOut = UploadFile(context, itemid);
+                        break;
+                    case "DELETE":
+                        break;
+                    case "OPTIONS":
+                        break;
+
+                    default:
+                        context.Response.ClearHeaders();
+                        context.Response.StatusCode = 405;
+                        break;
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        // Upload file to the server
+        public static String UploadFile(HttpContext context, string itemid = "")
+        {
+            var statuses = new List<FilesStatus>();
+            var headers = context.Request.Headers;
+
+            if (string.IsNullOrEmpty(headers["X-File-Name"]))
+            {
+                return UploadWholeFile(context, statuses, itemid);
+            }
+            else
+            {
+                return UploadPartialFile(headers["X-File-Name"], context, statuses, itemid);
+            }
+        }
+
+        // Upload partial file
+        public static String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string itemid = "")
+        {
+            Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+            if (fexpr.Match(fileName.ToLower()).Success)
+            {
+
+                if (itemid != "") itemid += "_";
+                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+                var inputStream = context.Request.Files[0].InputStream;
+                var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
+
+                using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+                {
+                    var buffer = new byte[1024];
+
+                    var l = inputStream.Read(buffer, 0, 1024);
+                    while (l > 0)
+                    {
+                        fs.Write(buffer, 0, l);
+                        l = inputStream.Read(buffer, 0, 1024);
+                    }
+                    fs.Flush();
+                    fs.Close();
+                }
+                statuses.Add(new FilesStatus(new FileInfo(fullName)));
+            }
+            return "";
+        }
+
+        // Upload entire file
+        public static String UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string itemid = "")
+        {
+            if (itemid != "") itemid += "_";
+            for (int i = 0; i < context.Request.Files.Count; i++)
+            {
+                var file = context.Request.Files[i];
+                Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
+                if (fexpr.Match(file.FileName.ToLower()).Success)
+                {
+                    file.SaveAs(StoreSettings.Current.FolderTempMapPath + "\\" + itemid + file.FileName);
+                    statuses.Add(new FilesStatus(Path.GetFileName(itemid + file.FileName), file.ContentLength));
+                }
+            }
+            return "";
+        }
+
+
+
+        #endregion
+
+        #region "Docs"
+
+
+        public static string UpdateProductDocs(HttpContext context)
+        {
+            //get uploaded params
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var settings = ajaxInfo.ToDictionary();
+
+            var strOut = "";
+
+            if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+            var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var docuploadlist = ajaxInfo.GetXmlProperty("genxml/hidden/docuploadlist");
+
+            if (Utils.IsNumeric(productitemid))
+            {
+                var docs = docuploadlist.Split(',');
+                foreach (var doc in docs)
+                {
+                    if (doc != "")
+                    {
+                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + doc;
+                        var extension = Path.GetExtension(fullName);
+                        if ((extension.ToLower() == ".pdf" || extension.ToLower() == ".zip"))
+                        {
+                            if (File.Exists(fullName))
+                            {
+                                var newDocFileName = StoreSettings.Current.FolderDocumentsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Guid.NewGuid() + extension;
+                                File.Copy(fullName, newDocFileName, true);
+                                var docurl = StoreSettings.Current.FolderDocuments.TrimEnd('/') + "/" + Path.GetFileName(newDocFileName);
+                                AddNewDoc(Convert.ToInt32(productitemid), newDocFileName, doc);
+                            }
+                        }
+                    }
+                }
+                // clear any cache for the product.
+                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
+
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductDocs.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+            }
+            return strOut;
+        }
+
+        public static void AddNewDoc(int itemId, String filepath, String orginalfilename)
+        {
+            var objCtrl = new NBrightBuyController();
+            var dataRecord = objCtrl.Get(itemId);
+            if (dataRecord != null)
+            {
+                var fileext = Path.GetExtension(orginalfilename);
+                var strXml = "<genxml><docs><genxml><hidden><filepath>" + filepath + "</filepath><fileext>" + fileext + "</fileext></hidden><textbox><txtfilename>" + orginalfilename + "</txtfilename></textbox></genxml></docs></genxml>";
+                if (dataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");
+                }
+                else
+                {
+                    dataRecord.AddXmlNode(strXml, "genxml/docs/genxml", "genxml/docs");
+                }
+                objCtrl.Update(dataRecord);
+            }
+        }
+
+
+
+        #endregion
 
         #endregion
 
