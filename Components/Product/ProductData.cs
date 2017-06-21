@@ -469,7 +469,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="groupref">groupref for select, "" = all, "cat"= Category only, "!cat" = all non-category, "{groupref}"=this group only</param>
         /// <param name="cascade">get all cascade records to get all parent categories</param>
         /// <returns></returns>
-        public List<GroupCategoryData> GetProperties(String groupref = "", Boolean cascade = false)
+        public List<GroupCategoryData> GetProperties(String groupref = "!cat", Boolean cascade = false)
         {
             return GetCategories(groupref, cascade);
         }
@@ -880,7 +880,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void UpdateDocs(NBrightInfo info)
         {
             var strAjaxXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductdocs");
-            strAjaxXml = GenXmlFunctions.DecodeCDataTag(strAjaxXml);
+            strAjaxXml = Utils.UnCode(strAjaxXml);
             var docList = NBrightBuyUtils.GetGenXmlListByAjax(strAjaxXml, "");            
             UpdateDocs(docList);
 
@@ -904,15 +904,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var objInfo = new NBrightInfo(true);
                 var objInfoLang = new NBrightInfo(true);
 
-                var localfields = docInfo.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
-                foreach (var f in localfields.Where(f => f != ""))
+                // build list of xpath fields that need processing.
+                var updatefields = new List<String>();
+                var fieldList = NBrightBuyUtils.GetAllFieldxPaths(docInfo);
+                foreach (var xpath in fieldList)
+                {
+                    if (docInfo.GetXmlProperty(xpath + "/@update") == "lang")
+                    {
+                        updatefields.Add(xpath);
+                    }
+                }
+                foreach (var f in updatefields.Where(f => f != ""))
                 {
                     objInfoLang.SetXmlProperty(f, docInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
 
-                var fields = docInfo.GetXmlProperty("genxml/hidden/fields").Split(',');
-                foreach (var f in fields.Where(f => f != ""))
+                // build list of xpath fields that need processing.
+                updatefields = new List<String>();
+                fieldList = NBrightBuyUtils.GetAllFieldxPaths(docInfo);
+                foreach (var xpath in fieldList)
+                {
+                    if (docInfo.GetXmlProperty(xpath + "/@update") == "save")
+                    {
+                        updatefields.Add(xpath);
+                    }
+                }
+                foreach (var f in updatefields.Where(f => f != ""))
                 {
                     objInfo.SetXmlProperty(f, docInfo.GetXmlProperty(f));
                     if (f == "genxml/hidden/filepath")

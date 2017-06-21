@@ -30,7 +30,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var nbi = new NBrightInfo();
             nbi.Lang = Utils.GetCurrentCulture();
             nbi.PortalId = PortalId;
-            var pageheaderTempl = NBrightBuyUtils.RazorTemplRender("Admin_Products_head.cshtml", 0, "", nbi, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+            var pageheaderTempl = NBrightBuyUtils.RazorTemplRender("Admin_Product_head.cshtml", 0, "", nbi, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             PageIncludes.IncludeTextInHeader(Page, pageheaderTempl);
 
         }
@@ -60,7 +60,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (NBrightBuyUtils.CheckRights()) // limit module data to NBS security roles
             {
-                RazorTemplate = "Admin_Products.cshtml";
+                RazorTemplate = "Admin_Product.cshtml";
 
                 // new data record so set defaults.
                 var obj = new NBrightInfo(true);
@@ -75,7 +75,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 lit.Text = strOut;
                 phData.Controls.Add(lit);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductsSearch.cshtml", 0, "", obj, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductSearch.cshtml", 0, "", obj, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                 lit = new Literal();
                 lit.Text = strOut;
                 phSearch.Controls.Add(lit);

@@ -500,6 +500,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 CategoryList = lenum.ToList();
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, CategoryList);
             }
+
+            // add breadcrumb (needs both GrpCategoryList and CategoryList )
+            //[TODO: fix this catch 22 for list dependancy]
+            foreach (var grpcat in CategoryList)
+            {
+                grpcat.breadcrumb = GetBreadCrumb(grpcat.categoryid, 200, ">", false);
+            }
+
+
         }
 
         private NBrightInfo GetLangData(List<NBrightInfo> langList,int categoryid)

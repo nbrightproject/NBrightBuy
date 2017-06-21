@@ -614,6 +614,7 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+
         public IEncodedString GroupSelectList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1")
         {
             var strOut = "";
@@ -872,6 +873,11 @@ namespace NBrightBuy.render
             }
 
             return new RawString(strOut);
+        }
+
+        public IEncodedString CatListBox(NBrightInfo info, String xpath, String attributes = "")
+        {
+            return new RawString("");
         }
 
         public IEncodedString PropertyDropDownList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, Boolean showHidden = false, Boolean showArchived = false, int parentid = 0, String catreflist = "", String prefix = "", bool displayCount = false, bool showEmpty = true, string groupref = "", string breadcrumbseparator = ">", string lang = "")

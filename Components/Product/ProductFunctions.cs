@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Razor;
 using System.Web.Script.Serialization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -71,6 +72,45 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     case "product_updateproductdocs":
                         strOut = ProductFunctions.UpdateProductDocs(context);
                         break;
+                    case "product_addproductcategory":
+                        strOut = ProductFunctions.AddProductCategory(context);
+                        break;
+                    case "product_removeproductcategory":
+                        strOut = ProductFunctions.RemoveProductCategory(context);
+                        break;
+                    case "product_setdefaultcategory":
+                        strOut = ProductFunctions.SetDefaultCategory(context);
+                        break;
+                    case "product_populatecategorylist":
+                        strOut = ProductFunctions.GetPropertyListBox(context);
+                        break;
+                    case "product_addproperty":
+                        strOut = ProductFunctions.AddProperty(context);
+                        break;
+                    case "product_removeproperty":
+                        strOut = ProductFunctions.RemoveProperty(context);
+                        break;
+                    case "product_removerelated":
+                        strOut = ProductFunctions.RemoveRelatedProduct(context);
+                        break;
+                    case "product_addrelatedproduct":
+                        strOut = ProductFunctions.AddRelatedProduct(context);
+                        break;
+                    case "product_getproductselectlist":
+                        strOut = ProductFunctions.GetProductSelectList(context);
+                        break;
+                    case "product_getclientselectlist":
+                        strOut = ProductFunctions.GetClientSelectList(context);
+                        break;
+                    case "product_addproductclient":
+                        strOut = ProductFunctions.AddProductClient(context);
+                        break;
+                    case "product_productclients":
+                        strOut = ProductFunctions.GetProductClients(context);
+                        break;
+                    case "product_removeproductclient":
+                        strOut = ProductFunctions.RemoveProductClient(context);
+                        break;                        
                 }
             }
             return strOut;
@@ -149,11 +189,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         prdData.UpdateOptions(optionXml, _editlang);
                         prdData.UpdateOptionValues(optionvalueXml, _editlang);
                         prdData.UpdateImages(ajaxInfo);
+                        prdData.UpdateDocs(ajaxInfo);
 
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateproductimages");
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
                         ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
                         var productXml = ajaxInfo.XMLData;
 
                         prdData.Update(productXml);
@@ -811,6 +853,383 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
 
         #endregion
+
+
+        #region "Categories"
+
+        public static string AddProductCategory(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var xrefitemid = ajaxInfo.GetXmlProperty("genxml/hidden/selectedcatid");
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string SetDefaultCategory(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var xrefitemid = ajaxInfo.GetXmlProperty("genxml/hidden/selectedcatid");
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    prodData.SetDefaultCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string RemoveProductCategory(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var xrefitemid = ajaxInfo.GetXmlProperty("genxml/hidden/selectedcatid");
+                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductCategories(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+
+
+        public static String GetProductCategories(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var strOut = "";
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductCategories.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+
+
+        #endregion
+
+
+        #region "Properties"
+
+        public static String GetPropertyListBox(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            ajaxInfo.Lang = Utils.GetCurrentCulture();
+            var strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductPropertySelect.cshtml", 0, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+            return strOut;
+        }
+
+        public static string AddProperty(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var xrefitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                if (xrefitemid > 0 && parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(parentitemid, _editlang, false);
+                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProperties(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string RemoveProperty(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var xrefitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                if (xrefitemid > 0 && parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(parentitemid, _editlang, false);
+                    prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProperties(context);
+                }
+                return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static String GetProperties(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var strOut = "";
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductProperties.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+
+        #endregion
+
+        #region "related products"
+
+        public static string RemoveRelatedProduct(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var selectedrelatedid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedrelatedid");
+                if (productid > 0 && selectedrelatedid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _editlang, false);
+                    prodData.RemoveRelatedProduct(Convert.ToInt32(selectedrelatedid));
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductRelated(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string AddRelatedProduct(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var selectedrelatedid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedrelatedid");
+                if (selectedrelatedid > 0 && productid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _editlang, false);
+                    if (prodData.Exists) prodData.AddRelatedProduct(Convert.ToInt32(selectedrelatedid));
+
+                    // do bi-direction
+                    var prodData2 = ProductUtils.GetProductData(Convert.ToInt32(selectedrelatedid), _editlang, false);
+                    if (prodData2.Exists) prodData2.AddRelatedProduct(Convert.ToInt32(productid));
+
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductRelated(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static String GetProductRelated(HttpContext context)
+        {
+            try
+            {
+
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var strOut = "";
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductRelated.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String GetProductSelectList(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                ajaxInfo.SetXmlProperty("genxml/hidden/razortemplate", "Admin_ProductSelectList.cshtml");
+                return ProductAdminList(ajaxInfo.ToDictionary(), true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        #endregion
+
+
+        #region "Clients"
+
+        public static string RemoveProductClient(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var selecteduserid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteduserid");
+                if (selecteduserid > 0 && productid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _editlang, false);
+                    if (!(NBrightBuyUtils.IsClientOnly() && (Convert.ToInt32(selecteduserid) == UserController.Instance.GetCurrentUserInfo().UserID)))
+                    {
+                        // ClientEditor role cannot remove themselves.
+                        prodData.RemoveClient(Convert.ToInt32(selecteduserid));
+                    }
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductClients(context);
+                }
+                return "Invalid itemid or selectedrelatedid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string AddProductClient(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var selecteduserid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteduserid");
+                if (selecteduserid > 0 && productid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _editlang, false);
+                    if (prodData.Exists) prodData.AddClient(Convert.ToInt32(selecteduserid));
+
+                    NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
+                    return GetProductClients(context);
+                }
+                return "Invalid itemid or selecteduserid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string GetClientSelectList(HttpContext context)
+        {
+            try
+            {
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var searchtext = ajaxInfo.GetXmlProperty("genxml/hidden/searchtext");
+
+                //get data
+                var prodData = ProductUtils.GetProductData(productitemid, _editlang);
+                var objCtrl = new NBrightBuyController();
+                var userlist = objCtrl.GetDnnUsers(prodData.Info.PortalId, "%" + searchtext + "%", 0, 1, 20, 20);
+                var strOut = "";
+                if (userlist.Count > 0)
+                {
+                    strOut = NBrightBuyUtils.RazorTemplRenderList("Admin_ProductClientSelect.cshtml", 0, "", userlist, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                }
+                return  strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static string GetProductClients(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var strOut = "";
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
+
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductClients.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+
+                return strOut;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+
+
+        #endregion
+
 
         #endregion
 
