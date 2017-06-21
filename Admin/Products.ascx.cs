@@ -30,6 +30,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var nbi = new NBrightInfo();
             nbi.Lang = Utils.GetCurrentCulture();
             nbi.PortalId = PortalId;
+
             var pageheaderTempl = NBrightBuyUtils.RazorTemplRender("Admin_Product_head.cshtml", 0, "", nbi, "/DesktopModules/NBright/NBrightBuy", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             PageIncludes.IncludeTextInHeader(Page, pageheaderTempl);
 

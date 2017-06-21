@@ -25,6 +25,9 @@
     // function to do actions after an ajax call has been made.
     function Admin_product_nbxgetCompleted(e) {
 
+        setupbackoffice(); // run JS to deal with standard BO functions like accordian.
+
+
         //NBS - Tooltips
         $('[data-toggle="tooltip"]').tooltip({
             animation: 'true',

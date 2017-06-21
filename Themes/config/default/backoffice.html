@@ -74,54 +74,63 @@ function DemoSelect2(){
 	$('.s2_with_tag').select2({allowClear: true,placeholder: "Please Select"});
 	$('.s2_country').select2();
 }
-$(document).ready(function() {
-	// Run beauty tables plugin on every table with class .beauty-table
-	$('.beauty-table').each(function(){
-		// Run keyboard navigation in table
-		$(this).beautyTables();
-		// Nice CSS-hover row and col for current cell
-		$(this).beautyHover();
-	});
-	// Add tooltip to form-controls
-	$('.form-control').tooltip();
-	LoadSelect2Script(DemoSelect2);
-	// Create jQuery-UI tabs
-	$("#tabs").tabs();
-	// Sortable for elements
-	$(".sort").sortable({
-		items: "div.col-sm-2",
-		appendTo: 'div.box-content'
-	});
-	// Droppable for example of trash
-	$(".drop div.col-sm-2").draggable({containment: '.dropbox' });
-	$('#trash').droppable({
-		drop: function(event, ui) {
-			$(ui.draggable).remove();
-		}
-	});
-	var icons = {
-		header: "ui-icon-circle-arrow-e",
-		activeHeader: "ui-icon-circle-arrow-s"
-	};
-	// Make accordion feature of jQuery-UI
-	$("#accordion").accordion({icons: icons, collapsible: true, heightStyle: "content", animate: 250 });
-	// Create UI spinner
-	$("#ui-spinner").spinner();
-	// Add Drag-n-Drop to boxes
-	WinMove();
+
+
+function setupbackoffice() {
+
+    // Run beauty tables plugin on every table with class .beauty-table
+    $('.beauty-table').each(function () {
+        // Run keyboard navigation in table
+        $(this).beautyTables();
+        // Nice CSS-hover row and col for current cell
+        $(this).beautyHover();
+    });
+    // Add tooltip to form-controls
+    $('.form-control').tooltip();
+    LoadSelect2Script(DemoSelect2);
+    // Create jQuery-UI tabs
+    $("#tabs").tabs();
+    // Sortable for elements
+    $(".sort").sortable({
+        items: "div.col-sm-2",
+        appendTo: 'div.box-content'
+    });
+    // Droppable for example of trash
+    $(".drop div.col-sm-2").draggable({ containment: '.dropbox' });
+    $('#trash').droppable({
+        drop: function (event, ui) {
+            $(ui.draggable).remove();
+        }
+    });
+    var icons = {
+        header: "ui-icon-circle-arrow-e",
+        activeHeader: "ui-icon-circle-arrow-s"
+    };
+    // Make accordion feature of jQuery-UI
+    $("#accordion").accordion({ icons: icons, collapsible: true, heightStyle: "content", animate: 250 });
+    // Create UI spinner
+    $("#ui-spinner").spinner();
+    // Add Drag-n-Drop to boxes
+    WinMove();
 
     //NBS - BO status
-	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
-	$('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
+    $('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').parent().parent().parent().find('a').trigger("click");
+    $('ul.main-menu a[[href*="ctrl/[Url:ctrl]"]]').trigger("click");
 
-	//NBS - Tooltips
+    //NBS - Tooltips
     $('[[data-toggle="tooltip"]]').tooltip({
-    animation : 'true',
-    placement : 'auto top',
-    viewport: {selector: '#content', padding: 0},
-    delay: {show: 100, hide: 200}
+        animation: 'true',
+        placement: 'auto top',
+        viewport: { selector: '#content', padding: 0 },
+        delay: { show: 100, hide: 200 }
     });
-	
-	});
+
+}
+
+$(document).ready(function() {
+    setupbackoffice();
+});
+
+
 </script>
 
