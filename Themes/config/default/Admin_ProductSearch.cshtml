@@ -1,4 +1,4 @@
-﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System
 @using System.Globalization
 @using System.Linq
@@ -43,7 +43,7 @@
                         </div>
                         <label class="col-sm-1 control-label">@ResourceKey("General.Category")</label>
                         <div class="col-sm-3">
-                            @CategoryDropDownList(StoreSettings.Current.SettingsInfo, "genxml/dropdownlist/ddllistsearchcategory", "class=''")
+                            @CategoryDropDownList(StoreSettings.Current.SettingsInfo, "genxml/dropdownlist/ddllistsearchcategory", "class='form-control'")
                         </div>
                         <div class="col-sm-2">
                             <a id="productAdmin_cmdSearch" class="btn btn-primary primarybutton" href="#"><i title="Search" class="fa fa-search fa-fw fa-lg"></i></a>

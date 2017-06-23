@@ -1,4 +1,4 @@
-﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System
 @using System.Globalization
 @using System.Linq
@@ -59,11 +59,11 @@
     <tr>
         @if (nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
         {
-            <td class="image centered"><a target="_blank" href=""><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")&amp;w=80&amp;h=-1"></a></td>
+            <td class="image centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="#"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")&amp;w=80&amp;h=-1"></a></td>
         }
         else
         {
-            <td class="noimage centered"><a target="_blank" href=""><i class="fa fa-picture-o fa-5x"></i></a></td>
+            <td class="noimage centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="#"><i class="fa fa-picture-o fa-5x"></i></a></td>
         }
         <td>
             <div>@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</div>

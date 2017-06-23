@@ -32,7 +32,7 @@ a, a:visited {color:#428BCA}
 .checkbox input[type=checkbox]{margin-left: 0;}
 .nav.main-menu .fa {font-size:20px;margin-right:12px;vertical-align:-1px;}
 .spacer{margin-bottom: 15px;}/* Gap between Bootstrap rows */
-.ui-accordion-header{font-size:17px;letter-spacing: 0.008em;}/* jQuery UI override */
+.ui-accordion-header{font-size:17px !important;letter-spacing: 0.008em;}/* jQuery UI override */
 .ui-accordion-header.ui-state-default{border-color:#E4E4E4}
 select option{padding-bottom:3px}
 .close-link{display:none !important}
@@ -46,7 +46,7 @@ select option{padding-bottom:3px}
 
 /* Buttons */
 .btn {cursor: pointer;outline: none;display: inline-block;vertical-align: top;position: relative;}
-a.btn-primary,a.btn-success{color:#FFFFFF}
+a.btn-primary, a.btn-success, a.btn-danger {color:#FFFFFF !important;}
 a.btn-default {color:#555555}
 #content .btn,#top-panel .btn{margin-right:10px}
 .dropup .btn-default .fa{vertical-align: 0;}

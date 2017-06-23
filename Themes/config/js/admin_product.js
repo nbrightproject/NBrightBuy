@@ -156,6 +156,14 @@
             nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
         };
 
+        if (e.cmd == 'product_admin_saveexit' || e.cmd == 'product_admin_saveas') {
+            $("#editlang").val($("#nextlang").val());
+            $("#editlanguage").val($("#nextlang").val());
+            $('#razortemplate').val('Admin_ProductList.cshtml');
+            $('#selecteditemid').val('');
+            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+        };
+
         if (e.cmd == 'product_getproductselectlist') {
             $('.processing').hide();
         };
@@ -297,6 +305,31 @@
                 nbxget('product_admin_save', '#productdatasection', '#actionreturn');
             });
 
+            $('#productAdmin_cmdSaveExit').unbind("click");
+            $('#productAdmin_cmdSaveExit').click(function () {
+                $('.processing').show();
+                //move data to update postback field
+                $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+                $('#xmlupdateoptiondata').val($.fn.genxmlajaxitems('#productoptions', '.optionitem'));
+                $('#xmlupdateoptionvaluesdata').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem'));
+                $('#xmlupdateproductimages').val($.fn.genxmlajaxitems('#productimages', '.imageitem'));
+                $('#xmlupdateproductdocs').val($.fn.genxmlajaxitems('#productdocs', '.docitem'));
+                nbxget('product_admin_saveexit', '#productdatasection', '#actionreturn');
+            });
+
+            $('#productAdmin_cmdSaveAs').unbind("click");
+            $('#productAdmin_cmdSaveAs').click(function () {
+                $('.processing').show();
+                //move data to update postback field
+                $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+                $('#xmlupdateoptiondata').val($.fn.genxmlajaxitems('#productoptions', '.optionitem'));
+                $('#xmlupdateoptionvaluesdata').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem'));
+                $('#xmlupdateproductimages').val($.fn.genxmlajaxitems('#productimages', '.imageitem'));
+                $('#xmlupdateproductdocs').val($.fn.genxmlajaxitems('#productdocs', '.docitem'));
+                nbxget('product_admin_saveas', '#productdatasection', '#actionreturn');
+            });
+
+
             $('#productAdmin_cmdDelete').unbind("click");
             $('#productAdmin_cmdDelete').click(function () {
                 if (confirm($('#confirmdeletemsg').text())) {
@@ -383,7 +416,7 @@
             $('#addopt').click(function () {
                 $('.processing').show();
                 $('#addqty').val($('#txtaddoptqty').val());
-                nbxget('product_addproductoptions', '#nbs_productadminsearch', '#datadisplay'); 
+                nbxget('product_addproductoptions', '#nbs_productadminsearch', '#productoptions');
             });
 
             $('#undooption').unbind("click");
@@ -427,7 +460,17 @@
             });
 
             //trigger select option, to display correct option values
-            $('.selectoption').last().trigger('click');
+            if ($('#selectedoptionid').val() == '') {
+                $('.selectoption').last().trigger('click');
+            } else {
+                var findstr = ".selectoption input[itemid='" + $('#selectedoptionid').val() + "']";
+                if ($('.selectoption').find(findstr).length > 0) {
+                    $('.selectoption').find(findstr).trigger('click');
+                } else {
+                    $('.selectoption').last().trigger('click');
+                }
+
+            }
 
 
             // ---------------------------------------------------------------------------

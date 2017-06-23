@@ -21,9 +21,7 @@
     var prdData = new ProductData(info.ItemID, info.PortalId, info.Lang);
 }
 
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+<!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
 <span id="productdatasection">
 
@@ -41,7 +39,7 @@
         <div class="col-xs-12 col-sm-12 productdatadisplay">
     <div class="box" id="accordion">
 
-            <h3>@ResourceKey("General.Product") : @info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</h3>
+        <h3>@ResourceKey("General.Product") : @info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</h3>
         <div class="box-content editdetails">
             <div class="form-horizontal dnnForm">
                 <div class="col-sm-6">
@@ -66,6 +64,10 @@
                             <label class="control-label">@ResourceKey("General.Manufacturer")</label>
                             @TextBox(info, "genxml/textbox/manufacturer", "class='form-control' maxlength='250'")
                         </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag(info.Lang)
+                            @TextBox(info, "genxml/lang/genxml/textbox/extrafield", "class='form-control' maxlength='250'")
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -83,12 +85,6 @@
                         <div class="col-sm-12">
                             <label class="control-label">@ResourceKey("General.Tags")</label>@LangFlag(info.Lang)
                             @TextArea(info, "genxml/lang/genxml/textbox/txttagwords", "class='form-control' height='100' maxlength='200' textmode='MultiLine'")
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag(info.Lang)
-                            @TextBox(info, "genxml/lang/genxml/textbox/extrafield", "class='form-control' maxlength='250'")
                         </div>
                     </div>
                 </div>
@@ -126,21 +122,6 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-
-            <h3>@ResourceKey("General.Description")</h3>
-            <div class="box-content productdescription">
-                <div class="form-horizontal dnnForm">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="control-label sr-only">@ResourceKey("General.Description")</label>@LangFlag(info.Lang)
-                                @CkEditor(info, "genxml/lang/genxml/edt/description", "class='form-control' height='400' width='100%'")
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
 
             <h3>@ResourceKey("General.Models")</h3>
             <div class="box-content editmodels">
@@ -201,7 +182,7 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <label class="control-label">@ResourceKey("General.Tax")</label><br />
-                                            @TaxRateDropDown(nbiModel, "genxml/dropdownlist/taxrate_" + lp1, "tax", "class='taxratedropdown'")
+                                            @TaxRateDropDown(nbiModel, "genxml/dropdownlist/taxrate_" + lp1, "tax", "class='taxratedropdown form-control'")
                                         </div>
                                         <div class="col-sm-2">
                                             <label class="control-label">@ResourceKey("General.Barcode")</label>
@@ -302,6 +283,21 @@
             </div>
         </div>
 
+        <h3>@ResourceKey("General.Description")</h3>
+            <div class="box-content productdescription">
+                <div class="form-horizontal dnnForm">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label sr-only">@ResourceKey("General.Description")</label>@LangFlag(info.Lang)
+                                @CkEditor(info, "genxml/lang/genxml/edt/description", "class='form-control' height='400' width='100%'")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
             <h3><span class="optionheader">@ResourceKey("General.Options")</span></h3>
             <div class="box-content editoptions">
 
@@ -313,38 +309,8 @@
                             <a class="btn btn-warning" id="undooption" style="display: none;">@ResourceKey("General.UndoButton")</a>
                         </div>
                         <ul id="productoptions">
-                            @{
-                                var lp2 = 1;
-                            }
-                            @foreach (var nbiOptions in prdData.Options)
-                            {
-                                <li class="optionitem form-group">
-                                    <!-- class="optionitem" is needed for JS postback update -->
-                                    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
-                                    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
-
-                                    <input id="optionid" type="hidden" value="@nbiOptions.GetXmlProperty("genxml/hidden/optionid")" />
-
-                                    <div class="col-sm-12 form-horizontal">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)&nbsp;
-                                                @CheckBox(nbiOptions, "genxml/checkbox/optrequired_" + lp2, "", "")
-                                                <label class="control-label">@ResourceKey("General.RequiredField")</label>
-                                                @TextBox(nbiOptions, "genxml/textbox/txtoptiondesc_" + lp2, "class='form-control input-sm' maxlength='250' ", "")
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label class="control-label">&nbsp;</label><br><a class="selectoption btn btn-success input-sm" itemid="@nbiOptions.GetXmlProperty("genxml/hidden/optionid")">@ResourceKey("General.cmdEditButton")</a>
-                                                <label class="control-label">&nbsp;</label><a class="removeoption btn btn-danger input-sm">@ResourceKey("General.cmdRemoveButton")</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                lp2 += 1;
-                            }
+                            @RenderRazorInjectTemplate(info, "Admin_ProductOptions.cshtml")
                         </ul>
-
-
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group form-inline">

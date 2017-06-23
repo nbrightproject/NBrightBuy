@@ -531,6 +531,7 @@
     <None Include="Themes\config\default\Admin_Clients_head.cshtml" />
     <None Include="Themes\config\default\Admin_ProductClients.cshtml" />
     <None Include="Themes\config\default\Admin_ProductClientSelect.cshtml" />
+    <None Include="Themes\config\default\Admin_ProductOptions.cshtml" />
     <None Include="Themes\config\default\Admin_ProductRelated.cshtml" />
     <None Include="Themes\config\default\Admin_ProductPropertySelect.cshtml" />
     <None Include="Themes\config\default\Admin_ProductProperties.cshtml" />

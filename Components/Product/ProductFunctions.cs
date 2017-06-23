@@ -48,6 +48,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     case "product_admin_save":
                         strOut = ProductFunctions.ProductAdminSave(context);
                         break;
+                    case "product_admin_saveexit":
+                        strOut = ProductFunctions.ProductAdminSaveExit(context);
+                        break;
+                    case "product_admin_saveas":
+                        strOut = ProductFunctions.ProductAdminSaveAs(context);
+                        break;
                     case "product_admin_selectlist":
                         strOut = ProductFunctions.ProductAdminList(context);
                         break;
@@ -170,49 +176,90 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-        public static String ProductAdminSave(HttpContext context)
+        public static String ProductAdminSaveExit(HttpContext context)
         {
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
-                {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                    var itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-                    if (itemid > 0)
-                    {
-                        var prdData = new ProductData(itemid, _editlang);
-                        var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
-                        var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
-                        var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));                
- 
-                        prdData.UpdateModels(modelXml,_editlang);
-                        prdData.UpdateOptions(optionXml, _editlang);
-                        prdData.UpdateOptionValues(optionvalueXml, _editlang);
-                        prdData.UpdateImages(ajaxInfo);
-                        prdData.UpdateDocs(ajaxInfo);
-
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateproductimages");
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
-                        ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
-                        var productXml = ajaxInfo.XMLData;
-
-                        prdData.Update(productXml);
-                        prdData.Save();
-
-                        // remove save GetData cache
-                        var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
-                        Utils.RemoveCache(strCacheKey);
-                        DataCache.ClearCache();
-
-                    }
-                }
+                ProductSave(context);
                 return "";
             }
             catch (Exception ex)
             {
                 return ex.ToString();
+            }
+        }
+        public static String ProductAdminSaveAs(HttpContext context)
+        {
+            try
+            {
+                ProductSave(context, true);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String ProductAdminSave(HttpContext context)
+        {
+            try
+            {
+                try
+                {
+                    ProductSave(context);
+                    return "";
+                }
+                catch (Exception ex)
+                {
+                    return ex.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private static void ProductSave(HttpContext context, bool newrecord = false)
+        {
+            if (NBrightBuyUtils.CheckManagerRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var itemid = -1;
+                if (!newrecord)
+                {
+                    itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                }
+                if (itemid != 0)
+                {
+                    var prdData = new ProductData(itemid, _editlang);
+                    var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
+                    var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
+                    var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));
+
+                    prdData.UpdateModels(modelXml, _editlang);
+                    prdData.UpdateOptions(optionXml, _editlang);
+                    prdData.UpdateOptionValues(optionvalueXml, _editlang);
+                    prdData.UpdateImages(ajaxInfo);
+                    prdData.UpdateDocs(ajaxInfo);
+
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateproductimages");
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptiondata");
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdateoptionvaluesdata");
+                    var productXml = ajaxInfo.XMLData;
+
+                    prdData.Update(productXml);
+                    prdData.Save();
+
+                    // remove save GetData cache
+                    var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    Utils.RemoveCache(strCacheKey);
+                    DataCache.ClearCache();
+
+                }
             }
         }
 
@@ -449,7 +496,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                     var strOut = "";
                     var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                    if (Utils.IsNumeric(selecteditemid))
+                    if (selecteditemid > 0)
                     {
                         var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
                         var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
@@ -482,16 +529,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
                         NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
 
-                        if (themeFolder == "")
-                        {
-                            themeFolder = StoreSettings.Current.ThemeFolder;
-                            if (ajaxInfo.GetXmlProperty("genxml/hidden/themefolder") != "") themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
-                        }
-
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRDLANG", _editlang);
+                        var info = objCtrl.GetData(selecteditemid, "PRDLANG", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptions.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
+
+                        NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     }
                     return strOut;
                 }

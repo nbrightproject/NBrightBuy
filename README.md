@@ -12,3 +12,4 @@ v3.6.0
 - Allow custom field on the model, using the file called "modelfields.cshtml"
 - Convert Client Admin to Razor.
 - Add custom fields to Client Admin "clientfields.cshtml"
+- REQUIRED min. v8.2.0.0 on NBrightTS  (Templating system)
