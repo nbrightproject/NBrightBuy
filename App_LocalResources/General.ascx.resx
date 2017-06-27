@@ -1146,4 +1146,7 @@
   <data name="pleaseselect.Text" xml:space="preserve">
     <value>Please Select</value>
   </data>
+  <data name="ApplyTax.Text" xml:space="preserve">
+    <value>Apply Tax rate to all Products in Category</value>
+  </data>
 </root>

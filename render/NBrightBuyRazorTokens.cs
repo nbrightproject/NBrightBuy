@@ -93,7 +93,7 @@ namespace NBrightBuy.render
                     var s = "";
                     if (tItem.Value == info.GetXmlProperty(xpath)) s = "selected";
 
-                    strOut += "    <option value='" + tItem.Value + "' " + s + " >" + tItem.Key + "</option>";
+                    strOut += "    <option value='" + tItem.Key + "' " + s + " >" + tItem.Value + "</option>";
                 }
 
                 strOut += "</select>";

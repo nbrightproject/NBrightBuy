@@ -269,7 +269,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return ProductAdminList(settings, paging);
         }
 
-        public static String ProductAdminList(Dictionary<string,string> settings, bool paging = true)
+        public static String ProductAdminList(Dictionary<string,string> settings, bool paging = true, string editlang = "")
         {
 
             try
@@ -277,6 +277,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
                     if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
+
+                    if (_editlang == "") _editlang = editlang;
 
                     var strOut = "";
 

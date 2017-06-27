@@ -42,19 +42,27 @@
 <div id="categorydatasection">
 
     <div id="categorydata">
-        
+
+        [<tag id="itemid" type="hidden" databind="ItemId" />]
+        [<tag id="lang" type="hidden" databind="Lang" />]
+
         <div id="productselectparams">
-            [<tag id="itemid" type="hidden" databind="ItemId" />]
-            [<tag id="lang" type="hidden" databind="Lang" />]
-            [<tag id="header" type="hidden" value="categoryproductheader.html"/>]
-            [<tag id="body" type="hidden" value="categoryproductbody.html"/>]
-            [<tag id="footer" type="hidden" value="categoryproductfooter.html"/>]
-            [<tag id="orderby" type="hidden" value="{bycategoryproduct}"/>]
-            [<tag id="pagesize" type="hidden" value="30"/>]
-            [<tag id="pagenumber" type="hidden" value="1"/>]
-            [<tag id="selectedcatid" type="hidden" value=""/>]            
-            [<tag id="searchtext" type="hidden" value=""/>]     
-            [<tag id="searchcategory" type="hidden" value=""/>]     
+            <input id="itemid" type="hidden" value="[<tag type='valueof' databind='itemid' />]" />
+            <input id="lang" type="hidden" value="[<tag type='valueof' databind='lang' />]" />
+            <input id="header" type="hidden" value="categoryproductheader.html" />
+            <input id="body" type="hidden" value="categoryproductbody.html" />
+            <input id="footer" type="hidden" value="categoryproductfooter.html" />
+            <input id="orderby" type="hidden" value="{bycategoryproduct}" />
+            <input id="pagesize" type="hidden" value="60" />
+            <input id="pagenumber" type="hidden" value="1" />
+            <input id="selectedcatid" type="hidden" value="" />
+            <input id="searchtext" type="hidden" value="" />
+            <input id="searchcategory" type="hidden" value="" />
+            <input id="editlang" type="hidden" value="[<tag type='valueof' databind='lang' />]" />
+            <input id="themefolder" type="hidden" value="config" />
+            <input id="razortemplate" type="hidden" value="Admin_CategoryProducts.cshtml" />
+            <input id="selectproductid" type="hidden" value=""/>
+            <input id="selecttaxrate" type="hidden" value="" />            
         </div>
 
         [<tag id="fields" type="postback" value="genxml/checkbox/chkdisable,genxml/checkbox/chkishidden,genxml/textbox/image,genxml/textbox/txtcategoryref,genxml/dropdownlist/ddlgrouptype,genxml/textbox/producttemplate,genxml/textbox/listitemtemplate,genxml/dropdownlist/ddlparentcatid,genxml/dropdownlist/ddlattrcode" />]
@@ -192,8 +200,9 @@
 							[<tag id="selectcatid" cssclass="s2_with_tag populate placeholder" type="catdropdown" width="300" allowblank="true" showhidden="True" groupref="cat" showall="true" />]<!-- Use groupref="cat" to restrict list to categories -->
 						</div>
 					    <div class="col-sm-3">
-                            [<tag id="taxrate" update="save" type="taxdropdown" cssclass="input-sm" />]
+					        [<tag id="taxrate" update="save" type="taxdropdown" cssclass="input-sm"/>]
 					        <a id="producttax" class="btn btn-primary">[<tag type="htmlof" resourcekey="General.cmdAddButton"/>]</a>
+                            <br />[<tag type='valueof' resourcekey='General.ApplyTax' />]
 					    </div>
 					</div>
 					<div class="form-group">

@@ -5,6 +5,10 @@ Developer please read this to get started:
 
 http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 
+v3.6.1
+- Fix to category Product Select.
+- Add apply tax to all products in a category.
+
 
 v3.6.0
 - Convert Product Admin to Razor.

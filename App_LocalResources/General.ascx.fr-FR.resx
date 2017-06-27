@@ -1137,4 +1137,7 @@
   <data name="QtyUnits.Text" xml:space="preserve">
     <value>Nbr unités</value>
   </data>
+  <data name="ApplyTax.Text" xml:space="preserve">
+    <value>Appliquer le taux d'imposition à tous les produits de la catégorie</value>
+  </data>
 </root>

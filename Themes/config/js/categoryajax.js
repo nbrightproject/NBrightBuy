@@ -24,7 +24,7 @@
             $("input[id*='header']").val("productselectheader.html");
             $("input[id*='body']").val("productselectbody.html");
             $("input[id*='footer']").val("productselectfooter.html");
-            nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+            nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
             $('#categorydatasection').hide();
             $('.actionbuttonwrapper').hide();
             $('#productselectsection').show();
@@ -60,6 +60,13 @@
         $('select[id*="selectcatid"]').change(function () {
             $('input[id*="selectedcatid"]').val($(this).val());
         });
+
+        $('#producttax').unbind();
+        $('#producttax').click(function () {
+            $('#selecttaxrate').val($('select[id*=taxrate]').val());
+            nbxget('cattaxupdate', '#productselectparams');
+        });
+
     });
 
     $('#productselectlist').change(function () {
@@ -67,7 +74,7 @@
         $('.cmdPg').unbind();
         $('.cmdPg').click(function () {
             $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
-            nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+            nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
         });
         // return from select product
         $('#returnfromselect').unbind();
@@ -86,48 +93,20 @@
         $('.selectproduct').unbind();
         $('.selectproduct').click(function () {
             showprocessing = false;
-            nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'));
+            $('#selectproductid').val($(this).attr('itemid'));
+            nbxget('selectcatxref', '#productselectparams');
             $('.selectproductid' + $(this).attr('itemid')).hide();
         });
 
     });
 
-    $('#productselectlist').change(function () {
-        //Do paging
-        $('.cmdPg').unbind();
-        $('.cmdPg').click(function () {
-            $('input[id*="pagenumber"]').val($(this).attr("pagenumber"));
-            nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
-        });
-        // return from select product
-        $('#returnfromselect').unbind();
-        $('#returnfromselect').click(function () {
-            $("input[id*='header']").val("propertyproductheader.html");
-            $("input[id*='body']").val("propertyproductbody.html");
-            $("input[id*='footer']").val("propertyproductfooter.html");
-            $("input[id*='searchtext']").val('');
-            $("input[id*='searchcategory']").val('');
-            nbxget('getcategoryproductlist', '#categorydata', '#productlist');
-            $('#productselectsection').hide();
-            $('#categorydatasection').show();
-            $('.actionbuttonwrapper').show();
-        });
-        // select product
-        $('.selectproduct').unbind();
-        $('.selectproduct').click(function () {
-            showprocessing = false;
-            nbxget('selectcatxref', '.selproductid' + $(this).attr('itemid'));
-            $('.selectproductid' + $(this).attr('itemid')).hide();
-        });
-
-    });
 
     // START: --------   Search products ----------------------
     // select search
     $('#selectsearch').click(function () {
         $('input[id*="searchtext"]').val($('input[id*="txtSearch"]').val());
         $('input[id*="searchcategory"]').val($('select[id*="ddlsearchcategory"]').val());
-        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
     });
 
     // select search reset
@@ -136,7 +115,7 @@
         $('select[id*="ddlsearchcategory"]').val('');
         $('input[id*="searchtext"]').val('');
         $('input[id*="searchcategory"]').val('');
-        nbxget('getproductselectlist', '#productselectparams', '#productselectlist');
+        nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
     });
     // END: -------------------------------------------------------
 

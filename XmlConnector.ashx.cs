@@ -155,6 +155,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         case "moveallcatxref":
                             if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context, true);
                             break;
+                        case "cattaxupdate":
+                            if (NBrightBuyUtils.CheckRights()) strOut = CatTaxUpdate(context);
+                            break;
                         case "fileupload":
                             if (NBrightBuyUtils.CheckRights())
                             {
@@ -550,14 +553,18 @@ namespace Nevoweb.DNN.NBrightBuy
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
 
                 var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
+                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' or typecode = 'CATCASCADE') and XrefItemId = {Settings:itemid}) ";
 
                 strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
 
 
                 if (!settings.ContainsKey("filter")) settings.Add("filter", strFilter);
-
-                return ProductFunctions.ProductAdminList(settings);
+                if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+                if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
+                settings["razortemplate"] = "Admin_CategoryProducts.cshtml";
+                settings["themefolder"] = "config";
+                
+                return ProductFunctions.ProductAdminList(settings,true,_editlang);
 
             }
             catch (Exception ex)
@@ -604,18 +611,51 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                var parentitemid = "";
-                var xrefitemid = "";
-                if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
-                if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
-                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                var selectedproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectproductid");
+                if (selectedproductid > 0 && catid > 0)
                 {
-                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
-                    prodData.AddCategory(Convert.ToInt32(xrefitemid));
+                    var prodData = ProductUtils.GetProductData(selectedproductid, _lang, false);
+                    prodData.AddCategory(catid);
                 }
                 else
                     return "Invalid parentitemid or xrefitmeid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return "";
+        }
+
+        private string CatTaxUpdate(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                var taxrate = ajaxInfo.GetXmlProperty("genxml/hidden/selecttaxrate");
+                var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+                if (catid > 0)
+                {
+                    var catData = new CategoryData(catid,_lang);
+                    foreach (var cxref in catData.GetAllArticles())
+                    {
+                        var strXml = "<genxml><models>";
+                        var prdData = new ProductData(cxref.ParentItemId, cxref.PortalId, lang);
+                        foreach (var mod in prdData.Models)
+                        {
+                            mod.SetXmlProperty("genxml/dropdownlist/taxrate", taxrate);
+                            strXml += mod.XMLData;
+                        }
+                        strXml += "</models></genxml>";
+                        prdData.DataRecord.ReplaceXmlNode(strXml, "genxml/models", "genxml");
+                        prdData.Save();
+                    }
+                }
+                else
+                    return "Invalid catid";
             }
             catch (Exception e)
             {
@@ -644,6 +684,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         DeleteCatXref(settings["itemid"], obj.ParentItemId.ToString(""));
                     }
                     strOut = NBrightBuyUtils.GetResxMessage();
+                    DataCache.ClearCache();
                 }
             }
             catch (Exception e)
@@ -669,6 +710,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     NBrightBuyUtils.CopyAllCatXref(Convert.ToInt32(settings["itemid"]), Convert.ToInt32(newcatid), moverecords);
 
                     strOut = NBrightBuyUtils.GetResxMessage();
+                    DataCache.ClearCache();
                 }
 
             }
