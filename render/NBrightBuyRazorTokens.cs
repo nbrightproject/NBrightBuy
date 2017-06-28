@@ -91,7 +91,7 @@ namespace NBrightBuy.render
                 foreach (var tItem in tList)
                 {
                     var s = "";
-                    if (tItem.Value == info.GetXmlProperty(xpath)) s = "selected";
+                    if (tItem.Key == info.GetXmlProperty(xpath)) s = "selected";
 
                     strOut += "    <option value='" + tItem.Key + "' " + s + " >" + tItem.Value + "</option>";
                 }

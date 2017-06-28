@@ -1,15 +1,28 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
 
     var showprocessing = true;
 
-    $(document).bind("ajaxSend", function () {
+    $(document).on("nbxgetcompleted", Admin_category_nbxgetCompleted); // assign a completed event for the ajax calls
+
+    $(document).bind("ajaxSend", function() {
         $('#nbsnotify').html(''); // clear message on each load.          
         if (showprocessing) $('.processing').show();
-    }).bind("ajaxComplete", function () {
+    }).bind("ajaxComplete", function() {
+
         $("#loading").hide();
         $('.processing').hide();
         showprocessing = true;
     });
+
+
+    function Admin_category_nbxgetCompleted(e) {
+
+        if (e.cmd == 'deletecatxref' || e.cmd == 'deleteallcatxref') {
+            nbxget('getcategoryproductlist', '#categorydata', '#productlist');
+        }
+
+    };
+
 
     $('#productlist').change(function () {
         //Do paging
@@ -21,9 +34,6 @@
         // select product
         $('#productselect').unbind();
         $('#productselect').click(function () {
-            $("input[id*='header']").val("productselectheader.html");
-            $("input[id*='body']").val("productselectbody.html");
-            $("input[id*='footer']").val("productselectfooter.html");
             nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
             $('#categorydatasection').hide();
             $('.actionbuttonwrapper').hide();
@@ -33,9 +43,8 @@
         $('.removeproduct').unbind();
         $('.removeproduct').click(function () {
             showprocessing = false;
-            nbxget('deletecatxref', '.productid' + $(this).attr('itemid'), '#nbsnotify');
-            //$('.productid' + $(this).attr('itemid')).hide();
-            nbxget('getcategoryproductlist', '#categorydata', '#productlist');
+            $('#selectproductid').val($(this).attr('itemid'));
+            nbxget('deletecatxref', '#productselectparams', '#nbsnotify');
         });
 
         $('#removeall').unbind();

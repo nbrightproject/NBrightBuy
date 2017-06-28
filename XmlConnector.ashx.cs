@@ -553,7 +553,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var dbOwner = DataProvider.Instance().DatabaseOwner;
 
                 var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' or typecode = 'CATCASCADE') and XrefItemId = {Settings:itemid}) ";
+                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
 
                 strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
 
@@ -579,14 +579,14 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             try
             {
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                var parentitemid = "";
-                var xrefitemid = "";
-                if (settings.ContainsKey("parentitemid")) parentitemid = settings["parentitemid"];
-                if (settings.ContainsKey("xrefitemid")) xrefitemid = settings["xrefitemid"];
-                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                var selectproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectproductid");
+                var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+                if (selectproductid > 0 && catid > 0)
                 {
-                    DeleteCatXref(xrefitemid, parentitemid);
+                    var prodData = ProductUtils.GetProductData(selectproductid, lang, false);
+                    prodData.RemoveCategory(catid);
                 }
                 else
                     return "Invalid parentitemid or xrefitemid";
@@ -598,14 +598,6 @@ namespace Nevoweb.DNN.NBrightBuy
             return "";
         }
 
-        private void DeleteCatXref(String xrefitemid, String parentitemid)
-        {
-            if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
-            {
-                var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _lang, false);
-                prodData.RemoveCategory(Convert.ToInt32(xrefitemid));
-            }
-        }
 
         private string SelectCatXref(HttpContext context)
         {
@@ -669,23 +661,20 @@ namespace Nevoweb.DNN.NBrightBuy
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-
-                if (settings.ContainsKey("itemid"))
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+                if (catid > 0)
                 {
-                    var strFilter = " and XrefItemId = {Settings:itemid} ";
-                    strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
-
-                    var objCtrl = new NBrightBuyController();
-                    var objList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATXREF", strFilter);
-
-                    foreach (var obj in objList)
+                    var catData = new CategoryData(catid, _lang);
+                    foreach (var cxref in catData.GetAllArticles())
                     {
-                        DeleteCatXref(settings["itemid"], obj.ParentItemId.ToString(""));
+                        var prdData = new ProductData(cxref.ParentItemId, cxref.PortalId, lang);
+                        prdData.RemoveCategory(catid);
                     }
-                    strOut = NBrightBuyUtils.GetResxMessage();
-                    DataCache.ClearCache();
                 }
+                strOut = NBrightBuyUtils.GetResxMessage();
+                DataCache.ClearCache();
             }
             catch (Exception e)
             {
