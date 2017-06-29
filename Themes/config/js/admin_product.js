@@ -36,6 +36,13 @@
             delay: { show: 100, hide: 200 }
         });
 
+        $('#productAdmin_cmdAddNew').unbind("click");
+        $('#productAdmin_cmdAddNew').click(function () {
+            $('.processing').show();
+            $('#razortemplate').val('Admin_ProductDetail.cshtml');
+            nbxget('product_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
+        });
+
         if (e.cmd == 'product_admin_getlist') {
 
             $('.processing').hide();
@@ -47,7 +54,8 @@
             $("#productAdmin_cmdSaveAs").hide();
             $("#productAdmin_cmdDelete").hide();
             $("#productAdmin_cmdReturn").hide();
-
+            $("#productAdmin_cmdAddNew").show();
+            
             // Move products
             $(".selectmove").hide();
             $(".selectcancel").hide();
@@ -181,7 +189,12 @@
             || e.cmd == 'product_addproperty'
             || e.cmd == 'product_addrelated'
             || e.cmd == 'product_removerelated'
+            || e.cmd == 'product_adminaddnew'
             || e.cmd == 'product_updateproductimages') {
+
+            // Copy the productid into the selecteditemid (for Add New Product)
+            $('#selecteditemid').val($('#itemid').val());
+
 
             $('.processing').hide();
 
@@ -192,6 +205,7 @@
             $("#productAdmin_cmdSaveAs").show();
             $("#productAdmin_cmdDelete").show();
             $("#productAdmin_cmdReturn").show();
+            $("#productAdmin_cmdAddNew").hide();
 
             $('#datadisplay').children().find('.sortelementUp').click(function () { moveUp($(this).parent()); });
             $('#datadisplay').children().find('.sortelementDown').click(function () { moveDown($(this).parent()); });
@@ -292,7 +306,7 @@
                 $('#selecteditemid').val('');
                 nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
             });
-
+            
             $('#productAdmin_cmdSave').unbind("click");
             $('#productAdmin_cmdSave').click(function () {
                 $('.processing').show();

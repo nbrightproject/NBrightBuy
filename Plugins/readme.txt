@@ -7,7 +7,7 @@ Files
 
 menu.config 
 -----------
- Main default system menu (will be used for new systems and should include all suystem menu options)
+ Main default system menu (will be used for new systems and should include all system menu options)
 
 *system.config 
 --------------

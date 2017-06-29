@@ -44,6 +44,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                     case "product_admin_getdetail":
                         strOut = ProductFunctions.ProductAdminDetail(context);
+                        break;                        
+                    case "product_adminaddnew":
+                        strOut = ProductFunctions.ProductAdminAddNew(context);
                         break;
                     case "product_admin_save":
                         strOut = ProductFunctions.ProductAdminSave(context);
@@ -122,7 +125,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return strOut;
         }
 
-        public static String ProductAdminDetail(HttpContext context)
+        public static String ProductAdminDetail(HttpContext context, int productid = 0)
         {
             try
             {
@@ -131,6 +134,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     var strOut = "";
                     var selecteditemid = settings["selecteditemid"];
+                    if (productid > 0) selecteditemid = productid.ToString();
                     if (Utils.IsNumeric(selecteditemid))
                     {
 
@@ -201,6 +205,26 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
+        public static String ProductAdminAddNew(HttpContext context)
+        {
+            try
+            {
+                var productid = ProductSave(context, true);
+                if (productid > 0)
+                {
+                    return ProductAdminDetail(context, productid);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public static String ProductAdminSave(HttpContext context)
         {
             try
@@ -221,7 +245,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-        private static void ProductSave(HttpContext context, bool newrecord = false)
+        private static int ProductSave(HttpContext context, bool newrecord = false)
         {
             if (NBrightBuyUtils.CheckManagerRights())
             {
@@ -259,8 +283,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     Utils.RemoveCache(strCacheKey);
                     DataCache.ClearCache();
 
+                    return prdData.Info.ItemID;
+
                 }
+
             }
+            return -1;
         }
 
         public static String ProductAdminList(HttpContext context, bool paging = true)
