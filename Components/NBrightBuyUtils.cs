@@ -816,7 +816,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (nodList != null)
                     foreach (XmlNode nod in nodList)
                     {
-                        var xmlData = GenXmlFunctions.GetGenXmlByAjax(nod.OuterXml, "","genxml",false,false,lang);
+                        var xmlData = GenXmlFunctions.GetGenXmlByAjaxLang(nod.OuterXml, "","genxml",false,false,lang);
                         var objInfo = new NBrightInfo();
                         objInfo.ItemID = -1;
                         objInfo.TypeCode = "AJAXDATA";

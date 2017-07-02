@@ -13,6 +13,10 @@
 @using Nevoweb.DNN.NBrightBuy.Components
 
 @{
+    var info = (NBrightInfo)Model.List.First();
+}
+
+@{
     // Example, remove the comments and the outer "@{ .... }" to make this work.
 
 //@{
@@ -24,3 +28,7 @@
 //</div>
 
 }
+<div>
+    @CkEditor(info, "genxml/textbox/modeldescription", "class='form-control' height='400' width='100%' datatype='html' ")
+
+</div>

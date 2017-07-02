@@ -814,7 +814,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         var xpathDest = f.Split('/');
                         if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
                     }
+
+                    var datatype = info.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        DataLangRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                    else if (datatype == "html")
                         DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                    else
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
                     DataRecord.RemoveXmlNode(f);
                 }
@@ -836,10 +845,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    //DataRecord.RemoveXmlNode(f);
-                    //var xpathDest = f.Split('/');
-                    //if (xpathDest.Count() >= 2) DataRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
-                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                    var datatype = info.GetXmlProperty(f + "/@datatype");
+                    if (datatype == "date")
+                        DataRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                    else if (datatype == "double")
+                        DataRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                    else if (datatype == "html")
+                        DataRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                    else
+                        DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
                     // if we have a image field then we need to create the imageurl field
                     if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
@@ -1069,6 +1083,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
                         objInfoLang.SetXmlPropertyDouble(f, modelInfo.GetXmlProperty(f));
+                    else if (datatype == "html")
+                        objInfoLang.SetXmlProperty(f, modelInfo.GetXmlPropertyRaw(f));
                     else
                         objInfoLang.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
@@ -1082,6 +1098,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
                     else if (datatype == "double")
                         objInfo.SetXmlPropertyDouble(f, modelInfo.GetXmlProperty(f));
+                    else if (datatype == "html")
+                        objInfo.SetXmlProperty(f, modelInfo.GetXmlPropertyRaw(f));
                     else
                         objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
                 }
