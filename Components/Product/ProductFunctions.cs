@@ -297,6 +297,72 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return -1;
         }
 
+
+        public static string ProductDisable(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    if (prodData.Disabled)
+                    {
+                        prodData.DataRecord.SetXmlProperty("genxml/checkbox/chkdisable", "False");
+                    }
+                    else
+                    {
+                        prodData.DataRecord.SetXmlProperty("genxml/checkbox/chkdisable", "True");
+                    }
+                    prodData.Save();
+                    // remove save GetData cache
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    Utils.RemoveCache(strCacheKey);
+
+                    return "";
+                }
+                return "Invalid parentitemid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string ProductHidden(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    if (prodData.DataRecord.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
+                    {
+                        prodData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False");
+                    }
+                    else
+                    {
+                        prodData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+                    }
+                    prodData.Save();
+                    // remove save GetData cache
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    Utils.RemoveCache(strCacheKey);
+
+                    return "";
+                }
+                return "Invalid parentitemid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+
         public static String ProductAdminList(HttpContext context, bool paging = true)
         {
             var settings = NBrightBuyUtils.GetAjaxDictionary(context);
@@ -458,7 +524,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-
         public static String AddModel(HttpContext context)
         {
             try
@@ -522,7 +587,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-
         public static String AddOption(HttpContext context)
         {
             try
@@ -581,7 +645,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return ex.ToString();
             }
         }
-
 
         public static String AddOptionValues(HttpContext context)
         {
@@ -973,71 +1036,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     return GetProductCategories(context);
                 }
                 return "Invalid parentitemid or xrefitmeid";
-            }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
-        }
-
-
-        public static string ProductDisable(HttpContext context)
-        {
-            try
-            {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                if (parentitemid > 0)
-                {
-                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
-                    if (prodData.Disabled)
-                    {
-                        prodData.Info.SetXmlProperty("genxml/checkbox/chkdisable", "False");
-                    }
-                    else
-                    {
-                        prodData.Info.SetXmlProperty("genxml/checkbox/chkdisable", "True");
-                    }
-                    prodData.Save();
-                    // remove save GetData cache
-                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
-                    Utils.RemoveCache(strCacheKey);
-
-                    return "";
-                }
-                return "Invalid parentitemid";
-            }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
-        }
-
-        public static string ProductHidden(HttpContext context)
-        {
-            try
-            {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                if (parentitemid > 0)
-                {
-                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
-                    if (prodData.Info.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
-                    {
-                        prodData.Info.SetXmlProperty("genxml/checkbox/chkishidden", "False");
-                    }
-                    else
-                    {
-                        prodData.Info.SetXmlProperty("genxml/checkbox/chkishidden", "True");
-                    }
-                    prodData.Save();
-                    // remove save GetData cache
-                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
-                    Utils.RemoveCache(strCacheKey);
-
-                    return "";
-                }
-                return "Invalid parentitemid";
             }
             catch (Exception e)
             {

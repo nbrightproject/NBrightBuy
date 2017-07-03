@@ -43,7 +43,11 @@
             nbxget('product_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'product_admin_getlist' || e.cmd == 'product_selectchangedisable' || e.cmd == 'product_selectchangehidden') {
+        if (e.cmd == 'product_selectchangedisable' || e.cmd == 'product_selectchangehidden') {
+            $('.processing').hide();
+        };
+
+        if (e.cmd == 'product_admin_getlist') {
 
             $('.processing').hide();
 
@@ -128,14 +132,24 @@
             $('.selectchangedisable').click(function () {
                 $('.processing').show();
                 $('#selecteditemid').val($(this).attr('itemid'));
-                nbxget('product_selectchangedisable', '#nbs_productadminsearch', '#datadisplay');
+                if ($(this).hasClass("fa-check-circle")) {
+                    $(this).addClass('fa-circle').removeClass('fa-check-circle');
+                } else {
+                    $(this).addClass('fa-check-circle').removeClass('fa-circle');
+                }
+                nbxget('product_selectchangedisable', '#nbs_productadminsearch');
             });
 
             $('.selectchangehidden').unbind("click");
             $('.selectchangehidden').click(function () {
                 $('.processing').show();
                 $('#selecteditemid').val($(this).attr('itemid'));
-                nbxget('product_selectchangehidden', '#nbs_productadminsearch', '#datadisplay');
+                if ($(this).hasClass("fa-check-circle")) {
+                    $(this).addClass('fa-circle').removeClass('fa-check-circle');
+                } else {
+                    $(this).addClass('fa-check-circle').removeClass('fa-circle');
+                }
+                nbxget('product_selectchangehidden', '#nbs_productadminsearch');
             });
 
 
