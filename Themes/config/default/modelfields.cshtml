@@ -13,22 +13,26 @@
 @using Nevoweb.DNN.NBrightBuy.Components
 
 @{
-    var info = (NBrightInfo)Model.List.First();
+    // var info = (NBrightInfo)Model.List.First();
 }
 
-@{
-    // Example, remove the comments and the outer "@{ .... }" to make this work.
+@{ // REMOVE this line
+    @* // REMOVE this line
+        // Example, remove the comments "@*" and the outer "@{ .... }" to make this work.
 
-//@{
-//    var info = (NBrightInfo)Model.List.First();
-//}
-//<div class="col-sm-2">
-//    <label class="control-label">TEST</label>
-//    @TextBox(info, "genxml/textbox/test_" + info.GetXmlProperty("genxml/lp"), "class='form-control input-sm' ")
-//</div>
+    @{
+        var info = (NBrightInfo)Model.List.First();
+    }
+    <div class="col-sm-2">
+        <label class="control-label">TEST</label>
+        @TextBox(info, "genxml/textbox/test_" + info.GetXmlProperty("genxml/lp"), "class='form-control input-sm' ")
+    </div>
 
-}
-<div>
-    @CkEditor(info, "genxml/textbox/modeldescription", "class='form-control' height='400' width='100%' datatype='html' ")
+    <div>
+        @CkEditor(info, "genxml/textbox/modeldescription", "class='form-control' height='400' width='100%' datatype='html' ")
 
-</div>
+    </div>
+    *@ // REMOVE this line
+
+// REMOVE this line
+    }

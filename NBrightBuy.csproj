@@ -1491,7 +1491,7 @@
     <Content Include="Themes\config\img\flags\32\zh-SG.png" />
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
     <Content Include="Themes\config\img\nb-store_24x24.png" />
-    <Content Include="Themes\config\js\admin_product.js" />
+    <Content Include="Themes\config\js\admin_product3610.js" />
     <Content Include="Themes\config\js\categoryajax.js" />
     <Content Include="Themes\config\js\js.cookie.js" />
     <Content Include="Themes\config\js\nbsfavoritescookie.js" />

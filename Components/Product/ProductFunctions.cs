@@ -119,7 +119,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                     case "product_removeproductclient":
                         strOut = ProductFunctions.RemoveProductClient(context);
-                        break;                        
+                        break;
+                    case "product_selectchangedisable":
+                        strOut = ProductFunctions.ProductDisable(context);
+                        break;
+                    case "product_selectchangehidden":
+                        strOut = ProductFunctions.ProductHidden(context);
+                        break;
                 }
             }
             return strOut;
@@ -973,6 +979,72 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return e.ToString();
             }
         }
+
+
+        public static string ProductDisable(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    if (prodData.Disabled)
+                    {
+                        prodData.Info.SetXmlProperty("genxml/checkbox/chkdisable", "False");
+                    }
+                    else
+                    {
+                        prodData.Info.SetXmlProperty("genxml/checkbox/chkdisable", "True");
+                    }
+                    prodData.Save();
+                    // remove save GetData cache
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    Utils.RemoveCache(strCacheKey);
+
+                    return "";
+                }
+                return "Invalid parentitemid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        public static string ProductHidden(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (parentitemid > 0)
+                {
+                    var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
+                    if (prodData.Info.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
+                    {
+                        prodData.Info.SetXmlProperty("genxml/checkbox/chkishidden", "False");
+                    }
+                    else
+                    {
+                        prodData.Info.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+                    }
+                    prodData.Save();
+                    // remove save GetData cache
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    Utils.RemoveCache(strCacheKey);
+
+                    return "";
+                }
+                return "Invalid parentitemid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
 
         public static string RemoveProductCategory(HttpContext context)
         {

@@ -10,6 +10,7 @@ v3.6.1
 - Fix Tax Drop Down to display description, not value.
 - Add apply tax to all products in a category.
 - Redisplay missing add button for products.
+- Activate Richtext for bespoke model fields.
 
 v3.6.0
 - Convert Product Admin to Razor.

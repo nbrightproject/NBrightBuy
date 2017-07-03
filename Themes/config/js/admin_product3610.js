@@ -43,7 +43,7 @@
             nbxget('product_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'product_admin_getlist') {
+        if (e.cmd == 'product_admin_getlist' || e.cmd == 'product_selectchangedisable' || e.cmd == 'product_selectchangehidden') {
 
             $('.processing').hide();
 
@@ -122,6 +122,22 @@
                 $('#selecteditemid').val($(this).attr('itemid'));
                 nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
             });
+
+
+            $('.selectchangedisable').unbind("click");
+            $('.selectchangedisable').click(function () {
+                $('.processing').show();
+                $('#selecteditemid').val($(this).attr('itemid'));
+                nbxget('product_selectchangedisable', '#nbs_productadminsearch', '#datadisplay');
+            });
+
+            $('.selectchangehidden').unbind("click");
+            $('.selectchangehidden').click(function () {
+                $('.processing').show();
+                $('#selecteditemid').val($(this).attr('itemid'));
+                nbxget('product_selectchangehidden', '#nbs_productadminsearch', '#datadisplay');
+            });
+
 
             $('.cmdPg').unbind("click");
             $('.cmdPg').click(function() {
