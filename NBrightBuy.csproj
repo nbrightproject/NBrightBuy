@@ -665,7 +665,6 @@
     <Content Include="Themes\config\default\js\devoops-nbb.js" />
     <Content Include="Themes\config\default\js\devoops.js" />
     <Content Include="Themes\config\default\js\devoops.min.js" />
-    <Content Include="Themes\config\default\menuplugin.xml" />
     <Content Include="Themes\config\default\ordersexport.html" />
     <Content Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.css" />
     <Content Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.js" />
