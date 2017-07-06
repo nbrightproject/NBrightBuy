@@ -1027,8 +1027,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var xrefitemid = ajaxInfo.GetXmlProperty("genxml/hidden/selectedcatid");
-                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                var xrefitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                if (xrefitemid > 0 && parentitemid > 0)
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
                     prodData.SetDefaultCategory(Convert.ToInt32(xrefitemid));
@@ -1050,8 +1050,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var xrefitemid = ajaxInfo.GetXmlProperty("genxml/hidden/selectedcatid");
-                if (Utils.IsNumeric(xrefitemid) && Utils.IsNumeric(parentitemid))
+                var xrefitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                if (xrefitemid > 0 && parentitemid > 0)
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(parentitemid), _editlang, false);
                     prodData.RemoveCategory(Convert.ToInt32(xrefitemid));

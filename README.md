@@ -5,6 +5,9 @@ Developer please read this to get started:
 
 http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 
+v3.6.2
+- Fix bug on Category removal and default.
+
 v3.6.1
 - Fix to category Product Select.
 - Fix Tax Drop Down to display description, not value.
