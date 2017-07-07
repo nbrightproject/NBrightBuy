@@ -6,7 +6,12 @@
     $(".selectlang").click(function() {
         $("#nextlang").val($(this).attr("editlang"));
         if ($("#razortemplate").val() == 'Admin_ProductDetail.cshtml') {
+            //move data to update postback field
             $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
+            $('#xmlupdateoptiondata').val($.fn.genxmlajaxitems('#productoptions', '.optionitem'));
+            $('#xmlupdateoptionvaluesdata').val($.fn.genxmlajaxitems('#productoptionvalues', '.optionvalueitem'));
+            $('#xmlupdateproductimages').val($.fn.genxmlajaxitems('#productimages', '.imageitem'));
+            $('#xmlupdateproductdocs').val($.fn.genxmlajaxitems('#productdocs', '.docitem'));
             nbxget('product_admin_save', '#productdatasection', '#actionreturn');
         } else {
             nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
