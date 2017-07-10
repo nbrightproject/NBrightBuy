@@ -5,6 +5,12 @@ Developer please read this to get started:
 
 http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 
+v3.6.4
+- Fix bug on category sort
+
+v3.6.3
+- update JS file.
+
 v3.6.2
 - Fix bug on Category removal and default.
 

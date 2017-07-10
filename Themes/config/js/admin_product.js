@@ -64,17 +64,20 @@
             $("#productAdmin_cmdDelete").hide();
             $("#productAdmin_cmdReturn").hide();
             $("#productAdmin_cmdAddNew").show();
-            
+
             // Move products
             $(".selectmove").hide();
             $(".selectcancel").hide();
             $(".selectrecord").hide();
             $(".savebutton").hide();
 
-            $("#ddllistsearchcategory").unbind("change");
+            if ($('#searchcategory').val() != '') {
+                $(".selectrecord").show();
+            }
+
+        $("#ddllistsearchcategory").unbind("change");
             $("#ddllistsearchcategory").change(function() {
                 $('#searchcategory').val($("#ddllistsearchcategory").val());
-                $(".selectrecord").show();
                 nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
             });
 
@@ -109,7 +112,6 @@
                 $(".selectmove").hide();
                 $(".selectcancel").hide();
                 $(".selectrecord").show();
-                $("#searchcategory").val('');
             });
 
             $('.selectmove').unbind("click");
@@ -207,6 +209,12 @@
             nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
         };
 
+        if (e.cmd == 'product_moveproductadmin') {
+            $('#razortemplate').val('Admin_ProductList.cshtml');
+            $('#selecteditemid').val('');
+            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+        };
+        
         if (e.cmd == 'product_getproductselectlist') {
             $('.processing').hide();
         };

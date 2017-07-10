@@ -504,9 +504,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                 //get uploaded params
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var moveproductid = ajaxInfo.GetXmlPropertyInt("moveproductid");
-                var movetoproductid = ajaxInfo.GetXmlPropertyInt("movetoproductid");
-                var searchcategory = ajaxInfo.GetXmlPropertyInt("searchcategory");
+                var moveproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moveproductid");
+                var movetoproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetoproductid");
+                var searchcategory = ajaxInfo.GetXmlPropertyInt("genxml/hidden/searchcategory");
                 if (searchcategory > 0 && movetoproductid > 0 && moveproductid > 0)
                 {
                     var objCtrl = new NBrightBuyController();
