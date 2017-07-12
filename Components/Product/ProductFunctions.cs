@@ -282,7 +282,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var productXml = ajaxInfo.XMLData;
 
                     prdData.Update(productXml);
-                    prdData.Save();
+                    prdData.Save(true,newrecord);
 
                     // remove save GetData cache
                     var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
