@@ -547,11 +547,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
+        public void Save()
+        {
+            Save(true, false);
+        }
+
+        public void Save(bool triggerevent)
+        {
+            Save(triggerevent,false);
+        }
+
         /// <summary>
         /// Save all Product Data
         /// </summary>
         /// <param name="triggerevent"> Used to stop infinate loop when Save used in event method</param>
-        public void Save(bool triggerevent = true)
+        public void Save(bool triggerevent, bool newrecord)
         {
             foreach (var model in Models)
             {
@@ -593,6 +603,30 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // Calc Display Prices
             UpdateDisplayCalcPrices();
             objCtrl.Update(DataRecord);
+
+            // copy langauge data to new langauge record, so we don;t get empty language records.
+            if (!newrecord) // new record don;t need this, they will be created with newrecord flag and that should only be removed on normal user save.
+            {
+                foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
+                {
+                    var l = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
+
+                    if (l.Count >= 1)
+                    {
+                        var nbilang = l[0];
+                        if (nbilang.GetXmlPropertyBool("genxml/newrecord") && DataLangRecord != null)
+                        {
+                            var nbi = (NBrightInfo) DataLangRecord.Clone();
+                            nbi.ItemID = nbilang.ItemID;
+                            nbi.Lang = lang;
+                            nbi.RemoveXmlNode("genxml/newrecord");
+                            objCtrl.Update(nbi);
+                        }
+                    }
+                }
+            }
+
+            Validate();
 
             if (triggerevent)
             {
@@ -862,31 +896,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     DataLangRecord.RemoveXmlNode(f);
                 }
             }
-
-            // update Models
-            //var strXml = info.GetXmlProperty("genxml/hidden/xmlupdatemodeldata");
-            //strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            //rtnstatuscode = UpdateModels(strXml);
-            //if (rtnstatuscode == "")
-            //{
-            //    // update Options
-            //    strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptions");
-            //    strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            //    UpdateOptions(strXml);
-            //    // update Options
-            //    strXml = info.GetXmlProperty("genxml/hidden/xmlupdateproductoptionvalues");
-            //    strXml = GenXmlFunctions.DecodeCDataTag(strXml);
-            //    UpdateOptionValues(strXml);
-            //    // update images
-            //    UpdateImages(info);
-            //    // update docs
-            //    UpdateDocs(info);
-
-            //    IsOnSale = CheckIsOnSale();
-            //    DealerIsOnSale = DealerCheckIsOnSale();
-            //    IsInStock = CheckIsInStock();
-            //    ClientFileUpload = CheckClientFileUpload();
-            //}
 
             return rtnstatuscode;
         }
@@ -1680,12 +1689,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var l = objCtrl.GetList(_portalId, -1, _typeLangCode, " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.Lang = '" + lang + "'");
                 if (l.Count == 0 && DataLangRecord != null)
                 {
-                    var nbi = (NBrightInfo)DataLangRecord.Clone();
+                    var nbi = (NBrightInfo) DataLangRecord.Clone();
                     nbi.ItemID = -1;
                     nbi.Lang = lang;
                     objCtrl.Update(nbi);
                     errorcount += 1;
                 }
+
                 if (l.Count > 1)
                 {
                     // we have more records than should exists, remove any old ones.
@@ -2160,7 +2170,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord = objCtrl.GetData(productId);
                 _typeCode = DataRecord.TypeCode;
                 DataLangRecord = objCtrl.GetDataLang(productId, _lang);
-                if (DataLangRecord == null) // rebuild langauge is we have a missing lang record
+                if (DataLangRecord == null) // rebuild langauge if we have a missing lang record
                 {
                     Validate();
                     DataLangRecord = objCtrl.GetDataLang(productId, _lang);
@@ -2204,6 +2214,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 nbi.ItemID = -1;
                 nbi.Lang = lang;
                 nbi.ParentItemId = itemId;
+                nbi.SetXmlProperty("genxml/newrecord", "True");
                 objCtrl.Update(nbi);
             }
 
