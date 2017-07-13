@@ -1,0 +1,169 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@using System.Web.UI.HtmlControls
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+@AddMetaData("resourcepath","/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    // assign Model, so we can resolve var in VS
+    var info = (NBrightInfo)Model.List.First();
+}
+
+
+<div class="dnnFormItem">
+    @DnnLabel("lblmodeldisplaytype", "ProductViewSettings.lblmodeldisplaytype")
+    @DropDownList(info, "genxml/dropdownlist/modeldisplaytype", "0,1,2","Radio,DropDown,List", " class='form-control' ", "")
+</div>
+
+<h5>@DnnLabel("lbllistimages", "ProductViewSettings.lbllistimages")</h5>
+
+<div class="dnnFormItem">
+@DnnLabel("lbllightboxspeed", "ProductViewSettings.lbllightboxspeed")
+@DropDownList(info, "genxml/dropdownlist/lightboxspeed","100,250,500,750","100,250,500,750", " class='form-control' ", "")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblitemwidth", "ProductViewSettings.lblitemwidth")
+@TextBox(info, "genxml/textbox/classicitemwidth"  ,"width='300px' class='form-control' ","276")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblitemheight", "ProductViewSettings.lblitemheight")
+@TextBox(info, "genxml/textbox/classicitemheight"  ,"width='300px' class='form-control' ","342px")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblitemimagecontainerheight", "ProductViewSettings.lblitemimagecontainerheight")
+@TextBox(info, "genxml/textbox/classicitemimagecontainerheight"  ,"width='300px' class='form-control' ","224px")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblitemgutter", "ProductViewSettings.lblitemgutter")
+@TextBox(info, "genxml/textbox/classicitemgutter"  ,"width='300px' class='form-control' ","8")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblitembottommargin", "ProductViewSettings.lblitembottommargin")
+@TextBox(info, "genxml/textbox/classicitembottommargin"  ,"width='300px' class='form-control' ","8")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblthumbnailwidth", "ProductViewSettings.lblthumbnailwidth")
+@TextBox(info, "genxml/textbox/classicthumbnailwidth"  ,"width='300px' class='form-control' ","253")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblthumbnailheight", "ProductViewSettings.lblthumbnailheight")
+@TextBox(info, "genxml/textbox/classicthumbnailheight"  ,"width='300px' class='form-control' ","0")
+</div>
+<h5>@DnnLabel("lbldetailimages", "ProductViewSettings.lbldetailimages")</h5>
+<div class="dnnFormItem">
+@DnnLabel("lblimagewidth", "ProductViewSettings.lblimagewidth")
+@TextBox(info, "genxml/textbox/classicimagewidth"  ,"width='300px' class='form-control' ","400")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblimageheight", "ProductViewSettings.lblimageheight")
+@TextBox(info, "genxml/textbox/classicimageheight"  ,"width='300px' class='form-control' ","0")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblgallerywidth", "ProductViewSettings.lblgallerywidth")
+@TextBox(info, "genxml/textbox/classicgallerywidth"  ,"width='300px' class='form-control' ","70")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblgalleryheight", "ProductViewSettings.lblgalleryheight")
+@TextBox(info, "genxml/textbox/classicgalleryheight"  ,"width='300px' class='form-control' ","0")
+</div>
+<h5>@DnnLabel("lblrelatedimages", "ProductViewSettings.lblrelatedimages")</h5>
+<div class="dnnFormItem">
+@DnnLabel("lblrelateditemwidth", "ProductViewSettings.lblrelateditemwidth")
+@TextBox(info, "genxml/textbox/relateditemwidth"  ,"width='300px' class='form-control' ","200")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelateditemheight", "ProductViewSettings.lblrelateditemheight")
+@TextBox(info, "genxml/textbox/relateditemheight"  ,"width='300px' class='form-control' ","210px")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelateditemimagecontainerheight", "ProductViewSettings.lblrelateditemimagecontainerheight")
+@TextBox(info, "genxml/textbox/relateditemimagecontainerheight"  ,"width='300px' class='form-control' ","160px")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelateditemgutter", "ProductViewSettings.lblrelateditemgutter")
+@TextBox(info, "genxml/textbox/classicrelateditemgutter"  ,"width='300px' class='form-control' ","1")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelateditembottommargin", "ProductViewSettings.lblrelateditembottommargin")
+@TextBox(info, "genxml/textbox/relateditembottommargin"  ,"width='300px' class='form-control' ","1")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelatedimagewidth", "ProductViewSettings.lblrelatedimagewidth")
+@TextBox(info, "genxml/textbox/relatedimagewidth"  ,"width='300px' class='form-control' ","160")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblrelatedimageheight", "ProductViewSettings.lblrelatedimageheight")
+@TextBox(info, "genxml/textbox/relatedimageheight"  ,"width='300px' class='form-control' ","0")
+</div>
+<hr />
+<h5>@DnnLabel("lbldisplayfeatures", "ProductViewSettings.lbldisplayfeatures")<h5>
+<div class="dnnFormItem">
+@DnnLabel("lblcategorydetails", "ProductViewSettings.lblcategorydetails")
+@CheckBox(info, "genxml/checkbox/categorydetails", ""," class='dnnCheckbox' ",true )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblmodelstable", "ProductViewSettings.lblmodelstable")
+@CheckBox(info, "genxml/checkbox/modelstable", ""," class='dnnCheckbox' ",true )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblshowstock", "ProductViewSettings.lblshowstock")
+@CheckBox(info, "genxml/checkbox/showstock", ""," class='dnnCheckbox' ",true )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblproductcode", "ProductViewSettings.lblproductcode")
+@CheckBox(info, "genxml/checkbox/productcode", ""," class='dnnCheckbox' ",true )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblcurrencyconverter", "ProductViewSettings.lblcurrencyconverter")
+@CheckBox(info, "genxml/checkbox/currencyconverter", ""," class='dnnCheckbox' " )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lbltabbedcontent", "ProductViewSettings.lbltabbedcontent")
+@CheckBox(info, "genxml/checkbox/tabbedcontent", ""," class='dnnCheckbox' " )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblwishlist", "ProductViewSettings.lblwishlist")
+@CheckBox(info, "genxml/checkbox/wishlist", ""," class='dnnCheckbox' ")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblplaceholderimage", "ProductViewSettings.lblplaceholderimage")
+@CheckBox(info, "genxml/checkbox/placeholderimage", ""," class='dnnCheckbox' ",true )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblnoimageicon", "ProductViewSettings.lblnoimageicon")
+@TextBox(info, "genxml/textbox/noimageicon"  ,"width='300px' class='form-control' ")
+<script type="text/javascript">
+$(document).ready(function() {
+                if ($('input[id*="noimageicon"]').val() == '') $('input[id*="noimageicon"]').val('<i class="fa fa-picture-o"></i>');
+});
+</script>
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblallowzeroprice", "ProductViewSettings.lblallowzeroprice")
+@CheckBox(info, "genxml/checkbox/allowzeroprice", ""," class='dnnCheckbox' " )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblholidaymode", "ProductViewSettings.lblholidaymode")
+@CheckBox(info, "genxml/checkbox/holidaymode", ""," class='dnnCheckbox' ")
+</div>
+<hr />
+<h5>@DnnLabel("lblsocialseodata", "ProductViewSettings.lblsocialseodata")</h5>
+<div class="dnnFormItem">
+@DnnLabel("lblogobjecttype", "ProductViewSettings.lblogobjecttype")
+@TextBox(info, "genxml/textbox/ogobjecttype"  ,"width='300px' class='form-control' ","website" )
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lblfacebookid", "ProductViewSettings.lblfacebookid")
+@TextBox(info, "genxml/textbox/facebookid"  ,"width='300px' class='form-control' ")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lbltwittersite", "ProductViewSettings.lbltwittersite")
+@TextBox(info, "genxml/textbox/twittersite"  ,"width='300px' class='form-control' ")
+</div>
+<div class="dnnFormItem">
+@DnnLabel("lbltwitteruser", "ProductViewSettings.lbltwitteruser")
+@TextBox(info, "genxml/textbox/twitteruser"  ,"width='300px' class='form-control' ")
+</div>
+

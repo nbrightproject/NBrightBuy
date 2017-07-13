@@ -644,6 +644,44 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString GroupCheckboxList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1")
+        {
+            var strOut = "";
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            strOut = $"<div id='{id}' {attributes}>";
+            var @checked = "";
+            var checkedClass = "";
+            var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true, groupType);
+            var hasItems = false;
+            foreach (var tItem in tList)
+            {
+                if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")
+                {
+                    if (info.GetXmlProperty(xpath) == tItem.GetXmlProperty("genxml/textbox/groupref"))
+                    {
+                        @checked = "checked";
+                        checkedClass = "dnnCheckbox-checked";
+                    }
+                    else
+                    {
+                        @checked = "";
+                        checkedClass = "";
+                    }
+                    if (hasItems) strOut += "<br/>";
+                    //  class='dnnCheckbox {checkedClass}'
+                    strOut += $"    <input type='checkbox' value='{tItem.GetXmlProperty("genxml/textbox/groupref")}' {@checked} {upd}><span>{tItem.GetXmlProperty("genxml/lang/genxml/textbox/groupname")} ({tItem.GetXmlProperty("genxml/textbox/groupref")})</span>";
+                    hasItems = true;
+                }
+            }
+
+            strOut += "</div>";
+
+            return new RawString(strOut);
+        }
+
 
         #endregion
 

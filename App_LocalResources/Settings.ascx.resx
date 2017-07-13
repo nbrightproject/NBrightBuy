@@ -468,4 +468,7 @@
   <data name="shareordersmsg.Text" xml:space="preserve">
     <value>Administer ORDERS made in this portal from any portal in the DNN installation</value>
   </data>
+  <data name="selectedfilters.Text" xml:space="preserve">
+    <value>Select Filters</value>
+  </data>
 </root>
