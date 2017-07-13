@@ -219,3 +219,4 @@ Installation/NBrightStore_03.05.04.00_DNN8_Install.zip
 Themes/config/default/menuplugin.xml
 Themes/Wiseopro/
 Installation/NBrightBuy_Resource.zip
+App_LocalResources/*.Portal*.resx
