@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -1759,6 +1759,7 @@
     <None Include="Themes\config\img\flags\32\Thumbs.db" />
     <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="Themes\Cygnus\Default\NBS_MiniCart.cshtml" />
+    <None Include="Web.config" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -1767,9 +1768,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"
+    <PostBuildEvent>copy "$(TargetDir)$(TargetFileName)" "..\..\..\..\bin\$(TargetFileName)"
 
-copy "$(AssemblyName).pdb" "..\..\..\..\..\bin\$(AssemblyName).pdb"
+copy "$(TargetDir)$(AssemblyName).pdb" "..\..\..\..\bin\$(AssemblyName).pdb"
 
 </PostBuildEvent>
   </PropertyGroup>
