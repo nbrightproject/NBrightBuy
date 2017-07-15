@@ -151,6 +151,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 case "cancel":
                     Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
                     break;
+                case "alterpercent":
+                    AlterCost();
+                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
+                    break;
             }
 
         }
@@ -182,6 +186,19 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         }
 
+        private void AlterCost()
+        {
+            var info = new NBrightInfo();
+            var shipping = new ShippingData(_ctrlkey);
+            info.XMLData = GenXmlFunctions.GetGenXml(rpDataH);
+            var percentValue = info.GetXmlPropertyDouble("genxml/textbox/alterpercent");
+            shipping.UpdateCost(percentValue);
+            shipping.Save();
+
+            //remove current setting from cache for reload
+            Utils.RemoveCache("NBrightBuyShipping" + PortalSettings.Current.PortalId.ToString(""));
+
+        }
 
 
 

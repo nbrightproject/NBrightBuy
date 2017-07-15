@@ -53,23 +53,44 @@
 </div>
 
 <div class="row freeshipping">
-<div class="box">
-			<div class="box-content">
-				<div class="form-horizontal dnnForm">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.FreeShipping" />]</label>
-        <div class="col-sm-1">
-            [<tag id="freeshiplimit" cssclass="form-control" type="textbox" maxlength="150" Text="0" />]
+    <div class="box">
+        <div class="box-content">
+            <div class="form-horizontal dnnForm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.FreeShipping"/>]</label>
+                    <div class="col-sm-1">
+                        [<tag id="freeshiplimit" cssclass="form-control" type="textbox" maxlength="150" Text="0"/>]
+                    </div>
+                    <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.CountryCodesCSV"/>]</label>
+                    <div class="col-sm-3">
+                        [<tag id="freeshipcountrycodes" cssclass="form-control" type="textbox" Text=""/>]
+                    </div>
+                </div>
+            </div>
         </div>
-        <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.CountryCodesCSV" />]</label>
-        <div class="col-sm-3">
-            [<tag id="freeshipcountrycodes" cssclass="form-control" type="textbox" Text="" />]
-        </div>
-    </div>
-    </div>
-    </div>
     </div>
 </div>
+
+
+<div class="row txaxincrease">
+    <div class="box">
+        <div class="box-content">
+            <div class="form-horizontal dnnForm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">[<tag type="valueof" resourcekey="Shipping.alterpercentlabel" />]</label>
+                    <div class="col-sm-1">
+                        [<tag id="alterpercent" cssclass="form-control" type="textbox" maxlength="2" Text="0" />]
+                    </div>
+                    <div class="col-sm-3">
+                        [<tag id="cmdAlterPercent" type="linkbutton" resourcekey="Shipping.alterpercent" cssclass="savebutton btn btn-warning" commandname="alterpercent" />]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="row">
 <div class="box">
 			<div class="box-content">

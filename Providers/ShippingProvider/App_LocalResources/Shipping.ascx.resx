@@ -141,4 +141,10 @@
   <data name="displayname.Text" xml:space="preserve">
     <value>Display Name</value>
   </data>
+  <data name="alterpercentlabel.Text" xml:space="preserve">
+    <value>Alter Shipping by (%)</value>
+  </data>
+  <data name="alterpercent.Text" xml:space="preserve">
+    <value>Update Shipping Costs</value>
+  </data>
 </root>

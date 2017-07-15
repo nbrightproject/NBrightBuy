@@ -36,7 +36,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         /// </summary>
         public void Save(Boolean debugMode = false)
         {
-                //save cart
                 var strXML = "<list>";
                 var lp = 0;
                 foreach (var info in _shippingList)
@@ -53,6 +52,37 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                     var modCtrl = new NBrightBuyController();
                     Info.ItemID = modCtrl.Update(Info);
                 }
+        }
+
+
+        public void UpdateCost(double percentageAmount)
+        {
+            if (percentageAmount != 0)
+            {
+                var lp = 0;
+                foreach (var i in _shippingList)
+                {
+                    var rangeListOut = "";
+                    var rangeList = i.GetXmlProperty("genxml/textbox/shiprange");
+                    var rl = rangeList.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var s in rl)
+                    {
+                        var ri = s.Split('=');
+                        if (ri.Count() == 2 && Utils.IsNumeric(ri[1]))
+                        {
+                            var riV = ri[0].Split('-');
+                            if (riV.Count() == 2 && Utils.IsNumeric(riV[0]) && Utils.IsNumeric(riV[1]))
+                            {
+                                var cost = Convert.ToDouble(ri[1], CultureInfo.GetCultureInfo("en-US"));
+                                rangeListOut += riV[0] + "-" + riV[1] + "=" + string.Format(new System.Globalization.CultureInfo("en-US"),"{0:F}", ((cost / 100) * (100 + percentageAmount))) + Environment.NewLine;
+                            }
+                        }
+                    }
+                    i.SetXmlProperty("genxml/textbox/shiprange", rangeListOut);
+                    UpdateRule(i.XMLData, lp);
+                    lp += 1;
+                }
+            }
         }
 
         #region "properties"
@@ -136,10 +166,6 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             }
         }
 
-        /// <summary>
-        /// Get Current Cart Item List
-        /// </summary>
-        /// <returns></returns>
         public List<NBrightInfo> GetRuleList()
         {
             var rtnList = new List<NBrightInfo>();
