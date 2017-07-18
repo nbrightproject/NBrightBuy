@@ -577,7 +577,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                         var lit = new Literal();
                         lit.Text = strOut;
-                        phData.Controls.Add(lit);
+                        //SK phData.Controls.Add(lit);
 
                         if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
 

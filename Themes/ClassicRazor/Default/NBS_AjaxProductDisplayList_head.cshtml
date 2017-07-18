@@ -1,0 +1,59 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Entities.Users
+@using NBrightCore.common
+
+<!-- RAZORTEMPLATE NBS_AjaxProductDisplayList_head -->
+<!-- This template is injected into the details page head section -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+
+<!-- Masonry Grid http://masonry.desandro.com -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/masonry.pkgd.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var $container = $('.productlist').masonry({
+            columnWidth: @(Model.GetSetting("classicitemwidth")), // List item width - Can also use CSS width of first list item
+            itemSelector: '.product',
+            gutter: @(Model.GetSetting("classicitemgutter")), // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
+            isOriginLeft: true, // Build from right to left if false
+            isOriginTop: true // Build from bottom to top if false
+        });
+
+    });
+
+    // Setup Ajax functionality
+    $(document).ready(function () {
+        $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
+
+        @* Initialize parameters. Fields defined in ascx. *@
+        $("#userid").val("@UserController.Instance.GetCurrentUserInfo().UserID");
+        $("#moduleid").val("@Model.ModuleId");
+        $("#tabid").val("@Model.GetUrlParam("tabid")");
+        $("#currentlang").val("@Model.Lang");
+        $("#lang").val("@Model.Lang");
+        $("#pagesize").val("20");
+        $("#pagenumber").val("1");
+
+        @* Parameters are set, now get the initial data *@
+        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+
+        function AjaxView_GetList_nbxgetCompleted(e) {
+            //$("#nbs-ajaxproducts").html(e.toString());
+            alert("AjaxView_GetList_nbxgetCompleted");
+        }
+    });
+
+    // Detect Touch Device
+    function isTouch() {
+        return (('ontouchstart' in window)
+            || (navigator.MaxTouchPoints > 0)
+            || (navigator.msMaxTouchPoints > 0));
+    }
+
+    if (isTouch()) {
+        $('.productimg').addClass("productimgtouch");
+    }
+
+</script>

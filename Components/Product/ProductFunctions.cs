@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +14,7 @@ using System.Web.Razor;
 using System.Web.Script.Serialization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore.common;
@@ -18,15 +22,19 @@ using NBrightCore.images;
 using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 {
     public static class ProductFunctions
     {
         #region "product Admin Methods"
+
         private static string _editlang = "";
 
-        public static string ProcessCommand(string paramCmd,HttpContext context,string editlang = "")
+        private static bool DebugMode => StoreSettings.Current.DebugMode;
+
+        public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
             _editlang = editlang;
             if (_editlang == "") _editlang = Utils.GetCurrentCulture();
@@ -44,7 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                     case "product_admin_getdetail":
                         strOut = ProductFunctions.ProductAdminDetail(context);
-                        break;                        
+                        break;
                     case "product_adminaddnew":
                         strOut = ProductFunctions.ProductAdminAddNew(context);
                         break;
@@ -126,6 +134,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     case "product_selectchangehidden":
                         strOut = ProductFunctions.ProductHidden(context);
                         break;
+                    case "product_ajaxview_getlist":
+                        strOut = ProductFunctions.ProductAjaxViewList(context);
+                        break;
                 }
             }
             return strOut;
@@ -146,7 +157,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                         if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
                         if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
-                        if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+                        if (!settings.ContainsKey("portalid"))
+                            settings.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
+                                // aways make sure we have portalid in settings
                         if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
 
                         var themeFolder = settings["themefolder"];
@@ -155,7 +168,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var portalId = Convert.ToInt32(settings["portalid"]);
 
                         var passSettings = settings;
-                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        foreach (var s in StoreSettings.Current.Settings())
+                            // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -172,9 +186,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid),"PRDLANG", _editlang);
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), "PRDLANG", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info,
+                            "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
                     return strOut;
                 }
@@ -198,6 +213,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return ex.ToString();
             }
         }
+
         public static String ProductAdminSaveAs(HttpContext context)
         {
             try
@@ -282,7 +298,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var productXml = ajaxInfo.XMLData;
 
                     prdData.Update(productXml);
-                    prdData.Save(true,newrecord);
+                    prdData.Save(true, newrecord);
 
                     // remove save GetData cache
                     var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
@@ -369,7 +385,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return ProductAdminList(settings, paging);
         }
 
-        public static String ProductAdminList(Dictionary<string,string> settings, bool paging = true, string editlang = "")
+        public static String ProductAdminList(Dictionary<string, string> settings, bool paging = true,
+            string editlang = "")
         {
 
             try
@@ -396,7 +413,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
                     if (!settings.ContainsKey("cascade")) settings.Add("cascade", "False");
 
-                    if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+                    if (!settings.ContainsKey("portalid"))
+                        settings.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
+                            // aways make sure we have portalid in settings
 
                     // select a specific entity data type for the product (used by plugins)
                     if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
@@ -420,7 +439,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var searchText = settings["searchtext"];
                     var searchCategory = settings["searchcategory"];
 
-                    if (searchText != "") filter += " and (NB3.[ProductName] like '%" + searchText + "%' or NB3.[ProductRef] like '%" + searchText + "%' or NB3.[Summary] like '%" + searchText + "%' ) ";
+                    if (searchText != "")
+                        filter += " and (NB3.[ProductName] like '%" + searchText + "%' or NB3.[ProductRef] like '%" +
+                                  searchText + "%' or NB3.[Summary] like '%" + searchText + "%' ) ";
 
                     if (Utils.IsNumeric(searchCategory))
                     {
@@ -428,9 +449,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                         var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
                         if (!cascade)
-                            filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
+                            filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual +
+                                      "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") ";
                         else
-                            filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATXREF' and XrefItemId = " + searchCategory + ") or (typecode = 'CATCASCADE' and XrefItemId = " + searchCategory + ")) ";
+                            filter += " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual +
+                                      "NBrightBuy] where (typecode = 'CATXREF' and XrefItemId = " + searchCategory +
+                                      ") or (typecode = 'CATCASCADE' and XrefItemId = " + searchCategory + ")) ";
                     }
                     else
                     {
@@ -440,7 +464,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     // logic for client list of products
                     if (NBrightBuyUtils.IsClientOnly())
                     {
-                        filter += " and NB1.ItemId in (select ParentItemId from dbo.[NBrightBuy] as NBclient where NBclient.TypeCode = 'USERPRDXREF' and NBclient.UserId = " + UserController.Instance.GetCurrentUserInfo().UserID.ToString("") + ") ";
+                        filter +=
+                            " and NB1.ItemId in (select ParentItemId from dbo.[NBrightBuy] as NBclient where NBclient.TypeCode = 'USERPRDXREF' and NBclient.UserId = " +
+                            UserController.Instance.GetCurrentUserInfo().UserID.ToString("") + ") ";
                     }
 
                     var recordCount = 0;
@@ -460,15 +486,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (pageSize == 0) pageSize = 20;
 
                         // get only entity type required
-                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter, entitytypecodelang, _editlang);
+                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, entitytypecode, filter,
+                            entitytypecodelang, _editlang);
 
                     }
 
                     // get selected entitytypecode.
-                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode, entitytypecodelang, _editlang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
+                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entitytypecode,
+                        entitytypecodelang, _editlang, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit,
+                        pageNumber, pageSize, recordCount);
 
                     var passSettings = settings;
-                    foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                    foreach (var s in StoreSettings.Current.Settings())
+                        // copy store setting, otherwise we get a byRef assignement
                     {
                         if (passSettings.ContainsKey(s.Key))
                             passSettings[s.Key] = s.Value;
@@ -476,7 +506,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             passSettings.Add(s.Key, s.Value);
                     }
 
-                    strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
+                    strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list,
+                        "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
 
                     // add paging if needed
                     if (paging && (recordCount > pageSize))
@@ -510,7 +541,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (searchcategory > 0 && movetoproductid > 0 && moveproductid > 0)
                 {
                     var objCtrl = new NBrightBuyController();
-                    objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
+                    objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "",
+                        searchcategory + ";" + moveproductid + ";" + movetoproductid);
                 }
 
                 DataCache.ClearCache();
@@ -541,7 +573,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var addqty = ajaxInfo.GetXmlPropertyInt("genxml/hidden/addqty");
 
                         var passSettings = ajaxInfo.ToDictionary();
-                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        foreach (var s in StoreSettings.Current.Settings())
+                            // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -569,13 +602,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (themeFolder == "")
                         {
                             themeFolder = StoreSettings.Current.ThemeFolder;
-                            if (ajaxInfo.GetXmlProperty("genxml/hidden/themefolder") != "") themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                            if (ajaxInfo.GetXmlProperty("genxml/hidden/themefolder") != "")
+                                themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
                         }
 
                         var objCtrl = new NBrightBuyController();
                         var info = objCtrl.Get(Convert.ToInt32(selecteditemid), "PRDLANG", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info,
+                            "/DesktopModules/NBright/NBrightBuy", themeFolder, _editlang, passSettings);
                     }
                     return strOut;
                 }
@@ -604,7 +639,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var addqty = ajaxInfo.GetXmlPropertyInt("genxml/hidden/addqty");
 
                         var passSettings = ajaxInfo.ToDictionary();
-                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        foreach (var s in StoreSettings.Current.Settings())
+                            // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -632,7 +668,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var objCtrl = new NBrightBuyController();
                         var info = objCtrl.GetData(selecteditemid, "PRDLANG", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptions.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptions.cshtml", 0, "", info,
+                            "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
 
                         NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     }
@@ -663,7 +700,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (!Utils.IsNumeric(qty)) qty = "1";
 
                 var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
-                if (Utils.IsNumeric(productitemid) )
+                if (Utils.IsNumeric(productitemid))
                 {
                     var itemId = Convert.ToInt32(productitemid);
                     if (itemId > 0)
@@ -673,7 +710,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
 
                         var passSettings = settings;
-                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        foreach (var s in StoreSettings.Current.Settings())
+                            // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -695,7 +733,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var objCtrl = new NBrightBuyController();
                         var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
+                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", info,
+                            "/DesktopModules/NBright/NBrightBuy", "config", _editlang, passSettings);
 
                         NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     }
@@ -724,7 +763,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemid);
                         NBrightBuyUtils.RemoveModCachePortalWide(ajaxInfo.PortalId);
                         return "OK";
-                   }
+                    }
                 }
                 return "";
             }
@@ -758,7 +797,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                             var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
                             if (imgResize == 0) imgResize = 800;
                             var imagepath = ResizeImage(fullName, imgResize);
-                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
+                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" +
+                                           Path.GetFileName(imagepath);
                             AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);
                         }
                     }
@@ -773,7 +813,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductImages.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductImages.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
             }
             return strOut;
@@ -784,7 +825,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             if (ImgUtils.IsImageFile(Path.GetExtension(fullName)))
             {
                 var extension = Path.GetExtension(fullName);
-                var newImageFileName = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Utils.GetUniqueKey() + extension;
+                var newImageFileName = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" +
+                                       Utils.GetUniqueKey() + extension;
                 if (extension != null && extension.ToLower() == ".png")
                 {
                     newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
@@ -808,7 +850,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var dataRecord = objCtrl.Get(itemId);
             if (dataRecord != null)
             {
-                var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" + imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
+                var strXml = "<genxml><imgs><genxml><hidden><imagepath>" + imagepath + "</imagepath><imageurl>" +
+                             imageurl + "</imageurl></hidden></genxml></imgs></genxml>";
                 if (dataRecord.XMLDoc.SelectSingleNode("genxml/imgs") == null)
                 {
                     dataRecord.AddXmlNode(strXml, "genxml/imgs", "genxml");
@@ -874,14 +917,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         }
 
         // Upload partial file
-        public static String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string itemid = "")
+        public static String UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses,
+            string itemid = "")
         {
             Regex fexpr = new Regex(StoreSettings.Current.Get("fileregexpr"));
             if (fexpr.Match(fileName.ToLower()).Success)
             {
 
                 if (itemid != "") itemid += "_";
-                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+                if (context.Request.Files.Count != 1)
+                    throw new HttpRequestValidationException(
+                        "Attempt to upload chunked file containing more than one fragment per request");
                 var inputStream = context.Request.Files[0].InputStream;
                 var fullName = StoreSettings.Current.FolderTempMapPath + "\\" + itemid + fileName;
 
@@ -952,9 +998,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         {
                             if (File.Exists(fullName))
                             {
-                                var newDocFileName = StoreSettings.Current.FolderDocumentsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Guid.NewGuid() + extension;
+                                var newDocFileName =
+                                    StoreSettings.Current.FolderDocumentsMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" +
+                                    Guid.NewGuid() + extension;
                                 File.Copy(fullName, newDocFileName, true);
-                                var docurl = StoreSettings.Current.FolderDocuments.TrimEnd('/') + "/" + Path.GetFileName(newDocFileName);
+                                var docurl = StoreSettings.Current.FolderDocuments.TrimEnd('/') + "/" +
+                                             Path.GetFileName(newDocFileName);
                                 AddNewDoc(Convert.ToInt32(productitemid), newDocFileName, doc);
                             }
                         }
@@ -966,7 +1015,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductDocs.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductDocs.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
             }
             return strOut;
@@ -979,7 +1029,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             if (dataRecord != null)
             {
                 var fileext = Path.GetExtension(orginalfilename);
-                var strXml = "<genxml><docs><genxml><hidden><filepath>" + filepath + "</filepath><fileext>" + fileext + "</fileext></hidden><textbox><txtfilename>" + orginalfilename + "</txtfilename></textbox></genxml></docs></genxml>";
+                var strXml = "<genxml><docs><genxml><hidden><filepath>" + filepath + "</filepath><fileext>" + fileext +
+                             "</fileext></hidden><textbox><txtfilename>" + orginalfilename +
+                             "</txtfilename></textbox></genxml></docs></genxml>";
                 if (dataRecord.XMLDoc.SelectSingleNode("genxml/docs") == null)
                 {
                     dataRecord.AddXmlNode(strXml, "genxml/docs", "genxml");
@@ -1079,7 +1131,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductCategories.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductCategories.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
                 return strOut;
 
@@ -1102,7 +1155,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             ajaxInfo.Lang = Utils.GetCurrentCulture();
-            var strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductPropertySelect.cshtml", 0, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+            var strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductPropertySelect.cshtml", 0, "", ajaxInfo,
+                "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
             return strOut;
         }
@@ -1162,7 +1216,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductProperties.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductProperties.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
                 return strOut;
 
@@ -1240,7 +1295,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductRelated.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductRelated.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
                 return strOut;
 
@@ -1281,7 +1337,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (selecteduserid > 0 && productid > 0)
                 {
                     var prodData = ProductUtils.GetProductData(Convert.ToInt32(productid), _editlang, false);
-                    if (!(NBrightBuyUtils.IsClientOnly() && (Convert.ToInt32(selecteduserid) == UserController.Instance.GetCurrentUserInfo().UserID)))
+                    if (
+                        !(NBrightBuyUtils.IsClientOnly() &&
+                          (Convert.ToInt32(selecteduserid) == UserController.Instance.GetCurrentUserInfo().UserID)))
                     {
                         // ClientEditor role cannot remove themselves.
                         prodData.RemoveClient(Convert.ToInt32(selecteduserid));
@@ -1336,9 +1394,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var strOut = "";
                 if (userlist.Count > 0)
                 {
-                    strOut = NBrightBuyUtils.RazorTemplRenderList("Admin_ProductClientSelect.cshtml", 0, "", userlist, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                    strOut = NBrightBuyUtils.RazorTemplRenderList("Admin_ProductClientSelect.cshtml", 0, "", userlist,
+                        "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
                 }
-                return  strOut;
+                return strOut;
             }
             catch (Exception ex)
             {
@@ -1357,7 +1416,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 var objCtrl = new NBrightBuyController();
                 var info = objCtrl.GetData(Convert.ToInt32(productitemid), "PRDLANG", _editlang);
 
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductClients.cshtml", 0, "", info, "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
+                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductClients.cshtml", 0, "", info,
+                    "/DesktopModules/NBright/NBrightBuy", "config", _editlang, ajaxInfo.ToDictionary());
 
                 return strOut;
 
@@ -1376,6 +1436,474 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         #endregion
 
+        #region Ajax ProductList
 
+        public static String ProductAjaxViewList(HttpContext context)
+        {
+            var retval = "";
+
+            // get the settings form the context
+            var ctxsettings = NBrightBuyUtils.GetAjaxDictionary(context);
+            // get the moduleid, tabid
+            var moduleid = int.Parse(ctxsettings["moduleid"]);
+            var tabid = int.Parse(ctxsettings["tabid"]);
+
+            var ps = PortalSettings.Current;
+
+            // get the module settings from DNN
+            var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
+            foreach (
+                KeyValuePair<string, string> modSetting in
+                ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings)
+            {
+                if (!settings.ContainsKey(modSetting.Key))
+                {
+                    settings.Add(modSetting.Key, modSetting.Value);
+                }
+            }
+            // then add the NBrightBuy settings
+            var ModSettings = new ModSettings(moduleid, settings);
+            //get Model Level Settings
+            var ModuleKey = ModSettings.Get("modref");
+            if (String.IsNullOrEmpty(ModuleKey))
+                ModuleKey = ModSettings.Get("modulekey"); // keep backward compatiblity with NBS_ProductView.
+
+            #region render template stuff
+
+            #region variables
+            var _eid = "";
+            var _ename = "";
+            var _catid = "";
+            var _catname = "";
+            var _modkey = "";
+            var _pagemid = "";
+            var _pagenum = "1";
+            var _pagesize = "";
+            var _templD = "";
+            var _displayentrypage = false;
+            var _orderbyindex = "";
+            NavigationData _navigationdata;
+            var EntityTypeCode = "PRD";
+            var EntityTypeCodeLang = "PRDLANG";
+            var _itemListName = "";
+            var _guidkey = "";
+            var _404code = false;
+            var returnlimit = 0;
+
+            _catid = ctxsettings["catid"];
+            _catname = ctxsettings["catref"];
+            _modkey = ctxsettings["modkey"];
+            _pagemid = ctxsettings["pagemid"];
+            _pagenum = ctxsettings["page"];
+            _pagesize = ctxsettings["pagesize"];
+            _orderbyindex = ctxsettings["orderby"];
+
+            _templD = ModSettings.Get("razorlisttemplate");
+
+            //Get returnlimt from module settings
+            var strreturnlimit = ModSettings.Get("returnlimit");
+            if (Utils.IsNumeric(strreturnlimit)) returnlimit = Convert.ToInt32(strreturnlimit);
+
+            var ModCtrl = new NBrightBuyController();
+
+            // Get meta data from template
+            // TODO: dat moeten we hier eigenlijk niet nodig hebben
+            // voor nu even handig om die parameters erbij te kunnen halen en ze later om te zetten naar client side rommel
+            _navigationdata = new NavigationData(ps.PortalId, ModuleKey);
+            var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy",
+                ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), moduleid.ToString());
+
+            #endregion
+
+            #region "Order BY"
+
+            ////////////////////////////////////////////
+            // get ORDERBY SORT 
+            ////////////////////////////////////////////
+            if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
+            {
+                if (metaTokens.ContainsKey("orderby" + _orderbyindex))
+                {
+                    if (metaTokens["orderby" + _orderbyindex].Contains("{") ||
+                        metaTokens["orderby" + _orderbyindex].ToLower().Contains("order by"))
+                    {
+                        _navigationdata.OrderBy = metaTokens["orderby" + _orderbyindex];
+                        _navigationdata.OrderByIdx = _orderbyindex;
+                    }
+                    else
+                    {
+                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby" + _orderbyindex];
+                        _navigationdata.OrderByIdx = _orderbyindex;
+                    }
+                    _navigationdata.Save();
+                }
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
+                {
+                    if (metaTokens["orderby"].Contains("{") || metaTokens["orderby"].ToLower().Contains("order by"))
+                    {
+                        _navigationdata.OrderBy = metaTokens["orderby"];
+                    }
+                    else
+                    {
+                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                    }
+                    _navigationdata.OrderByIdx = "";
+                    _navigationdata.Save();
+                }
+            }
+
+
+            #endregion
+
+            #region "Get Paging setup"
+
+            //See if we have a pagesize, uses the "searchpagesize" tag token.
+            // : This can be overwritten by the cookie value if we need user selection of pagesize.
+
+            #region "Get pagesize, from best place"
+            //TODO SK pagesize is already in _pagesize
+            var pageSize = 0;
+            if (Utils.IsNumeric(_pagesize)) pageSize = Convert.ToInt32(_pagesize);
+            //if (Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+            //// overwrite default module pagesize , if we have a pagesize control in the template
+            //if (metaTokens.ContainsKey("selectpagesize") && Utils.IsNumeric(_navigationdata.PageSize))
+            //{
+            //    pageSize = Convert.ToInt32(_navigationdata.PageSize);
+            //}
+            ////check for url param page size
+            //if (Utils.IsNumeric(_pagesize) &&
+            //    (_pagemid == "" | _pagemid == moduleid.ToString(CultureInfo.InvariantCulture)))
+            //    pageSize = Convert.ToInt32(_pagesize);
+            //if (pageSize == 0)
+            //{
+            //    var strPgSize = "";
+            //    if (metaTokens.ContainsKey("searchpagesize")) strPgSize = metaTokens["searchpagesize"];
+            //    if (metaTokens.ContainsKey("pagesize") && strPgSize == "") strPgSize = metaTokens["pagesize"];
+            //    if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
+            //}
+            if (pageSize > 0)
+            {
+                // TODO: make sure paging is shown
+            }
+            _navigationdata.PageSize = pageSize.ToString("");
+
+            #endregion
+
+            #endregion
+
+            #region "Get filter setup"
+
+            // check the display header to see if we have a sqlfilter defined.
+            var strFilter = "";
+            var sqlTemplateFilter = "";
+            if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
+
+            if (_navigationdata.HasCriteria)
+            {
+                var paramcatid = _catid;
+                if (Utils.IsNumeric(paramcatid))
+                {
+                    if (_navigationdata.CategoryId != Convert.ToInt32(paramcatid)) // filter mode DOES NOT persist catid (stop confusion when user selects a category)
+                    {
+                        _navigationdata.ResetSearch();
+                    }
+                }
+
+                // if navdata is not deleted then get filter from navdata, created by productsearch module.
+                strFilter = _navigationdata.Criteria;
+                if (!strFilter.Contains(sqlTemplateFilter)) strFilter += " " + sqlTemplateFilter;
+
+                if (_navigationdata.Mode.ToLower() == "s") _navigationdata.ResetSearch(); // single search so clear after
+            }
+            else
+            {
+                // reset search if category selected 
+                // NOTE: keeping search across categories is VERY confusing for cleint, although it works logically.
+                _navigationdata.ResetSearch();
+                strFilter = sqlTemplateFilter;
+            }
+
+            var pageNumber = 1;
+            //check for url param paging
+            if (Utils.IsNumeric(_pagenum) && (_pagemid == "" | _pagemid == moduleid.ToString(CultureInfo.InvariantCulture)))
+            {
+                pageNumber = Convert.ToInt32(_pagenum);
+            }
+
+            #endregion
+
+            #region "Get Category select setup"
+
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+
+            //get default catid.
+            var catseo = _catid;
+            var defcatid = ModSettings.Get("defaultcatid");
+            NBrightInfo objCat = null;
+            if (Utils.IsNumeric(defcatid))
+            {
+                // if we have no filter use the default category
+                if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+            }
+            else
+            {
+                defcatid = ModSettings.Get("defaultpropertyid");
+                if (Utils.IsNumeric(defcatid))
+                {
+                    // if we have no filter use the default category
+                    if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+                }
+            }
+
+            // If we have a static list,then always display the default category
+            if (ModSettings.Get("staticlist") == "True")
+            {
+                if (catseo == "") catseo = _catid;
+                _catid = defcatid;
+                if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                else
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                if (ModSettings.Get("caturlfilter") == "True" && catseo != "" && catseo != _catid)
+                {
+                    // add aditional filter for catid filter on url (catseo holds catid from url)
+                    if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + catseo + ") ";
+                    else
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + catseo + ") ";
+                }
+                // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" + _catid;
+            }
+            else
+            {
+                #region "use url to get category to display"
+                //check if we are display categories 
+                // get category list data
+                if (_catname != "") // if catname passed in url, calculate what the catid is
+                {
+                    objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORYLANG", _catname);
+                    if (objCat == null)
+                    {
+                        // check it's not just a single language
+                        objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORY", _catname);
+                        if (objCat != null) _catid = objCat.ItemID.ToString("");
+                    }
+                    else
+                    {
+                        _catid = objCat.ParentItemId.ToString("");
+                        if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
+                        {
+                            // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                            var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                            var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
+                            if (activeCat != null)
+                            {
+                                var redirecturl = "";
+                                if (Utils.IsNumeric(_eid))
+                                {
+                                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture(), true, EntityTypeCode);
+                                    redirecturl = NBrightBuyUtils.GetEntryUrl(ps.PortalId, _eid, _modkey, prdData.SEOName, tabid.ToString(), "", activeCat.categoryrefGUIDKey);
+                                }
+                                else
+                                {
+                                    redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, tabid);
+                                }
+
+                                try
+                                {
+                                    if (redirecturl != "")
+                                    {
+                                        //TODO: get rid of redirects here, won't do anything anyway so probably something else must be done
+                                        //Response.Redirect(redirecturl, false);
+                                        //Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
+                                        //Response.End();
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    // catch err
+                                }
+                            }
+                        }
+                    }
+                    // We have a category selected (in url), so overwrite categoryid navigationdata.
+                    // This allows the return to the same category after a returning from a entry view.
+                    if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+                    catseo = _catid;
+                }
+
+                if (Utils.IsNumeric(_catid))
+                {
+
+                    if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                    else
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                    if (Utils.IsNumeric(catseo))
+                    {
+                        var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                        if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
+                        {
+                            //TODO: Should remain in ascx.cs perhaps?
+                            //Page Title
+                            //var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                            //if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                            //var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                            //if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                            //if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                            //if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                            ////Page KeyWords
+                            //var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                            //if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                            ////Page Description
+                            //var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                            //if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                            //if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+
+                            // Remove canonical link for list.  The Open URL Rewriter (OUR) will create a url that is different to the default SEO url in NBS. 
+                            // So to stop clashes it's been disable by default.  The requirment for a canonical link on a category list is more ticking the box than of being any SEO help (might even be causing confusion to Search Engines). 
+                            // ** If your a SEO nutcases (or SEO companies pushing for it) then you can uncomment the code below, and you can implement the Open URL Rewriter and canonical link.
+
+                            //if (PortalSettings.HomeTabId == TabId)
+                            //    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                            //else
+                            //{
+                            //    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                            //    // Code required for OUR (if used, test to ensure it works correctly!!)
+                            //    //PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, "", Utils.GetCurrentCulture()));
+                            //}
+                        }
+                    }
+
+                    // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                    if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" + _catid;
+
+                }
+                else
+                {
+                    if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
+                    if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = " Order by ModifiedDate DESC  ";
+                }
+
+                #endregion
+            }
+
+            // This allows the return to the same category after a returning from a entry view. + Gives support for current category in razor tokens
+            if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+
+            #endregion
+
+            #region "Apply provider product filter"
+
+            // Special filtering can be done, by using the ProductFilter interface.
+            var productfilterkey = "";
+            if (metaTokens.ContainsKey("providerfilterkey")) productfilterkey = metaTokens["providerfilterkey"];
+            if (productfilterkey != "")
+            {
+                var provfilter = FilterInterface.Instance(productfilterkey);
+                if (provfilter != null) strFilter = provfilter.GetFilter(strFilter, _navigationdata, ModSettings, context);
+            }
+
+            #endregion
+
+            #region "itemlists (wishlist)"
+
+            // if we have a itemListName field then get the itemlist cookie.
+            if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
+            {
+                if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
+                if (_itemListName == "") _itemListName = Utils.RequestParam(context, "itemlistname"); // see if we've passed a wishlist name in url
+                if (_itemListName != "")
+                {
+                    var cw = new ItemListData(_itemListName);
+                    if (cw.Exists && cw.ItemCount > 0)
+                    {
+                        strFilter = " and (";
+                        foreach (var i in cw.GetItemList())
+                        {
+                            strFilter += " NB1.itemid = '" + i + "' or";
+                        }
+                        strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                    }
+                    else
+                    {
+                        //no data in list so select false itemid to stop anything displaying
+                        strFilter += " and (NB1.itemid = '-1') ";
+                    }
+                }
+            }
+
+            #endregion
+
+            // save navigation data
+            _navigationdata.PageModuleId = Utils.RequestParam(context, "pagemid");
+            _navigationdata.PageNumber = Utils.RequestParam(context, "page");
+            if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
+
+            // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
+            NBrightCore.common.Cookie.SetCookieValue(ps.PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
+
+            if (strFilter.Trim() == "")
+            {
+                //TODO: Check, but this should not be possible
+                // if at this point we have no filter, then assume we're using urlrewriter and a 404 url has been entered.
+                // rather than display all visible products in a list with no default.
+                // redirect to the product display function, so we can display a 404 and product not found.
+                //RazorDisplayDataEntry(_eid);
+            }
+            else
+            {
+
+                strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
+                var recordCount = ModCtrl.GetDataListCount(ps.PortalId, moduleid, EntityTypeCode, strFilter, EntityTypeCodeLang, Utils.GetCurrentCulture(), DebugMode);
+
+                _navigationdata.RecordCount = recordCount.ToString("");
+                _navigationdata.Save();
+
+                if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
+
+                // **** check if we already have the template cached, if so no need for DB call or razor call ****
+                // get same cachekey used for DB return, and use for razor.
+                var razorcachekey = ModCtrl.GetDataListCacheKey(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + ps.PortalId.ToString();
+                retval = (String)NBrightBuyUtils.GetModCache(cachekey);
+                if (retval == null || DebugMode)
+                {
+                    var l = ModCtrl.GetDataList(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    retval = NBrightBuyUtils.RazorTemplRenderList(_templD, moduleid, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                }
+
+                //SK phData.Controls.Add(lit);
+
+                if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
+
+                if (pageSize > 0)
+                {
+                    //TODO do something with paging
+                    //CtrlPaging.PageSize = pageSize;
+                    //CtrlPaging.CurrentPage = pageNumber;
+                    //CtrlPaging.TotalRecords = recordCount;
+                    //CtrlPaging.BindPageLinks();
+                }
+            }
+
+            #endregion
+
+
+            return retval;
+        }
+
+
+        #endregion
     }
 }

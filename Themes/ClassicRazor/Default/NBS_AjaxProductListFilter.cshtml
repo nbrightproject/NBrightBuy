@@ -2,6 +2,7 @@
 @using System
 @using System.Collections.Generic
 @using System.Linq
+@using DotNetNuke.Entities.Portals
 @using NBrightCore.render
 @using NBrightDNN
 @using NBrightCore.common
@@ -9,8 +10,28 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-<div class="filter">
+@{
+    var portalId = PortalSettings.Current.PortalId;
+}
+
+<div class="nbs-filter">
     Filter thing
+    @foreach (var selGroup in Model.Settings.Where(kv => kv.Key.StartsWith("selectedfilters-") && kv.Value.ToLower() == "true"))
+    {
+        var groupRef = selGroup.Key.Substring(selGroup.Key.IndexOf("-") + 1);
+
+        var groupnbi = new NBrightBuyController().GetByGuidKey(portalId, -1, "GROUP", groupRef);
+
+        var propList = NBrightBuyUtils.BuildCatList(1, false, false, groupnbi.ItemID, "", "", false, true, groupRef, "", "");
+
+        <h2>@groupnbi.GetXmlProperty("genxml/lang/genxml/textbox/groupname")</h2>
+        <ul>
+            @foreach (var item in propList)
+            {
+                <li><input type="checkbox" value="@item.Key" />@item.Value</li>
+            }
+        </ul>
+    }
 </div>
 
 <script type="text/javascript">
