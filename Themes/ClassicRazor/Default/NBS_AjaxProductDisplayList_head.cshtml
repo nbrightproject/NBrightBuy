@@ -24,7 +24,8 @@
     });
 
     // Setup Ajax functionality
-    var selPageSiSizeDropDown = "#pagesizedropdown" + "@Model.ModuleRef";
+    var selPageSizeDropDown = "#pagesizedropdown" + "@Model.ModuleRef";
+    var selOrderByDropDown = "#sortorderdropdown" + "@Model.ModuleRef";
     $(document).ready(function () {
         $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -48,12 +49,19 @@
 
     function addHandlers() {
         console.log("addHandlers called");
-        $(selPageSiSizeDropDown).change(pageSizeChanged);
+        $(selPageSizeDropDown).change(pageSizeChanged);
+        console.log("addHandlers to " + $(selOrderByDropDown).length.toString() + " sortorderdropdowns");
+        $(selOrderByDropDown).change(sortOrderChanged);
     }
 
     function pageSizeChanged() {
         console.log("pageSizeChanged called");
-        $("#pagesize").val($(selPageSiSizeDropDown).val());
+        $("#pagesize").val($(selPageSizeDropDown).val());
+        loadProductList();
+    }
+    function sortOrderChanged() {
+        console.log("sortOrderChanged called");
+        $("#orderby").val($(selOrderByDropDown).val());
         loadProductList();
     }
 

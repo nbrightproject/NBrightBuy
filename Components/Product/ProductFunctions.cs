@@ -1450,17 +1450,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
             var ps = PortalSettings.Current;
 
+
+            var settings =new Hashtable();
             // get the module settings from DNN
-            var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
-            foreach (
-                KeyValuePair<string, string> modSetting in
-                ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings)
-            {
-                if (!settings.ContainsKey(modSetting.Key))
-                {
-                    settings.Add(modSetting.Key, modSetting.Value);
-                }
-            }
+            //var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
+            //foreach (
+            //    KeyValuePair<string, string> modSetting in
+            //    ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings)
+            //{
+            //    if (!settings.ContainsKey(modSetting.Key))
+            //    {
+            //        settings.Add(modSetting.Key, modSetting.Value);
+            //    }
+            //}
+
             // then add the NBrightBuy settings
             var ModSettings = new ModSettings(moduleid, settings);
             //get Model Level Settings
@@ -1569,6 +1572,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             if (Utils.IsNumeric(_pagesize)) pageSize = Convert.ToInt32(_pagesize);
             //if (Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
             //// overwrite default module pagesize , if we have a pagesize control in the template
+            // TODO SK Don't think I need to know if there's a pagesize selector in the template. it just asks the right pagesize
+            // TODO SK Maybe I should know to make it impossible to request more items than configured
             //if (metaTokens.ContainsKey("selectpagesize") && Utils.IsNumeric(_navigationdata.PageSize))
             //{
             //    pageSize = Convert.ToInt32(_navigationdata.PageSize);

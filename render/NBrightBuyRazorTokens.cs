@@ -1067,7 +1067,7 @@ namespace NBrightBuy.render
         /// <param name="model"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String cssclass = "")
+        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String cssclass = "", bool addId = false, bool addScriptPostbackOnChange = true)
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
 
@@ -1075,7 +1075,9 @@ namespace NBrightBuy.render
 
             var strOut = "";
             var datat = datatext.Split(',');
-            strOut = "<select class='sortorderdropdown" + model.ModuleRef + " " + cssclass + " '>";
+
+            var id = addId ? $"id='sortorderdropdown{model.ModuleRef}'" : "";
+            strOut = $"<select {id} class='sortorderdropdown{model.ModuleRef} {cssclass}'>";
             var c = 0;
             var s = "";
             foreach (var t in datat)
@@ -1096,14 +1098,17 @@ namespace NBrightBuy.render
                 s = "";
                 if (c.ToString("D") == navigationdata.OrderByIdx) s = "selected";
 
-                strOut += "    <option value='" + c.ToString("D") + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                strOut += $"    <option value='{c.ToString("D")}' {s} selectedurl='{url}'>{t}</option>";
                 c += 1;
 
             }
             strOut += "</select>";
-            strOut += "<script>";
-            strOut += "$('.sortorderdropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); $('#loader').show(); });";
-            strOut += "</script>";
+
+            if (addScriptPostbackOnChange)
+            {
+                var onchangeScript = "function () { window.location.replace($('option:selected', this).attr('selectedurl')); $('#loader').show(); }";
+                strOut += $"<script>$('.sortorderdropdown{model.ModuleRef}').change({onchangeScript});</script>";
+            }
             return new RawString(strOut);
         }
 
