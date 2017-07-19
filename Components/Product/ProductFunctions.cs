@@ -139,6 +139,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         break;
                 }
             }
+            //TODO: security must be done otherwise
+            else
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
+
+                switch (paramCmd)
+                {
+                    case "product_ajaxview_getlist":
+                        strOut = ProductFunctions.ProductAjaxViewList(context);
+                        break;
+                }
+            }
             return strOut;
         }
 
@@ -513,7 +526,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (paging && (recordCount > pageSize))
                     {
                         var pg = new NBrightCore.controls.PagingCtrl();
-                        strOut += pg.RenderPager(recordCount, pageSize, pageNumber);
+                        var strPg = pg.RenderPager(recordCount, pageSize, pageNumber);
+                        strOut += strPg;
                     }
 
                     return strOut;
@@ -1485,6 +1499,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _templD = "";
             var _displayentrypage = false;
             var _orderbyindex = "";
+            var _propertyfilter = "";
             NavigationData _navigationdata;
             var EntityTypeCode = "PRD";
             var EntityTypeCodeLang = "PRDLANG";
@@ -1500,6 +1515,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             _pagenum = ctxsettings["page"];
             _pagesize = ctxsettings["pagesize"];
             _orderbyindex = ctxsettings["orderby"];
+            _propertyfilter = ctxsettings["propertyfilter"];
 
             _templD = ModSettings.Get("razorlisttemplate");
 
@@ -1589,10 +1605,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             //    if (metaTokens.ContainsKey("pagesize") && strPgSize == "") strPgSize = metaTokens["pagesize"];
             //    if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
             //}
-            if (pageSize > 0)
-            {
-                // TODO: make sure paging is shown
-            }
+
             _navigationdata.PageSize = pageSize.ToString("");
 
             #endregion
@@ -1849,6 +1862,35 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
             #endregion
 
+            #region apply ajax property filter
+
+            if (!string.IsNullOrEmpty(_propertyfilter))
+            {
+                var propIds = new List<string>();
+                foreach (string propId in _propertyfilter.Split(','))
+                {
+                    if (!String.IsNullOrEmpty(propId))
+                    {
+                        propIds.Add(propId);
+                    }
+                }
+                var sqlPropFilter = "";
+                foreach (var propId in propIds)
+                {
+                    if (!String.IsNullOrEmpty(sqlPropFilter))
+                    {
+                        sqlPropFilter += " AND ";
+                    }
+                    sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+                }
+                if (!String.IsNullOrEmpty(sqlPropFilter))
+                {
+                    strFilter += $" AND ({sqlPropFilter}) ";
+                }
+            }
+
+            #endregion
+
             // save navigation data
             _navigationdata.PageModuleId = Utils.RequestParam(context, "pagemid");
             _navigationdata.PageNumber = Utils.RequestParam(context, "page");
@@ -1890,16 +1932,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                 //SK phData.Controls.Add(lit);
 
-                if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
-
-                if (pageSize > 0)
+                // add paging if needed
+                if (recordCount > pageSize)
                 {
-                    //TODO do something with paging
-                    //CtrlPaging.PageSize = pageSize;
-                    //CtrlPaging.CurrentPage = pageNumber;
-                    //CtrlPaging.TotalRecords = recordCount;
-                    //CtrlPaging.BindPageLinks();
+                    var pg = new NBrightCore.controls.PagingCtrl();
+                    var strPg = pg.RenderPager(recordCount, pageSize, pageNumber);
+                    retval += strPg;
                 }
+
+                if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
             }
 
             #endregion

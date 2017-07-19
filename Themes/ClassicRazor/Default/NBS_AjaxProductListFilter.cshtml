@@ -14,17 +14,15 @@
     var portalId = PortalSettings.Current.PortalId;
 }
 
-<div class="nbs-filter">
-    Filter thing
+<div class="nbs-ajaxfilter">
     @foreach (var selGroup in Model.Settings.Where(kv => kv.Key.StartsWith("selectedfilters-") && kv.Value.ToLower() == "true"))
     {
         var groupRef = selGroup.Key.Substring(selGroup.Key.IndexOf("-") + 1);
-
-        var groupnbi = new NBrightBuyController().GetByGuidKey(portalId, -1, "GROUP", groupRef);
-
+        var nbc = new NBrightBuyController();
+        var groupnbi = nbc.GetByGuidKey(portalId, -1, "GROUP", groupRef);
+        var grouplang = nbc.GetDataLang(groupnbi.ItemID, System.Threading.Thread.CurrentThread.CurrentCulture.ToString());
         var propList = NBrightBuyUtils.BuildCatList(1, false, false, groupnbi.ItemID, "", "", false, true, groupRef, "", "");
-
-        <h2>@groupnbi.GetXmlProperty("genxml/lang/genxml/textbox/groupname")</h2>
+        <h2>@grouplang.GetXmlProperty("genxml/textbox/groupname")</h2>
         <ul>
             @foreach (var item in propList)
             {

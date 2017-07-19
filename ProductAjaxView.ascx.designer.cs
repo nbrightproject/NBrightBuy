@@ -20,14 +20,5 @@ namespace Nevoweb.DNN.NBrightBuy {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phData;
-        
-        /// <summary>
-        /// phPaging control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPaging;
     }
 }

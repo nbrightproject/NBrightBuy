@@ -2409,7 +2409,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
 
         #endregion
-
     }
 }
 

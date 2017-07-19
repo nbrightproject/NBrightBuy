@@ -50,9 +50,23 @@
     function addHandlers() {
         console.log("addHandlers called");
         $(selPageSizeDropDown).change(pageSizeChanged);
-        console.log("addHandlers to " + $(selOrderByDropDown).length.toString() + " sortorderdropdowns");
         $(selOrderByDropDown).change(sortOrderChanged);
+
+        $(".NBrightPagingDiv a.cmdPg[pagenumber!='']").click(function(){ pagerClicked(this); });
     }
+
+    /*
+<div class="NBrightPagingDiv">
+    <ul>
+        <a class="cmdPg" pagenumber=""></a>
+        <li class="NBrightSelectPg"><a class="cmdPg" pagenumber="1">1</a></li>
+        <li class="NBrightNormalPg"><a class="cmdPg" pagenumber="2">2</a></li>
+        <li class="NBrightNormalPg"><a class="cmdPg" pagenumber="3">3</a></li>
+        <li class="NBrightNextPg"><a class="cmdPg" pagenumber="2">&gt;</a></li>
+        <a class="cmdPg" pagenumber=""></a>
+    </ul>
+</div>    
+    */
 
     function pageSizeChanged() {
         console.log("pageSizeChanged called");
@@ -64,7 +78,23 @@
         $("#orderby").val($(selOrderByDropDown).val());
         loadProductList();
     }
+    function pagerClicked(lnk) {
+        console.log("pagerclicked called");
+        console.log("pagenumber: " + $(lnk).attr("pagenumber"));
+        $("#page").val($(lnk).attr("pagenumber"));
+        loadProductList();
+    }
+    function propertyFilterClicked() {
+        console.log("propertyFilterClicked called");
 
+        var list = "";
+        console.log("propertyFilterClicked found checked elements: " + $(".nbs-ajaxfilter input[type='checkbox']:checked").length.toString());
+        $(".nbs-ajaxfilter input[type='checkbox']:checked").each(function() {
+            list += $(this).val() + ",";
+        });
+        $("#propertyfilter").val(list);
+        loadProductList();
+    }
     function loadProductList() {
         nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
     }

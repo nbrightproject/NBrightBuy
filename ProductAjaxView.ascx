@@ -1,6 +1,5 @@
 <%@ Control language="C#" Inherits="Nevoweb.DNN.NBrightBuy.ProductAjaxView" AutoEventWireup="true"  Codebehind="ProductAjaxView.ascx.cs" %>
 <asp:PlaceHolder ID="phData" runat="server"></asp:PlaceHolder>
-<asp:PlaceHolder ID="phPaging" runat="server"></asp:PlaceHolder>
 
 <div id="nbs_productajaxview" style="display: none;">
     <!-- Parameter fields -->
@@ -16,9 +15,9 @@
     <input id="modkey" type="hidden" value="" />
     <input id="pagemid" type="hidden" value="" />
     <input id="page" type="hidden" value="" />
-    <input id="pagenumber" type="hidden" value="" />
     <input id="pagesize" type="hidden" value="" />
     <input id="orderby" type="hidden" value="" />
-
+    
+    <input id="propertyfilter" type="hidden" value="" />
 </div>
 <div id="nbs_ajaxproducts"></div>
