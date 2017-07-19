@@ -1113,8 +1113,11 @@ namespace NBrightBuy.render
         /// <param name="datatext"></param>
         /// <param name="model"></param>
         /// <param name="attributes"></param>
+        /// <param name="cssclass"></param>
+        /// <param name="addId"></param>
+        /// <param name="addScriptPostbackOnChange">Inidaction to add javascript to initiate postback when the dropdown changes</param>
         /// <returns></returns>
-        public IEncodedString PageSizeDropDownList(String datatext, NBrightRazor model, String cssclass = "")
+        public IEncodedString PageSizeDropDownList(String datatext, NBrightRazor model, String cssclass = "", bool addId = false, bool addScriptPostbackOnChange = true)
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
 
@@ -1124,7 +1127,8 @@ namespace NBrightBuy.render
 
             var strOut = "";
             var datat = datatext.Split(',');
-            strOut = "<select class='pagesizedropdown" + model.ModuleRef + " " + cssclass + " '>";
+            var id = addId ? $"id='pagesizedropdown{model.ModuleRef}'" : "";
+            strOut = $"<select {id} class='pagesizedropdown{model.ModuleRef} {cssclass} '>";
             var c = 0;
             var s = "";
             foreach (var t in datat)
@@ -1145,14 +1149,17 @@ namespace NBrightBuy.render
                 s = "";
                 if (t == navigationdata.PageSize) s = "selected";
 
-                strOut += "    <option value='" + t + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                strOut += $"    <option value='{t}' {s} selectedurl='{url}' >{t}</option>";
                 c += 1;
             }
             strOut += "</select>";
 
-            strOut += "<script>";
-            strOut += "$('.pagesizedropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl'));  $('#loader').show(); });";
-            strOut += "</script>";
+            if (addScriptPostbackOnChange)
+            {
+                var onchangeScript =
+                    "function () { window.location.replace($('option:selected', this).attr('selectedurl'));  $('#loader').show(); }";
+                strOut += $"<script>$('.pagesizedropdown{model.ModuleRef}').change({onchangeScript});</script>";
+            }
 
             return new RawString(strOut);
         }

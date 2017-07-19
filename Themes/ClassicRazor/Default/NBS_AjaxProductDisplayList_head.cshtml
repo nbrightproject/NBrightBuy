@@ -24,6 +24,7 @@
     });
 
     // Setup Ajax functionality
+    var selPageSiSizeDropDown = "#pagesizedropdown" + "@Model.ModuleRef";
     $(document).ready(function () {
         $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -33,17 +34,32 @@
         $("#tabid").val("@Model.GetUrlParam("tabid")");
         $("#currentlang").val("@Model.Lang");
         $("#lang").val("@Model.Lang");
-        $("#pagesize").val("20");
+        $("#pagesize").val("@Model.Settings["pagesize"]");
         $("#pagenumber").val("1");
 
         @* Parameters are set, now get the initial data *@
-        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
-
-        function AjaxView_GetList_nbxgetCompleted(e) {
-            //$("#nbs-ajaxproducts").html(e.toString());
-            alert("AjaxView_GetList_nbxgetCompleted");
-        }
+        loadProductList();
     });
+
+    function AjaxView_GetList_nbxgetCompleted(e) {
+        console.log("AjaxView_GetList_nbxgetCompleted called");
+        addHandlers();
+    }
+
+    function addHandlers() {
+        console.log("addHandlers called");
+        $(selPageSiSizeDropDown).change(pageSizeChanged);
+    }
+
+    function pageSizeChanged() {
+        console.log("pageSizeChanged called");
+        $("#pagesize").val($(selPageSiSizeDropDown).val());
+        loadProductList();
+    }
+
+    function loadProductList() {
+        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    }
 
     // Detect Touch Device
     function isTouch() {

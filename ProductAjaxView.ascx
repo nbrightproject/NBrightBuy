@@ -10,14 +10,13 @@
     <input id="tabid" type="hidden" value="" />
     <input id="currentlang" type="hidden" value="" />
     <input id="lang" type="hidden" value="" />
-    <input id="pagesize" type="hidden" value="" />
-    <input id="pagenumber" type="hidden" value="" />
     <input id="catid" type="hidden" value="" />
     <input id="catref" type="hidden" value="" />
 
     <input id="modkey" type="hidden" value="" />
     <input id="pagemid" type="hidden" value="" />
     <input id="page" type="hidden" value="" />
+    <input id="pagenumber" type="hidden" value="" />
     <input id="pagesize" type="hidden" value="" />
     <input id="orderby" type="hidden" value="" />
 
