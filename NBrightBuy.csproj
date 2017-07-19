@@ -189,6 +189,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Clients\ClientFunctions.cs" />
+    <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="Components\Payments\PaymentFunctions.cs" />

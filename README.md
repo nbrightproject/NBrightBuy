@@ -8,8 +8,6 @@ http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 v3.6.5
 - Allow shipping provider to adjust all shipping cost by a percentage.
 - Fix template to display document download name.
-
-v3.6.5
 - Fix bug on category sort
 
 v3.6.3

@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -25,6 +26,7 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
@@ -147,6 +149,12 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     param[0] = "";
                     Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
                     break;
+                case "runcustomprovider":
+                    var msg = RunCustomProvider();
+                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
+                    param[0] = "";
+                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
+                    break;
             }
 
         }
@@ -254,6 +262,30 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             }
         }
 
+        private string RunCustomProvider()
+        {
+            try
+            {
+                var assembly = GenXmlFunctions.GetField(rpData, "providerassembly");
+                var namespaceclass = GenXmlFunctions.GetField(rpData, "providernamespaceclass");
+                var paramdata = GenXmlFunctions.GetField(rpData, "paramdata");
+                ObjectHandle handle = null;
+                handle = Activator.CreateInstance(assembly, namespaceclass);
+                if (handle != null)
+                {
+                    var prov = (CustomActionInterface)handle.Unwrap();
+                    if (prov != null)
+                    {
+                        prov.Run(paramdata);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return "ERROR";
+            }
+            return "";
+        }
 
         private void ResetLanguage()
         {
