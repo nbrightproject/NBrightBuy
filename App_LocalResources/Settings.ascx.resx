@@ -271,7 +271,7 @@
     <value>Share products</value>
   </data>
   <data name="shareproductsmsg.Text" xml:space="preserve">
-    <value>Share PRODUCTS and CATEGORIES created in this portal with all portals in the DNN installation</value>
+    <value>Share PRODUCTS created in this portal with all portals in the DNN installation</value>
   </data>
   <data name="alloweditorder.Text" xml:space="preserve">
     <value>Allow Order Edit</value>
@@ -467,5 +467,11 @@
   </data>
   <data name="shareordersmsg.Text" xml:space="preserve">
     <value>Administer ORDERS made in this portal from any portal in the DNN installation</value>
+  </data>
+  <data name="sharecategories.Text" xml:space="preserve">
+    <value>Share categories</value>
+  </data>
+  <data name="sharecategoriesmsg.Text" xml:space="preserve">
+    <value>Share CATEGORIES created in this portal with all portals in the DNN installation. Sharing categories will also share any producs add to the category across ALL portals.</value>
   </data>
 </root>

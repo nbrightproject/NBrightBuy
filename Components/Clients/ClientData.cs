@@ -391,6 +391,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataRecord.PortalId = PortalId;
                 DataRecord.ModuleId = -1;
                 DataRecord.TypeCode = "CLIENT";
+                objCtrl.Update(DataRecord);
             }
             else
             {

@@ -360,4 +360,10 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="article.Text" xml:space="preserve">
     <value>item</value>
   </data>
+  <data name="page404title.Text" xml:space="preserve">
+    <value>The page you are looking for doesn't exist (404)</value>
+  </data>
+  <data name="productnotfound.Text" xml:space="preserve">
+    <value>404 - Product Not Found</value>
+  </data>
 </root>

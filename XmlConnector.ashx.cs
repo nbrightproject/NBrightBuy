@@ -194,7 +194,15 @@ namespace Nevoweb.DNN.NBrightBuy
                                 var downloadname = Utils.RequestQueryStringParam(context, "downloadname");
                                 var fpath = HttpContext.Current.Server.MapPath(fname);
                                 if (downloadname == "") downloadname = Path.GetFileName(fname);
-                                Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                                try
+                                {
+                                    Utils.ForceDocDownload(fpath, downloadname, context.Response);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // ignore, robots can cause error on thread abort.
+                                    //Exceptions.LogException(ex);
+                                }
                             }
                             break;
                         case "printproduct":

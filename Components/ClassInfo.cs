@@ -89,6 +89,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string friendlyurlids = "friendlyurlids";
         public static string alloweditorder = "alloweditorder";
         public static string shareproducts = "shareproducts";
+        public static string sharecategories = "sharecategories";
         public static string chkgroupresults = "chkgroupresults";
         public static string productimageresize = "productimageresize";
         public static string cartsteps = "cartsteps";
