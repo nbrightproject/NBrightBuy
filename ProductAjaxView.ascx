@@ -19,5 +19,9 @@
     <input id="orderby" type="hidden" value="" />
     
     <input id="propertyfilter" type="hidden" value="" />
+    
+    <!-- this one will be set from the filter list -->
+    <input id="propertyfiltertypeinside" type="hidden" value="" />
+    <input id="propertyfiltertypeoutside" type="hidden" value="" />
 </div>
 <div id="nbs_ajaxproducts"></div>

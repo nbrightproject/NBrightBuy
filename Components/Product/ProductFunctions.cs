@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Razor;
 using System.Web.Script.Serialization;
+using System.Windows.Forms.VisualStyles;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -172,7 +173,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
                         if (!settings.ContainsKey("portalid"))
                             settings.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
-                                // aways make sure we have portalid in settings
+                        // aways make sure we have portalid in settings
                         if (!settings.ContainsKey("selecteditemid")) settings.Add("selecteditemid", "");
 
                         var themeFolder = settings["themefolder"];
@@ -182,7 +183,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                         var passSettings = settings;
                         foreach (var s in StoreSettings.Current.Settings())
-                            // copy store setting, otherwise we get a byRef assignement
+                        // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -428,7 +429,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                     if (!settings.ContainsKey("portalid"))
                         settings.Add("portalid", PortalSettings.Current.PortalId.ToString(""));
-                            // aways make sure we have portalid in settings
+                    // aways make sure we have portalid in settings
 
                     // select a specific entity data type for the product (used by plugins)
                     if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
@@ -511,7 +512,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                     var passSettings = settings;
                     foreach (var s in StoreSettings.Current.Settings())
-                        // copy store setting, otherwise we get a byRef assignement
+                    // copy store setting, otherwise we get a byRef assignement
                     {
                         if (passSettings.ContainsKey(s.Key))
                             passSettings[s.Key] = s.Value;
@@ -588,7 +589,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                         var passSettings = ajaxInfo.ToDictionary();
                         foreach (var s in StoreSettings.Current.Settings())
-                            // copy store setting, otherwise we get a byRef assignement
+                        // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -654,7 +655,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                         var passSettings = ajaxInfo.ToDictionary();
                         foreach (var s in StoreSettings.Current.Settings())
-                            // copy store setting, otherwise we get a byRef assignement
+                        // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -725,7 +726,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                         var passSettings = settings;
                         foreach (var s in StoreSettings.Current.Settings())
-                            // copy store setting, otherwise we get a byRef assignement
+                        // copy store setting, otherwise we get a byRef assignement
                         {
                             if (passSettings.ContainsKey(s.Key))
                                 passSettings[s.Key] = s.Value;
@@ -1465,7 +1466,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var ps = PortalSettings.Current;
 
 
-            var settings =new Hashtable();
+            var settings = new Hashtable();
             // get the module settings from DNN
             //var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
             //foreach (
@@ -1507,6 +1508,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _guidkey = "";
             var _404code = false;
             var returnlimit = 0;
+            var _filterTypeInsideProp = "AND";
+            var _filterTypeOutsideProp = "AND";
 
             _catid = ctxsettings["catid"];
             _catname = ctxsettings["catref"];
@@ -1518,6 +1521,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             _propertyfilter = ctxsettings["propertyfilter"];
 
             _templD = ModSettings.Get("razorlisttemplate");
+
+            // we're making sure here, that this thing can only be AND or OR to prevent SQL Injection in any case
+            if (ctxsettings["propertyfiltertypeinside"] == "OR")
+                _filterTypeInsideProp = "OR";
+            if (ctxsettings["propertyfiltertypeoutside"] == "OR")
+                _filterTypeOutsideProp = "OR";
 
             //Get returnlimt from module settings
             var strreturnlimit = ModSettings.Get("returnlimit");
@@ -1867,25 +1876,51 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             if (!string.IsNullOrEmpty(_propertyfilter))
             {
                 var propIds = new List<string>();
-                foreach (string propId in _propertyfilter.Split(','))
+                var groupPropIds = new Dictionary<string, List<string>>();
+                foreach (string grpPropId in _propertyfilter.Split(','))
                 {
-                    if (!String.IsNullOrEmpty(propId))
+                    if (!String.IsNullOrEmpty(grpPropId) && grpPropId.Contains("-"))
                     {
-                        propIds.Add(propId);
+                        var groupId = grpPropId.Split('-')[0];
+                        var propId = grpPropId.Split('-')[1];
+
+                        if (!groupPropIds.ContainsKey(groupId)) groupPropIds.Add(groupId, new List<string>());
+
+                        groupPropIds[groupId].Add(propId);
                     }
                 }
-                var sqlPropFilter = "";
-                foreach (var propId in propIds)
+
+                var sqlGroupFilter = "";
+                foreach (var groupPropId in groupPropIds.Keys)
                 {
-                    if (!String.IsNullOrEmpty(sqlPropFilter))
+                    if (!String.IsNullOrEmpty(sqlGroupFilter))
                     {
-                        sqlPropFilter += " AND ";
+                        sqlGroupFilter += $" {_filterTypeOutsideProp} ";
                     }
-                    sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+
+                    var sqlPropFilter = "";
+                    foreach (var propId in groupPropIds[groupPropId])
+                    {
+                        if (!String.IsNullOrEmpty(sqlPropFilter))
+                        {
+                            sqlPropFilter += $" {_filterTypeInsideProp} ";
+                        }
+                        sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+                    }
+                    sqlGroupFilter += $" ({sqlPropFilter}) ";
                 }
-                if (!String.IsNullOrEmpty(sqlPropFilter))
+
+                //foreach (var propId in propIds)
+                //{
+                //    if (!String.IsNullOrEmpty(sqlPropFilter))
+                //    {
+                //        sqlPropFilter += " AND ";
+                //    }
+                //    sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+                //}
+                if (!String.IsNullOrEmpty(sqlGroupFilter))
                 {
-                    strFilter += $" AND ({sqlPropFilter}) ";
+                    strFilter += $" AND ({sqlGroupFilter}) ";
                 }
             }
 

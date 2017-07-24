@@ -1,6 +1,7 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using System.Linq
 @using System.Web.UI.HtmlControls
+@using NBrightCore
 @using NBrightDNN
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
@@ -8,6 +9,22 @@
 @{
     var info = (NBrightInfo)Model.List.First();
 }
+
+<script type="text/javascript">
+    function upateNbsFilterSelectionSortOrders() {
+        $("#nbs-filterselection input[id^='selectedfiltersSort-']").each(function(index) {
+            $(this).val(index);
+        });
+    }
+    $( function() {
+        $("#nbs-filterselection").sortable({
+            stop: function (event, ui) { upateNbsFilterSelectionSortOrders(); }
+        });;
+        $("#nbs-filterselection").disableSelection();
+
+        upateNbsFilterSelectionSortOrders();
+    });
+</script>
 
 <div id="nbrightbuysettings">
 
@@ -33,13 +50,25 @@
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lbltemplate", "Settings.razortemplate")
-                    @NBrightTextBox(info, "genxml/textbox/razortemplate", "", "NBS_CategoryMenu.cshtml")
+                    @NBrightTextBox(info, "genxml/textbox/razortemplate", "", "NBS_AjaxProductListFilter.cshtml")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lblfiltertypeoutsideproperty", "Settings.lblfiltertypeoutsideproperty")
+                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeoutsideproperty", "ResourceKey:Settings.filtertypeoutsidedatavalue", "ResourceKey:Settings.filtertypeoutsidedata", "", "AND", "class='radio-inline'")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lblfiltertypeinsideproperty", "Settings.lblfiltertypeinsideproperty")
+                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeinsideproperty", "ResourceKey:Settings.filtertypeinsidedatavalue", "ResourceKey:Settings.filtertypeinsidedata", "", "AND", "class='radio-inline'")
                 </div>
             </div>
             <h2>available filters</h2>
             <div class="dnnFormItem">
                 @DnnLabel("lblFilters", "Settings.selectedfilters")
-                @GroupCheckboxList(info, "genxml/checkboxlist/selectedfilters", "class")
+                @GroupCheckboxList(info, "genxml/checkboxlist/selectedfilters", "style=\"display: inline-block\" id=\"nbs-filterselection\"", addSortOrderInput: true)
             </div>
         </div>
 

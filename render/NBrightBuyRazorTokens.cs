@@ -644,7 +644,7 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString GroupCheckboxList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1")
+        public IEncodedString GroupCheckboxList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1", bool addSortOrderInput = false)
         {
             var strOut = "";
             var upd = getUpdateAttr(xpath, attributes);
@@ -672,8 +672,14 @@ namespace NBrightBuy.render
                         @checked = "";
                         checkedClass = "";
                     }
-                    if (hasItems) strOut += "<br/>";
-                    strOut += $"    <input id='{id}-{groupRef}' type='checkbox' value='{groupRef}' {@checked} {upd}><span class='dnnCheckbox {checkedClass}'>{groupName} ({groupRef})</span>";
+                    var sortOrderInput = "";
+                    if (addSortOrderInput)
+                    {
+                        var sortValue = info.GetXmlPropertyInt($"genxml/checkbox/{id}Sort-{groupRef}");
+                        sortOrderInput = $"<input type=\"hidden\" id=\"{id}Sort-{groupRef}\" value=\"{sortValue}\" {upd}>";
+                    }
+
+                    strOut += $"    <div>{sortOrderInput}<input id='{id}-{groupRef}' type='checkbox' value='{groupRef}' {@checked} {upd}><span class='dnnCheckbox {checkedClass}'>{groupName} ({groupRef})</span></div>";
                     hasItems = true;
                 }
             }
