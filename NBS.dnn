@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
 
-    <package name="NBS_ProductView" type="Module" version="3.6.4">
+    <package name="NBS_ProductView" type="Module" version="3.6.5">
       <friendlyName>NBS_ProductView</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
@@ -45,42 +45,52 @@
           <scripts>
             <basePath>DesktopModules\NBright\NBrightBuy</basePath>
             <script type="Install">
+              <path>Installation</path>
               <name>02.06.00.SqlDataProvider</name>
               <version>02.06.00</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.00.00.SqlDataProvider</name>
               <version>03.00.00</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.02.00.SqlDataProvider</name>
               <version>03.02.00</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.02.00.SqlDataProvider</name>
               <version>03.02.00</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.05.06.SqlDataProvider</name>
               <version>03.05.06</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.05.07.SqlDataProvider</name>
               <version>03.05.07</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.05.08.SqlDataProvider</name>
               <version>03.05.08</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.05.09.SqlDataProvider</name>
               <version>03.05.09</version>
             </script>
             <script type="Install">
+              <path>Installation</path>
               <name>03.05.10.SqlDataProvider</name>
               <version>03.05.10</version>
             </script>
             <script type="UnInstall">
+              <path>Installation</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>03.00.00</version>
             </script>

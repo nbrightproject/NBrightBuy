@@ -1962,6 +1962,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (retval == null || DebugMode)
                 {
                     var l = ModCtrl.GetDataList(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    if(!ModSettings.Settings().ContainsKey("recordcount")) ModSettings.Settings().Add("recordcount", "");
+                    ModSettings.Settings()["recordcount"] = recordCount.ToString();
                     retval = NBrightBuyUtils.RazorTemplRenderList(_templD, moduleid, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 }
 
