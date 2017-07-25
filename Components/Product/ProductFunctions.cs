@@ -41,118 +41,132 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             if (_editlang == "") _editlang = Utils.GetCurrentCulture();
 
             var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
-            if (NBrightBuyUtils.CheckManagerRights())
-            {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
 
-                switch (paramCmd)
-                {
-                    case "product_admin_getlist":
-                        strOut = ProductFunctions.ProductAdminList(context);
-                        break;
-                    case "product_admin_getdetail":
-                        strOut = ProductFunctions.ProductAdminDetail(context);
-                        break;
-                    case "product_adminaddnew":
-                        strOut = ProductFunctions.ProductAdminAddNew(context);
-                        break;
-                    case "product_admin_save":
-                        strOut = ProductFunctions.ProductAdminSave(context);
-                        break;
-                    case "product_admin_saveexit":
-                        strOut = ProductFunctions.ProductAdminSaveExit(context);
-                        break;
-                    case "product_admin_saveas":
-                        strOut = ProductFunctions.ProductAdminSaveAs(context);
-                        break;
-                    case "product_admin_selectlist":
-                        strOut = ProductFunctions.ProductAdminList(context);
-                        break;
-                    case "product_moveproductadmin":
-                        strOut = ProductFunctions.MoveProductAdmin(context);
-                        break;
-                    case "product_addproductmodels":
-                        strOut = ProductFunctions.AddModel(context);
-                        break;
-                    case "product_addproductoptions":
-                        strOut = ProductFunctions.AddOption(context);
-                        break;
-                    case "product_addproductoptionvalues":
-                        strOut = ProductFunctions.AddOptionValues(context);
-                        break;
-                    case "product_admin_delete":
-                        strOut = ProductFunctions.DeleteProduct(context);
-                        break;
-                    case "product_updateproductimages":
-                        strOut = ProductFunctions.UpdateProductImages(context);
-                        break;
-                    case "product_updateproductdocs":
-                        strOut = ProductFunctions.UpdateProductDocs(context);
-                        break;
-                    case "product_addproductcategory":
-                        strOut = ProductFunctions.AddProductCategory(context);
-                        break;
-                    case "product_removeproductcategory":
-                        strOut = ProductFunctions.RemoveProductCategory(context);
-                        break;
-                    case "product_setdefaultcategory":
-                        strOut = ProductFunctions.SetDefaultCategory(context);
-                        break;
-                    case "product_populatecategorylist":
-                        strOut = ProductFunctions.GetPropertyListBox(context);
-                        break;
-                    case "product_addproperty":
-                        strOut = ProductFunctions.AddProperty(context);
-                        break;
-                    case "product_removeproperty":
-                        strOut = ProductFunctions.RemoveProperty(context);
-                        break;
-                    case "product_removerelated":
-                        strOut = ProductFunctions.RemoveRelatedProduct(context);
-                        break;
-                    case "product_addrelatedproduct":
-                        strOut = ProductFunctions.AddRelatedProduct(context);
-                        break;
-                    case "product_getproductselectlist":
-                        strOut = ProductFunctions.GetProductSelectList(context);
-                        break;
-                    case "product_getclientselectlist":
-                        strOut = ProductFunctions.GetClientSelectList(context);
-                        break;
-                    case "product_addproductclient":
-                        strOut = ProductFunctions.AddProductClient(context);
-                        break;
-                    case "product_productclients":
-                        strOut = ProductFunctions.GetProductClients(context);
-                        break;
-                    case "product_removeproductclient":
-                        strOut = ProductFunctions.RemoveProductClient(context);
-                        break;
-                    case "product_selectchangedisable":
-                        strOut = ProductFunctions.ProductDisable(context);
-                        break;
-                    case "product_selectchangehidden":
-                        strOut = ProductFunctions.ProductHidden(context);
-                        break;
-                    case "product_ajaxview_getlist":
-                        strOut = ProductFunctions.ProductAjaxViewList(context);
-                        break;
-                }
-            }
-            //TODO: security must be done otherwise
-            else
+            switch (paramCmd)
             {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
-
-                switch (paramCmd)
-                {
-                    case "product_ajaxview_getlist":
-                        strOut = ProductFunctions.ProductAjaxViewList(context);
-                        break;
-                }
+                case "product_admin_getlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminList(context);
+                    break;
+                case "product_admin_getdetail":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminDetail(context);
+                    break;
+                case "product_adminaddnew":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminAddNew(context);
+                    break;
+                case "product_admin_save":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSave(context);
+                    break;
+                case "product_admin_saveexit":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSaveExit(context);
+                    break;
+                case "product_admin_saveas":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSaveAs(context);
+                    break;
+                case "product_admin_selectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminList(context);
+                    break;
+                case "product_moveproductadmin":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.MoveProductAdmin(context);
+                    break;
+                case "product_addproductmodels":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddModel(context);
+                    break;
+                case "product_addproductoptions":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddOption(context);
+                    break;
+                case "product_addproductoptionvalues":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddOptionValues(context);
+                    break;
+                case "product_admin_delete":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.DeleteProduct(context);
+                    break;
+                case "product_updateproductimages":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.UpdateProductImages(context);
+                    break;
+                case "product_updateproductdocs":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.UpdateProductDocs(context);
+                    break;
+                case "product_addproductcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProductCategory(context);
+                    break;
+                case "product_removeproductcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProductCategory(context);
+                    break;
+                case "product_setdefaultcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.SetDefaultCategory(context);
+                    break;
+                case "product_populatecategorylist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetPropertyListBox(context);
+                    break;
+                case "product_addproperty":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProperty(context);
+                    break;
+                case "product_removeproperty":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProperty(context);
+                    break;
+                case "product_removerelated":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveRelatedProduct(context);
+                    break;
+                case "product_addrelatedproduct":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddRelatedProduct(context);
+                    break;
+                case "product_getproductselectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetProductSelectList(context);
+                    break;
+                case "product_getclientselectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetClientSelectList(context);
+                    break;
+                case "product_addproductclient":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProductClient(context);
+                    break;
+                case "product_productclients":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetProductClients(context);
+                    break;
+                case "product_removeproductclient":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProductClient(context);
+                    break;
+                case "product_selectchangedisable":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductDisable(context);
+                    break;
+                case "product_selectchangehidden":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductHidden(context);
+                    break;
+                case "product_ajaxview_getlist":
+                    strOut = ProductFunctions.ProductAjaxViewList(context);
+                    break;
             }
+
             return strOut;
         }
 
@@ -1962,7 +1976,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 if (retval == null || DebugMode)
                 {
                     var l = ModCtrl.GetDataList(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-                    if(!ModSettings.Settings().ContainsKey("recordcount")) ModSettings.Settings().Add("recordcount", "");
+                    if (!ModSettings.Settings().ContainsKey("recordcount")) ModSettings.Settings().Add("recordcount", "");
                     ModSettings.Settings()["recordcount"] = recordCount.ToString();
                     retval = NBrightBuyUtils.RazorTemplRenderList(_templD, moduleid, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 }
