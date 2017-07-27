@@ -679,7 +679,7 @@ namespace NBrightBuy.render
                         sortOrderInput = $"<input type=\"hidden\" id=\"{id}Sort-{groupRef}\" value=\"{sortValue}\" {upd}>";
                     }
 
-                    strOut += $"    <div>{sortOrderInput}<input id='{id}-{groupRef}' type='checkbox' value='{groupRef}' {@checked} {upd}><span class='dnnCheckbox {checkedClass}'>{groupName} ({groupRef})</span></div>";
+                    strOut += $"    <div>{sortOrderInput}<input id='{id}-{groupRef}' type='checkbox' value='{groupRef}' {@checked} {upd}><span class='dnnCheckbox dnnCheckboxLabel {checkedClass}'>{groupName} ({groupRef})</span></div>";
                     hasItems = true;
                 }
             }

@@ -45,6 +45,7 @@
     function AjaxView_GetList_nbxgetCompleted(e) {
         //console.log("AjaxView_GetList_nbxgetCompleted called");
         addHandlers();
+        $('#loader').hide('');
     }
 
     function addHandlers() {
@@ -96,6 +97,7 @@
         loadProductList();
     }
     function loadProductList() {
+        $('#loader').show('');
         nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
     }
 

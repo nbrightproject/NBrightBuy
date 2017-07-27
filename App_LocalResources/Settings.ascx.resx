@@ -469,7 +469,7 @@
     <value>Administer ORDERS made in this portal from any portal in the DNN installation</value>
   </data>
   <data name="selectedfilters.Text" xml:space="preserve">
-    <value>Select Filters</value>
+    <value>Select Filters&lt;br/&gt;&lt;span style="font-weight: normal;"&gt;(drag-drop to sort)&lt;/span&gt;</value>
   </data>
   <data name="filtertypeinsidedata.Text" xml:space="preserve">
     <value>Product must have all selected properties,Product must have one or more of selected properties</value>
@@ -494,5 +494,8 @@
   </data>
   <data name="lblfiltertypeoutsideproperty.Text" xml:space="preserve">
     <value>Filter Type Outside Property</value>
+  </data>
+  <data name="selectedfilters.Help" xml:space="preserve">
+    <value>Drag and drop individual items to change the sort order.</value>
   </data>
 </root>

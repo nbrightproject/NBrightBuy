@@ -28,6 +28,7 @@
      <InstallInclude Include="**\*.xml" Exclude="**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
       <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;Installation\**;" />
       <InstallInclude Include="**\images\**" Exclude="packages\**" />
+      <InstallInclude Include="**\img\**" Exclude="packages\**" />
       
     </ItemGroup>
 
@@ -45,6 +46,7 @@
       <SourceInclude Include="**\*.js" />
       <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;packages\**;" />
       <SourceInclude Include="**\images\**" />
+      <SourceInclude Include="**\img\**" />
       <SourceInclude Include="**\*.cs" />
       <SourceInclude Include="**\*.cs.designer" />
       <SourceInclude Include="**\*.csproj" />

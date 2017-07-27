@@ -400,8 +400,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             var filePath = StoreSettings.Current.FolderTempMapPath + "\\" + tempfilename;
-            Utils.SaveFile(filePath, nbi.XMLData);
+            try
+            {
+                Utils.SaveFile(filePath, nbi.XMLData);
 
+            }
+            catch (Exception e)
+            {
+                // this is because the file's in use sometimes
+                // we call it bad luck in those cases
+            }
 
             Exists = true;
         }

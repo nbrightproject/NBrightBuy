@@ -244,6 +244,11 @@ input.quantity {float:left;margin:0 6px;}
 .productdetail .relateditem .manufacturer{display:inline-block;margin-right:3px;}
 .productdetail .relateditem .name{display:inline-block;}
 
+/* Ajax Filter Module */
+.nbs-ajaxfilter li {
+    list-style: none;
+}
+
 /* Flags */
 .outofstockflag {background:#395876;color:#FFFFFF;font-size:12px;font-weight:bold;right:0;line-height:24px;padding:0 9px;position:absolute;top:10%;}
 .outofstockflag:after {border-color:#395876 #395876 #395876 transparent;border-style:solid;border-width:12px 7px;content:" ";left:-7px;position:absolute;}

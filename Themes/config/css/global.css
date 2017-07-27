@@ -65,6 +65,11 @@ input[type=radio].invalid{box-shadow:0 0 4px #ff0000;}
 #loader{background:#848D92;color: #000000;height: 100%;left: 0;opacity: 0.3;transition:all 0.4s ease-in-out 0s;position: fixed;text-align: center;top: 0;width: 100%;z-index: 9999;}
 #loader .fa{margin-top:300px;color: #ffffff;}
 
+/* For sortable checkboxlist */
+.checkboxlist-sortable .dnnCheckboxLabel {
+    cursor: move;
+}
+
 /**********************************************************/
 /* MEDIA QUERIES */
 /**********************************************************/

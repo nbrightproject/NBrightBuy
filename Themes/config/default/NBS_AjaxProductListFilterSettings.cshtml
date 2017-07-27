@@ -1,6 +1,7 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using System.Linq
 @using System.Web.UI.HtmlControls
+@using DotNetNuke.Services.Localization
 @using NBrightCore
 @using NBrightDNN
 
@@ -16,7 +17,10 @@
             $(this).val(index);
         });
     }
-    $( function() {
+    $(function () {
+        @* This should probably go somewhere more generic *@
+        $(".nbs-vertical-radiogroup label").after("<br/>");
+
         $("#nbs-filterselection").sortable({
             stop: function (event, ui) { upateNbsFilterSelectionSortOrders(); }
         });;
@@ -56,19 +60,19 @@
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lblfiltertypeoutsideproperty", "Settings.lblfiltertypeoutsideproperty")
-                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeoutsideproperty", "ResourceKey:Settings.filtertypeoutsidedatavalue", "ResourceKey:Settings.filtertypeoutsidedata", "", "AND", "class='radio-inline'")
+                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeoutsideproperty", "ResourceKey:Settings.filtertypeoutsidedatavalue", "ResourceKey:Settings.filtertypeoutsidedata", "class=\"nbs-vertical-radiogroup\"", "AND", "class='radio-inline'")
                 </div>
             </div>
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lblfiltertypeinsideproperty", "Settings.lblfiltertypeinsideproperty")
-                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeinsideproperty", "ResourceKey:Settings.filtertypeinsidedatavalue", "ResourceKey:Settings.filtertypeinsidedata", "", "AND", "class='radio-inline'")
+                    @RadioButtonList(info, "genxml/radiobuttonlist/filtertypeinsideproperty", "ResourceKey:Settings.filtertypeinsidedatavalue", "ResourceKey:Settings.filtertypeinsidedata", "class=\"nbs-vertical-radiogroup\"", "AND", "class='radio-inline'")
                 </div>
             </div>
             <h2>available filters</h2>
             <div class="dnnFormItem">
                 @DnnLabel("lblFilters", "Settings.selectedfilters")
-                @GroupCheckboxList(info, "genxml/checkboxlist/selectedfilters", "style=\"display: inline-block\" id=\"nbs-filterselection\"", addSortOrderInput: true)
+                @GroupCheckboxList(info, "genxml/checkboxlist/selectedfilters", "style=\"display: inline-block\" id=\"nbs-filterselection\" class=\"checkboxlist-sortable\"", addSortOrderInput: true)
             </div>
         </div>
 
