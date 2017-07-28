@@ -29,7 +29,7 @@
                     <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)&nbsp;
                     @CheckBox(nbiOptions, "genxml/checkbox/optrequired_" + lp2, "", "")
                     <label class="control-label">@ResourceKey("General.RequiredField")</label>
-                    @TextBox(nbiOptions, "genxml/textbox/txtoptiondesc_" + lp2, "class='form-control input-sm' maxlength='250' ", "")
+                    @TextBox(nbiOptions, "genxml/lang/genxml/textbox/txtoptiondesc_" + lp2, "class='form-control input-sm' maxlength='250' ", "")
                 </div>
                 <div class="col-sm-6">
                     <label class="control-label">&nbsp;</label><br><a class="selectoption btn btn-success input-sm" itemid="@nbiOptions.GetXmlProperty("genxml/hidden/optionid")">@ResourceKey("General.cmdEditButton")</a>
