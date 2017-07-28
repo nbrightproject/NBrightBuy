@@ -403,7 +403,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                         }
                                         else
                                         {
-                                            redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
+                                            redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId, Utils.GetCurrentCulture());
                                         }
 
                                         try
