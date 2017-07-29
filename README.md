@@ -5,6 +5,14 @@ Developer please read this to get started:
 
 http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 
+
+v3.6.6
+- fix option text not going to multi-langauge data area on save.
+- Fix redirect loop of url on langauge change.
+- Unify Processing Icon
+- Split shared product/category option.
+- Add Custom Action provider.
+
 v3.6.5
 - Allow shipping provider to adjust all shipping cost by a percentage.
 - Fix template to display document download name.

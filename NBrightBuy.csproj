@@ -435,9 +435,7 @@
     <Content Include="OrderRazorAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProfileRazorFormSettings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ProfileRazorFormSettings.ascx" />
     <Content Include="ProfileRazorForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
