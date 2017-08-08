@@ -469,6 +469,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return GetProviders("11", activeOnly);
         }
 
+        public Dictionary<String, NBrightInfo> GetAjaxProviders(Boolean activeOnly = true)
+        {
+            return GetProviders("12", activeOnly);
+        }
+
+
         public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
         {
             return GetProviders("99", activeOnly);

@@ -46,10 +46,10 @@ $(document).ready(function() {
         if ((event.which == 13) && ($(event.target)[[0]].type != 'textarea')) {
         event.preventDefault();
         return false;
-    }
-  });
+        }
+   });
 
-$('.personalBarContainer').hide();
+    $('.personalBarContainer').hide();
 
 });
 
@@ -58,5 +58,6 @@ $('.personalBarContainer').hide();
 <style>
     body {
         margin-left: 0px !important;
+        overflow-y: scroll !important;
     }
 </style>

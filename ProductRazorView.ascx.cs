@@ -85,6 +85,19 @@ namespace Nevoweb.DNN.NBrightBuy
             
             base.OnInit(e);
 
+            // check if we're using a typcode for the data.
+            if (ModSettings != null)
+            {
+                var modentitytypecode = ModSettings.Get("entitytypecode");
+                if (modentitytypecode != "")
+                {
+                    EntityTypeCode = modentitytypecode;
+                    EntityTypeCodeLang = modentitytypecode + "LANG";
+                }
+            }
+
+
+
             // if guidkey entered instead of eid, find it using the guid and assign to _eid
             _guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
             if (_guidkey == "") _guidkey = Utils.RequestQueryStringParam(Context, "ref");
@@ -116,6 +129,7 @@ namespace Nevoweb.DNN.NBrightBuy
             CtrlPaging.UseListDisplay = true;
             try
             {
+
                 _catid = Utils.RequestQueryStringParam(Context, "catid");
                 _catname = Utils.RequestQueryStringParam(Context, "catref");
 

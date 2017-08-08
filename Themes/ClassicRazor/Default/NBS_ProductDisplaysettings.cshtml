@@ -1,4 +1,5 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System
 @using System.Linq
 @using System.Web.UI.HtmlControls
 @using NBrightDNN
@@ -10,6 +11,11 @@
     // assign Model, so we can resolve var in VS
     var info = (NBrightInfo)Model.List.First();
 }
+
+<div class="dnnFormItem">
+    @DnnLabel("lblEntityTypeCode", "ProductViewSettings.EntityTypeCode")
+    @TextBox(info, "genxml/textbox/entitytypecode", "width='300px' class='form-control' ", "ResourceKey:EntityTypeCode.EntityTypeCode")
+</div>
 
 
 <div class="dnnFormItem">

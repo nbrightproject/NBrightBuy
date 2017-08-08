@@ -390,4 +390,7 @@
   <data name="caturlfilter.Text" xml:space="preserve">
     <value>Filter by Selected Category</value>
   </data>
+  <data name="EntityTypeCode.Text" xml:space="preserve">
+    <value>Entity TypeCode</value>
+  </data>
 </root>

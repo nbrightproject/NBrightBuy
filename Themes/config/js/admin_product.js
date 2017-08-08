@@ -262,7 +262,7 @@
             $(function () {
                 'use strict';
                 var url = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=fileupload';
-                $('#fileupload').unbind();
+                $('#fileupload').unbind('fileupload');
                 $('#fileupload').fileupload({
                     url: url,
                     maxFileSize: 5000000,

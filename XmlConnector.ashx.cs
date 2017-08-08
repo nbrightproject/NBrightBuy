@@ -102,7 +102,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
-
                     strOut = "ERROR!! - No Security rights for current user!";
                     switch (paramCmd)
                     {
@@ -264,6 +263,24 @@ namespace Nevoweb.DNN.NBrightBuy
                             strOut = DoOrderBy(context);
                             break;
 
+                    }
+                }
+
+                if (strOut == "")
+                {
+                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                    var provList = pluginData.GetAjaxProviders();
+                    foreach (var d in provList)
+                    {
+                        if (paramCmd.StartsWith(d.Key + "_"))
+                        {
+                            var ajaxprov = AjaxInterface.Instance(d.Key);
+                            if (ajaxprov != null)
+                            {
+                                strOut = ajaxprov.ProcessCommand(paramCmd, context, _editlang);
+                            }
+
+                        }
                     }
                 }
 
