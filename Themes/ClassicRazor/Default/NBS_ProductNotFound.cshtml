@@ -1,16 +1,7 @@
-@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
-@using System.Linq
-@using NBrightDNN
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using Nevoweb.DNN.NBrightBuy.Components;
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
-
-<!-- "pageheaderdetail.cshtml" template will be auto injected as dynamic data into page head section -->
-@{
-    // assign Model, so we can resolve var in VS
-    var product = (ProductData)Model.List.First();
-    var info = (NBrightInfo)product.Info;
-}
 
 <div class="addedtobasket" style="display:none;">@ResourceKey("ProductView.addedtobasket")</div>
 
@@ -18,7 +9,7 @@
 
     <div class="productdetail" itemscope >
 
-        <h1>Product Not Found</h1>
+        <h1>@ResourceKey("ProductView.productnotfound")</h1>
   
     </div>
 

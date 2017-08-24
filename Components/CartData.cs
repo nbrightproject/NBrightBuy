@@ -76,7 +76,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (IsValidated() && itemList.Count > 0)
             {
                 PurchaseTypeCode = "ORDER";
-                if (base.PurchaseInfo.GetXmlProperty("genxml/createddate") == "") base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString(CultureInfo.GetCultureInfo(Utils.GetCurrentCulture())), TypeCode.DateTime);
+                if (base.PurchaseInfo.GetXmlProperty("genxml/createddate") == "") base.PurchaseInfo.SetXmlProperty("genxml/createddate", DateTime.Now.ToString("O"), TypeCode.DateTime);
                 if (base.PurchaseInfo.GetXmlProperty("genxml/ordernumber") == "") base.PurchaseInfo.SetXmlProperty("genxml/ordernumber", StoreSettings.Current.Get("orderprefix") + DateTime.Today.Year.ToString("").Substring(2, 2) + DateTime.Today.Month.ToString("00") + DateTime.Today.Day.ToString("00") + _cartId);
 
                 Save();

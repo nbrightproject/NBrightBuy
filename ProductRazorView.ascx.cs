@@ -403,7 +403,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                         }
                                         else
                                         {
-                                            redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId);
+                                            redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, TabId, Utils.GetCurrentCulture());
                                         }
 
                                         try
@@ -630,7 +630,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 productData = ProductUtils.GetProductData(Convert.ToInt32(entryId), Utils.GetCurrentCulture(), true, EntityTypeCode);
             }
 
-            if (productData.Exists)
+            if (productData.Exists && (productData.Info.PortalId == -1 || productData.Info.PortalId == PortalId))
             {
 
                 if (PortalSettings.HomeTabId == TabId)
@@ -664,6 +664,10 @@ namespace Nevoweb.DNN.NBrightBuy
             else
             {
                 _404code = true;
+
+                // insert page header text
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "NBS_ProductNotFound_head.cshtml", ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+
                 var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;

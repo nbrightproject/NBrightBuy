@@ -20,6 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -29,6 +30,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -203,6 +205,7 @@
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Clients\ClientFunctions.cs" />
+    <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="Components\Payments\PaymentFunctions.cs" />
@@ -468,6 +471,7 @@
     <Content Include="OrderRazorAdminSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="ProfileRazorFormSettings.ascx" />
     <Content Include="ProductAjaxView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -551,10 +555,14 @@
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplaysettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProfileHome.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProfileHome_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\OrderPrintOutput.cshtml" />
     <None Include="Themes\ClassicRazor\Default\printorder.cshtml" />
     <None Include="Plugins\v030501-system.configsave" />
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
@@ -1698,6 +1706,7 @@
     <EmbeddedResource Include="App_LocalResources\General.ascx.nl-NL.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.en-GB.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\notification.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.nl-NL.resx" />
@@ -1763,7 +1772,9 @@
   <ItemGroup>
     <None Include="Components\Installation\02.06.00.SqlDataProvider" />
     <None Include="Components\Installation\03.00.00.SqlDataProvider" />
-    <None Include="NBS.dnn" />
+    <None Include="NBS.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Components\Installation\Uninstall.SqlDataProvider" />
     <None Include="NBrightThumb.ashx" />
     <None Include="Themes\Classic\Default\detail.cshtml" />

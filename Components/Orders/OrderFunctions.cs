@@ -434,7 +434,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Orders
 
             }
 
-            var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','nvarchar(20)') DESC, ModifiedDate DESC  ";
+            var orderby = "   order by [XMLData].value('(genxml/createddate)[1]','datetime') DESC, ModifiedDate DESC  ";
             var list = objCtrl.GetList(portalId, -1, "ORDER", filter, orderby, 0, pageNumber, pageSize, recordCount);
 
             var passSettings = settings;

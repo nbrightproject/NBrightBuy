@@ -159,4 +159,19 @@
   <data name="purgeimageswarn.Text" xml:space="preserve">
     <value>Purging Images will DELETE all images not linked to a product or category.  If any plugins use the NBSstore\images folder, these images will be deleted.</value>
   </data>
+  <data name="customprovider.Text" xml:space="preserve">
+    <value>Custom Action Provider</value>
+  </data>
+  <data name="providerassembly.Text" xml:space="preserve">
+    <value>Provider Assembly</value>
+  </data>
+  <data name="providernamespaceclass.Text" xml:space="preserve">
+    <value>Provider Namespace,Class</value>
+  </data>
+  <data name="runcustomprovider.Text" xml:space="preserve">
+    <value>Run Custom Action Provider</value>
+  </data>
+  <data name="paramdata.Text" xml:space="preserve">
+    <value>Parameter Data</value>
+  </data>
 </root>

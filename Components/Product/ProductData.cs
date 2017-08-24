@@ -857,7 +857,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     else if (datatype == "html")
                         DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
                     else
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f).Trim());
 
                     DataRecord.RemoveXmlNode(f);
                 }

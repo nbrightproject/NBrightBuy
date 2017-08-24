@@ -138,4 +138,10 @@
   <data name="unit.data" xml:space="preserve">
     <value>Par poids;Par prix</value>
   </data>
+  <data name="alterpercent.Text" xml:space="preserve">
+    <value>Mise à jour des frais d'expédition</value>
+  </data>
+  <data name="alterpercentlabel.Text" xml:space="preserve">
+    <value>Modifier l'expédition par (%)</value>
+  </data>
 </root>

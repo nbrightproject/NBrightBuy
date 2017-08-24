@@ -222,7 +222,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
         {
 
-            var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey;
+            var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey + "*" + Utils.GetCurrentCulture();
             var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
             if (obj != null) return obj;
             
@@ -232,10 +232,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 strFilter += " and UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1); // only return 1, not a real guidkey, so m,ay be duplicates.
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter);
             if (l.Count == 0) return null;
-            Utils.SetCache(strCacheKey, l[0]);
-            return l[0];
+            var rtnObj = l[0];
+            if (l.Count > 1)
+            {
+                // we have multiple records returned for the guidkey, try and return the correct langauge or if not return first.
+                foreach (var i in l)
+                {
+                    if (i.Lang == Utils.GetCurrentCulture())
+                    {
+                        rtnObj = i;
+                        break;
+                    }
+                }
+            }
+            Utils.SetCache(strCacheKey, rtnObj);
+            return rtnObj;
         }
 
         /// <summary>

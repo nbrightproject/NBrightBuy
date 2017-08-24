@@ -389,7 +389,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // update shared product if flagged
             // possible call from scheduler, no storesetting in that case.
-            if ((StoreSettings.Current != null) && StoreSettings.Current.GetBool("shareproducts") && DataRecord.PortalId >= 0)
+            if ((StoreSettings.Current != null) && StoreSettings.Current.GetBool(StoreSettingKeys.sharecategories) && DataRecord.PortalId >= 0)
             {
                 DataRecord.PortalId = -1;
                 _objCtrl.Update(DataRecord);
@@ -433,7 +433,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private int AddNew()
         {
             var nbi = new NBrightInfo(true);
-            if (StoreSettings.Current.Get("shareproducts") == "True") // option in storesetting to share products created here across all portals.
+            if (StoreSettings.Current.GetBool(StoreSettingKeys.sharecategories)) // option in storesetting to share products created here across all portals.
                 _portalId = -1;
             else
                 _portalId = PortalSettings.Current.PortalId;
