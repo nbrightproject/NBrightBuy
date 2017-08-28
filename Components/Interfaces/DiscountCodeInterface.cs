@@ -39,7 +39,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             ProviderList = new Dictionary<string, DiscountCodeInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var l = pluginData.GetDiscountCodeProviders();
+            var l = pluginData.GetDiscountCodeProviders(false);
 
             foreach (var p in l)
             {

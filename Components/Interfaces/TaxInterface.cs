@@ -37,7 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             _providerList = new Dictionary<string, TaxInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var l = pluginData.GetTaxProviders();
+            var l = pluginData.GetTaxProviders(false);
 
             foreach (var p in l)
             {

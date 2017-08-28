@@ -37,7 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             _providerList = new Dictionary<string, EntityTypeInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var l = pluginData.GetEntityTypeProviders();
+            var l = pluginData.GetEntityTypeProviders(false);
 
             foreach (var p in l)
             {

@@ -40,7 +40,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 		    _providerList = new Dictionary<string, AjaxInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-		    var l = pluginData.GetAjaxProviders();
+		    var l = pluginData.GetAjaxProviders(false);
 
             foreach (var p in l)
             {

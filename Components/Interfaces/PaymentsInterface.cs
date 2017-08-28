@@ -36,7 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
             _providerList = new Dictionary<string, PaymentsInterface>();
 
             var pluginData = new PluginData(PortalSettings.Current.PortalId);
-		    var l = pluginData.GetPaymentProviders();
+		    var l = pluginData.GetPaymentProviders(false);
 
 		    foreach (var p in l)
 		    {
