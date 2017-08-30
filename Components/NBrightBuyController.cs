@@ -189,11 +189,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="entityTypeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public NBrightInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string entityTypeCodeLang = "", string lang = "")
+        public NBrightInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string entityTypeCodeLang = "", string lang = "", bool debug = false)
         {
             var strCacheKey = "GetByType*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + lang;
-            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
-            if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+            if (!debug)
+            {
+                var obj = (NBrightInfo) Utils.GetCache(strCacheKey);
+                if (obj != null && StoreSettings.Current.DebugMode == false) return obj;
+            }
 
             var strFilter = "";
             if (selUserId != "")
@@ -219,13 +222,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="guidKey"></param>
         /// <param name="selUserId"></param>
         /// <returns></returns>
-        public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey)
         {
+            return GetByGuidKey(portalId, moduleId, entityTypeCode, guidKey, "", false);
+        }
+        public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId)
+        {
+            return GetByGuidKey(portalId, moduleId, entityTypeCode, guidKey, selUserId, false);
+        }
 
+        public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId, bool debug)
+        {
             var strCacheKey = "GetByGudKey*" + moduleId.ToString("") + "*" + portalId.ToString("") + "*" + entityTypeCode + "*" + selUserId + "*" + guidKey + "*" + Utils.GetCurrentCulture();
-            var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
-            if (obj != null) return obj;
-            
+            if (!debug)
+            {
+                var obj = (NBrightInfo)Utils.GetCache(strCacheKey);
+                if (obj != null) return obj;
+            }
+
             var strFilter = " and GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
             {

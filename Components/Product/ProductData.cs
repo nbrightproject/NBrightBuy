@@ -1452,7 +1452,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         foreach (var p in parentcats.Parents)
                         {
                             strGuid = p.ToString("") + "x" + Info.ItemID.ToString("");
-                            var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid);
+                            var obj = objCtrl.GetByGuidKey(_portalId, -1, "CATCASCADE", strGuid,"", true);
                             if (obj == null)
                             {
                                 nbi = new NBrightInfo();
@@ -1528,7 +1528,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 var strGuid = productid.ToString("") + "x" + Info.ItemID.ToString("");
                 var objCtrl = new NBrightBuyController();
-                var nbi = objCtrl.GetByGuidKey(_portalId, -1, _typeCode + "XREF", strGuid);
+                var nbi = objCtrl.GetByGuidKey(_portalId, -1, _typeCode + "XREF", strGuid,"",true);
                 if (nbi == null)
                 {
                     nbi = new NBrightInfo();
@@ -1562,7 +1562,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             var strGuid = userid.ToString("") + "x" + Info.ItemID.ToString("");
             var objCtrl = new NBrightBuyController();
-            var nbi = objCtrl.GetByGuidKey(_portalId, -1, "USERPRDXREF", strGuid);
+            var nbi = objCtrl.GetByGuidKey(_portalId, -1, "USERPRDXREF", strGuid,"",true);
             if (nbi == null)
             {
                 nbi = new NBrightInfo();

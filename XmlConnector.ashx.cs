@@ -47,7 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             #region "Initialize"
 
-            var strOut = "";
+            var strOut = "** No Action **";
 
             var paramCmd = Utils.RequestQueryStringParam(context, "cmd");
             var itemId = Utils.RequestQueryStringParam(context, "itemid");
@@ -98,11 +98,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else if (paramCmd.StartsWith("product_"))
                 {
+                    ProductFunctions.EntityTypeCode = "PRD";
                     strOut = ProductFunctions.ProcessCommand(paramCmd, context, _editlang);
                 }
                 else
                 {
-                    strOut = "ERROR!! - No Security rights for current user!";
                     switch (paramCmd)
                     {
                         case "test":
@@ -266,7 +266,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     }
                 }
 
-                if (strOut == "")
+                if (strOut == "** No Action **")
                 {
                     var pluginData = new PluginData(PortalSettings.Current.PortalId);
                     var provList = pluginData.GetAjaxProviders();
@@ -588,8 +588,28 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
                 settings["razortemplate"] = "Admin_CategoryProducts.cshtml";
                 settings["themefolder"] = "config";
-                
-                return ProductFunctions.ProductAdminList(settings,true,_editlang);
+
+                var list = ProductFunctions.ProductAdminList(settings,true,_editlang);
+                if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
+                var entitytypecode = settings["entitytypecode"];
+
+                var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                var provList = pluginData.GetAjaxProviders();
+                foreach (var d in provList)
+                {
+                    var ajaxprov = AjaxInterface.Instance(d.Key);
+                    if (ajaxprov != null)
+                    {
+                        if (entitytypecode != ajaxprov.Ajaxkey)
+                        {
+                            var provlist = ProductFunctions.ProductAdminList(settings, true, "", ajaxprov.Ajaxkey);
+                            list = provlist + list;
+                        }
+                    }
+                }
+
+                return list;
+
 
             }
             catch (Exception ex)
