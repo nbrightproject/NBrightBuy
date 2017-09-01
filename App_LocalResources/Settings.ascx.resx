@@ -474,4 +474,34 @@
   <data name="sharecategoriesmsg.Text" xml:space="preserve">
     <value>Share CATEGORIES created in this portal with all portals in the DNN installation. Sharing categories will also share any producs add to the category across ALL portals.</value>
   </data>
+  <data name="selectedfilters.Text" xml:space="preserve">
+    <value>Select Filters&lt;br/&gt;&lt;span style="font-weight: normal;"&gt;(drag-drop to sort)&lt;/span&gt;</value>
+  </data>
+  <data name="filtertypeinsidedata.Text" xml:space="preserve">
+    <value>Product must have all selected properties,Product must have one or more of selected properties</value>
+  </data>
+  <data name="filtertypeinsidedatavalue.Text" xml:space="preserve">
+    <value>AND,OR</value>
+  </data>
+  <data name="lblfiltertypeinsideproperty.Help" xml:space="preserve">
+    <value>Select the type of filter to be use when multiple options are checked within the same property.</value>
+  </data>
+  <data name="lblfiltertypeinsideproperty.Text" xml:space="preserve">
+    <value>Filter Type Inside Property</value>
+  </data>
+  <data name="filtertypeoutsidedata.Text" xml:space="preserve">
+    <value>Product must meet conditions of all properties,Product must meet conditions of one or more properties</value>
+  </data>
+  <data name="filtertypeoutsidedatavalue.Text" xml:space="preserve">
+    <value>AND,OR</value>
+  </data>
+  <data name="lblfiltertypeoutsideproperty.Help" xml:space="preserve">
+    <value>Select the type of filter to be use when options are checked within different properties.</value>
+  </data>
+  <data name="lblfiltertypeoutsideproperty.Text" xml:space="preserve">
+    <value>Filter Type Outside Property</value>
+  </data>
+  <data name="selectedfilters.Help" xml:space="preserve">
+    <value>Drag and drop individual items to change the sort order.</value>
+  </data>
 </root>

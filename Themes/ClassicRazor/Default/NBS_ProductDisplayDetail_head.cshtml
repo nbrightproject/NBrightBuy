@@ -73,6 +73,7 @@
 <!-- Quantity Input -->
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.processing').hide();
 
         $(".quantity").keydown(function (e) {
             if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.

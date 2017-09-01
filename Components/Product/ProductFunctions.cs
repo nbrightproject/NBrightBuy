@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +12,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Razor;
 using System.Web.Script.Serialization;
+using System.Windows.Forms.VisualStyles;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore.common;
@@ -28,115 +33,145 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         private static string _editlang = "";
         public static string EntityTypeCode = "";
         public static string TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
+        private static bool DebugMode => StoreSettings.Current.DebugMode;
 
         public static void ResetTemplateRelPath()
         {
             TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
         }
 
-        public static string ProcessCommand(string paramCmd,HttpContext context,string editlang = "")
+        public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
             _editlang = editlang;
             if (_editlang == "") _editlang = Utils.GetCurrentCulture();
 
             var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
-            if (NBrightBuyUtils.CheckManagerRights())
-            {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
-                EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
-                if (EntityTypeCode == "") EntityTypeCode = "PRD"; // default to product
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
+            EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
+            if (EntityTypeCode == "") EntityTypeCode = "PRD"; // default to product
 
-                switch (paramCmd)
-                {
-                    case "product_admin_getlist":
-                        strOut = ProductFunctions.ProductAdminList(context);
-                        break;
-                    case "product_admin_getdetail":
-                        strOut = ProductFunctions.ProductAdminDetail(context);
-                        break;                        
-                    case "product_adminaddnew":
-                        strOut = ProductFunctions.ProductAdminAddNew(context);
-                        break;
-                    case "product_admin_save":
-                        strOut = ProductFunctions.ProductAdminSave(context);
-                        break;
-                    case "product_admin_saveexit":
-                        strOut = ProductFunctions.ProductAdminSaveExit(context);
-                        break;
-                    case "product_admin_saveas":
-                        strOut = ProductFunctions.ProductAdminSaveAs(context);
-                        break;
-                    case "product_admin_selectlist":
-                        strOut = ProductFunctions.ProductAdminList(context);
-                        break;
-                    case "product_moveproductadmin":
-                        strOut = ProductFunctions.MoveProductAdmin(context);
-                        break;
-                    case "product_addproductmodels":
-                        strOut = ProductFunctions.AddModel(context);
-                        break;
-                    case "product_addproductoptions":
-                        strOut = ProductFunctions.AddOption(context);
-                        break;
-                    case "product_addproductoptionvalues":
-                        strOut = ProductFunctions.AddOptionValues(context);
-                        break;
-                    case "product_admin_delete":
-                        strOut = ProductFunctions.DeleteProduct(context);
-                        break;
-                    case "product_updateproductimages":
-                        strOut = ProductFunctions.UpdateProductImages(context);
-                        break;
-                    case "product_updateproductdocs":
-                        strOut = ProductFunctions.UpdateProductDocs(context);
-                        break;
-                    case "product_addproductcategory":
-                        strOut = ProductFunctions.AddProductCategory(context);
-                        break;
-                    case "product_removeproductcategory":
-                        strOut = ProductFunctions.RemoveProductCategory(context);
-                        break;
-                    case "product_setdefaultcategory":
-                        strOut = ProductFunctions.SetDefaultCategory(context);
-                        break;
-                    case "product_populatecategorylist":
-                        strOut = ProductFunctions.GetPropertyListBox(context);
-                        break;
-                    case "product_addproperty":
-                        strOut = ProductFunctions.AddProperty(context);
-                        break;
-                    case "product_removeproperty":
-                        strOut = ProductFunctions.RemoveProperty(context);
-                        break;
-                    case "product_removerelated":
-                        strOut = ProductFunctions.RemoveRelatedProduct(context);
-                        break;
-                    case "product_addrelatedproduct":
-                        strOut = ProductFunctions.AddRelatedProduct(context);
-                        break;
-                    case "product_getproductselectlist":
-                        strOut = ProductFunctions.GetProductSelectList(context);
-                        break;
-                    case "product_getclientselectlist":
-                        strOut = ProductFunctions.GetClientSelectList(context);
-                        break;
-                    case "product_addproductclient":
-                        strOut = ProductFunctions.AddProductClient(context);
-                        break;
-                    case "product_productclients":
-                        strOut = ProductFunctions.GetProductClients(context);
-                        break;
-                    case "product_removeproductclient":
-                        strOut = ProductFunctions.RemoveProductClient(context);
-                        break;
-                    case "product_selectchangedisable":
-                        strOut = ProductFunctions.ProductDisable(context);
-                        break;
-                    case "product_selectchangehidden":
-                        strOut = ProductFunctions.ProductHidden(context);
-                        break;
-                }
+            switch (paramCmd)
+            {
+                case "product_admin_getlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminList(context);
+                    break;
+                case "product_admin_getdetail":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminDetail(context);
+                    break;
+                case "product_adminaddnew":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminAddNew(context);
+                    break;
+                case "product_admin_save":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSave(context);
+                    break;
+                case "product_admin_saveexit":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSaveExit(context);
+                    break;
+                case "product_admin_saveas":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminSaveAs(context);
+                    break;
+                case "product_admin_selectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductAdminList(context);
+                    break;
+                case "product_moveproductadmin":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.MoveProductAdmin(context);
+                    break;
+                case "product_addproductmodels":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddModel(context);
+                    break;
+                case "product_addproductoptions":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddOption(context);
+                    break;
+                case "product_addproductoptionvalues":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddOptionValues(context);
+                    break;
+                case "product_admin_delete":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.DeleteProduct(context);
+                    break;
+                case "product_updateproductimages":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.UpdateProductImages(context);
+                    break;
+                case "product_updateproductdocs":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.UpdateProductDocs(context);
+                    break;
+                case "product_addproductcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProductCategory(context);
+                    break;
+                case "product_removeproductcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProductCategory(context);
+                    break;
+                case "product_setdefaultcategory":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.SetDefaultCategory(context);
+                    break;
+                case "product_populatecategorylist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetPropertyListBox(context);
+                    break;
+                case "product_addproperty":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProperty(context);
+                    break;
+                case "product_removeproperty":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProperty(context);
+                    break;
+                case "product_removerelated":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveRelatedProduct(context);
+                    break;
+                case "product_addrelatedproduct":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddRelatedProduct(context);
+                    break;
+                case "product_getproductselectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetProductSelectList(context);
+                    break;
+                case "product_getclientselectlist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetClientSelectList(context);
+                    break;
+                case "product_addproductclient":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.AddProductClient(context);
+                    break;
+                case "product_productclients":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.GetProductClients(context);
+                    break;
+                case "product_removeproductclient":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.RemoveProductClient(context);
+                    break;
+                case "product_selectchangedisable":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductDisable(context);
+                    break;
+                case "product_selectchangehidden":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = ProductFunctions.ProductHidden(context);
+                    break;
+                case "product_ajaxview_getlist":
+                    strOut = ProductFunctions.ProductAjaxViewList(context);
+                    break;
             }
             return strOut;
         }
@@ -1423,6 +1458,545 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
 
         #endregion
+
+
+        #endregion
+
+
+        #region Ajax ProductList
+
+        public static String ProductAjaxViewList(HttpContext context)
+        {
+            var retval = "";
+
+            // get the settings form the context
+            var ctxsettings = NBrightBuyUtils.GetAjaxDictionary(context);
+            // get the moduleid, tabid
+            var moduleid = int.Parse(ctxsettings["moduleid"]);
+            var tabid = int.Parse(ctxsettings["tabid"]);
+
+            var ps = PortalSettings.Current;
+
+
+            var settings = new Hashtable();
+            // get the module settings from DNN
+            //var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
+            //foreach (
+            //    KeyValuePair<string, string> modSetting in
+            //    ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings)
+            //{
+            //    if (!settings.ContainsKey(modSetting.Key))
+            //    {
+            //        settings.Add(modSetting.Key, modSetting.Value);
+            //    }
+            //}
+
+            // then add the NBrightBuy settings
+            var ModSettings = new ModSettings(moduleid, settings);
+            //get Model Level Settings
+            var ModuleKey = ModSettings.Get("modref");
+            if (String.IsNullOrEmpty(ModuleKey))
+                ModuleKey = ModSettings.Get("modulekey"); // keep backward compatiblity with NBS_ProductView.
+
+            #region render template stuff
+
+            #region variables
+            var _eid = "";
+            var _ename = "";
+            var _catid = "";
+            var _catname = "";
+            var _modkey = "";
+            var _pagemid = "";
+            var _pagenum = "1";
+            var _pagesize = "";
+            var _templD = "";
+            var _displayentrypage = false;
+            var _orderbyindex = "";
+            var _propertyfilter = "";
+            NavigationData _navigationdata;
+            var EntityTypeCode = "PRD";
+            var EntityTypeCodeLang = "PRDLANG";
+            var _itemListName = "";
+            var _guidkey = "";
+            var _404code = false;
+            var returnlimit = 0;
+            var _filterTypeInsideProp = "AND";
+            var _filterTypeOutsideProp = "AND";
+
+            _catid = ctxsettings["catid"];
+            _catname = ctxsettings["catref"];
+            _modkey = ctxsettings["modkey"];
+            _pagemid = ctxsettings["pagemid"];
+            _pagenum = ctxsettings["page"];
+            _pagesize = ctxsettings["pagesize"];
+            _orderbyindex = ctxsettings["orderby"];
+            _propertyfilter = ctxsettings["propertyfilter"];
+
+            _templD = ModSettings.Get("razorlisttemplate");
+
+            // we're making sure here, that this thing can only be AND or OR to prevent SQL Injection in any case
+            if (ctxsettings["propertyfiltertypeinside"] == "OR")
+                _filterTypeInsideProp = "OR";
+            if (ctxsettings["propertyfiltertypeoutside"] == "OR")
+                _filterTypeOutsideProp = "OR";
+
+            //Get returnlimt from module settings
+            var strreturnlimit = ModSettings.Get("returnlimit");
+            if (Utils.IsNumeric(strreturnlimit)) returnlimit = Convert.ToInt32(strreturnlimit);
+
+            var ModCtrl = new NBrightBuyController();
+
+            // Get meta data from template
+            // TODO: dat moeten we hier eigenlijk niet nodig hebben
+            // voor nu even handig om die parameters erbij te kunnen halen en ze later om te zetten naar client side rommel
+            _navigationdata = new NavigationData(ps.PortalId, ModuleKey);
+            var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy",
+                ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), moduleid.ToString());
+
+            #endregion
+
+            #region "Order BY"
+
+            ////////////////////////////////////////////
+            // get ORDERBY SORT 
+            ////////////////////////////////////////////
+            if (_orderbyindex != "") // if we have orderby set in url, find the meta tags
+            {
+                if (metaTokens.ContainsKey("orderby" + _orderbyindex))
+                {
+                    if (metaTokens["orderby" + _orderbyindex].Contains("{") ||
+                        metaTokens["orderby" + _orderbyindex].ToLower().Contains("order by"))
+                    {
+                        _navigationdata.OrderBy = metaTokens["orderby" + _orderbyindex];
+                        _navigationdata.OrderByIdx = _orderbyindex;
+                    }
+                    else
+                    {
+                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby" + _orderbyindex];
+                        _navigationdata.OrderByIdx = _orderbyindex;
+                    }
+                    _navigationdata.Save();
+                }
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(_navigationdata.OrderBy) && metaTokens.ContainsKey("orderby"))
+                {
+                    if (metaTokens["orderby"].Contains("{") || metaTokens["orderby"].ToLower().Contains("order by"))
+                    {
+                        _navigationdata.OrderBy = metaTokens["orderby"];
+                    }
+                    else
+                    {
+                        _navigationdata.OrderBy = " Order by " + metaTokens["orderby"];
+                    }
+                    _navigationdata.OrderByIdx = "";
+                    _navigationdata.Save();
+                }
+            }
+
+
+            #endregion
+
+            #region "Get Paging setup"
+
+            //See if we have a pagesize, uses the "searchpagesize" tag token.
+            // : This can be overwritten by the cookie value if we need user selection of pagesize.
+
+            #region "Get pagesize, from best place"
+            //TODO SK pagesize is already in _pagesize
+            var pageSize = 0;
+            if (Utils.IsNumeric(_pagesize)) pageSize = Convert.ToInt32(_pagesize);
+            //if (Utils.IsNumeric(ModSettings.Get("pagesize"))) pageSize = Convert.ToInt32(ModSettings.Get("pagesize"));
+            //// overwrite default module pagesize , if we have a pagesize control in the template
+            // TODO SK Don't think I need to know if there's a pagesize selector in the template. it just asks the right pagesize
+            // TODO SK Maybe I should know to make it impossible to request more items than configured
+            //if (metaTokens.ContainsKey("selectpagesize") && Utils.IsNumeric(_navigationdata.PageSize))
+            //{
+            //    pageSize = Convert.ToInt32(_navigationdata.PageSize);
+            //}
+            ////check for url param page size
+            //if (Utils.IsNumeric(_pagesize) &&
+            //    (_pagemid == "" | _pagemid == moduleid.ToString(CultureInfo.InvariantCulture)))
+            //    pageSize = Convert.ToInt32(_pagesize);
+            //if (pageSize == 0)
+            //{
+            //    var strPgSize = "";
+            //    if (metaTokens.ContainsKey("searchpagesize")) strPgSize = metaTokens["searchpagesize"];
+            //    if (metaTokens.ContainsKey("pagesize") && strPgSize == "") strPgSize = metaTokens["pagesize"];
+            //    if (Utils.IsNumeric(strPgSize)) pageSize = Convert.ToInt32(strPgSize);
+            //}
+
+            _navigationdata.PageSize = pageSize.ToString("");
+
+            #endregion
+
+            #endregion
+
+            #region "Get filter setup"
+
+            // check the display header to see if we have a sqlfilter defined.
+            var strFilter = "";
+            var sqlTemplateFilter = "";
+            if (metaTokens.ContainsKey("sqlfilter")) sqlTemplateFilter = GenXmlFunctions.StripSqlCommands(metaTokens["sqlfilter"]);
+
+            if (_navigationdata.HasCriteria)
+            {
+                var paramcatid = _catid;
+                if (Utils.IsNumeric(paramcatid))
+                {
+                    if (_navigationdata.CategoryId != Convert.ToInt32(paramcatid)) // filter mode DOES NOT persist catid (stop confusion when user selects a category)
+                    {
+                        _navigationdata.ResetSearch();
+                    }
+                }
+
+                // if navdata is not deleted then get filter from navdata, created by productsearch module.
+                strFilter = _navigationdata.Criteria;
+                if (!strFilter.Contains(sqlTemplateFilter)) strFilter += " " + sqlTemplateFilter;
+
+                if (_navigationdata.Mode.ToLower() == "s") _navigationdata.ResetSearch(); // single search so clear after
+            }
+            else
+            {
+                // reset search if category selected 
+                // NOTE: keeping search across categories is VERY confusing for cleint, although it works logically.
+                _navigationdata.ResetSearch();
+                strFilter = sqlTemplateFilter;
+            }
+
+            var pageNumber = 1;
+            //check for url param paging
+            if (Utils.IsNumeric(_pagenum) && (_pagemid == "" | _pagemid == moduleid.ToString(CultureInfo.InvariantCulture)))
+            {
+                pageNumber = Convert.ToInt32(_pagenum);
+            }
+
+            #endregion
+
+            #region "Get Category select setup"
+
+            var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+            var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+
+            //get default catid.
+            var catseo = _catid;
+            var defcatid = ModSettings.Get("defaultcatid");
+            NBrightInfo objCat = null;
+            if (Utils.IsNumeric(defcatid))
+            {
+                // if we have no filter use the default category
+                if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+            }
+            else
+            {
+                defcatid = ModSettings.Get("defaultpropertyid");
+                if (Utils.IsNumeric(defcatid))
+                {
+                    // if we have no filter use the default category
+                    if (_catid == "" && strFilter.Trim() == "") _catid = defcatid;
+                }
+            }
+
+            // If we have a static list,then always display the default category
+            if (ModSettings.Get("staticlist") == "True")
+            {
+                if (catseo == "") catseo = _catid;
+                _catid = defcatid;
+                if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                else
+                    strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                if (ModSettings.Get("caturlfilter") == "True" && catseo != "" && catseo != _catid)
+                {
+                    // add aditional filter for catid filter on url (catseo holds catid from url)
+                    if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + catseo + ") ";
+                    else
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + catseo + ") ";
+                }
+                // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" + _catid;
+            }
+            else
+            {
+                #region "use url to get category to display"
+                //check if we are display categories 
+                // get category list data
+                if (_catname != "") // if catname passed in url, calculate what the catid is
+                {
+                    objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORYLANG", _catname);
+                    if (objCat == null)
+                    {
+                        // check it's not just a single language
+                        objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORY", _catname);
+                        if (objCat != null) _catid = objCat.ItemID.ToString("");
+                    }
+                    else
+                    {
+                        _catid = objCat.ParentItemId.ToString("");
+                        if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
+                        {
+                            // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
+                            var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+                            var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
+                            if (activeCat != null)
+                            {
+                                var redirecturl = "";
+                                if (Utils.IsNumeric(_eid))
+                                {
+                                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture(), true, EntityTypeCode);
+                                    redirecturl = NBrightBuyUtils.GetEntryUrl(ps.PortalId, _eid, _modkey, prdData.SEOName, tabid.ToString(), "", activeCat.categoryrefGUIDKey);
+                                }
+                                else
+                                {
+                                    redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, tabid);
+                                }
+
+                                try
+                                {
+                                    if (redirecturl != "")
+                                    {
+                                        //TODO: get rid of redirects here, won't do anything anyway so probably something else must be done
+                                        //Response.Redirect(redirecturl, false);
+                                        //Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
+                                        //Response.End();
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    // catch err
+                                }
+                            }
+                        }
+                    }
+                    // We have a category selected (in url), so overwrite categoryid navigationdata.
+                    // This allows the return to the same category after a returning from a entry view.
+                    if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+                    catseo = _catid;
+                }
+
+                if (Utils.IsNumeric(_catid))
+                {
+
+                    if (ModSettings.Get("chkcascaderesults").ToLower() == "true")
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where (typecode = 'CATCASCADE' or typecode = 'CATXREF') and XrefItemId = " + _catid + ") ";
+                    else
+                        strFilter = strFilter + " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = " + _catid + ") ";
+
+                    if (Utils.IsNumeric(catseo))
+                    {
+                        var objSEOCat = ModCtrl.GetData(Convert.ToInt32(catseo), "CATEGORYLANG", Utils.GetCurrentCulture());
+                        if (objSEOCat != null && _eid == "") // we may have a detail page and listonly module, in which can we need the product detail as page title
+                        {
+                            //TODO: Should remain in ascx.cs perhaps?
+                            //Page Title
+                            //var seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                            //if (seoname == "") seoname = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+
+                            //var newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseopagetitle");
+                            //if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtseoname");
+                            //if (newBaseTitle == "") newBaseTitle = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategoryname");
+                            //if (newBaseTitle != "") BasePage.Title = newBaseTitle;
+                            ////Page KeyWords
+                            //var newBaseKeyWords = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetakeywords");
+                            //if (newBaseKeyWords != "") BasePage.KeyWords = newBaseKeyWords;
+                            ////Page Description
+                            //var newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtmetadescription");
+                            //if (newBaseDescription == "") newBaseDescription = objSEOCat.GetXmlProperty("genxml/lang/genxml/textbox/txtcategorydesc");
+                            //if (newBaseDescription != "") BasePage.Description = newBaseDescription;
+
+
+                            // Remove canonical link for list.  The Open URL Rewriter (OUR) will create a url that is different to the default SEO url in NBS. 
+                            // So to stop clashes it's been disable by default.  The requirment for a canonical link on a category list is more ticking the box than of being any SEO help (might even be causing confusion to Search Engines). 
+                            // ** If your a SEO nutcases (or SEO companies pushing for it) then you can uncomment the code below, and you can implement the Open URL Rewriter and canonical link.
+
+                            //if (PortalSettings.HomeTabId == TabId)
+                            //    PageIncludes.IncludeCanonicalLink(Page, Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias)); //home page always default of site.
+                            //else
+                            //{
+                            //    PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, seoname, Utils.GetCurrentCulture()));
+                            //    // Code required for OUR (if used, test to ensure it works correctly!!)
+                            //    //PageIncludes.IncludeCanonicalLink(Page, NBrightBuyUtils.GetListUrl(PortalId, TabId, objSEOCat.ItemID, "", Utils.GetCurrentCulture()));
+                            //}
+                        }
+                    }
+
+                    // do special custom sort in each cateogry, this passes the catid to the SQL SPROC, whcih process the '{bycategoryproduct}' and orders by product/category seq. 
+                    if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = "{bycategoryproduct}" + _catid;
+
+                }
+                else
+                {
+                    if (!_navigationdata.FilterMode) _navigationdata.CategoryId = 0; // filter mode persist catid
+                    if (_navigationdata.OrderBy.Contains("{bycategoryproduct}")) _navigationdata.OrderBy = " Order by ModifiedDate DESC  ";
+                }
+
+                #endregion
+            }
+
+            // This allows the return to the same category after a returning from a entry view. + Gives support for current category in razor tokens
+            if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+
+            #endregion
+
+            #region "Apply provider product filter"
+
+            // Special filtering can be done, by using the ProductFilter interface.
+            var productfilterkey = "";
+            if (metaTokens.ContainsKey("providerfilterkey")) productfilterkey = metaTokens["providerfilterkey"];
+            if (productfilterkey != "")
+            {
+                var provfilter = FilterInterface.Instance(productfilterkey);
+                if (provfilter != null) strFilter = provfilter.GetFilter(strFilter, _navigationdata, ModSettings, context);
+            }
+
+            #endregion
+
+            #region "itemlists (wishlist)"
+
+            // if we have a itemListName field then get the itemlist cookie.
+            if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
+            {
+                if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
+                if (_itemListName == "") _itemListName = Utils.RequestParam(context, "itemlistname"); // see if we've passed a wishlist name in url
+                if (_itemListName != "")
+                {
+                    var cw = new ItemListData(_itemListName);
+                    if (cw.Exists && cw.ItemCount > 0)
+                    {
+                        strFilter = " and (";
+                        foreach (var i in cw.GetItemList())
+                        {
+                            strFilter += " NB1.itemid = '" + i + "' or";
+                        }
+                        strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                    }
+                    else
+                    {
+                        //no data in list so select false itemid to stop anything displaying
+                        strFilter += " and (NB1.itemid = '-1') ";
+                    }
+                }
+            }
+
+            #endregion
+
+            #region apply ajax property filter
+
+            if (!string.IsNullOrEmpty(_propertyfilter))
+            {
+                var propIds = new List<string>();
+                var groupPropIds = new Dictionary<string, List<string>>();
+                foreach (string grpPropId in _propertyfilter.Split(','))
+                {
+                    if (!String.IsNullOrEmpty(grpPropId) && grpPropId.Contains("-"))
+                    {
+                        var groupId = grpPropId.Split('-')[0];
+                        var propId = grpPropId.Split('-')[1];
+
+                        if (!groupPropIds.ContainsKey(groupId)) groupPropIds.Add(groupId, new List<string>());
+
+                        groupPropIds[groupId].Add(propId);
+                    }
+                }
+
+                var sqlGroupFilter = "";
+                foreach (var groupPropId in groupPropIds.Keys)
+                {
+                    if (!String.IsNullOrEmpty(sqlGroupFilter))
+                    {
+                        sqlGroupFilter += $" {_filterTypeOutsideProp} ";
+                    }
+
+                    var sqlPropFilter = "";
+                    foreach (var propId in groupPropIds[groupPropId])
+                    {
+                        if (!String.IsNullOrEmpty(sqlPropFilter))
+                        {
+                            sqlPropFilter += $" {_filterTypeInsideProp} ";
+                        }
+                        sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+                    }
+                    sqlGroupFilter += $" ({sqlPropFilter}) ";
+                }
+
+                //foreach (var propId in propIds)
+                //{
+                //    if (!String.IsNullOrEmpty(sqlPropFilter))
+                //    {
+                //        sqlPropFilter += " AND ";
+                //    }
+                //    sqlPropFilter += $"NB1.[ItemId] in (select parentitemid from {dbOwner}[{objQual}NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {propId}) ";
+                //}
+                if (!String.IsNullOrEmpty(sqlGroupFilter))
+                {
+                    strFilter += $" AND ({sqlGroupFilter}) ";
+                }
+            }
+
+            #endregion
+
+            // save navigation data
+            _navigationdata.PageModuleId = Utils.RequestParam(context, "pagemid");
+            _navigationdata.PageNumber = Utils.RequestParam(context, "page");
+            if (Utils.IsNumeric(_catid)) _navigationdata.PageName = NBrightBuyUtils.GetCurrentPageName(Convert.ToInt32(_catid));
+
+            // save the last active modulekey to a cookie, so it can be used by the "NBrightBuyUtils.GetReturnUrl" function
+            NBrightCore.common.Cookie.SetCookieValue(ps.PortalId, "NBrigthBuyLastActive", "ModuleKey", ModuleKey, 1);
+
+            if (strFilter.Trim() == "")
+            {
+                //TODO: Check, but this should not be possible
+                // if at this point we have no filter, then assume we're using urlrewriter and a 404 url has been entered.
+                // rather than display all visible products in a list with no default.
+                // redirect to the product display function, so we can display a 404 and product not found.
+                //RazorDisplayDataEntry(_eid);
+            }
+            else
+            {
+
+                strFilter += " and (NB3.Visible = 1) "; // get only visible products
+
+                var recordCount = ModCtrl.GetDataListCount(ps.PortalId, moduleid, EntityTypeCode, strFilter, EntityTypeCodeLang, Utils.GetCurrentCulture(), DebugMode);
+
+                _navigationdata.RecordCount = recordCount.ToString("");
+                _navigationdata.Save();
+
+                if (returnlimit > 0 && returnlimit < recordCount) recordCount = returnlimit;
+
+                // **** check if we already have the template cached, if so no need for DB call or razor call ****
+                // get same cachekey used for DB return, and use for razor.
+                var razorcachekey = ModCtrl.GetDataListCacheKey(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                var cachekey = "NBrightBuyRazorOutput" + _templD + "*" + razorcachekey + ps.PortalId.ToString();
+                retval = (String)NBrightBuyUtils.GetModCache(cachekey);
+                if (retval == null || DebugMode)
+                {
+                    var l = ModCtrl.GetDataList(ps.PortalId, moduleid, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
+                    if (!ModSettings.Settings().ContainsKey("recordcount")) ModSettings.Settings().Add("recordcount", "");
+                    ModSettings.Settings()["recordcount"] = recordCount.ToString();
+                    retval = NBrightBuyUtils.RazorTemplRenderList(_templD, moduleid, razorcachekey, l, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                }
+
+                //SK phData.Controls.Add(lit);
+
+                // add paging if needed
+                if (recordCount > pageSize)
+                {
+                    var pg = new NBrightCore.controls.PagingCtrl();
+                    var strPg = pg.RenderPager(recordCount, pageSize, pageNumber);
+                    retval += strPg;
+                }
+
+                if (_navigationdata.SingleSearchMode) _navigationdata.ResetSearch();
+            }
+
+            #endregion
+
+
+            return retval;
+        }
 
 
         #endregion

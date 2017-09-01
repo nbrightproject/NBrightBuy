@@ -20,7 +20,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +30,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -188,6 +190,20 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="AjaxProductListFilter.ascx.cs">
+      <DependentUpon>AjaxProductListFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AjaxProductListFilter.ascx.designer.cs">
+      <DependentUpon>AjaxProductListFilter.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxProductListFilterSettings.ascx.cs">
+      <DependentUpon>AjaxProductListFilterSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
+      <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
@@ -240,6 +256,20 @@
     </Compile>
     <Compile Include="OrderRazorAdminSettings.ascx.designer.cs">
       <DependentUpon>OrderRazorAdminSettings.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAjaxView.ascx.cs">
+      <DependentUpon>ProductAjaxView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductAjaxView.ascx.designer.cs">
+      <DependentUpon>ProductAjaxView.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductAjaxViewSettings.ascx.cs">
+      <DependentUpon>ProductAjaxViewSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProductAjaxViewSettings.ascx.designer.cs">
+      <DependentUpon>ProductAjaxViewSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="ProfileRazorFormSettings.ascx.cs">
       <DependentUpon>ProfileRazorFormSettings.ascx</DependentUpon>
@@ -417,6 +447,12 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="AjaxProductListFilter.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="AjaxProductListFilterSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Plugins\readme.txt" />
     <Content Include="ProductRazorSearch.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -437,6 +473,15 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="ProfileRazorFormSettings.ascx" />
+    <Content Include="ProductAjaxView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProductAjaxViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ProfileRazorFormSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProfileRazorForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -459,7 +504,9 @@
     <Content Include="CartRazorView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductRazorViewSettings.ascx" />
+    <Content Include="ProductRazorViewSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ProductRazorView.ascx" />
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -495,6 +542,7 @@
     <None Include="Components\Installation\03.05.09.SqlDataProvider" />
     <None Include="Components\Installation\03.05.08.SqlDataProvider" />
     <None Include="README.md" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductListFilter.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Payment_head.cshtml" />
     <None Include="Components\Installation\03.05.06.SqlDataProvider" />
     <None Include="Components\Installation\03.05.07.SqlDataProvider" />
@@ -509,6 +557,9 @@
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplaysettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileHome.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileHome_head.cshtml" />
@@ -551,6 +602,7 @@
     <None Include="Themes\config\default\Admin_ProductSearch.cshtml" />
     <None Include="Themes\config\default\Admin_Product_head.cshtml" />
     <None Include="Themes\config\default\modelfields.cshtml" />
+    <None Include="Themes\config\default\NBS_AjaxProductListFilterSettings.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Profileform.cshtml" />
@@ -1075,6 +1127,7 @@
     <Content Include="Themes\config\default\productselectheader.html" />
     <Content Include="Themes\config\default\ProductView_Settings.html" />
     <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
+    <None Include="Themes\config\default\NBS_AjaxProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />
@@ -1631,6 +1684,7 @@
     <EmbeddedResource Include="App_LocalResources\categorymenu.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenu.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenu.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\AjaxProductListFilterSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenusettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenusettings.ascx.nl-NL.resx" />
@@ -1767,6 +1821,7 @@
     <None Include="Themes\config\img\flags\32\Thumbs.db" />
     <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="Themes\Cygnus\Default\NBS_MiniCart.cshtml" />
+    <None Include="Web.config" />
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -1775,12 +1830,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"
-
-copy "$(AssemblyName).pdb" "..\..\..\..\..\bin\$(AssemblyName).pdb"
-
-</PostBuildEvent>
+    <Extension>zip</Extension>
+    <DNNFileName>NBS</DNNFileName>
+    <PackageName>NBS</PackageName>
   </PropertyGroup>
+  <Import Project="BuildScripts\ModulePackage.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

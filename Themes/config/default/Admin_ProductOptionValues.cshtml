@@ -17,13 +17,13 @@
 @foreach (var nbiOptionValues in prdData.OptionValues)
 {
 
-    <li class="optionvalueitem @nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid") form-group">
+    <li class="optionvalueitem @nbiOptionValues.GetXmlProperty("genxml/hidden/optionid") form-group">
         <!-- class="optionvalueitem" is needed for JS postback update -->
         <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
         <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
 
-        <input id="optionid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionid")" />
-        <input id="optionvalueid" type="hidden" value="@nbiOptionValues.GetXmlProperty(" genxml/hidden/optionvalueid")" />
+        <input id="optionid" type="hidden" value="@nbiOptionValues.GetXmlProperty("genxml/hidden/optionid")" />
+        <input id="optionvalueid" type="hidden" value="@nbiOptionValues.GetXmlProperty("genxml/hidden/optionvalueid")" />
 
         <div class="col-sm-12 form-horizontal">
             <div class="row">

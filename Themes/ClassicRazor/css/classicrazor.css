@@ -140,10 +140,12 @@ a.categoryurl{display:block;}
 .NBrightPagingDiv ul li{display:inline-block;background:none;padding-left:0;margin-bottom:0;overflow:visible;}
 .NBrightPagingDiv a{background:#F2F2F2;border:1px solid #DDDDDD;color:#777777 !important;display:inline-block;font-size:14px;margin-right:4px;padding:6px 10px;text-decoration:none;}
 .NBrightPagingDiv a:hover{background:#3B96B6;color:#FFFFFF !important;}
+.NBrightPagingDiv ul > a.cmdPg{display:none !important}/* hide pager ears when empty */
 .NBrightNormalPg a{}
 .NBrightSelectPg a{background:#FFFFFF;}
 .NBrightNextPg a{}
 .NBrightPrevPg a{}
+
 
 /* Product Detail */
 .productdetail {overflow:hidden;line-height:normal;}
@@ -241,6 +243,11 @@ input.quantity {float:left;margin:0 6px;}
 .productdetail .relateditem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size:12px;}
 .productdetail .relateditem .manufacturer{display:inline-block;margin-right:3px;}
 .productdetail .relateditem .name{display:inline-block;}
+
+/* Ajax Filter Module */
+.nbs-ajaxfilter li {
+    list-style: none;
+}
 
 /* Flags */
 .outofstockflag {background:#395876;color:#FFFFFF;font-size:12px;font-weight:bold;right:0;line-height:24px;padding:0 9px;position:absolute;top:10%;}

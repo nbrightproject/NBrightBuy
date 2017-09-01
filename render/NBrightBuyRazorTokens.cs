@@ -644,6 +644,51 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString GroupCheckboxList(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = true,String groupType = "1", bool addSortOrderInput = false)
+        {
+            var strOut = "";
+            var upd = getUpdateAttr(xpath, attributes);
+            var id = getIdFromXpath(xpath);
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            strOut = $"<div {attributes}>";
+            var @checked = "";
+            var checkedClass = "";
+            var tList = NBrightBuyUtils.GetCategoryGroups(StoreSettings.Current.EditLanguage, true, groupType);
+            var hasItems = false;
+            foreach (var tItem in tList)
+            {
+                var groupRef = tItem.GetXmlProperty("genxml/textbox/groupref");
+                var groupName = tItem.GetXmlProperty("genxml/textbox/groupname");
+                if (tItem.GetXmlProperty("genxml/textbox/groupref") != "cat")
+                {
+                    if (info.GetXmlPropertyBool($"genxml/checkbox/{id}-{groupRef}"))
+                    {
+                        @checked = "checked";
+                        checkedClass = "dnnCheckbox-checked";
+                    }
+                    else
+                    {
+                        @checked = "";
+                        checkedClass = "";
+                    }
+                    var sortOrderInput = "";
+                    if (addSortOrderInput)
+                    {
+                        var sortValue = info.GetXmlPropertyInt($"genxml/checkbox/{id}Sort-{groupRef}");
+                        sortOrderInput = $"<input type=\"hidden\" id=\"{id}Sort-{groupRef}\" value=\"{sortValue}\" {upd}>";
+                    }
+
+                    strOut += $"    <div>{sortOrderInput}<input id='{id}-{groupRef}' type='checkbox' value='{groupRef}' {@checked} {upd}><span class='dnnCheckbox dnnCheckboxLabel {checkedClass}'>{groupName} ({groupRef})</span></div>";
+                    hasItems = true;
+                }
+            }
+
+            strOut += "</div>";
+
+            return new RawString(strOut);
+        }
+
 
         #endregion
 
@@ -1028,7 +1073,7 @@ namespace NBrightBuy.render
         /// <param name="model"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String cssclass = "")
+        public IEncodedString SortOrderDropDownList(String datatext, NBrightRazor model, String cssclass = "", bool addId = false, bool addScriptPostbackOnChange = true)
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
 
@@ -1036,7 +1081,9 @@ namespace NBrightBuy.render
 
             var strOut = "";
             var datat = datatext.Split(',');
-            strOut = "<select class='sortorderdropdown" + model.ModuleRef + " " + cssclass + " '>";
+
+            var id = addId ? $"id='sortorderdropdown{model.ModuleRef}'" : "";
+            strOut = $"<select {id} class='sortorderdropdown{model.ModuleRef} {cssclass}'>";
             var c = 0;
             var s = "";
             foreach (var t in datat)
@@ -1057,14 +1104,17 @@ namespace NBrightBuy.render
                 s = "";
                 if (c.ToString("D") == navigationdata.OrderByIdx) s = "selected";
 
-                strOut += "    <option value='" + c.ToString("D") + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                strOut += $"    <option value='{c.ToString("D")}' {s} selectedurl='{url}'>{t}</option>";
                 c += 1;
 
             }
             strOut += "</select>";
-            strOut += "<script>";
-            strOut += "$('.sortorderdropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl')); $('#loader').show(); });";
-            strOut += "</script>";
+
+            if (addScriptPostbackOnChange)
+            {
+                var onchangeScript = "function () { window.location.replace($('option:selected', this).attr('selectedurl')); $('#loader').show(); }";
+                strOut += $"<script>$('.sortorderdropdown{model.ModuleRef}').change({onchangeScript});</script>";
+            }
             return new RawString(strOut);
         }
 
@@ -1074,8 +1124,11 @@ namespace NBrightBuy.render
         /// <param name="datatext"></param>
         /// <param name="model"></param>
         /// <param name="attributes"></param>
+        /// <param name="cssclass"></param>
+        /// <param name="addId"></param>
+        /// <param name="addScriptPostbackOnChange">Inidaction to add javascript to initiate postback when the dropdown changes</param>
         /// <returns></returns>
-        public IEncodedString PageSizeDropDownList(String datatext, NBrightRazor model, String cssclass = "")
+        public IEncodedString PageSizeDropDownList(String datatext, NBrightRazor model, String cssclass = "", bool addId = false, bool addScriptPostbackOnChange = true)
         {
             if (datatext.StartsWith("ResourceKey:")) datatext = ResourceKey(datatext.Replace("ResourceKey:", "")).ToString();
 
@@ -1085,7 +1138,8 @@ namespace NBrightBuy.render
 
             var strOut = "";
             var datat = datatext.Split(',');
-            strOut = "<select class='pagesizedropdown" + model.ModuleRef + " " + cssclass + " '>";
+            var id = addId ? $"id='pagesizedropdown{model.ModuleRef}'" : "";
+            strOut = $"<select {id} class='pagesizedropdown{model.ModuleRef} {cssclass} '>";
             var c = 0;
             var s = "";
             foreach (var t in datat)
@@ -1106,14 +1160,17 @@ namespace NBrightBuy.render
                 s = "";
                 if (t == navigationdata.PageSize) s = "selected";
 
-                strOut += "    <option value='" + t + "' " + s + " selectedurl='" + url + "' >" + t + "</option>";
+                strOut += $"    <option value='{t}' {s} selectedurl='{url}' >{t}</option>";
                 c += 1;
             }
             strOut += "</select>";
 
-            strOut += "<script>";
-            strOut += "$('.pagesizedropdown" + model.ModuleRef + "').change(function () { window.location.replace($('option:selected', this).attr('selectedurl'));  $('#loader').show(); });";
-            strOut += "</script>";
+            if (addScriptPostbackOnChange)
+            {
+                var onchangeScript =
+                    "function () { window.location.replace($('option:selected', this).attr('selectedurl'));  $('#loader').show(); }";
+                strOut += $"<script>$('.pagesizedropdown{model.ModuleRef}').change({onchangeScript});</script>";
+            }
 
             return new RawString(strOut);
         }
