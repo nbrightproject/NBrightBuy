@@ -20,7 +20,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -30,7 +29,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -1815,6 +1813,7 @@
     <None Include="Themes\config\default\NBS_MiniCartsettings.cshtml" />
     <None Include="Themes\config\default\productfields.cshtml" />
     <None Include="Themes\config\default\productviewsettings.cshtml" />
+    <None Include="Themes\config\default\setup.config" />
     <None Include="Themes\config\default\settingspageheader.cshtml" />
     <None Include="Themes\config\img\flags\16\Thumbs.db" />
     <None Include="Themes\config\img\flags\24\Thumbs.db" />

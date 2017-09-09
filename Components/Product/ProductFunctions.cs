@@ -330,7 +330,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     prdData.Save(true,newrecord);
 
                     // remove save GetData cache
-                    var strCacheKey = prdData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    var strCacheKey = prdData.Info.ItemID.ToString("") + "*" + prdData.DataRecord.TypeCode  + "LANG*" + "*" + _editlang;
                     Utils.RemoveCache(strCacheKey);
                     DataCache.ClearCache();
 
@@ -362,7 +362,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     }
                     prodData.Save();
                     // remove save GetData cache
-                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + prodData.DataRecord.TypeCode  + "LANG*" + "*" + _editlang;
                     Utils.RemoveCache(strCacheKey);
 
                     return "";
@@ -394,7 +394,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     }
                     prodData.Save();
                     // remove save GetData cache
-                    var strCacheKey = prodData.Info.ItemID.ToString("") + "*PRDLANG*" + "*" + _editlang;
+                    var strCacheKey = prodData.Info.ItemID.ToString("") + prodData.DataRecord.TypeCode  + "LANG*" + "*" + _editlang;
                     Utils.RemoveCache(strCacheKey);
 
                     return "";
@@ -436,6 +436,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
 
                     if (_editlang == "") _editlang = editlang;
+                    if (_editlang == "") _editlang = Utils.GetCurrentCulture();                    
 
                     var strOut = "";
 
@@ -1322,10 +1323,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
+                var list = "";
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 ajaxInfo.SetXmlProperty("genxml/hidden/razortemplate", "Admin_ProductSelectList.cshtml");
                 var settings = ajaxInfo.ToDictionary();
-                var list = ProductAdminList(settings, true);
                 if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
                 var entitytypecode = settings["entitytypecode"];
 
@@ -1336,12 +1337,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var ajaxprov = AjaxInterface.Instance(d.Key);
                         if (ajaxprov != null)
                         {
-                            if (entitytypecode != ajaxprov.Ajaxkey)
+                            if (entitytypecode == ajaxprov.Ajaxkey) // only get single typecode
                             {
                                 var provlist = ProductAdminList(ajaxInfo.ToDictionary(), true, "", ajaxprov.Ajaxkey);
-                                list = provlist + list;
+                                list = provlist;
                             }
                         }
+                }
+
+                if (list == "")
+                {
+                    list = ProductAdminList(settings, true);
                 }
 
                 return list;
@@ -1470,26 +1476,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var retval = "";
 
             // get the settings form the context
-            var ctxsettings = NBrightBuyUtils.GetAjaxDictionary(context);
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             // get the moduleid, tabid
-            var moduleid = int.Parse(ctxsettings["moduleid"]);
-            var tabid = int.Parse(ctxsettings["tabid"]);
+            var moduleid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            var tabid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/tabid");
 
             var ps = PortalSettings.Current;
 
 
             var settings = new Hashtable();
-            // get the module settings from DNN
-            //var settings = ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings;
-            //foreach (
-            //    KeyValuePair<string, string> modSetting in
-            //    ModuleController.Instance.GetModule(moduleid, tabid, false).ModuleSettings)
-            //{
-            //    if (!settings.ContainsKey(modSetting.Key))
-            //    {
-            //        settings.Add(modSetting.Key, modSetting.Value);
-            //    }
-            //}
 
             // then add the NBrightBuy settings
             var ModSettings = new ModSettings(moduleid, settings);
@@ -1523,22 +1518,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _filterTypeInsideProp = "AND";
             var _filterTypeOutsideProp = "AND";
 
-            _catid = ctxsettings["catid"];
-            _catname = ctxsettings["catref"];
-            _modkey = ctxsettings["modkey"];
-            _pagemid = ctxsettings["pagemid"];
-            _pagenum = ctxsettings["page"];
-            _pagesize = ctxsettings["pagesize"];
-            _orderbyindex = ctxsettings["orderby"];
-            _propertyfilter = ctxsettings["propertyfilter"];
+            _catid = ajaxInfo.GetXmlProperty("catid");
+            _catname = ajaxInfo.GetXmlProperty("catref");
+            _modkey = ajaxInfo.GetXmlProperty("modkey");
+            _pagemid = ajaxInfo.GetXmlProperty("pagemid");
+            _pagenum = ajaxInfo.GetXmlProperty("page");
+            _pagesize = ajaxInfo.GetXmlProperty("pagesize");
+            _orderbyindex = ajaxInfo.GetXmlProperty("orderby");
+            _propertyfilter = ajaxInfo.GetXmlProperty("propertyfilter");
 
             _templD = ModSettings.Get("razorlisttemplate");
 
             // we're making sure here, that this thing can only be AND or OR to prevent SQL Injection in any case
-            if (ctxsettings["propertyfiltertypeinside"] == "OR")
-                _filterTypeInsideProp = "OR";
-            if (ctxsettings["propertyfiltertypeoutside"] == "OR")
-                _filterTypeOutsideProp = "OR";
+            if (ajaxInfo.GetXmlProperty("propertyfiltertypeinside").ToUpper() == "OR") _filterTypeInsideProp = "OR";
+            if (ajaxInfo.GetXmlProperty("propertyfiltertypeoutside").ToUpper() == "OR") _filterTypeOutsideProp = "OR";
 
             //Get returnlimt from module settings
             var strreturnlimit = ModSettings.Get("returnlimit");
@@ -1550,8 +1543,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             // TODO: dat moeten we hier eigenlijk niet nodig hebben
             // voor nu even handig om die parameters erbij te kunnen halen en ze later om te zetten naar client side rommel
             _navigationdata = new NavigationData(ps.PortalId, ModuleKey);
-            var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy",
-                ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), moduleid.ToString());
+            var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), moduleid.ToString());
 
             #endregion
 
@@ -1984,6 +1976,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 // add paging if needed
                 if (recordCount > pageSize)
                 {
+                    if (pageSize == 0) pageSize = 12;
                     var pg = new NBrightCore.controls.PagingCtrl();
                     var strPg = pg.RenderPager(recordCount, pageSize, pageNumber);
                     retval += strPg;

@@ -1,9 +1,10 @@
 ﻿$(document).ready(function() {
 
-
-
     $('.selectlang').unbind("click");
     $(".selectlang").click(function() {
+        $('.actionbuttonwrapper').hide();
+        $('.editlanguage').hide();
+        $('.processing').show();
         $("#nextlang").val($(this).attr("editlang"));
         if ($("#razortemplate").val() == 'Admin_ProductDetail.cshtml') {
             //move data to update postback field
@@ -18,7 +19,6 @@
         }
     });
 
-
     $(document).on("nbxgetcompleted", Admin_product_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // start load all ajax data, continued by js in product.js file
@@ -29,6 +29,9 @@
 
     // function to do actions after an ajax call has been made.
     function Admin_product_nbxgetCompleted(e) {
+
+        $('.actionbuttonwrapper').show();
+        $('.editlanguage').show();
 
         setupbackoffice(); // run JS to deal with standard BO functions like accordian.
 
@@ -238,6 +241,7 @@
             // Copy the productid into the selecteditemid (for Add New Product)
             $('#selecteditemid').val($('#itemid').val());
 
+            $('.actionbuttonwrapper').show();
 
             $('.processing').hide();
 
@@ -352,6 +356,8 @@
             
             $('#productAdmin_cmdSave').unbind("click");
             $('#productAdmin_cmdSave').click(function () {
+                $('.actionbuttonwrapper').hide();
+                $('.editlanguage').hide();
                 $('.processing').show();
                 //move data to update postback field
                 $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
@@ -364,6 +370,8 @@
 
             $('#productAdmin_cmdSaveExit').unbind("click");
             $('#productAdmin_cmdSaveExit').click(function () {
+                $('.actionbuttonwrapper').hide();
+                $('.editlanguage').hide();
                 $('.processing').show();
                 //move data to update postback field
                 $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
@@ -376,6 +384,8 @@
 
             $('#productAdmin_cmdSaveAs').unbind("click");
             $('#productAdmin_cmdSaveAs').click(function () {
+                $('.actionbuttonwrapper').hide();
+                $('.editlanguage').hide();
                 $('.processing').show();
                 //move data to update postback field
                 $('#xmlupdatemodeldata').val($.fn.genxmlajaxitems('#productmodels', '.modelitem'));
@@ -390,6 +400,8 @@
             $('#productAdmin_cmdDelete').unbind("click");
             $('#productAdmin_cmdDelete').click(function () {
                 if (confirm($('#confirmdeletemsg').text())) {
+                    $('.actionbuttonwrapper').hide();
+                    $('.editlanguage').hide();
                     $('.processing').show();
                     nbxget('product_admin_delete', '#nbs_productadminsearch', '#actionreturn');
                 }

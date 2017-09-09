@@ -84,8 +84,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void Save()
         {
             var objCtrl = new NBrightBuyController();
-            objCtrl.Update(DataRecord);
+            var groupId = objCtrl.Update(DataRecord);
             objCtrl.Update(DataLangRecord);
+            Info = objCtrl.Get(groupId, "GROUPLANG", _lang);
         }
 
         public int Validate()

@@ -593,6 +593,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var objCtrl = new NBrightBuyController();
             var productid = objCtrl.Update(DataRecord);
             DataLangRecord.ParentItemId = productid;
+            DataLangRecord.RemoveXmlNode("genxml/newrecord");  //don't need new flag on original
             var plangid = objCtrl.Update(DataLangRecord);
 
             // reload data so it's upto date with new ids
@@ -614,13 +615,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (l.Count >= 1)
                     {
                         var nbilang = l[0];
-                        if (nbilang.GetXmlPropertyBool("genxml/newrecord") && DataLangRecord != null)
+                        if (DataLangRecord != null)
                         {
-                            var nbi = (NBrightInfo) DataLangRecord.Clone();
-                            nbi.ItemID = nbilang.ItemID;
-                            nbi.Lang = lang;
-                            nbi.RemoveXmlNode("genxml/newrecord");
-                            objCtrl.Update(nbi);
+                            if (nbilang.GetXmlPropertyBool("genxml/newrecord"))
+                            {
+                                var nbi = (NBrightInfo) DataLangRecord.Clone();
+                                nbi.ItemID = nbilang.ItemID;
+                                nbi.Lang = lang;
+                                nbi.RemoveXmlNode("genxml/newrecord");
+                                objCtrl.Update(nbi);
+                            }
                         }
                     }
                 }

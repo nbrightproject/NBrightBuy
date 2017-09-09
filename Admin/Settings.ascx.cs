@@ -19,6 +19,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -301,20 +302,25 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (!g.Any()) CreateGroup("cat", "Categories","2");
             if (l.Count == 0)
             {
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "promo" select i;
-                if (!g.Any()) CreateGroup("promo", "Promotions", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "man" select i;
-                if (!g.Any()) CreateGroup("man", "Manufacturer", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "supp" select i;
-                if (!g.Any()) CreateGroup("supp", "Supplier", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "fea" select i;
-                if (!g.Any()) CreateGroup("fea", "Features", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "spec" select i;
-                if (!g.Any()) CreateGroup("spec", "Specifications", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "temp" select i;
-                if (!g.Any()) CreateGroup("temp", "Temp", "1");
-                g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == "searchfilter" select i;
-                if (!g.Any()) CreateGroup("searchfilter", "Display Search Filter", "3");
+                // read init xml config file.
+                string relPath = "/DesktopModules/NBright/NBrightBuy/Themes/config/default";
+                var fullpath = HttpContext.Current.Server.MapPath(relPath);
+                var strXml = Utils.ReadFile(fullpath + "\\setup.config");
+                var nbi = new NBrightInfo();
+                nbi.XMLData = strXml;
+
+                var xmlNodes = nbi.XMLDoc?.SelectNodes("root/group");
+                if (xmlNodes != null)
+                {
+                    foreach (XmlNode xmlNod in xmlNodes)
+                    {
+                        if (xmlNod.Attributes?["groupref"] != null)
+                        {
+                            g = from i in l where i.GetXmlProperty("genxml/textbox/groupref") == xmlNod.Attributes["groupref"].Value select i;
+                            if (!g.Any()) CreateGroup(xmlNod.Attributes["groupref"].Value, xmlNod.Attributes["groupname"].Value, xmlNod.Attributes["grouptype"].Value);
+                        }
+                    }
+                }
             }
 
             //update resx fields
@@ -337,6 +343,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             n.Type = groupType;
             n.DataRecord.GUIDKey = groupref;
             n.Save();
+            n.Validate();
         }
 
 
