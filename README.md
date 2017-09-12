@@ -38,3 +38,9 @@ v3.6.0
 - Convert Client Admin to Razor.
 - Add custom fields to Client Admin "clientfields.cshtml"
 - REQUIRED min. v8.2.0.0 on NBrightTS  (Templating system)
+
+v3.6.7
+- fix bug on multiple langauge save.
+- Close possible SQL hole in typecode lang record select for GetDataLang SPROC
+- Add Tag Word js. 
+
