@@ -1509,8 +1509,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _orderbyindex = "";
             var _propertyfilter = "";
             NavigationData _navigationdata;
-            var EntityTypeCode = "PRD";
-            var EntityTypeCodeLang = "PRDLANG";
+            var EntityTypeCode = ModSettings.Get("entitytypecode");
+            var EntityTypeCodeLang = ModSettings.Get("entitytypecode") + "LANG";
             var _itemListName = "";
             var _guidkey = "";
             var _404code = false;

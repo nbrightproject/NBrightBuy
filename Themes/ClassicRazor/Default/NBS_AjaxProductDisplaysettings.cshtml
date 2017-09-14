@@ -11,6 +11,10 @@
     var info = (NBrightInfo)Model.List.First();
 }
 
+<div class="dnnFormItem">
+    @DnnLabel("lblEntityTypeCode", "ProductViewSettings.EntityTypeCode")
+    @TextBox(info, "genxml/textbox/entitytypecode", "width='300px' class='form-control' ", "ResourceKey:EntityTypeCode.EntityTypeCode")
+</div>
 
 <div class="dnnFormItem">
     @DnnLabel("lblmodeldisplaytype", "ProductViewSettings.lblmodeldisplaytype")

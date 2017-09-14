@@ -1013,6 +1013,8 @@
     <Content Include="Themes\config\default\plugins\select2\select2_locale_zh-TW.js" />
     <Content Include="Themes\config\default\plugins\sparkline\jquery.sparkline.js" />
     <Content Include="Themes\config\default\plugins\sparkline\jquery.sparkline.min.js" />
+    <Content Include="Themes\config\default\plugins\tagsinput\jquery.tagsinput.css" />
+    <Content Include="Themes\config\default\plugins\tagsinput\jquery.tagsinput.js" />
     <Content Include="Themes\config\default\plugins\tinymce\jquery.tinymce.min.js" />
     <Content Include="Themes\config\default\plugins\tinymce\license.txt" />
     <Content Include="Themes\config\default\plugins\tinymce\plugins\advlist\plugin.min.js" />
