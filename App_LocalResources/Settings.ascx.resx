@@ -474,4 +474,10 @@
   <data name="sharecategoriesmsg.Text" xml:space="preserve">
     <value>Share CATEGORIES created in this portal with all portals in the DNN installation. Sharing categories will also share any producs add to the category across ALL portals.</value>
   </data>
+  <data name="enablefilelogging.Text" xml:space="preserve">
+    <value>Enable File Logging</value>
+  </data>
+  <data name="enablefileloggingmsg.Text" xml:space="preserve">
+    <value>To be able to actually see a logfile, you need to add a logger and an appender to the DotNetNuke.Log4Net.config file in the root of your DNN installation.</value>
+  </data>
 </root>

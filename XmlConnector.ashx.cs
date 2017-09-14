@@ -77,6 +77,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             #endregion
 
+            Logging.Debug($"XmlConnector called with: paramCmd='{paramCmd}', itemId='{itemId}', itemListName='{itemListName}'");
+
             #endregion
 
             try
@@ -202,6 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy
                                 {
                                     // ignore, robots can cause error on thread abort.
                                     //Exceptions.LogException(ex);
+                                    Logging.Debug($"XmlConnector.ProcessRequest exception for {paramCmd} which is ignored because bots tend to cause these on thread abort: {ex.Message}.");
                                 }
                             }
                             break;
@@ -263,7 +266,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         case "orderby":
                             strOut = DoOrderBy(context);
                             break;
-
                     }
                 }
 
@@ -273,7 +275,7 @@ namespace Nevoweb.DNN.NBrightBuy
             catch (Exception ex)
             {
                 strOut = ex.ToString();
-                Exceptions.LogException(ex);
+                Logging.LogException(ex);
             }
 
 
@@ -795,6 +797,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception ex)
             {
+                Logging.LogException(ex);
                 return ex.ToString();
             }
         }
@@ -826,6 +829,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception ex)
             {
+                Logging.LogException(ex);
                 return ex.ToString();
             }
         }
@@ -970,7 +974,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex);
+                Logging.LogException(ex);
                 return "ERROR";
             }
         }
@@ -1101,6 +1105,7 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception ex)
             {
+                Logging.LogException(ex);
                 return ex.ToString();
             }
 

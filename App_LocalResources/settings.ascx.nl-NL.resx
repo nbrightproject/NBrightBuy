@@ -1,5 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -7,132 +112,135 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="addressestab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Mijn adressen</value>
+  <data name="addressestab.Text" xml:space="preserve">
+    <value>Mijn adressen</value>
   </data>
-  <data name="adminemail.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">E-mailadres van de beheerder van de winkel, dit is het standaardarchief e-mailadres verzenden.</value>
+  <data name="adminemail.Help" xml:space="preserve">
+    <value>E-mailadres van de beheerder van de winkel, dit is het standaardarchief e-mailadres verzenden.</value>
   </data>
-  <data name="adminemail.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Beheerder</value>
+  <data name="adminemail.Text" xml:space="preserve">
+    <value>Beheerder</value>
   </data>
-  <data name="backofficeexittab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Back-Office Exit Page</value>
+  <data name="backofficeexittab.Text" xml:space="preserve">
+    <value>Back-Office Exit Page</value>
   </data>
-  <data name="carttab.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Gebruikt Gebruikersbeheer/omleiden naar de pagina Winkelwagen wanneer bepaalde acties zijn gedaan.</value>
+  <data name="carttab.Help" xml:space="preserve">
+    <value>Gebruikt Gebruikersbeheer/omleiden naar de pagina Winkelwagen wanneer bepaalde acties zijn gedaan.</value>
   </data>
-  <data name="carttab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Kassa</value>
+  <data name="carttab.Text" xml:space="preserve">
+    <value>Kassa</value>
   </data>
-  <data name="cataloguemode.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Catalogus-modus</value>
+  <data name="cataloguemode.Text" xml:space="preserve">
+    <value>Catalogus-modus</value>
   </data>
-  <data name="checkoutpromocode.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Promo codeveld</value>
+  <data name="checkoutpromocode.Text" xml:space="preserve">
+    <value>Promo codeveld</value>
   </data>
-  <data name="checkouttaxcode.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Fiscale codeveld</value>
+  <data name="checkouttaxcode.Text" xml:space="preserve">
+    <value>Fiscale codeveld</value>
   </data>
-  <data name="copyorderto.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Kopiëren van bestelling naar E-mail</value>
+  <data name="copyorderto.Text" xml:space="preserve">
+    <value>Kopiëren van bestelling naar E-mail</value>
   </data>
-  <data name="currencysymbol.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Valutasymbool</value>
+  <data name="currencysymbol.Text" xml:space="preserve">
+    <value>Valutasymbool</value>
   </data>
-  <data name="defaultthemefolder.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Standaard omslag van het thema</value>
+  <data name="defaultthemefolder.Text" xml:space="preserve">
+    <value>Standaard omslag van het thema</value>
   </data>
-  <data name="devoptions.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Ontwikkelaar opties</value>
+  <data name="devoptions.Text" xml:space="preserve">
+    <value>Ontwikkelaar opties</value>
   </data>
-  <data name="Enabled.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Ingeschakeld</value>
+  <data name="Enabled.Text" xml:space="preserve">
+    <value>Ingeschakeld</value>
   </data>
-  <data name="enabledealer.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Dealer inschakelen</value>
+  <data name="enabledealer.Text" xml:space="preserve">
+    <value>Dealer inschakelen</value>
   </data>
-  <data name="folderdocs.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Documentenmap</value>
+  <data name="folderdocs.Text" xml:space="preserve">
+    <value>Documentenmap</value>
   </data>
-  <data name="folderimages.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Afbeeldingenmap</value>
+  <data name="folderimages.Text" xml:space="preserve">
+    <value>Afbeeldingenmap</value>
   </data>
-  <data name="folderuploads.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Upload map</value>
+  <data name="folderuploads.Text" xml:space="preserve">
+    <value>Upload map</value>
   </data>
-  <data name="fontawesome.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Omvatten FontAwesome</value>
+  <data name="fontawesome.Text" xml:space="preserve">
+    <value>Omvatten FontAwesome</value>
   </data>
-  <data name="jqueryuicss.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Omvatten jQuery UI CSS</value>
+  <data name="jqueryuicss.Text" xml:space="preserve">
+    <value>Omvatten jQuery UI CSS</value>
   </data>
-  <data name="jqueryuijs.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Omvatten jQuery UI JS</value>
+  <data name="jqueryuijs.Text" xml:space="preserve">
+    <value>Omvatten jQuery UI JS</value>
   </data>
-  <data name="manageremail.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">CSV-lijst van manager e-mails.</value>
+  <data name="manageremail.Help" xml:space="preserve">
+    <value>CSV-lijst van manager e-mails.</value>
   </data>
-  <data name="manageremail.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Manager</value>
+  <data name="manageremail.Text" xml:space="preserve">
+    <value>Manager</value>
   </data>
-  <data name="minimumstocklevel.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Minimale voorraad</value>
+  <data name="minimumstocklevel.Text" xml:space="preserve">
+    <value>Minimale voorraad</value>
   </data>
-  <data name="ordermanagertab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Mijn bestellingen</value>
+  <data name="ordermanagertab.Text" xml:space="preserve">
+    <value>Mijn bestellingen</value>
   </data>
-  <data name="orderprefix.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Volgorde voorvoegsel</value>
+  <data name="orderprefix.Text" xml:space="preserve">
+    <value>Volgorde voorvoegsel</value>
   </data>
-  <data name="pageactions.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Paginahandelingen</value>
+  <data name="pageactions.Text" xml:space="preserve">
+    <value>Paginahandelingen</value>
   </data>
-  <data name="pagesize.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Pagina lengte</value>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Pagina lengte</value>
   </data>
-  <data name="paymenttab.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Tabblad waar de client zal worden omgeleid om een methode van betaling te selecteren.</value>
+  <data name="paymenttab.Help" xml:space="preserve">
+    <value>Tabblad waar de client zal worden omgeleid om een methode van betaling te selecteren.</value>
   </data>
-  <data name="paymenttab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Betaling</value>
+  <data name="paymenttab.Text" xml:space="preserve">
+    <value>Betaling</value>
   </data>
-  <data name="productlisttab.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Gebruikt Gebruikersbeheer/omleiden naar de productpagina wanneer bepaalde acties zijn gedaan.</value>
+  <data name="productlisttab.Help" xml:space="preserve">
+    <value>Gebruikt Gebruikersbeheer/omleiden naar de productpagina wanneer bepaalde acties zijn gedaan.</value>
   </data>
-  <data name="productlisttab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Productlijst</value>
+  <data name="productlisttab.Text" xml:space="preserve">
+    <value>Productlijst</value>
   </data>
-  <data name="profiletab.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Mijn profiel</value>
+  <data name="profiletab.Text" xml:space="preserve">
+    <value>Mijn profiel</value>
   </data>
-  <data name="removelogo.confirm" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Logo verwijderen?</value>
+  <data name="removelogo.confirm" xml:space="preserve">
+    <value>Logo verwijderen?</value>
   </data>
-  <data name="removelogo.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Verwijderen</value>
+  <data name="removelogo.Text" xml:space="preserve">
+    <value>Verwijderen</value>
   </data>
-  <data name="resetpasswordonclientvalidate.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Wachtwoord opnieuw instellen op Client validatie</value>
+  <data name="resetpasswordonclientvalidate.Text" xml:space="preserve">
+    <value>Wachtwoord opnieuw instellen op Client validatie</value>
   </data>
-  <data name="sendclientroleemail.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">E-mail verzenden Client wanneer toegevoegd aan Client functie</value>
+  <data name="sendclientroleemail.Text" xml:space="preserve">
+    <value>E-mail verzenden Client wanneer toegevoegd aan Client functie</value>
   </data>
-  <data name="Settings.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Instellingen</value>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Instellingen</value>
   </data>
-  <data name="storagetypeclient.Help" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Client cartid en andere klant specifieke gegevens kunnen worden opgeslagen als Cookies of SessionMemory</value>
+  <data name="storagetypeclient.Help" xml:space="preserve">
+    <value>Client cartid en andere klant specifieke gegevens kunnen worden opgeslagen als Cookies of SessionMemory</value>
   </data>
-  <data name="storagetypeclient.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Opslag klanttype</value>
+  <data name="storagetypeclient.Text" xml:space="preserve">
+    <value>Opslag klanttype</value>
   </data>
-  <data name="subscribenewsletter.Text" lastModified="2014-11-29 13:48:06">
-    <value xml:space="preserve">Nieuwsbrief Checkbox</value>
+  <data name="subscribenewsletter.Text" xml:space="preserve">
+    <value>Nieuwsbrief Checkbox</value>
+  </data>
+  <data name="enablefilelogging.Text" xml:space="preserve">
+    <value>Logbestand inschakelen</value>
   </data>
 </root>

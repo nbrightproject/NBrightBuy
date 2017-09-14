@@ -84,7 +84,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers.PromoProvider
             catch (Exception ex)
             {
                 strOut = ex.ToString();
-                Exceptions.LogException(ex);
+                Logging.LogException(ex);
             }
 
 

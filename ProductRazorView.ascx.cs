@@ -88,6 +88,9 @@ namespace Nevoweb.DNN.NBrightBuy
             // if guidkey entered instead of eid, find it using the guid and assign to _eid
             _guidkey = Utils.RequestQueryStringParam(Context, "guidkey");
             if (_guidkey == "") _guidkey = Utils.RequestQueryStringParam(Context, "ref");
+
+            Logging.Info($"ProductRazorView requested with: eid={_eid}, guidkey={_guidkey}.");
+
             if (_eid== "" && _guidkey != "")
             {
                 var guidData = ModCtrl.GetByGuidKey(PortalId, -1, EntityTypeCode, _guidkey);
