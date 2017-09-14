@@ -76,6 +76,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Interfaces
 
         public abstract String ProcessCommand(string paramCmd, HttpContext context, string editlang = "");
 
+        public abstract void Validate();
+
     }
 
 }

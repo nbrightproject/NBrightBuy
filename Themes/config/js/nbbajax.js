@@ -68,3 +68,28 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 		$("input[id*='disabledsearchtokens']").val(disabledlist);
 	}
 
+	function nbxposturl(cmd, params) {
+	    $.ajaxSetup({ cache: false });
+
+	    var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd + "&" + params;
+	    var request = $.ajax({
+	        type: "POST",
+	        url: cmdupdate,
+	        cache: false,
+	        timeout: 30000
+	    });
+
+	    request.done(function (data) {
+	        if (data != 'noaction') {
+	            $.event.trigger({
+	                type: "nbxgetcompleted",
+	                cmd: cmd
+	            });
+	        }
+	    });
+
+	    request.fail(function (jqXHR, textStatus) {
+	        $('#loader').hide('');
+	        alert("Request failed: " + textStatus);
+	    });
+	}

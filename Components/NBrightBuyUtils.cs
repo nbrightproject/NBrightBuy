@@ -1140,8 +1140,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var prodList = objCtrl.GetList(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, -1, "PRD");
             foreach (var p in prodList)
             {
-                var prodData = ProductUtils.GetProductData(p.ItemID, StoreSettings.Current.EditLanguage);
-                errcount += prodData.Validate();
+                var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+                foreach (var lang in enabledlanguages)
+                {
+                    var prodData = ProductUtils.GetProductData(p.ItemID, lang.Key, true, "PRD");
+                    errcount += prodData.Validate();
+                }
             }
 
             // Validate Categories
@@ -1168,6 +1172,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 objCtrl.Update(info);
             }
 
+            // validate plugin data
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetAjaxProviders();
+            foreach (var d in provList)
+            {
+                    var ajaxprov = AjaxInterface.Instance(d.Key);
+                    if (ajaxprov != null)
+                    {
+                        ajaxprov.Validate();
+                    }
+            }
 
             return errcount;
         }
