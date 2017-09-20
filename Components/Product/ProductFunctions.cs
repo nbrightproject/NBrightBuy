@@ -1518,20 +1518,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _filterTypeInsideProp = "AND";
             var _filterTypeOutsideProp = "AND";
 
-            _catid = ajaxInfo.GetXmlProperty("catid");
-            _catname = ajaxInfo.GetXmlProperty("catref");
-            _modkey = ajaxInfo.GetXmlProperty("modkey");
-            _pagemid = ajaxInfo.GetXmlProperty("pagemid");
-            _pagenum = ajaxInfo.GetXmlProperty("page");
-            _pagesize = ajaxInfo.GetXmlProperty("pagesize");
-            _orderbyindex = ajaxInfo.GetXmlProperty("orderby");
-            _propertyfilter = ajaxInfo.GetXmlProperty("propertyfilter");
+            _catid = ajaxInfo.GetXmlProperty("genxml/hidden/catid");
+            _catname = ajaxInfo.GetXmlProperty("genxml/hidden/catref");
+            _modkey = ajaxInfo.GetXmlProperty("genxml/hidden/modkey");
+            _pagemid = ajaxInfo.GetXmlProperty("genxml/hidden/pagemid");
+            _pagenum = ajaxInfo.GetXmlProperty("genxml/hidden/page");
+            _pagesize = ajaxInfo.GetXmlProperty("genxml/hidden/pagesize");
+            _orderbyindex = ajaxInfo.GetXmlProperty("genxml/hidden/orderby");
+            _propertyfilter = ajaxInfo.GetXmlProperty("genxml/hidden/propertyfilter");
 
             _templD = ModSettings.Get("razorlisttemplate");
 
             // we're making sure here, that this thing can only be AND or OR to prevent SQL Injection in any case
-            if (ajaxInfo.GetXmlProperty("propertyfiltertypeinside").ToUpper() == "OR") _filterTypeInsideProp = "OR";
-            if (ajaxInfo.GetXmlProperty("propertyfiltertypeoutside").ToUpper() == "OR") _filterTypeOutsideProp = "OR";
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/propertyfiltertypeinside").ToUpper() == "OR") _filterTypeInsideProp = "OR";
+            if (ajaxInfo.GetXmlProperty("genxml/hidden/propertyfiltertypeoutside").ToUpper() == "OR") _filterTypeOutsideProp = "OR";
 
             //Get returnlimt from module settings
             var strreturnlimit = ModSettings.Get("returnlimit");
@@ -1674,6 +1674,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             //get default catid.
             var catseo = _catid;
             var defcatid = ModSettings.Get("defaultcatid");
+            if (defcatid == "") defcatid = "0";
             NBrightInfo objCat = null;
             if (Utils.IsNumeric(defcatid))
             {
@@ -1683,6 +1684,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             else
             {
                 defcatid = ModSettings.Get("defaultpropertyid");
+                if (defcatid == "") defcatid = "0";
                 if (Utils.IsNumeric(defcatid))
                 {
                     // if we have no filter use the default category

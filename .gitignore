@@ -220,3 +220,5 @@ Themes/config/default/menuplugin.xml
 Themes/Wiseopro/
 Installation/NBrightBuy_Resource.zip
 App_LocalResources/*.Portal*.resx
+Themes/Indigo/
+Providers/ManualPaymentProvider/App_LocalResources/ManualPayment.ascx.Portal-0.resx

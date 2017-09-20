@@ -348,6 +348,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     //get default catid.
                     var catseo = _catid;
                     var defcatid = ModSettings.Get("defaultcatid");
+                    if (defcatid == "") defcatid = "0";
                     if (Utils.IsNumeric(defcatid))
                     {
                         // if we have no filter use the default category
@@ -356,6 +357,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     else
                     {
                         defcatid = ModSettings.Get("defaultpropertyid");
+                        if (defcatid == "") defcatid = "0";
                         if (Utils.IsNumeric(defcatid))
                         {
                             // if we have no filter use the default category
