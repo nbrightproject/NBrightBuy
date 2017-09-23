@@ -76,6 +76,35 @@ namespace NBrightBuy.render
             }
         }
 
+        public IEncodedString LanguageDropDown(NBrightInfo info, String xpath, String attributes = "", Boolean allowEmpty = false)
+        {
+
+            var strOut = "";
+            var rtnList = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+
+            if (rtnList != null && rtnList.Count > 0)
+            {
+                // we have a list, so do a dropdownlist
+                if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+                var upd = getUpdateAttr(xpath, attributes);
+                var id = getIdFromXpath(xpath);
+                strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+                var s = "";
+                if (allowEmpty) strOut += "    <option value=''></option>";
+                foreach (var l in rtnList)
+                {
+                    if (info.GetXmlProperty(xpath) == l.Value.Code)
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + l.Value.Code + "' " + s + ">" + l.Value.NativeName + "</option>";
+                }
+                strOut += "</select>";
+            }
+            return new RawString(strOut);
+        }
+
         public IEncodedString TaxRateDropDown(NBrightInfo info,string xpath,string providerkey, String attributes = "",bool allowblank = true)
         {
             try
