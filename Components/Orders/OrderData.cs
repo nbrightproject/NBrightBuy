@@ -112,6 +112,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 PurchaseInfo.SetXmlProperty("genxml/dropdownlist/orderstatus", value);
                 PurchaseInfo.GUIDKey = value;
 
+                SavePurchaseData();
+
                 NBrightBuyUtils.ProcessEventProvider(EventActions.AfterOrderStatusChange, PurchaseInfo);
 
             }  

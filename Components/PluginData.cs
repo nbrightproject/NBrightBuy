@@ -300,7 +300,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void AddNewPlugin()
         {
             var objInfoIn = new NBrightInfo(true);
-            AddPlugin(objInfoIn,0);
+            AddPlugin(objInfoIn);
         }
 
         public String AddPlugin(NBrightInfo pluginInfo, int index = -1)

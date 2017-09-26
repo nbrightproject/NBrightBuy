@@ -13,11 +13,6 @@ using Nevoweb.DNN.NBrightBuy.Components;
 namespace Nevoweb.DNN.NBrightBuy.Admin
 {
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The EditNBrightIndex class is used to manage content
-    /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class Products : NBrightBuyAdminBase
     {
 

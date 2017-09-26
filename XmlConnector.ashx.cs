@@ -101,6 +101,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     ProductFunctions.EntityTypeCode = "PRD";
                     strOut = ProductFunctions.ProcessCommand(paramCmd, context, _editlang);
                 }
+                else if (paramCmd.StartsWith("category_"))
+                {
+                    CategoryFunctions.EntityTypeCode = "CAT";
+                    strOut = CategoryFunctions.ProcessCommand(paramCmd, context, _editlang);
+                }                
                 else
                 {
                     switch (paramCmd)

@@ -52,8 +52,7 @@
     <Reference Include="NBrightDNN">
       <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="RazorEngine">
       <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -202,6 +201,7 @@
     <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Categories\CategoryFunctions.cs" />
     <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
@@ -239,7 +239,7 @@
     <Compile Include="CategoryRazorMenu.ascx.designer.cs">
       <DependentUpon>CategoryRazorMenu.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\CatMenuRazorBuilder.cs" />
+    <Compile Include="Components\Categories\CatMenuRazorBuilder.cs" />
     <Compile Include="Components\Interfaces\EntityTypeInterface.cs" />
     <Compile Include="OrderRazorAdmin.ascx.cs">
       <DependentUpon>OrderRazorAdmin.ascx</DependentUpon>
@@ -284,12 +284,12 @@
       <DependentUpon>ProfileRazorForm.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\CartData.cs" />
-    <Compile Include="Components\CategoryUtils.cs" />
-    <Compile Include="Components\CatMenuBuilder.cs" />
+    <Compile Include="Components\Categories\CategoryUtils.cs" />
+    <Compile Include="Components\Categories\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
     <Compile Include="Components\AddressData.cs" />
     <Compile Include="Components\Clients\ClientData.cs" />
-    <Compile Include="Components\CategoryData.cs" />
+    <Compile Include="Components\Categories\CategoryData.cs" />
     <Compile Include="Components\CatProdXref.cs" />
     <Compile Include="Components\GroupData.cs" />
     <Compile Include="Components\Interfaces\SchedulerInterface.cs" />
@@ -582,8 +582,10 @@
     <None Include="Themes\config\default\Admin_ClientsList.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersList.cshtml" />
     <None Include="Themes\config\default\Admin_Clients_head.cshtml" />
+    <None Include="Themes\config\default\Admin_Category.cshtml" />
     <None Include="Themes\config\default\Admin_ProductClients.cshtml" />
     <None Include="Themes\config\default\Admin_ProductClientSelect.cshtml" />
+    <None Include="Themes\config\default\Admin_CategoryList.cshtml" />
     <None Include="Themes\config\default\Admin_ProductOptions.cshtml" />
     <None Include="Themes\config\default\Admin_CategoryProducts.cshtml" />
     <None Include="Themes\config\default\Admin_ProductRelated.cshtml" />
@@ -595,9 +597,11 @@
     <None Include="Themes\config\default\Admin_ProductOptionValues.cshtml" />
     <None Include="Themes\config\default\Admin_Product.cshtml" />
     <None Include="Themes\config\default\Admin_ProductDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_CategorySearch.cshtml" />
     <None Include="Themes\config\default\Admin_ProductSelectList.cshtml" />
     <None Include="Themes\config\default\Admin_ProductList.cshtml" />
     <None Include="Themes\config\default\Admin_ProductSearch.cshtml" />
+    <None Include="Themes\config\default\Admin_Category_head.cshtml" />
     <None Include="Themes\config\default\Admin_Product_head.cshtml" />
     <None Include="Themes\config\default\modelfields.cshtml" />
     <None Include="Themes\config\default\NBS_AjaxProductListFilterSettings.cshtml" />
@@ -1547,6 +1551,7 @@
     <Content Include="Themes\config\img\flags\32\zh-SG.png" />
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
     <Content Include="Themes\config\img\nb-store_24x24.png" />
+    <Content Include="Themes\config\js\admin_category.js" />
     <Content Include="Themes\config\js\admin_product.js" />
     <Content Include="Themes\config\js\categoryajax.js" />
     <Content Include="Themes\config\js\js.cookie.js" />
