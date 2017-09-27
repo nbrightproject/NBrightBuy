@@ -47,12 +47,15 @@
             nbxget('product_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'product_selectchangedisable' || e.cmd == 'product_selectchangehidden') {
+        if (e.cmd == 'product_selectchangedisable' || e.cmd == 'product_selectchangehidden' || e.cmd == 'category_admin_savelist') {
             $('.processing').hide();
         };
 
-        if (e.cmd == 'category_admin_getlist') {
-
+        if (e.cmd == 'category_admin_getlist'
+            || e.cmd == 'category_admin_delete'
+            || e.cmd == 'category_admin_movecategory'
+            || e.cmd == 'category_admin_addnew') {
+            
             $('.processing').hide();
 
             $("#productAdmin_cmdSaveExit").hide();
@@ -74,7 +77,7 @@
                 $(".selectmove").show();
                 $(".selectmove[itemid='" + $(this).attr("itemid") + "']").hide();
                 $(".selectcancel[itemid='" + $(this).attr("itemid") + "']").show();
-                $("#moveproductid").val($(this).attr("itemid"));
+                $("#movecatid").val($(this).attr("itemid"));
 
                 var selectid = $(this).attr("itemid");
                 $(".selectmove").each(function(index) {
@@ -95,8 +98,8 @@
                 $(".selectmove").hide();
                 $(".selectcancel").hide();
                 $(".selectrecord").show();
-                $("#movetoproductid").val($(this).attr("itemid"));
-                nbxget('product_moveproductadmin', '#nbs_productadminsearch', '#datadisplay');
+                $("#movetocatid").val($(this).attr("itemid"));
+                nbxget('category_admin_movecategory', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
             // editbutton created by list, so needs to be assigned on each render of list.
@@ -143,17 +146,34 @@
             $('#categoryAdmin_cmdAddNew').unbind("click");
             $("#categoryAdmin_cmdAddNew").click(function () {
                 $('.processing').show();
-                nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
+                nbxget('category_admin_addnew', '#nbs_categoryadminsearch', '#datadisplay');
+            });
+
+            $('.categoryAdmin_cmdDelete').unbind("click");
+            $(".categoryAdmin_cmdDelete").click(function () {
+                $('.processing').show();
+                $('#selectedcatid').val($(this).attr('itemid'));
+                nbxget('category_admin_delete', '#nbs_categoryadminsearch', '#datadisplay');
+            });
+
+            $('#categoryAdmin_cmdAddNew').unbind("click");
+            $("#categoryAdmin_cmdAddNew").click(function () {
+                $('.processing').show();
+                nbxget('category_admin_addnew', '#nbs_categoryadminsearch', '#datadisplay');
+            });
+
+            $('#categoryAdmin_cmdSaveList').unbind("click");
+            $("#categoryAdmin_cmdSaveList").click(function () {
+                $('.processing').show();
+                nbxget('category_admin_savelist', '.categoryfields', '', '.categoryitemfields');
+            });
+
+            $('.categorynametextbox').unbind("change");
+            $(".categorynametextbox").change(function () {
+                $('#isdirty_' + $(this).attr('lp')).val('True');
+                //alert($('#isdirty_' + $(this).attr('lp')).val());
             });
             
-
-        }
-
-        if (e.cmd == 'category_admin_delete') {
-            $('.processing').show();
-            $('#razortemplate').val('Admin_CategoryList.cshtml');
-            $('#selecteditemid').val('');
-            nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
         }
 
         if (e.cmd == 'product_admin_save') {

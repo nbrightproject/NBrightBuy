@@ -32,6 +32,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         public static string EditLangCurrent = "";
         public static string EntityTypeCode = "";
         public static string TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
+
+        private static  NBrightBuyController _objCtrl = null;
         private static bool DebugMode => StoreSettings.Current.DebugMode;
 
         public static void ResetTemplateRelPath()
@@ -41,6 +43,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
+            _objCtrl = new NBrightBuyController();
+
             EditLangCurrent = editlang;
             if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
 
@@ -60,9 +64,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     //strOut = ProductFunctions.ProductAdminDetail(context);
                     break;
-                case "category_adminaddnew":
+                case "category_admin_addnew":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = CategoryAdminAddNew(context);
+                    break;                    
+                case "category_admin_savelist":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = CategoryAdminSaveList(context);
                     break;
                 case "product_admin_save":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -80,9 +88,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     //strOut = ProductFunctions.ProductAdminList(context);
                     break;
-                case "product_moveproductadmin":
+                case "category_admin_movecategory":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.MoveProductAdmin(context);
+                    strOut = MoveCategoryAdmin(context);
                     break;
                 case "product_addproductmodels":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -94,11 +102,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "product_addproductoptionvalues":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = ProductFunctions.AddOptionValues(context);
+                    //strOut = ProductFunctions.AddOptionValues(context);
                     break;
-                case "product_admin_delete":
+                case "category_admin_delete":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.DeleteProduct(context);
+                    strOut = DeleteCategory(context);
                     break;
                 case "product_updateproductimages":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -166,7 +174,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "product_selectchangehidden":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.ProductHidden(context);
+                    strOut = CategoryHidden(context);
                     break;
                 case "product_ajaxview_getlist":
                     //strOut = ProductFunctions.ProductAjaxViewList(context);
@@ -195,8 +203,183 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         public static String CategoryAdminAddNew(HttpContext context)
         {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var currentlang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            var categoryData = CategoryUtils.GetCategoryData(-1, currentlang);
+            categoryData.GroupType = "cat";
+            var grpCtrl = new GrpCatController(Utils.GetCurrentCulture());
+            var grp = grpCtrl.GetGrpCategoryByRef(categoryData.GroupType);
+            if (grp != null) categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grp.categoryid.ToString(""));
+            categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "true");
+            categoryData.DataRecord.ParentItemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
+            categoryData.Save();
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
             return CategoryAdminList(context);
         }
+
+        public static String DeleteCategory(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var selectedcatid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+            var currentlang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            var categoryData = CategoryUtils.GetCategoryData(selectedcatid, currentlang);
+            categoryData.Delete();
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+            return CategoryAdminList(context);
+        }
+
+
+        public static String CategoryAdminSaveList(HttpContext context)
+        {
+            var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
+
+            foreach (var nbi in ajaxInfoList)
+            {
+                if (nbi.GetXmlPropertyBool("genxml/hidden/isdirty"))
+                {
+                    var categoryData = CategoryUtils.GetCategoryData(nbi.GetXmlPropertyInt("genxml/hidden/itemid"), nbi.GetXmlProperty("genxml/hidden/categorylang"));
+                    if (categoryData.Exists)
+                    {
+                        categoryData.Name = nbi.GetXmlProperty("genxml/textbox/txtcategoryname");
+                        categoryData.Save();
+                    }
+                }
+            }
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+            return "";
+        }
+
+        public static String MoveCategoryAdmin(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var movecatid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movecatid");
+            var movetocatid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetocatid");
+
+            if (movecatid > 0 && movetocatid > 0)
+            {
+                MoveRecord(movetocatid, movecatid);
+            }
+
+            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+            return CategoryAdminList(context);
+        }
+
+        private static void MoveRecord(int movetocatid, int movecatid)
+        {
+            if (movecatid > 0)
+            {
+                var movData = CategoryUtils.GetCategoryData(movetocatid, StoreSettings.Current.EditLanguage);
+                var selData = CategoryUtils.GetCategoryData(movecatid, StoreSettings.Current.EditLanguage);
+                if (movData.Exists && selData.Exists)
+                {
+                    var fromParentItemid = selData.DataRecord.ParentItemId;
+                    var toParentItemid = movData.DataRecord.ParentItemId;
+                    var reindex = toParentItemid != fromParentItemid;
+                    var objGrpCtrl = new GrpCatController(StoreSettings.Current.EditLanguage);
+                    var movGrp = objGrpCtrl.GetGrpCategory(movData.Info.ItemID);
+                    if (!movGrp.Parents.Contains(selData.Info.ItemID)) // cannot move a category into itself (i.e. move parent into sub-category)
+                    {
+                        selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", toParentItemid.ToString(""));
+                        selData.DataRecord.ParentItemId = toParentItemid;
+                        selData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", movData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+                        var strneworder = movData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                        var selorder = selData.DataRecord.GetXmlPropertyDouble("genxml/hidden/recordsortorder");
+                        var neworder = Convert.ToDouble(strneworder, CultureInfo.GetCultureInfo("en-US"));
+                        if (strneworder < selorder)
+                            neworder = neworder - 0.5;
+                        else
+                            neworder = neworder + 0.5;
+                        selData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", neworder.ToString(""), TypeCode.Double);
+                        var objCtrl = new NBrightBuyController();
+                        objCtrl.Update(selData.DataRecord);
+
+                        FixRecordSortOrder(toParentItemid.ToString("")); //reindex all siblings (this is so we get a int on the recordsortorder)
+                        FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+
+                        if (reindex)
+                        {
+                            objGrpCtrl.ReIndexCascade(fromParentItemid); // reindex from parent and parents.
+                            objGrpCtrl.ReIndexCascade(selData.Info.ItemID); // reindex select and parents
+                        }
+                        NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+                    }
+                }
+            }
+        }
+
+        private static void FixRecordGroupType(String parentid, String groupType)
+        {
+            if (Utils.IsNumeric(parentid) && Convert.ToInt32(parentid) > 0)
+            {
+                // fix any incorrect sort orders
+                var strFilter = " and NB1.ParentItemId = " + parentid + " ";
+                var levelList = _objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLangCurrent, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+                foreach (NBrightInfo catinfo in levelList)
+                {
+                    var grouptype = catinfo.GetXmlProperty("genxml/dropdownlist/ddlgrouptype");
+                    var catData = CategoryUtils.GetCategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    if (grouptype != groupType)
+                    {
+                        catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", groupType);
+                        _objCtrl.Update(catData.DataRecord);
+                    }
+                    FixRecordGroupType(catData.Info.ItemID.ToString(""), groupType);
+                }
+            }
+        }
+
+        private static void FixRecordSortOrder(String parentid)
+        {
+            if (!Utils.IsNumeric(parentid)) parentid = "0";
+            // fix any incorrect sort orders
+            Double lp = 1;
+            var strFilter = " and NB1.ParentItemId = " + parentid + " ";
+            var levelList = _objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLangCurrent, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
+            foreach (NBrightInfo catinfo in levelList)
+            {
+                var recordsortorder = catinfo.GetXmlProperty("genxml/hidden/recordsortorder");
+                if (!Utils.IsNumeric(recordsortorder) || Convert.ToDouble(recordsortorder, CultureInfo.GetCultureInfo("en-US")) != lp)
+                {
+                    var catData = CategoryUtils.GetCategoryData(catinfo.ItemID, StoreSettings.Current.EditLanguage);
+                    catData.DataRecord.SetXmlProperty("genxml/hidden/recordsortorder", lp.ToString(""));
+                    _objCtrl.Update(catData.DataRecord);
+                }
+                lp += 1;
+            }
+        }
+
+
+        public static string CategoryHidden(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (parentitemid > 0)
+                {
+                    var catData = CategoryUtils.GetCategoryData(parentitemid, StoreSettings.Current.EditLanguage);
+
+                    if (catData.DataRecord.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
+                    {
+                        catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "False");
+                    }
+                    else
+                    {
+                        catData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "True");
+                    }
+                    catData.Save();
+                    // remove save GetData cache
+                    NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+                    return "";
+                }
+                return "Invalid parentitemid";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
 
 
     }

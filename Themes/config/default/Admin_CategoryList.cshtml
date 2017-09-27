@@ -53,8 +53,7 @@
                             <th>@ResourceKey("General.Hidden")</th>
                         </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody class="categoryfields">
                         @{
                             int lp = 0;
                         }
@@ -62,8 +61,7 @@
                         @foreach (NBrightInfo nbi in Model.List)
                         {
                             lp += 1;
-                            <tr>
-
+                            <tr class="categoryitemfields">
                                 <td class="text-nowrap" style="padding-right:30px">
                                     <a class="cmdopen" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdFolderIcon")</a>
                                 </td>
@@ -72,9 +70,10 @@
                                     @nbi.GetXmlProperty("genxml/entrycount")
                                 </td>
                                 <td style="width: 100%">
-                                    @NBrightTextBox(nbi, "genxml/textbox/txtcategoryname", "class='form-control' maxlength='150'")
+                                    @NBrightTextBox(nbi, "genxml/textbox/txtcategoryname", "class='form-control categorynametextbox ' maxlength='150' lp='" + lp + "'")
                                 </td>
                                 <td>
+                                    <input id="categorylang_@(lp)" type="hidden" value="@nbi.Lang" />
                                     <input id="itemid_@(lp)" type="hidden" value="@nbi.ItemID" />
                                     <input id="isdirty_@(lp)" type="hidden" value="false" />
                                     <a title="Move" href="#" class="selectrecord" itemid="@nbi.ItemID"><i class="fa fa-sort fa-fw fa-2x"></i></a>

@@ -12,6 +12,10 @@
     <input id='currentlang' type='hidden' value='@Model.Lang' />
     <input id="razortemplate" type="hidden" value="" />
     <input id="themefolder" type="hidden" value="config" />
+    <input id="selectedcatid" type="hidden" value="" />
+    <input id="movetocatid" type="hidden" value="" />
+    <input id="movecatid" type="hidden" value="" />
+    
 
     <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
     <input id="lang" type="hidden" value="@Model.Lang" />
@@ -19,8 +23,6 @@
     <input id="emailtype" type="hidden" value="" />
     <input id="emailsubject" type="hidden" value="" />
     <input id="emailmessage" type="hidden" value="" />
-    <input id="moveproductid" type="hidden" value="" />
-    <input id="movetoproductid" type="hidden" value="" />
     <input id="searchcategory" type="hidden" value="" />
     <input id="cascade" type="hidden" value="True" />
     <input id="addqty" type="hidden" value="1" />
@@ -32,7 +34,6 @@
     <input id="selecteduserid" type="hidden" value="" />
     <input id="imguploadlist" type="hidden" value="" />
     <input id="docuploadlist" type="hidden" value="" />
-    <input id="selectedcatid" type="hidden" value="" />    
     <input id="orderby" type="hidden" value="{bycategoryproduct}" />
 </span>
 
@@ -47,6 +48,7 @@
         </a>
         <div class="actionbuttonwrapper">
             <a id="categoryAdmin_cmdAddNew" class="btn btn-primary " href="#">@ResourceKey("General.cmdAddButton")</a>
+            <a id="categoryAdmin_cmdSaveList" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
             <a id="productAdmin_cmdSaveExit" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveExitButton")</a>
             <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
             <a id="productAdmin_cmdSaveAs" style="display: none;" class="btn btn-warning " href="#">@ResourceKey("General.cmdSaveAsButton")</a>

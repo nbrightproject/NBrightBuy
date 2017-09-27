@@ -64,6 +64,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public bool Exists { get; private set; }
 
+        public String Name
+        {
+            get
+            {
+                return DataLangRecord.GetXmlProperty("genxml/textbox/txtcategoryname");
+            }
+            set
+            {
+                DataLangRecord.SetXmlProperty("genxml/textbox/txtcategoryname", value);
+            }
+        }
+
         public String GroupType {
             get
             {
@@ -147,6 +159,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public void Delete()
+        {
+            _objCtrl.Delete(DataRecord.ItemID);
+        }
 
         public void Save()
         {
