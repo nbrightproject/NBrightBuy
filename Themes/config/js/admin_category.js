@@ -55,8 +55,6 @@
 
             $('.processing').hide();
 
-            $('.productsearchpanel').show();
-
             $("#productAdmin_cmdSaveExit").hide();
             $("#productAdmin_cmdSave").hide();
             $("#productAdmin_cmdSaveAs").hide();
@@ -69,27 +67,6 @@
             $(".selectcancel").hide();
             $(".selectrecord").show();
             $(".savebutton").hide();
-
-            if ($('#searchcategory').val() != '') {
-                $(".selectrecord").show();
-            }
-
-        $("#ddllistsearchcategory").unbind("change");
-            $("#ddllistsearchcategory").change(function() {
-                $('#searchcategory').val($("#ddllistsearchcategory").val());
-                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
-            });
-
-            $("#chkcascaderesults").unbind("change");
-            $("#chkcascaderesults").change(function() {
-                if ($("#chkcascaderesults").is(':checked')) {
-                    $('#cascade').val("True");
-                } else {
-                    $('#cascade').val("False");
-                }
-                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
-            });
-
 
             $('.selectrecord').unbind("click");
             $(".selectrecord").click(function() {
@@ -122,29 +99,15 @@
                 nbxget('product_moveproductadmin', '#nbs_productadminsearch', '#datadisplay');
             });
 
-            $('#productAdmin_searchtext').val($('#searchtext').val());
-
             // editbutton created by list, so needs to be assigned on each render of list.
-            $('.productAdmin_cmdEdit').unbind("click");
-            $('.productAdmin_cmdEdit').click(function() {
+            $('.categoryAdmin_cmdEdit').unbind("click");
+            $('.categoryAdmin_cmdEdit').click(function () {
                 $('.processing').show();
-                $('#razortemplate').val('Admin_ProductDetail.cshtml');
+                $('#razortemplate').val('Admin_CategoryDetail.cshtml');
                 $('#selecteditemid').val($(this).attr('itemid'));
-                nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
+                nbxget('category_admin_getdetail', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
-
-            $('.selectchangedisable').unbind("click");
-            $('.selectchangedisable').click(function () {
-                $('.processing').show();
-                $('#selecteditemid').val($(this).attr('itemid'));
-                if ($(this).hasClass("fa-check-circle")) {
-                    $(this).addClass('fa-circle').removeClass('fa-check-circle');
-                } else {
-                    $(this).addClass('fa-check-circle').removeClass('fa-circle');
-                }
-                nbxget('product_selectchangedisable', '#nbs_productadminsearch');
-            });
 
             $('.selectchangehidden').unbind("click");
             $('.selectchangehidden').click(function () {
@@ -158,40 +121,39 @@
                 nbxget('product_selectchangehidden', '#nbs_productadminsearch');
             });
 
-
-            $('.cmdPg').unbind("click");
-            $('.cmdPg').click(function() {
+            $('.cmdopen').unbind("click");
+            $(".cmdopen").click(function () {
                 $('.processing').show();
-                $('#pagenumber').val($(this).attr('pagenumber'));
-                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+                $('#returncatid').val($('#catid').val() + "," + $('#returncatid').val());
+                $('#catid').val($(this).attr('itemid'));
+                $('#razortemplate').val('Admin_CategoryList.cshtml');
+                nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
-            $('#productAdmin_cmdSearch').unbind("click");
-            $('#productAdmin_cmdSearch').click(function() {
+            $('.cmdreturn').unbind("click");
+            $(".cmdreturn").click(function () {
                 $('.processing').show();
-                $('#pagenumber').val('1');
-                $('#searchtext').val($('#productAdmin_searchtext').val());
-
-                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+                var array = $('#returncatid').val().split(',');
+                $('#catid').val(array[0]);
+                $('#returncatid').val($('#returncatid').val().replace(array[0] + ",",""));
+                $('#razortemplate').val('Admin_CategoryList.cshtml');
+                nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
-            $('#productAdmin_cmdReset').unbind("click");
-            $('#productAdmin_cmdReset').click(function() {
+            $('#categoryAdmin_cmdAddNew').unbind("click");
+            $("#categoryAdmin_cmdAddNew").click(function () {
                 $('.processing').show();
-                $('#pagenumber').val('1');
-                $('#searchtext').val('');
-                $("#searchcategory").val('');
-
-                nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+                nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
+            
 
         }
 
-        if (e.cmd == 'product_admin_delete') {
+        if (e.cmd == 'category_admin_delete') {
             $('.processing').show();
-            $('#razortemplate').val('Admin_ProductList.cshtml');
+            $('#razortemplate').val('Admin_CategoryList.cshtml');
             $('#selecteditemid').val('');
-            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
+            nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
         }
 
         if (e.cmd == 'product_admin_save') {

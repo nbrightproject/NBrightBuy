@@ -1,7 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System
 @using System.Globalization
-@using System.Linq
 @using System.Text
 @using System.Web
 @using System.Web.Razor.Parser
@@ -13,10 +12,6 @@
 @using NBrightCore.common;
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
-
-@{
-    var info = (NBrightInfo)Model.List.First();
-}
 
 <br />
 
@@ -51,7 +46,7 @@
                         <tr>
                             <th></th>
                             <th>@ResourceKey("General.Products")</th>
-                            <th>@ResourceKey("General.Name")@LangFlag(info.Lang)</th>
+                            <th>@ResourceKey("General.Name")@LangFlag(Model.Lang)</th>
                             <th> </th>
                             <th> </th>
                             <th> </th>
@@ -89,10 +84,10 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a class="cmdEdit" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdEditIcon")</a>
+                                    <a class="categoryAdmin_cmdEdit" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdEditIcon")</a>
                                 </td>
                                 <td>
-                                    <a class="cmdDelete" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdDeleteIcon")</a>
+                                    <a class="categoryAdmin_cmdDelete" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdDeleteIcon")</a>
                                 </td>
                                 <td class="text-center">
                                     <div class="dnnForm dnnFormItem">

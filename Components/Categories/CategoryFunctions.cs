@@ -54,15 +54,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 case "category_admin_getlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.CategoryAdminList(context);
+                    strOut = CategoryAdminList(context);
                     break;
                 case "product_admin_getdetail":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     //strOut = ProductFunctions.ProductAdminDetail(context);
                     break;
-                case "product_adminaddnew":
+                case "category_adminaddnew":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.ProductAdminAddNew(context);
+                    strOut = CategoryAdminAddNew(context);
                     break;
                 case "product_admin_save":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -185,12 +185,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var themefolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
             if (themefolder == "") themefolder = "config";
 
-            var grpCats = NBrightBuyUtils.GetCatList(ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid"), "cat", currentlang);
-            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", grpCats, TemplateRelPath, themefolder, EditLangCurrent, StoreSettings.Current.Settings());
+            var grpCats = NBrightBuyUtils.GetCatList(ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid"), "cat",
+                currentlang);
+            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", grpCats, TemplateRelPath,
+                themefolder, EditLangCurrent, StoreSettings.Current.Settings());
 
             return strOut;
         }
 
+        public static String CategoryAdminAddNew(HttpContext context)
+        {
+            return CategoryAdminList(context);
+        }
 
 
     }

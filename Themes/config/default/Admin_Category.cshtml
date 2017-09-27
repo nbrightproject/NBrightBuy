@@ -6,8 +6,9 @@
 
 
 <!-- fields required to send required ajax cart to server -->
-<span id="nbs_productadminsearch">
+<span id="nbs_categoryadminsearch">
     <input id="catid" type="hidden" value="0" />
+    <input id="returncatid" type="hidden" value="0" />
     <input id='currentlang' type='hidden' value='@Model.Lang' />
     <input id="razortemplate" type="hidden" value="" />
     <input id="themefolder" type="hidden" value="config" />
@@ -15,7 +16,6 @@
     <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
     <input id="lang" type="hidden" value="@Model.Lang" />
     <input id="searchtext" type="hidden" value="" />
-    <input id="selecteditemid" type="hidden" value="" />
     <input id="emailtype" type="hidden" value="" />
     <input id="emailsubject" type="hidden" value="" />
     <input id="emailmessage" type="hidden" value="" />
@@ -46,7 +46,7 @@
             <i class="fa fa-bars"></i>
         </a>
         <div class="actionbuttonwrapper">
-            <a id="productAdmin_cmdAddNew" class="btn btn-primary " href="#">@ResourceKey("General.cmdAddButton")</a>
+            <a id="categoryAdmin_cmdAddNew" class="btn btn-primary " href="#">@ResourceKey("General.cmdAddButton")</a>
             <a id="productAdmin_cmdSaveExit" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveExitButton")</a>
             <a id="productAdmin_cmdSave" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
             <a id="productAdmin_cmdSaveAs" style="display: none;" class="btn btn-warning " href="#">@ResourceKey("General.cmdSaveAsButton")</a>
