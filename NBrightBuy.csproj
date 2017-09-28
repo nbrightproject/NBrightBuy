@@ -681,9 +681,6 @@
     <Content Include="Themes\config\default\categorydetailbody.html" />
     <Content Include="Themes\config\default\categorydetailfooter.html" />
     <Content Include="Themes\config\default\categorydetailheader.html" />
-    <Content Include="Themes\config\default\categorylistbody.html" />
-    <Content Include="Themes\config\default\categorylistfooter.html" />
-    <Content Include="Themes\config\default\categorylistheader.html" />
     <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
