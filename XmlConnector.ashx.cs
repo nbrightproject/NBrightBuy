@@ -103,7 +103,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else if (paramCmd.StartsWith("category_"))
                 {
-                    CategoryFunctions.EntityTypeCode = "CAT";
+                    CategoryFunctions.EntityTypeCode = "CATEGORY";
                     strOut = CategoryFunctions.ProcessCommand(paramCmd, context, _editlang);
                 }                
                 else

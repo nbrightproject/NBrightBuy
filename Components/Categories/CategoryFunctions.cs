@@ -60,9 +60,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = CategoryAdminList(context);
                     break;
-                case "product_admin_getdetail":
+                case "category_admin_getdetail":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.ProductAdminDetail(context);
+                    strOut = CategoryAdminDetail(context);
                     break;
                 case "category_admin_addnew":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -172,7 +172,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     //strOut = ProductFunctions.ProductDisable(context);
                     break;
-                case "product_selectchangehidden":
+                case "category_selectchangehidden":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = CategoryHidden(context);
                     break;
@@ -193,8 +193,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var themefolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
             if (themefolder == "") themefolder = "config";
 
-            var grpCats = NBrightBuyUtils.GetCatList(ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid"), "cat",
-                currentlang);
+            var grpCats = NBrightBuyUtils.GetCatList(ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid"), "cat", currentlang);
             var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", grpCats, TemplateRelPath,
                 themefolder, EditLangCurrent, StoreSettings.Current.Settings());
 
@@ -354,7 +353,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             try
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
                 if (parentitemid > 0)
                 {
                     var catData = CategoryUtils.GetCategoryData(parentitemid, StoreSettings.Current.EditLanguage);
@@ -377,6 +376,51 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             catch (Exception e)
             {
                 return e.ToString();
+            }
+        }
+
+
+        public static String CategoryAdminDetail(HttpContext context, int catid = 0)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var strOut = "";
+                    var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                    if (catid > 0) selecteditemid = catid;
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                        var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                        var portalId = PortalSettings.Current.PortalId;
+
+                        var passSettings = ajaxInfo.ToDictionary();
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        if (selecteditemid <= 0) return "";
+
+                        if (themeFolder == "") themeFolder = StoreSettings.Current.ThemeFolder;
+
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), EntityTypeCode + "LANG", EditLangCurrent);
+
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, TemplateRelPath, themeFolder, EditLangCurrent, passSettings);
+                    }
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
             }
         }
 

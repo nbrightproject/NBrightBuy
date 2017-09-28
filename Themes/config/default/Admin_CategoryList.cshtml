@@ -88,10 +88,17 @@
                                 <td>
                                     <a class="categoryAdmin_cmdDelete" itemid="@(nbi.ItemID)" href="#">@ResourceKey("General.cmdDeleteIcon")</a>
                                 </td>
-                                <td class="text-center">
-                                    <div class="dnnForm dnnFormItem">
-                                        @CheckBox(nbi, "genxml/checkbox/chkishidden","","")
-                                    </div>
+                                <td class="centered">
+                                    @{
+                                        var checkdisplay = "";
+                                    }
+                                    @if (nbi.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
+                                    {
+                                        checkdisplay = "-check";
+                                    }
+                                    <a href="#">
+                                        <i class="fa fa@(checkdisplay)-circle fa-2x selectchangehidden" itemid="@nbi.ItemID"></i>
+                                    </a>
                                 </td>
                             </tr>
 
