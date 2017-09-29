@@ -6,60 +6,41 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-<ul id="selectlistwrapper" class="productlist">
+@if (Model.List.Count > 0)
+{
+    <ul id="selectlistwrapper" class="productlist">
 
-    @foreach (NBrightInfo nbiPrd in Model.List)
-    {
+        @foreach (NBrightInfo nbiPrd in Model.List)
+        {
 
-        <li class="productid@(nbiPrd.ItemID)">
+            <li class="productid@(nbiPrd.ItemID)">
 
-            <input id="parentitemid" type="hidden" value="@nbiPrd.ItemID" />
-            <input id="xrefitemid" type="hidden" value="@Model.Settings["itemid"]" />
+                <input id="parentitemid" type="hidden" value="@nbiPrd.ItemID"/>
+                <input id="xrefitemid" type="hidden" value="@Model.Settings["itemid"]"/>
 
-            <ul class="productlistitem">
+                <ul class="productlistitem">
 
-                @if (nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
-                {
-                    <li class="image name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=100&h=0&src=@nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")" /></li>
-                }
-                else
-                {
-                    <li class="noimage name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><i class="fa fa-picture-o fa-5x"></i></li>
-                }
-
-                <li class="title">
-                    @if (@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer") == "")
+                    @if (nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                     {
-                        @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer")<span>: </span>
+                        <li class="image name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=100&h=0&src=@nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")"/></li>
                     }
-                    @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")
-                </li>
-                <li class="removeitem"><a class="removeproduct" itemid="@nbiPrd.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw"></i></a>
-            </ul>
-</li>
+                    else
+                    {
+                        <li class="noimage name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><i class="fa fa-picture-o fa-5x"></i></li>
+                    }
 
-    }
+                    <li class="title">
+                        @if (@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer") == "")
+                        {
+                            @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer")<span>: </span>
+                        }
+                        @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")
+                    </li>
+                    <li class="removeitem"><a class="removeproduct" itemid="@nbiPrd.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw"></i></a>
+                </ul>
+            </li>
 
-</ul>
+        }
 
-
-<script type="text/javascript">
-
-$( document ).ready(function() {
-
-var $container = $('#selectlistwrapper').masonry({
-  columnWidth: 120, // List item width - Can also use CSS width of first list item
-  itemSelector: '.productlistitem',
-  gutter: 6, // Set horizontal gap and include in calculations. Also used in CSS for vertical gap
-  isOriginLeft: true, // Build from right to left if false
-  isOriginTop: true, // Build from bottom to top if false
-});
-
-// initialize Masonry after all images have loaded - Webkit needs this when image containers don't have a fixed height
-$container.imagesLoaded( function() {
-  $container.masonry();
-});
-
-});
-
-</script>
+    </ul>
+}

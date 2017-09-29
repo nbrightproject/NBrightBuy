@@ -108,9 +108,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = DeleteCategory(context);
                     break;
-                case "product_updateproductimages":
+                case "category_updateimages":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.UpdateProductImages(context);
+                    strOut = UpdateCategoryImages(context);
                     break;
                 case "product_updateproductdocs":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -179,6 +179,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 case "product_ajaxview_getlist":
                     //strOut = ProductFunctions.ProductAjaxViewList(context);
                     break;
+                case "category_categoryproductlist":
+                    strOut = GetCategoryProductList(context);
+                    break;
+                case "category_removeimage":
+                    strOut = RemoveCategoryImage(context);
+                    break;                    
             }
             return strOut;
         }
@@ -410,7 +416,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (themeFolder == "") themeFolder = StoreSettings.Current.ThemeFolder;
 
                         var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), EntityTypeCode + "LANG", EditLangCurrent);
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), EntityTypeCode + "LANG", EditLangCurrent,true);
 
                         strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, TemplateRelPath, themeFolder, EditLangCurrent, passSettings);
                     }
@@ -424,7 +430,116 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
+        private static String GetCategoryProductList(HttpContext context)
+        {
+            try
+            {
+                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
 
+                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
+                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
+
+                strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
+
+
+                if (!settings.ContainsKey("filter")) settings.Add("filter", strFilter);
+                if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
+                if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
+                settings["razortemplate"] = "Admin_CategoryProducts.cshtml";
+                settings["themefolder"] = "config";
+
+                var list = ProductFunctions.ProductAdminList(settings, true, EditLangCurrent);
+                if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
+                var entitytypecode = settings["entitytypecode"];
+
+                var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                var provList = pluginData.GetAjaxProviders();
+                foreach (var d in provList)
+                {
+                    var ajaxprov = AjaxInterface.Instance(d.Key);
+                    if (ajaxprov != null)
+                    {
+                        if (entitytypecode != ajaxprov.Ajaxkey)
+                        {
+                            var provlist = ProductFunctions.ProductAdminList(settings, true, "", ajaxprov.Ajaxkey);
+                            list = provlist + list;
+                        }
+                    }
+                }
+
+                return list;
+
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+        #region "fileupload"
+
+        public static string UpdateCategoryImages(HttpContext context)
+        {
+            //get uploaded params
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var catitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+            var imguploadlist = ajaxInfo.GetXmlProperty("genxml/hidden/imguploadlist");
+            var strOut = "";
+
+            if (catitemid > 0)
+            {
+                var imgs = imguploadlist.Split(',');
+                foreach (var img in imgs)
+                {
+                    if (ImgUtils.IsImageFile(Path.GetExtension(img)) && img != "")
+                    {
+                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + img;
+                        if (File.Exists(fullName))
+                        {
+                            var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
+                            if (imgResize == 0) imgResize = 800;
+                            var imagepath = ProductFunctions.ResizeImage(fullName, imgResize);
+                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
+                            AddNewImage(catitemid, imageurl, imagepath);
+                        }
+                    }
+                }
+            }
+            return CategoryAdminDetail(context);
+        }
+
+        private static void AddNewImage(int itemId, String imageurl, String imagepath)
+        {
+            var catData = new CategoryData(itemId,EditLangCurrent);
+            if (catData.Exists)
+            {
+                catData.DataRecord.SetXmlProperty("genxml/hidden/imageurl", imageurl);
+                catData.DataRecord.SetXmlProperty("genxml/hidden/imagepath", imagepath);
+                catData.Save();
+            }
+        }
+
+        public static string RemoveCategoryImage(HttpContext context)
+        {
+            //get uploaded params
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var catitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+
+            var catData = new CategoryData(catitemid, EditLangCurrent);
+            if (catData.Exists)
+            {
+                catData.DataRecord.SetXmlProperty("genxml/hidden/imageurl", "");
+                catData.DataRecord.SetXmlProperty("genxml/hidden/imagepath", "");
+                catData.Save();
+            }
+            return CategoryAdminDetail(context);
+        }
+
+        #endregion
 
     }
 }

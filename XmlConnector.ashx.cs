@@ -141,9 +141,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             cw2.Delete();
                             strOut = "deleted";
                             break;
-                        case "getcategoryproductlist":
-                            strOut = GetCategoryProductList(context);
-                            break;
                         case "deletecatxref":
                             if (NBrightBuyUtils.CheckRights()) strOut = DeleteCatXref(context);
                             break;
@@ -575,55 +572,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Category Methods"
 
-        private String GetCategoryProductList(HttpContext context)
-        {
-            try
-            {
-                var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
-                var dbOwner = DataProvider.Instance().DatabaseOwner;
-
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                var strFilter = " and NB1.[ItemId] in (select parentitemid from " + dbOwner + "[" + objQual + "NBrightBuy] where typecode = 'CATXREF' and XrefItemId = {Settings:itemid}) ";
-
-                strFilter = Utils.ReplaceSettingTokens(strFilter, settings);
-
-
-                if (!settings.ContainsKey("filter")) settings.Add("filter", strFilter);
-                if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
-                if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
-                settings["razortemplate"] = "Admin_CategoryProducts.cshtml";
-                settings["themefolder"] = "config";
-
-                var list = ProductFunctions.ProductAdminList(settings,true,_editlang);
-                if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
-                var entitytypecode = settings["entitytypecode"];
-
-                var pluginData = new PluginData(PortalSettings.Current.PortalId);
-                var provList = pluginData.GetAjaxProviders();
-                foreach (var d in provList)
-                {
-                    var ajaxprov = AjaxInterface.Instance(d.Key);
-                    if (ajaxprov != null)
-                    {
-                        if (entitytypecode != ajaxprov.Ajaxkey)
-                        {
-                            var provlist = ProductFunctions.ProductAdminList(settings, true, "", ajaxprov.Ajaxkey);
-                            list = provlist + list;
-                        }
-                    }
-                }
-
-                return list;
-
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-
-        }
 
         private string DeleteCatXref(HttpContext context)
         {

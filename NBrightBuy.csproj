@@ -586,6 +586,7 @@
     <None Include="Themes\config\default\Admin_ProductClients.cshtml" />
     <None Include="Themes\config\default\Admin_ProductClientSelect.cshtml" />
     <None Include="Themes\config\default\Admin_CategoryList.cshtml" />
+    <None Include="Themes\config\default\Admin_CategoryImages.cshtml" />
     <None Include="Themes\config\default\Admin_ProductOptions.cshtml" />
     <None Include="Themes\config\default\Admin_CategoryProducts.cshtml" />
     <None Include="Themes\config\default\Admin_ProductRelated.cshtml" />
@@ -678,9 +679,7 @@
     <Content Include="Themes\config\default\backoffice.html" />
     <Content Include="Themes\config\default\backofficepageheader.html" />
     <Content Include="Themes\config\default\CartView_Settings.html" />
-    <Content Include="Themes\config\default\categorydetailbody.html" />
-    <Content Include="Themes\config\default\categorydetailfooter.html" />
-    <Content Include="Themes\config\default\categorydetailheader.html" />
+    <None Include="Themes\config\default\Admin_CategoryDetail.cshtml" />
     <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
     <Content Include="Themes\config\default\categoryproductbody.html" />
     <Content Include="Themes\config\default\categoryproductfooter.html" />
@@ -1550,7 +1549,6 @@
     <Content Include="Themes\config\img\nb-store_24x24.png" />
     <Content Include="Themes\config\js\admin_category.js" />
     <Content Include="Themes\config\js\admin_product.js" />
-    <Content Include="Themes\config\js\categoryajax.js" />
     <Content Include="Themes\config\js\js.cookie.js" />
     <Content Include="Themes\config\js\nbsfavoritescookie.js" />
     <Content Include="Themes\config\js\imagesloaded.pkgd.min.js" />
