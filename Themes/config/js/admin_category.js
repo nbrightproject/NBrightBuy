@@ -44,8 +44,6 @@
         $('.actionbuttonwrapper').show();
         $('.editlanguage').show();
 
-        setupbackoffice(); // run JS to deal with standard BO functions like accordian.
-
 
         //NBS - Tooltips
         $('[data-toggle="tooltip"]').tooltip({
@@ -62,7 +60,9 @@
             nbxget('product_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'category_selectchangehidden' || e.cmd == 'category_admin_savelist') {
+        if (e.cmd == 'category_categoryproductlist'
+            || e.cmd == 'category_selectchangehidden'
+            || e.cmd == 'category_admin_savelist') {
             $('.processing').hide();
         };
 
@@ -201,14 +201,16 @@
             nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
         };
 
-        if (e.cmd == 'category_categoryproductlist') {
-            $('.processing').hide();
+        if (e.cmd == 'category_displayproductselect') {
+            setupbackoffice(); // run JS to deal with standard BO functions like accordian.   NOTE: Select2 can only be assigned 1 time.
         };
 
         if (e.cmd == 'category_admin_getdetail'
             || e.cmd == 'category_removeimage'
             || e.cmd == 'category_updateimages') {            
-            
+
+            setupbackoffice(); // run JS to deal with standard BO functions like accordian.   NOTE: Select2 can only be assigned 1 time.
+
             $('.actionbuttonwrapper').show();        
 
             $("#categoryAdmin_cmdAddNew").hide();
@@ -326,20 +328,54 @@
 
 
 
-            // select product
+            // ---------------------------------------------------------------------------
+            // Product Select
+            // ---------------------------------------------------------------------------
             $('#productselect').unbind();
             $('#productselect').click(function () {
-                nbxget('product_getproductselectlist', '#productselectparams', '#productselectlist');
-                $('#categorydatasection').hide();
-                $('.actionbuttonwrapper').hide();
-                $('#productselectsection').show();
+                $('.processing').show();
+                nbxget('category_displayproductselect', '#nbs_categoryadminsearch', '#datadisplay');
             });
-
 
             $('.processing').hide();
             //nbxget('category_categoryproductlist', '#nbs_productadminsearch', '#productlist');
 
         }
+
+        // ---------------------------------------------------------------------------
+        // Product Select
+        // ---------------------------------------------------------------------------
+        if (e.cmd == 'category_getproductselectlist') {
+            $('.processing').hide();
+
+            $('#returnfromselect').click(function () {
+                $('#pagesize').val('20');
+                $("#searchtext").val('');
+                $("#searchcategory").val('');
+                nbxget('category_admin_getdetail', '#nbs_categoryadminsearch', '#datadisplay');
+                $('#datadisplay').show();
+            });
+
+            $('#selectsearch').unbind("click");
+            $('#selectsearch').click(function () {
+                $('.processing').show();
+                $('#pagenumber').val('1');
+                $('#searchtext').val($('#txtproductselectsearch').val());
+                $('#searchcategory').val($('#ddlsearchcategory').val());
+                nbxget('category_getproductselectlist', '#nbs_categoryadminsearch', '#productselectlist');
+            });
+
+            $('#selectreset').unbind("click");
+            $('#selectreset').click(function () {
+                $('.processing').show();
+                $('#pagenumber').val('1');
+                $('#searchtext').val('');
+                $("#searchcategory").val('');
+                $('#txtproductselectsearch').val('');
+                nbxget('category_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
+            });
+
+        };
 
     };
 

@@ -148,9 +148,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     //strOut = ProductFunctions.AddRelatedProduct(context);
                     break;
-                case "product_getproductselectlist":
+                case "category_getproductselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    //strOut = ProductFunctions.GetProductSelectList(context);
+                    ProductFunctions.EntityTypeCode = "PRD";
+                    ProductFunctions.EditLangCurrent = EditLangCurrent;
+                    strOut = ProductFunctions.GetProductSelectList(context);
                     break;
                 case "product_getclientselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -184,7 +186,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "category_removeimage":
                     strOut = RemoveCategoryImage(context);
-                    break;                    
+                    break;
+                case "category_displayproductselect":
+                    strOut = CategoryProductSelect(context);
+                    break;
+                    
+
             }
             return strOut;
         }
@@ -471,6 +478,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return list;
 
 
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+
+        }
+
+        private static String CategoryProductSelect(HttpContext context)
+        {
+            try
+            {
+                var strOut = "";
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                    if (Utils.IsNumeric(selecteditemid))
+                    {
+                        var themeFolder = "config";
+                        var razortemplate = "Admin_CategoryProductSelect.cshtml";
+
+                        var passSettings = ajaxInfo.ToDictionary();
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        if (selecteditemid <= 0) return "";
+
+                        if (themeFolder == "") themeFolder = StoreSettings.Current.ThemeFolder;
+
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.GetData(Convert.ToInt32(selecteditemid), EntityTypeCode + "LANG", EditLangCurrent, true);
+
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, TemplateRelPath, themeFolder, EditLangCurrent, passSettings);
+                    }
+                }
+                return strOut;
             }
             catch (Exception ex)
             {

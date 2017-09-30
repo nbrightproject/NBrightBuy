@@ -574,6 +574,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\config\default\Admin_CategoryProductSelect.cshtml" />
     <None Include="Themes\config\default\Admin_Clients.cshtml" />
     <None Include="Themes\config\default\Admin_Orders.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
