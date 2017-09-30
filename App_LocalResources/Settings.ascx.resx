@@ -504,4 +504,10 @@
   <data name="selectedfilters.Help" xml:space="preserve">
     <value>Drag and drop individual items to change the sort order.</value>
   </data>
+  <data name="enablefilelogging.Text" xml:space="preserve">
+    <value>Enable File Logging</value>
+  </data>
+  <data name="enablefileloggingmsg.Text" xml:space="preserve">
+    <value>To be able to actually see a logfile, you need to add a logger and an appender to the DotNetNuke.Log4Net.config file in the root of your DNN installation.</value>
+  </data>
 </root>

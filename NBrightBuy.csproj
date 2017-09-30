@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=8.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
       <HintPath>..\..\..\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
@@ -206,6 +210,7 @@
     <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
     <Compile Include="Components\Interfaces\PromoInterface.cs" />
     <Compile Include="Components\Interfaces\AjaxInterface.cs" />
+    <Compile Include="Components\Logging.cs" />
     <Compile Include="Components\Orders\OrderFunctions.cs" />
     <Compile Include="Components\Payments\PaymentFunctions.cs" />
     <Compile Include="Components\Product\ProductData.cs" />
