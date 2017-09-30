@@ -150,8 +150,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "category_getproductselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    ProductFunctions.EntityTypeCode = "PRD";
-                    ProductFunctions.EditLangCurrent = EditLangCurrent;
                     strOut = ProductFunctions.GetProductSelectList(context);
                     break;
                 case "product_getclientselectlist":

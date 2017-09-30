@@ -1445,7 +1445,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbi.GUIDKey = strGuid;
                     var newitemid = objCtrl.Update(nbi);
                     nbi = objCtrl.Get(newitemid);
-                    nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort></genxml>";
+                    nbi.XMLData = "<genxml><sort>" + newitemid.ToString() + "</sort><typecode>" + DataRecord.TypeCode + "</typecode></genxml>";
                     objCtrl.Update(nbi);
 
                     //add all cascade xref 

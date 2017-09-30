@@ -1337,7 +1337,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         var ajaxprov = AjaxInterface.Instance(d.Key);
                         if (ajaxprov != null)
                         {
-                            if (entitytypecode == ajaxprov.Ajaxkey) // only get single typecode
+                            if (entitytypecode != ajaxprov.Ajaxkey) // only get single typecode
                             {
                                 var provlist = ProductAdminList(ajaxInfo.ToDictionary(), true, "", ajaxprov.Ajaxkey);
                                 list = provlist;
@@ -1345,10 +1345,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         }
                 }
 
-                if (list == "")
-                {
-                    list = ProductAdminList(settings, true);
-                }
+                list += ProductAdminList(settings, true);
 
                 return list;
             }
