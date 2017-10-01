@@ -348,6 +348,11 @@
         if (e.cmd == 'category_getproductselectlist') {
             $('.processing').hide();
 
+            $("#categoryAdmin_cmdSaveExit").hide();
+            $("#categoryAdmin_cmdSave").hide();
+            $("#categoryAdmin_cmdDelete").hide();
+            $("#categoryAdmin_cmdReturn").hide();
+
             $('#returnfromselect').click(function () {
                 $('#pagesize').val('20');
                 $("#searchtext").val('');
@@ -372,6 +377,13 @@
                 $('#searchtext').val('');
                 $("#searchcategory").val('');
                 $('#txtproductselectsearch').val('');
+                nbxget('category_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
+            });
+
+            $('.cmdPg').unbind("click");
+            $('.cmdPg').click(function () {
+                $('.processing').show();
+                $('#pagenumber').val($(this).attr('pagenumber'));
                 nbxget('category_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
             });
 
