@@ -7,6 +7,7 @@
 
 <!-- fields required to send required ajax cart to server -->
 <span id="nbs_categoryadminsearch">
+    <input id="lang" type="hidden" value="@Model.Lang" />
     <input id="catid" type="hidden" value="0" />
     <input id="returncatid" type="hidden" value="0" />
     <input id='currentlang' type='hidden' value='@Model.Lang' />
@@ -20,23 +21,11 @@
     <input id="searchcategory" type="hidden" value="" />
     <input id="pagesize" type="hidden" value="20" />
     <input id="pagenumber" type="hidden" value="1" />
-    
-
-    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
-    <input id="lang" type="hidden" value="@Model.Lang" />
-    <input id="emailtype" type="hidden" value="" />
-    <input id="emailsubject" type="hidden" value="" />
-    <input id="emailmessage" type="hidden" value="" />
-    <input id="cascade" type="hidden" value="True" />
-    <input id="addqty" type="hidden" value="1" />
-    <input id="editlang" type="hidden" value="@Model.Lang" />
-    <input id="nextlang" type="hidden" value="@Model.Lang" /> <!-- editlanguage to be used after save.  editlang, must stay the same during save. -->
-    <input id="selectedoptionid" type="hidden" value="" />
-    <input id="selectedgroupref" type="hidden" value="" />
-    <input id="selectedrelatedid" type="hidden" value="" />
-    <input id="selecteduserid" type="hidden" value="" />
-    <input id="docuploadlist" type="hidden" value="" />
+    <input id="selectproductid" type="hidden" value="" />    
+    <input id="cascade" type="hidden" value="False" />
     <input id="orderby" type="hidden" value="{bycategoryproduct}" />
+    <input id="newcatid" type="hidden" value="" />
+    <input id="selecttaxrate" type="hidden" value="" />           
 </span>
 
 

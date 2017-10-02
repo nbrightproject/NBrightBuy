@@ -143,7 +143,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "product_getproductselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = ProductFunctions.GetProductSelectList(context);
+                    strOut = ProductFunctions.ProductAdminList(context, true, EditLangCurrent);
                     break;
                 case "product_getclientselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -407,81 +407,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-
-        public static String ProductAdminList(HttpContext context, bool paging = true)
-        {
-            var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-            return ProductAdminList(settings, paging,"","");
-        }
-
-        public static String ProductAdminList(Dictionary<string, string> settings, bool paging)
-        {
-            return ProductAdminList(settings, paging, "","");
-        }
-
-        public static String ProductAdminList(Dictionary<string, string> settings, bool paging, string editlang)
-        {
-            return ProductAdminList(settings, paging, editlang,"");
-        }
-
-        public static String ProductAdminList(Dictionary<string,string> settings, bool paging, string editlang,string datatypecode)
+        public static string ProductAdminList(HttpContext context, bool paging = true, string editlang = "",string datatypecode = "",bool loadAjaxEntities = false)
         {
 
             try
             {
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
-
-                    if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
+                    if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return null;
 
                     if (EditLangCurrent == "") EditLangCurrent = editlang;
                     if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();                    
 
                     var strOut = "";
 
-                    if (!settings.ContainsKey("themefolder")) settings.Add("themefolder", "");
-                    if (!settings.ContainsKey("razortemplate")) settings.Add("razortemplate", "");
-                    if (!settings.ContainsKey("header")) settings.Add("header", "");
-                    if (!settings.ContainsKey("body")) settings.Add("body", "");
-                    if (!settings.ContainsKey("footer")) settings.Add("footer", "");
-                    if (!settings.ContainsKey("filter")) settings.Add("filter", "");
-                    if (!settings.ContainsKey("orderby")) settings.Add("orderby", "");
-                    if (!settings.ContainsKey("returnlimit")) settings.Add("returnlimit", "0");
-                    if (!settings.ContainsKey("pagenumber")) settings.Add("pagenumber", "0");
-                    if (!settings.ContainsKey("pagesize")) settings.Add("pagesize", "0");
-                    if (!settings.ContainsKey("searchtext")) settings.Add("searchtext", "");
-                    if (!settings.ContainsKey("searchcategory")) settings.Add("searchcategory", "");
-                    if (!settings.ContainsKey("cascade")) settings.Add("cascade", "False");
-
-                    if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-
                     // select a specific entity data type for the product (used by plugins)
-                    if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
-                    if (!settings.ContainsKey("entitytypecodelang")) settings.Add("entitytypecodelang", EntityTypeCode + "LANG");
-                    var entitytypecodelang = settings["entitytypecodelang"];
-                    var entitytypecode = settings["entitytypecode"];
+                    var entitytypecodelang = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecodelang");
+                    var entitytypecode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
+                    if (entitytypecode == "") entitytypecode = EntityTypeCode;
+                    if (entitytypecode == "") entitytypecode = "PRD";
+                    if (entitytypecodelang == "") entitytypecodelang = EntityTypeCode + "LANG";
 
                     if (datatypecode == "") datatypecode = entitytypecode;
                     var datatypecodelang = datatypecode + "LANG";
 
-                    var themeFolder = settings["themefolder"];
-                    if (themeFolder == "") themeFolder = "config";
+                    var filter = ajaxInfo.GetXmlProperty("genxml/hidden/filter");
+                    var orderby = ajaxInfo.GetXmlProperty("genxml/hidden/orderby");
+                    var returnLimit = ajaxInfo.GetXmlPropertyInt("genxml/hidden/returnlimit");
+                    var pageNumber = ajaxInfo.GetXmlPropertyInt("genxml/hidden/pagenumber");
+                    var pageSize = ajaxInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+                    var cascade = ajaxInfo.GetXmlPropertyBool("genxml/hidden/cascade");
+                    var portalId = PortalSettings.Current.PortalId;
+                    if (ajaxInfo.GetXmlProperty("genxml/hidden/portalid") != "")
+                    {
+                        portalId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+                    }
 
-                    var header = settings["header"];
-                    var body = settings["body"];
-                    var footer = settings["footer"];
-                    var filter = settings["filter"];
-                    var orderby = settings["orderby"];
-                    var returnLimit = Convert.ToInt32(settings["returnlimit"]);
-                    var pageNumber = Convert.ToInt32(settings["pagenumber"]);
-                    var pageSize = Convert.ToInt32(settings["pagesize"]);
-                    var cascade = Convert.ToBoolean(settings["cascade"]);
-                    var razortemplate = settings["razortemplate"];
-                    var portalId = Convert.ToInt32(settings["portalid"]);
-
-                    var searchText = settings["searchtext"];
-                    var searchCategory = settings["searchcategory"];
+                    var searchText = ajaxInfo.GetXmlProperty("genxml/hidden/searchtext");
+                    var searchCategory = ajaxInfo.GetXmlProperty("genxml/hidden/searchcategory");
 
                     if (searchText != "") filter += " and (NB3.[ProductName] like '%" + searchText + "%' or NB3.[ProductRef] like '%" + searchText + "%' or NB3.[Summary] like '%" + searchText + "%' ) ";
 
@@ -506,15 +471,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         filter += " and NB1.ItemId in (select ParentItemId from dbo.[NBrightBuy] as NBclient where NBclient.TypeCode = 'USERPRDXREF' and NBclient.UserId = " + UserController.Instance.GetCurrentUserInfo().UserID.ToString("") + ") ";
                     }
 
-                    var recordCount = 0;
+                    // get any plugin data records.
+                    var plugindatasql = " and (NB1.TypeCode = '" + datatypecode + "'";
 
-                    if (themeFolder == "")
+                    if (loadAjaxEntities)
                     {
-                        themeFolder = StoreSettings.Current.ThemeFolder;
-                        if (settings.ContainsKey("themefolder")) themeFolder = settings["themefolder"];
+                        var pluginData = new PluginData(PortalSettings.Current.PortalId);
+                        var provList = pluginData.GetAjaxProviders();
+                        foreach (var d in provList)
+                        {
+                            var ajaxprov = AjaxInterface.Instance(d.Key);
+                            if (ajaxprov != null)
+                            {
+                                if (datatypecode != ajaxprov.Ajaxkey)
+                                {
+                                    plugindatasql += " or NB1.TypeCode = '" + ajaxprov.Ajaxkey + "'";
+                                }
+                            }
+                        }
                     }
 
+                    filter = plugindatasql + ") " + filter;
 
+                    var recordCount = 0;
                     var objCtrl = new NBrightBuyController();
 
                     if (paging) // get record count for paging
@@ -522,18 +501,53 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                         if (pageNumber == 0) pageNumber = 1;
                         if (pageSize == 0) pageSize = 20;
 
-                        // get only entity type required
-                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, datatypecode, filter, datatypecodelang, EditLangCurrent);
+                        // get only entity type required.  Do NOT use typecode, that is set by the filter.
+                        recordCount = objCtrl.GetListCount(PortalSettings.Current.PortalId, -1, "", filter, "", EditLangCurrent);
 
                     }
 
                     // get selected entitytypecode.
-                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, datatypecode, datatypecodelang, EditLangCurrent, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
+                    var list = objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "", "", EditLangCurrent, filter, orderby, StoreSettings.Current.DebugMode, "", returnLimit, pageNumber, pageSize, recordCount);
+
+                    return RenderProductAdminList(list,ajaxInfo,recordCount);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogException(ex);
+                return ex.ToString();
+            }
+            return "";
+        }
+
+        public static String RenderProductAdminList(List<NBrightInfo> list,NBrightInfo ajaxInfo,int recordCount)
+        {
+
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    if (list == null) return "";
+                    if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
+
+                    if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
+
+                    var strOut = "";
+
+                    // select a specific entity data type for the product (used by plugins)
+                    var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                    if (themeFolder == "") themeFolder = "config";
+                    var pageNumber = ajaxInfo.GetXmlPropertyInt("genxml/hidden/pagenumber");
+                    var pageSize = ajaxInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+                    var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+
+                    bool paging = pageSize > 0;
 
                     var passSettings = new Dictionary<string, string>();
-                    foreach (var s in settings)
+                    foreach (var s in ajaxInfo.ToDictionary())
                     {
-                            passSettings.Add(s.Key, s.Value);
+                        passSettings.Add(s.Key, s.Value);
                     }
                     foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
                     {
@@ -582,8 +596,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
                 DataCache.ClearCache();
 
-                return ProductFunctions.ProductAdminList(context);
-
+                return ProductFunctions.ProductAdminList(context, true, EditLangCurrent);
             }
             catch (Exception ex)
             {
@@ -1317,42 +1330,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 return ex.ToString();
             }
 
-        }
-
-        public static String GetProductSelectList(HttpContext context)
-        {
-            try
-            {
-                var list = "";
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                ajaxInfo.SetXmlProperty("genxml/hidden/razortemplate", "Admin_ProductSelectList.cshtml");
-                var settings = ajaxInfo.ToDictionary();
-                if (!settings.ContainsKey("entitytypecode")) settings.Add("entitytypecode", "PRD");
-                var entitytypecode = settings["entitytypecode"];
-
-                var pluginData = new PluginData(PortalSettings.Current.PortalId);
-                var provList = pluginData.GetAjaxProviders();
-                foreach (var d in provList)
-                {
-                        var ajaxprov = AjaxInterface.Instance(d.Key);
-                        if (ajaxprov != null)
-                        {
-                            if (entitytypecode != ajaxprov.Ajaxkey) // only get single typecode
-                            {
-                                var provlist = ProductAdminList(ajaxInfo.ToDictionary(), true, "", ajaxprov.Ajaxkey);
-                                list = provlist;
-                            }
-                        }
-                }
-
-                list += ProductAdminList(settings, true);
-
-                return list;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
         }
 
         #endregion

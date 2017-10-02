@@ -687,9 +687,6 @@
     <Content Include="Themes\config\default\CartView_Settings.html" />
     <None Include="Themes\config\default\Admin_CategoryDetail.cshtml" />
     <Content Include="Themes\config\default\CategoryMenu_Settings.html" />
-    <Content Include="Themes\config\default\categoryproductbody.html" />
-    <Content Include="Themes\config\default\categoryproductfooter.html" />
-    <Content Include="Themes\config\default\categoryproductheader.html" />
     <None Include="Themes\config\default\clientfields.cshtml" />
     <Content Include="Themes\config\default\clientselectbody.html" />
     <Content Include="Themes\config\default\clientselectfooter.html" />

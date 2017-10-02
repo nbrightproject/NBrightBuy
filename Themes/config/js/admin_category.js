@@ -62,6 +62,9 @@
 
         if (e.cmd == 'category_categoryproductlist'
             || e.cmd == 'category_selectchangehidden'
+            || e.cmd == 'category_copyallcatxref'
+            || e.cmd == 'category_moveallcatxref'
+            || e.cmd == 'category_cattaxupdate'
             || e.cmd == 'category_admin_savelist') {
             $('.processing').hide();
         };
@@ -76,11 +79,11 @@
             $("#categoryAdmin_cmdAddNew").show();
             $("#categoryAdmin_cmdSaveList").show();
 
-            $("#productAdmin_cmdSaveExit").hide();
-            $("#productAdmin_cmdSave").hide();
-            $("#productAdmin_cmdSaveAs").hide();
-            $("#productAdmin_cmdDelete").hide();
-            $("#productAdmin_cmdReturn").hide();
+            $("#categoryAdmin_cmdSaveExit").hide();
+            $("#categoryAdmin_cmdSave").hide();
+            $("#categoryAdmin_cmdSaveAs").hide();
+            $("#categoryAdmin_cmdDelete").hide();
+            $("#categoryAdmin_cmdReturn").hide();
 
             // Move products
             $(".selectmove").hide();
@@ -334,11 +337,60 @@
             $('#productselect').unbind();
             $('#productselect').click(function () {
                 $('.processing').show();
+                $('#razortemplate').val('Admin_ProductSelectList.cshtml');
                 nbxget('category_displayproductselect', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
+
+            // remove single product
+            $('.removeproduct').unbind();
+            $('.removeproduct').click(function () {
+                $('#selectproductid').val($(this).attr('itemid'));
+                $('.productid' + $(this).attr('itemid')).hide();
+                nbxget('category_deletecatxref', '#nbs_categoryadminsearch');
+            });
+
+            $('#removeall').unbind();
+            $('#removeall').click(function () {
+                if (confirm($('#confirmmsg').html())) {
+                    $('#productlist').hide();
+                    nbxget('category_deleteallcatxref', '#nbs_categoryadminsearch');
+                }
+            });
+
+            $('select[id*="selectcatid"]').change(function () {
+                $('input[id*="newcatid"]').val($(this).val());
+            });
+
+            $('#copyto').unbind();
+            $('#copyto').click(function () {
+                if (confirm($('#confirmmsg').html())) {
+                    $('.processing').show();
+                    $('#selectproductid').val($(this).attr('itemid'));
+                    nbxget('category_copyallcatxref', '#nbs_categoryadminsearch', '#nbsnotify');
+                }
+            });
+
+            $('#moveto').unbind();
+            $('#moveto').click(function () {
+                if (confirm($('#confirmmsg').html())) {
+                    $('.processing').show();
+                    $('#productlist').hide();
+                    nbxget('category_moveallcatxref', '#nbs_categoryadminsearch', '#nbsnotify');
+                }
+            });
+
+
+            $('#producttax').unbind();
+            $('#producttax').click(function () {
+                $('#selecttaxrate').val($('select[id*=taxrate]').val());
+                $('.processing').show();
+                nbxget('category_cattaxupdate', '#nbs_categoryadminsearch', '#nbsnotify');
+            });
+
+
+
             $('.processing').hide();
-            //nbxget('category_categoryproductlist', '#nbs_productadminsearch', '#productlist');
 
         }
 
@@ -354,9 +406,9 @@
             $("#categoryAdmin_cmdReturn").hide();
 
             $('#returnfromselect').click(function () {
-                $('#pagesize').val('20');
                 $("#searchtext").val('');
                 $("#searchcategory").val('');
+                $('#razortemplate').val('Admin_CategoryDetail.cshtml');
                 nbxget('category_admin_getdetail', '#nbs_categoryadminsearch', '#datadisplay');
                 $('#datadisplay').show();
             });
@@ -377,14 +429,22 @@
                 $('#searchtext').val('');
                 $("#searchcategory").val('');
                 $('#txtproductselectsearch').val('');
-                nbxget('category_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
+                nbxget('category_getproductselectlist', '#nbs_categoryadminsearch', '#productselectlist');
             });
 
             $('.cmdPg').unbind("click");
             $('.cmdPg').click(function () {
                 $('.processing').show();
                 $('#pagenumber').val($(this).attr('pagenumber'));
-                nbxget('category_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
+                nbxget('category_getproductselectlist', '#nbs_categoryadminsearch', '#productselectlist');
+            });
+
+            // select product
+            $('.selectproduct').unbind();
+            $('.selectproduct').click(function () {
+                $('.selectproductid' + $(this).attr('itemid')).hide();
+                $('#selectproductid').val($(this).attr('itemid'));
+                nbxget('category_selectcatxref', '#nbs_categoryadminsearch'); 
             });
 
         };
