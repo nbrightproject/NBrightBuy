@@ -81,6 +81,13 @@
     <Compile Include="Admin\AddressBook.ascx.designer.cs">
       <DependentUpon>AddressBook.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\PropertiesValue.ascx.cs">
+      <DependentUpon>PropertiesValue.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\PropertiesValue.ascx.designer.cs">
+      <DependentUpon>PropertiesValue.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Categories.ascx.cs">
       <DependentUpon>Categories.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -205,6 +212,8 @@
     <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Properties\PropertyData.cs" />
+    <Compile Include="Components\Properties\PropertyFunctions.cs" />
     <Compile Include="Components\Categories\CategoryFunctions.cs" />
     <Compile Include="Components\Clients\ClientFunctions.cs" />
     <Compile Include="Components\Interfaces\CustomActionInterface.cs" />
@@ -405,6 +414,9 @@
     <Content Include="Admin\AddressBook.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Admin\PropertiesValue.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Categories.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -412,9 +424,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\BackOffice.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="Admin\PropertiesValue.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Admin\Tools.ascx">
@@ -579,7 +588,15 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\config\default\Admin_Property.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertyDetail.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertyImages.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertyList.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertyProducts.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertyProductSelect.cshtml" />
     <None Include="Themes\config\default\Admin_CategoryProductSelect.cshtml" />
+    <None Include="Themes\config\default\Admin_PropertySearch.cshtml" />
+    <None Include="Themes\config\default\Admin_Property_head.cshtml" />
     <None Include="Themes\config\default\Admin_Clients.cshtml" />
     <None Include="Themes\config\default\Admin_Orders.cshtml" />
     <None Include="Themes\config\default\Admin_OrdersCustom.cshtml" />
@@ -1550,6 +1567,7 @@
     <Content Include="Themes\config\img\flags\32\zh-SG.png" />
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
     <Content Include="Themes\config\img\nb-store_24x24.png" />
+    <Content Include="Themes\config\js\admin_property.js" />
     <Content Include="Themes\config\js\admin_category.js" />
     <Content Include="Themes\config\js\admin_product.js" />
     <Content Include="Themes\config\js\js.cookie.js" />

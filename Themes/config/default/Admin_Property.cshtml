@@ -6,8 +6,9 @@
 
 
 <!-- fields required to send required ajax cart to server -->
-<span id="nbs_categoryadminsearch">
+<span id="nbs_propertyadminsearch">
     <input id="lang" type="hidden" value="@Model.Lang" />
+    <input id="catid" type="hidden" value="0" />
     <input id="returncatid" type="hidden" value="0" />
     <input id='currentlang' type='hidden' value='@Model.Lang' />
     <input id="razortemplate" type="hidden" value="" />
@@ -47,6 +48,35 @@
     </div>
     <div class="col-xs-3 col-sm-3 top-panel-right">
         @EditLangaugeButton()
+    </div>
+</div>
+
+<div class="row searchheader">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-search"></i><span>@ResourceKey("General.Property")</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+                    <a class="close-link"><i class="fa fa-times"></i></a>
+                </div>
+                <div class="no-move">
+                </div>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal dnnForm">
+                    <div class="form-group form-inline">
+                        <div class="col-sm-6">
+                            @GroupSelectList(new NBrightInfo(),"genxml/dropdonwlist/groupsel", "class='groupsel populate placeholder form-control' width='300px' ",false, "1")&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

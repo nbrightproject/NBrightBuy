@@ -188,29 +188,74 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Update(NBrightInfo info)
         {
-            var localfields = info.GetXmlProperty("genxml/hidden/localizedfields").Split(',');
 
-            foreach (var f in localfields)
+            // build list of xpath fields that need processing.
+            var updatefields = new List<String>();
+            var fieldList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in fieldList)
             {
-                if (f == "genxml/edt/message")
+                if (info.GetXmlProperty(xpath + "/@update") == "lang")
+                {
+                    updatefields.Add(xpath);
+                }
+            }
+
+            foreach (var f in updatefields)
+            {
+                if (f.EndsWith("/message"))
                 {
                     // special processing for editor, to place code in standard place.
                     if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
                     if (info.GetXmlProperty("genxml/textbox/message") == "")
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/edt/message"));
+                        DataLangRecord.SetXmlProperty("genxml/edt/message", info.GetXmlPropertyRaw("genxml/edt/message"));
                     else
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty("genxml/textbox/message")); // ajax on ckeditor (Ajax diesn't work for telrik)
+                        DataLangRecord.SetXmlProperty("genxml/edt/message", info.GetXmlPropertyRaw("genxml/textbox/message")); // ajax on ckeditor (Ajax diesn't work for telrik)
                 }
                 else
-                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                {
+                    DataLangRecord.RemoveXmlNode(f);
+                    var xpathDest = f.Split('/');
+                    if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(info.XMLData, f, xpathDest[0] + "/" + xpathDest[1]);
+                }
+
+                var datatype = info.GetXmlProperty(f + "/@datatype");
+                if (datatype == "date")
+                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                else if (datatype == "double")
+                    DataLangRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                else if (datatype == "html")
+                    DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                else
+                    DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f).Trim());
+
 
                 DataRecord.RemoveXmlNode(f);
             }
-            var fields = info.GetXmlProperty("genxml/hidden/fields").Split(',');
 
-            foreach (var f in fields)
+
+            updatefields = new List<String>();
+            fieldList = NBrightBuyUtils.GetAllFieldxPaths(info);
+            foreach (var xpath in fieldList)
             {
-                DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                var id = xpath.Split('/').Last();
+                if (info.GetXmlProperty(xpath + "/@update") == "save")
+                {
+                    updatefields.Add(xpath);
+                }
+            }
+
+            foreach (var f in updatefields)
+            {
+                var datatype = info.GetXmlProperty(f + "/@datatype");
+                if (datatype == "date")
+                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                else if (datatype == "double")
+                    DataRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                else if (datatype == "html")
+                    DataRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                else
+                    DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+
                 // if we have a image field then we need to create the imageurl field
                 if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
                 {

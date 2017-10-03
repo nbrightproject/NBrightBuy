@@ -73,6 +73,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = CategoryAdminSaveList(context);
                     break;
+                case "category_admin_save":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = CategorySave(context);
+                    break;
+                case "category_admin_saveexit":
+                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    strOut = CategorySave(context);
+                    break;
                 case "category_admin_movecategory":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
                     strOut = MoveCategoryAdmin(context);
@@ -188,6 +196,105 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
             return "";
         }
+
+        public static String ProductAdminSave(HttpContext context)
+        {
+            try
+            {
+                try
+                {
+                    CategorySave(context);
+                    return "";
+                }
+                catch (Exception ex)
+                {
+                    return ex.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        public static String CategorySave(HttpContext context)
+        {
+            if (NBrightBuyUtils.CheckManagerRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/dropdownlist/ddlparentcatid");
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                if (catid > 0)
+                {
+                    if (parentitemid != catid)
+                    {
+                        var catData = new CategoryData(catid, EditLangCurrent);
+
+                        // check we've not put a category under it's child
+                        if (!IsParentInChildren(catData, parentitemid))
+                        {
+                            var catDirectList = catData.GetDirectArticles();
+                            var oldparentitemId = catData.ParentItemId;
+                            if (parentitemid != oldparentitemId)
+                            {
+                                // remove articles for category, so we realign the cascade records.                            
+                                foreach (var p in catDirectList)
+                                {
+                                    var prdData = new ProductData(p.ParentItemId, p.PortalId, p.Lang);
+                                    prdData.RemoveCategory(catData.CategoryId);
+                                }
+                            }
+
+                            catData.Update(ajaxInfo);
+
+                            // the base category ref cannot have language dependant refs, we therefore just use a unique key
+                            var catref = catData.DataRecord.GetXmlProperty("genxml/textbox/txtcategoryref");
+                            if (catref == "")
+                            {
+                                if (catData.DataRecord.GUIDKey == "")
+                                {
+                                    catref = Utils.GetUniqueKey().ToLower();
+                                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catref);
+                                    catData.DataRecord.GUIDKey = catref;
+                                }
+                                else
+                                {
+                                    catData.DataRecord.SetXmlProperty("genxml/textbox/txtcategoryref", catData.DataRecord.GUIDKey);
+                                }
+                            }
+                            catData.Save();
+                            CategoryUtils.ValidateLangaugeRef(PortalSettings.Current.PortalId, catid); // do validate so we update all refs and children refs
+                            NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+
+                            if (parentitemid != oldparentitemId)
+                            {
+                                // all all articles for category. so we realign the cascade records.                            
+                                foreach (var p in catDirectList)
+                                {
+                                    var prdData = new ProductData(p.ParentItemId, p.PortalId, p.Lang);
+                                    prdData.AddCategory(catData.CategoryId);
+                                }
+                            }
+                        }
+                    }
+                }
+                NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
+            }
+            return "";
+        }
+
+        private static Boolean IsParentInChildren(CategoryData catData, int parentItemId)
+        {
+            foreach (var ch in catData.GetDirectChildren())
+            {
+                if (ch.ItemID == parentItemId) return true;
+                var catChildData = CategoryUtils.GetCategoryData(ch.ItemID, StoreSettings.Current.EditLanguage);
+                if (IsParentInChildren(catChildData, parentItemId)) return true;
+            }
+            return false;
+        }
+
 
         public static String MoveCategoryAdmin(HttpContext context)
         {
@@ -365,7 +472,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
         }
 
-        private static String GetCategoryProductList(HttpContext context)
+        public static String GetCategoryProductList(HttpContext context)
         {
             try
             {
@@ -392,7 +499,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         }
 
-        private static String CategoryProductSelect(HttpContext context)
+        public static String CategoryProductSelect(HttpContext context)
         {
             try
             {
@@ -496,7 +603,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         #endregion
 
-        private static string SelectCatXref(HttpContext context)
+        public static string SelectCatXref(HttpContext context)
         {
             try
             {
@@ -517,7 +624,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             }
             return "";
         }
-        private static string DeleteAllCatXref(HttpContext context)
+        public static string DeleteAllCatXref(HttpContext context)
         {
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
@@ -543,7 +650,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return strOut;
         }
 
-        private static string DeleteCatXref(HttpContext context)
+        public static string DeleteCatXref(HttpContext context)
         {
             try
             {
@@ -566,7 +673,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         }
 
 
-        private static String CopyAllCatXref(HttpContext context, Boolean moverecords = false)
+        public static String CopyAllCatXref(HttpContext context, Boolean moverecords = false)
         {
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
@@ -592,7 +699,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return strOut;
         }
 
-        private static string CatTaxUpdate(HttpContext context)
+        public static string CatTaxUpdate(HttpContext context)
         {
             try
             {
