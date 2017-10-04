@@ -1,4 +1,2 @@
-﻿
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ..\NBrightBuy.csproj /t:Rebuild /p:Configuration=Release
-
+﻿"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe" ..\NBrightBuy.csproj /build release /out build.log
 pause
