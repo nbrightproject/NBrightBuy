@@ -5,12 +5,14 @@
         $('.actionbuttonwrapper').hide();
         $('.editlanguage').hide();
         $('.processing').show();
-        $("#nextlang").val($(this).attr("editlang"));
         if ($("#razortemplate").val() == 'Admin_CategoryDetail.cshtml') {
             //move data to update postback field
+            $("#nextlang").val($(this).attr("editlang"));
             nbxget('category_admin_save', '#categorydatasection', '#actionreturn');
         } else {
             // Need to save list
+            $("#currentlang").val($(this).attr("editlang"));
+            $('#razortemplate').val('Admin_CategoryList.cshtml');
             nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
         }
     });
@@ -64,8 +66,8 @@
             || e.cmd == 'category_selectchangehidden'
             || e.cmd == 'category_copyallcatxref'
             || e.cmd == 'category_moveallcatxref'
-            || e.cmd == 'category_cattaxupdate'
-            || e.cmd == 'category_admin_savelist') {
+            || e.cmd == 'category_admin_savelist'
+            || e.cmd == 'category_cattaxupdate') {
             $('.processing').hide();
         };
 
@@ -192,19 +194,6 @@
             
         }
 
-        if (e.cmd == 'product_admin_save') {
-            $("#editlang").val($("#nextlang").val());
-            $("#editlanguage").val($("#nextlang").val());
-            nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
-        };
-
-        if (e.cmd == 'product_admin_saveexit' || e.cmd == 'product_admin_saveas') {
-            $("#editlang").val($("#nextlang").val());
-            $("#editlanguage").val($("#nextlang").val());
-            $('#razortemplate').val('Admin_ProductList.cshtml');
-            $('#selecteditemid').val('');
-            nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
-        };
 
         if (e.cmd == 'category_displayproductselect') {
             setupbackoffice(); // run JS to deal with standard BO functions like accordian.   NOTE: Select2 can only be assigned 1 time.
@@ -322,7 +311,7 @@
             $('#productselect').unbind();
             $('#productselect').click(function () {
                 $('.processing').show();
-                $('#razortemplate').val('Admin_ProductSelectList.cshtml');
+                $('#razortemplate').val('Admin_CategoryProductSelect.cshtml');
                 nbxget('category_displayproductselect', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
@@ -381,6 +370,7 @@
 
         if (e.cmd == 'category_admin_save') {
             $('.processing').show();
+            $('#currentlang').val($('#nextlang').val());
             $('#razortemplate').val('Admin_CategoryDetail.cshtml');
             nbxget('category_admin_getdetail', '#nbs_categoryadminsearch', '#datadisplay');
         }

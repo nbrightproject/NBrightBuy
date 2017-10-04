@@ -30,11 +30,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 {
     public static class PropertyFunctions
     {
+        public static string UiLang = "";
         public static string EditLangCurrent = "";
         public static string EntityTypeCode = "";
         public static string TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
 
-        private static  NBrightBuyController _objCtrl = null;
+        private static  NBrightBuyController _objCtrl = new NBrightBuyController();
         private static bool DebugMode => StoreSettings.Current.DebugMode;
 
         public static void ResetTemplateRelPath()
@@ -44,13 +45,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
-            _objCtrl = new NBrightBuyController();
 
             EditLangCurrent = editlang;
             if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
 
             var strOut = "PROPERTY - ERROR!! - No Security rights or function command.";
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            UiLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            if (UiLang == "") UiLang = EditLangCurrent;
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
             EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             if (EntityTypeCode == "") EntityTypeCode = "CAT"; // default to category
@@ -59,7 +61,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 case "property_admin_getlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.CategoryAdminList(context);
+                    strOut = CategoryFunctions.CategoryAdminList(context, "property");
                     break;
                 case "property_admin_getdetail":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -67,7 +69,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "property_admin_addnew":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.CategoryAdminAddNew(context);
+                    strOut = CategoryFunctions.CategoryAdminAddNew(context,"property");
                     break;                    
                 case "property_admin_savelist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -83,11 +85,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     break;
                 case "property_admin_movecategory":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.MoveCategoryAdmin(context);
+                    strOut = CategoryFunctions.MoveCategoryAdmin(context, "property");
                     break;
                 case "property_admin_delete":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.DeleteCategory(context);
+                    strOut = CategoryFunctions.DeleteCategory(context, "property");
                     break;
                 case "property_updateimages":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;

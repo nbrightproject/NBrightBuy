@@ -40,15 +40,15 @@
 
     <br />
 
-    <div id="categorydatasection">
+    <div id="propertydatasection">
 
-        <div id="categorydata">
+        <div id="propertydata">
 
             <input id="itemid" type="hidden" value="@info.ItemID" />
             <input id="editlanguage" type="hidden" value="@info.Lang" />
 
             <!-- Is this hidden tag required -->
-            <div class="hidden">@TextBox(info, "genxml/dropdownlist/ddlgrouptype", "","cat")</div><!-- Required - Sets grouptype to only categories and hides the field -->
+            <div class="hidden">@TextBox(info, "genxml/dropdownlist/ddlgrouptype")</div><!-- Required - Sets grouptype to only categories and hides the field -->
 
             <div class="row categorydetails">
                 <div class="col-md-12">

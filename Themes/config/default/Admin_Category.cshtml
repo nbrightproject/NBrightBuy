@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using DotNetNuke.Entities.Users
+@using NBrightCore.common
 @using NBrightDNN
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
@@ -7,7 +8,7 @@
 
 <!-- fields required to send required ajax cart to server -->
 <span id="nbs_categoryadminsearch">
-    <input id="lang" type="hidden" value="@Model.Lang" />
+    <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()" />
     <input id="returncatid" type="hidden" value="0" />
     <input id='currentlang' type='hidden' value='@Model.Lang' />
     <input id="razortemplate" type="hidden" value="" />
@@ -25,6 +26,7 @@
     <input id="orderby" type="hidden" value="{bycategoryproduct}" />
     <input id="newcatid" type="hidden" value="" />
     <input id="selecttaxrate" type="hidden" value="" />           
+    <input id="nextlang" type="hidden" value="" />
 </span>
 
 

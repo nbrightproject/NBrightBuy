@@ -1149,4 +1149,7 @@
   <data name="ApplyTax.Text" xml:space="preserve">
     <value>Apply Tax rate to all Products in Category</value>
   </data>
+  <data name="GroupType.Text" xml:space="preserve">
+    <value>Group Type</value>
+  </data>
 </root>

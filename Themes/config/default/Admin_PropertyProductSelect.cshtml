@@ -23,7 +23,8 @@
         $(document).ready(function () {
             $('.box-content').toggle(); // Initially hide all panels - Doesn't hide Products in cat - need to fox
             $('.categoryselectproducts div.box-content').toggle();
-            nbxget('category_getproductselectlist', '#nbs_categoryadminsearch', '#productselectlist');
+            $('#razortemplate').val('Admin_ProductSelectList.cshtml');
+            nbxget('property_getproductselectlist', '#nbs_propertyadminsearch', '#productselectlist');
         });
     </script>
 

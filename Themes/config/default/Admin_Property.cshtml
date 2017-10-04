@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using DotNetNuke.Entities.Users
+@using NBrightCore.common
 @using NBrightDNN
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
@@ -7,9 +8,8 @@
 
 <!-- fields required to send required ajax cart to server -->
 <span id="nbs_propertyadminsearch">
-    <input id="lang" type="hidden" value="@Model.Lang" />
+    <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()" />
     <input id="catid" type="hidden" value="0" />
-    <input id="returncatid" type="hidden" value="0" />
     <input id='currentlang' type='hidden' value='@Model.Lang' />
     <input id="razortemplate" type="hidden" value="" />
     <input id="themefolder" type="hidden" value="config" />
@@ -25,7 +25,9 @@
     <input id="cascade" type="hidden" value="False" />
     <input id="orderby" type="hidden" value="{bycategoryproduct}" />
     <input id="newcatid" type="hidden" value="" />
-    <input id="selecttaxrate" type="hidden" value="" />           
+    <input id="selecttaxrate" type="hidden" value="" />
+    <input id="selectedgroup" type="hidden" value="" />
+    <input id="nextlang" type="hidden" value="" />
 </span>
 
 
@@ -38,12 +40,12 @@
             <i class="fa fa-bars"></i>
         </a>
         <div class="actionbuttonwrapper">
-            <a id="categoryAdmin_cmdAddNew" class="btn btn-primary " href="#">@ResourceKey("General.cmdAddButton")</a>
-            <a id="categoryAdmin_cmdSaveList" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
-            <a id="categoryAdmin_cmdSaveExit" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveExitButton")</a>
-            <a id="categoryAdmin_cmdSave" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
-            <a id="categoryAdmin_cmdDelete" style="display: none;" class="btn btn-danger " href="#">@ResourceKey("General.cmdDeleteButton")</a>
-            <a id="categoryAdmin_cmdReturn" style="display: none;" class="btn btn-default " href="#">@ResourceKey("General.cmdReturnButton")</a>
+            <a id="propertyAdmin_cmdAddNew" class="btn btn-primary " href="#">@ResourceKey("General.cmdAddButton")</a>
+            <a id="propertyAdmin_cmdSaveList" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
+            <a id="propertyAdmin_cmdSaveExit" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveExitButton")</a>
+            <a id="propertyAdmin_cmdSave" style="display: none;" class="btn btn-primary " href="#">@ResourceKey("General.cmdSaveButton")</a>
+            <a id="propertyAdmin_cmdDelete" style="display: none;" class="btn btn-danger " href="#">@ResourceKey("General.cmdDeleteButton")</a>
+            <a id="propertyAdmin_cmdReturn" style="display: none;" class="btn btn-default " href="#">@ResourceKey("General.cmdReturnButton")</a>
         </div>
     </div>
     <div class="col-xs-3 col-sm-3 top-panel-right">
@@ -51,34 +53,17 @@
     </div>
 </div>
 
-<div class="row searchheader">
-    <div class="col-xs-12 col-sm-12">
-        <div class="box">
-            <div class="box-header">
-                <div class="box-name">
-                    <i class="fa fa-search"></i><span>@ResourceKey("General.Property")</span>
-                </div>
-                <div class="box-icons">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a><a class="expand-link"><i class="fa fa-expand"></i></a>
-                    <a class="close-link"><i class="fa fa-times"></i></a>
-                </div>
-                <div class="no-move">
-                </div>
-            </div>
-            <div class="box-content">
-                <div class="form-horizontal dnnForm">
-                    <div class="form-group form-inline">
-                        <div class="col-sm-6">
-                            @GroupSelectList(new NBrightInfo(),"genxml/dropdonwlist/groupsel", "class='groupsel populate placeholder form-control' width='300px' ",false, "1")&nbsp;&nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="panel panel-default groupselpanel">
+    <div class="panel-body">
+        <div class="col-sm-3">
+            <label class="control-label">@ResourceKey("General.GroupType")</label>
+            @GroupSelectList(new NBrightInfo(), "genxml/dropdonwlist/groupsel", "class='groupsel populate placeholder form-control' width='300px' ", false, "1")
+        </div>
+        <div class="col-sm-9">
         </div>
     </div>
 </div>
+
 
 <div id="datadisplay"></div>
 

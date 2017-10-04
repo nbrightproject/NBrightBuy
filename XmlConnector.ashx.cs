@@ -107,7 +107,12 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     CategoryFunctions.EntityTypeCode = "CATEGORY";
                     strOut = CategoryFunctions.ProcessCommand(paramCmd, context, _editlang);
-                }                
+                }
+                else if (paramCmd.StartsWith("property_"))
+                {
+                    PropertyFunctions.EntityTypeCode = "CATEGORY";
+                    strOut = PropertyFunctions.ProcessCommand(paramCmd, context, _editlang);
+                }
                 else
                 {
                     switch (paramCmd)
