@@ -129,6 +129,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 case "category_cattaxupdate":
                     if (NBrightBuyUtils.CheckRights()) strOut = CatTaxUpdate(context);
                     break;
+                case "category_addgroupfilter":
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddGroupFilter(context);
+                    break;
+                case "category_removegroupfilter":
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveGroupFilter(context);
+                    break;
+                case "category_categorygroupfilter":
+                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryGroupFilters(context);
+                    break;                    
             }
             return strOut;
         }
@@ -748,6 +757,87 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             return "";
         }
 
+
+        public static string AddGroupFilter(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                var groupref = ajaxInfo.GetXmlProperty("genxml/hidden/selectedgroupref");
+                if (catid > 0 && groupref != "")
+                {
+                    var grp = _objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "GROUP", groupref);
+                    if (grp != null)
+                    {
+                        var catData = new CategoryData(catid, EditLangCurrent);
+                        catData.AddFilterGroup(grp.ItemID);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return CategoryGroupFilters(context);
+        }
+        public static string RemoveGroupFilter(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                var groupid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedgroupid");
+                if (catid > 0)
+                {
+                    var catData = new CategoryData(catid, EditLangCurrent);
+                    catData.RemoveFilterGroup(groupid);
+                }
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+            return CategoryGroupFilters(context);
+        }
+
+        public static String CategoryGroupFilters(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckManagerRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var strOut = "";
+                    var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+                    if (catid > 0)
+                    {
+                        var themeFolder = "config";
+                        var razortemplate = "Admin_CategoryFilterGroups.cshtml";
+
+                        var passSettings = ajaxInfo.ToDictionary();
+                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        {
+                            if (passSettings.ContainsKey(s.Key))
+                                passSettings[s.Key] = s.Value;
+                            else
+                                passSettings.Add(s.Key, s.Value);
+                        }
+
+                        var objCtrl = new NBrightBuyController();
+                        var info = objCtrl.GetData(catid, EntityTypeCode + "LANG", EditLangCurrent, true);
+
+                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", info, TemplateRelPath, themeFolder, UiLang, passSettings);
+                    }
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
 
     }

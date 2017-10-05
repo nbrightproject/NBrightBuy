@@ -361,10 +361,37 @@
                 nbxget('category_cattaxupdate', '#nbs_categoryadminsearch', '#nbsnotify');
             });
 
+            // ---------------------------------------------------------------------------
+            // Group Filters
+            // ---------------------------------------------------------------------------
+            $('#selectgrouptype').unbind();
+            $('#selectgrouptype').click(function () {
+                $('.processing').show();
+                $('#selectedgroupref').val($(this).val());
+                if ($(this).val() != null) nbxget('category_addgroupfilter', '#nbs_categoryadminsearch', '.filtergroupsection');
+            });
 
+            $('.removegroupcategory').unbind();
+            $('.removegroupcategory').click(function () {
+                $('.processing').show();
+                $('#selectedgroupid').val($(this).attr("groupid"));
+                nbxget('category_removegroupfilter', '#nbs_categoryadminsearch', '.filtergroupsection');
+            });
 
             $('.processing').hide();
 
+        }
+        if (e.cmd == 'category_removegroupfilter'
+            || e.cmd == 'category_addgroupfilter') {
+
+            $('.removegroupcategory').unbind();
+            $('.removegroupcategory').click(function () {
+                $('.processing').show();
+                $('#selectedgroupid').val($(this).attr("groupid"));
+                nbxget('category_removegroupfilter', '#nbs_categoryadminsearch', '.filtergroupsection');
+            });
+
+            $('.processing').hide();
         }
 
         if (e.cmd == 'category_admin_save') {

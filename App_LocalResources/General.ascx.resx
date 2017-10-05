@@ -1152,4 +1152,10 @@
   <data name="GroupType.Text" xml:space="preserve">
     <value>Group Type</value>
   </data>
+  <data name="filtergroups.Text" xml:space="preserve">
+    <value>Filter Groups</value>
+  </data>
+  <data name="group.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
 </root>

@@ -588,6 +588,7 @@
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenu_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\config\default\Admin_CategoryFilterGroups.cshtml" />
     <None Include="Themes\config\default\Admin_Property.cshtml" />
     <None Include="Themes\config\default\Admin_PropertyDetail.cshtml" />
     <None Include="Themes\config\default\Admin_PropertyImages.cshtml" />

@@ -314,6 +314,53 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return l;
         }
 
+        public List<GroupData> GetFilterGroups(string lang)
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATGRPXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString(""));
+            var rtnlist = new List<GroupData>();
+            foreach (var nbi in l)
+            {
+                var c = new GroupData(nbi.XrefItemId, lang);
+                if (c.Exists)
+                {
+                    rtnlist.Add(c);
+                }
+            }
+            return rtnlist;
+        }
+
+        public int AddFilterGroup(int groupid)
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATGRPXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = " + groupid.ToString(""));
+            if (l.Any())
+            {
+                var nbi = l.First();
+                return nbi.ItemID;
+            }
+            else
+            {
+                var nbi = new NBrightInfo();
+                nbi.XMLData = "<genxml><sort>1</sort><typecode>CAT</typecode></genxml>";
+                nbi.ParentItemId = Info.ItemID;
+                nbi.XrefItemId = groupid;
+                nbi.PortalId = Info.PortalId;
+                nbi.ModuleId = Info.ModuleId;
+                nbi.TypeCode = "CATGRPXREF";
+                nbi.ItemID = -1;
+                return _objCtrl.Update(nbi);
+            }
+        }
+
+        public void RemoveFilterGroup(int groupid)
+        {
+            var l = _objCtrl.GetList(_portalId, -1, "CATGRPXREF", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = " + groupid.ToString(""));
+            if (l.Any())
+            {
+                var nbi = l.First();
+                _objCtrl.Delete(nbi.ItemID);
+            }
+        }
+
         public int Validate()
         {
             var errorcount = 0;
