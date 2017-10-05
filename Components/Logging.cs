@@ -14,9 +14,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             get
             {
-                if (StoreSettings.Current.EnableFileLogging)
+                if (StoreSettings.Current == null)
                 {
-                    //return LoggerSource.Instance.GetLogger($"NBrightBuy");
+                    return LoggerSource.Instance.GetLogger($"NBrightBuy.Host");
+                }
+                else if (StoreSettings.Current.EnableFileLogging)
+                {
                     return LoggerSource.Instance.GetLogger($"NBrightBuy.Portal-{StoreSettings.Current.SettingsInfo.PortalId}");
                 }
                 return null;
@@ -27,7 +30,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             // put it in the dnn exceptionlog
             DotNetNuke.Services.Exceptions.Exceptions.LogException(exc);
-            // enter a log entry
+            // enter a log entry with some debugging info
             StackTrace st = new StackTrace();
             var msg = $"Exception in {st.GetFrame(2).GetMethod().Name}: {exc.Message}. StackTrace: {exc.StackTrace}";
             Logger?.Error(msg);
