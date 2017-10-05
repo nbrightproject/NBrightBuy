@@ -121,15 +121,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                 case "property_deleteallcatxref":
                     if (NBrightBuyUtils.CheckRights()) strOut = CategoryFunctions.DeleteAllCatXref(context);
                     break;
-                case "property_copyallcatxref":
-                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryFunctions.CopyAllCatXref(context);
-                    break;
-                case "property_moveallcatxref":
-                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryFunctions.CopyAllCatXref(context, true);
-                    break;
-                case "property_cattaxupdate":
-                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryFunctions.CatTaxUpdate(context);
-                    break;
             }
             return strOut;
         }

@@ -13,6 +13,10 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
+@{
+    var info = (NBrightInfo)Model.List.First();
+}
+
 <br />
 
 <div class="row">
@@ -44,7 +48,8 @@
                 <table class="table table-striped table-hover categorylist">
                     <thead>
                     <tr>
-                        <th>@ResourceKey("General.Name")@LangFlag(Model.Lang)</th>
+                        <th>@ResourceKey("General.Ref")</th>
+                        <th>@ResourceKey("General.Name")@LangFlag(info.Lang)</th>
                         <th> </th>
                         <th> </th>
                         <th> </th>
@@ -60,8 +65,19 @@
                     {
                         lp += 1;
                         <tr class="propertyitemfields">
-
-                            <td style="width: 100%">
+                                @if (nbi.GetXmlProperty("genxml/textbox/propertyref") == "")
+                                {
+                                    <td style="width: 20%">
+                                        @NBrightTextBox(nbi, "genxml/textbox/propertyref", "class='form-control' maxlength='150' lp='" + lp + "'")
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="width: 20%">
+                                        @nbi.GetXmlProperty("genxml/textbox/propertyref")
+                                    </td>
+                                }
+                            <td style="width: 80%">
                                 @NBrightTextBox(nbi, "genxml/textbox/txtcategoryname", "class='form-control categorynametextbox ' maxlength='150' lp='" + lp + "'")
                             </td>
                             <td>

@@ -2271,7 +2271,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         /// <summary>
         /// Set thread langauge to correct langauge to match html page.
-        /// uses ajaxInfo.GetXmlProperty("genxml/hidden/currentlang"); param
+        /// uses ajaxInfo.GetXmlProperty("genxml/hidden/editlang"); param
         /// returns the edit culture code from the "editlang" param.
         /// </summary>
         /// <param name="context"></param>
@@ -2284,16 +2284,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static string SetContextLangauge(NBrightInfo ajaxInfo = null)
         {
-            // NOTE: "genxml/hidden/lang" should be set in the template for langauge to work OK.
+            // NOTE: "genxml/hidden/editlang" and "genxml/hidden/uilang" should be set in the template for langauge to work OK.
             // set langauge if we have it passed.
             if (ajaxInfo == null) ajaxInfo = new NBrightInfo(true);
-            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/currentlang");
+            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
             if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "language"); // fallback
             if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallback
-            if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang"); // fallback
             if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
             // set the context  culturecode, so any DNN functions use the correct culture 
-            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            var uilang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang"); //UI Langauge
+            if (uilang != "" && uilang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(uilang);
 
             var editlang = lang;
             if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");

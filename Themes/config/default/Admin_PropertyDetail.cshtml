@@ -47,9 +47,6 @@
             <input id="itemid" type="hidden" value="@info.ItemID" />
             <input id="editlanguage" type="hidden" value="@info.Lang" />
 
-            <!-- Is this hidden tag required -->
-            <div class="hidden">@TextBox(info, "genxml/dropdownlist/ddlgrouptype")</div><!-- Required - Sets grouptype to only categories and hides the field -->
-
             <div class="row categorydetails">
                 <div class="col-md-12">
                     <div class="box">
@@ -73,12 +70,6 @@
                                         <div class="col-sm-12">
                                             <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)
                                             @TextBox(info, "genxml/lang/genxml/textbox/txtcategoryname", "maxlength='250' class='form-control'", "")
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label class="control-label">@ResourceKey("General.Parent")</label>
-                                            @CategoryDropDownList(info, "genxml/dropdownlist/ddlparentcatid", "class='select2-container s2_with_tag populate placeholder'", true,20,true,true,info.ParentItemId,"","..",false,true,"cat",">",info.Lang)
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -144,8 +135,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                            <label class="control-label">@ResourceKey("General.attrcode")</label>
-                                            @GroupSelectList(info, "genxml/dropdownlist/ddlattrcode", "class='s2_with_tag populate'", true,"3")
+                                            <label class="control-label">@ResourceKey("General.GroupType")</label>
+                                            @GroupSelectList(info, "genxml/dropdownlist/ddlgrouptype", "class='s2_with_tag populate'", true,"1")
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -221,21 +212,9 @@
                         <div class="box-content">
                             <div class="form-horizontal dnnForm">
                                 <div class="form-group">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-12">
                                         <a id="productselect" class="btn btn-primary">@ResourceKey("General.cmdAddButton")</a>
                                         <a id="removeall" class="btn btn-danger">@ResourceKey("General.RemoveAllButton")</a>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a id="moveto" class="btn btn-default" confirm="@ResourceKey("General.Confirm")">@ResourceKey("General.MoveToButton")</a>
-                                        <a id="copyto" class="btn btn-default" confirm="@ResourceKey("General.Confirm")">@ResourceKey("General.CopyToButton")</a>
-                                            @CategoryDropDownList(info, "genxml/dropdownlist/selectcatid", "class='select2-container s2_with_tag populate placeholder' style='width: 300px;'", true, 20, true, true, 0, "", "..", false, true, "cat", ">", info.Lang)
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div>
-                                            @TaxRateDropDown(info, "genxml/dropdownlist/taxrate", "tax", "class='taxratedropdown input-sm'")
-                                            <a id="producttax" class="btn btn-primary">@ResourceKey("General.cmdAddButton")</a>
-                                            <br/>@ResourceKey("General.ApplyTax")
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

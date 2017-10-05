@@ -11,7 +11,7 @@
             nbxget('category_admin_save', '#categorydatasection', '#actionreturn');
         } else {
             // Need to save list
-            $("#currentlang").val($(this).attr("editlang"));
+            $("#editlang").val($(this).attr("editlang"));
             $('#razortemplate').val('Admin_CategoryList.cshtml');
             nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
         }
@@ -298,7 +298,6 @@
             $('#categoryAdmin_cmdDelete').click(function () {
                 if (confirm($('#confirmdeletemsg').text())) {
                     $('.processing').show();
-                    $('#selectedcatid').val($(this).attr('itemid'));
                     nbxget('category_admin_delete', '#nbs_categoryadminsearch', '#datadisplay');                    
                 }
             });
@@ -370,11 +369,12 @@
 
         if (e.cmd == 'category_admin_save') {
             $('.processing').show();
-            $('#currentlang').val($('#nextlang').val());
+            $('#editlang').val($('#nextlang').val());
             $('#razortemplate').val('Admin_CategoryDetail.cshtml');
             nbxget('category_admin_getdetail', '#nbs_categoryadminsearch', '#datadisplay');
         }
-        if (e.cmd == 'category_admin_saveexit') {
+        if (e.cmd == 'category_admin_saveexit'
+            || e.cmd == 'category_admin_delete') {
             $('.processing').show();
             $('#razortemplate').val('Admin_CategoryList.cshtml');
             nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');

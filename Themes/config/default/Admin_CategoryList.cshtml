@@ -13,6 +13,11 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
+@{
+    var info = (NBrightInfo)Model.List.First();
+}
+
+
 <br />
 
 <div class="row">
@@ -46,7 +51,7 @@
                         <tr>
                             <th></th>
                             <th>@ResourceKey("General.Products")</th>
-                            <th>@ResourceKey("General.Name")@LangFlag(Model.Lang)</th>
+                            <th>@ResourceKey("General.Name")@LangFlag(info.Lang)</th>
                             <th> </th>
                             <th> </th>
                             <th> </th>

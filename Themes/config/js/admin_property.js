@@ -5,14 +5,13 @@
         $('.actionbuttonwrapper').hide();
         $('.editlanguage').hide();
         $('.processing').show();
-        alert($("#razortemplate").val());
         if ($("#razortemplate").val() == 'Admin_PropertyDetail.cshtml') {
             //move data to update postback field
             $("#nextlang").val($(this).attr("editlang"));
             nbxget('property_admin_save', '#propertydatasection', '#actionreturn');
         } else {
             // Need to save list
-            $("#currentlang").val($(this).attr("editlang"));
+            $("#editlang").val($(this).attr("editlang"));
             $('#razortemplate').val('Admin_PropertyList.cshtml');
             nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
         }
@@ -184,7 +183,11 @@
                 $(".categorynametextbox").change(function () {
                     $('#isdirty_' + $(this).attr('lp')).val('True');
                 });
-            
+                $('#propertyref').unbind("change");
+                $("#propertyref").change(function () {
+                    $('#isdirty_' + $(this).attr('lp')).val('True');
+                });
+
             }
 
 
@@ -292,7 +295,6 @@
                 $('#propertyAdmin_cmdDelete').click(function () {
                     if (confirm($('#confirmdeletemsg').text())) {
                         $('.processing').show();
-                        $('#selectedcatid').val($(this).attr('itemid'));
                         nbxget('property_admin_delete', '#nbs_propertyadminsearch', '#datadisplay');
                     }
                 });
@@ -330,33 +332,6 @@
                     $('input[id*="newcatid"]').val($(this).val());
                 });
 
-                $('#copyto').unbind();
-                $('#copyto').click(function () {
-                    if (confirm($('#confirmmsg').html())) {
-                        $('.processing').show();
-                        $('#selectproductid').val($(this).attr('itemid'));
-                        nbxget('property_copyallcatxref', '#nbs_propertyadminsearch', '#nbsnotify');
-                    }
-                });
-
-                $('#moveto').unbind();
-                $('#moveto').click(function () {
-                    if (confirm($('#confirmmsg').html())) {
-                        $('.processing').show();
-                        $('#productlist').hide();
-                        nbxget('property_moveallcatxref', '#nbs_propertyadminsearch', '#nbsnotify');
-                    }
-                });
-
-
-                $('#producttax').unbind();
-                $('#producttax').click(function () {
-                    $('#selecttaxrate').val($('select[id*=taxrate]').val());
-                    $('.processing').show();
-                    nbxget('property_cattaxupdate', '#nbs_propertyadminsearch', '#nbsnotify');
-                });
-
-
 
                 $('.processing').hide();
 
@@ -364,12 +339,15 @@
 
             if (e.cmd == 'property_admin_save') {
                 $('.processing').show();
-                $('#currentlang').val($('#nextlang').val());
+                $('#editlang').val($('#nextlang').val());
                 $('#razortemplate').val('Admin_PropertyDetail.cshtml');
                 nbxget('property_admin_getdetail', '#nbs_propertyadminsearch', '#datadisplay');
             }
-            if (e.cmd == 'property_admin_saveexit') {
+            if (e.cmd == 'property_admin_saveexit'
+                || e.cmd == 'property_admin_delete') {
                 $('.processing').show();
+                $('.groupselpanel').show();
+                $('#selectedcatid').val('');
                 $('#razortemplate').val('Admin_PropertyList.cshtml');
                 nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
             }

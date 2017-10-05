@@ -9,8 +9,8 @@
     <input id="userid" type="hidden" value="" />
     <input id="moduleid" type="hidden" value="" />
     <input id="tabid" type="hidden" value="" />
-    <input id="currentlang" type="hidden" value="" />
-    <input id="lang" type="hidden" value="" />
+    <input id="editlang" type="hidden" value="" />
+    <input id="uilang" type="hidden" value="" />
     <input id="catid" type="hidden" value="" />
     <input id="catref" type="hidden" value="" />
 
