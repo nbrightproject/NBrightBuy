@@ -13,11 +13,6 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
-@{
-    var info = (NBrightInfo)Model.List.First();
-}
-
-
 <br />
 
 <div class="row">
@@ -51,7 +46,10 @@
                         <tr>
                             <th></th>
                             <th>@ResourceKey("General.Products")</th>
-                            <th>@ResourceKey("General.Name")@LangFlag(info.Lang)</th>
+                            <th>
+                                @ResourceKey("General.Name");
+                            </th>
+                            <th> </th>
                             <th> </th>
                             <th> </th>
                             <th> </th>
@@ -76,6 +74,9 @@
                                 </td>
                                 <td style="width: 100%">
                                     @NBrightTextBox(nbi, "genxml/textbox/txtcategoryname", "class='form-control categorynametextbox ' maxlength='150' lp='" + lp + "'")
+                                </td>
+                                <td>
+                                    @LangFlag(nbi.Lang)
                                 </td>
                                 <td>
                                     <input id="categorylang_@(lp)" type="hidden" value="@nbi.Lang" />

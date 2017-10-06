@@ -12,40 +12,71 @@
 
 @{
     var portalId = PortalSettings.Current.PortalId;
+
+    var catid = 0;
+    if (Utils.IsNumeric(Model.GetUrlParam("catid")))
+    {
+        catid = Convert.ToInt32(Model.GetUrlParam("catid"));
+    }
+
 }
 
+
 <div class="nbs-ajaxfilter">
-    @{
-        
-    }
-    @foreach (var selGroup in Model.Settings.Where(kv => kv.Key.StartsWith("selectedfilterssort-")).OrderBy(kv => kv.Value == "" ? -1 : int.Parse(kv.Value)))
-    {
-        var groupRef = selGroup.Key.Substring(selGroup.Key.IndexOf("-") + 1);
-
-        // is it selected?
-        var isSelected = Model.Settings.Any(kv => kv.Key == "selectedfilters-" + groupRef && kv.Value.ToLower() == "true");
-
-        if (!isSelected)
-        {
-            continue;
+        @{
         }
-        var nbc = new NBrightBuyController();
-        var groupnbi = nbc.GetByGuidKey(portalId, -1, "GROUP", groupRef);
-        var grouplang = nbc.GetDataLang(groupnbi.ItemID, System.Threading.Thread.CurrentThread.CurrentCulture.ToString());
-        var propList = NBrightBuyUtils.BuildCatList(1, false, false, groupnbi.ItemID, "", "", false, true, groupRef, "", "");
-        <h2>@grouplang.GetXmlProperty("genxml/textbox/groupname")</h2>
-        <ul>
-            @foreach (var item in propList)
-            {
-                <li><input type="checkbox" value="@groupRef-@item.Key"/>@item.Value</li>
-            }
-        </ul>
-    }
-</div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#propertyfiltertypeinside").val("@Model.GetSetting("filtertypeinsideproperty")");
-        $("#propertyfiltertypeoutside").val("@Model.GetSetting("filtertypeoutsideproperty")");
-    });
-</script>
+    @if (catid > 0)
+    {
+        var catData = new CategoryData(catid, Model.Lang);
+
+        foreach (GroupData selGroup in catData.GetFilterGroups(Model.Lang))
+        {
+            var propList = NBrightBuyUtils.BuildCatList(1, false, false, selGroup.Info.ItemID, "", "", false, true, selGroup.Ref, "", "");
+            <h2>@selGroup.Name</h2>
+            <ul>
+                @foreach (var item in propList)
+                {
+                    <li><input type="checkbox" value="@(selGroup.Ref)-@item.Key"/>@item.Value</li>
+                }
+            </ul>
+        }
+    }
+    else
+    {
+
+        foreach (var selGroup in Model.Settings.Where(kv => kv.Key.StartsWith("selectedfilterssort-")).OrderBy(kv => kv.Value == "" ? -1 : int.Parse(kv.Value)))
+        {
+            var groupRef = selGroup.Key.Substring(selGroup.Key.IndexOf("-") + 1);
+
+            // is it selected?
+            var isSelected = Model.Settings.Any(kv => kv.Key == "selectedfilters-" + groupRef && kv.Value.ToLower() == "true");
+
+            if (!isSelected)
+            {
+                continue;
+            }
+            var nbc = new NBrightBuyController();
+            var groupnbi = nbc.GetByGuidKey(portalId, -1, "GROUP", groupRef);
+            var grouplang = nbc.GetDataLang(groupnbi.ItemID, Model.Lang);
+            var propList = NBrightBuyUtils.BuildCatList(1, false, false, groupnbi.ItemID, "", "", false, true, groupRef, "", "");
+            <h2>@grouplang.GetXmlProperty("genxml/textbox/groupname")</h2>
+            <ul>
+                @foreach (var item in propList)
+                {
+                    <li><input type="checkbox" value="@groupRef-@item.Key" />@item.Value</li>
+                }
+            </ul>
+        }
+
+    }
+
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#propertyfiltertypeinside").val("@Model.GetSetting("filtertypeinsideproperty")");
+            $("#propertyfiltertypeoutside").val("@Model.GetSetting("filtertypeoutsideproperty")");
+        });
+    </script>

@@ -152,7 +152,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var themefolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
             if (themefolder == "") themefolder = "config";
 
-            var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
+            var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
             var grpCats = new List<NBrightInfo>();
             if (editType.ToLower() == "property")
             {
@@ -179,7 +179,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var grp = grpCtrl.GetGrpCategoryByRef(categoryData.GroupType);
             if (grp != null) categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grp.categoryid.ToString(""));
             categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "true");
-            categoryData.DataRecord.ParentItemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
+            categoryData.DataRecord.ParentItemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
             categoryData.Save();
             NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
             return CategoryAdminList(context, editType);

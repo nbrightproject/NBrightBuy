@@ -149,8 +149,8 @@
             $('.cmdopen').unbind("click");
             $(".cmdopen").click(function () {
                 $('.processing').show();
-                $('#returncatid').val($('#catid').val() + "," + $('#returncatid').val());
-                $('#catid').val($(this).attr('itemid'));
+                $('#returncatid').val($('#selectedcatid').val() + "," + $('#returncatid').val());
+                $('#selectedcatid').val($(this).attr('itemid'));
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
                 nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
@@ -159,7 +159,7 @@
             $(".cmdreturn").click(function () {
                 $('.processing').show();
                 var array = $('#returncatid').val().split(',');
-                $('#catid').val(array[0]);
+                $('#selectedcatid').val(array[0]);
                 $('#returncatid').val($('#returncatid').val().replace(array[0] + ",",""));
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
                 nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
