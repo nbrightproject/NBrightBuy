@@ -642,6 +642,7 @@
 
             $('#productselect').click(function () {
                 $('#pagesize').val('60');
+                $('#razortemplate').val('Admin_ProductSelectList.cshtml');
                 nbxget('product_getproductselectlist', '#nbs_productadminsearch', '#productselectlist');
                 $('#productdatasection').hide();
                 $('#productselectsection').show();
@@ -653,6 +654,7 @@
                 $('#productselectsection').hide();
                 $("#searchtext").val('');
                 $("#searchcategory").val('');
+                $('#razortemplate').val('Admin_ProductDetail.cshtml');
                 nbxget('product_admin_getdetail', '#nbs_productadminsearch', '#datadisplay');
                 $('#datadisplay').show();
             });

@@ -4808,7 +4808,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                         var nbi = new NBrightInfo();
                         nbi.XMLData = nod.OuterXml;
 
-                        strOut += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth") + "',";
+                        strOut += "{'x': '" + nbi.GetXmlPropertyInt("item/createdyear") + "-" + nbi.GetXmlPropertyInt("item/createdmonth").ToString("D2") + "',";
                         strOut += "'y': " + nbi.GetXmlPropertyRaw("item/appliedtotal").ToString() + "},";
 
                     }
