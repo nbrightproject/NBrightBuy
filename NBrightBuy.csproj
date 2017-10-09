@@ -311,7 +311,7 @@
     <Compile Include="Components\Interfaces\FilterInterface.cs" />
     <Compile Include="Components\Interfaces\PaymentsInterface.cs" />
     <Compile Include="Components\ProfileData.cs" />
-    <Compile Include="Components\PluginData.cs" />
+    <Compile Include="Components\Plugins\PluginData.cs" />
     <Compile Include="Components\PurchaseData.cs" />
     <Compile Include="Components\Orders\OrderData.cs" />
     <Compile Include="Components\RequestForm.cs" />

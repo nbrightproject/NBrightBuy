@@ -222,3 +222,6 @@ Installation/NBrightBuy_Resource.zip
 App_LocalResources/*.Portal*.resx
 Themes/Indigo/
 Providers/ManualPaymentProvider/App_LocalResources/ManualPayment.ascx.Portal-0.resx
+install/menuplugin.xml
+install/menu.config
+install/NBrightBuy_Resource.zip

@@ -79,6 +79,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
     public enum EventActions { ValidateCartBefore, ValidateCartAfter, ValidateCartItemBefore, ValidateCartItemAfter, AfterCartSave, AfterCategorySave, AfterProductSave, AfterSavePurchaseData, BeforeOrderStatusChange, AfterOrderStatusChange, BeforePaymentOK, AfterPaymentOK, BeforePaymentFail, AfterPaymentFail, BeforeSendEmail, AfterSendEmail };
 
+    public enum OrderStatus
+    {
+        /// 010       ,020             ,030      ,040       ,050                 ,060                ,070              ,120               ,080    ,090    ,100      ,110
+        /// Incomplete,Waiting for Bank,Cancelled,Payment OK,Payment Not Verified,Waiting for Payment,Waiting for Stock,Being Manufactured,Waiting,Shipped,Completed,Archived
+        Incomplete = 010,
+        WaitingForBank = 020,
+        Cancelled = 030,
+        PaymentOk = 040,
+        PaymentNotVerified = 050,
+        WaitingForPayment = 060,
+        WaitingForStock = 070,
+        BeingManufactured = 120,
+        Waiting = 080,
+        Shipped = 090,
+        Completed = 100,
+        Archived = 110
+    }
+
+
     public static class StoreSettingKeys
     {
         public static string countrycodelist = "countrycodelist";
