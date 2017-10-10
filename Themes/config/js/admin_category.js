@@ -87,7 +87,7 @@
             $("#categoryAdmin_cmdDelete").hide();
             $("#categoryAdmin_cmdReturn").hide();
 
-            // Move products
+            // Move categories
             $(".selectmove").hide();
             $(".selectcancel").hide();
             $(".selectrecord").show();
@@ -149,8 +149,10 @@
             $('.cmdopen').unbind("click");
             $(".cmdopen").click(function () {
                 $('.processing').show();
-                $('#returncatid').val($('#selectedcatid').val() + "," + $('#returncatid').val());
                 $('#selectedcatid').val($(this).attr('itemid'));
+                if ($('#selectedcatid').val() != $('#returncatid').val()) {
+                    $('#returncatid').val($('#selectedcatid').val() + "," + $('#returncatid').val());
+                }
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
                 nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
@@ -159,8 +161,8 @@
             $(".cmdreturn").click(function () {
                 $('.processing').show();
                 var array = $('#returncatid').val().split(',');
-                $('#selectedcatid').val(array[0]);
-                $('#returncatid').val($('#returncatid').val().replace(array[0] + ",",""));
+                $('#selectedcatid').val(array[1]);
+                $('#returncatid').val($('#returncatid').val().replace(array[0] + ",", ""));
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
                 nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });
@@ -276,7 +278,9 @@
             $('#categoryAdmin_cmdReturn').unbind("click");
             $('#categoryAdmin_cmdReturn').click(function () {
                 $('.processing').show();
-                $('#selectedcatid').val('');
+                alert($('#returncatid').val());
+                var array = $('#returncatid').val().split(',');
+                $('#selectedcatid').val(array[0]);
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
                 nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
             });

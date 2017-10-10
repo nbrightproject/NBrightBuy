@@ -175,11 +175,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var selgroup = ajaxInfo.GetXmlProperty("genxml/hidden/selectedgroup");
             if (selgroup == "") selgroup = "cat";
             categoryData.GroupType = selgroup;
-            var grpCtrl = new GrpCatController(Utils.GetCurrentCulture());
-            var grp = grpCtrl.GetGrpCategoryByRef(categoryData.GroupType);
-            if (grp != null) categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", grp.categoryid.ToString(""));
             categoryData.DataRecord.SetXmlProperty("genxml/checkbox/chkishidden", "true");
             categoryData.DataRecord.ParentItemId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
+            categoryData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlparentcatid", categoryData.DataRecord.ParentItemId.ToString());
             categoryData.Save();
             NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
             return CategoryAdminList(context, editType);

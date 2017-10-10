@@ -254,13 +254,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void PaymentOk(String orderStatus = "040", Boolean sendEmails = true)
         {
+            PaymentOk(orderStatus, sendEmails, false);
+        }
+
+        public void PaymentOk(String orderStatus, Boolean sendEmails, Boolean forceStatusChange)
+        {
             NBrightBuyUtils.ProcessEventProvider(EventActions.BeforePaymentOK, PurchaseInfo);
 
             if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
             {
 
                 // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
-                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030")
+                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030" || forceStatusChange)
                 {
                     var discountprov = DiscountCodeInterface.Instance();
                     if (discountprov != null)

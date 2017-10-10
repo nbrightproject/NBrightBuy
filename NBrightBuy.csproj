@@ -577,7 +577,9 @@
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileHome_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\OrderPrintOutput.cshtml" />
     <None Include="Themes\ClassicRazor\Default\printorder.cshtml" />
-    <None Include="Plugins\v030501-system.configsave" />
+    <None Include="Plugins\v030501-system.configsave">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Themes\ClassicRazor\Default\ClientMenu.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_DisplaySearch.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuDrill.cshtml" />
