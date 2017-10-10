@@ -278,7 +278,6 @@
             $('#categoryAdmin_cmdReturn').unbind("click");
             $('#categoryAdmin_cmdReturn').click(function () {
                 $('.processing').show();
-                alert($('#returncatid').val());
                 var array = $('#returncatid').val().split(',');
                 $('#selectedcatid').val(array[0]);
                 $('#razortemplate').val('Admin_CategoryList.cshtml');
