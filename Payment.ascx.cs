@@ -73,7 +73,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 var templFooter = "";
                 var templText = "";
 
-                if ((_provList.Count == 0 || _cartInfo.PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtotal") <= 0) && orderid == "")
+                if (_provList.Count == 0 && ModSettings.Get("orderingsystem") == "True")
                 {
                     #region "No Payment providers, so process as a ordering system"
 
@@ -189,7 +189,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
             var orderid = Utils.RequestQueryStringParam(Context, "orderid");
 
-            if ((_provList.Count == 0 || _cartInfo.PurchaseInfo.GetXmlPropertyDouble("genxml/appliedtotal") <= 0) && orderid == "")
+            if (_provList.Count == 0 && ModSettings.Get("orderingsystem") == "True")
             {
                 #region "No Payment providers, so process as a ordering system"
 
@@ -205,6 +205,7 @@ namespace Nevoweb.DNN.NBrightBuy
 
                     // update status to completed
                     _orderData = new OrderData(PortalId, _cartInfo.PurchaseInfo.ItemID);
+                    _orderData.CreatedDate = DateTime.Now.ToString("O");
                     _orderData.SavePurchaseData();
 
                     var cartL = new List<NBrightInfo>();
