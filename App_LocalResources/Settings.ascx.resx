@@ -510,4 +510,10 @@
   <data name="enablefileloggingmsg.Text" xml:space="preserve">
     <value>To be able to actually see a logfile, you need to add a logger and an appender to the DotNetNuke.Log4Net.config file in the root of your DNN installation.</value>
   </data>
+  <data name="providercontrolpath.Text" xml:space="preserve">
+    <value>Provider Path</value>
+  </data>
+  <data name="providercontrolpath.Help" xml:space="preserve">
+    <value>If a provider plugin is being used to display data, this setting defines the control path which will be used to find the templates. (Default: NBrightBuy)</value>
+  </data>
 </root>

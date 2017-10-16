@@ -47,6 +47,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _printtemplate = "";
         private String _guidkey = "";
         private Boolean _404code = false;
+        private string _controlPath = "";
 
         #region Event Handlers
 
@@ -65,6 +66,7 @@ namespace Nevoweb.DNN.NBrightBuy
             _eid = Utils.RequestQueryStringParam(Context, "eid");
             _print = Utils.RequestParam(Context, "print");
             _printtemplate = Utils.RequestParam(Context, "template");
+            _controlPath = ControlPath;
 
             //SK this tells basepage not to inject the pager
             EnablePaging = false;
@@ -74,11 +76,18 @@ namespace Nevoweb.DNN.NBrightBuy
             // check if we're using a typcode for the data.
             if (ModSettings != null)
             {
+                // check if we're using a typcode for the data.
                 var modentitytypecode = ModSettings.Get("entitytypecode");
                 if (modentitytypecode != "")
                 {
                     EntityTypeCode = modentitytypecode;
                     EntityTypeCodeLang = modentitytypecode + "LANG";
+                }
+                // check if we're using a provider _controlPath for the templates.
+                var provider_controlPath = ModSettings.Get("provider_controlPath");
+                if (provider_controlPath != "")
+                {
+                    _controlPath = "/DesktopModules/NBright/" + provider_controlPath + "/";
                 }
             }
 
@@ -196,7 +205,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 else
                 {
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
                 }
             }
 
@@ -257,11 +266,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);
@@ -271,7 +280,7 @@ namespace Nevoweb.DNN.NBrightBuy
             else
             {
                 _404code = true;
-                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

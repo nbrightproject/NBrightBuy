@@ -254,6 +254,9 @@ namespace Nevoweb.DNN.NBrightBuy
                         case "orderby":
                             strOut = DoOrderBy(context);
                             break;
+                        case "renderthemefolders":
+                            strOut = RenderThemeFolders(context);
+                            break;
 
                     }
                 }
@@ -610,6 +613,21 @@ namespace Nevoweb.DNN.NBrightBuy
                 if (lang == "") lang = Utils.GetCurrentCulture();
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", ajaxInfo, controlpath, theme, lang, StoreSettings.Current.Settings());
             }
+            return razorTempl;
+        }
+
+        /// <summary>
+        /// This is used to render a new theme dropdownlist when a change to the control path has been made.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private String RenderThemeFolders(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var uilang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            var razorTempl = "";
+            if (uilang == "") uilang = Utils.GetCurrentCulture();
+            razorTempl = NBrightBuyUtils.RazorTemplRender("ThemeFolderSelect.cshtml", 0, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", "config", uilang, StoreSettings.Current.Settings());
             return razorTempl;
         }
 

@@ -1,0 +1,18 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@using System.Web.UI.HtmlControls
+@using NBrightDNN
+
+@AddMetaData("resourcepath","/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+    var providercontrolpath = info.GetXmlProperty("genxml/dropdownlist/providercontrolpath").Trim('/');
+    if (providercontrolpath == "")
+    {
+        providercontrolpath = "NBrightBuy";
+    }
+}
+
+@DnnLabel("lblthemefolder", "Settings.Theme")
+@FolderSelectList(info, "genxml/dropdownlist/themefolder", "/DesktopModules/NBright/" + providercontrolpath + "/Themes", " class='form-control' ")

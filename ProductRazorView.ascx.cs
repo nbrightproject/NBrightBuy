@@ -62,6 +62,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _printtemplate = "";
         private String _guidkey = "";
         private Boolean _404code = false;
+        private string _controlPath = "";
 
         #region Event Handlers
 
@@ -80,22 +81,28 @@ namespace Nevoweb.DNN.NBrightBuy
             _eid = Utils.RequestQueryStringParam(Context, "eid");
             _print = Utils.RequestParam(Context, "print");
             _printtemplate = Utils.RequestParam(Context, "template");
+            _controlPath = ControlPath;
 
             EnablePaging = true;
             
             base.OnInit(e);
 
-            // check if we're using a typcode for the data.
             if (ModSettings != null)
             {
+                // check if we're using a typcode for the data.
                 var modentitytypecode = ModSettings.Get("entitytypecode");
                 if (modentitytypecode != "")
                 {
                     EntityTypeCode = modentitytypecode;
                     EntityTypeCodeLang = modentitytypecode + "LANG";
                 }
+                // check if we're using a provider controlpath for the templates.
+                var providercontrolpath = ModSettings.Get("providercontrolpath");
+                if (providercontrolpath != "")
+                {
+                    _controlPath = "/DesktopModules/NBright/" + providercontrolpath + "/";
+                }
             }
-
 
 
             // if guidkey entered instead of eid, find it using the guid and assign to _eid
@@ -222,7 +229,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     // Get meta data from template
 
-                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), ModuleId.ToString());
+                    var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), ModuleId.ToString());
 
                     #region "Order BY"
 
@@ -553,7 +560,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     #endregion
 
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
 
                     // save navigation data
                     _navigationdata.PageModuleId = Utils.RequestParam(Context, "pagemid");
@@ -591,7 +598,7 @@ namespace Nevoweb.DNN.NBrightBuy
                         if (strOut == null || StoreSettings.Current.DebugMode)
                         {
                             var l = ModCtrl.GetDataList(PortalId, ModuleId, EntityTypeCode, EntityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, _navigationdata.OrderBy, DebugMode, "", returnlimit, pageNumber, pageSize, recordCount);
-                            strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                            strOut = NBrightBuyUtils.RazorTemplRenderList(_templD, ModuleId, razorcachekey, l, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                         }
 
                         var lit = new Literal();
@@ -669,11 +676,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);
@@ -685,9 +692,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 _404code = true;
 
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "NBS_ProductNotFound_head.cshtml", ControlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "NBS_ProductNotFound_head.cshtml", _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
-                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

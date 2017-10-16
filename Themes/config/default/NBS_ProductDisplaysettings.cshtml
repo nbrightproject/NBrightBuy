@@ -9,6 +9,20 @@
     var info = (NBrightInfo)Model.List.First();
 }
 
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        //use to chnage the them folder dropdown on entry and on change.
+        nbxget('renderthemefolders', '#themedata', '#themefolders');
+        $('#providercontrolpath').change(function () {
+            nbxget('renderthemefolders', '#themedata', '#themefolders');
+        });
+
+    });
+
+</script>
+
 <div id="nbrightbuysettings">
 
     <div>
@@ -26,8 +40,20 @@
             <input id="razortemplate" type="hidden" value="NBS_ProductDisplaysettings.cshtml" />
             <div class="dnnFormItem">
                 <div>
+                    @DnnLabel("lblcontrolpayth", "Settings.providercontrolpath")
+                    @FolderSelectList(info, "genxml/dropdownlist/providercontrolpath", "/DesktopModules/NBright", " class='form-control' ")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div id="themefolders">
                     @DnnLabel("lblthemefolder", "Settings.Theme")
                     @FolderSelectList(info, "genxml/dropdownlist/themefolder", "/DesktopModules/NBright/NBrightBuy/Themes", " class='form-control' ")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lblEntityTypeCode", "ProductViewSettings.EntityTypeCode")
+                    @TextBox(info, "genxml/textbox/entitytypecode", "width='300px' class='form-control' ", "ResourceKey:EntityTypeCode.EntityTypeCode")
                 </div>
             </div>
             <div class="dnnFormItem">
