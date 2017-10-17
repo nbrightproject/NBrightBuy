@@ -18,9 +18,13 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 {
     public class NBrightBuyFrontOfficeBase : NBrightBuyBase
 	{
+        private string _controlPath = "";
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            _controlPath = ControlPath;
 
             if (ModSettings.Settings().ContainsKey("themefolder") && ModSettings.Settings()["themefolder"] != "")
             {
@@ -33,15 +37,26 @@ namespace Nevoweb.DNN.NBrightBuy.Base
                 RazorTemplate = ModSettings.Settings()["razortemplate"];
             }
 
+            if (ModSettings != null)
+            {
+                // check if we're using a provider controlpath for the templates.
+                var providercontrolpath = ModSettings.Get("providercontrolpath");
+                if (providercontrolpath != "")
+                {
+                    _controlPath = "/DesktopModules/NBright/" + providercontrolpath + "/";
+                }
+            }
+
+
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "frontofficepageheader.cshtml", ControlPath, ThemeFolder, ModSettings.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "frontofficepageheader.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
 
             if (ModuleContext.Configuration != null)
             {
                 if (String.IsNullOrEmpty(RazorTemplate)) RazorTemplate = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
 
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), ControlPath, ThemeFolder, ModSettings.Settings());
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
             }
             var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
 

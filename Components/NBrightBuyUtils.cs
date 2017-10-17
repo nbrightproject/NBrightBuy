@@ -2192,7 +2192,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (carttemplate != "")
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, controlPath, theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                var passSettings = new Dictionary<string, string>();
+                foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                {
+                    if (passSettings.ContainsKey(s.Key))
+                        passSettings[s.Key] = s.Value;
+                    else
+                        passSettings.Add(s.Key, s.Value);
+                }
+
+                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, controlPath, theme, Utils.GetCurrentCulture(), passSettings);
             }
             return razorTempl;
         }

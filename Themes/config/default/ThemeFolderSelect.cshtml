@@ -12,6 +12,8 @@
     {
         providercontrolpath = "NBrightBuy";
     }
+    // set this from hidden field.  Workaround: The dropdownlst is not set if we don't load correct controlpath to the template
+    info.SetXmlProperty("genxml/dropdownlist/themefolder", info.GetXmlProperty("genxml/hidden/themefolder"));
 }
 
 @DnnLabel("lblthemefolder", "Settings.Theme")

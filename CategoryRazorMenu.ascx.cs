@@ -37,6 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy
     /// </summary>
     public partial class CategoryRazorMenu : NBrightBuyFrontOfficeBase
     {
+        private string _controlPath = "";
 
         #region Event Handlers
 
@@ -44,12 +45,25 @@ namespace Nevoweb.DNN.NBrightBuy
         {           
             base.OnInit(e);
 
+            _controlPath = ControlPath;
+
             if (ModuleKey == "")  // if we don't have module setting jump out
             {
                 var lit = new Literal();
                 lit.Text = "NO MODULE SETTINGS";
                 phData.Controls.Add(lit);
                 return;
+            }
+
+
+            if (ModSettings != null)
+            {
+                // check if we're using a provider controlpath for the templates.
+                var providercontrolpath = ModSettings.Get("providercontrolpath");
+                if (providercontrolpath != "")
+                {
+                    _controlPath = "/DesktopModules/NBright/" + providercontrolpath + "/";
+                }
             }
 
         }
@@ -77,7 +91,7 @@ namespace Nevoweb.DNN.NBrightBuy
         private void RazorPageLoad()
         {
             var obj = new NBrightInfo();
-            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate,-1,"", obj,ControlPath, ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate,-1,"", obj,_controlPath, ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
             var lit = new Literal();
             lit.Text = strOut;
             phData.Controls.Add(lit);

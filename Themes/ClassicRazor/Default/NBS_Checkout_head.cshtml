@@ -18,9 +18,9 @@
         <input id="carttemplate" type="hidden" value="">
         <input id="carttheme" type="hidden" value="ClassicRazor">
         <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
+        <input id="uilang" type="hidden" value="@Model.Lang" />
         <input id="defaultaddr" value="" type="hidden" />
         <input id="cartstep" value="@(Model.GetUrlParam("cartstep", "1"))" type="hidden" />      
-
     </span>
 
    <!-- shipping provider element to trigger reload -->
