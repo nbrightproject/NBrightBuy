@@ -32,6 +32,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         #region "product Admin Methods"
         public static string EditLangCurrent = "";
         public static string EntityTypeCode = "";
+        public static string UserLang = "";
         public static string TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
         private static bool DebugMode => StoreSettings.Current.DebugMode;
 
@@ -45,11 +46,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             EditLangCurrent = editlang;
             if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
 
+
             var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
             EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             if (EntityTypeCode == "") EntityTypeCode = "PRD"; // default to product
+
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/userlang");
+            if (UserLang == "") UserLang = Utils.GetCurrentCulture();
+
 
             switch (paramCmd)
             {
@@ -313,9 +319,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
                     var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));
 
-                    prdData.UpdateModels(modelXml, EditLangCurrent);
-                    prdData.UpdateOptions(optionXml, EditLangCurrent);
-                    prdData.UpdateOptionValues(optionvalueXml, EditLangCurrent);
+                    prdData.UpdateModels(modelXml, UserLang);
+                    prdData.UpdateOptions(optionXml, UserLang);
+                    prdData.UpdateOptionValues(optionvalueXml, UserLang);
                     prdData.UpdateImages(ajaxInfo);
                     prdData.UpdateDocs(ajaxInfo);
 
