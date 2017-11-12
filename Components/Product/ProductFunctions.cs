@@ -58,119 +58,119 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             switch (paramCmd)
             {
                 case "product_admin_getlist":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminList(context);
                     break;
                 case "product_admin_getdetail":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminDetail(context);
                     break;
                 case "product_adminaddnew":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminAddNew(context);
                     break;
                 case "product_admin_save":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminSave(context);
                     break;
                 case "product_admin_saveexit":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminSaveExit(context);
                     break;
                 case "product_admin_saveas":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminSaveAs(context);
                     break;
                 case "product_admin_selectlist":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminList(context);
                     break;
                 case "product_moveproductadmin":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.MoveProductAdmin(context);
                     break;
                 case "product_addproductmodels":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddModel(context);
                     break;
                 case "product_addproductoptions":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddOption(context);
                     break;
                 case "product_addproductoptionvalues":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddOptionValues(context);
                     break;
                 case "product_admin_delete":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.DeleteProduct(context);
                     break;
                 case "product_updateproductimages":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.UpdateProductImages(context);
                     break;
                 case "product_updateproductdocs":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.UpdateProductDocs(context);
                     break;
                 case "product_addproductcategory":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddProductCategory(context);
                     break;
                 case "product_removeproductcategory":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.RemoveProductCategory(context);
                     break;
                 case "product_setdefaultcategory":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.SetDefaultCategory(context);
                     break;
                 case "product_populatecategorylist":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.GetPropertyListBox(context);
                     break;
                 case "product_addproperty":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddProperty(context);
                     break;
                 case "product_removeproperty":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.RemoveProperty(context);
                     break;
                 case "product_removerelated":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.RemoveRelatedProduct(context);
                     break;
                 case "product_addrelatedproduct":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddRelatedProduct(context);
                     break;
                 case "product_getproductselectlist":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductAdminList(context, true, EditLangCurrent);
                     break;
                 case "product_getclientselectlist":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.GetClientSelectList(context);
                     break;
                 case "product_addproductclient":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.AddProductClient(context);
                     break;
                 case "product_productclients":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.GetProductClients(context);
                     break;
                 case "product_removeproductclient":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.RemoveProductClient(context);
                     break;
                 case "product_selectchangedisable":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductDisable(context);
                     break;
                 case "product_selectchangehidden":
-                    if (!NBrightBuyUtils.CheckManagerRights()) break;
+                    if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = ProductFunctions.ProductHidden(context);
                     break;
                 case "product_ajaxview_getlist":
@@ -184,7 +184,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     var settings = NBrightBuyUtils.GetAjaxDictionary(context);
                     var strOut = "";
@@ -302,7 +302,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         private static int ProductSave(HttpContext context, bool newrecord = false)
         {
-            if (NBrightBuyUtils.CheckManagerRights())
+            if (NBrightBuyUtils.CheckRights())
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                 var itemid = -1;
@@ -416,7 +416,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
@@ -530,7 +530,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     if (list == null) return "";
                     if (UserController.Instance.GetCurrentUserInfo().UserID <= 0) return "";
@@ -586,20 +586,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
-
-                //get uploaded params
-                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var moveproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moveproductid");
-                var movetoproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetoproductid");
-                var searchcategory = ajaxInfo.GetXmlPropertyInt("genxml/hidden/searchcategory");
-                if (searchcategory > 0 && movetoproductid > 0 && moveproductid > 0)
+                if (NBrightBuyUtils.CheckRights())
                 {
-                    var objCtrl = new NBrightBuyController();
-                    objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
+                    //get uploaded params
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var moveproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moveproductid");
+                    var movetoproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetoproductid");
+                    var searchcategory = ajaxInfo.GetXmlPropertyInt("genxml/hidden/searchcategory");
+                    if (searchcategory > 0 && movetoproductid > 0 && moveproductid > 0)
+                    {
+                        var objCtrl = new NBrightBuyController();
+                        objCtrl.GetListCustom(PortalSettings.Current.PortalId, -1, "NBrightBuy_MoveProductinCateogry", 0, "", searchcategory + ";" + moveproductid + ";" + movetoproductid);
+                    }
+
+                    DataCache.ClearCache();
                 }
-
-                DataCache.ClearCache();
-
                 return ProductFunctions.ProductAdminList(context, true, EditLangCurrent);
             }
             catch (Exception ex)
@@ -612,7 +613,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                     var strOut = "";
@@ -675,7 +676,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                     var strOut = "";
@@ -735,56 +736,59 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
             try
             {
-                //get uploaded params
-                var settings = NBrightBuyUtils.GetAjaxDictionary(context);
-                if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
-                if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
-                if (!settings.ContainsKey("selectedoptionid")) return "";
-
-                var optionid = settings["selectedoptionid"];
-                var productitemid = settings["selecteditemid"];
-                var qty = settings["addqty"];
-                if (!Utils.IsNumeric(qty)) qty = "1";
-
                 var strOut = "No Product ID ('itemid' hidden fields needed on input form)";
-                if (Utils.IsNumeric(productitemid) )
+                if (NBrightBuyUtils.CheckRights())
                 {
-                    var itemId = Convert.ToInt32(productitemid);
-                    if (itemId > 0)
+
+                    //get uploaded params
+                    var settings = NBrightBuyUtils.GetAjaxDictionary(context);
+                    if (!settings.ContainsKey("itemid")) settings.Add("itemid", "");
+                    if (!settings.ContainsKey("addqty")) settings.Add("addqty", "1");
+                    if (!settings.ContainsKey("selectedoptionid")) return "";
+
+                    var optionid = settings["selectedoptionid"];
+                    var productitemid = settings["selecteditemid"];
+                    var qty = settings["addqty"];
+                    if (!Utils.IsNumeric(qty)) qty = "1";
+
+                    if (Utils.IsNumeric(productitemid))
                     {
-
-                        var prodData = ProductUtils.GetProductData(itemId, EditLangCurrent, true, EntityTypeCode);
-
-
-                        var passSettings = settings;
-                        foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                        var itemId = Convert.ToInt32(productitemid);
+                        if (itemId > 0)
                         {
-                            if (passSettings.ContainsKey(s.Key))
-                                passSettings[s.Key] = s.Value;
-                            else
-                                passSettings.Add(s.Key, s.Value);
+
+                            var prodData = ProductUtils.GetProductData(itemId, EditLangCurrent, true, EntityTypeCode);
+
+
+                            var passSettings = settings;
+                            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                            {
+                                if (passSettings.ContainsKey(s.Key))
+                                    passSettings[s.Key] = s.Value;
+                                else
+                                    passSettings.Add(s.Key, s.Value);
+                            }
+
+                            var lp = 1;
+                            while (lp <= Convert.ToInt32(qty))
+                            {
+                                prodData.AddNewOptionValue(optionid);
+                                lp += 1;
+                                if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
+                            }
+                            prodData.Save();
+                            ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
+
+
+                            var objCtrl = new NBrightBuyController();
+                            var info = objCtrl.GetData(Convert.ToInt32(productitemid), EntityTypeCode + "LANG", EditLangCurrent);
+
+                            strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", info, TemplateRelPath, "config", EditLangCurrent, passSettings);
+
+                            NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                         }
-
-                        var lp = 1;
-                        while (lp <= Convert.ToInt32(qty))
-                        {
-                            prodData.AddNewOptionValue(optionid);
-                            lp += 1;
-                            if (lp > 50) break; // we don;t want to create a stupid amount, it will slow the system!!!
-                        }
-                        prodData.Save();
-                        ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, itemId);
-
-
-                        var objCtrl = new NBrightBuyController();
-                        var info = objCtrl.GetData(Convert.ToInt32(productitemid), EntityTypeCode + "LANG", EditLangCurrent);
-
-                        strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductOptionValues.cshtml", 0, "", info, TemplateRelPath, "config", EditLangCurrent, passSettings);
-
-                        NBrightBuyUtils.RemoveModCachePortalWide(prodData.Info.PortalId);
                     }
                 }
-
                 return strOut;
             }
             catch (Exception ex)
@@ -797,7 +801,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         {
             try
             {
-                if (NBrightBuyUtils.CheckManagerRights())
+                if (NBrightBuyUtils.CheckRights())
                 {
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                     var itemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
@@ -823,42 +827,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
         public static string UpdateProductImages(HttpContext context)
         {
-            //get uploaded params
-            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-            var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-            var imguploadlist = ajaxInfo.GetXmlProperty("genxml/hidden/imguploadlist");
             var strOut = "";
-
-            if (Utils.IsNumeric(productitemid))
+            if (NBrightBuyUtils.CheckRights())
             {
-                var imgs = imguploadlist.Split(',');
-                foreach (var img in imgs)
+
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var productitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var imguploadlist = ajaxInfo.GetXmlProperty("genxml/hidden/imguploadlist");
+
+                if (Utils.IsNumeric(productitemid))
                 {
-                    if (ImgUtils.IsImageFile(Path.GetExtension(img)) && img != "")
+                    var imgs = imguploadlist.Split(',');
+                    foreach (var img in imgs)
                     {
-                        string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + img;
-                        if (File.Exists(fullName))
+                        if (ImgUtils.IsImageFile(Path.GetExtension(img)) && img != "")
                         {
-                            var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
-                            if (imgResize == 0) imgResize = 800;
-                            var imagepath = ResizeImage(fullName, imgResize);
-                            var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
-                            AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);
+                            string fullName = StoreSettings.Current.FolderTempMapPath + "\\" + img;
+                            if (File.Exists(fullName))
+                            {
+                                var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
+                                if (imgResize == 0) imgResize = 800;
+                                var imagepath = ResizeImage(fullName, imgResize);
+                                var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
+                                AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);
+                            }
                         }
                     }
+                    // clear any cache for the product.
+                    ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
+
+                    var cachekey = "AjaxProductImgs*" + productitemid;
+                    Utils.RemoveCache(cachekey);
+
+
+                    var objCtrl = new NBrightBuyController();
+                    var info = objCtrl.GetData(Convert.ToInt32(productitemid), EntityTypeCode + "LANG", EditLangCurrent);
+
+                    strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductImages.cshtml", 0, "", info, TemplateRelPath, "config", EditLangCurrent, ajaxInfo.ToDictionary());
+
                 }
-                // clear any cache for the product.
-                ProductUtils.RemoveProductDataCache(PortalSettings.Current.PortalId, Convert.ToInt32(productitemid));
-
-                var cachekey = "AjaxProductImgs*" + productitemid;
-                Utils.RemoveCache(cachekey);
-
-
-                var objCtrl = new NBrightBuyController();
-                var info = objCtrl.GetData(Convert.ToInt32(productitemid), EntityTypeCode + "LANG", EditLangCurrent);
-
-                strOut = NBrightBuyUtils.RazorTemplRender("Admin_ProductImages.cshtml", 0, "", info, TemplateRelPath, "config", EditLangCurrent, ajaxInfo.ToDictionary());
-
             }
             return strOut;
         }
