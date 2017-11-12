@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1252" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  <PropertyGroup>
-   <MSBuildCommunityTasksPath Condition="'$(MSBuildCommunityTasksPath)' == ''">$(MSBuildProjectDirectory)\BuildScripts</MSBuildCommunityTasksPath>
+   <MSBuildCommunityTasksPath Condition="'$(MSBuildCommunityTasksPath)' == ''">$(MSBuildProjectDirectory)\packages\MSBuildTasks.1.5.0.235\tools</MSBuildCommunityTasksPath>
    <MSBuildDnnBinPath Condition="'$(MSBuildDnnBinPath)' == ''">$(MSBuildProjectDirectory)\..\..\..\bin</MSBuildDnnBinPath>
    <MSBuildCommunityTasksLib>$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.dll</MSBuildCommunityTasksLib>
  </PropertyGroup>

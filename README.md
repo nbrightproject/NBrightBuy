@@ -5,6 +5,8 @@ Developer please read this to get started:
 
 http://nbsdocs.nbrightproject.org/Documentation/Developerguide/DevSetup.aspx
 
+To load MSBuild NuGet use Package Manager:
+PM> Install-Package MSBuildTasks -Version 1.5.0.235 
 
 v3.6.6
 - fix option text not going to multi-langauge data area on save.

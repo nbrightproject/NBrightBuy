@@ -2431,6 +2431,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objInfo;
         }
 
+        public static String GetUILang(NBrightInfo ajaxInfo)
+        {
+            var UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang1");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang2");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang3");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/language");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+            if (UserLang != "") return UserLang;
+            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
+            if (UserLang != "") return UserLang;
+            return Utils.GetCurrentCulture();
+        }
 
         #endregion
     }

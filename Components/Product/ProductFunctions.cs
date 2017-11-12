@@ -32,7 +32,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
         #region "product Admin Methods"
         public static string EditLangCurrent = "";
         public static string EntityTypeCode = "";
-        public static string UserLang = "";
+        public static string UiLang = "";
         public static string TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
         private static bool DebugMode => StoreSettings.Current.DebugMode;
 
@@ -52,9 +52,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
             EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             if (EntityTypeCode == "") EntityTypeCode = "PRD"; // default to product
-
-            UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/userlang");
-            if (UserLang == "") UserLang = Utils.GetCurrentCulture();
+            UiLang = NBrightBuyUtils.GetUILang(ajaxInfo);
 
 
             switch (paramCmd)
@@ -319,9 +317,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
                     var optionXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptiondata"));
                     var optionvalueXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdateoptionvaluesdata"));
 
-                    prdData.UpdateModels(modelXml, UserLang);
-                    prdData.UpdateOptions(optionXml, UserLang);
-                    prdData.UpdateOptionValues(optionvalueXml, UserLang);
+                    prdData.UpdateModels(modelXml, UiLang);
+                    prdData.UpdateOptions(optionXml, UiLang);
+                    prdData.UpdateOptionValues(optionvalueXml, UiLang);
                     prdData.UpdateImages(ajaxInfo);
                     prdData.UpdateDocs(ajaxInfo);
 
