@@ -521,7 +521,9 @@
     <Content Include="ProductRazorViewSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ProductRazorView.ascx" />
+    <Content Include="ProductRazorView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
