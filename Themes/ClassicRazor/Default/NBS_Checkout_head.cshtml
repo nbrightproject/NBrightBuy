@@ -110,6 +110,7 @@
                 $('#carttemplate').val('NBS_CheckoutShipMethod.cshtml');
                 nbxget('rendercart', '#checkoutdata', '#checkoutdisplayshipmethod');
             }
+            $('.processing').hide();
         });
 
         // cart list loaded
@@ -169,7 +170,11 @@
 
             $('.checkoutbillformregiondiv').unbind();
             $('.checkoutbillformregiondiv').change(function () {
-                $('#billaddress_region').val($('#billregion').val());
+                if ($('#billregion').val() != '')
+                {
+                    $('#billaddress_region').val($('#billregion').val());
+                    $('#billregion').val('')
+                }
                 $('.checkoutbillformregiondiv').show();
             });
 
@@ -189,7 +194,10 @@
 
             $('.checkoutshipformregiondiv').unbind();
             $('.checkoutshipformregiondiv').change(function () {
-                $('#shipaddress_region').val($('#shipregion').val());
+                if ($('#shipregion').val() != '') {
+                    $('#shipaddress_region').val($('#shipregion').val());
+                    $('#shipregion').val('')
+                }
                 $('.checkoutshipformregiondiv').show();
             });
 

@@ -46,6 +46,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _lang = lang;
             _typeCode = typeCode;
             _typeLangCode = typeCode + "LANG";
+            if (_storeSettings == null)
+            {
+                if (_portalId < 0) _portalId = PortalSettings.Current.PortalId;
+                _storeSettings = new StoreSettings(_portalId);
+            }
             #region "Init data objects to prevent possible errors"
 
             Models = new List<NBrightInfo>();
