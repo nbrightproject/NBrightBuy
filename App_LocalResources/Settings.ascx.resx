@@ -516,4 +516,7 @@
   <data name="providercontrolpath.Help" xml:space="preserve">
     <value>If a provider plugin is being used to display data, this setting defines the control path which will be used to find the templates. (Default: NBrightBuy)</value>
   </data>
+  <data name="activateajax.Text" xml:space="preserve">
+    <value>Activate Ajax</value>
+  </data>
 </root>

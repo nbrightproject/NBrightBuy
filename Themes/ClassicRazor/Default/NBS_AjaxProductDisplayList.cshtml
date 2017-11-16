@@ -22,11 +22,12 @@
 <!-- RAZORTEMPLATE NBS_AjaxProductDisplayList -->
 <!-- Product List header -->
 
+
 <div class="nbs">
     <!-- Product List header -->
     @if (Model.GetSettingInt("displaytype") == 0)
     {
-        <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model)</div>
+        <div class="categorybreadcrumbs">@CategoryBreadCrumb(true, Model,true,-1,"",-1,400,true)</div>
     }
 
     <!-- Show category details -->

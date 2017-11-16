@@ -59,14 +59,20 @@
             </div>
             <div class="dnnFormItem">
                 <div>
-                    @DnnLabel("lbltemplate", "Settings.parentcategory")
+                    @DnnLabel("lblparentcat", "Settings.parentcategory")
                     @CategoryDropDownList(info,"genxml/dropdownlist/parentcatid")
                 </div>
             </div>
             <div class="dnnFormItem">
                 <div>
-                    @DnnLabel("lbltemplate", "Settings.productlisttab")
+                    @DnnLabel("lbllisttab", "Settings.productlisttab")
                     @TabSelectListOnTabId(info, "genxml/dropdownlist/productlisttab")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lblactivateajax", "Settings.activateajax")
+                    @CheckBox(info,"genxml/checkbox/activateajax","")
                 </div>
             </div>
         </div>

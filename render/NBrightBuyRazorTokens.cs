@@ -554,7 +554,7 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
-        public IEncodedString CategoryBreadCrumb(Boolean includelinks, NBrightRazor model, Boolean aslist = true, int tabRedirect = -1, String separator = "", int wordlength = -1, int maxlength = 400)
+        public IEncodedString CategoryBreadCrumb(Boolean includelinks, NBrightRazor model, Boolean aslist = true, int tabRedirect = -1, String separator = "", int wordlength = -1, int maxlength = 400,bool ajax = false)
         {
             var strOut = "";
 
@@ -590,7 +590,7 @@ namespace NBrightBuy.render
                     {
                         if (tabRedirect == 0) tabRedirect = PortalSettings.Current.ActiveTab.TabID;
                         if (tabRedirect == -1) tabRedirect = StoreSettings.Current.ProductListTabId;
-                        strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist);
+                        strOut = grpCatCtrl.GetBreadCrumbWithLinks(catid, tabRedirect, wordlength, separator, aslist,false, ajax);
                     }
                     else
                     {

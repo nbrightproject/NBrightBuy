@@ -406,6 +406,8 @@
         if (e.cmd == 'category_admin_saveexit'
             || e.cmd == 'category_admin_delete') {
             $('.processing').show();
+            var array = $('#returncatid').val().split(',');
+            $('#selectedcatid').val(array[0]);
             $('#razortemplate').val('Admin_CategoryList.cshtml');
             nbxget('category_admin_getlist', '#nbs_categoryadminsearch', '#datadisplay');
         }

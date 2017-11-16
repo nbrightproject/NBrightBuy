@@ -24,7 +24,14 @@
 }
 
 <div class="treemenu">
-    @CategoryTreeMenu(Model.GetSettingInt("parentcatid"), "NBS_CategoryMenuLink.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), catid, Utils.GetCurrentCulture(), tabid)
+    @if (Model.GetSettingBool("activateajax"))
+    {
+        @CategoryTreeMenu(Model.GetSettingInt("parentcatid"), "NBS_CategoryMenuLinkAjax.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), catid, Utils.GetCurrentCulture(), tabid)
+    }
+    else
+    {
+        @CategoryTreeMenu(Model.GetSettingInt("parentcatid"), "NBS_CategoryMenuLink.cshtml", "/DesktopModules/NBright/NBrightBuy", Model.GetSetting("themefolder"), catid, Utils.GetCurrentCulture(), tabid)
+    }
 </div>
 
 <script type="text/javascript">

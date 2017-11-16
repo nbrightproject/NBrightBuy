@@ -414,6 +414,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
         public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist, bool useSEO)
         {
+            return GetBreadCrumbWithLinks(categoryid, tabId, shortLength, separator, aslist, false, useSEO);
+        }
+        public String GetBreadCrumbWithLinks(int categoryid, int tabId, int shortLength, string separator, bool aslist, bool useSEO, bool ajax = false)
+        {
             var breadCrumb = "";
             var checkDic = new Dictionary<int, int>();
             while (true)
@@ -434,11 +438,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         }
 
                         var strOut = "";
-                        if (aslist)
-                            strOut = "<li>" + separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + "</li>" + breadCrumb;
+                        if (ajax)
+                        {
+                            var catid = l.First().categoryid;
+                            if (aslist)
+                                strOut = "<li>" + separator + "<a href='#' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + "</li>" + breadCrumb;
+                            else
+                                strOut = separator + "<a href='#' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + breadCrumb;
+                        }
                         else
-                            strOut = separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + breadCrumb;
-                        
+                        {
+                            if (aslist)
+                                strOut = "<li>" + separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + "</li>" + breadCrumb;
+                            else
+                                strOut = separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "'>" + crumbText + "</a>" + breadCrumb;
+                        }
+
                         checkDic.Add(categoryid, categoryid);
                         categoryid = l.First().parentcatid;
                         breadCrumb = strOut;
