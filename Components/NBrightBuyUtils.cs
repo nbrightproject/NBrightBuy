@@ -1595,6 +1595,32 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return razorTempl;
         }
 
+        public static string RazorTemplRenderNoCache(string razorTemplName, int moduleid, string cacheKey, object obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
+        {
+            // do razor template
+                var razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl != "")
+                {
+                    if (obj == null) obj = new NBrightInfo(true);
+                    var l = new List<object>();
+                    l.Add(obj);
+                    if (settings == null) settings = new Dictionary<string, string>();
+                    if (!settings.ContainsKey("userid")) settings.Add("userid", UserController.Instance.GetCurrentUserInfo().UserID.ToString());
+                    var nbRazor = new NBrightRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                    nbRazor.TemplateName = razorTemplName;
+                    nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
+
+                    razorTempl = RazorRender(nbRazor, razorTempl, "", true);
+                }
+                else
+                {
+                    razorTempl = "ERROR - Razor Template Not Found: " + theme + "." + razorTemplName;
+                }
+            return razorTempl;
+        }
+
         /// <summary>
         /// legacy method to render template using both tag tokens and razor tokens
         /// </summary>
@@ -1738,6 +1764,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
             }
         }
+        public static void RazorIncludePageHeaderNoCache(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
+        {
+
+            if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
+            if (!page.Items["nbrightinject"].ToString().Contains(razorTemplateName + ","))
+            {
+                var razorTempl = "";
+                if (productdata == null)
+                {
+                    var nbi = new NBrightInfo();
+                    nbi.Lang = Utils.GetCurrentCulture();
+                    razorTempl = NBrightBuyUtils.RazorTemplRenderNoCache(razorTemplateName, moduleid, "RazorIncludePageHeader", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                }
+                else
+                {
+                    razorTempl = NBrightBuyUtils.RazorTemplRenderNoCache(razorTemplateName, moduleid, "RazorIncludePageHeader", productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                }
+                if (razorTempl != "" && !razorTempl.StartsWith("ERROR"))
+                {
+                    PageIncludes.IncludeTextInHeader(page, razorTempl);
+                    page.Items["nbrightinject"] = page.Items["nbrightinject"] + razorTemplateName + ",";
+                }
+            }
+        }
+        
 
 
         #endregion

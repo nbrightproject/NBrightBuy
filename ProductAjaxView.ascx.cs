@@ -21,6 +21,7 @@ using NBrightDNN;
 using NBrightDNN.render;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Products;
 
 namespace Nevoweb.DNN.NBrightBuy
 {
@@ -200,12 +201,11 @@ namespace Nevoweb.DNN.NBrightBuy
                     // get correct itemid, based on eid given
                     _eid = GetEntryIdFromName(_eid);
                     RazorDisplayDataEntry(_eid);
-
                 }
                 else
                 {
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
                 }
             }
 

@@ -25,8 +25,9 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using Nevoweb.DNN.NBrightBuy.Components.Products;
 
-namespace Nevoweb.DNN.NBrightBuy.Components.Clients
+namespace Nevoweb.DNN.NBrightBuy.Components.Category
 {
     public static class CategoryFunctions
     {

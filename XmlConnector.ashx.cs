@@ -30,6 +30,8 @@ using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using Nevoweb.DNN.NBrightBuy.Components.Orders;
 using Nevoweb.DNN.NBrightBuy.Components.Payments;
+using Nevoweb.DNN.NBrightBuy.Components.Products;
+using Nevoweb.DNN.NBrightBuy.Components.Category;
 using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy

@@ -49,6 +49,7 @@
         $('.ajaxcatmenu').unbind("click");
         $(".ajaxcatmenu").click(function() {
             $('#catid').val($(this).attr("catid"))
+            $('#catref').val('')
             loadProductList();
         });
 
@@ -130,13 +131,14 @@
     <input id="editlang" type="hidden" value="" />
     <input id="uilang" type="hidden" value="" />
     <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")" />
-    <input id="catref" type="hidden" value="" />
+    <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")" />
 
     <input id="modkey" type="hidden" value="" />
     <input id="pagemid" type="hidden" value="" />
     <input id="page" type="hidden" value="" />
     <input id="pagesize" type="hidden" value="" />
     <input id="orderby" type="hidden" value="" />
+    <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")" />     
 
     <input id="propertyfilter" type="hidden" value="" />
 

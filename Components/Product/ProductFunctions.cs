@@ -25,7 +25,7 @@ using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Admin;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
-namespace Nevoweb.DNN.NBrightBuy.Components.Clients
+namespace Nevoweb.DNN.NBrightBuy.Components.Products
 {
     public static class ProductFunctions
     {
@@ -1456,13 +1456,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
 
 
         #region Ajax ProductList
-
         public static String ProductAjaxViewList(HttpContext context)
         {
             var retval = "";
-
-            // get the settings form the context
             var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+
             // get the moduleid, tabid
             var moduleid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             var tabid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/tabid");
@@ -1495,8 +1493,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             var _orderbyindex = "";
             var _propertyfilter = "";
             NavigationData _navigationdata;
-            var EntityTypeCode = ModSettings.Get("entitytypecode");
-            var EntityTypeCodeLang = ModSettings.Get("entitytypecode") + "LANG";
+            var EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
+            var EntityTypeCodeLang = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode") + "LANG";
             var _itemListName = "";
             var _guidkey = "";
             var _404code = false;
