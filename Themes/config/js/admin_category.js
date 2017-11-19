@@ -67,6 +67,7 @@
             || e.cmd == 'category_copyallcatxref'
             || e.cmd == 'category_moveallcatxref'
             || e.cmd == 'category_admin_savelist'
+            || e.cmd == 'category_admin_movecategory'
             || e.cmd == 'category_cattaxupdate') {
             $('.processing').hide();
         };
@@ -121,6 +122,7 @@
                 $(".selectcancel").hide();
                 $(".selectrecord").show();
                 $("#movetocatid").val($(this).attr("itemid"));
+                $('.processing').show();
                 nbxget('category_admin_movecategory', '#nbs_categoryadminsearch', '#datadisplay');
             });
 
