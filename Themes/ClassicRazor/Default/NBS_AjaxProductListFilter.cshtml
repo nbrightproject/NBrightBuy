@@ -19,12 +19,17 @@
 
 <div class="nbs-ajaxfilter">
 
+    @{ 
+        var showdefault = true;
+    }
+
     @if (catid > 0)
     {
         var catData = new CategoryData(catid, Model.Lang);
 
         foreach (GroupData selGroup in catData.GetFilterGroups(Model.Lang))
         {
+            showdefault = false;
             var propList = NBrightBuyUtils.BuildCatList(1, false, false, selGroup.Info.ItemID, "", "", false, true, selGroup.Ref, "", "");
             <h2>@selGroup.Name</h2>
             <ul>
@@ -35,7 +40,8 @@
             </ul>
         }
     }
-    else
+
+    @if (showdefault)
     {
 
         foreach (var selGroup in Model.Settings.Where(kv => kv.Key.StartsWith("selectedfilterssort-")).OrderBy(kv => kv.Value == "" ? -1 : int.Parse(kv.Value)))
