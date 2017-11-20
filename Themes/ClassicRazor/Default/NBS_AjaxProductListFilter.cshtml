@@ -11,20 +11,13 @@
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
 @{
+    var ajaxInfo = (NBrightInfo)Model.List.First();
     var portalId = PortalSettings.Current.PortalId;
-
-    var catid = 0;
-    if (Utils.IsNumeric(Model.GetUrlParam("catid")))
-    {
-        catid = Convert.ToInt32(Model.GetUrlParam("catid"));
-    }
-
+    var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid");
 }
 
 
 <div class="nbs-ajaxfilter">
-        @{
-        }
 
     @if (catid > 0)
     {
@@ -74,9 +67,3 @@
 
     </div>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#propertyfiltertypeinside").val("@Model.GetSetting("filtertypeinsideproperty")");
-            $("#propertyfiltertypeoutside").val("@Model.GetSetting("filtertypeoutsideproperty")");
-        });
-    </script>

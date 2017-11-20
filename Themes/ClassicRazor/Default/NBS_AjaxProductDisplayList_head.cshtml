@@ -30,13 +30,13 @@
         $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
 
         @* Initialize parameters. Fields defined in ascx. *@
-        $("#userid").val("@UserController.Instance.GetCurrentUserInfo().UserID");
-        $("#moduleid").val("@Model.ModuleId");
-        $("#tabid").val("@Model.GetUrlParam("tabid")");
-        $("#editlang").val("@Model.Lang");
-        $("#uilang").val("@Model.Lang");
-        $("#pagesize").val("@Model.Settings["pagesize"]");
-        $("#pagenumber").val("1");
+        //$("#userid").val("@UserController.Instance.GetCurrentUserInfo().UserID");
+        //$("#moduleid").val("@Model.ModuleId");
+        //$("#tabid").val("@Model.GetUrlParam("tabid")");
+        //$("#editlang").val("@Model.Lang");
+        //$("#uilang").val("@Model.Lang");
+        //$("#pagesize").val("@Model.Settings["pagesize"]");
+        //$("#pagenumber").val("1");
 
         @* Parameters are set, now get the initial data *@
         loadProductList();
@@ -50,10 +50,23 @@
         $(".ajaxcatmenu").click(function() {
             $('#catid').val($(this).attr("catid"))
             $('#catref').val('')
+            $('#filter_catid').val($(this).attr("catid"))
+            $('#filter_catref').val('')
             loadProductList();
         });
 
         $('.processing').hide();
+        if (e.cmd == 'product_ajaxview_getlist') {
+            $("#propertyfiltertypeinside").val($("#filter_propertyfiltertypeinside").val());
+            $("#propertyfiltertypeoutside").val($("#filter_propertyfiltertypeoutside").val());
+            nbxget('product_ajaxview_getfilters', '#nbs_ajaxfiltermodulesettings', '#nbs_ajaxfilter');
+        }
+
+        if (e.cmd == 'product_ajaxview_getfilters') {
+            // propertyFilterClicked method is in AjaxDisplayProductList_head
+            $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
+        }
+
     }
 
     function addHandlers() {
@@ -74,7 +87,7 @@
         <li class="NBrightNextPg"><a class="cmdPg" pagenumber="2">&gt;</a></li>
         <a class="cmdPg" pagenumber=""></a>
     </ul>
-</div>    
+</div>
     */
 
     function pageSizeChanged() {
@@ -102,11 +115,15 @@
             list += $(this).val() + ",";
         });
         $("#propertyfilter").val(list);
-        loadProductList();
+        loadProductListFilter();
     }
     function loadProductList() {
         $('.processing').show();
         nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    }
+    function loadProductListFilter() {
+        $('.processing').show();
+        nbxget('product_ajaxview_getlistfilter', '#nbs_productajaxview', '#nbs_ajaxproducts');
     }
 
     // Detect Touch Device
@@ -125,24 +142,24 @@
 <div id="nbs_productajaxview" style="display: none;">
     <!-- Parameter fields -->
     <!-- These fields will be initialized from the _head.cshtml -->
-    <input id="userid" type="hidden" value="" />
-    <input id="moduleid" type="hidden" value="" />
-    <input id="tabid" type="hidden" value="" />
-    <input id="editlang" type="hidden" value="" />
-    <input id="uilang" type="hidden" value="" />
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
+    <input id="moduleid" type="hidden" value="@Model.ModuleId" />
+    <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
+    <input id="editlang" type="hidden" value="@Model.Lang" />
+    <input id="uilang" type="hidden" value="@Model.Lang" />
     <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")" />
     <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")" />
 
     <input id="modkey" type="hidden" value="" />
     <input id="pagemid" type="hidden" value="" />
-    <input id="page" type="hidden" value="" />
-    <input id="pagesize" type="hidden" value="" />
+    <input id="page" type="hidden" value="1" />
+    <input id="pagesize" type="hidden" value="@Model.Settings["pagesize"]" />
     <input id="orderby" type="hidden" value="" />
     <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")" />     
 
     <input id="propertyfilter" type="hidden" value="" />
 
-    <!-- this one will be set from the filter list -->
+    <!-- this one will be set from the filter list set by JS from filter head fields. -->
     <input id="propertyfiltertypeinside" type="hidden" value="" />
     <input id="propertyfiltertypeoutside" type="hidden" value="" />
 </div>

@@ -558,6 +558,7 @@
     <None Include="Components\Installation\03.05.09.SqlDataProvider" />
     <None Include="Components\Installation\03.05.08.SqlDataProvider" />
     <None Include="README.md" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductListFilter_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductListFilter.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLinkAjax.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_Payment_head.cshtml" />
@@ -1702,29 +1703,28 @@
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\addressadminsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\addressadminsettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\AjaxProductListFilterSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CartView.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\cartview.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\CartView.ascx.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\CartView.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\cartviewsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\cartviewsettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenu.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenu.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenu.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\AjaxProductListFilterSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenusettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\categorymenusettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\CategoryMenuSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\CartViewSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\checkoutsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\checkoutsettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\CheckoutSettings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Clients.ascx.en-GB.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\clients.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\Clients.ascx.nl-NL.resx" />
@@ -1732,34 +1732,34 @@
     <EmbeddedResource Include="App_LocalResources\CountryNames.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\countrynames.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\CountryNames.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\EntityTypeCode.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\General.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\general.ascx.it-IT.resx" />
-    <EmbeddedResource Include="App_LocalResources\General.ascx.nl-NL.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\General.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\General.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.en-GB.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.fr-FR.Portal-0.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\notification.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\Notification.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.Portal-0.resx" />
+    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\orderadmin.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\orderadminsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\orderadminsettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\paymentsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\paymentsettings.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\PaymentSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.fr-FR.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_LocalResources\plugins.ascx.it-IT.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_LocalResources\plugins.ascx.nl-NL.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.fr-FR.resx" />
+    <EmbeddedResource Include="App_LocalResources\plugins.ascx.it-IT.resx" />
+    <EmbeddedResource Include="App_LocalResources\plugins.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\productsearch.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearch.ascx.nl-NL.resx" />
@@ -1767,6 +1767,7 @@
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\productsearchsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductView.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\productview.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductView.ascx.nl-NL.resx" />
@@ -1774,32 +1775,19 @@
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\productviewsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\profileformsettings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\profileformsettings.ascx.nl-NL.resx" />
+    <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\settings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\settings.ascx.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\EntityTypeCode.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\tools.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\tools.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Notification.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_LocalResources\ProfileFormSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\OrderAdmin.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\Plugins.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="App_LocalResources\OrderAdminSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\ProductViewSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\ProductSearchSettings.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\General.ascx.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Components\Installation\02.06.00.SqlDataProvider" />
@@ -1856,6 +1844,7 @@
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Installation\" />
     <Folder Include="Providers\" />
     <Folder Include="Themes\Classic\js\" />
   </ItemGroup>

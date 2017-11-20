@@ -12,6 +12,7 @@
 // --- End copyright notice --- 
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
@@ -76,11 +77,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
         private void RazorPageLoad()
         {
-            var obj = new NBrightInfo();
-            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate,-1,"", obj,ControlPath, ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
-            var lit = new Literal();
-            lit.Text = strOut;
-            phData.Controls.Add(lit);
+            // insert page header text
+            NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), ControlPath, ModSettings.ThemeFolder, ModSettings.Settings());
         }
 
         #endregion

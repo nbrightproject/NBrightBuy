@@ -176,6 +176,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                 case "product_ajaxview_getlist":
                     strOut = ProductFunctions.ProductAjaxViewList(context);
                     break;
+                case "product_ajaxview_getlistfilter":
+                    strOut = ProductFunctions.ProductAjaxViewList(context);
+                    break;
+                case "product_ajaxview_getfilters":
+                    strOut = ProductFunctions.ProductAjaxFilter(context);
+                    break;
             }
             return strOut;
         }
@@ -1702,56 +1708,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                 #region "use url to get category to display"
                 //check if we are display categories 
                 // get category list data
-                if (_catname != "") // if catname passed in url, calculate what the catid is
+                if (_catname != "")
                 {
-                    objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORYLANG", _catname);
-                    if (objCat == null)
-                    {
-                        // check it's not just a single language
-                        objCat = ModCtrl.GetByGuidKey(ps.PortalId, moduleid, "CATEGORY", _catname);
-                        if (objCat != null) _catid = objCat.ItemID.ToString("");
-                    }
-                    else
-                    {
-                        _catid = objCat.ParentItemId.ToString("");
-                        if (!String.IsNullOrEmpty(objCat.GUIDKey) && Utils.IsNumeric(_catid) && objCat.Lang != Utils.GetCurrentCulture())
-                        {
-                            // do a 301 redirect to correct url for the langauge (If the langauge is changed on the product list, we need to make sure we have the correct catref for the langauge)
-                            var catGrpCtrl = new GrpCatController(Utils.GetCurrentCulture());
-                            var activeCat = catGrpCtrl.GetCategory(Convert.ToInt32(_catid));
-                            if (activeCat != null)
-                            {
-                                var redirecturl = "";
-                                if (Utils.IsNumeric(_eid))
-                                {
-                                    var prdData = ProductUtils.GetProductData(Convert.ToInt32(_eid), Utils.GetCurrentCulture(), true, EntityTypeCode);
-                                    redirecturl = NBrightBuyUtils.GetEntryUrl(ps.PortalId, _eid, _modkey, prdData.SEOName, tabid.ToString(), "", activeCat.categoryrefGUIDKey);
-                                }
-                                else
-                                {
-                                    redirecturl = catGrpCtrl.GetCategoryUrl(activeCat, tabid);
-                                }
-
-                                try
-                                {
-                                    if (redirecturl != "")
-                                    {
-                                        //TODO: get rid of redirects here, won't do anything anyway so probably something else must be done
-                                        //Response.Redirect(redirecturl, false);
-                                        //Response.StatusCode = (int)System.Net.HttpStatusCode.MovedPermanently;
-                                        //Response.End();
-                                    }
-                                }
-                                catch (Exception)
-                                {
-                                    // catch err
-                                }
-                            }
-                        }
-                    }
-                    // We have a category selected (in url), so overwrite categoryid navigationdata.
-                    // This allows the return to the same category after a returning from a entry view.
-                    if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
+                    _catid = CategoryUtils.GetCatIdFromName(_catname);
                     catseo = _catid;
                 }
 
@@ -1977,7 +1936,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             return retval;
         }
 
+        public static String ProductAjaxFilter(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
 
+            // get the moduleid, tabid
+            var moduleid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            var ps = PortalSettings.Current;
+            var settings = new Hashtable();
+
+            // then add the NBrightBuy settings
+            var ModSettings = new ModSettings(moduleid, settings);
+
+
+            var RazorTemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+            var providercontrolpath = "/DesktopModules/NBright/" + ajaxInfo.GetXmlProperty("genxml/hidden/providercontrolpath") + "/";
+            var ThemeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+            var uilang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            var catname = ajaxInfo.GetXmlProperty("genxml/hidden/catref");
+
+            if (catname != "" && ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid") == 0)
+            {
+                ajaxInfo.SetXmlProperty("genxml/hidden/catid", CategoryUtils.GetCatIdFromName(catname));
+            }
+
+            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, -1, "", ajaxInfo, providercontrolpath, ThemeFolder, uilang, ModSettings.Settings());
+
+            return strOut;
+        }
         #endregion
 
 

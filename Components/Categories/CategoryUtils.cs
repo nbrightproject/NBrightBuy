@@ -14,7 +14,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static String GetCatIdFromName(String catname)
         {
-            var catid = "";
+            var catid = "0";
             if (catname != "")
                 {
                     var objCtrl = new NBrightBuyController();
