@@ -437,6 +437,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 else
                     objInfo.SetXmlProperty("genxml/isdealer", "False");
 
+                // add entitytype for validation methods
+                productData.Info.SetXmlProperty("genxml/entitytypecode", productData.DataRecord.TypeCode);
 
                 //move all product and model data into cart item, so we can display bespoke fields.
                 objInfo.AddSingleNode("productxml", productData.Info.XMLData, "genxml");

@@ -181,7 +181,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (objTabInfo.TabID != rdTabid)
             {
                 var portalTabs = NBrightDNN.DnnUtils.GetPortalTabs(portalId);
-                if (portalTabs != null)
+                if (portalTabs != null && portalTabs.ContainsKey(Convert.ToInt32(rdTabid)))
                 {
                     var rTab = portalTabs[Convert.ToInt32(rdTabid)];
                     if (rTab != null) objTabInfo = rTab;
@@ -1442,6 +1442,19 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return templ;
         }
 
+        public static bool FileExists(string relfilepathname)
+        {
+            try
+            {
+                var filepathname = HttpContext.Current.Server.MapPath(relfilepathname);
+                return System.IO.File.Exists(filepathname);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
 
         public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<NBrightInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
@@ -2360,10 +2373,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var lang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
             if (lang == "") lang = Utils.RequestParam(HttpContext.Current, "language"); // fallback
             if (lang == "") lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang"); // fallback
-            if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
             // set the context  culturecode, so any DNN functions use the correct culture 
             var uilang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang"); //UI Langauge
-            if (uilang != "" && uilang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(uilang);
+            if (uilang != "")
+            {
+                if (uilang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString())
+                {
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(uilang);
+                    if (lang == "") lang = uilang; // reset lang to uilang
+                }
+            }
+            else
+            {
+                // if no uilang, default back to lang
+                if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            }
+            if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
+
 
             var editlang = lang;
             if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "") editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");

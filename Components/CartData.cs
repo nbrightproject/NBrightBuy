@@ -433,6 +433,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (removeZeroQtyItems && qty == 0) return null; // Remove zero qty item
 
+            if (lang == "") lang = Utils.GetCurrentCulture();
             var prd = ProductUtils.GetProductData(prdid, lang);
             if (!prd.Exists || prd.Disabled) return null; //Invalid product remove from cart
 

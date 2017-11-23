@@ -61,6 +61,9 @@
                     nbi.XMLData = itemxml.OuterXml; // use NBrightInfo class, just to make life eaiser.
 
                     <tr class="cartdatarow">
+
+                        <input id="uilang" type="hidden" value="@Model.Lang" />
+
                         <td class="detailscolumn">
                             @if (nbi.GetXmlProperty("genxml/productxml/genxml/imgs/genxml[1]/hidden/imageurl") == "")
                             {

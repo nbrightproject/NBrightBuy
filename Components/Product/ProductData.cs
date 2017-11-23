@@ -2178,13 +2178,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Exists = true;
                 DataRecord = objCtrl.GetData(productId);
                 _typeCode = DataRecord.TypeCode;
+                _typeLangCode = _typeCode + "LANG";
                 DataLangRecord = objCtrl.GetDataLang(productId, _lang);
                 if (DataLangRecord == null) // rebuild langauge if we have a missing lang record
                 {
                     Validate();
                     DataLangRecord = objCtrl.GetDataLang(productId, _lang);
                 }
-                _typeLangCode = DataLangRecord.TypeCode;
 
                 IsOnSale = CheckIsOnSale();
                 DealerIsOnSale = DealerCheckIsOnSale();
