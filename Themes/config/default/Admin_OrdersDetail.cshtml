@@ -606,7 +606,9 @@
                                     var lp = 0;
                                     foreach (NBrightInfo nbiopt in optList)
                                     {
-                                        <span>
+                                        if (nbiopt.GetXmlProperty("option/optname") != "" && ((nbiopt.GetXmlProperty("option/optvaltext") != "" && nbiopt.GetXmlProperty("option/optvalueid") != "False") || nbiopt.GetXmlProperty("option/optvalueid") == "True"))
+                                        {
+                                            <span>
                                                 @if (lp > 0)
                                                 {
                                                     <span>,</span>
@@ -617,7 +619,8 @@
                                                     @CurrencyOf(nbiopt.GetXmlPropertyDouble("option/optvalcost"))
                                                 }
                                             </span>
-                                        lp += 1;
+                                            lp += 1;
+                                        }
                                     }
                                 }
 

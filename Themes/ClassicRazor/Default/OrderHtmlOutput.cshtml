@@ -203,7 +203,7 @@
                 {
 
 
-                    if (Model.GetSetting("emaillogo") != "")
+                    if (Model.GetSetting("emaillogourl") != "")
                     {
                     <!-- Logo -->
                         <table width="700" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
@@ -350,9 +350,11 @@
                                                                     <div>
                                                                         <b> <a href="@EntryUrl(nbiitem,Model,false)">@nbiitem.GetXmlProperty("genxml/productname")&nbsp;@nbiitem.GetXmlProperty("genxml/modeldesc")</a></b>
                                                                     </div>
+
                                                                     <div>
 
                                                                         @{
+
                                                                             var optList = new List<NBrightInfo>();
                                                                             var xmlNodList = nbiitem.XMLDoc.SelectNodes("genxml/options/option");
                                                                             foreach (XmlNode n in xmlNodList)
@@ -365,19 +367,23 @@
                                                                             var lp = 0;
                                                                             foreach (NBrightInfo nbiopt in optList)
                                                                             {
-                                                                                <span>
-                                                                                    @if (lp > 0)
-                                                                                    {
-                                                                                        <span>,</span>
-                                                                                    }
-                                                                                    @nbiopt.GetXmlProperty("option/optname"): @nbiopt.GetXmlProperty("option/optvaltext")
-                                                                                    @if (nbiopt.GetXmlPropertyDouble("option/optvalcost") > 0)
-                                                                                    {
-                                                                                        @CurrencyOf(nbiopt.GetXmlPropertyDouble("option/optvalcost"))
-                                                                                    }
-                                                                                </span>
-                                                                                lp += 1;
+                                                                                if (nbiopt.GetXmlProperty("option/optname") != "" && ((nbiopt.GetXmlProperty("option/optvaltext") != "" && nbiopt.GetXmlProperty("option/optvalueid") != "False") || nbiopt.GetXmlProperty("option/optvalueid") == "True"))
+                                                                                {
+                                                                                    <span>
+                                                                                        @if (lp > 0)
+                                                                                        {
+                                                                                            <span>,</span>
+                                                                                        }
+                                                                                        @nbiopt.GetXmlProperty("option/optname"): @nbiopt.GetXmlProperty("option/optvaltext")
+                                                                                        @if (nbiopt.GetXmlPropertyDouble("option/optvalcost") > 0)
+                                                                                        {
+                                                                                            @CurrencyOf(nbiopt.GetXmlPropertyDouble("option/optvalcost"))
+                                                                                        }
+                                                                                    </span>
+                                                                                    lp += 1;
+                                                                                }
                                                                             }
+
                                                                         }
 
                                                                     </div>

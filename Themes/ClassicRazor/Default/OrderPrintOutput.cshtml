@@ -327,9 +327,11 @@ $(document).ready(function () {
                             }
 
 
+
                         <div>
 
                             @{
+
                                 var optList = new List<NBrightInfo>();
                                 var xmlNodList = nbiitem.XMLDoc.SelectNodes("genxml/options/option");
                                 foreach (XmlNode n in xmlNodList)
@@ -342,22 +344,28 @@ $(document).ready(function () {
                                 var lp = 0;
                                 foreach (NBrightInfo nbiopt in optList)
                                 {
-                                    <span>
-                                        @if (lp > 0)
-                                        {
-                                            <span>,</span>
-                                        }
-                                        @nbiopt.GetXmlProperty("option/optname"): @nbiopt.GetXmlProperty("option/optvaltext")
-                                        @if (nbiopt.GetXmlPropertyDouble("option/optvalcost") > 0)
-                                        {
-                                            @CurrencyOf(nbiopt.GetXmlPropertyDouble("option/optvalcost"))
-                                        }
-                                    </span>
-                                    lp += 1;
+                                    if (nbiopt.GetXmlProperty("option/optname") != "" && ((nbiopt.GetXmlProperty("option/optvaltext") != "" && nbiopt.GetXmlProperty("option/optvalueid") != "False") || nbiopt.GetXmlProperty("option/optvalueid") == "True"))
+                                    {
+                                        <span>
+                                            @if (lp > 0)
+                                            {
+                                                <span>,</span>
+                                            }
+                                            @nbiopt.GetXmlProperty("option/optname"): @nbiopt.GetXmlProperty("option/optvaltext")
+                                            @if (nbiopt.GetXmlPropertyDouble("option/optvalcost") > 0)
+                                            {
+                                                @CurrencyOf(nbiopt.GetXmlPropertyDouble("option/optvalcost"))
+                                            }
+                                        </span>
+                                        lp += 1;
+                                    }
                                 }
+
                             }
 
                         </div>
+
+
                         @{
                             var docList = new List<NBrightInfo>();
                             var xmldocNodList = nbiitem.XMLDoc.SelectNodes("genxml/productxml/genxml/docs/*");
