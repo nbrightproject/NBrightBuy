@@ -1532,7 +1532,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             // Get meta data from template
             // TODO: dat moeten we hier eigenlijk niet nodig hebben
             // voor nu even handig om die parameters erbij te kunnen halen en ze later om te zetten naar client side rommel
-            _navigationdata = new NavigationData(ps.PortalId, ModuleKey, "SessionMemory"); // used sessionmemory, to stop lock read error with ajax.
+
+            var navigationfilename = ajaxInfo.GetXmlProperty("genxml/hidden/navigationfilename");
+            if (navigationfilename != "")
+            {
+                _navigationdata = new NavigationData(navigationfilename);
+            }
+            else
+            {
+                _navigationdata = new NavigationData(ps.PortalId, ModuleKey);
+            }
             var metaTokens = NBrightBuyUtils.RazorPreProcessTempl(_templD, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings(), moduleid.ToString());
 
             #endregion

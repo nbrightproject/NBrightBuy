@@ -1,6 +1,7 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using DotNetNuke.Entities.Users
 @using NBrightCore.common
+@using Nevoweb.DNN.NBrightBuy.Components
 
 <!-- RAZORTEMPLATE NBS_AjaxProductDisplayList_head -->
 <!-- This template is injected into the details page head section -->
@@ -52,6 +53,7 @@
             $('#catref').val('')
             $('#filter_catid').val($(this).attr("catid"))
             $('#filter_catref').val('')
+            $('#searchtext').val('')
             loadProductList();
         });
 
@@ -162,4 +164,8 @@
     <!-- this one will be set from the filter list set by JS from filter head fields. -->
     <input id="propertyfiltertypeinside" type="hidden" value="" />
     <input id="propertyfiltertypeoutside" type="hidden" value="" />
+
+    <!-- Get tempfileaname for navigation data. -->
+    <input id="navigationfilename" type="hidden" value="@Model.Settings["navigationfilename"]" />
+
 </div>

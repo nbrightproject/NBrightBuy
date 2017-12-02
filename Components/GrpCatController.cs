@@ -574,10 +574,47 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             const string strOrderBy = " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ";
             var grpcatList = new List<GroupCategoryData>();
 
-            var l = objCtrl.GetList(_portalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
-            var lg = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
-            var lx = objCtrl.GetList(_portalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
-            var lx2 = objCtrl.GetList(_portalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
+            var l = new List<NBrightInfo>();
+            var lg = new List<NBrightInfo>();
+            var lx = new List<NBrightInfo>();
+            var lx2 = new List<NBrightInfo>();
+
+            // if we get an error, assume the DB connection lock and rerun to get detail. (unsure why it does this???)
+            try
+            {
+                l = objCtrl.GetList(_portalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
+            }
+            catch
+            {
+                l = objCtrl.GetList(_portalId, -1, "CATEGORY", "", strOrderBy, 0, 0, 0, 0, "", "");
+            }
+            try
+            {
+                lg = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
+            }
+            catch
+            {
+                lg = objCtrl.GetList(_portalId, -1, "CATEGORYLANG", "and NB1.lang = '" + lang + "'", "", 0, 0, 0, 0, "", "");
+            }
+
+            try
+            {
+                lx = objCtrl.GetList(_portalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
+            }
+            catch
+            {
+                lx = objCtrl.GetList(_portalId, -1, "CATCASCADE", "", "", 0, 0, 0, 0, "", "");
+            }
+
+            try
+            {
+                lx2 = objCtrl.GetList(_portalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
+            }
+            catch
+            {
+                lx2 = objCtrl.GetList(_portalId, -1, "CATXREF", "", "", 0, 0, 0, 0, "", "");
+            }
+
             lx.AddRange(lx2);
             foreach (var i in l)
             {

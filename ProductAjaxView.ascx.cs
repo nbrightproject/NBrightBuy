@@ -204,6 +204,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
+                    ModSettings.Set("navigationfilename", _navigationdata.GetTempFileName());                        
                     // insert page header text
                     NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
                 }

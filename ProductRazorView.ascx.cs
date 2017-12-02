@@ -452,6 +452,8 @@ namespace Nevoweb.DNN.NBrightBuy
                             // This allows the return to the same category after a returning from a entry view.
                             if (Utils.IsNumeric(_catid)) _navigationdata.CategoryId = Convert.ToInt32(_catid);
                             catseo = _catid;
+                            _navigationdata.ResetSearch();
+                            strFilter = "";
                         }
 
                         if (Utils.IsNumeric(_catid))

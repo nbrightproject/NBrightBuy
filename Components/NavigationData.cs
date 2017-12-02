@@ -35,7 +35,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Exists = false;
             _portalId = portalId;
             _cookieName = "NBrightBuyNav" + "_" + moduleKey.Trim() + nameAppendix.Trim();
+            _storageType = DataStorageType.Cookie; // force cookie, some issues with session memory.
             Get();
+        }
+
+        public NavigationData(string navigationfilename)
+        {
+            Get(navigationfilename);
         }
 
         /// <summary>
@@ -356,6 +362,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             var tempfilename = "";
 
+
             if (_storageType == DataStorageType.SessionMemory)
             {
                 if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String) HttpContext.Current.Session[_cookieName + "tempname"];
@@ -418,19 +425,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Get the cookie data from the client.
         /// </summary>
         /// <returns></returns>
-        public NavigationData Get()
+        public NavigationData Get(string tempfilename = "")
         {
             ClearData();
 
-            var tempfilename = "";
-
-            if (_storageType == DataStorageType.SessionMemory)
+            if (tempfilename == "")
             {
-                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String)HttpContext.Current.Session[_cookieName + "tempname"];
-            }
-            else
-            {
-                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
+                if (_storageType == DataStorageType.SessionMemory)
+                {
+                    if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String)HttpContext.Current.Session[_cookieName + "tempname"];
+                }
+                else
+                {
+                    tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
+                }
             }
 
             XmlData = "";
@@ -462,6 +470,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 Exists = true;
 
             return this;
+        }
+
+        public string GetTempFileName()
+        {
+            ClearData();
+            var tempfilename = "";
+            if (_storageType == DataStorageType.SessionMemory)
+            {
+                if (HttpContext.Current.Session[_cookieName + "tempname"] != null) tempfilename = (String)HttpContext.Current.Session[_cookieName + "tempname"];
+            }
+            else
+            {
+                tempfilename = Cookie.GetCookieValue(_portalId, _cookieName, "tempname", "");
+            }
+            return tempfilename;
         }
 
         /// <summary>
