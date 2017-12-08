@@ -374,6 +374,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                     // remove save GetData cache
                     var strCacheKey = prodData.Info.ItemID.ToString("") + prodData.DataRecord.TypeCode  + "LANG*" + "*" + EditLangCurrent;
                     Utils.RemoveCache(strCacheKey);
+                    DataCache.ClearCache();
 
                     return "";
                 }
@@ -406,6 +407,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                     // remove save GetData cache
                     var strCacheKey = prodData.Info.ItemID.ToString("") + prodData.DataRecord.TypeCode  + "LANG*" + "*" + EditLangCurrent;
                     Utils.RemoveCache(strCacheKey);
+                    DataCache.ClearCache();
 
                     return "";
                 }

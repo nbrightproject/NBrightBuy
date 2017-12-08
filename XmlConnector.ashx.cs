@@ -269,7 +269,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     var provList = pluginData.GetAjaxProviders();
                     foreach (var d in provList)
                     {
-                        if (paramCmd.StartsWith(d.Key + "_"))
+                        if (paramCmd.StartsWith(d.Key + "_") || paramCmd.StartsWith("cmd" + d.Key + "_"))
                         {
                             var ajaxprov = AjaxInterface.Instance(d.Key);
                             if (ajaxprov != null)

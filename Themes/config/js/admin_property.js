@@ -250,7 +250,7 @@
                         })
                         .bind('fileuploadstop', function (e) {
                             if (filesdone == filecount) {
-                                nbxget('category_updateimages', '#nbs_categoryadminsearch', '#datadisplay'); // load images
+                                nbxget('property_updateimages', '#nbs_propertyadminsearch', '#datadisplay'); // load images
                                 filesdone = 0;
                                 $('input[id*="imguploadlist"]').val('');
                                 $('.processing').hide();
@@ -262,7 +262,7 @@
                 $('#removeimage').unbind("click");
                 $('#removeimage').click(function () {
                     $('.processing').show();
-                    nbxget('category_removeimage', '#nbs_categoryadminsearch', '#datadisplay');
+                    nbxget('property_removeimage', '#nbs_propertyadminsearch', '#datadisplay');
                 });
             
 
