@@ -69,6 +69,18 @@
             $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
         }
 
+        // Add to Basket for Ajax + Form validation  (Mini-Cart head duplicate)
+        var form = $("#Form");
+        form.validate();
+		
+        $('.addtobasket').unbind("click");
+        $('.addtobasket').click(function () {
+            if (form.valid()) {
+                nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+                $('.addedtobasket').delay(10).fadeIn('fast');
+            }
+        });
+
     }
 
     function addHandlers() {
