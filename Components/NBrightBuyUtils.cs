@@ -1768,7 +1768,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 else
                 {
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader", productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageHeader" + productdata.Info.ItemID, productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 }
                 if (razorTempl != "" && !razorTempl.StartsWith("ERROR"))
                 {
