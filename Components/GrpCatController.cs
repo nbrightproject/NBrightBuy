@@ -442,9 +442,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         {
                             var catid = l.First().categoryid;
                             if (aslist)
-                                strOut = "<li>" + separator + "<a href='#' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + "</li>" + breadCrumb;
+                                strOut = "<li>" + separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + "</li>" + breadCrumb;
                             else
-                                strOut = separator + "<a href='#' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + breadCrumb;
+                                strOut = separator + "<a href='" + GetCategoryUrl(l.First(), tabId) + "' catid='" + catid + "' class='ajaxcatmenu'>" + crumbText + "</a>" + breadCrumb;
                         }
                         else
                         {

@@ -554,6 +554,7 @@
     <Content Include="Themes\ClassicRazor\Default\addressadminheader.html" />
     <Content Include="Themes\ClassicRazor\Default\addressadmininput.html" />
     <None Include="README.md" />
+    <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList_paging.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductListFilter_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductListFilter.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_CategoryMenuLinkAjax.cshtml" />

@@ -39,21 +39,58 @@
         //$("#pagesize").val("@Model.Settings["pagesize"]");
         //$("#pagenumber").val("1");
 
+        if ('@Model.GetUrlParam("page")' != '') {
+            $("#page").val(@Model.GetUrlParam("page"));
+        }
+
         @* Parameters are set, now get the initial data *@
         loadProductList();
     });
+
+    // call ajax based on browser history
+    window.onpopstate = function (e) {
+        var currentState = history.state;
+        if (currentState) {
+            $('#catid').val(currentState.catid);
+            $('#filter_catid').val(currentState.catid);
+            loadProductList();
+        }
+    };
+
 
     function AjaxView_GetList_nbxgetCompleted(e) {
         //console.log("AjaxView_GetList_nbxgetCompleted called");
         addHandlers();
 
+
         $('.ajaxcatmenu').unbind("click");
         $(".ajaxcatmenu").click(function() {
-            $('#catid').val($(this).attr("catid"))
-            $('#catref').val('')
-            $('#filter_catid').val($(this).attr("catid"))
-            $('#filter_catref').val('')
-            $('#searchtext').val('')
+            event.preventDefault();
+			
+            $(".active").removeClass("active");
+            $(this).parent().addClass("active");
+
+            var pagenumber = $(this).attr("pagenumber");
+            if (typeof pagenumber == 'undefined')
+            {
+                pagenumber = "1";
+            }
+            $("#page").val(pagenumber);
+
+            var catid = $(this).attr("catid");
+            if (typeof catid != 'undefined')
+            {
+                $('#catid').val(catid);
+                $('#filter_catid').val(catid);                
+            }			
+            $('#catref').val('');
+            $('#filter_catref').val('');
+            $('#searchtext').val('');
+
+            // add to browser bar and history
+            var stateObj = { catid: $(this).attr("catid") };
+            history.pushState(stateObj, "Title", $(this).attr("href"));
+
             loadProductList();
         });
 
@@ -72,7 +109,7 @@
         // Add to Basket for Ajax + Form validation  (Mini-Cart head duplicate)
         var form = $("#Form");
         form.validate();
-		
+
         $('.addtobasket').unbind("click");
         $('.addtobasket').click(function () {
             if (form.valid()) {

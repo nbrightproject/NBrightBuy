@@ -1932,8 +1932,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                 if (recordCount > pageSize)
                 {
                     if (pageSize == 0) pageSize = 12;
-                    var pg = new NBrightCore.controls.PagingCtrl();
-                    var strPg = pg.RenderPager(recordCount, pageSize, pageNumber);
+                    var pgdata = NBrightBuyUtils.GetPagingData(recordCount, pageSize, pageNumber);
+                    var strPg = NBrightBuyUtils.RazorTemplRenderList(Path.GetFileNameWithoutExtension(_templD) + "_paging" + Path.GetExtension(_templD), moduleid, razorcachekey + "PG", pgdata, "/DesktopModules/NBright/NBrightBuy", ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                     retval += strPg;
                 }
 

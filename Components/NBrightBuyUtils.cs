@@ -2400,6 +2400,107 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return editlang;
         }
 
+
+        public static List<NBrightInfo> GetPagingData(int TotalRecords, int PageSize, int CurrentPage, int pageLinksPerPage = 10)
+        {
+            var pageL = new List<NBrightInfo>();
+
+            var lastPage = Convert.ToInt32(TotalRecords / PageSize);
+            if (TotalRecords != (lastPage * PageSize)) lastPage = lastPage + 1;
+            if (lastPage == 1) return pageL;            //if only one page, don;t process
+
+            var rangebase = Convert.ToInt32((CurrentPage - 1) / pageLinksPerPage);
+            var lowNum = (rangebase * pageLinksPerPage) + 1;
+            var highNum = lowNum + (pageLinksPerPage - 1);
+            if (highNum > Convert.ToInt32(lastPage)) highNum = Convert.ToInt32(lastPage);
+            if (lowNum < 1) lowNum = 1;
+
+
+            if ((lowNum > 1) && (CurrentPage > pageLinksPerPage))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", "1");
+                nbi.SetXmlProperty("genxml/text", "<<");
+                nbi.SetXmlProperty("genxml/type", "head1");
+                pageL.Add(nbi);
+            }
+
+            if ((CurrentPage > 1))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", Convert.ToString(CurrentPage - 1));
+                nbi.SetXmlProperty("genxml/text", "<");
+                nbi.SetXmlProperty("genxml/type", "head2");
+                pageL.Add(nbi);
+            }
+
+            if ((lowNum > 1) && (CurrentPage > pageLinksPerPage))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", Convert.ToString(lowNum - 1));
+                nbi.SetXmlProperty("genxml/text", "...");
+                nbi.SetXmlProperty("genxml/type", "headsection");
+                pageL.Add(nbi);
+            }
+
+
+            for (int i = lowNum; i <= highNum; i++)
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber",i.ToString(""));
+                nbi.SetXmlProperty("genxml/text", i.ToString(""));
+                nbi.SetXmlProperty("genxml/type", "page");
+                if (CurrentPage == i)
+                {
+                    nbi.SetXmlProperty("genxml/currentpage", "True");
+                }
+                else
+                {
+                    nbi.SetXmlProperty("genxml/currentpage", "False");
+                }
+                pageL.Add(nbi);
+            }
+
+
+
+            if ((lastPage > highNum))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", Convert.ToString(highNum + 1));
+                nbi.SetXmlProperty("genxml/text", "...");
+                nbi.SetXmlProperty("genxml/type", "foot1");
+                pageL.Add(nbi);
+            }
+
+
+            if ((lastPage > CurrentPage))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", Convert.ToString(CurrentPage + 1));
+                nbi.SetXmlProperty("genxml/text", ">");
+                nbi.SetXmlProperty("genxml/type", "foot2");
+                pageL.Add(nbi);
+            }
+
+            if ((lastPage != highNum) && (lastPage > CurrentPage))
+            {
+                var nbi = new NBrightInfo(true);
+                nbi.SetXmlProperty("genxml/pagenumber", Convert.ToString(lastPage));
+                nbi.SetXmlProperty("genxml/text", ">>");
+                nbi.SetXmlProperty("genxml/type", "foot1");
+                pageL.Add(nbi);
+            }
+
+
+
+
+
+
+            return pageL;
+        }
+
+
+
         #region "AJAX functions"
 
         public static Dictionary<String, String> GetAjaxDictionary(HttpContext context)
