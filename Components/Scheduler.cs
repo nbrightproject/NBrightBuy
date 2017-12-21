@@ -25,10 +25,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 foreach (var portal in portallist)
                 {
 
-                    // clear down NBStore temp folder
                     var storeSettings = new StoreSettings(portal.PortalID);
                     if (Directory.Exists(storeSettings.FolderTempMapPath))
                     {
+                        // clear old carts
+                        var objCtrl = new NBrightBuyController();
+                        var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
+                        var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
+                        var days = 60;
+                        var d = DateTime.Now.AddDays(days * -1);
+                        var strDate = d.ToString("s");
+                        var stmt = "";
+                        stmt = "delete from " + dbOwner + "[" + objQual + "NBrightBuy] where PortalId = " + portal.PortalID.ToString("") + " and typecode = 'CART' and ModifiedDate < '" + strDate + "' ";
+                        objCtrl.ExecSql(stmt);
+
+
+                        // clear down NBStore temp folder
                         string[] files = Directory.GetFiles(storeSettings.FolderTempMapPath);
 
                         foreach (string file in files)

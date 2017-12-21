@@ -71,6 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (UserId != UserController.Instance.GetCurrentUserInfo().UserID && EditMode == "") UserId = UserController.Instance.GetCurrentUserInfo().UserID;
                 PurchaseInfo.UserId = UserId;
+                PurchaseInfo.GUIDKey = UserId.ToString("");
                 if (EditMode == "" && !string.IsNullOrEmpty(UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale))
                 {
                     ClientLang = UserController.Instance.GetCurrentUserInfo().Profile.PreferredLocale;
@@ -1174,6 +1175,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (entryId == -1)
                 {
                     PurchaseInfo.UserId = UserController.Instance.GetCurrentUserInfo().UserID; // new cart created from front office, so give current userid.
+                    PurchaseInfo.GUIDKey = UserController.Instance.GetCurrentUserInfo().UserID.ToString(""); // new cart created from front office, so give current userid.
                     EditMode = "";
                 }
             }

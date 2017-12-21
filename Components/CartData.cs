@@ -189,21 +189,33 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             if (!Utils.IsNumeric(cartId))
             {
-
-                if (StoreSettings.Current.StorageTypeClient  == DataStorageType.SessionMemory)
+                NBrightInfo nbi = null;
+                var userid = UserController.Instance.GetCurrentUserInfo().UserID;
+                if (userid > 0)
                 {
-                    if (HttpContext.Current.Session[_cookieName + "cartId"] != null) cartId = (String) HttpContext.Current.Session[_cookieName + "cartId"];
+                    // get any cart linked to a user.
+                    var modCtrl = new NBrightBuyController();
+                    nbi = modCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "CART", userid.ToString(""), userid.ToString(""),true);
+                    if (nbi != null) cartId = nbi.ItemID.ToString("");
                 }
-                else
-                {
-                    _cookie = HttpContext.Current.Request.Cookies[_cookieName];
-                    if (_cookie == null)
+                if (nbi == null)
+                {                    
+                    if (StoreSettings.Current.StorageTypeClient == DataStorageType.SessionMemory)
                     {
-                        _cookie = new HttpCookie(_cookieName);
+                        if (HttpContext.Current.Session[_cookieName + "cartId"] != null)
+                            cartId = (String) HttpContext.Current.Session[_cookieName + "cartId"];
                     }
                     else
                     {
-                        if (_cookie["cartId"] != null) cartId = _cookie["cartId"];
+                        _cookie = HttpContext.Current.Request.Cookies[_cookieName];
+                        if (_cookie == null)
+                        {
+                            _cookie = new HttpCookie(_cookieName);
+                        }
+                        else
+                        {
+                            if (_cookie["cartId"] != null) cartId = _cookie["cartId"];
+                        }
                     }
                 }
                 if (!Utils.IsNumeric(cartId)) cartId = "-1";
@@ -213,6 +225,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _cartId = Convert.ToInt32(cartId);
                 SaveCartId(); //created from order, so save cartid for client.
             }
+
 
             //populate cart data
             var rtnid = PopulatePurchaseData(Convert.ToInt32(cartId));
@@ -237,7 +250,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 _cookie = HttpContext.Current.Request.Cookies[_cookieName];
                 if (_cookie == null) _cookie = new HttpCookie(_cookieName);
                 _cookie["cartId"] = _cartId.ToString("");
-                _cookie.Expires = DateTime.Now.AddDays(1d);
+                _cookie.Expires = DateTime.Now.AddYears(1);
                 HttpContext.Current.Response.Cookies.Add(_cookie);
             }
 
