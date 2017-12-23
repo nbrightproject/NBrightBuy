@@ -32,6 +32,7 @@ using Nevoweb.DNN.NBrightBuy.Components.Orders;
 using Nevoweb.DNN.NBrightBuy.Components.Payments;
 using Nevoweb.DNN.NBrightBuy.Components.Products;
 using Nevoweb.DNN.NBrightBuy.Components.Category;
+using Nevoweb.DNN.NBrightBuy.Components.ItemLists;
 using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -115,6 +116,10 @@ namespace Nevoweb.DNN.NBrightBuy
                     PropertyFunctions.EntityTypeCode = "CATEGORY";
                     strOut = PropertyFunctions.ProcessCommand(paramCmd, context, _editlang);
                 }
+                else if (paramCmd.StartsWith("itemlist_"))
+                {
+                    strOut = ItemListsFunctions.ProcessCommand(paramCmd, context);
+                }                
                 else
                 {
                     switch (paramCmd)
@@ -128,27 +133,6 @@ namespace Nevoweb.DNN.NBrightBuy
                             break;
                         case "getdata":
                             strOut = GetReturnData(context);
-                            break;
-                        case "additemlist":
-                            if (Utils.IsNumeric(itemId))
-                            {
-                                var cw = new ItemListData(itemListName);
-                                cw.Add(itemId);
-                                strOut = cw.ItemList;
-                            }
-                            break;
-                        case "removeitemlist":
-                            if (Utils.IsNumeric(itemId))
-                            {
-                                var cw1 = new ItemListData(itemListName);
-                                cw1.Remove(itemId);
-                                strOut = cw1.ItemList;
-                            }
-                            break;
-                        case "deleteitemlist":
-                            var cw2 = new ItemListData(itemListName);
-                            cw2.Delete();
-                            strOut = "deleted";
                             break;
                         case "fileupload":
                             if (NBrightBuyUtils.CheckRights())

@@ -1806,26 +1806,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             // if we have a itemListName field then get the itemlist cookie.
             if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
             {
-                if (metaTokens.ContainsKey("itemlistname")) _itemListName = metaTokens["itemlistname"];
-                if (_itemListName == "") _itemListName = Utils.RequestParam(context, "itemlistname"); // see if we've passed a wishlist name in url
-                if (_itemListName != "")
+
+                var cw = new ItemListData();
+                if (cw.Exists && cw.ItemCount > 0)
                 {
-                    var cw = new ItemListData(_itemListName);
-                    if (cw.Exists && cw.ItemCount > 0)
+                    strFilter = " and (";
+                    foreach (var i in cw.GetItemList())
                     {
-                        strFilter = " and (";
-                        foreach (var i in cw.GetItemList())
-                        {
-                            strFilter += " NB1.itemid = '" + i + "' or";
-                        }
-                        strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") "; // remove the last "or"                    
+                        strFilter += " NB1.itemid = '" + i + "' or";
                     }
-                    else
-                    {
-                        //no data in list so select false itemid to stop anything displaying
-                        strFilter += " and (NB1.itemid = '-1') ";
-                    }
+                    strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") ";
+                    // remove the last "or"                    
                 }
+                else
+                {
+                    //no data in list so select false itemid to stop anything displaying
+                    strFilter += " and (NB1.itemid = '-1') ";
+                }
+
             }
 
             #endregion

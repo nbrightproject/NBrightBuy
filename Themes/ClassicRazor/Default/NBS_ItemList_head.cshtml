@@ -1,0 +1,28 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+
+
+@RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicRazor\\Default\\NBS_ProductDisplayList_head.cshtml",Model)
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(document).on("nbxgetcompleted", ItemList_GetList_nbxgetCompleted);
+
+        loadItemList();
+
+    });
+
+
+    function ItemList_GetList_nbxgetCompleted(e) {
+        $('.processing').hide();
+
+
+    }
+
+    function loadItemList() {
+        $('.processing').show();
+        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    }
+
+</script>

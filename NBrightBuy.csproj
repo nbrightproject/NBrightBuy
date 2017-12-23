@@ -214,6 +214,7 @@
     <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\ItemLists\ItemListsFunctions.cs" />
     <Compile Include="Components\Properties\PropertyData.cs" />
     <Compile Include="Components\Properties\PropertyFunctions.cs" />
     <Compile Include="Components\Categories\CategoryFunctions.cs" />
@@ -227,6 +228,20 @@
     <Compile Include="Components\Product\ProductData.cs" />
     <Compile Include="Components\Product\ProductFunctions.cs" />
     <Compile Include="Components\Product\ProductUtils.cs" />
+    <Compile Include="ItemListRazor.ascx.cs">
+      <DependentUpon>ItemListRazor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemListRazor.ascx.designer.cs">
+      <DependentUpon>ItemListRazor.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemListRazorSettings.ascx.cs">
+      <DependentUpon>ItemListRazorSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemListRazorSettings.ascx.designer.cs">
+      <DependentUpon>ItemListRazorSettings.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductRazorSearch.ascx.cs">
       <DependentUpon>ProductRazorSearch.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -322,7 +337,7 @@
     <Compile Include="Components\Interfaces\ShippingInterface.cs" />
     <Compile Include="Components\Interfaces\EventInterface.cs" />
     <Compile Include="Components\Interfaces\TaxInterface.cs" />
-    <Compile Include="Components\ItemListData.cs" />
+    <Compile Include="Components\ItemLists\ItemListData.cs" />
     <Compile Include="Components\DdrMenuInterface.cs" />
     <Compile Include="Components\GrpCatController.cs" />
     <Compile Include="Components\ModSettings.cs" />
@@ -467,6 +482,12 @@
     <Content Include="AjaxProductListFilterSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="ItemListRazor.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="ItemListRazorSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Plugins\readme.txt" />
     <Content Include="ProductRazorSearch.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -569,6 +590,7 @@
     <Content Include="Themes\ClassicRazor\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ItemListsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplaysettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList.cshtml" />
@@ -675,8 +697,8 @@
     <None Include="Themes\ClassicRazor\Default\NBS_MiniCart_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProfileFormsettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplaysettings.cshtml" />
-    <None Include="Themes\ClassicRazor\Default\NBS_WishList_head.cshtml" />
-    <None Include="Themes\ClassicRazor\Default\NBS_WishList.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ItemList_head.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ItemList.cshtml" />
     <None Include="Themes\config\default\NBS_DisplaySearchSettings.cshtml" />
     <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
     <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
@@ -1151,6 +1173,7 @@
     <Content Include="Themes\config\default\ProductView_Settings.html" />
     <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
     <None Include="Themes\config\default\NBS_AjaxProductDisplaysettings.cshtml" />
+    <None Include="Themes\config\default\NBS_ItemListsettings.cshtml" />
     <None Include="Themes\config\default\ThemeFolderSelect.cshtml" />
     <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
