@@ -24,8 +24,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
-            var itemId = ajaxInfo.GetXmlProperty("genxml/hidden/productid");
-            var itemlistname = ajaxInfo.GetXmlProperty("genxml/hidden/itemlistname");
             _entityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             _entityTypeCodeLang = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecodelang");
             if (_entityTypeCode == "") _entityTypeCode = "PRD";
@@ -34,10 +32,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
             _templatename = ajaxInfo.GetXmlProperty("genxml/hidden/templatename");
             if (_templatename == "") _templatename = "NBS_favoriteslist";
             if (_themeFolder == "") _themeFolder = "ClassicRazor";
+            var itemId = ajaxInfo.GetXmlProperty("genxml/hidden/shopitemid");
+            var itemlistname = ajaxInfo.GetXmlProperty("genxml/hidden/shoplistname");
 
             var strOut = "ORDER - ERROR!! - No Security rights for current user!";
 
-            var cw = new ItemListData();
+            var cw = new ItemListData(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
 
             switch (paramCmd)
             {
@@ -62,13 +62,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
                 case "itemlist_productlist":
                     strOut = GetProductItemListHtml(cw, itemlistname);
                     break;
+                case "itemlist_getpopup":
+                    strOut = GetProductItemListPopup(cw, itemlistname);
+                    break;
             }
 
             return strOut;
         }
 
 
-        public static List<NBrightInfo> GetProductItemList(ItemListData itemListData,string listkey = "")
+        public static List<NBrightInfo> GetProductItemList(ItemListData itemListData,string listkey = "",string entityTypeCode = "PRD", string entityTypeCodeLang = "PRDLANG")
         {
             var strOut = "";
             var strFilter = "";
@@ -80,35 +83,45 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
                 {
                     foreach (var i in itemListData.listnames)
                     {
-                        strFilter = " and (";
-                        foreach (var i2 in itemListData.productsInList[i.Key])
+                        var itemlist = itemListData.GetItemList(i.Key);
+                        if (itemlist.Count > 0)
                         {
-                            strFilter += " NB1.itemid = '" + i2 + "' or";
-                        }
-                        strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") ";
-                        strFilter += " and (NB3.Visible = 1) ";
-                        var l = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, _entityTypeCode, _entityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, "");
-                        foreach (var n in l)
-                        {
-                            n.SetXmlProperty("genxml/listkey",i.Key);
-                            rtnList.Add(n);
+                            strFilter = " and (";
+                            foreach (var i2 in itemlist)
+                            {
+                                strFilter += " NB1.itemid = '" + i2 + "' or";
+                            }
+                            strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") ";
+                            strFilter += " and (NB3.Visible = 1) ";
+                            var l = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, entityTypeCode,
+                                entityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, "", true);
+                            foreach (var n in l)
+                            {
+                                n.SetXmlProperty("genxml/listkey", i.Key);
+                                rtnList.Add(n);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    strFilter = " and (";
-                    foreach (var i in itemListData.productsInList[listkey])
+                    var itemlist = itemListData.GetItemList(listkey);
+                    if (itemlist.Count > 0)
                     {
-                        strFilter += " NB1.itemid = '" + i + "' or";
-                    }
-                    strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") ";
-                    strFilter += " and (NB3.Visible = 1) ";
-                    var l = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, _entityTypeCode, _entityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, "");
-                    foreach (var n in l)
-                    {
-                        n.SetXmlProperty("genxml/listkey", listkey);
-                        rtnList.Add(n);
+                        strFilter = " and (";
+                        foreach (var i in itemlist)
+                        {
+                            strFilter += " NB1.itemid = '" + i + "' or";
+                        }
+                        strFilter = strFilter.Substring(0, (strFilter.Length - 3)) + ") ";
+                        strFilter += " and (NB3.Visible = 1) ";
+                        var l = ModCtrl.GetDataList(PortalSettings.Current.PortalId, -1, _entityTypeCode,
+                            _entityTypeCodeLang, Utils.GetCurrentCulture(), strFilter, "", true);
+                        foreach (var n in l)
+                        {
+                            n.SetXmlProperty("genxml/listkey", listkey);
+                            rtnList.Add(n);
+                        }
                     }
                 }
             }
@@ -116,13 +129,36 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
             return rtnList;
         }
 
-        public static string GetProductItemListHtml(ItemListData itemListData, string listkey = "")
+        public static string GetProductItemListHtml(ItemListData itemListData, string listkey = "", string entityTypeCode = "PRD", string entityTypeCodeLang = "PRDLANG")
         {
             var strOut = "";
-            var rtnList = GetProductItemList(itemListData,listkey);
+            var rtnList = GetProductItemList(itemListData,listkey, entityTypeCode,  entityTypeCodeLang);
             var modelsetings = StoreSettings.Current.Settings();
-            modelsetings.Add("listkeys", itemListData.listkeys);
+            if (!modelsetings.ContainsKey("listkeys")) modelsetings.Add("listkeys", itemListData.listkeys);
             strOut = NBrightBuyUtils.RazorTemplRenderList(_templatename, -1, "", rtnList, "/DesktopModules/NBright/NBrightBuy", _themeFolder, Utils.GetCurrentCulture(), modelsetings);
+
+            return strOut;
+        }
+
+        public static string GetProductItemListPopup(ItemListData itemListData, string listkey = "", string entityTypeCode = "PRD", string entityTypeCodeLang = "PRDLANG")
+        {
+            var ajaxInfo = new NBrightInfo(true);
+            ajaxInfo.SetXmlProperty("genxml/products", itemListData.products);
+            ajaxInfo.SetXmlProperty("genxml/listkeys", itemListData.listkeys);
+            ajaxInfo.SetXmlProperty("genxml/list", "");
+            foreach (var l in itemListData.listnames)
+            {
+                ajaxInfo.SetXmlProperty("genxml/list/" + l.Key, l.Value);
+            }
+            ajaxInfo.SetXmlProperty("genxml/productsinlist", "");
+            foreach (var l in itemListData.productsInList)
+            {
+                ajaxInfo.SetXmlProperty("genxml/productsinlist/" + l.Key, l.Value);
+            }
+
+            var modelsetings = StoreSettings.Current.Settings();
+            if (!modelsetings.ContainsKey("listkeys")) modelsetings.Add("listkeys", itemListData.listkeys);
+            var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ItemListPopupBody.cshtml", -1, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", _themeFolder, Utils.GetCurrentCulture(), modelsetings);
 
             return strOut;
         }

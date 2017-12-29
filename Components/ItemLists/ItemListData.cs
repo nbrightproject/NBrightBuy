@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows.Forms.VisualStyles;
 using System.Xml;
@@ -20,6 +21,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     {
 
         private HttpCookie _cookie;
+        private ClientData _clientData;
 
         public Dictionary<string, string> listnames;
         public string products;
@@ -32,9 +34,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// Populate class with cookie data
         /// </summary>
         /// <param name="listName"></param>
-        public ItemListData()
+        public ItemListData(int portalId, int userId)
         {
-            UserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            UserId = userId;
             CookieName = "NBSShoppingList";
             Exists = false;
             ItemCount = 0;
@@ -44,8 +46,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             if (UserId > 0)
             {
-                Get();
-                SaveCookie();
+                _clientData = new ClientData(portalId, UserId);
+                if (_clientData.Exists)
+                {
+                    Get();
+                    SaveCookie();
+                }
             }
         }
 
@@ -55,44 +61,41 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public void SaveAll()
         {
             // if user then get from clientdata
-            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            if (currentUserId > 0)
+            if (UserId > 0)
             {
-                var clientData = new ClientData(PortalSettings.Current.PortalId, currentUserId);
-                if (clientData.Exists)
+                if (_clientData.Exists)
                 {
                     products = "";
                     listkeys = "";
                     foreach (var lname in listnames)
                     {
                         listkeys += lname.Key + "*";
-                        clientData.UpdateItemList(lname.Key, productsInList[lname.Key]);
-                        var l = clientData.GetItemList(lname.Key);
+                        _clientData.UpdateItemList(lname.Key, productsInList[lname.Key],lname.Value);
+                        var l = _clientData.GetItemList(lname.Key);
                         products += l;
                     }
-                    clientData.Save();
+                    _clientData.Save();
                     SaveCookie();
                 }
             }
         }
 
-        public void SaveList(string listkey)
+        public void SaveList(string listkey,string listname)
         {
+            listkey = CleanListKey(listkey);
             // if user then get from clientdata
-            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            if (currentUserId > 0)
+            if (UserId > 0)
             {
-                var clientData = new ClientData(PortalSettings.Current.PortalId, currentUserId);
-                if (clientData.Exists)
+                if (_clientData.Exists)
                 {
-                    clientData.UpdateItemList(listkey, productsInList[listkey]);
-                    clientData.Save();
+                    _clientData.UpdateItemList(listkey, productsInList[listkey], listname);
+                    _clientData.Save();
                     products = "";
                     listkeys = "";
                     foreach (var list in listnames)
                     {
                         listkeys += list.Key + "*";
-                        var l = clientData.GetItemList(list.Key);
+                        var l = _clientData.GetItemList(list.Key);
                         products += l;
                     }
                     SaveCookie();
@@ -124,19 +127,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public ItemListData Get()
         {
                 // if user then get from clientdata
-            var currentUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            if (currentUserId > 0)
+            if (UserId > 0)
             {
                 products = "";
-                var clientData = new ClientData(PortalSettings.Current.PortalId, currentUserId);
-                if (clientData.Exists)
+                if (_clientData.Exists)
                 {
                     listkeys = "";
-                    listnames = clientData.GetItemListNames();
+                    listnames = _clientData.GetItemListNames();
                     foreach (var list in listnames)
                     {
                         listkeys += list.Key + "*";
-                        var l = clientData.GetItemList(list.Key);
+                        var l = _clientData.GetItemList(list.Key);
                         productsInList.Add(list.Key, l);
                         products += l;
                     }
@@ -162,8 +163,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         public void DeleteList(string listkey)
         {
+            listkey = CleanListKey(listkey);
             if (productsInList.ContainsKey(listkey))
             {
+                if (UserId > 0)
+                {
+                    if (_clientData.Exists)
+                    {
+                        _clientData.DataRecord.RemoveXmlNode("genxml/itemlists/" + listkey);
+                        _clientData.Save();
+                    }
+                }
+                listnames.Remove(listkey);
                 productsInList.Remove(listkey);
                 SaveAll();
             }
@@ -171,6 +182,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void Add(string listkey, string itemId)
         {
+            var listkey1 = listkey;
+            listkey = CleanListKey(listkey);
             if (productsInList.ContainsKey(listkey))
             {
                 productsInList[listkey] = productsInList[listkey] + itemId + "*";
@@ -178,9 +191,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             else
             {
                 productsInList.Add(listkey, itemId + "*");
-                listnames.Add(listkey, listkey.Replace(" ","-"));
+                listnames.Add(listkey, listkey1);
             }
-            SaveList(listkey);
+            SaveList(listkey, listkey1);
         }
 
         /// <summary>
@@ -189,10 +202,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="itemId"></param>
         public void Remove(string listkey, string itemId)
         {
+            listkey = CleanListKey(listkey);
             if (productsInList.ContainsKey(listkey))
             {
                 productsInList[listkey] = productsInList[listkey].Replace(itemId + "*", "");
-                SaveList(listkey);
+                SaveList(listkey,"");
             }
         }
 
@@ -210,6 +224,18 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (s != "") gl.Add(s);
             }
             if (gl.Count == 0) return null;
+            return gl;
+        }
+        public List<String> GetItemList(string listkey)
+        {
+            var gl = new List<String>();
+            listkey = CleanListKey(listkey);
+            if (products == "" || !productsInList.ContainsKey(listkey) || productsInList[listkey] == "") return gl;
+            var l = productsInList[listkey].Split('*');
+            foreach (var s in l)
+            {
+                if (s != "") gl.Add(s);
+            }
             return gl;
         }
 
@@ -235,6 +261,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public int ItemCount { get; private set; }
 
 
+
+        private string CleanListKey(string listkey)
+        {
+            listkey = listkey.Replace(" ", "-");
+            if (Regex.IsMatch(listkey, @"^\d"))
+            {
+                listkey = "lst" + listkey;  //elements that start with numeric are not allow in XML
+            }
+            return Regex.Replace(listkey, "[^a-zA-Z0-9]+", "", RegexOptions.Compiled);
+        }
 
     }
 

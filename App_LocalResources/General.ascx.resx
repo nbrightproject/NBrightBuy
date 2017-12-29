@@ -1158,4 +1158,10 @@
   <data name="group.Text" xml:space="preserve">
     <value>Group</value>
   </data>
+  <data name="createnewlist.Text" xml:space="preserve">
+    <value>Create new list</value>
+  </data>
+  <data name="listtitle.Text" xml:space="preserve">
+    <value>Please select your list</value>
+  </data>
 </root>

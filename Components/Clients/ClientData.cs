@@ -41,6 +41,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PopulateClientData(userid);
         }
 
+        public ClientData(int portalId, int userid, bool debugmode)
+        {
+            Exists = false;
+            PortalId = portalId;
+            PopulateClientData(userid, debugmode);
+        }
+
 
         #region "base methods"
 
@@ -343,18 +350,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "itemlists"
 
-        public void UpdateItemList(string listname, string listcsv = "")
+        public void UpdateItemList(string listkey, string listcsv,string listname)
         {
             if (DataRecord.XMLDoc.SelectSingleNode("genxml/itemlists") == null)
             {
                 DataRecord.SetXmlProperty("genxml/itemlists", "");
             }
-            DataRecord.SetXmlProperty("genxml/itemlists/" + Utils.CleanInput(listname).Replace(" ","-"), listcsv);
+            DataRecord.SetXmlProperty("genxml/itemlists/" + listkey, listcsv);
+            if (listname == "") listname = listkey;
+            DataRecord.SetXmlProperty("genxml/itemlists/" + listkey + "/@name", listname);
         }
 
-        public string GetItemList(string listname)
+        public string GetItemList(string listkey)
         {
-            return DataRecord.GetXmlProperty("genxml/itemlists/" + Utils.CleanInput(listname).Replace(" ", "-"));
+            return DataRecord.GetXmlProperty("genxml/itemlists/" + listkey);
         }
 
         public Dictionary<string,string> GetItemListNames()
@@ -363,7 +372,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var nodList = DataRecord.XMLDoc.SelectNodes("genxml/itemlists/*");
             foreach (XmlNode n in nodList)
             {
-                l.Add(n.Name,n.Name.Replace("-"," "));
+                var lname = n.Name;
+                if (n.Attributes?["name"] != null)
+                {
+                    lname = n.Attributes["name"].InnerText;
+                }
+                l.Add(n.Name,lname);
             }
             return l;
         } 
@@ -373,7 +387,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "private methods/functions"
 
-        private void PopulateClientData(int userId)
+        private void PopulateClientData(int userId,bool debugmode = false)
         {
             _clientInfo = new NBrightInfo(true);
             _clientInfo.ItemID = userId;
@@ -382,7 +396,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // get any datarecord on DB
             var objCtrl = new NBrightBuyController();
-            DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", userId.ToString(""));
+            DataRecord = objCtrl.GetByType(PortalId, -1, "CLIENT", userId.ToString(""),"","", debugmode);
             if (DataRecord == null)
             {
                 DataRecord = new NBrightInfo(true);

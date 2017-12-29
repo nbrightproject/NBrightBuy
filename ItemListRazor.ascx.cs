@@ -21,6 +21,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -85,10 +86,14 @@ namespace Nevoweb.DNN.NBrightBuy
             if (UserId > 0) // limit module to registered users
             {
                 // new data record so set defaults.
-                var cw = new ItemListData();
+                var cw = new ItemListData(PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
                 var objList = ItemListsFunctions.GetProductItemList(cw);
 
-                //ModSettings.Settings().Add("listkeys", cw.listkeys);
+                if (ModSettings.Settings().ContainsKey("listkeys"))
+                {
+                    ModSettings.Settings().Remove("listkeys");
+                }
+                ModSettings.Settings().Add("listkeys", cw.listkeys);
 
                 var strOut = NBrightBuyUtils.RazorTemplRenderList(RazorTemplate, ModuleId, "", objList, ControlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();

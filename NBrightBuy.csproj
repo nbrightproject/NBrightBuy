@@ -591,6 +591,8 @@
     <Content Include="Themes\ClassicRazor\Default\paymentheader.html" />
     <Content Include="Themes\ClassicRazor\Default\paymentOK.html" />
     <None Include="Themes\ClassicRazor\Default\NBS_ItemListsettings.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ItemListPopupBody.cshtml" />
+    <None Include="Themes\ClassicRazor\Default\NBS_ProductDisplayListBody.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_ProductNotFound_head.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplaysettings.cshtml" />
     <None Include="Themes\ClassicRazor\Default\NBS_AjaxProductDisplayList.cshtml" />

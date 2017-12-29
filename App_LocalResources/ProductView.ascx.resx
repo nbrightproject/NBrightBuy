@@ -366,4 +366,16 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   <data name="productnotfound.Text" xml:space="preserve">
     <value>404 - Product Not Found</value>
   </data>
+  <data name="addicon.Text" xml:space="preserve">
+    <value>&lt;span title="Add" class="fa-stack"&gt;
+  &lt;i class="fa fa-plus fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-plus-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
+  <data name="cancelicon.Text" xml:space="preserve">
+    <value>&lt;span title="Cancel" class="fa-stack"&gt;
+  &lt;i class="fa fa-times fa-stack-2x"&gt;&lt;/i&gt;
+  &lt;i class="fa fa-times-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
+&lt;/span&gt;</value>
+  </data>
 </root>

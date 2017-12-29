@@ -1807,7 +1807,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
             {
 
-                var cw = new ItemListData();
+                var cw = new ItemListData(PortalSettings.Current.PortalId,UserController.Instance.GetCurrentUserInfo().UserID);
                 if (cw.Exists && cw.ItemCount > 0)
                 {
                     strFilter = " and (";

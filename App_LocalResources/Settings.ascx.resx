@@ -519,4 +519,7 @@
   <data name="activateajax.Text" xml:space="preserve">
     <value>Activate Ajax</value>
   </data>
+  <data name="logintab.Text" xml:space="preserve">
+    <value>Login Page</value>
+  </data>
 </root>

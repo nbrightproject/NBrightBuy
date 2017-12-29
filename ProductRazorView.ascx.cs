@@ -22,6 +22,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
@@ -537,7 +538,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     // if we have a itemListName field then get the itemlist cookie.
                     if (ModSettings.Get("displaytype") == "2") // displaytype 2 = "selected list"
                     {
-                        var cw = new ItemListData();
+                        var cw = new ItemListData(PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
                         if (cw.Exists && cw.ItemCount > 0)
                         {
                             strFilter = " and (";

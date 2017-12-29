@@ -10,6 +10,10 @@
 <!-- Masonry Grid http://masonry.desandro.com -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/masonry.pkgd.min.js"></script>
 
+<!-- Colorbox Lightbox -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/js/jquery.colorbox-min.js"></script>
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicRazor/css/colorbox.css" rel="stylesheet">
+
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -45,10 +49,12 @@
 
         @* Parameters are set, now get the initial data *@
         loadProductList();
+        loadItemListPopup();
+
     });
 
     // call ajax based on browser history
-    window.onpopstate = function (e) {
+    window.onpopstate = function(e) {
         var currentState = history.state;
         if (currentState) {
             $('#catid').val(currentState.catid);
@@ -62,37 +68,35 @@
         //console.log("AjaxView_GetList_nbxgetCompleted called");
         addHandlers();
 
-
         $('.ajaxcatmenu').unbind("click");
-        $(".ajaxcatmenu").click(function() {
-            event.preventDefault();
-			
-            $(".active").removeClass("active");
-            $(this).parent().addClass("active");
+        $(".ajaxcatmenu")
+            .click(function() {
+                event.preventDefault();
 
-            var pagenumber = $(this).attr("pagenumber");
-            if (typeof pagenumber == 'undefined')
-            {
-                pagenumber = "1";
-            }
-            $("#page").val(pagenumber);
+                $(".active").removeClass("active");
+                $(this).parent().addClass("active");
 
-            var catid = $(this).attr("catid");
-            if (typeof catid != 'undefined')
-            {
-                $('#catid').val(catid);
-                $('#filter_catid').val(catid);                
-            }			
-            $('#catref').val('');
-            $('#filter_catref').val('');
-            $('#searchtext').val('');
+                var pagenumber = $(this).attr("pagenumber");
+                if (typeof pagenumber == 'undefined') {
+                    pagenumber = "1";
+                }
+                $("#page").val(pagenumber);
 
-            // add to browser bar and history
-            var stateObj = { catid: $(this).attr("catid") };
-            history.pushState(stateObj, "Title", $(this).attr("href"));
+                var catid = $(this).attr("catid");
+                if (typeof catid != 'undefined') {
+                    $('#catid').val(catid);
+                    $('#filter_catid').val(catid);
+                }
+                $('#catref').val('');
+                $('#filter_catref').val('');
+                $('#searchtext').val('');
 
-            loadProductList();
-        });
+                // add to browser bar and history
+                var stateObj = { catid: $(this).attr("catid") };
+                history.pushState(stateObj, "Title", $(this).attr("href"));
+
+                loadProductList();
+            });
 
         $('.processing').hide();
         if (e.cmd == 'product_ajaxview_getlist') {
@@ -104,7 +108,26 @@
         if (e.cmd == 'product_ajaxview_getfilters') {
             // propertyFilterClicked method is in AjaxDisplayProductList_head
             $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
+
+            if ('@Model.GetUrlParam("shopitemid")' != '') {
+                // we have shopitemid in url, so display itemlist popup
+                $('#shopitemid').val('@Model.GetUrlParam("shopitemid")');
+                $(".shoppinglistadd[itemid='@Model.GetUrlParam("shopitemid")']").click();
+            }
+
         }
+
+
+        // Shopping List Popup
+        $('.shoppinglistadd').unbind("click");
+        $('.shoppinglistadd').click(function() {
+                if (@UserController.Instance.GetCurrentUserInfo().UserID <= 0) {
+                    window.location.replace('/default.aspx?tabid=@(StoreSettings.Current.Get("logintab"))&returnurl=' + location.protocol + '//' + location.host + location.pathname + '?shopitemid=' + $(this).attr('itemid'));
+                } else {
+                    $('#shopitemid').val($(this).attr('itemid'));
+                    $(".shoppinglistadd").colorbox({ inline: true, width: "20%", fixed: true });
+                }
+            });
 
         // Add to Basket for Ajax + Form validation  (Mini-Cart head duplicate)
         var form = $("#Form");
@@ -118,6 +141,57 @@
             }
         });
 
+        // Wish List events
+        $('.wishlistadd').unbind("click");
+        $('.wishlistadd').click(function () {
+            $('#shoplistname').val($('.shoplistselect').val());
+            nbxget('itemlist_add', '#nbs_productajaxview'); //apply serverside
+            $('#shoppinglistpopup').colorbox.close();
+        });
+
+        $('.wishlistremove').unbind("click");
+        $('.wishlistremove').click(function () {
+            var name = $(this).attr('listname');
+            nbxget('itemlist_remove', '.entryid' + $(this).attr('itemid')); //apply serverside
+        });
+
+        $('.wishlistremoveall').unbind("click");
+        $('.wishlistremoveall').click(function () {
+            nbxget('itemlist_delete', '.entryid' + $(this).attr('itemid')); //apply serverside
+        });
+
+        $('.shoplistselect').unbind("change");
+        $('.shoplistselect').change(function () {
+            if ($(this).val() == '-1') {
+                $('.newlistdiv').show();
+                $('.wishlistadd').hide();
+                $('.shoplistselect').hide();                
+            } else {
+                $('#shoplistname').val($(this).val());                
+                $('.newlistdiv').hide();
+                $('.wishlistadd').show();                
+                $('.shoplistselect').show();
+            }
+        });
+
+        $('.cancelnewlist').unbind("click");
+        $('.cancelnewlist').click(function () {
+            $('.newlistdiv').hide();
+            $('.wishlistadd').show();                
+            $('.shoplistselect').show();
+            $('.shoplistselect>option:eq(0)').attr('selected', true);
+        });
+
+        $('.addnewlist').unbind("click");
+        $('.addnewlist').click(function () {
+            var newlisttext = $('.newlisttext').val();
+            //$('.shoplistselect').append('<option value="' + newlisttext + '" selected="selected">' + newlisttext + '</option>');
+            $('.shoplistselect').append( new Option(newlisttext,newlisttext,false,true) );
+            $('.newlistdiv').hide();
+            $('.wishlistadd').show();                
+            $('.shoplistselect').show();
+        });
+        
     }
 
     function addHandlers() {
@@ -176,6 +250,10 @@
         $('.processing').show();
         nbxget('product_ajaxview_getlistfilter', '#nbs_productajaxview', '#nbs_ajaxproducts');
     }
+    function loadItemListPopup() {
+        $('.processing').show();
+        nbxget('itemlist_getpopup', '#nbs_productajaxview', '#shoppinglistpopup');
+    }
 
     // Detect Touch Device
     function isTouch() {
@@ -193,28 +271,40 @@
 <div id="nbs_productajaxview" style="display: none;">
     <!-- Parameter fields -->
     <!-- These fields will be initialized from the _head.cshtml -->
-    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
-    <input id="moduleid" type="hidden" value="@Model.ModuleId" />
-    <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
-    <input id="editlang" type="hidden" value="@Model.Lang" />
-    <input id="uilang" type="hidden" value="@Model.Lang" />
-    <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")" />
-    <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")" />
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"/>
+    <input id="moduleid" type="hidden" value="@Model.ModuleId"/>
+    <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")"/>
+    <input id="editlang" type="hidden" value="@Model.Lang"/>
+    <input id="uilang" type="hidden" value="@Model.Lang"/>
+    <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")"/>
+    <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")"/>
 
-    <input id="modkey" type="hidden" value="" />
-    <input id="pagemid" type="hidden" value="" />
-    <input id="page" type="hidden" value="1" />
-    <input id="pagesize" type="hidden" value="@Model.Settings["pagesize"]" />
-    <input id="orderby" type="hidden" value="" />
-    <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")" />     
+    <input id="modkey" type="hidden" value=""/>
+    <input id="pagemid" type="hidden" value=""/>
+    <input id="page" type="hidden" value="1"/>
+    <input id="pagesize" type="hidden" value="@Model.Settings["pagesize"]"/>
+    <input id="orderby" type="hidden" value=""/>
+    <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")"/>
 
-    <input id="propertyfilter" type="hidden" value="" />
+    <input id="themefolder" type="hidden" value="@Model.GetSetting("themefolder")" />
+
+    <input id="propertyfilter" type="hidden" value=""/>
 
     <!-- this one will be set from the filter list set by JS from filter head fields. -->
-    <input id="propertyfiltertypeinside" type="hidden" value="" />
-    <input id="propertyfiltertypeoutside" type="hidden" value="" />
+    <input id="propertyfiltertypeinside" type="hidden" value=""/>
+    <input id="propertyfiltertypeoutside" type="hidden" value=""/>
 
     <!-- Get tempfileaname for navigation data. -->
-    <input id="navigationfilename" type="hidden" value="@Model.Settings["navigationfilename"]" />
+    <input id="navigationfilename" type="hidden" value="@Model.Settings["navigationfilename"]"/>
 
+    <!-- use this to pass itemid that need to be added to favorite/shop list. -->
+    <input id="shopitemid" type="hidden" value="" />
+    <input id="shoplistname" type="hidden" value="" />
+
+</div>
+
+<!-- Shopping List Popup -->
+<div style="display:none">
+    <div id="shoppinglistpopup" class="shoppinglistpopup">
+    </div>
 </div>

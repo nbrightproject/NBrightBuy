@@ -434,7 +434,7 @@ namespace Nevoweb.DNN.NBrightBuy.render
                                 var listname = "ItemList";
                                 if ((xmlNod.Attributes["listname"] != null)) listname = xmlNod.Attributes["listname"].Value;
 
-                                var wl = new ItemListData();
+                                var wl = new ItemListData(PortalSettings.Current.PortalId,UserController.Instance.GetCurrentUserInfo().UserID);
                                 if (wl.IsInList(productid))
                                 {
                                     rtnData.DataValue = "TRUE";
