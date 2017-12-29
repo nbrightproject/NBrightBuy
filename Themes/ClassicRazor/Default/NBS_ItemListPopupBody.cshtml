@@ -19,7 +19,12 @@
                 var itemlists = info.XMLDoc.SelectSingleNode("genxml/listkeys");
                 if (itemlists != null)
                 {
-                    var arrayitemlists = itemlists.InnerText.Split('*');
+                    var defaultlist = "" + ResourceKey("General.favorites") + "*";
+                    var arrayitemlists = defaultlist.Split('*');
+                    if (itemlists.InnerText != "")
+                    {
+                        arrayitemlists = itemlists.InnerText.Split('*');
+                    }
                     foreach (string itemlist in arrayitemlists)
                     {
                         if (itemlist != "")
