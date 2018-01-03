@@ -85,8 +85,8 @@
             strID = $(this).attr("id");
             nam = strID.split('_');
             var shortID = nam[nam.length - 1];
-            var lp = 1
-            while (shortID.length < 3) {
+            var lp = 1;
+            while (shortID.length < 4 && nam.length > lp) {
                 lp++;
                 shortID = nam[nam.length - lp];
             }
@@ -110,8 +110,8 @@
                 strID = $(this).attr("id");
                 nam = strID.split('_');
                 var shortID = nam[nam.length - 1];
-                var lp = 1
-                while (shortID.length < 3) {
+                var lp = 1;
+                while (shortID.length < 4 && nam.length > lp) {
                     lp++;
                     shortID = nam[nam.length - lp];
                 }
@@ -145,8 +145,8 @@
             strID = $(this).attr("id");
             nam = strID.split('_');
             var shortID = nam[nam.length - 1];
-            var lp = 1
-            while (shortID.length < 3) {
+            var lp = 1;
+            while (shortID.length < 4 && nam.length > lp) {
                 lp++;
                 shortID = nam[nam.length - lp];
             }
@@ -187,7 +187,7 @@
             var nam = strID.split('_');
             var shortID = nam[nam.length - 1];
             var lp = 1;
-            while (shortID.length < 3) {
+            while (shortID.length < 4 && nam.length > lp) {
                 lp++;
                 shortID = nam[nam.length - lp];
             }

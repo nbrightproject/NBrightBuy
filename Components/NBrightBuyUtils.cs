@@ -1100,6 +1100,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/checkbox/" + xmlNod.Name);
                 }
             }
+            nods = nbi.XMLDoc.SelectNodes("genxml/checkboxlist/*");
+            if (nods != null)
+            {
+                foreach (XmlNode xmlNod in nods)
+                {
+                    if (!ignoreAry.Contains(xmlNod.Name)) rtnList.Add("genxml/checkboxlist/" + xmlNod.Name);
+                }
+            }
             nods = nbi.XMLDoc.SelectNodes("genxml/dropdownlist/*");
             if (nods != null)
             {

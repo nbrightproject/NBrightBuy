@@ -306,7 +306,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             }
         }
 
-        private static int ProductSave(HttpContext context, bool newrecord = false)
+        public static int ProductSave(HttpContext context, bool newrecord = false)
         {
             if (NBrightBuyUtils.CheckRights())
             {

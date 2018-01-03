@@ -840,34 +840,46 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    var id = f.Split('/').Last();
-                    if (id == "description")
+                    if (f.StartsWith("genxml/checkboxlist"))
                     {
-                        var xpath = f.Replace("textbox", "edt");
-                        // special processing for editor, to place code in standard place.
-                        if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null) DataLangRecord.AddSingleNode("edt", "", "genxml");
-                        if (info.GetXmlProperty("genxml/textbox/description") == "")
-                            DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/description"));
+                        // process checkboxlist by copy xml node.
+                        DataLangRecord.ReplaceXmlNode(info.XMLData,f, "genxml/checkboxlist");
+                    }
+                    else
+                    {
+
+                        var id = f.Split('/').Last();
+                        if (id == "description")
+                        {
+                            var xpath = f.Replace("textbox", "edt");
+                            // special processing for editor, to place code in standard place.
+                            if (DataLangRecord.XMLDoc.SelectSingleNode("genxml/edt") == null)
+                                DataLangRecord.AddSingleNode("edt", "", "genxml");
+                            if (info.GetXmlProperty("genxml/textbox/description") == "")
+                                DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/edt/description"));
+                            else
+                                DataLangRecord.SetXmlProperty(xpath,
+                                    info.GetXmlPropertyRaw("genxml/textbox/description"));
+                            // ajax on ckeditor (Ajax doesn't work for telrik)
+                        }
                         else
-                            DataLangRecord.SetXmlProperty(xpath, info.GetXmlPropertyRaw("genxml/textbox/description")); // ajax on ckeditor (Ajax doesn't work for telrik)
-                    }
-                    else
-                    {
-                        DataLangRecord.RemoveXmlNode(f);
-                        var xpathDest = f.Split('/');
-                        if (xpathDest.Count() >= 2) DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
-                    }
+                        {
+                            DataLangRecord.RemoveXmlNode(f);
+                            var xpathDest = f.Split('/');
+                            if (xpathDest.Count() >= 2)
+                                DataLangRecord.AddXmlNode(xmlData, f, xpathDest[0] + "/" + xpathDest[1]);
+                        }
 
-                    var datatype = info.GetXmlProperty(f + "/@datatype");
-                    if (datatype == "date")
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
-                    else if (datatype == "double")
-                        DataLangRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
-                    else if (datatype == "html")
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
-                    else
-                        DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f).Trim());
-
+                        var datatype = info.GetXmlProperty(f + "/@datatype");
+                        if (datatype == "date")
+                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                        else if (datatype == "double")
+                            DataLangRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                        else if (datatype == "html")
+                            DataLangRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                        else
+                            DataLangRecord.SetXmlProperty(f, info.GetXmlProperty(f).Trim());
+                    }
                     DataRecord.RemoveXmlNode(f);
                 }
             }
@@ -888,20 +900,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
                 if (f != "")
                 {
-                    var datatype = info.GetXmlProperty(f + "/@datatype");
-                    if (datatype == "date")
-                        DataRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
-                    else if (datatype == "double")
-                        DataRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
-                    else if (datatype == "html")
-                        DataRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                    if (f.StartsWith("genxml/checkboxlist"))
+                    {
+                        // process checkboxlist by copy xml node.
+                        DataRecord.ReplaceXmlNode(info.XMLData, f, "genxml/checkboxlist");
+                    }
                     else
-                        DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
+                    {
+                        var datatype = info.GetXmlProperty(f + "/@datatype");
+                        if (datatype == "date")
+                            DataRecord.SetXmlProperty(f, info.GetXmlProperty(f), TypeCode.DateTime);
+                        else if (datatype == "double")
+                            DataRecord.SetXmlPropertyDouble(f, info.GetXmlProperty(f));
+                        else if (datatype == "html")
+                            DataRecord.SetXmlProperty(f, info.GetXmlPropertyRaw(f));
+                        else
+                            DataRecord.SetXmlProperty(f, info.GetXmlProperty(f));
 
-                    // if we have a image field then we need to create the imageurl field
-                    if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
-                        DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url", _storeSettings.FolderImages + "/" + info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
-
+                        // if we have a image field then we need to create the imageurl field
+                        if (info.GetXmlProperty(f.Replace("textbox/", "hidden/hidinfo")) == "Img=True")
+                            DataRecord.SetXmlProperty(f.Replace("textbox/", "hidden/") + "url",
+                                _storeSettings.FolderImages + "/" +
+                                info.GetXmlProperty(f.Replace("textbox/", "hidden/hid")));
+                    }
                     DataLangRecord.RemoveXmlNode(f);
                 }
             }
