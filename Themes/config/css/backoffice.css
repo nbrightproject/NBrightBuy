@@ -111,12 +111,14 @@ body{background:#646262}
 /* Productlist items as table rows */
 .productadmintable .edititem{top:0;right:0;position:absolute;}
 .productadmintable td{display:table-cell;vertical-align:middle !important}
+.productadmintable td.noimage a{display:block;width:80px;height:60px;text-align:center;background:#ccc;}
+.productadmintable td.noimage .fa{color:white;line-height:60px}
 
 /* Productlist items as thumbnails */
 #accordion{background:#F8F8F8;border:none;box-shadow:none}
 .productadminlist{list-style: none outside none;margin: 0;padding: 0;}
 .productadminlist > li{float:left}
-.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative}
+.productadminlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position:relative}
 .productadminlist .productlistitem li{text-align:center;}
 .productadminlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
 .productadminlist .productlistitem li.noimage{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
@@ -202,23 +204,25 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 /* Category Editor Productlist items */
 .productlist{list-style: none outside none;margin: 0;padding: 0;}
 .productlist > li{float:left}
-.productlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative;}
+.productlist .productlistitem{list-style: none outside none;margin: 0;padding: 0;background:#fff;border:#ccc solid 1px;width:120px;height:160px;margin:0 10px 10px 0;position: relative;}
 .productlist .productlistitem li{text-align:center;}
 .productlist .productlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
-.productlist .productlistitem li.noimage{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.productlist .productlistitem li.noimage{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px;}
+.productlist .productlistitem li.image img {max-height:100px;}
 .productlist .productlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
-.productlist .productlistitem .removeitem{top:0;right:0;position:absolute;}
+.productlist .productlistitem .removeitem{top:2px;right:2px;position:absolute;}
 .productlist .productlistitem .removeproduct{color:#D33030;cursor:pointer;}
 
 /* Category Editor Productlist adding items This section not working with masonry */
 .productlist{list-style: none outside none;margin: 0;padding: 0;}
 .productlist > li{float:left}
-.productlist .selectlistitem{list-style: none outside none;margin: 0;padding: 0;background:#FFFFFF;width:120px;height:160px;margin-bottom:6px;position: relative;}
+.productlist .selectlistitem{list-style: none outside none;margin: 0;padding: 0;background:#fff;border:#ccc solid 1px;width:120px;height:160px;margin:0 10px 10px 0;position: relative;}
 .productlist .selectlistitem li{text-align:center;}
 .productlist .selectlistitem li.image{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
 .productlist .selectlistitem li.noimage{display:table-cell;text-align:center;vertical-align:middle;width:inherit;width:120px;height:120px}
+.productlist .selectlistitem li.image img {max-height:100px;}
 .productlist .selectlistitem li.title{line-height:150%;font-weight:bold;padding:3px 0;font-size: 12px;height:40px;overflow:hidden}
-.productlist .selectlistitem .additem{top:0;right:0;position:absolute;}
+.productlist .selectlistitem .additem{top:2px;right:2px;position:absolute;}
 .productlist .selectlistitem .selectproduct{cursor:pointer;}
 
 /* Store settings */

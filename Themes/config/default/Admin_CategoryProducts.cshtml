@@ -8,6 +8,7 @@
 
 @if (Model.List.Count > 0)
 {
+
     <ul id="selectlistwrapper" class="productlist">
 
         @foreach (NBrightInfo nbiPrd in Model.List)
@@ -22,21 +23,15 @@
 
                     @if (nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                     {
-                        <li class="image name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=100&h=0&src=@nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")"/></li>
+                        <li class="image name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?w=100&h=80&src=@nbiPrd.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")"/></li>
                     }
                     else
                     {
-                        <li class="noimage name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><i class="fa fa-picture-o fa-5x"></i></li>
+                        <li class="noimage name" data-toggle="tooltip" data-original-title="@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")"><i class="fa fa-picture-o fa-4x"></i></li>
                     }
 
-                    <li class="title">
-                        @if (@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer") == "")
-                        {
-                            @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtmanufacturer")<span>: </span>
-                        }
-                        @nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")
-                    </li>
-                    <li class="removeitem"><a class="removeproduct" itemid="@nbiPrd.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw"></i></a>
+                    <li class="title">@nbiPrd.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</li>
+                    <li class="removeitem"><a class="removeproduct" itemid="@nbiPrd.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a></li>
                 </ul>
             </li>
 

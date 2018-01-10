@@ -298,17 +298,11 @@
                                                             }
                                                             else
                                                             {
-                                                                <li class="noimage name" data-toggle="tooltip" data-original-title="@prdData.ProductName"><i class="fa fa-picture-o fa-5x"></i></li>
+                                                                <li class="noimage name" data-toggle="tooltip" data-original-title="@prdData.ProductName"><i class="fa fa-picture-o fa-4x"></i></li>
                                                             }
 
-                                                            <li class="title">
-                                                                @if (@prdData.DataRecord.GetXmlProperty("genxml/textbox/manufacturer") != "")
-                                                                {
-                                                                    @prdData.DataRecord.GetXmlProperty("genxml/textbox/manufacturer")<span>: </span>
-                                                                }
-                                                                @prdData.ProductName
-                                                            </li>
-                                                            <li class="removeitem"><a class="removeproduct" itemid="@prdData.DataRecord.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw"></i></a>
+                                                            <li class="title">@prdData.ProductName</li>
+                                                            <li class="removeitem"><a class="removeproduct" itemid="@prdData.DataRecord.ItemID"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a></li>
                                                         </ul>
                                                     </li>
                                                 }
