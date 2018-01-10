@@ -146,6 +146,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             var strXml = new StringBuilder("<root>");
             var objCtrlUser = new UserController();
 
+
+            var ignoreshared = (GenXmlFunctions.GetField(rpData, "ignoreshared") == "True");
+
             if (GenXmlFunctions.GetField(rpData,"exportproducts") == "True")
             {
 
@@ -159,7 +162,13 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     if (entityprov != null)
                     {
                         var provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCode());
-                        foreach (var i in provl) { strXml.Append(i.ToXmlItem()); }
+                        foreach (var i in provl)
+                        {
+                            if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                            {
+                                strXml.Append(i.ToXmlItem());
+                            }
+                        }
 
                         provl = ModCtrl.GetList(PortalId, -1, entityprov.GetEntityTypeCodeLang());
                         foreach (var i in provl) { strXml.Append(i.ToXmlItem()); }
@@ -167,13 +176,31 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 }
 
                 var l = ModCtrl.GetList(PortalId, -1, "PRD");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
 
                 l = ModCtrl.GetList(PortalId, -1, "PRDLANG");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             
                 l = ModCtrl.GetList(PortalId, -1, "PRDXREF");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
 
                 l = ModCtrl.GetList(PortalId, -1, "USERPRDXREF");
                 foreach (var i in l)
@@ -181,8 +208,11 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                     var u = objCtrlUser.GetUser(i.PortalId, i.UserId);
                     if (u != null)
                     {
-                        i.TextData = u.Username;
-                        strXml.Append(i.ToXmlItem());
+                        if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                        {
+                            i.TextData = u.Username;
+                            strXml.Append(i.ToXmlItem());
+                        }
                     }
                 }
                 
@@ -191,39 +221,87 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "CATEGORY");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
 
                 l = ModCtrl.GetList(PortalId, -1, "CATEGORYLANG");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportcategories") == "True" && GenXmlFunctions.GetField(rpData, "exportproducts") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "CATCASCADE");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
                 l = ModCtrl.GetList(PortalId, -1, "CATXREF");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportproperties") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "GROUP");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
 
                 l = ModCtrl.GetList(PortalId, -1, "GROUPLANG");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportsettings") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, 0, "SETTINGS");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             }
 
             if (GenXmlFunctions.GetField(rpData, "exportorders") == "True")
             {
                 var l = ModCtrl.GetList(PortalId, -1, "ORDER");
-                foreach (var i in l) { strXml.Append(i.ToXmlItem()); }
+                foreach (var i in l)
+                {
+                    if ((ignoreshared && i.PortalId != -1) || !ignoreshared)
+                    {
+                        strXml.Append(i.ToXmlItem());
+                    }
+                }
             }
 
             strXml.Append("</root>");

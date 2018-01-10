@@ -45,4 +45,9 @@ v3.6.7
 - fix bug on multiple langauge save.
 - Close possible SQL hole in typecode lang record select for GetDataLang SPROC
 - Add Tag Word js. 
+- Add Ajax Product list
+- Add userbased favorite lists
+- Add CKEditor param
+- Enable shared products on import.
+- Option to Ignore Shared records on Export
 

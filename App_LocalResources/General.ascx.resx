@@ -1164,4 +1164,7 @@
   <data name="listtitle.Text" xml:space="preserve">
     <value>Please select your list</value>
   </data>
+  <data name="IgnoreShared.Text" xml:space="preserve">
+    <value>Ignore Shared Records</value>
+  </data>
 </root>
