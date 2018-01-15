@@ -202,11 +202,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="itemId"></param>
         public void Remove(string listkey, string itemId)
         {
-            listkey = CleanListKey(listkey);
-            if (productsInList.ContainsKey(listkey))
+            if (listkey == "")
             {
-                productsInList[listkey] = productsInList[listkey].Replace(itemId + "*", "");
-                SaveList(listkey,"");
+                foreach (var lname in listnames)
+                {
+                    if (productsInList.ContainsKey(lname.Key))
+                    {
+                        productsInList[lname.Key] = productsInList[lname.Key].Replace(itemId + "*", "");
+                        SaveList(lname.Key, "");
+                    }
+                }
+            }
+            else
+            {
+                listkey = CleanListKey(listkey);
+                if (productsInList.ContainsKey(listkey))
+                {
+                    productsInList[listkey] = productsInList[listkey].Replace(itemId + "*", "");
+                    SaveList(listkey, "");
+                }
             }
         }
 
