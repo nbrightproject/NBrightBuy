@@ -168,4 +168,7 @@
   <data name="CreateAddress.Text" xml:space="preserve">
     <value>Créer une nouvelle adresse</value>
   </data>
+  <data name="ClientmenuShoppingLists.Text" xml:space="preserve">
+    <value>Listes de courses</value>
+  </data>
 </root>

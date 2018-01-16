@@ -273,4 +273,7 @@
   <data name="CreateAddress.Text" xml:space="preserve">
     <value>Create a new address</value>
   </data>
+  <data name="ClientmenuShoppingLists.Text" xml:space="preserve">
+    <value>Shopping lists</value>
+  </data>
 </root>

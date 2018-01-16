@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300);
+@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,900);
 
 /* Common */
 @-webkit-viewport   { width: device-width; }
@@ -72,6 +72,7 @@ body{background:#646262}
 .navbar a.btn-success{}
 #sidebar-left{background:#646262}
 #content{box-shadow:none}
+a.show-sidebar {margin-top:15px;}
 .show-sidebar .fa{color: #646262;font-size: 20px;}
 .ui-accordion-header.ui-state-active {background:#1aa8e3 !important;color: #ffffff;}
 
@@ -310,7 +311,7 @@ a.sortelementUp,a.sortelementDown{cursor:pointer;position:absolute;display:block
 .orderstatus120 {background:#eb2659;} /* Being Manufactured - Pink */
 
 /* Branding */
-.backoffice-logo {height:50px;font-family:'Source Sans Pro', sans-serif;font-weight:300;font-size:28px;color:white;line-height:48px;padding-left:34px;background:#bbcf1f url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/amylis_24x24.png") no-repeat 0 12px;}
+.backoffice-logo {height:50px;font-family:'Source Sans Pro', sans-serif;font-weight:900;font-size:28px;letter-spacing:-1px;color:white;line-height:48px;padding-left:34px;background:#bbcf1f url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/amylis_24x24.png") no-repeat 0 12px;}
 /* NB-Store */
 .nbstore .backoffice-logo {background:#1aa8e3 url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/nb-store_24x24.png") no-repeat 0 12px;}
 /* Amylis */

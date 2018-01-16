@@ -1137,13 +1137,43 @@
   <data name="QtyUnits.Text" xml:space="preserve">
     <value>Nbr unités</value>
   </data>
+  <data name="txtemptybasket.Text" xml:space="preserve">
+    <value>Le panier est vide</value>
+  </data>
+  <data name="txtitems.Text" xml:space="preserve">
+    <value>Sous-total</value>
+  </data>
+  <data name="pleaseselect.Text" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
   <data name="ApplyTax.Text" xml:space="preserve">
     <value>Appliquer le taux d'imposition à tous les produits de la catégorie</value>
+  </data>
+  <data name="GroupType.Text" xml:space="preserve">
+    <value>Type de groupe</value>
+  </data>
+  <data name="filtergroups.Text" xml:space="preserve">
+    <value>Groupes de filtres</value>
+  </data>
+  <data name="group.Text" xml:space="preserve">
+    <value>Groupe</value>
+  </data>
+  <data name="filter.Text" xml:space="preserve">
+    <value>Filtrer</value>
   </data>
   <data name="createnewlist.Text" xml:space="preserve">
     <value>Créer une nouvelle liste</value>
   </data>
   <data name="listtitle.Text" xml:space="preserve">
-    <value>Sélectionnez SVP une liste de produits</value>
+    <value>Veuillez sélectionner une liste</value>
+  </data>
+  <data name="shoppinglistadd.Text" xml:space="preserve">
+    <value>Ajouter à cette liste</value>
+  </data>
+  <data name="createlist.Text" xml:space="preserve">
+    <value>Créer la liste</value>
+  </data>
+  <data name="cancellist.Text" xml:space="preserve">
+    <value>Annuler</value>
   </data>
 </root>

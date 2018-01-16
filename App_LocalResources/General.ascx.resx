@@ -1158,11 +1158,23 @@
   <data name="group.Text" xml:space="preserve">
     <value>Group</value>
   </data>
+  <data name="filter.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="createnewlist.Text" xml:space="preserve">
     <value>Create new list</value>
   </data>
   <data name="listtitle.Text" xml:space="preserve">
-    <value>Please select your list</value>
+    <value>Please select a list</value>
+  </data>
+  <data name="shoppinglistadd.Text" xml:space="preserve">
+    <value>Add to this list</value>
+  </data>
+  <data name="createlist.Text" xml:space="preserve">
+    <value>Create list</value>
+  </data>
+  <data name="cancellist.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="IgnoreShared.Text" xml:space="preserve">
     <value>Ignore Shared Records</value>
