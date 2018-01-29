@@ -672,7 +672,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (emailtype == "OrderCreatedClient")
                     {
                         emailBody = NBrightBuyUtils.RazorTemplRender("OrderHtmlOutput.cshtml", 0, "", ordData, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), StoreSettings.Current.Get("merchantculturecode"), passSettings);
-                        SendEmail(emailBody, StoreSettings.Current.ManagerEmail, emailtype, ordData.GetInfo(), emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
+                        SendEmail(emailBody, StoreSettings.Current.ManagerEmail, "OrderCreatedManager", ordData.GetInfo(), emailsubjectresxkey, fromEmail, StoreSettings.Current.Get("merchantculturecode"));
                     }
 
 

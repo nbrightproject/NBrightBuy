@@ -313,9 +313,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 else
                     numberofmodels = 1; // if we have no numeric, assume we need to add it
 
+                var replaceIndex = -1;
+                if (nbSettings.GetXmlPropertyBool("genxml/newcartitems")) // always create new items for cart. (Do not replace)
+                {
+                    replaceIndex = -2;
+                }
                 for (var i = 1; i <= numberofmodels; i++)
                 {
-                    strRtn += AddSingleItem(strproductid, m, qtylist[m], ajaxInfo, debugMode);
+                    strRtn += AddSingleItem(strproductid, m, qtylist[m], ajaxInfo, debugMode, replaceIndex);
                 }
             }
             return strRtn;
@@ -548,7 +553,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 //replace the item if it's already in the list.
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
-                if (nodItem == null || clientfileuopload)
+                if (nodItem == null || clientfileuopload || replaceIndex == -2)
                 {
                     #region "Client Files"
 
