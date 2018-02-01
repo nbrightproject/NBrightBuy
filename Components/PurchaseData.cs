@@ -555,6 +555,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null || clientfileuopload || replaceIndex == -2)
                 {
+                    objInfo.SetXmlProperty("genxml/itemcode", objInfo.GetXmlProperty("genxml/itemcode") + Utils.GetUniqueKey());  // make sure itemcode is unique
+
                     #region "Client Files"
 
                     if (clientfileuopload)
