@@ -1,0 +1,34 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using NBrightCore.common
+@using NBrightDNN
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/resx")
+
+
+    <div id="cartlist" style="">
+
+        <!-- Layout template -->
+        <div id="cartdetails" class="nbs dnnform">
+            <div id="checkoutdisplaylist"></div>
+            <div id="checkoutdisplayaddr"></div>
+            <div id="checkoutsummary">
+                <!-- lang field so ajax call knows what language is being used, when "checkoutsummary" element is posted for ajax recalc -->
+                <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
+                <input id="uilang" type="hidden" value="@Model.Lang" />
+                <div id="checkoutdisplayshipmethod"></div>
+                <div id="checkoutdisplaysummary"></div>
+            </div>
+
+                <div id="cartactions" style="display: none;">
+                    <div style="clear: both;">
+                        <a href="javascript:void(0)" id="cmdPrev" class="primarybutton">@ResourceKey("CartView.Previous")</a>
+                        <a href="javascript:void(0)" id="cmdDeleteCart" class="secondarybutton clearcart">@ResourceKey("CartView.cmdClearCart")</a>
+                        <a href="javascript:void(0)" id="cmdRecalcCart" class="secondarybutton recalculatecart">@ResourceKey("CartView.UpdateCart")</a>
+                        <a href="javascript:void(0)" id="cmdNext" class="primarybutton">@ResourceKey("CartView.Next")</a>
+                    </div>
+                </div>
+
+            </div>
+
+    </div>

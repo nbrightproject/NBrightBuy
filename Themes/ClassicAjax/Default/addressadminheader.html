@@ -1,0 +1,28 @@
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/css/ClientAccount.css" rel="stylesheet">
+
+<!-- Client Menu -->
+<div class="clientmenuwrapper">
+<ul class="clientmenu">
+  <li><a href="/Activity-Feed">[<tag type="valueof" resourcekey="Clients.ClientmenuAccount" />]</a></li>
+[<tag type="if" function="settings" key="enablemyorders" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:ordermanagertab]">[<tag type="valueof" resourcekey="Clients.ClientmenuOrders" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyprofile" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:addressestab]">[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablefavorites" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:favoritestab]">[<tag type="valueof" resourcekey="Clients.ClientmenuShoppingLists" />]</a></li>
+[<tag type="endif"  />]
+[<tag type="if" function="settings" key="enablemyaddress" testvalue="True" display="{ON}" />]
+  <li><a href="/tabid/[Settings:profiletab]">[<tag type="valueof" resourcekey="Clients.ClientmenuProfile" />]</a></li>
+[<tag type="endif"  />]
+</ul>
+</div>
+
+<div class="nbs myaddresses">
+
+<div id="addressbook">
+
+<h1>[<tag type="valueof" resourcekey="Clients.ClientmenuAddresses" />]</h1>
+
+<ul id="checkoutselectaddress">

@@ -1,0 +1,144 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+<!-- "pageheaderdetail.cshtml" template will be auto injected as dynamic data into page head section -->
+@{
+    // assign Model, so we can resolve var in VS
+    var product = (ProductData) Model.List.First(); 
+    var info = (NBrightInfo) product.Info;
+}
+
+<!-- This template is injected into the details page head section -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+
+<!-- SEO name field test to cover all services Combined to reduce the number of tests needed -->
+<meta property="og:title" content="@PropertyValue(product,"man","propertyname") @(product.ProductName)"/>
+<meta name="twitter:title" content="@PropertyValue(product,"man","propertyname") @(product.SEOName)"/>
+<meta itemprop="name" content="@PropertyValue(product,"man","propertyname") @(product.SEOName)"/>
+
+<!-- Open Graph data for Facebook - Title and Type are required - https://developers.facebook.com/docs/reference/opengraph/object-type/object -->
+<meta property="og:description" content="@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")"/>
+    @if (product.Imgs.Count > 0)
+    {
+        <meta property="og:image" content="http://@WebsiteUrl()@product.Imgs.First().GetXmlProperty(" genxml/hidden/imageurl")"/>
+    }
+<meta property="og:url" content="@EntryUrl(info,Model,false,product.SEOName)"/>
+<meta property="og:site_name" content="@Model.GetSetting("portalname")"/>
+<meta property="og:type" content="@Model.GetSetting("ogobjecttype")"/>
+<meta property="og:price:amount" content="@product.FromPrice()"/>
+<meta property="og:price:currency" content="@(NBrightBuyUtils.GetCurrencyIsoCode())"/>
+
+<!-- Facebook id number for Page Insights - https://www.facebook.com/help/336893449723054 -->
+<meta property="fb:admins" content="[Settings:facebookid]"/>
+
+<!-- Twitter Card - https://dev.twitter.com/docs/cards -->
+<meta name="twitter:card" content="product"/>
+<meta name="twitter:site" content="@Model.GetSetting("twittersite")"/>
+<meta name="twitter:creator" content="@Model.GetSetting("twitteruser")"/>
+<meta name="twitter:domain" content="@WebsiteUrl()"/>
+<meta name="twitter:description" content="@product.SEODescription"/> 
+@if (product.Imgs.Count > 0)
+{
+    <meta name="twitter:image" content="http://@WebsiteUrl()@product.Imgs.First().GetXmlProperty(" genxml/hidden/imageurl")"/>
+}
+<meta name="twitter:label1" content="@ResourceKey("ProductView.price")"/><!-- need to fix this to just get the label, no spans -->
+<meta name="twitter:data1" content="@product.FromPrice()"/>
+<meta name="twitter:label2" content=""/>
+<meta name="twitter:data2" content=""/>
+
+<!-- Google Plus -->
+<meta itemprop="description" content="@product.SEODescription"/>
+@if (product.Imgs.Count > 0)
+{
+    <meta itemprop="image" content="http://@WebsiteUrl()@product.Imgs.First().GetXmlProperty(" genxml/hidden/imageurl")" />
+}
+
+<!-- Rich Snippets / Schema.org code is inserted directly into the detail.html template - http://schema.org/Product -->
+
+<!-- Quantity Input -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.processing').hide();
+
+        $(".quantity").keydown(function (e) {
+            if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
+            if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+        });
+
+        $('.qtyminus').click(function () {
+
+            var idx = $(this).attr("index");
+            if (idx === undefined) {
+                if (parseInt($('.selectedaddqty').val()) > 1)
+                    $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) - 1);
+                else
+                    $('.selectedaddqty').val('1');
+            } else {
+                $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) - 1);
+                if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
+            }
+        });
+
+        $('.qtyplus').click(function () {
+            var idx = $(this).attr("index");
+            if (idx === undefined) {
+                $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) + 1);
+                if ($('.selectedaddqty').val() == 'NaN') $('.selectedaddqty').val('1');
+            } else {
+                $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) + 1);
+                if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
+            }
+        });
+
+        $('.addtobasket').click(function () {
+            if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
+        });
+
+    });
+</script>
+
+<!-- Details Tabs -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.nav-tabs > li > a').click(function(event){
+            event.preventDefault();//stop browser to take action for clicked anchor
+
+            //get displaying tab content jQuery selector
+            var active_tab_selector = $('.nav-tabs > li.tab-active > a').attr('href');
+
+            //find actived navigation and remove 'active' css
+            var actived_nav = $('.nav-tabs > li.tab-active');
+            actived_nav.removeClass('tab-active');
+
+            //add 'active' css into clicked navigation
+            $(this).parents('li').addClass('tab-active');
+
+            //hide displaying tab content
+            $(active_tab_selector).removeClass('tab-active');
+            $(active_tab_selector).addClass('tab-hide');
+
+            //show target tab content
+            var target_tab_selector = $(this).attr('href');
+            $(target_tab_selector).removeClass('tab-hide');
+            $(target_tab_selector).addClass('tab-active');
+        });
+    });
+</script>
+
+<!-- Switch Image -->
+<script type="text/javascript">
+
+function showImage(imgPath, imgAlt) {
+  var imgMain = document.getElementById('mainimage');
+  imgMain.src = imgPath;
+  imgMain.alt = imgAlt;
+}
+
+</script>
+

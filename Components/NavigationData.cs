@@ -39,11 +39,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             Get();
         }
 
-        public NavigationData(string navigationfilename)
-        {
-            Get(navigationfilename);
-        }
-
         /// <summary>
         /// Build the SQL criteria form the xml field input and the template meta data
         /// </summary>
