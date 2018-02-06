@@ -27,6 +27,7 @@
         loadProductList();
         loadItemListPopup();
 
+
     });
 
     // call ajax based on browser history
@@ -212,6 +213,13 @@
 		nbxget('product_ajaxview_getfilters', '#nbs_ajaxfiltermodulesettings', '#nbs_ajaxfilter');
     }
 	
+    function IsInFavorites(productid) {
+        var productitemlist = $.cookie("NBSShoppingList");
+        if (productitemlist.indexOf(productid + '*') !== -1) {
+            return true;
+        }
+        return false;
+    }
 
 
     // Detect Touch Device
