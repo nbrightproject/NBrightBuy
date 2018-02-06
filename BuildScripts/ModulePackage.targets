@@ -32,6 +32,7 @@
       <InstallInclude Include="**\Themes\Classic\**\*.*" Exclude="**\menuplugin.xml;" />
       <InstallInclude Include="**\Themes\ClassicRazor\**\*.*" Exclude="**\menuplugin.xml;" />
       <InstallInclude Include="**\Themes\config\**\*.*" Exclude="**\menuplugin.xml;" />
+      <InstallInclude Include="**\Themes\ClassicAjax\**\*.*" Exclude="**\menuplugin.xml;" />
       
     </ItemGroup>
     

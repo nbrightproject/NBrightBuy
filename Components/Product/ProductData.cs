@@ -1761,10 +1761,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // remove duplicate catcascade records
-            var cascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") );
+            var cascadeList = objCtrl.GetList(_portalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") );
             foreach (var c in cascadeList)
             {
-                var l2 = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and GUIDKey = '" + c.GUIDKey + "'");
+                var l2 = objCtrl.GetList(_portalId, -1, "CATCASCADE", " and GUIDKey = '" + c.GUIDKey + "'");
                 if (l2.Count > 1)
                 {
                     for (int i = 1; i < l2.Count; i++)
@@ -1776,12 +1776,54 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // remove any unlinked catacscade records
-            cascadeList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = 0");
+            cascadeList = objCtrl.GetList(_portalId, -1, "CATCASCADE", " and NB1.ParentItemId = " + Info.ItemID.ToString("") + " and NB1.XrefItemId = 0");
             foreach (var c in cascadeList)
             {
                 objCtrl.Delete(c.ItemID);
                 errorcount += 1;
             }
+            // remove catcascade record that have no catxref record for the product.
+            var caslist = new List<int>();
+            var catcascadelist = objCtrl.GetList(_portalId, -1, "CATCASCADE", " and nb1.ParentItemId = '" + Info.ItemID + "' ");
+            foreach (var n in catcascadelist)
+            {
+                caslist.Add(n.XrefItemId);
+            }
+
+            var catlist2 = GetCategories();
+            if (catlist2.Any())
+            {
+                foreach (var cat in catlist2)
+                {
+
+                    var objGrpCtrl = new GrpCatController("fr-FR", true);
+                    var parentcats = objGrpCtrl.GetCategory(cat.categoryid);
+                    if (parentcats != null)
+                    {
+                        foreach (var p in parentcats.Parents)
+                        {
+                            if (caslist.Contains(p))
+                            {
+                                caslist.Remove(p);
+                            }
+                        }
+                    }
+                }
+                if (caslist.Count > 0)
+                {
+                    // invalid record, delete
+                    foreach (var di in caslist)
+                    {
+                        var strGuidKey = di + "x" + Info.ItemID;
+                        var delrecord = objCtrl.GetByGuidKey(DataRecord.PortalId, -1, "CATCASCADE", strGuidKey);
+                        if (delrecord != null)
+                        {
+                            objCtrl.Delete(delrecord.ItemID);
+                        }
+                    }
+                }
+            }
+
 
 
             // update shared product if flagged
