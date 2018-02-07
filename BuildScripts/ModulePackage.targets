@@ -29,10 +29,10 @@
       <InstallInclude Include="**\*.txt"  Exclude="Themes\**;**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;Installation\**;" />
       <InstallInclude Include="**\images\**" Exclude="packages\**;Themes\**;" />
       <InstallInclude Include="**\img\**" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="**\Themes\Classic\**\*.*" Exclude="**\menuplugin.xml;" />
-      <InstallInclude Include="**\Themes\ClassicRazor\**\*.*" Exclude="**\menuplugin.xml;" />
-      <InstallInclude Include="**\Themes\config\**\*.*" Exclude="**\menuplugin.xml;" />
-      <InstallInclude Include="**\Themes\ClassicAjax\**\*.*" Exclude="**\menuplugin.xml;" />
+      <InstallInclude Include="**\Themes\Classic\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
+      <InstallInclude Include="**\Themes\ClassicRazor\**\*.*" Exclude="**\menuplugin.xml**\Thumbs.db;;" />
+      <InstallInclude Include="**\Themes\config\**\*.*" Exclude="**\menuplugin.xml**\Thumbs.db;;" />
+      <InstallInclude Include="**\Themes\ClassicAjax\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
       
     </ItemGroup>
     
