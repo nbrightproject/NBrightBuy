@@ -104,8 +104,8 @@
 .NBrightPrevPg a {}
 
 /* Featured Product */
-.featuredproduct {position:relative;}
-.featuredproduct .product {background:white;position:relative;border:#eae8e8 solid 1px;padding:40px 12px 40px 80px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+.featuredproduct {border:#eae8e8 solid 1px;position:relative;}
+.featuredproduct .product {position:relative;padding:40px 12px 40px 80px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 .featuredproduct .product:after {content:"";display:table;clear:both;}
 .featuredproduct .productimg {display:inline-block;width:300px;height:300px;float:right;}
 .featuredproduct .product div.image {display:table-cell;text-align:center;vertical-align:middle;width:inherit;height:300px;}

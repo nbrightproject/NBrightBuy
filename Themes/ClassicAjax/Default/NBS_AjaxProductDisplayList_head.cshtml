@@ -215,8 +215,10 @@
 	
     function IsInFavorites(productid) {
         var productitemlist = $.cookie("NBSShoppingList");
-        if (productitemlist.indexOf(productid + '*') !== -1) {
-            return true;
+        if (productitemlist !== null && productitemlist !== undefined) {
+            if (productitemlist.indexOf(productid + '*') !== -1) {
+                return true;
+            }            
         }
         return false;
     }
