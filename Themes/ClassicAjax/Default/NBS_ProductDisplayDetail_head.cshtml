@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Linq
+@using DotNetNuke.Entities.Users
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
 
@@ -57,51 +58,12 @@
     <meta itemprop="image" content="http://@WebsiteUrl()@product.Imgs.First().GetXmlProperty(" genxml/hidden/imageurl")" />
 }
 
-<!-- Rich Snippets / Schema.org code is inserted directly into the detail.html template - http://schema.org/Product -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/product.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.cookie.min.js"></script>
 
-<!-- Quantity Input -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.processing').hide();
-
-        $(".quantity").keydown(function (e) {
-            if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
-            if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
-        });
-
-        $('.qtyminus').click(function () {
-
-            var idx = $(this).attr("index");
-            if (idx === undefined) {
-                if (parseInt($('.selectedaddqty').val()) > 1)
-                    $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) - 1);
-                else
-                    $('.selectedaddqty').val('1');
-            } else {
-                $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) - 1);
-                if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
-            }
-        });
-
-        $('.qtyplus').click(function () {
-            var idx = $(this).attr("index");
-            if (idx === undefined) {
-                $('.selectedaddqty').val(parseInt($('.selectedaddqty').val()) + 1);
-                if ($('.selectedaddqty').val() == 'NaN') $('.selectedaddqty').val('1');
-            } else {
-                $('#selectedmodelqty' + idx).val(parseInt($('#selectedmodelqty' + idx).val()) + 1);
-                if ($('#selectedmodelqty' + idx).val() == 'NaN') $('#selectedmodelqty' + idx).val('1');            
-            }
-        });
-
-        $('.addtobasket').click(function () {
-            if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
-        });
-
-    });
-</script>
+<!-- Colorbox Lightbox -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.colorbox-min.js"></script>
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/css/colorbox.css" rel="stylesheet">
 
 <!-- Details Tabs -->
 <script type="text/javascript">
@@ -142,3 +104,44 @@ function showImage(imgPath, imgAlt) {
 
 </script>
 
+
+<div id="nbs_productajaxview" style="display: none;">
+    <!-- Parameter fields -->
+    <!-- These fields will be initialized from the _head.cshtml -->
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
+    <input id="moduleid" type="hidden" value="@Model.ModuleId" />
+    <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
+    <input id="editlang" type="hidden" value="@Model.Lang" />
+    <input id="uilang" type="hidden" value="@Model.Lang" />
+    <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")" />
+    <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")" />
+
+    <input id="modkey" type="hidden" value="@Model.ModuleRef" />
+    <input id="pagemid" type="hidden" value="" />
+    <input id="page" type="hidden" value="@Model.GetUrlParam("page")" />
+    <input id="pagesize" type="hidden" value="@Model.Settings["pagesize"]" />
+    <input id="orderby" type="hidden" value="" />
+    <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")" />
+
+    <input id="themefolder" type="hidden" value="@Model.GetSetting("themefolder")" />
+
+    <input id="propertyfilter" type="hidden" value="" />
+
+    <!-- this one will be set from the filter list set by JS from filter head fields. -->
+    <input id="propertyfiltertypeinside" type="hidden" value="" />
+    <input id="propertyfiltertypeoutside" type="hidden" value="" />
+
+    <!-- use this to pass itemid that need to be added to favorite/shop list. -->
+    <input id="shopitemid" type="hidden" value="@Model.GetUrlParam("shopitemid")" />
+    <input id="shoplistname" type="hidden" value="" />
+    <input id="shopredirectflag" type="hidden" value="" />
+
+</div>
+
+<input id="logintab" type="hidden" value="@(StoreSettings.Current.Get("logintab"))" />
+
+<!-- Shopping List Popup -->
+<div style="display: none">
+    <div id="shoppinglistpopup" class="shoppinglistpopup">
+    </div>
+</div>

@@ -1,37 +1,46 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Entities.Users
 @using NBrightCore.common
+@using Nevoweb.DNN.NBrightBuy.Components
 
 <!-- This template is injected into the details page head section -->
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/product.js"></script>
 
-<!-- Masonry Grid http://masonry.desandro.com -->
-<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/masonry.pkgd.min.js"></script>
+<div id="nbs_productajaxview" style="display: none;">
+    <!-- Parameter fields -->
+    <!-- These fields will be initialized from the _head.cshtml -->
+    <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID" />
+    <input id="moduleid" type="hidden" value="@Model.ModuleId" />
+    <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
+    <input id="editlang" type="hidden" value="@Model.Lang" />
+    <input id="uilang" type="hidden" value="@Model.Lang" />
+    <input id="catid" type="hidden" value="@Model.GetUrlParam("catid")" />
+    <input id="catref" type="hidden" value="@Model.GetUrlParam("catref")" />
 
-<script type="text/javascript">
+    <input id="modkey" type="hidden" value="@Model.ModuleRef" />
+    <input id="pagemid" type="hidden" value="" />
+    <input id="page" type="hidden" value="@Model.GetUrlParam("page")" />
+    <input id="pagesize" type="hidden" value="@Model.Settings["pagesize"]" />
+    <input id="orderby" type="hidden" value="" />
+    <input id="entitytypecode" type="hidden" value="@Model.GetSetting("entitytypecode")" />
 
-$(document).ready(function() {
+    <input id="themefolder" type="hidden" value="@Model.GetSetting("themefolder")" />
 
-    var $container = $('.productlist').masonry({
-        columnWidth: @(Model.GetSetting("classicitemwidth")), // List item width - Can also use CSS width of first list item
-      itemSelector: '.product',
-      gutter: @(Model.GetSetting("classicitemgutter")),
-// Set horizontal gap and include in calculations. Also used in CSS for vertical gap
-            isOriginLeft: true, // Build from right to left if false
-            isOriginTop: true // Build from bottom to top if false
-        });
+    <input id="propertyfilter" type="hidden" value="" />
 
-    });
+    <!-- this one will be set from the filter list set by JS from filter head fields. -->
+    <input id="propertyfiltertypeinside" type="hidden" value="" />
+    <input id="propertyfiltertypeoutside" type="hidden" value="" />
 
-// Detect Touch Device
-    function isTouch() {
-        return (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
-    }
+    <!-- use this to pass itemid that need to be added to favorite/shop list. -->
+    <input id="shopitemid" type="hidden" value="@Model.GetUrlParam("shopitemid")" />
+    <input id="shoplistname" type="hidden" value="" />
+    <input id="shopredirectflag" type="hidden" value="" />
 
-    if (isTouch()) {
-        $('.productimg').addClass("productimgtouch");
-    }
+</div>
 
-</script>
+<input id="logintab" type="hidden" value="@(StoreSettings.Current.Get("logintab"))" />
 
 <!-- Shopping List Popup -->
 <div style="display: none">

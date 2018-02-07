@@ -1,17 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
 @using NBrightCore.common
 
-@if (Model.GetSettingBool("enablefavorites"))
-{
-    <!-- favorites cookies js -->
-    <script src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbsfavoritescookie.js" type="text/javascript"></script>
-    <script>
-        $(document).ready(function () {
-            showhidebuttons('nbsfavorites0');  // use default name
-        });
-    </script>
-}
-
 <!-- fields required to send required ajax cart to server -->
 <!-- This is in this template so it works for ALL products list/detail modules on the page.-->
 <span class="minicartdata" style="display: none;">
@@ -47,13 +36,14 @@
 
         $('.addtobasket').click(function () {
             if (form.valid()) {
-            nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+                if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
+                nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
                 $('.addedtobasket').delay(10).fadeIn('fast');
             }
         });
 
         $('#minicartdatareturn').change(function () {
-            nbxget('rendercart', '.minicartdata', '.container_ClassicAjax_nbs_minicart'); // Reload Cart
+            nbxget('rendercart', '.minicartdata', '.container_classicajax_nbs_minicart'); // Reload Cart
             $('.addedtobasket').delay(1000).fadeOut('fast');
         });
 

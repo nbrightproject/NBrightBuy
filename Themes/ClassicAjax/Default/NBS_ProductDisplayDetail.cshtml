@@ -132,11 +132,22 @@
                           <a class="qtyplus" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
                         </div>
 
-                        <a class="actionbutton addtobasket" itemid="@(info.ItemID)" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i>@ResourceKey("ProductView.addtobasket")</a>
+                        <a class="actionbutton addtobasket " itemid="@(info.ItemID)" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i>@ResourceKey("ProductView.addtobasket")</a>
 
                         <!-- Shopping List buttons -->
-                        <a href="#shoppinglistpopup" class="shoppinglistadd actionbutton absec" itemid="@(info.ItemID)"><i class="fa fa-star-o"></i></a>
-                        <a class="shoppinglistremove actionbutton absec" itemid="@(info.ItemID)" style="display:none;"><i class="fa fa-star"></i></a>
+                        <a id="shoppinglistadd-@(info.ItemID)" href="#shoppinglistpopup" class="shoppinglistadd actionbutton absec" itemid="@(info.ItemID)"><i class="fa fa-star-o"></i></a>
+                        <a id="shoppinglistremove-@(info.ItemID)" class="shoppinglistremove actionbutton absec" itemid="@(info.ItemID)" style="display:none;"><i class="fa fa-star"></i></a>
+                        <script>
+                            if (IsInFavorites(@(info.ItemID))) {
+                                $('#shoppinglistadd-@(info.ItemID)').hide();
+                                $('#shoppinglistremove-@(info.ItemID)').show();
+                            } else {
+                                $('#shoppinglistadd-@(info.ItemID)').show();
+                                $('#shoppinglistremove-@(info.ItemID)').hide();
+                            }
+                        </script>
+
+
                     }
                     else
                     {
