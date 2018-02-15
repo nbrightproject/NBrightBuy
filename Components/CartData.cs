@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Eventing;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
@@ -287,8 +288,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // Calculate first, so if we add items the price is calculated
             if (PromoInterface.Instance() != null)
             {
-                PurchaseInfo = PromoInterface.Instance().CalculatePromotion(PortalId, PurchaseInfo);
-                itemList = GetCartItemList(); // get any new items
+                var promol = PromoInterface.ProviderList;
+                foreach (var p in promol)
+                {
+                    PurchaseInfo = PromoInterface.Instance(p.Key).CalculatePromotion(PortalId, PurchaseInfo);
+                    itemList = GetCartItemList(); // get any new items
+                }
             }
 
             var strXml = "<items>";
