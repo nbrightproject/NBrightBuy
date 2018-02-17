@@ -457,6 +457,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // update product xml data on cart (product may have change via plugin so always replace)
             cartItemInfo.RemoveXmlNode("genxml/productxml");
+            // add entitytype for validation methods
+            prd.Info.SetXmlProperty("genxml/entitytypecode", prd.Info.TypeCode);
             cartItemInfo.AddSingleNode("productxml", prd.Info.XMLData, "genxml");
 
             var prdModel = prd.GetModel(modelid);
@@ -644,6 +646,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             }
+
 
             cartItemInfo = NBrightBuyUtils.ProcessEventProvider(EventActions.ValidateCartItemAfter, cartItemInfo);
 
