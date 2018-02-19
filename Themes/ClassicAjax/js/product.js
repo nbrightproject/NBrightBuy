@@ -84,7 +84,6 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     if (e.cmd == 'product_ajaxview_getfilters') {
         // propertyFilterClicked method is in AjaxDisplayProductList_head
         $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
-
         var shopredirectflag = $.cookie("shopredirectflag");
         if (shopredirectflag != 0) {
             $.cookie("shopredirectflag", 0);
@@ -121,22 +120,17 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     // Shopping List Popup
     $('.shoppinglistadd').unbind("click");
     $('.shoppinglistadd').click(function () {
-        if ($('#userid').val() <= 0) {
-            $.cookie("shopredirectflag", $(this).attr('itemid'));
-            window.location.replace('/default.aspx?tabid=' + $('#logintab').val() + '&returnurl=' + location.protocol + '//' + location.host + location.pathname);
-        } else {
-            $('#shopitemid').val($(this).attr('itemid'));
-            $(".shoppinglistadd").colorbox({
-                inline: true, width: "20%", fixed: true,
-                onClosed: function () {
-                    $('#shopitemid').val('');
-                }
-            });
-
-        }
+        $('#shopitemid').val($(this).attr('itemid'));
+        $(".shoppinglistadd").colorbox({
+            inline: true, width: "20%", fixed: true,
+            onClosed: function () {
+                $('#shopitemid').val('');
+            }
+        });
     });
 
     // Wish List events
+
     $('.wishlistadd').unbind("click");
     $('.wishlistadd').click(function () {
         $('#shoplistname').val($('.shoplistselect').val());
@@ -186,7 +180,18 @@ function AjaxView_GetList_nbxgetCompleted(e) {
         $('.wishlistadd').show();                
         $('.shoplistselect').show();
     });
-        
+
+    $('.redirecttologin').unbind("click");
+    $('.redirecttologin').click(function () {
+        $.cookie("shopredirectflag", $('#shopitemid').val());
+        window.location.replace('/default.aspx?tabid=' + $('#logintab').val() + '&returnurl=' + location.protocol + '//' + location.host + location.pathname);
+    });
+    $('.cancellogin').unbind("click");
+    $('.cancellogin').click(function () {
+        $.cookie("shopredirectflag", 0);
+        $('#shoppinglistpopup').colorbox.close();
+    });
+
 }
 
 
