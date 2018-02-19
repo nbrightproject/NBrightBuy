@@ -63,7 +63,7 @@
                     <td>@(nbi.GetXmlProperty("genxml/createddate"))</td>
                     <td>@CurrencyOf(nbi.GetXmlPropertyDouble("genxml/appliedtotal"))</td>
                     <td><strong>@ResourceKey("General.orderstatus" + nbi.GetXmlProperty("genxml/dropdownlist/orderstatus"))</strong></td>
-                    <td class="nowrap text-right"><a href='#' class='cmd_vieworder' itemid="@nbi.ItemID"><i class="fa fa-plus-circle fa-lg"></i></a></td>
+                    <td class="nowrap text-right"><a href='javascript:void(0)' class='cmd_vieworder' itemid="@nbi.ItemID"><i class="fa fa-plus-circle fa-lg"></i></a></td>
                 </tr>
         }
 

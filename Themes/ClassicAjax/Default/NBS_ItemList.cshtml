@@ -3,6 +3,8 @@
 @using System.Collections.Generic
 @using System.Linq
 @using System.Web
+@using DotNetNuke.Entities.Portals
+@using DotNetNuke.Entities.Users
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
 
@@ -19,6 +21,8 @@
 
 @if (Model.Settings.ContainsKey("listkeys"))
 {
+
+    var cw = new ItemListData(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
     var listarray = Model.Settings["listkeys"].Split('*');
     var itemlist = Model.List;
 
@@ -29,6 +33,7 @@
         var newlist = new List<object>();
         if (listkey != "")
         {
+
             foreach (NBrightInfo i in itemlist)
             {
                 if (i.GetXmlProperty("genxml/listkey") == listkey)
@@ -38,7 +43,8 @@
             }
             Model.List = newlist;
 
-            <h3>@listkey</h3>
+            <h3>@cw.listnames[listkey]</h3>
+
             <div>
             @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicAjax\\Default\\NBS_ItemListProducts.cshtml", Model)
             <div class="slp-footer"><a class="wishlistremoveall primarybutton" listkey="@(listkey)"><i class="fa fa-trash"></i> @ResourceKey("ProductView.wishlistclearall")</a></div>

@@ -587,8 +587,6 @@
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
     <Content Include="Themes\ClassicAjax\js\imagelightbox.nbb.js" />
-    <Content Include="Themes\ClassicAjax\js\jquery-ui-1.10.4.custom.js" />
-    <Content Include="Themes\ClassicAjax\js\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cookie.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.carousel.min.js" />
@@ -660,6 +658,8 @@
     <None Include="Themes\ClassicAjax\Default\NBS_ProfileForm_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_ProfileHome.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_ProfileHome_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_WishList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_WishList_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\OrderHtmlOutput.cshtml" />

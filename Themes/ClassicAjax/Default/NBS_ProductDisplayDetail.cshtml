@@ -222,33 +222,33 @@
                                 {
                                     <tr>
                                         <td class="models-option">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtmodelname")</td><!-- Model Name -->
-                                        @if (m.GetXmlProperty("genxml/textbox/txtmodelref") != "") {
                                           <td>Réf. @m.GetXmlProperty("genxml/textbox/txtmodelref")</td>
-                                        }
-                                        @if (product.BestPrice() > 0) {
                                           <td>
-                                          @if (product.BestPrice() < product.FromPrice())
+                                          @if (m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice") > 0)
                                           {
-                                              <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(product.FromPrice())</span>
-                                              <strong>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</strong>
+                                              <span class="old">@NBrightBuyUtils.FormatToStoreCurrency(m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))</span>
+                                              <strong>@NBrightBuyUtils.FormatToStoreCurrency(m.GetXmlPropertyDouble("genxml/textbox/txtsaleprice"))</strong>
                                           }
                                           else
                                           {
-                                              <span>@NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice())</span>
+                                              <span>@NBrightBuyUtils.FormatToStoreCurrency(m.GetXmlPropertyDouble("genxml/textbox/txtunitcost"))</span>
                                           }
                                           </td>
-                                        }
-                                        <td>
-                                          @if (!product.IsInStock)
-                                          {
-                                              <strong>Produit épuisé</strong>
-                                          }
-                                          else
-                                          {
-                                              <span>En stock</span>
-                                          }
+                                        <td class="models-value">
+                                            @if (m.GetXmlPropertyBool("genxml/checkbox/chkstockon") && (m.GetXmlPropertyDouble("genxml/textbox/txtqtyremaining") <= m.GetXmlPropertyDouble("genxml/textbox/txtqtyminstock")))
+                                            {
+                                                <strong>@ResourceKey("ProductView.outofstock")</strong>
+                                                if (m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra") != "")
+                                                {
+                                                    <span> - </span>
+                                                    <span>@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</span>
+                                                }
+                                            }
+                                            @if (m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra") != "")
+                                            {
+                                                <span>@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</span>
+                                            }
                                         </td>
-                                        <td class="models-value">@m.GetXmlProperty("genxml/lang/genxml/textbox/txtextra")</td><!-- Model Description -->
                                     </tr>
                                 }
                             }
