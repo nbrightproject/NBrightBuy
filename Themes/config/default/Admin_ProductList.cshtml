@@ -59,11 +59,11 @@
     <tr>
         @if (nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
         {
-            <td class="image centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="#"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")&amp;w=80&amp;h=60"></a></td>
+            <td class="image centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="javascript:void(0)"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")&amp;w=80&amp;h=60"></a></td>
         }
         else
         {
-            <td class="noimage centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="#"><i class="fa fa-picture-o fa-3x"></i></a></td>
+            <td class="noimage centered"><a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="javascript:void(0)"><i class="fa fa-picture-o fa-3x"></i></a></td>
         }
         <td>
             <div>@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</div>
@@ -81,7 +81,7 @@
             {
                 checkdisplay = "-check";
             }
-            <a href="#">
+            <a href="javascript:void(0)">
                 <i class="fa fa@(checkdisplay)-circle fa-2x selectchangehidden" itemid="@nbi.ItemID"></i>                               
             </a>
         </td>
@@ -93,16 +93,16 @@
             {
                 checkdisplay2 = "-check";
             }
-            <a href="#">
+            <a href="javascript:void(0)">
                 <i class="fa fa@(checkdisplay2)-circle fa-2x selectchangedisable " itemid="@nbi.ItemID"></i>                
             </a>
         </td>
         <td>
-            <a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="#">@ResourceKey("General.cmdEditIcon")</a>
+            <a class="productAdmin_cmdEdit" itemid="@nbi.ItemID" href="javascript:void(0)">@ResourceKey("General.cmdEditIcon")</a>
         </td><!-- editlink class added to show processing -->
         <td>
-            <a title="@ResourceKey("General.cmdMove")" href="#" class="selectrecord" itemid="@nbi.ItemID"><i class="fa fa-sort fa-fw fa-2x"></i></a>
-            <a title="@ResourceKey("General.cmdCancel")" href="#" class="selectcancel" itemid="@nbi.ItemID" style="display: none;"><i class="fa fa-times-circle fa-fw fa-2x"></i></a>
+            <a title="@ResourceKey("General.cmdMove")" href="javascript:void(0)" class="selectrecord" itemid="@nbi.ItemID"><i class="fa fa-sort fa-fw fa-2x"></i></a>
+            <a title="@ResourceKey("General.cmdCancel")" href="javascript:void(0)" class="selectcancel" itemid="@nbi.ItemID" style="display: none;"><i class="fa fa-times-circle fa-fw fa-2x"></i></a>
             <span class="selectmove" itemid="@nbi.ItemID" style="display: none;" parentlist="@nbi.GetXmlProperty("genxml/parentlist")">
                 <a id="cmdMove">@ResourceKey("General.cmdMoveIcon")</a>
             </span>

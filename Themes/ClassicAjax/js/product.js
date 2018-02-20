@@ -84,12 +84,16 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     if (e.cmd == 'product_ajaxview_getfilters') {
         // propertyFilterClicked method is in AjaxDisplayProductList_head
         $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
-        var shopredirectflag = $.cookie("shopredirectflag");
-        if (shopredirectflag != 0) {
-            $.cookie("shopredirectflag", 0);
-            $('#shopitemid').val(shopredirectflag);
-            $(".shoppinglistadd[itemid='" + $('#shopitemid').val() + "']").click();
-        } 
+
+        if (typeof $.cookie('shopredirectflag') != 'undefined') {
+            var shopredirectflag = $.cookie("shopredirectflag");
+            if (shopredirectflag != 0) {
+                $.cookie("shopredirectflag", 0);
+                $('#shopitemid').val(shopredirectflag);
+                $(".shoppinglistadd[itemid='" + $('#shopitemid').val() + "']").click();
+            }
+        }
+        $("html, body").animate({ scrollTop: 0 }, 200);
     }
 
     // Add to Basket for Ajax + Form validation  (Mini-Cart head duplicate)

@@ -356,10 +356,10 @@
         <div class="col-sm col-sm-12 form-inline text-right">
             <hr/>
             <div class="form-group">
-                    <a id="OrderAdmin_cmdReOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
+                    <a id="OrderAdmin_cmdReOrder" class="btn btn-default" href="javascript:void(0)" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
                     @if (Model.GetSettingBool("alloweditorder"))
                     {
-                        <a id="OrderAdmin_cmdEditOrder" class="btn btn-default" href="#" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdEditOrder")</a>
+                        <a id="OrderAdmin_cmdEditOrder" class="btn btn-default" href="javascript:void(0)" itemid="@nbi.ItemID">@ResourceKey("OrderAdmin.cmdEditOrder")</a>
                     }
                     @if (nbi.UserId > 0)
                 {
@@ -372,10 +372,10 @@
                         <span class="sr-only">@ResourceKey("OrderAdmin.ToggleDropdown")</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a id="OrderAdmin_cmdEmailAmended" href="#">@ResourceKey("OrderAdmin.cmdEmailAmended")</a></li>
-                        <li><a id="OrderAdmin_cmdEmailValidated" href="#">@ResourceKey("OrderAdmin.cmdEmailValidated")</a></li>
-                        <li><a id="OrderAdmin_cmdEmailShipped" href="#">@ResourceKey("OrderAdmin.cmdEmailShipped")</a></li>
-                        <li><a id="OrderAdmin_cmdEmailReceipt" href="#">@ResourceKey("OrderAdmin.cmdEmailReceipt")</a></li>
+                        <li><a id="OrderAdmin_cmdEmailAmended" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdEmailAmended")</a></li>
+                        <li><a id="OrderAdmin_cmdEmailValidated" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdEmailValidated")</a></li>
+                        <li><a id="OrderAdmin_cmdEmailShipped" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdEmailShipped")</a></li>
+                        <li><a id="OrderAdmin_cmdEmailReceipt" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdEmailReceipt")</a></li>
                     </ul>
                 </div>&nbsp;&nbsp;
                 <div class="btn-group dropup">
@@ -454,7 +454,7 @@
                                     @if (nbi.GetXmlProperty("genxml/hidden/invoicefilename") != "")
                                     {
                                         <a class="documentlink btn btn-primary" href='/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=docdownload&downloadname=@nbi.GetXmlProperty("genxml/hidden/invoicedownloadname")&filename=@nbi.GetXmlProperty("genxml/hidden/invoicefilerelpath")'>@ResourceKey("OrderAdmin.downloadinvoice")</a>
-                                        <a id="OrderAdmin_cmdDeleteInvoice" class="btn btn-primary" href="#">@ResourceKey("OrderAdmin.cmdDeleteInvoice")</a>
+                                        <a id="OrderAdmin_cmdDeleteInvoice" class="btn btn-primary" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdDeleteInvoice")</a>
                                     }
                                     else
                                     {
@@ -536,7 +536,7 @@
                                 <div class="col-sm-12">
                                     <label class="control-label">@ResourceKey("OrderAdmin.addnotes")</label>
                                     @NBrightTextArea(nbi, "genxml/textbox/auditnotes", " height='100' ", "")
-                                    <a id="OrderAdmin_addauditnote" class="btn btn-primary OrderAdmin_cmdSave" href="#">@ResourceKey("General.cmdAddButton")</a>
+                                    <a id="OrderAdmin_addauditnote" class="btn btn-primary OrderAdmin_cmdSave" href="javascript:void(0)">@ResourceKey("General.cmdAddButton")</a>
                                 </div>
                             </div>
                             <div class="clearfix"></div>

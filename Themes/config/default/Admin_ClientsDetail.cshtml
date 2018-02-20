@@ -245,7 +245,7 @@
 					        <a id="cmdViewOrders" class="btn btn-default btn-block" href="@viewOrderUrl">@ResourceKey("Clients.cmdViewOrders")</a>
 					    </div>
 					    <div class="col-sm-4">
-					        <a id="cmdCreateOrder" class="btn btn-default btn-block" href="#">@ResourceKey("Clients.cmdCreateOrder")</a>
+					        <a id="cmdCreateOrder" class="btn btn-default btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdCreateOrder")</a>
 					    </div>
 					</div>
 					<div class="form-group">
@@ -267,33 +267,33 @@
 					    <div class="col-sm-4">
                             @if (info.GetXmlPropertyBool("genxml/membership/approved"))
                             {
-                                <a id="cmdUnAuthoriseUser" class="btn btn-danger btn-block" href="#">@ResourceKey("Clients.cmdUnAuthoriseUser")</a>
+                                <a id="cmdUnAuthoriseUser" class="btn btn-danger btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdUnAuthoriseUser")</a>
                             }
                             else
                             {
-                                <a id="cmdValidateUser" class="btn btn-success btn-block" href="#">@ResourceKey("Clients.cmdValidateUser")</a>
+                                <a id="cmdValidateUser" class="btn btn-success btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdValidateUser")</a>
                             }
 					    </div>
 						<div class="col-sm-4">
-                            <a id="cmdResetPass" class="btn btn-warning btn-block" href="#">@ResourceKey("Clients.cmdResetPass")</a>
+                            <a id="cmdResetPass" class="btn btn-warning btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdResetPass")</a>
 						</div>
 					</div>
 					<div class="form-group">
 					    <div class="col-sm-4">
                             @if (info.GetXmlPropertyBool("genxml/membership/lockedout"))
                             {
-                                <a id="cmdUnlockUser" class="btn btn-default btn-block" href="#">@ResourceKey("Clients.cmdUnlockUser")</a>
+                                <a id="cmdUnlockUser" class="btn btn-default btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdUnlockUser")</a>
                             }
 					    </div>
 					    <div class="col-sm-4">
                             @if (!info.GetXmlPropertyBool("genxml/textbox/isdeleted"))
                             {
-                                <a id="cmdDeleteUser" class="btn btn-warning btn-block" href="#">@ResourceKey("Clients.cmdDeleteUser")</a>
+                                <a id="cmdDeleteUser" class="btn btn-warning btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdDeleteUser")</a>
                             }
                             else
                             {
-                                <a id="cmdRemoveUser" class="btn btn-danger btn-block" href="#">@ResourceKey("Clients.cmdRemoveUser")</a>
-                                <a id="cmdRestoreUser" class="btn btn-success btn-block" href="#">@ResourceKey("Clients.cmdRestoreUser")</a>
+                                <a id="cmdRemoveUser" class="btn btn-danger btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdRemoveUser")</a>
+                                <a id="cmdRestoreUser" class="btn btn-success btn-block" href="javascript:void(0)">@ResourceKey("Clients.cmdRestoreUser")</a>
                             }
 					    </div>
 					</div>

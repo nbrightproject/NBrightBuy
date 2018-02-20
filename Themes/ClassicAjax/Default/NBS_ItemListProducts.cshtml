@@ -20,7 +20,7 @@
         var product = new ProductData(info.ItemID, info.Lang);
         lang = info.Lang;
 
-    <div class="product">
+    <div class='product productline@(info.ItemID)'>
 
         <div class="productimg">
           @if (product.Imgs.Count > 0)
@@ -70,7 +70,7 @@
                 <a href="javascript:void(0);" class="actionbutton addtobasket" itemid="@(info.ItemID)"><i class="fa fa-shopping-cart"></i>@ResourceKey("ProductView.addtobasket")</a>
                 }
             }
-            <a class="shoppinglistremove actionbutton absec" itemid="@(info.ItemID)" href="#"><i class="fa fa-star"></i></a>
+            <a class="shoppinglistremove actionbutton absec" itemid="@(info.ItemID)" href="javascript:void(0)"><i class="fa fa-star"></i></a>
         </div>
 
         <!-- fields required to send required ajax data to server -->

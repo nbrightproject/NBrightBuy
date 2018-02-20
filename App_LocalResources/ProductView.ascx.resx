@@ -378,4 +378,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
   &lt;i class="fa fa-times-o fa-stack-1x fa-inverse"&gt;&lt;/i&gt;
 &lt;/span&gt;</value>
   </data>
+  <data name="productdetail.Text" xml:space="preserve">
+    <value>Product Details</value>
+  </data>
 </root>

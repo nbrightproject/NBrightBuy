@@ -39,8 +39,16 @@
         @{
             var totalCount = Model.GetSetting("recordcount") == "" ? Category("entrycount", Model).ToString() : Model.GetSetting("recordcount");
         }
-        <h1>@Category("categoryname", Model)</h1>
-        <div>@totalCount <span>@(ResourceKey("ProductView.articles"))</span></div>
+          @if (Model.GetSettingInt("displaytype") == 0)
+          {
+            <h1>@Category("categoryname", Model)</h1>
+          }
+          @if (Model.GetSettingInt("displaytype") == 1)
+          {
+            <h1>@(ResourceKey("ProductView.searchresults"))</h1>
+          }
+
+          <div>@totalCount <span>@(ResourceKey("ProductView.articles"))</span></div>
         <!--<i>@(Category("message", Model))</i>-->
       </div>
     </div>

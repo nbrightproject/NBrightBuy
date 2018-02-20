@@ -74,11 +74,11 @@
                         {
                             if (product.Models.Count > 1)
                             {
-                            <a href="@EntryUrl(info,Model)" class="actionbutton">Fiche produit</a>
+                            <a href="@EntryUrl(info,Model)" class="actionbutton">@ResourceKey("ProductView.productdetail")</a>
                             }
                             else
                             {
-                            <a href="javascript:void(0);" class="actionbutton addtobasket" itemid="@(info.ItemID)"><i class="fa fa-shopping-cart"></i>Ajouter au panier</a>
+                            <a href="javascript:void(0);" class="actionbutton addtobasket" itemid="@(info.ItemID)"><i class="fa fa-shopping-cart"></i>@ResourceKey("ProductView.addtobasket")</a>
                             }
                         }
                         <!-- Shopping List buttons -->
