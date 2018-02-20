@@ -586,6 +586,7 @@
     <Content Include="Themes\ClassicAjax\img\loading.gif" />
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
+    <Content Include="Themes\ClassicAjax\js\cart.js" />
     <Content Include="Themes\ClassicAjax\js\imagelightbox.nbb.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cookie.min.js" />
@@ -594,6 +595,7 @@
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.responsiveTabs.min.js" />
+    <Content Include="Themes\ClassicAjax\js\checkout.js" />
     <Content Include="Themes\ClassicAjax\js\product.js" />
     <None Include="README.md" />
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
@@ -628,6 +630,7 @@
     <None Include="Themes\ClassicAjax\Default\NBS_FeatProductDisplay.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_FeatProductDisplay_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_FullCart.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_CartList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_FullCartList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_FullCartsettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_FullCart_head.cshtml" />

@@ -72,18 +72,8 @@
                     <div class="buy">
                         @if (!Model.GetSettingBool("cataloguemode"))
                         {
-                            if (product.Models.Count > 1)
-                            {
                             <a href="@EntryUrl(info,Model)" class="actionbutton">@ResourceKey("ProductView.productdetail")</a>
-                            }
-                            else
-                            {
-                            <a href="javascript:void(0);" class="actionbutton addtobasket" itemid="@(info.ItemID)"><i class="fa fa-shopping-cart"></i>@ResourceKey("ProductView.addtobasket")</a>
-                            }
                         }
-                        <!-- Shopping List buttons -->
-                        <a href="#shoppinglistpopup" class="shoppinglistadd actionbutton absec" itemid="@(info.ItemID)"><i class="fa fa-star-o"></i></a>
-                        <a class="shoppinglistremove actionbutton absec" itemid="@(info.ItemID)" style="display:none;"><i class="fa fa-star"></i></a>
                     </div>
 
                     @if (product.IsOnSale)
