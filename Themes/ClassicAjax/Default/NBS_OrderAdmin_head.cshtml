@@ -5,6 +5,10 @@
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+
 @RenderTemplate("/DesktopModules/NBright/NBrightBuy/Themes/config/default/datepicker.cshtml", Model)
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
@@ -92,7 +96,6 @@
         $(document).ready(function() {
             // start load all ajax data, continued by js in product.js file
             $('.processing').show();
-
             $('#razortemplate').val('NBS_OrderAdminList.cshtml');
             nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
 
