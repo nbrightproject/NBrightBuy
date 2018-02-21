@@ -1176,4 +1176,13 @@
   <data name="cancellist.Text" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  <data name="IgnoreShared.Text" xml:space="preserve">
+    <value>Ignore Shared Records</value>
+  </data>
+  <data name="login.Text" xml:space="preserve">
+    <value>Se connecter</value>
+  </data>
+  <data name="loginpopupmsg.Text" xml:space="preserve">
+    <value>Vous devez être connecté afin d'ajouter des produits aux listes de courses.</value>
+  </data>
 </root>
