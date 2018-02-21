@@ -551,7 +551,6 @@
     <Content Include="Themes\ClassicAjax\css\classicajax.css" />
     <Content Include="Themes\ClassicAjax\css\ClientAccount.css" />
     <Content Include="Themes\ClassicAjax\css\colorbox.css" />
-    <Content Include="Themes\ClassicAjax\css\imagelightbox.nbb.css" />
     <Content Include="Themes\ClassicAjax\css\images\animated-overlay.gif" />
     <Content Include="Themes\ClassicAjax\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Themes\ClassicAjax\css\images\ui-bg_flat_55_fbf9ee_40x100.png" />
@@ -566,8 +565,6 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_454545_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Themes\ClassicAjax\css\jquery-ui-1.10.4.custom.css" />
-    <Content Include="Themes\ClassicAjax\css\jquery-ui-1.10.4.custom.min.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_Checkout.css" />
     <Content Include="Themes\ClassicAjax\Default\addclientrole.html" />
@@ -587,14 +584,12 @@
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
     <Content Include="Themes\ClassicAjax\js\cart.js" />
-    <Content Include="Themes\ClassicAjax\js\imagelightbox.nbb.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cookie.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.carousel.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.min.js" />
-    <Content Include="Themes\ClassicAjax\js\jquery.responsiveTabs.min.js" />
     <Content Include="Themes\ClassicAjax\js\checkout.js" />
     <Content Include="Themes\ClassicAjax\js\product.js" />
     <None Include="README.md" />

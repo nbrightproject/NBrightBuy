@@ -1,4 +1,4 @@
-﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Linq
 @using System.Text
 @using System.Web
@@ -132,7 +132,7 @@
                         <td class="quantitycolumn">
                             <input id="itemcode" value="@(nbi.GetXmlProperty("genxml/itemcode"))" type="hidden"/> <!-- This is required, so mergecart can work on update -->
 
-                            <div class="quantityoptions">
+                            <div class="quantityfields">
                                 <a class="qtyminus" href="javascript:void(0)" itemcode="@(nbi.GetXmlProperty("genxml/itemcode"))"><i class="fa fa-minus"></i></a>
                                 @NBrightTextBox(nbi, "genxml/qty", "class='quantity itemcode" + nbi.GetXmlProperty("genxml/itemcode") + "'", "1")
                                 <a class="qtyplus" href="javascript:void(0)" itemcode="@(nbi.GetXmlProperty("genxml/itemcode"))" ><i class="fa fa-plus"></i></a>

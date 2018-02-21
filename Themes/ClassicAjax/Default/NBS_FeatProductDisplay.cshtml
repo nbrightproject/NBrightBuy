@@ -70,17 +70,13 @@
                     </div>
 
                     <div class="buy">
-                        @if (!Model.GetSettingBool("cataloguemode"))
-                        {
-                            <a href="@EntryUrl(info,Model)" class="actionbutton">@ResourceKey("ProductView.productdetail")</a>
-                        }
+                        <a href="@EntryUrl(info,Model)" class="actionbutton"><i class="fa fa-search"></i>@ResourceKey("ProductView.productdetail")</a>
                     </div>
 
                     @if (product.IsOnSale)
                     {
                         <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
                     }
-
                     @if (!product.IsInStock)
                     {
                         <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>

@@ -54,7 +54,7 @@
 #cartlist table tr:last-child td{}
 #cartlist table tr td:last-child{}
 #cartlist table tr:last-child td:last-child{}
-#cartlist table th{background:#777777;color:#FFFFFF;line-height:34px;padding:0;}
+#cartlist table th{background:#777777;color:#FFFFFF;line-height:34px;padding:0 10px;}
 #cartlist table tr:first-child td:first-child{}
 #cartlist table tr:first-child td:last-child{}
 
@@ -63,15 +63,18 @@
 #cartlist .detailscolumn .image{float:left;height:100px;margin-right:12px;width:100px;}
 #cartlist .detailscolumn img{width:100%;height:100%;}
 #cartlist .detailscolumn .details{overflow:hidden;}
-#cartlist th.detailscolumn{padding-left:12px;}
 #cartlist .detailscolumn{text-align:left;}
 #cartlist .detailscolumn .title{font-weight:bold;}
 #cartlist .cartlistoptions{clear:both;}
-#cartlist .quantity{box-shadow:none;text-align:center;width:33px;}
 #cartlist .ui-spinner{font-size:17px;}
 #cartlist .deleteitem{}
 #cartlist .fa-times-circle{color:#666;}
 #cartlist .fa-times-circle:hover{color:#C80000;}
+#cartlist .quantityfields {min-width:70px;}
+#cartlist .quantityfields a {display:block;float:left;width:24px;height:24px;background:white;color:#aaaaaa;font-size:9px;text-decoration:none;line-height:24px;text-align:center;border:#dfdddd solid 1px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+#cartlist .quantityfields a:hover {text-decoration:none;background:#aaaaaa;color:white;}
+#cartlist .quantityfields input {text-align:center;outline:none;background:#f4f4f4;border:none;border-top:#dfdddd solid 1px;border-bottom:#dfdddd solid 1px;font-size:14px;font-weight:700;width:22px !important;height:24px;line-height:26px;margin:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+input.quantity {float:left;}
 
 /* Payment */
 #payment{width:66%;margin:0 auto;padding:1%;} /* padding to allow for box shadow on panel */

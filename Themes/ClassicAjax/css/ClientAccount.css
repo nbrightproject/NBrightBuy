@@ -67,6 +67,34 @@
 .orderdetailitems tr.active {background:#F5F5F5;}
 .orderdetailitems td {vertical-align:top;border:none;padding:10px;}
 
+/* SHOPPING LISTS */
+.shoppinglistproducts {}
+.shoppinglistproducts .product {border-top:#eae8e8 solid 1px;border-right:#eae8e8 solid 1px;border-left:#eae8e8 solid 1px;padding:10px;}
+.shoppinglistproducts .product:after {content:"";display:table;clear:both;}
+.shoppinglistproducts .productimg {display:block;float:left;width:50px;height:50px;margin-right:10px;}
+.shoppinglistproducts .product div.image {display:table-cell;text-align:center;vertical-align:middle;width:inherit;height:50px;}
+.shoppinglistproducts .product div.image img {max-height:50px;}
+.shoppinglistproducts .product div.noimage {display:table-cell;text-align:center;vertical-align:middle;width:inherit;font-size:24px;line-height:50px;opacity:0.1;height:50px;}
+.shoppinglistproducts .product div.noimage a:link {color:#efefef;}
+.shoppinglistproducts .product .description {float:left;}
+.shoppinglistproducts .product div.price {font-size:18px;color:#222222;font-weight:700;}
+.shoppinglistproducts .product .price .from {font-size:12px;}
+.shoppinglistproducts .product .price .old {font-size:12px;text-decoration:line-through;}
+.shoppinglistproducts .product .price .sale {background:#757370;color:white;padding:0 3px;margin-left:3px;}
+.shoppinglistproducts .product .price .ttc {margin-left:3px;font-size:14px;}
+.shoppinglistproducts .product .buttons {float:right;}
+.shoppinglistproducts .product .buttons a.actionbutton {margin-left:6px;}
+.shoppinglistproducts .product .buttons a.actionbutton i.fa {margin-right:0;}
+.slp-footer {border:#eae8e8 solid 1px;padding:10px;}
+.slp-footer a {color:white !important;}
+/* Get rid of blue for active accordion */
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #c5c5c5;
+    background: #f6f6f6;
+    font-weight: normal;
+    color: #454545;
+}
+
 /* PROFILE */
 /* Profile form is now using DNN default styles */
 #profileinput {}

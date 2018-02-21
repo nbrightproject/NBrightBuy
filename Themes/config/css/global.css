@@ -60,10 +60,11 @@
 .strikethrough:after{border-top:2px solid #D00000;position:absolute;content:"";right:-3px;top:45%;left:-3px;opacity:0.5}
 input[type=radio].invalid{box-shadow:0 0 4px #ff0000;}
 
-/* Loading image - Includes opacity for IE5-8 */
-#loader{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);}
-#loader{background:#848D92;color: #000000;height: 100%;left: 0;opacity: 0.3;transition:all 0.4s ease-in-out 0s;position: fixed;text-align: center;top: 0;width: 100%;z-index: 9999;}
-#loader .fa{margin-top:300px;color: #ffffff;}
+/* Loading Div */
+.processing {background:rgba(0, 0, 0, 0.2);height:100%;width:100%;transition:all 0.4s ease-in-out 0s;position:fixed;text-align:center;z-index:9998;}
+.processing .fa {color:white;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:0;right:0;margin:auto;z-index:9999;}
+.processingwait {background:rgba(0, 0, 0, 0.2);height:100%;width:100%;transition:all 0.4s ease-in-out 0s;position:fixed;text-align:center;z-index:9998;}
+.processingwait .fa {color:white;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:0;right:0;margin:auto;z-index:9999;}
 
 /* For sortable checkboxlist */
 .checkboxlist-sortable .dnnCheckboxLabel {
