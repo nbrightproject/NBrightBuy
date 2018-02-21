@@ -1,6 +1,4 @@
 ﻿
-alert('asss');
-
         jQuery.fn.extend({
             renameAttr: function (name, newName, removeData) {
                 var val;
@@ -17,8 +15,6 @@ alert('asss');
         });
 
 $(document).ready(function() {
-
-    alert('asss1');
 
     $('#cmdDeleteCart').click(function () {
         var msg = $('#cmdClearCart').val();
@@ -101,6 +97,37 @@ $(document).ready(function() {
             $('#cartactions').show();
         }
 
+        $(".quantity").keydown(function (e) {
+            if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
+            if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+        });
+
+        $('.qtyminus').unbind();
+        $('.qtyminus').click(function () {
+            var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
+            var newQty = parseInt(oldqty, 10);
+            if (isNaN(newQty)) {
+                newQty = 2;
+            }
+            if (newQty >= 1) {
+                --newQty;
+                $('.itemcode' + $(this).attr('itemcode')).val(newQty);
+            }
+        });
+        $('.qtyplus').unbind();
+        $('.qtyplus').click(function () {
+            var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
+            var newQty = parseInt(oldqty, 10);
+            if (isNaN(newQty)) {
+                newQty = 0;
+            }
+            ++newQty;
+            $('.itemcode' + $(this).attr('itemcode')).val(newQty);
+        });
+
+
     });
 
 
@@ -181,7 +208,6 @@ $(document).ready(function() {
     // cart summary loaded
     $('#checkoutdisplaysummary').change(function () {
 
-        $('.processing').hide();
         $('#cartactions').show();
 
         $('#cmdRecalcSummary').unbind();
@@ -197,13 +223,12 @@ $(document).ready(function() {
             nbxget('redirecttopayment', '#checkoutsummary', '#checkoutpayredirectreturn');
         });
 
-
+        $('.processing').hide();
     });
 
     // cart ship method (provider) loaded
     $('#checkoutdisplayshipmethod').change(function () {
 
-        $('.processing').hide();
         $('#cartactions').show();
 
         $('.shippingmethodselect').unbind();
@@ -234,7 +259,10 @@ $(document).ready(function() {
             }
         });
 
+        $('.processing').hide();
+
     });
+
 
     processCartStep('start');
 
