@@ -36,18 +36,6 @@ namespace Nevoweb.DNN.NBrightBuy
     public partial class AddressAdmin : NBrightBuyFrontOfficeBase
     {
 
-        private String _catid = "";
-        private String _catname = "";
-        private GenXmlTemplate _templateHeader;//this is used to pickup the meta data on page load.
-        private String _templH = "";
-        private String _templD = "";
-        private String _templinp = "";
-        private String _templF = "";
-        private String _entryid = "";
-        private String _tabid = "";
-        private AddressData _addressData;
-        private const string NotifyRef = "addressbookupdated";
-
         #region Event Handlers
 
 
@@ -55,48 +43,12 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             base.OnInit(e);
 
-            _addressData = new AddressData();
-
-            if (ModSettings.Get("themefolder") == "")  // if we don't have module setting jump out
+            if (ModuleKey == "")  // if we don't have module setting jump out
             {
-                rpDataH.ItemTemplate = new GenXmlTemplate("NO MODULE SETTINGS");
+                var lit = new Literal();
+                lit.Text = "NO MODULE SETTINGS";
+                phData.Controls.Add(lit);
                 return;
-            }
-
-            try
-            {
-                _templH = ModSettings.Get("txtdisplayheader");
-                _templD = ModSettings.Get("txtdisplaybody");
-                _templF = ModSettings.Get("txtdisplayfooter");
-                _templinp = ModSettings.Get("txtinputform");
-
-                // Get Display Header
-                var rpDataHTempl = ModCtrl.GetTemplateData(ModSettings, _templH, Utils.GetCurrentCulture(), DebugMode);
-
-                _templateHeader = NBrightBuyUtils.GetGenXmlTemplate(rpDataHTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-                rpDataH.ItemTemplate = _templateHeader;
-
-                // insert page header text
-                NBrightBuyUtils.IncludePageHeaders(ModCtrl, ModuleId, Page, _templateHeader, ModSettings.Settings(), null, DebugMode);
-
-                // Get Display Body
-                var rpDataTempl = ModCtrl.GetTemplateData(ModSettings, _templD, Utils.GetCurrentCulture(), DebugMode);
-                rpData.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get Display Footer
-                var rpDataFTempl = ModCtrl.GetTemplateData(ModSettings, _templF, Utils.GetCurrentCulture(), DebugMode);
-                rpDataF.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpDataFTempl, ModSettings.Settings(), PortalSettings.HomeDirectory);
-
-                // Get Display Footer
-                var rpInpTempl = ModCtrl.GetTemplateData(ModSettings, _templinp, Utils.GetCurrentCulture(), DebugMode);
-                rpAddr.ItemTemplate = NBrightBuyUtils.GetGenXmlTemplate(rpInpTempl, ModSettings.Settings(), PortalSettings.HomeDirectory); 
-
-
-            }
-            catch (Exception exc)
-            {
-                rpDataF.ItemTemplate = new GenXmlTemplate(exc.Message, ModSettings.Settings());
-                // catch any error and allow processing to continue, output error as footer template.
             }
 
         }
@@ -106,6 +58,7 @@ namespace Nevoweb.DNN.NBrightBuy
             try
             {
                 base.OnLoad(e);
+
                 if (Page.IsPostBack == false)
                 {
                     PageLoad();
@@ -113,106 +66,35 @@ namespace Nevoweb.DNN.NBrightBuy
             }
             catch (Exception exc) //Module failed to load
             {
-                //display the error on the template (don;t want to log it here, prefer to deal with errors directly.)
+                //display the error on the template (don't want to log it here, prefer to deal with errors directly.)
                 var l = new Literal();
                 l.Text = exc.ToString();
-                phData.Controls.Add(l);
+                Controls.Add(l);
             }
         }
 
         private void PageLoad()
         {
-
-            #region "Data Repeater"
-
-
-            if (_templD.Trim() != "") // if we don;t have a template, don't do anything
+            if (UserId > 0) // limit module to registered users
             {
-                var l = _addressData.GetAddressList();
-                rpData.DataSource = l;
-                rpData.DataBind();
-            }
+                // new data record so set defaults.
+                var obj = new NBrightInfo(true);
+                obj.PortalId = PortalId;
+                obj.ModuleId = 0;
+                obj.Lang = Utils.GetCurrentCulture();
+                obj.GUIDKey = RazorTemplate;
+                obj.ItemID = -1;
 
-            #endregion
+                var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", obj, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
 
-            base.DoDetail(rpDataH);
-            base.DoDetail(rpDataF);
-            var addrid = Utils.RequestParam(Context, "addressid");
-            if (Utils.IsNumeric(addrid))
-            {
-                var objAddr = _addressData.GetAddress(Convert.ToInt32(addrid));
-                if (objAddr == null) objAddr = new NBrightInfo(true); //assume new address
-                base.DoDetail(rpAddr,objAddr);
             }
-            else
-            {
-                base.DoDetail(rpAddr);                
-            }
-
         }
 
         #endregion
 
-
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
-
-            switch (e.CommandName.ToLower())
-            {
-                case "updateaddress":
-                    _addressData.AddAddress(rpAddr);
-                    param[0] = "addressid=" + Utils.RequestParam(Context, "addressid");
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "saveaddress":
-                    _addressData.AddAddress(rpAddr);
-                    var addrid = Utils.RequestParam(Context, "addressid");
-                    if (Utils.IsNumeric(addrid) && ModSettings.Get("emailmanager") == "True")
-                    {
-                        var ad = _addressData.GetAddress(Convert.ToInt32(addrid));
-                        if (ad != null)
-                        {
-                            var emailtemplate = ModSettings.Get("emailtemplate");
-                            if (ModSettings.Get("emailmanageropt") == "2")
-                            {
-                                NBrightBuyUtils.SendEmailToManager(emailtemplate, ad, "profileupdated_emailsubject.Text");
-                            }
-                            else
-                            {
-                                if (ad.GetXmlPropertyBool("genxml/hidden/default"))
-                                {
-                                    NBrightBuyUtils.SendEmailToManager(emailtemplate, ad, "profileupdated_emailsubject.Text");
-                                }
-                            }
-                        }
-                    }
-                    NBrightBuyUtils.SetNotfiyMessage(ModuleId, NotifyRef, NotifyCode.ok);
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "deleteaddress":
-                    _addressData.RemoveAddress(e.Item.ItemIndex);                        
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "editaddress":
-                    param[0] = "addressid=" + e.Item.ItemIndex.ToString("");
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "newaddress":
-                    param[0] = "addressid=-1";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "cancel":
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-            }
-
-        }
-
-        #endregion
 
 
     }

@@ -26,6 +26,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using NBrightBuy.render;
 using NBrightCore.images;
+using Nevoweb.DNN.NBrightBuy.Components.Address;
 using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using Nevoweb.DNN.NBrightBuy.Components.Orders;
@@ -115,10 +116,14 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     PropertyFunctions.EntityTypeCode = "CATEGORY";
                     strOut = PropertyFunctions.ProcessCommand(paramCmd, context, _editlang);
-                }
+                }                
                 else if (paramCmd.StartsWith("itemlist_"))
                 {
                     strOut = ItemListsFunctions.ProcessCommand(paramCmd, context);
+                }
+                else if (paramCmd.StartsWith("addressadmin_"))
+                {
+                    strOut = AddressAdminFunctions.ProcessCommand(paramCmd, context);
                 }                
                 else
                 {

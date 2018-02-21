@@ -101,9 +101,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #endregion
 
-
-
-
     }
 
 }

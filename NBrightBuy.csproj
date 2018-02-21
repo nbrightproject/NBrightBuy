@@ -214,6 +214,7 @@
     <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Address\AddressFunctions.cs" />
     <Compile Include="Components\ItemLists\ItemListsFunctions.cs" />
     <Compile Include="Components\Properties\PropertyData.cs" />
     <Compile Include="Components\Properties\PropertyFunctions.cs" />
@@ -318,7 +319,7 @@
     <Compile Include="Components\Categories\CategoryUtils.cs" />
     <Compile Include="Components\Categories\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />
-    <Compile Include="Components\AddressData.cs" />
+    <Compile Include="Components\Address\AddressData.cs" />
     <Compile Include="Components\Clients\ClientData.cs" />
     <Compile Include="Components\Categories\CategoryData.cs" />
     <Compile Include="Components\CatProdXref.cs" />
@@ -520,8 +521,12 @@
     <Content Include="ProfileRazorForm.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="AddressAdmin.ascx" />
-    <Content Include="AddressAdminSettings.ascx" />
+    <Content Include="AddressAdmin.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="AddressAdminSettings.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Admin\Container.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -637,10 +642,15 @@
     <None Include="Themes\ClassicAjax\Default\NBS_MiniCart.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_MiniCartsettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_MiniCart_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_AddressAdmin.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_OrderAdmin.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_AddressAdminDetail.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_OrderAdminDetail.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_AddressAdminList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_OrderAdminList.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_AddressAdminsettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_OrderAdminsettings.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_AddressAdmin_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_OrderAdmin_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_Payment_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplayDetail.cshtml" />
@@ -708,6 +718,7 @@
     <None Include="Themes\config\default\Admin_Product_head.cshtml" />
     <None Include="Themes\config\default\modelfields.cshtml" />
     <None Include="Themes\config\default\NBS_AjaxProductListFilterSettings.cshtml" />
+    <None Include="Themes\config\default\NBS_AddressAdminsettings.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\config\default\NBS_DisplaySearchSettings.cshtml" />
     <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />

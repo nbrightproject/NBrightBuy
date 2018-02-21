@@ -2,8 +2,6 @@
 <asp:PlaceHolder ID="phData" runat="server"></asp:PlaceHolder>
 
 <div id="nbs_ajaxproducts">
-<div class="processingwait">
-    <i class="fa fa-cog fa-spin fa-4x"></i>
-</div>
+<div class="processingwait" ><div class="spinner"></div></div>    
 </div>
 

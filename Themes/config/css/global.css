@@ -61,10 +61,26 @@
 input[type=radio].invalid{box-shadow:0 0 4px #ff0000;}
 
 /* Loading Div */
-.processing {background:rgba(0, 0, 0, 0.2);height:100%;width:100%;transition:all 0.4s ease-in-out 0s;position:fixed;text-align:center;z-index:9998;}
-.processing .fa {color:white;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:0;right:0;margin:auto;z-index:9999;}
-.processingwait {background:rgba(0, 0, 0, 0.2);height:100%;width:100%;transition:all 0.4s ease-in-out 0s;position:fixed;text-align:center;z-index:9998;}
-.processingwait .fa {color:white;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:0;right:0;margin:auto;z-index:9999;}
+.processing, .processingwait {background:rgba(255, 255, 255, 0.8);height:100%;width:100%;transition:all 0.4s ease-in-out 0s;position:fixed;top:0;left:0;text-align:center;z-index:9998;}
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  border-top-color: #07d;
+  animation: spinner .6s linear infinite;
+  z-index: 9999;
+}
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
 
 /* For sortable checkboxlist */
 .checkboxlist-sortable .dnnCheckboxLabel {
