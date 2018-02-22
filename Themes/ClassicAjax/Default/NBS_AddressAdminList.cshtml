@@ -29,52 +29,54 @@
         <h1>@ResourceKey("Clients.ClientmenuAddresses")</h1>
 
         <ul id="checkoutselectaddress">
-                                    @foreach (NBrightInfo nbi in Model.List)
-                                    {
-                                        var addrmsg = ResourceKey("General.OptionalAddress");
-                                        var addrclass = "";
-                                        if (nbi.GetXmlPropertyBool("genxml/hidden/default"))
-                                        {
-                                            addrmsg = ResourceKey("General.PrimaryAddress");
-                                            addrclass = "defaultaddress";
-                                        }
+            @{
+                var lp = 0;
+            }
+            @foreach (NBrightInfo nbi in Model.List)
+            {
+                var addrmsg = ResourceKey("General.OptionalAddress");
+                var addrclass = "";
+                if (nbi.GetXmlPropertyBool("genxml/hidden/default"))
+                {
+                    addrmsg = ResourceKey("General.PrimaryAddress");
+                    addrclass = "defaultaddress";
+                }
 
-                                            <li class="@(addrclass)">
-                                                <div class="addresstype">
-                                                    <h3>@(addrmsg)</h3>
-                                                </div>
-
-
-
-                                                <div>
-                                                    @nbi.GetXmlProperty("genxml/textbox/firstname")
-                                                    @nbi.GetXmlProperty("genxml/textbox/lastname")
-                                                </div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/company")</div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/unit")</div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/street")</div>
-                                                <div>
-                                                    @nbi.GetXmlProperty("genxml/textbox/postalcode")
-                                                    @nbi.GetXmlProperty("genxml/textbox/city")
-                                                </div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/region")</div>
-                                                <div>@nbi.GetXmlProperty("genxml/dropdownlist/country/@selectedtext")</div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/telephone")</div>
-                                                <div>@nbi.GetXmlProperty("genxml/textbox/email")</div>
-
-                                                <div class="addressbuttons">
-                                                    <a id="AddressAdmin_cmdEdit" class="primarybutton" href="javascript:void(0)"> @ResourceKey("General.cmdEditButton")</a>
-
-                                                    @if (!nbi.GetXmlPropertyBool("genxml/hidden/default"))
-                                                    {
-                                                        <a id="AddressAdmin_cmdDel" class="secondarybutton" href="javascript:void(0)">@ResourceKey("General.cmdDeleteButton")</a>
-                                                    }
-                                                </div>
-
-                                            </li>
+                <li class="@(addrclass)">
+                    <div class="addresstype">
+                        <h3>@(addrmsg)</h3>
+                    </div>
 
 
 
+                    <div>
+                        @nbi.GetXmlProperty("genxml/textbox/firstname")
+                        @nbi.GetXmlProperty("genxml/textbox/lastname")
+                    </div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/company")</div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/unit")</div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/street")</div>
+                    <div>
+                        @nbi.GetXmlProperty("genxml/textbox/postalcode")
+                        @nbi.GetXmlProperty("genxml/textbox/city")
+                    </div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/region")</div>
+                    <div>@nbi.GetXmlProperty("genxml/dropdownlist/country/@selectedtext")</div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/telephone")</div>
+                    <div>@nbi.GetXmlProperty("genxml/textbox/email")</div>
+
+                    <div class="addressbuttons">
+                        <a class="primarybutton AddressAdmin_cmdEdit" href="javascript:void(0)" itemid="@nbi.ItemID" index="@lp"> @ResourceKey("General.cmdEditButton")</a>
+
+                        @if (!nbi.GetXmlPropertyBool("genxml/hidden/default"))
+                        {
+                            <a class="secondarybutton AddressAdmin_cmdDel" href="javascript:void(0)" itemid="@nbi.ItemID" index="@lp">@ResourceKey("General.cmdDeleteButton")</a>
+                        }
+                    </div>
+
+                </li>
+
+                lp = lp + 1;
 
             }
         </ul>

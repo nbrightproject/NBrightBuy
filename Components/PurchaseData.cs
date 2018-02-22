@@ -256,7 +256,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public String AddAjaxItem(NBrightInfo ajaxInfo, NBrightInfo nbSettings, Boolean debugMode = false)
         {
-
+            Lang = NBrightBuyUtils.SetContextLangauge(ajaxInfo);
             var strproductid = ajaxInfo.GetXmlProperty("genxml/hidden/productid");
             // Get ModelID
             var modelidlist = new List<String>();
@@ -293,8 +293,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (strmodelId == "") strmodelId = ajaxInfo.GetXmlProperty("genxml/hidden/modeldefault");
                 if (strmodelId == "")
                 {
-                    if (ajaxInfo.Lang == null) ajaxInfo.Lang = Utils.GetCurrentCulture();
-                    var p = ProductUtils.GetProductData(strproductid,ajaxInfo.Lang);
+                    var p = ProductUtils.GetProductData(strproductid,Lang);
                     strmodelId = p.Models[0].GetXmlProperty("genxml/hidden/modelid");
                 }
                 modelidlist.Add(strmodelId);
@@ -327,75 +326,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         }
 
 
-        /// <summary>
-        /// Add product to cart
-        /// </summary>
-        /// <param name="rpData"></param>
-        /// <param name="nbSettings"></param>
-        /// <param name="rowIndex"></param>
-        /// <param name="debugMode"></param>
-        public String AddItem(Repeater rpData, NBrightInfo nbSettings, int rowIndex, Boolean debugMode = false)
-        {
-
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", StoreSettings.Current.FolderUploadsMapPath, rowIndex);
-
-
-            // load into NBrigthInfo class, so it's easier to get at xml values.
-            var objInfoIn = new NBrightInfo();
-            objInfoIn.XMLData = strXml;
-
-            var strproductid = objInfoIn.GetXmlProperty("genxml/hidden/productid");
-            // Get ModelID
-            var modelidlist = new List<String>();
-            var qtylist = new Dictionary<String, String>();
-            var nodList = objInfoIn.XMLDoc.SelectNodes("genxml/repeaters/repeater[1]/*");
-            if (nodList != null && nodList.Count > 0)
-            {
-                foreach (XmlNode nod in nodList)
-                {
-                    var nbi = new NBrightInfo();
-                    nbi.XMLData = nod.OuterXml;
-                    var strmodelId = nbi.GetXmlProperty("genxml/hidden/modelid");
-                    var strqtyId = nbi.GetXmlProperty("genxml/textbox/selectedmodelqty");
-                    if (Utils.IsNumeric(strqtyId))
-                    {
-                        modelidlist.Add(strmodelId);
-                        qtylist.Add(strmodelId, strqtyId);                                                            
-                    }
-                }
-            }
-            if (qtylist.Count == 0)
-            {
-                var strmodelId = objInfoIn.GetXmlProperty("genxml/radiobuttonlist/rblmodelsel");
-                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/dropdownlist/ddlmodelsel");
-                if (strmodelId == "") strmodelId = objInfoIn.GetXmlProperty("genxml/hidden/modeldefault");
-
-                modelidlist.Add(strmodelId);
-                var strqtyId = objInfoIn.GetXmlProperty("genxml/textbox/selectedaddqty");
-                if (!Utils.IsNumeric(strqtyId)) strqtyId = "1";
-                qtylist.Add(strmodelId, strqtyId);
-            }
-
-            var strRtn = "";
-            foreach (var m in modelidlist)
-            {
-                var numberofmodels = 0; // use additemqty field to add multiple items
-                var additemqty = objInfoIn.GetXmlProperty("genxml/textbox/additemqty");
-                if (Utils.IsNumeric(additemqty))
-                    numberofmodels = Convert.ToInt32(additemqty); // zero should be allowed on add all to basket option.
-                else
-                    numberofmodels = 1; // if we have no numeric, assume we need to add it
-
-                for (var i = 1; i <= numberofmodels; i++)
-                {
-                    strRtn += AddSingleItem(strproductid, m, qtylist[m], objInfoIn, debugMode);
-                }
-            }
-            return strRtn;
-        }
-
         public String AddSingleItem(String strproductid, String strmodelId, String strqtyId, NBrightInfo objInfoIn, Boolean debugMode = false, int replaceIndex = -1)
         {
+            Lang = NBrightBuyUtils.SetContextLangauge(objInfoIn);
+
             if (!Utils.IsNumeric(strqtyId) || Convert.ToInt32(strqtyId) <= 0) return "";
 
             if (StoreSettings.Current.DebugModeFileOut) objInfoIn.XMLDoc.Save(PortalSettings.Current.HomeDirectoryMapPath + "debug_addtobasket.xml");
@@ -407,7 +341,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (Utils.IsNumeric(strproductid))
             {
                 var itemcode = ""; // The itemcode var is used to decide if a cart item is new or already existing in the cart.
-                var productData = ProductUtils.GetProductData(Convert.ToInt32(strproductid), Utils.GetCurrentCulture());
+                var productData = ProductUtils.GetProductData(Convert.ToInt32(strproductid), Lang);
 
                 if (productData.Info == null) return ""; // we may have a invalid productid that has been saved by a cookie, but since has been deleted.
 
@@ -555,7 +489,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var nodItem = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/items/genxml[itemcode='" + itemcode.TrimEnd('-') + "']");
                 if (nodItem == null || clientfileuopload || replaceIndex == -2)
                 {
-                    objInfo.SetXmlProperty("genxml/itemcode", objInfo.GetXmlProperty("genxml/itemcode") + Utils.GetUniqueKey());  // make sure itemcode is unique
+                    if (replaceIndex == -2)
+                    {
+                        // make itemcode unique, so we create new item each time.
+                        objInfo.SetXmlProperty("genxml/itemcode", objInfo.GetXmlProperty("genxml/itemcode") + Utils.GetUniqueKey());  // make sure itemcode is unique
+                    }
 
                     #region "Client Files"
 
@@ -859,17 +797,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        /// <summary>
-        /// Add/Upate billing Address
-        /// </summary>
-        public void AddBillingAddress(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddBillingAddress(addInfo);
-        }
-
         public void AddBillingAddress(NBrightInfo info)
         {
             var strXml = "<billaddress>";
@@ -886,17 +813,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/billaddress");
             if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
             return rtnInfo;
-        }
-
-        /// <summary>
-        /// Add/Upate Shipping Address
-        /// </summary>
-        public void AddShippingAddress(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddShippingAddress(addInfo);
         }
 
         public void AddShippingAddress(NBrightInfo info)
@@ -923,18 +839,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             PurchaseInfo.RemoveXmlNode("genxml/shipaddress");
         }
 
-
-        /// <summary>
-        /// Add/Upate Extra Info
-        /// </summary>
-        public void AddExtraInfo(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddExtraInfo(addInfo);
-        }
-
         public void AddExtraInfo(NBrightInfo info)
         {
             var strXml = "<extrainfo>";
@@ -959,17 +863,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
 
             return rtnInfo;
-        }
-
-        /// <summary>
-        /// Add/Upate Extra Shipping data
-        /// </summary>
-        public void AddShipData(Repeater rpData)
-        {
-            var strXML = GenXmlFunctions.GetGenXml(rpData);
-            var addInfo = new NBrightInfo();
-            addInfo.XMLData = strXML;
-            AddShipData(addInfo);
         }
 
         public void AddShipData(NBrightInfo info)

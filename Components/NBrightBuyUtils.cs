@@ -2390,11 +2390,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(uilang);
                     if (lang == "") lang = uilang; // reset lang to uilang
                 }
+                return uilang;
             }
-            else
+            // if no uilang, default back to lang
+            if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString())
             {
-                // if no uilang, default back to lang
-                if (lang != "" && lang != System.Threading.Thread.CurrentThread.CurrentCulture.ToString()) System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             }
             if (lang == "") lang = Utils.GetCurrentCulture(); // fallback, but very often en-US on ajax call
 

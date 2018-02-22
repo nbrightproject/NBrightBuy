@@ -26,7 +26,7 @@
     <div class="nbssearchfield">
     <div class="nbssearchinput">
         @NBrightTextBox(info, "genxml/textbox/searchtext", "maxlength='150' placeholder='" + @ResourceKey("General.Search") + "' class='NormalTextBox'")
-        <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
+        <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()">
         <input id="modulekey" type="hidden" update="save" value="@Model.GetSetting("targetmodulekey")">
         <input id="navigationmode" update="save" type="hidden" value="f">
         <input id="search1" type="hidden" update="save" value="<tag id='search' action='open' sqloperator='and' />">

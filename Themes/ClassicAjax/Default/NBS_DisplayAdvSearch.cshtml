@@ -31,7 +31,7 @@
     @PropertyCheckboxList(info, "genxml/checkboxlist/propspec", "spec")
 
 
-    <input id="lang" type="hidden" value="@Utils.GetCurrentCulture()">
+    <input id=ui"lang" type="hidden" value="@Utils.GetCurrentCulture()">
     <input id="modulekey" type="hidden" update="save" value="@Model.GetSetting("targetmodulekey")">
     <input id="navigationmode" update="save" type="hidden" value="f">
     <input id="@(Model.ModuleId)_search1" type="hidden" update="save" value="<tag id='searchtext' action='open' sqloperator='and' />">

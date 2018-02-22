@@ -588,6 +588,7 @@
     <Content Include="Themes\ClassicAjax\img\loading.gif" />
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
+    <Content Include="Themes\ClassicAjax\js\AddressAdmin.js" />
     <Content Include="Themes\ClassicAjax\js\cart.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cookie.min.js" />

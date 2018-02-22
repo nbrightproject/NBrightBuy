@@ -24,6 +24,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Address
             var strOut = "AddressAdmin - ERROR!! - No Security rights for current user!";
             if (NBrightBuyUtils.CheckManagerRights())
             {
+                NBrightBuyUtils.SetContextLangauge(context);
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                 var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
                 var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
@@ -40,6 +41,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Address
                     case "addressadmin_deleteaddress":
                         break;
                     case "addressadmin_editaddress":
+                        strOut = GetAddress(context);
                         break;
                     case "addressadmin_newaddress":
                         break;
@@ -89,6 +91,43 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Address
 
         }
 
+
+        private static String GetAddress(HttpContext context)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                {
+                    var addressData = new AddressData();
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                    var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                    var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                    var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+                    var selectedindex = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedindex");
+                    
+                    var passSettings = ajaxInfo.ToDictionary();
+                    foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+                    {
+                        if (passSettings.ContainsKey(s.Key))
+                            passSettings[s.Key] = s.Value;
+                        else
+                            passSettings.Add(s.Key, s.Value);
+                    }
+
+                    var obj = addressData.GetAddress(selectedindex);
+
+
+                    var strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", obj, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
 
 
     }
