@@ -72,22 +72,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <summary>
         /// Add Adddress
         /// </summary>
-        /// <param name="rpData"></param>
+        /// <param name=""></param>
         /// <param name="debugMode"></param>
-        public String AddAddress(Repeater rpData, Boolean debugMode = false)
-        {
-            var strXml = GenXmlFunctions.GetGenXml(rpData, "", "");
-            // load into NBrigthInfo class, so it's easier to get at xml values.
-            var objInfoIn = new NBrightInfo();
-            objInfoIn.XMLData = strXml;
-            var addIndex = objInfoIn.GetXmlProperty("genxml/hidden/index"); // addresses updated from manager should have a index hidden field.
-            if (addIndex == "") addIndex = objInfoIn.GetXmlProperty("genxml/dropdownlist/selectaddress"); // updated from cart should have a selected address
-            if (!Utils.IsNumeric(addIndex)) addIndex = "-1"; // assume new address.
-            var addressIndex = Convert.ToInt32(addIndex);
-            AddAddress(objInfoIn,addressIndex);
-            return ""; // if everything is OK, don't send a message back.
-        }
-
         public String AddAddress(NBrightInfo addressInfo, int addressIndex, Boolean debugMode = false)
         {
             var addrExists = AddressExists(addressInfo);
@@ -275,12 +261,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
             else
             {
-                UpdateDefaultProfileAddress(); //alway update default address to profile, to keep it in-line.
+                //UpdateDefaultProfileAddress(); //alway update default address to profile, to keep it in-line.
             }
         }
 
         private void UpdateDefaultProfileAddress()
         {
+            // do NOT update profile.  This stops the address being saved property on a race condition with update of default address.
+            // It's not required to update DNN profile for the store, so we're droping this functionality.
             var da = GetDefaultAddress();
             if (da != null)
             {

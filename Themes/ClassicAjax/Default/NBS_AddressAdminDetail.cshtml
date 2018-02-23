@@ -19,19 +19,17 @@
 <!-- Client Menu -->
 @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicAjax\\Default\\ClientMenu.cshtml", Model)
 
-<div class="actions">
-    <a id="OrderAdmin_cmdReturn" class="btn btn-default primarybutton" href="javascript:void(0)">@ResourceKey("OrderAdmin.cmdReturnButton")</a>
-    <a id="OrderAdmin_cmdReOrder" class="btn btn-default primarybutton" href="javascript:void(0)" itemid="@(info.ItemID)">@ResourceKey("OrderAdmin.cmdReOrderButton")</a>
-    <a id="OrderAdmin_cmdPrint" class="btn btn-default primarybutton" target="_blank" href="/DesktopModules/NBright/NBrightBuy/PrintView.aspx?itemid=@(info.ItemID)&printcode=printorder&printtype=OrderCreated&language=@(Utils.GetCurrentCulture())">@ResourceKey("OrderAdmin.PrintOrder")</a>
-</div>
-
 <div class="nbs myaddresses">
 
-    <div id="addressbook">
+    <div id="addressdata">
 
+        <input id="uilang" type="hidden" value="@Model.GetUrlParam("language")"/> <!-- default to current language -->
+        <input id="addrindex" type="hidden" value="@info.GetXmlProperty("genxml/selectedindex")"/>
 
-        <h1>@ResourceKey("Clients.ClientmenuAddresses")</h1>
-
+        <div class="addressbuttons">
+            <a class="primarybutton AddressAdmin_cmdSave" href="javascript:void(0)"  index="@info.GetXmlProperty("genxml/selectedindex")"> @ResourceKey("General.cmdSaveButton")</a>
+            <a class="secondarybutton AddressAdmin_cmdCancel" href="javascript:void(0)" index="@info.GetXmlProperty("genxml/selectedindex")"> @ResourceKey("General.cmdCancelButton")</a>
+        </div>
 
         <div class="formrow">
             <div class="leftside">

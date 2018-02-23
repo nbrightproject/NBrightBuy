@@ -142,45 +142,6 @@ namespace Nevoweb.DNN.NBrightBuy
         #endregion
 
 
-        #region  "Events "
-
-        protected void CtrlItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            var cArg = e.CommandArgument.ToString();
-            var param = new string[3];
-            if (_uid != "") param[0] = "uid=" + _uid;
-
-            switch (e.CommandName.ToLower())
-            {
-                case "saveaddress":
-                    _addressData.AddAddress(rpAddr);
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "deleteaddress":
-                    _addressData.RemoveAddress(e.Item.ItemIndex);
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "editaddress":
-                    param[1] = "addressid=" + e.Item.ItemIndex.ToString("");
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "newaddress":
-                    param[1] = "addressid=-1";
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-                case "viewclient":
-                    param[1] = "ctrl=clients";
-                    Response.Redirect(Globals.NavigateURL(TabId, "", param), true);
-                    break;
-                case "cancel":
-                    Response.Redirect(NBrightBuyUtils.AdminUrl(TabId, param), true);
-                    break;
-            }
-
-        }
-
-        #endregion
-
 
     }
 

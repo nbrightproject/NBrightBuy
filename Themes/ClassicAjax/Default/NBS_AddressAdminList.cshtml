@@ -12,12 +12,6 @@
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/resx")
 
-<script>
-  $( function() {
-      $('input[datatype=date]').datepicker();
-  } );
-</script>
-
 <!-- Client Menu -->
 @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\ClassicAjax\\Default\\ClientMenu.cshtml", Model)
 
@@ -27,6 +21,10 @@
 
 
         <h1>@ResourceKey("Clients.ClientmenuAddresses")</h1>
+
+        <div class="addressbuttons">
+            <a class="primarybutton AddressAdmin_cmdAdd" href="javascript:void(0)"> @ResourceKey("General.cmdAddButton")</a>
+        </div>
 
         <ul id="checkoutselectaddress">
             @{
@@ -66,11 +64,11 @@
                     <div>@nbi.GetXmlProperty("genxml/textbox/email")</div>
 
                     <div class="addressbuttons">
-                        <a class="primarybutton AddressAdmin_cmdEdit" href="javascript:void(0)" itemid="@nbi.ItemID" index="@lp"> @ResourceKey("General.cmdEditButton")</a>
+                        <a class="primarybutton AddressAdmin_cmdEdit" href="javascript:void(0)" index="@lp"> @ResourceKey("General.cmdEditButton")</a>
 
                         @if (!nbi.GetXmlPropertyBool("genxml/hidden/default"))
                         {
-                            <a class="secondarybutton AddressAdmin_cmdDel" href="javascript:void(0)" itemid="@nbi.ItemID" index="@lp">@ResourceKey("General.cmdDeleteButton")</a>
+                            <a class="secondarybutton AddressAdmin_cmdDel" href="javascript:void(0)" index="@lp">@ResourceKey("General.cmdDeleteButton")</a>
                         }
                     </div>
 

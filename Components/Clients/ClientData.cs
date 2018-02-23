@@ -70,7 +70,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     var rc = new DotNetNuke.Security.Roles.RoleController();
                     var ri = rc.GetRoleByName(PortalId, StoreSettings.ClientEditorRole);
                     if (ri != null) rc.AddUserRole(PortalId, _userInfo.UserID, ri.RoleID, Null.NullDate, Null.NullDate);
-                    if (StoreSettings.Current.Get("sendclientroleemail") == "True") NBrightBuyUtils.SendEmail(_userInfo.Email, "addclientrole.html", _clientInfo, "", "", _userInfo.Profile.PreferredLocale);
+                    if (StoreSettings.Current.Get("sendclientroleemail") == "True")
+                    {
+                        var emailBody = "";
+                        emailBody = NBrightBuyUtils.RazorTemplRender("AddClientRole.cshtml", 0, "", _clientInfo, "/DesktopModules/NBright/NBrightBuy", StoreSettings.Current.Get("themefolder"), _userInfo.Profile.PreferredLocale, StoreSettings.Current.Settings());
+                        NBrightBuyUtils.SendEmail(emailBody, _userInfo.Email, "ClientRole", _clientInfo, StoreSettings.Current.SettingsInfo.GetXmlProperty("genxml/textbox/storecompany"), StoreSettings.Current.ManagerEmail, _userInfo.Profile.PreferredLocale);
+                    }
                 }
             }
         }

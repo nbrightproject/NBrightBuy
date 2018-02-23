@@ -572,12 +572,6 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_Checkout.css" />
-    <Content Include="Themes\ClassicAjax\Default\addclientrole.html" />
-    <Content Include="Themes\ClassicAjax\Default\addressadminbody.html" />
-    <Content Include="Themes\ClassicAjax\Default\addressadminemail.html" />
-    <Content Include="Themes\ClassicAjax\Default\addressadminfooter.html" />
-    <Content Include="Themes\ClassicAjax\Default\addressadminheader.html" />
-    <Content Include="Themes\ClassicAjax\Default\addressadmininput.html" />
     <Content Include="Themes\ClassicAjax\Default\paymentFAIL.html" />
     <Content Include="Themes\ClassicAjax\Default\paymentfooter.html" />
     <Content Include="Themes\ClassicAjax\Default\paymentheader.html" />
@@ -671,6 +665,7 @@
     <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_WishList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_WishList_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\AddClientRole.cshtml" />
     <None Include="Themes\ClassicAjax\Default\OrderHtmlOutput.cshtml" />
     <None Include="Themes\ClassicAjax\Default\OrderPrintOutput.cshtml" />
     <None Include="Themes\ClassicAjax\Default\printorder.cshtml" />
@@ -730,10 +725,6 @@
     <Content Include="Themes\config\css\backoffice.css" />
     <Content Include="Themes\config\css\global.css" />
     <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
-    <Content Include="Themes\config\default\addressbookbody.html" />
-    <Content Include="Themes\config\default\addressbookfooter.html" />
-    <Content Include="Themes\config\default\addressbookheader.html" />
-    <Content Include="Themes\config\default\addressbookinput.html" />
     <Content Include="Themes\config\default\ajaxincludes.html" />
     <Content Include="Themes\config\default\backoffice.html" />
     <Content Include="Themes\config\default\backofficepageheader.html" />
@@ -1631,7 +1622,9 @@
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\settings.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\settings.ascx.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\tools.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\tools.ascx.nl-NL.resx" />

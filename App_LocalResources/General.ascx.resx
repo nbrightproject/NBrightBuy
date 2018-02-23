@@ -1182,4 +1182,7 @@
   <data name="loginpopupmsg.Text" xml:space="preserve">
     <value>You must login to your account to add products to your favorite lists.</value>
   </data>
+  <data name="AccessToClient.Text" xml:space="preserve">
+    <value>Access given to Client</value>
+  </data>
 </root>
