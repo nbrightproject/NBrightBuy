@@ -13,33 +13,6 @@ namespace Nevoweb.DNN.NBrightBuy {
     public partial class Payment {
         
         /// <summary>
-        /// rpDetailDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpDetailDisplay;
-        
-        /// <summary>
-        /// rpPaymentGateways control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPaymentGateways;
-        
-        /// <summary>
-        /// rpDetailFooter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpDetailFooter;
-        
-        /// <summary>
         /// phData control.
         /// </summary>
         /// <remarks>

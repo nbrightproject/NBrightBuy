@@ -9,6 +9,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using NBrightCore.common;
 using NBrightCore.render;
+using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 
 namespace Nevoweb.DNN.NBrightBuy.Components.Payments
@@ -33,13 +34,38 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Payments
                         orderData.PaymentProviderKey = ajaxInfo.GetXmlProperty("genxml/hidden/paymentproviderkey").ToLower(); // provider keys should always be lowecase
                         orderData.SavePurchaseData();
                         strOut = PaymentsInterface.Instance(orderData.PaymentProviderKey).RedirectForPayment(orderData);
-                    }
-                    
+                    }                    
+                    break;
+                case "payment_getlist":
+                    strOut = GetPaymentList(context);
                     break;
             }
 
             return strOut;
         }
+
+
+        private static String GetPaymentList(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+            var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+            var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+
+            var passSettings = ajaxInfo.ToDictionary();
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+
+            var l = new List<NBrightInfo>();
+
+            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", l, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+            return strOut;
+        }
+
 
 
     }

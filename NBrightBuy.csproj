@@ -582,6 +582,7 @@
     <Content Include="Themes\ClassicAjax\img\loading.gif" />
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
+    <Content Include="Themes\ClassicAjax\js\payment.js" />
     <Content Include="Themes\ClassicAjax\js\AddressAdmin.js" />
     <Content Include="Themes\ClassicAjax\js\cart.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
@@ -596,6 +597,9 @@
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
     <None Include="Themes\ClassicAjax\Default\ClientMenu.cshtml" />
     <None Include="Themes\ClassicAjax\Default\frontofficepageheader.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_Payment.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_PaymentList.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_Paymentsettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplayList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplayList_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplayList_paging.cshtml" />
@@ -713,6 +717,7 @@
     <None Include="Themes\config\default\Admin_Category_head.cshtml" />
     <None Include="Themes\config\default\Admin_Product_head.cshtml" />
     <None Include="Themes\config\default\modelfields.cshtml" />
+    <None Include="Themes\config\default\NBS_Paymentsettings.cshtml" />
     <None Include="Themes\config\default\NBS_AjaxProductListFilterSettings.cshtml" />
     <None Include="Themes\config\default\NBS_AddressAdminsettings.cshtml" />
     <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
@@ -724,7 +729,6 @@
     <None Include="Plugins\menu.config" />
     <Content Include="Themes\config\css\backoffice.css" />
     <Content Include="Themes\config\css\global.css" />
-    <Content Include="Themes\config\default\AddressAdmin_Settings.html" />
     <Content Include="Themes\config\default\ajaxincludes.html" />
     <Content Include="Themes\config\default\backoffice.html" />
     <Content Include="Themes\config\default\backofficepageheader.html" />
