@@ -176,6 +176,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string supportemail = "supportemail";
         public static string manageremail = "manageremail";
         public static string adminemail = "adminemail";
+        public static string imagesizes = "imagesizes";
     }
 
     public class FilesStatus

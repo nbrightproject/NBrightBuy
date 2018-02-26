@@ -60,9 +60,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Payments
                     passSettings.Add(s.Key, s.Value);
             }
 
-            var l = new List<NBrightInfo>();
+            var cartInfo = new CartData(PortalSettings.Current.PortalId);
+            if (cartInfo != null)
+            {
+            }
 
-            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", l, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
+            var strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", cartInfo, "/DesktopModules/NBright/NBrightBuy", themeFolder, Utils.GetCurrentCulture(), passSettings);
             return strOut;
         }
 

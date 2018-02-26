@@ -79,7 +79,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include="Themes\config\default\methodselection.cshtml" />
-    <Content Include="Themes\config\default\methodselection.html" />
     <Content Include="Themes\config\default\settings.html" />
   </ItemGroup>
   <ItemGroup>

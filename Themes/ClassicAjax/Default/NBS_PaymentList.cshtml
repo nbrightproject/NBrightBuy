@@ -20,41 +20,38 @@
     var info = cart.PurchaseInfo;
 }
 
-@if (Model.GetSettingBool("carttitle"))
-{
-    <h1>@ResourceKey("CartView.YourBasket")</h1>
-}
-@if (Model.GetSettingBool("cartsteps"))
-{
-    <div class="checkoutsteps">
-        <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
-        <ol>
-            <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
-            <li class="step2 activestep">@ResourceKey("CartView.CartstepsAddresses")</li>
-            <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
-            <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
-            <li class="step5 activestep">@ResourceKey("CartView.CartstepsConfirm")</li>
-        </ol>
-    </div>
-}
+    @if (Model.GetSettingBool("carttitle"))
+    {
+        <h1>@ResourceKey("CartView.YourBasket")</h1>
+    }
+    @if (Model.GetSettingBool("cartsteps"))
+    {
+        <div class="checkoutsteps">
+            <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
+            <ol>
+                <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
+                <li class="step2 activestep">@ResourceKey("CartView.CartstepsAddresses")</li>
+                <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
+                <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
+                <li class="step5 activestep">@ResourceKey("CartView.CartstepsConfirm")</li>
+            </ol>
+        </div>
+    }
 
 
 
     <div id="payment" class="panel">
 
         <div class="formrow paymenttotal">
-            @ResourceKey("CartView.Totaltopay") : @CurrencyOf(info.GetXmlPropertyDouble("genxml/appliedtotal")) 
-        </div> 
+            @ResourceKey("CartView.Totaltopay") : @CurrencyOf(info.GetXmlPropertyDouble("genxml/appliedtotal"))
+        </div>
 
-
-
-
-
+        @PaymentProviderList(info, "")
 
 
     </div>
 
     <div>
-        <a href="javascript:history.back()" class="secondarybutton">[<tag type="valueof" resourcekey="Cartview.Previous" />]</a>
+        <a href="javascript:history.back()" class="secondarybutton">@ResourceKey("Cartview.Previous")</a>
     </div>
 

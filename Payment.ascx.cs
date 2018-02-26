@@ -81,15 +81,41 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             if (UserId > 0) // limit module to registered users
             {
-                // new data record so set defaults.
-                var obj = new NBrightInfo(true);
-                obj.PortalId = PortalId;
-                obj.ModuleId = 0;
-                obj.Lang = Utils.GetCurrentCulture();
-                obj.GUIDKey = RazorTemplate;
-                obj.ItemID = -1;
+                var strOut = "";
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", obj, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                // new data record so set defaults.
+                var cartInfo = new CartData(PortalSettings.Current.PortalId);
+
+                    var orderid = Utils.RequestParam(Context, "orderid");
+                if (Utils.IsNumeric(orderid))
+                {
+                    // orderid exists, so must be return from bank; Process it!!
+                    var orderData = new OrderData(PortalId, Convert.ToInt32(orderid));
+                    var prov = PaymentsInterface.Instance(orderData.PaymentProviderKey);
+
+
+                    // In this situation the Manual payment will ALWAYS be successful, but the code is here as an exmaple
+                    var msg = prov.ProcessPaymentReturn(Context);
+                    if (msg == "") // no message so successful
+                    {
+                        orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
+                        orderData.PaymentOk("050");
+                        strOut = NBrightBuyUtils.RazorTemplRender("NBS_PaymentOK.cshtml", 0, "", orderData, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                    }
+                    else
+                    {
+                        orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // reload the order, becuase the status and typecode may have changed by the payment provider.
+                        orderData.AddAuditMessage(msg, "paymsg", "payment.ascx", "False");
+                        orderData.Save();
+                        strOut = NBrightBuyUtils.RazorTemplRender("NBS_PaymentFail.cshtml", 0, "", cartInfo, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                    }
+                }
+                else
+                {
+                    // not returning from bank, so display list of payment providers.
+                    strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", cartInfo, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                }
+
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

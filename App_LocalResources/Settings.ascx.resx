@@ -522,4 +522,7 @@
   <data name="logintab.Text" xml:space="preserve">
     <value>Login Page</value>
   </data>
+  <data name="productimageresizelist.Text" xml:space="preserve">
+    <value>Image sizes to create (CSV list)</value>
+  </data>
 </root>

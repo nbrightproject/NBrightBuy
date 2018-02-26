@@ -855,7 +855,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                             if (File.Exists(fullName))
                             {
                                 var imgResize = StoreSettings.Current.GetInt(StoreSettingKeys.productimageresize);
-                                if (imgResize == 0) imgResize = 800;
+                                if (imgResize == 0) imgResize = 960;
                                 var imagepath = ResizeImage(fullName, imgResize);
                                 var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
                                 AddNewImage(Convert.ToInt32(productitemid), imageurl, imagepath);
@@ -879,12 +879,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             return strOut;
         }
 
-        public static String ResizeImage(String fullName, int imgSize = 640)
+
+        public static String ResizeImage(String fullName, int imgSize, string newFileName, bool useSizeFolder, bool deletefullname = true)
         {
             if (ImgUtils.IsImageFile(Path.GetExtension(fullName)))
             {
+                if (newFileName == "")
+                {
+                    newFileName = Utils.GetUniqueKey();
+                }
+                var imgFolder = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\";
+                if (useSizeFolder)
+                {
+                    imgFolder = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + imgSize;
+                    if (!Directory.Exists(imgFolder))
+                    {
+                        Directory.CreateDirectory(imgFolder);
+                    }
+                    imgFolder += "\\";
+                }
                 var extension = Path.GetExtension(fullName);
-                var newImageFileName = StoreSettings.Current.FolderImagesMapPath.TrimEnd(Convert.ToChar("\\")) + "\\" + Utils.GetUniqueKey() + extension;
+                var newImageFileName = imgFolder + newFileName + extension;
                 if (extension != null && extension.ToLower() == ".png")
                 {
                     newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
@@ -893,12 +908,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                 {
                     newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
                 }
-                Utils.DeleteSysFile(fullName);
+                if (deletefullname)
+                {
+                    Utils.DeleteSysFile(fullName);
+                }
 
                 return newImageFileName;
 
             }
             return "";
+        }
+
+        public static String ResizeImage(String fullName, int imgSize = 960)
+        {
+            return ResizeImage(fullName, imgSize, "", false);
         }
 
 

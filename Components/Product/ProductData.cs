@@ -13,6 +13,7 @@ using DotNetNuke.Services.Localization;
 using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
+using Nevoweb.DNN.NBrightBuy.Components.Products;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -608,6 +609,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
             // Calc Display Prices
             UpdateDisplayCalcPrices();
+            //Create images for all sizes
+            ProductImagesCreate();
             objCtrl.Update(DataRecord);
 
             // copy langauge data to new langauge record, so we don;t get empty language records.
@@ -645,6 +648,40 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 DataLangRecord = objCtrl.Get(plangid);
             }
         }
+
+        public void ProductImagesCreate(string newFileName = "")
+        {
+            if (newFileName == "")
+            {
+                newFileName = ProductName;
+            }
+            if (newFileName.Trim(' ') != "")
+            {
+                var lp = 1;
+                foreach (var img in Imgs)
+                {
+
+                    var imgResize = StoreSettings.Current.Get(StoreSettingKeys.imagesizes);
+                    if (imgResize == "")
+                    {
+                        imgResize = "960,640,240";
+                    }
+                    var imgsizes = imgResize.Split(',');
+                    foreach (var imgsize in imgsizes)
+                    {
+                        if (Utils.IsNumeric(imgsize) && Convert.ToInt32(imgsize) > 0)
+                        {
+                            newFileName = Utils.StripAccents(Utils.CleanInput(newFileName.Replace(" ", "-")));
+                            var rtnfilepath = ProductFunctions.ResizeImage(img.GetXmlProperty("genxml/hidden/imagepath"), Convert.ToInt32(imgsize), newFileName, true,false);
+                            //DataLangRecord.SetXmlProperty("genxml/imgsize", "");
+                            //DataLangRecord.SetXmlProperty("genxml/imgsize/" + Convert.ToInt32(imgsize), rtnfilepath);
+                        }
+                    }
+                    lp += 1;
+                }
+            }
+        }
+
 
         private void UpdateDisplayCalcPrices()
         {

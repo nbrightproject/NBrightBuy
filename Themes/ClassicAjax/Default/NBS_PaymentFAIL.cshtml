@@ -1,0 +1,35 @@
+﻿@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/resx")
+
+@{
+    // assign Model, so we can resolve var in VS
+    var cart = (CartData)Model.List.First();
+    var info = cart.PurchaseInfo;
+}
+
+<div class="nbs paymentfailed">
+
+    <div class="formrow">
+        <h3>@ResourceKey("CartView.PaymentFailed")</h3>
+        <p>@BreakOf(ResourceKey("Notification.checkoutfailmessage"))</p>
+    </div>
+
+    @if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
+    {
+        <div class="formrow">
+            <a class="primarybutton" href="/tabid/@(Model.GetSetting("ordermanagertab"))">@ResourceKey("CartView.ManageOrders")</a>
+        </div>
+    }
+    else
+    {
+        <div class="formrow">
+            <a class="primarybutton" href="/tabid/@(Model.GetSetting("productlisttab"))">@ResourceKey("CartView.returntostore")</a>
+        </div>
+    }
+
+</div>

@@ -2,9 +2,6 @@
 
 $(document).ready(function () {
     // start load all ajax data, continued by js in product.js file
-    $('.processing').show();
-    $('#razortemplate').val('NBS_PaymentList.cshtml');
-    nbxget('payment_getlist', '#nbs_Paymentsearch', '#datadisplay');
 
     $(document).on("nbxgetcompleted", NBS_Payment_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -14,7 +11,11 @@ $(document).ready(function () {
         $('.processing').hide();
 
         if (e.cmd == 'payment_getlist') {
-           
+
+            $('.processing').show();
+            $('#razortemplate').val('NBS_PaymentList.cshtml');
+            nbxget('payment_getlist', '#nbs_Paymentsearch', '#datadisplay');
+
         }
 
     };

@@ -1375,6 +1375,35 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString PaymentProviderList(NBrightInfo info, String attributes = "")
+        {
+            var strOut = "";
+            var cartData = new CartData(PortalSettings.Current.PortalId);
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetPaymentProviders();
+
+            foreach (var d in provList)
+            {
+                var p = d.Value;
+                var key = p.GetXmlProperty("genxml/textbox/ctrl");
+                var prov = PaymentsInterface.Instance(key);
+                if (prov != null)
+                {
+                    var templ = prov.GetTemplate(cartData.PurchaseInfo);
+                    if (templ == "")
+                    {
+                        var msgcode = "noproviderdata_" + NotifyCode.warning.ToString();
+                        templ = "<div>" + key + "</div>";
+                        templ += NBrightBuyUtils.GetResxMessage(msgcode);
+                    }
+                    strOut += templ;
+                }
+            }
+
+            return new RawString(strOut);
+        }
+
+
         #endregion
 
         #region "OrderAdmin"
