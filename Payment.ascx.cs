@@ -65,7 +65,25 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 if (Page.IsPostBack == false)
                 {
-                    PageLoad();
+                    var providerkey = Utils.RequestParam(Context, "provider");
+                    if (providerkey != "")
+                    {
+                        var strOut = "";
+                        var cartInfo = new CartData(PortalSettings.Current.PortalId);
+                        if (cartInfo != null)
+                        {
+                            cartInfo.SaveModelTransQty(); // move qty into trans
+                            cartInfo.ConvertToOrder(StoreSettings.Current.DebugMode);
+                            var orderData = new OrderData(cartInfo.PurchaseInfo.ItemID);
+                            orderData.PaymentProviderKey = providerkey.ToLower(); // provider keys should always be lowecase
+                            orderData.SavePurchaseData();
+                            PaymentsInterface.Instance(orderData.PaymentProviderKey).RedirectForPayment(orderData);
+                        }
+                    }
+                    else
+                    {
+                        PageLoad();
+                    }
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -86,7 +104,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 // new data record so set defaults.
                 var cartInfo = new CartData(PortalSettings.Current.PortalId);
 
-                    var orderid = Utils.RequestParam(Context, "orderid");
+                var orderid = Utils.RequestParam(Context, "orderid");
                 if (Utils.IsNumeric(orderid))
                 {
                     // orderid exists, so must be return from bank; Process it!!

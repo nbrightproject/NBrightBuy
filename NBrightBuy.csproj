@@ -572,10 +572,8 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_Checkout.css" />
-    <Content Include="Themes\ClassicAjax\Default\paymentFAIL.html" />
-    <Content Include="Themes\ClassicAjax\Default\paymentfooter.html" />
-    <Content Include="Themes\ClassicAjax\Default\paymentheader.html" />
-    <Content Include="Themes\ClassicAjax\Default\paymentOK.html" />
+    <None Include="Themes\ClassicAjax\Default\NBS_PaymentFAIL.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\NBS_PaymentOK.cshtml" />
     <Content Include="Themes\ClassicAjax\img\close.png" />
     <Content Include="Themes\ClassicAjax\img\email-facebook.gif" />
     <Content Include="Themes\ClassicAjax\img\email-twitter.gif" />
