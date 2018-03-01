@@ -18,6 +18,11 @@
 <!-- NBS Back Office theme -->
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/config/css/backoffice.css" rel="stylesheet">
 
+<!-- Load these scripts to use nbrightajax functions -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.genxmlajax.js"></script>
+
+
 <script type="text/javascript">
 // Responsive Content fix for Windows Phone http://trentwalton.com/2013/01/16/windows-phone-8-viewport-fix
 if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
@@ -61,3 +66,5 @@ $(document).ready(function() {
         overflow-y: scroll !important;
     }
 </style>
+
+<div id="loader" class="processing" style="display:none;"><div class="spinner"></div></div>

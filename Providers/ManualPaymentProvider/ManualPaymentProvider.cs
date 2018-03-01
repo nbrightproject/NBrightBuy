@@ -20,7 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public override string GetTemplate(NBrightInfo cartInfo)
         {
             var templ = "";
-            var info = ProviderUtils.GetProviderSettings("manualpayment");
+            var info = ProviderUtils.GetData(Utils.GetCurrentCulture());
             var templateName = info.GetXmlProperty("genxml/textbox/checkouttemplate");
             if (templateName.EndsWith(".html"))
             {
@@ -36,7 +36,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string RedirectForPayment(OrderData orderData)
         {
-            var info = ProviderUtils.GetProviderSettings("manualpayment");
+            var info = ProviderUtils.GetData(orderData.Lang);
             var settings = info.ToDictionary();
             var neworderstatus = "020";
             if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];

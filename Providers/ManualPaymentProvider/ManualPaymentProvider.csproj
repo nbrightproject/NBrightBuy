@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxProvider.cs" />
     <Compile Include="ManualPayment.ascx.cs">
       <DependentUpon>ManualPayment.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -78,8 +79,10 @@
     <Content Include="ManualPayment.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="pluginmanualpaymentAjax.xml" />
+    <Content Include="Themes\config\js\manualpayment.js" />
     <None Include="Themes\config\default\methodselection.cshtml" />
-    <Content Include="Themes\config\default\settings.html" />
+    <None Include="Themes\config\default\settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\ManualPayment.ascx.en-GB.resx" />
