@@ -77,7 +77,7 @@
             <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
             <input id="uilang" type="hidden" value="@(info.Lang)">
 
-            <div class="return"><a href="@EntryReturnUrl(Model)" class="actionbutton absec"><i class="fa fa-reply"></i>Retourner à la liste</a></div>
+            <div class="return"><a href="@EntryReturnUrl(Model)" class="actionbutton absec"><i class="fa fa-reply"></i>@ResourceKey("ProductView.return")</a></div>
 
             <h2>@info.GetXmlProperty("genxml/textbox/manufacturer")</h2>
 
@@ -100,7 +100,7 @@
                     {
                     <span class="from">@ResourceKey("ProductView.from")</span>
                     }
-                    @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))<span class="ttc">TTC</span>
+                    @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))
                 }
 
             </div>
@@ -159,7 +159,6 @@
 
             <div class="properties">
               Réf. @info.GetXmlProperty("genxml/textbox/txtproductref")<br />
-              Marque : <a href="javascript:void(0)">Marque cliquable</a>
             </div>
 
             <div>
@@ -176,15 +175,15 @@
             <ul class="nav-tabs">
               @if (info.GetXmlProperty("genxml/lang/genxml/edt/description") != "")
               {
-                  <li class="tab-active"><a href="#tab-1">Description</a></li><!-- Product description -->
+                  <li class="tab-active"><a href="#tab-1">@ResourceKey("ProductView.description")</a></li><!-- Product description -->
               }
               @if (product.Docs.Count >= 1)
               {
-                  <li><a href="#tab-2">Documentation</a></li><!-- Document downloads -->
+                  <li><a href="#tab-2">@ResourceKey("ProductView.documentation")</a></li><!-- Document downloads -->
               }
               @if (product.Models.Count > 1)
               {
-                  <li><a href="#tab-3">Références</a></li>
+                  <li><a href="#tab-3">@ResourceKey("ProductView.references")</a></li>
               }
             </ul>
 
