@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Globalization
+@using NBrightCore.common
 @using NBrightDNN
 
     @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider/App_LocalResources")
@@ -9,6 +10,7 @@
 <div id="nbs_manualpaymentparam">
 
     <input id="paymentproviderkey" type="hidden" value="manualpayment" />
+    <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()" />
 
     <h3>@ResourceKey("ManualPayment.ManualPayment")</h3>
 

@@ -37,6 +37,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var param = new string[3];
             param[0] = "orderid=" + orderData.PurchaseInfo.ItemID.ToString("D");
             param[1] = "status=1";
+            param[2] = "language=" + Utils.GetCurrentCulture();
             return Globals.NavigateURL(StoreSettings.Current.PaymentTabId, "", param);
         }
 
@@ -54,12 +55,12 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];
                 if (neworderstatus == "") neworderstatus = "060";
                 orderData.PaymentOk(neworderstatus);
-                return GetReturnTemplate(true, "");
+                return GetReturnTemplate(orderData, true, "");
             }
             return "";
         }
 
-        private string GetReturnTemplate(bool paymentok, string paymenterror)
+        private string GetReturnTemplate(OrderData orderData, bool paymentok, string paymenterror)
         {
             var displaytemplate = "payment_ok.cshtml";
             if (!paymentok)
@@ -82,6 +83,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
                 passSettings.Add("paymenterror", paymenterror);
             }
             info.UserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            info.SetXmlProperty("genxml/ordernumber", orderData.OrderNumber);
             templ = NBrightBuyUtils.RazorTemplRender(displaytemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider", "config", Utils.GetCurrentCulture(), passSettings);
 
             return templ;
