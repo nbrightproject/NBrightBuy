@@ -147,4 +147,16 @@
   <data name="movetostatus.Text" xml:space="preserve">
     <value>Move To Status</value>
   </data>
+  <data name="checkoutdisplay.Text" xml:space="preserve">
+    <value>Checkout Display</value>
+  </data>
+  <data name="failreturndisplay.Text" xml:space="preserve">
+    <value>Failed Return Display</value>
+  </data>
+  <data name="processoptions.Text" xml:space="preserve">
+    <value>Process Options</value>
+  </data>
+  <data name="returndisplay.Text" xml:space="preserve">
+    <value>Successful Return Display</value>
+  </data>
 </root>

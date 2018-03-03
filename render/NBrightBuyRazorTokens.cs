@@ -1427,7 +1427,7 @@ namespace NBrightBuy.render
                 var aryCode = orderstatuscode.Split(',');
                 var aryText = orderstatustext.Split(',');
 
-                strOut = "<select id='" + id + "' class='orderstatusdropdown " + cssclass + " '>";
+                strOut = "<select id='" + id + "' update='save' class='orderstatusdropdown " + cssclass + " '>";
                 var c = 0;
                 var s = "";
                 foreach (var t in aryCode)

@@ -1,0 +1,19 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System.Linq
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Portals
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightPayBox/App_LocalResources")
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    var info = (NBrightInfo)Model.List.First();
+}
+
+<div class="formrow">
+    <h3>@info.GetXmlProperty("genxml/lang/genxml/textbox/rtntitle")</h3>
+    <p>@BreakOf(@info.GetXmlProperty("genxml/lang/genxml/textbox/rtnmessage"))</p>
+</div>

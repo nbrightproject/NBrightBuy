@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using ManualPaymentProvider;
 using NBrightCore.common;
 using NBrightDNN;
@@ -30,12 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string RedirectForPayment(OrderData orderData)
         {
-            var objCtrl = new NBrightBuyController();
-            var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", orderData.Lang);
-            var settings = info.ToDictionary();
             var neworderstatus = "020";
-            if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];
-            if (neworderstatus == "") neworderstatus = "020";
             orderData.OrderStatus = neworderstatus;
             orderData.SavePurchaseData();
             var param = new string[3];
@@ -50,19 +46,45 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             if (Utils.IsNumeric(orderid))
             {
                 var orderData = new OrderData(Convert.ToInt32(orderid));
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", orderData.Lang);
 
-                // 010 = Incomplete, 020 = Waiting for Bank,030 = Cancelled,040 = Payment OK,050 = Payment Not Verified,060 = Waiting for Payment,070 = Waiting for Stock,080 = Waiting,090 = Shipped,010 = Closed,011 = Archived
-                if (orderData.OrderStatus == "020")
-                {
-                    var rtnstatus = Utils.RequestQueryStringParam(context, "status");
-                    if (rtnstatus == "1") // status 1 = successful (0 = fail)
-                    {
-                        orderData.PaymentOk("060");
-                    }
-                }
-
+                var neworderstatus = "060";
+                var settings = info.ToDictionary();
+                if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];
+                if (neworderstatus == "") neworderstatus = "060";
+                orderData.PaymentOk(neworderstatus);
+                return GetReturnTemplate(true, "");
             }
             return "";
+        }
+
+        private string GetReturnTemplate(bool paymentok, string paymenterror)
+        {
+            var displaytemplate = "payment_ok.cshtml";
+            if (!paymentok)
+            {
+                displaytemplate = "payment_fail.cshtml";
+            }
+            var templ = "";
+            var objCtrl = new NBrightBuyController();
+            var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", Utils.GetCurrentCulture());
+            var passSettings = info.ToDictionary();
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+            if (passSettings.ContainsKey("paymenterror"))
+            {
+                passSettings.Add("paymenterror", paymenterror);
+            }
+            info.UserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            templ = NBrightBuyUtils.RazorTemplRender(displaytemplate, 0, "", info, "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider", "config", Utils.GetCurrentCulture(), passSettings);
+
+            return templ;
         }
 
     }
