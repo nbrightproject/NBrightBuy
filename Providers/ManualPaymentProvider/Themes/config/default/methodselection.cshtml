@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Globalization
+@using System.Linq
 @using NBrightCore.common
 @using NBrightDNN
 
@@ -7,21 +8,25 @@
 
 <div id="manualpaymentredirect" style="display: none;"></div>
 
+@{
+    var info = (NBrightInfo)Model.List.First();
+}
+
 <div id="nbs_manualpaymentparam">
 
     <input id="paymentproviderkey" type="hidden" value="manualpayment" />
     <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()" />
 
-    <h3>@ResourceKey("ManualPayment.ManualPayment")</h3>
+    <h3>@info.GetXmlProperty("genxml/lang/genxml/textbox/manualpaymenttitle")</h3>
 
-        <div class="defaultmessage">@ResourceKey("ManualPayment.DefaultMessage")</div>
+        <div class="defaultmessage">@info.GetXmlProperty("genxml/lang/genxml/textbox/manualpaymentmessage")</div>
 
         <div class="clearfix"></div>
 
     <!-- commandname must be "pay" and the commandargument must be the provider control key -->
     <div id="cartactions" style="">
         <div style="clear: both;">
-            <a href="javascript:void(0)" id="cmdManualPay" class="primarybutton">@ResourceKey("ManualPayment.Continue")</a>
+            <a href="javascript:void(0)" id="cmdManualPay" class="primarybutton">@info.GetXmlProperty("genxml/lang/genxml/textbox/buttontext")</a>
         </div>
     </div>
 
