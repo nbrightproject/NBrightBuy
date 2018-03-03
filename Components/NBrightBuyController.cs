@@ -691,10 +691,89 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
+        public NBrightInfo GetPluginSinglePageData(string GuidKey, string typeCode, string lang)
+        {
+            DataCache.ClearCache(); // clear ALL cache.
+            var objCtrl = new NBrightBuyController();
+            var info = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+            if (info == null)
+            {
+                // create record if not in DB
+                info = new NBrightInfo(true);
+                info.GUIDKey = GuidKey;
+                info.TypeCode = typeCode;
+                info.ModuleId = -1;
+                info.PortalId = PortalSettings.Current.PortalId;
+                info.ItemID = objCtrl.Update(info);
+            }
+            var nbilang = objCtrl.GetDataLang(info.ItemID, lang);
+            if (nbilang == null)
+            {
+                // create lang records if not in DB
+                foreach (var lg in DnnUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                {
+                    nbilang = objCtrl.GetDataLang(info.ItemID, lg);
+                    if (nbilang == null)
+                    {
+                        nbilang = new NBrightInfo(true);
+                        nbilang.GUIDKey = "";
+                        nbilang.TypeCode = typeCode + "LANG";
+                        nbilang.ParentItemId = info.ItemID;
+                        nbilang.Lang = lg;
+                        nbilang.ModuleId = -1;
+                        nbilang.PortalId = PortalSettings.Current.PortalId;
+                        nbilang.ItemID = objCtrl.Update(nbilang);
+                    }
+                }
+            }
+
+            // do edit field data if a itemid has been selected
+            var nbi = objCtrl.Get(info.ItemID, typeCode + "LANG", lang);
+            return nbi;
+        }
+
+        public string SavePluginSinglePageData(HttpContext context)
+        {
+            try
+            {
+
+                var objCtrl = new NBrightBuyController();
+
+                //get uploaded params
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var lang = NBrightBuyUtils.SetContextLangauge(ajaxInfo); // Ajax breaks context with DNN, so reset the context language to match the client.
+
+                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+                if (Utils.IsNumeric(itemid))
+                {
+                    var nbi = objCtrl.Get(Convert.ToInt32(itemid));
+                    if (nbi != null)
+                    {
+                        // get data passed back by ajax
+                        var strIn = HttpUtility.UrlDecode(Utils.RequestParam(context, "inputxml"));
+                        // update record with ajax data
+                        nbi.UpdateAjax(strIn);
+                        objCtrl.Update(nbi);
+
+                        // do langauge record
+                        var nbi2 = objCtrl.GetDataLang(Convert.ToInt32(itemid), lang);
+                        nbi2.UpdateAjax(strIn);
+                        objCtrl.Update(nbi2);
+                    }
+                    DataCache.ClearCache(); // clear ALL cache.
+                }
+                return "";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
 
         #endregion
 
-            #region "static methods"
+        #region "static methods"
 
         private static NBrightInfo UpdateLangNodeFields(String xmlname, NBrightInfo baseInfo, NBrightInfo dlang)
         {

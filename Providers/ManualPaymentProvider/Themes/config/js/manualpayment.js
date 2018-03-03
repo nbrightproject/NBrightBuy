@@ -6,8 +6,17 @@ $(document).ready(function () {
     $('#manualpayment_cmdSave').unbind("click");
     $('#manualpayment_cmdSave').click(function () {
         $('.processing').show();
-        $(this).hide();
+        $('.actionbuttonwrapper').hide();
         nbxget('manualpaymentajax_savesettings', '.manualpaymentdata', '.manualpaymentreturnmsg');
+    });
+
+    $('.selectlang').unbind("click");
+    $(".selectlang").click(function () {
+        $('.editlanguage').hide();
+        $('.actionbuttonwrapper').hide();
+        $('.processing').show();
+        $("#nextlang").val($(this).attr("editlang"));
+        nbxget('manualpaymentajax_selectlang', '.manualpaymentdata', '.manualpaymentdata');
     });
 
 
@@ -17,8 +26,12 @@ $(document).ready(function () {
     function NBS_PayBox_nbxgetCompleted(e) {
 
         $('.processing').hide();
+        $('.actionbuttonwrapper').show();
+        $('.editlanguage').show();
 
-        $('#manualpayment_cmdSave').show();
+        if (e.cmd == 'manualpaymentajax_selectlang') {
+
+        }
 
     };
 

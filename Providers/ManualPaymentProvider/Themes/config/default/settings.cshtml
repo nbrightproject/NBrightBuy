@@ -17,80 +17,41 @@
 
 <br />
 
-    <div id="pageactionssource">
-        <!-- Page actions are moved into header bar - also exist at page bottom-->
-        <div class="col-xs-9 col-sm-9">
-            <a href="javascript:void(0)" class="show-sidebar">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="actionbuttonwrapper">
-                <a id="manualpayment_cmdSave" class="btn btn-primary" href="javascript:void(0);">@ResourceKey("General.cmdSaveButton")</a>
-            </div>
-        </div>
-        <div class="col-xs-3 col-sm-3 top-panel-right">
-            @EditLangaugeButton();
+<div id="pageactionssource">
+    <!-- Page actions are moved into header bar - also exist at page bottom-->
+    <div class="col-xs-9 col-sm-9">
+        <a href="#" class="show-sidebar">
+            <i class="fa fa-bars"></i>
+        </a>
+        <div class="actionbuttonwrapper">
+            <a id="manualpayment_cmdSave" class="btn btn-primary" href="javascript:void(0);">@ResourceKey("General.cmdSaveButton")</a>
         </div>
     </div>
+    <div class="col-xs-3 col-sm-3 top-panel-right">
+        @EditLangaugeButton();
+    </div>
+</div>
 
 <div class="row">
 
-    <div class="manualpaymentreturnmsg">
+    <div class="payboxreturnmsg">
     </div>
 
     <div class="col-xs-12 col-sm-12">
         <div class="box">
             <div class="box-header">
                 <div class="box-name">
-                    <i class="fa fa-search"></i><span>@ResourceKey("ManualPayment.ManualPaymentMethod")</span>
+                    <i class="fa fa-search"></i><span>Manual Payment</span>
                 </div>
             </div>
             <div class="box-content manualpaymentdata">
-                <div class="form-horizontal dnnForm">
 
-                    <input id="itemid" type="hidden" value="@info.ItemID"/>
-                    <input id="uilang" type="hidden" value="@info.Lang"/>
+                @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Providers\\ManualPaymentProvider\\Themes/config\\Default\\settingsfields.cshtml", Model)
 
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@ResourceKey("ManualPayment.Title")</label>
-                        <div class="col-sm-5">
-                            @NBrightTextBox(info, "genxml/lang/genxml/textbox/manualpaymenttitle", "maxlength='150'", ResourceKey("ManualPayment.ManualPayment", info.Lang).ToString())
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@ResourceKey("ManualPayment.Message")</label>
-                        <div class="col-sm-5">
-                            @NBrightTextArea(info, "genxml/lang/genxml/textbox/manualpaymentmessage", "height='100' maxlength='200' textmode='MultiLine' ", ResourceKey("ManualPayment.DefaultMessage", info.Lang).ToString())
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@ResourceKey("ManualPayment.buttontext")</label>
-                        <div class="col-sm-5">
-                            @NBrightTextBox(info, "genxml/lang/genxml/textbox/buttontext", "maxlength='150'", ResourceKey("ManualPayment.Continue", info.Lang).ToString())
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@ResourceKey("ManualPayment.checkouttemplate")</label>
-                        <div class="col-sm-5">
-                            @TextBox(info, "genxml/textbox/checkouttemplate", "class='form-control'", "methodselection.cshtml")
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">@ResourceKey("ManualPayment.movetostatus")</label>
-                        <div class="col-sm-5">
-                            @OrderStatusDropDownList("orderstatus")
-                        </div>
-                    </div>
-
-
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-    <div class="clearfix"></div>
+<div class="clearfix"></div>
+

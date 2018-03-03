@@ -20,23 +20,18 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         public override string GetTemplate(NBrightInfo cartInfo)
         {
             var templ = "";
-            var info = ProviderUtils.GetData(Utils.GetCurrentCulture());
-            var templateName = info.GetXmlProperty("genxml/textbox/checkouttemplate");
-            if (templateName.EndsWith(".html"))
-            {
-                templ = ProviderUtils.GetTemplateData(templateName, info);
-            }
-            else
-            {
-                templ = NBrightBuyUtils.RazorTemplRender(templateName, 0, "",info, "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
-            }
 
+            var objCtrl = new NBrightBuyController();
+            var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", Utils.GetCurrentCulture());
+            var templateName = info.GetXmlProperty("genxml/textbox/checkouttemplate");
+            templ = NBrightBuyUtils.RazorTemplRender(templateName, 0, "",info, "/DesktopModules/NBright/NBrightBuy/Providers/ManualPaymentProvider", "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             return templ;
         }
 
         public override string RedirectForPayment(OrderData orderData)
         {
-            var info = ProviderUtils.GetData(orderData.Lang);
+            var objCtrl = new NBrightBuyController();
+            var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", orderData.Lang);
             var settings = info.ToDictionary();
             var neworderstatus = "020";
             if (settings.ContainsKey("orderstatus")) neworderstatus = settings["orderstatus"];

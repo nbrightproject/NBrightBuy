@@ -58,7 +58,8 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
         {
             if (NBrightBuyUtils.CheckRights())
             {
-                var info = ProviderUtils.GetData(Utils.GetCurrentCulture());
+                var objCtrl = new NBrightBuyController();
+                var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", Utils.GetCurrentCulture());
                 var strOut = NBrightBuyUtils.RazorTemplRender("settings.cshtml", 0, "", info, ControlPath, "config", Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
                 var l = new Literal();
                 l.Text = strOut;

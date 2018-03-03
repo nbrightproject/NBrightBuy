@@ -82,6 +82,7 @@
     <Content Include="pluginmanualpaymentAjax.xml" />
     <Content Include="Themes\config\js\manualpayment.js" />
     <None Include="Themes\config\default\methodselection.cshtml" />
+    <None Include="Themes\config\default\settingsfields.cshtml" />
     <None Include="Themes\config\default\settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
