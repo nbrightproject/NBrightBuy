@@ -68,7 +68,6 @@
             <h2><a href="@EntryUrl(info,Model)"><span>@info.GetXmlProperty("genxml/textbox/manufacturer")</span>@ProductName(info)</a></h2>
 
             <div class="price">
-
                 @if (product.Models.Count > 1)
                 {
                     <span class="from">@ResourceKey("ProductView.from")</span>
@@ -81,27 +80,20 @@
                 }
                 else
                 {
-                    @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))<span class="ttc">TTC</span>
+                    @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))
                 }
             </div>
 
+            <div class="flags">
             @if (product.IsOnSale)
             {
-                <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                <span class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</span>
             }
-
             @if (!product.IsInStock)
             {
-                <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                <span class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</span>
             }
-            @if (product.HasProperty("endofline"))
-            {
-                <div class="outofstockflag">@(ResourceKey("ProductView.endoflineflag"))</div>
-            }
-            @if (product.HasProperty("promotion"))
-            {
-                <div class="onsaleflag">@(ResourceKey("ProductView.promoflag"))</div>
-            }
+            </div>
 
         </div>
 

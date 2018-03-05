@@ -65,46 +65,6 @@
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.colorbox-min.js"></script>
 <link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/css/colorbox.css" rel="stylesheet">
 
-<!-- Details Tabs -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.nav-tabs > li > a').click(function(event){
-            event.preventDefault();//stop browser to take action for clicked anchor
-
-            //get displaying tab content jQuery selector
-            var active_tab_selector = $('.nav-tabs > li.tab-active > a').attr('href');
-
-            //find actived navigation and remove 'active' css
-            var actived_nav = $('.nav-tabs > li.tab-active');
-            actived_nav.removeClass('tab-active');
-
-            //add 'active' css into clicked navigation
-            $(this).parents('li').addClass('tab-active');
-
-            //hide displaying tab content
-            $(active_tab_selector).removeClass('tab-active');
-            $(active_tab_selector).addClass('tab-hide');
-
-            //show target tab content
-            var target_tab_selector = $(this).attr('href');
-            $(target_tab_selector).removeClass('tab-hide');
-            $(target_tab_selector).addClass('tab-active');
-        });
-    });
-</script>
-
-<!-- Switch Image -->
-<script type="text/javascript">
-
-function showImage(imgPath, imgAlt) {
-  var imgMain = document.getElementById('mainimage');
-  imgMain.src = imgPath;
-  imgMain.alt = imgAlt;
-}
-
-</script>
-
-
 <div id="nbs_productajaxview" style="display: none;">
     <!-- Parameter fields -->
     <!-- These fields will be initialized from the _head.cshtml -->

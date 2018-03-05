@@ -37,7 +37,7 @@
                   @if (product.Imgs.Count > 0)
                   {
                       <div class="image">
-                          <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, "300", "0")">
+                          <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(info, "400", "0")">
                       </div>
                   }
                   else
@@ -65,7 +65,7 @@
                         }
                         else
                         {
-                            @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))<span class="ttc">TTC</span>
+                            @(NBrightBuyUtils.FormatToStoreCurrency(product.BestPrice()))
                         }
                     </div>
 
@@ -73,22 +73,16 @@
                         <a href="@EntryUrl(info,Model)" class="actionbutton"><i class="fa fa-search"></i>@ResourceKey("ProductView.productdetail")</a>
                     </div>
 
+                    <div class="flags">
                     @if (product.IsOnSale)
                     {
-                        <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                        <span class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</span>
                     }
                     @if (!product.IsInStock)
                     {
-                        <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
+                        <span class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</span>
                     }
-                    @if (product.HasProperty("endofline"))
-                    {
-                        <div class="outofstockflag">@(ResourceKey("ProductView.endoflineflag"))</div>
-                    }
-                    @if (product.HasProperty("promotion"))
-                    {
-                        <div class="onsaleflag">@(ResourceKey("ProductView.promoflag"))</div>
-                    }
+                    </div>
 
                 </div>
 
