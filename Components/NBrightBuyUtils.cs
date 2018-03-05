@@ -97,6 +97,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return obj;
         }
 
+        public static Dictionary<string,string> GetPassSettings(NBrightInfo ajaxInfo)
+        {
+            var passSettings = ajaxInfo.ToDictionary();
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
+            return passSettings;
+        }
+
+
 
         public static string FormatListtoXml(IEnumerable<NBrightInfo> objList)
         {
@@ -381,6 +395,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             return NBrightCore.common.Utils.GetCache(CacheKey);
         }
+        public static object GetCache(string CacheKey)
+        {
+            return NBrightCore.common.Utils.GetCache(CacheKey);
+        }
 
         /// <summary>
         /// Save into normal cache, but keep a list on the moduleid, so we can remove it at module level
@@ -403,6 +421,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static void SetModCache(int moduleid, string CacheKey, object objObject)
         {
             SetModCache(moduleid, CacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
+        }
+
+        public static void SetCache(string cacheKey, object objObject)
+        {
+            NBrightCore.common.Utils.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(1, 0, 0, 0));
         }
 
         public static void RemoveCache(string cacheKey)

@@ -57,44 +57,34 @@
 @foreach (NBrightInfo nbi in Model.List)
 {
     <tr>
-        @if (nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
-        {
-            <td class="image centered"><a class="pluginsAdmin_cmdEdit" itemid="@nbi.ItemID" href="javascript:void(0)"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@nbi.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl")&amp;w=80&amp;h=60"></a></td>
-        }
-        else
-        {
-            <td class="noimage centered"><a class="pluginsAdmin_cmdEdit" itemid="@nbi.ItemID" href="javascript:void(0)"><i class="fa fa-picture-o fa-3x"></i></a></td>
-        }
-        <td>
-            <div>@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtpluginsname")</div>
-            @if (nbi.GetXmlProperty("genxml/textbox/txtpluginsref") != "")
-            {
-                var refout = ResourceKey("General.Code") + ": " + nbi.GetXmlProperty("genxml/textbox/txtpluginsref");
-                @(refout)
-            }
-        </td>
+
+
+        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/name")</td>
+        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrl")</td>
+
+
         <td class="centered">
             @{
                 var checkdisplay = "";
             }
-            @if (nbi.GetXmlPropertyBool("genxml/checkbox/chkishidden"))
+            @if (nbi.GetXmlPropertyBool("genxml/checkbox/hidden"))
             {
                 checkdisplay = "-check";
             }
             <a href="javascript:void(0)">
-                <i class="fa fa@(checkdisplay)-circle fa-2x selectchangehidden" itemid="@nbi.ItemID"></i>                               
+                <i class="fa fa@(checkdisplay)-circle fa-2x selectchangehidden" itemid="@nbi.ItemID"></i>
             </a>
         </td>
         <td class="centered">
             @{
                 var checkdisplay2 = "";
             }
-            @if (nbi.GetXmlPropertyBool("genxml/checkbox/chkdisable"))
+            @if (nbi.GetXmlPropertyBool("genxml/checkbox/active"))
             {
                 checkdisplay2 = "-check";
             }
             <a href="javascript:void(0)">
-                <i class="fa fa@(checkdisplay2)-circle fa-2x selectchangedisable " itemid="@nbi.ItemID"></i>                
+                <i class="fa fa@(checkdisplay2)-circle fa-2x selectchangedisable " itemid="@nbi.ItemID"></i>
             </a>
         </td>
         <td>

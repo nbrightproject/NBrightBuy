@@ -78,6 +78,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
             if (NBrightBuyUtils.CheckRights()) // limit module data to NBS security roles
             {
+
                 RazorTemplate = "Admin_Plugins.cshtml";
 
                 // new data record so set defaults.

@@ -32,19 +32,13 @@
             nbxget('plugins_adminaddnew', '#nbs_pluginsadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'plugins_selectchangedisable' || e.cmd == 'plugins_selectchangehidden') {
-            $('.processing').hide();
-        };
-
         if (e.cmd == 'plugins_admin_getlist') {
 
             $('.processing').hide();
 
             $('.pluginssearchpanel').show();
 
-            $("#pluginsAdmin_cmdSaveExit").hide();
             $("#pluginsAdmin_cmdSave").hide();
-            $("#pluginsAdmin_cmdSaveAs").hide();
             $("#pluginsAdmin_cmdDelete").hide();
             $("#pluginsAdmin_cmdReturn").hide();
             $("#pluginsAdmin_cmdAddNew").show();
@@ -58,22 +52,6 @@
             if ($('#searchcategory').val() != '') {
                 $(".selectrecord").show();
             }
-
-        $("#ddllistsearchcategory").unbind("change");
-            $("#ddllistsearchcategory").change(function() {
-                $('#searchcategory').val($("#ddllistsearchcategory").val());
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-            });
-
-            $("#chkcascaderesults").unbind("change");
-            $("#chkcascaderesults").change(function() {
-                if ($("#chkcascaderesults").is(':checked')) {
-                    $('#cascade').val("True");
-                } else {
-                    $('#cascade').val("False");
-                }
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-            });
 
 
             $('.selectrecord').unbind("click");
@@ -107,20 +85,18 @@
                 nbxget('plugins_movepluginsadmin', '#nbs_pluginsadminsearch', '#datadisplay');
             });
 
-            $('#pluginsAdmin_searchtext').val($('#searchtext').val());
-
             // editbutton created by list, so needs to be assigned on each render of list.
             $('.pluginsAdmin_cmdEdit').unbind("click");
             $('.pluginsAdmin_cmdEdit').click(function() {
                 $('.processing').show();
-                $('#razortemplate').val('Admin_pluginsDetail.cshtml');
+                $('#razortemplate').val('Admin_PluginsDetail.cshtml');
                 $('#selecteditemid').val($(this).attr('itemid'));
                 nbxget('plugins_admin_getdetail', '#nbs_pluginsadminsearch', '#datadisplay');
             });
 
 
-            $('.selectchangedisable').unbind("click");
-            $('.selectchangedisable').click(function () {
+            $('.selectchangeactive').unbind("click");
+            $('.selectchangeactive').click(function () {
                 $('.processing').show();
                 $('#selecteditemid').val($(this).attr('itemid'));
                 if ($(this).hasClass("fa-check-circle")) {
@@ -128,46 +104,7 @@
                 } else {
                     $(this).addClass('fa-check-circle').removeClass('fa-circle');
                 }
-                nbxget('plugins_selectchangedisable', '#nbs_pluginsadminsearch');
-            });
-
-            $('.selectchangehidden').unbind("click");
-            $('.selectchangehidden').click(function () {
-                $('.processing').show();
-                $('#selecteditemid').val($(this).attr('itemid'));
-                if ($(this).hasClass("fa-check-circle")) {
-                    $(this).addClass('fa-circle').removeClass('fa-check-circle');
-                } else {
-                    $(this).addClass('fa-check-circle').removeClass('fa-circle');
-                }
-                nbxget('plugins_selectchangehidden', '#nbs_pluginsadminsearch');
-            });
-
-
-            $('.cmdPg').unbind("click");
-            $('.cmdPg').click(function() {
-                $('.processing').show();
-                $('#pagenumber').val($(this).attr('pagenumber'));
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-            });
-
-            $('#pluginsAdmin_cmdSearch').unbind("click");
-            $('#pluginsAdmin_cmdSearch').click(function() {
-                $('.processing').show();
-                $('#pagenumber').val('1');
-                $('#searchtext').val($('#pluginsAdmin_searchtext').val());
-
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-            });
-
-            $('#pluginsAdmin_cmdReset').unbind("click");
-            $('#pluginsAdmin_cmdReset').click(function() {
-                $('.processing').show();
-                $('#pagenumber').val('1');
-                $('#searchtext').val('');
-                $("#searchcategory").val('');
-
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
+                nbxget('plugins_selectchangeactive', '#nbs_pluginsadminsearch');
             });
 
         }
@@ -185,7 +122,7 @@
             nbxget('plugins_admin_getdetail', '#nbs_pluginsadminsearch', '#datadisplay');
         };
 
-        if (e.cmd == 'plugins_admin_saveexit' || e.cmd == 'plugins_admin_saveas') {
+        if (e.cmd == 'plugins_admin_saveexit') {
             $("#editlang").val($("#nextlang").val());
             $("#editlanguage").val($("#nextlang").val());
             $('#razortemplate').val('Admin_pluginsList.cshtml');
@@ -205,19 +142,7 @@
 
         if (e.cmd == 'plugins_admin_getdetail'
             || e.cmd == 'plugins_addpluginsmodels'
-            || e.cmd == 'plugins_addpluginsoptions'
-            || e.cmd == 'plugins_addpluginsoptionvalues'
-            || e.cmd == 'plugins_updatepluginsdocs'
-            || e.cmd == 'plugins_addpluginscategory'
-            || e.cmd == 'plugins_setdefaultcategory'
-            || e.cmd == 'plugins_removepluginscategory'
-            || e.cmd == 'plugins_populatecategorylist'
-            || e.cmd == 'plugins_removeproperty'
-            || e.cmd == 'plugins_addproperty'
-            || e.cmd == 'plugins_addrelated'
-            || e.cmd == 'plugins_removerelated'
-            || e.cmd == 'plugins_adminaddnew'
-            || e.cmd == 'plugins_updatepluginsimages') {
+            || e.cmd == 'plugins_adminaddnew') {
 
             // Copy the pluginsid into the selecteditemid (for Add New plugins)
             $('#selecteditemid').val($('#itemid').val());
@@ -228,9 +153,7 @@
 
             $('.pluginssearchpanel').hide();
             
-            $("#pluginsAdmin_cmdSaveExit").show();
             $("#pluginsAdmin_cmdSave").show();
-            $("#pluginsAdmin_cmdSaveAs").show();
             $("#pluginsAdmin_cmdDelete").show();
             $("#pluginsAdmin_cmdReturn").show();
             $("#pluginsAdmin_cmdAddNew").hide();
@@ -283,7 +206,6 @@
             $('#addmodels').unbind("click");
             $('#addmodels').click(function () {
                 $('.processing').show();
-                $('#addqty').val($('#txtaddmodelqty').val());
                 nbxget('plugins_addpluginsmodels', '#nbs_pluginsadminsearch', '#datadisplay'); // load models
             });
 
@@ -359,13 +281,6 @@
             $('#recyclebin').append($(elementtoberemoved));
         } else { $(elementtoberemoved).remove(); }
         if ($(elementtoberemoved).hasClass('modelitem')) $('#undomodel').show();
-        if ($(elementtoberemoved).hasClass('optionitem')) $('#undooption').show();
-        if ($(elementtoberemoved).hasClass('optionvalueitem')) $('#undooptionvalue').show();
-        if ($(elementtoberemoved).hasClass('imageitem')) $('#undoimage').show();
-        if ($(elementtoberemoved).hasClass('docitem')) $('#undodoc').show();
-        if ($(elementtoberemoved).hasClass('categoryitem')) $('#undocategory').show();
-        if ($(elementtoberemoved).hasClass('relateditem')) $('#undorelated').show();
-        if ($(elementtoberemoved).hasClass('clientitem')) $('#undoclient').show();
     }
     function undoremove(itemselector, destinationselector) {
         if ($('#recyclebin').length > 0) {
@@ -373,23 +288,7 @@
         }
         if ($('#recyclebin').children(itemselector).length == 0) {
             if (itemselector == '.modelitem') $('#undomodel').hide();
-            if (itemselector == '.optionitem') $('#undooption').hide();
-            if (itemselector == '.optionvalueitem') $('#undooptionvalue').hide();
-            if (itemselector == '.imageitem') $('#undoimage').hide();
-            if (itemselector == '.docitem') $('#undodoc').hide();
-            if (itemselector == '.categoryitem') $('#undocategory').hide();
-            if (itemselector == '.relateditem') $('#undorelated').hide();
-            if (itemselector == '.clientitem') $('#undoclient').hide();
         }
-    }
-
-    function showoptionvalues() {
-        $('#pluginsoptionvalues').children().hide();
-        if ($('#pluginsoptions').children('.selected').first().find('input[id*="optionid"]').length > 0) {
-            $('#pluginsoptionvalues').children('.' + $('#pluginsoptions').children('.selected').first().find('input[id*="optionid"]').val()).show();
-            $('#pluginsoptionvalues').show();
-        }
-        $('#optionvaluecontrol').show();
     }
 
 

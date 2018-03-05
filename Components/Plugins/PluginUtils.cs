@@ -17,7 +17,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
     public class PluginUtils
     {
 
-        public static List<NBrightInfo> GetPluginList(String lang)
+        public static List<NBrightInfo> GetPluginList()
         {
             var objCtrl = new NBrightBuyController();
             var rtnList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PLUGIN","", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','int')");
@@ -79,6 +79,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 if (interfaces.Count == 0)
                 {
                     // possible legacy format, change.
+                    p.SetXmlProperty("genxml/checkbox/disable", p.GetXmlProperty("genxml/checkbox/active"));
                     p.SetXmlProperty("genxml/interfaces", "");
                     p.SetXmlProperty("genxml/interfaces/genxml", "");
                     p.SetXmlProperty("genxml/interfaces/genxml/dropdownlist", "");
@@ -150,6 +151,125 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             return rtnList;
+        }
+
+
+        /// <summary>
+        /// Search filesystem for any new plugins that have been added. Removed any deleted ones.
+        /// </summary>
+        public void UpdateSystemPlugins()
+        {
+                // Add new plugins
+                var updated = false;
+                var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
+            if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+            {
+                var objCtrl = new NBrightBuyController();
+                var ctrlList = new Dictionary<String, int>();
+                var flist = Directory.GetFiles(pluginfoldermappath);
+                foreach (var f in flist)
+                {
+                    if (f.EndsWith(".xml"))
+                    {
+                        var datain = File.ReadAllText(f);
+                        try
+                        {
+                            var nbi = new NBrightInfo();
+                            nbi.XMLData = datain;
+                            // check if we are injecting multiple
+                            var nodlist = nbi.XMLDoc.SelectNodes("root/genxml");
+                            if (nodlist != null && nodlist.Count == 0)
+                            {
+                                nbi.ItemID = -1;
+                                nbi.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrl");
+                                nbi.PortalId = PortalSettings.Current.PortalId;
+                                nbi.Lang = "";
+                                nbi.ParentItemId = 0;
+                                nbi.ModuleId = -1;
+                                nbi.XrefItemId = 0;
+                                nbi.UserId = 0;
+                                nbi.TypeCode = "PLUGIN";
+                                objCtrl.Update(nbi);
+                            }
+                            else
+                            {
+                                foreach (XmlNode nod in nodlist)
+                                {
+                                    var nbi2 = new NBrightInfo();
+                                    nbi2.XMLData = nod.OuterXml;
+                                    nbi2.ItemID = -1;
+                                    nbi2.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrl");
+                                    nbi2.PortalId = PortalSettings.Current.PortalId;
+                                    nbi2.Lang = "";
+                                    nbi2.ParentItemId = 0;
+                                    nbi2.ModuleId = -1;
+                                    nbi2.XrefItemId = 0;
+                                    nbi2.UserId = 0;
+                                    nbi2.TypeCode = "PLUGIN";
+                                    objCtrl.Update(nbi2);
+                                }
+                            }
+
+
+                            ctrlList.Add(nbi.GetXmlProperty("genxml/textbox/ctrl"), nbi.GetXmlPropertyInt("genxml/hidden/index"));
+
+                            updated = true;
+                            File.Delete(f);
+                        }
+                        catch (Exception)
+                        {
+                            // data might not be XML complient (ignore)
+                        }
+                    }
+                }
+
+            }
+
+            if (updated)
+            {
+                ClearPluginCache(PortalSettings.Current.PortalId);
+            }
+
+        }
+
+        public void RemoveDeletedSystemPlugins()
+        {
+            // remove delete plugins.
+            var pluginList = GetPluginList();
+            foreach (var p in pluginList)
+            {
+                var remove = false;
+                var ctrlpath = p.GetXmlProperty("path");
+                if (ctrlpath != "")
+                {
+                    var ctrlmappath = System.Web.Hosting.HostingEnvironment.MapPath(ctrlpath);
+                    var assembly = p.GetXmlProperty("assembly");
+                    if (ctrlpath == "" || !File.Exists(ctrlmappath))
+                    {
+                        if (assembly != "")
+                        {
+                            if (!assembly.EndsWith(".dll")) assembly = assembly + ".dll";
+                            var binmappath = System.Web.Hosting.HostingEnvironment.MapPath("/bin/" + assembly);
+                            if (!File.Exists(binmappath)) remove = true;
+                        }
+                        else
+                            remove = true;
+                    }
+
+                    if (remove)
+                    {
+                        var objCtrl = new NBrightBuyController();
+                        objCtrl.Delete(p.ItemID);
+                    }
+                }
+            }
+            ClearPluginCache(PortalSettings.Current.PortalId);
+        }
+
+        public void ClearPluginCache(int portalId)
+        {
+            var cachekey = "pluginlist" + portalId;
+            NBrightBuyUtils.RemoveCache(cachekey);
         }
 
 

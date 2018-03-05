@@ -42,9 +42,9 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
 
                 // check for new plugins
-                var pi = new PluginData(PortalId, true);
-                pi.UpdateSystemPlugins();
-                pi.CheckforNewSystemConfig();
+                //var pi = new PluginData(PortalId, true);
+                //pi.UpdateSystemPlugins();
+                //pi.CheckforNewSystemConfig();
 
                 #region "load templates"
 
