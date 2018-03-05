@@ -586,16 +586,12 @@
     <Content Include="Themes\ClassicAjax\img\loading.gif" />
     <Content Include="Themes\ClassicAjax\img\loading_background.png" />
     <Content Include="Themes\ClassicAjax\img\overlay.png" />
-    <Content Include="Themes\ClassicAjax\js\payment.js" />
-    <Content Include="Themes\ClassicAjax\js\AddressAdmin.js" />
-    <Content Include="Themes\ClassicAjax\js\cart.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.colorbox-min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cookie.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.carousel.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.min.js" />
-    <Content Include="Themes\ClassicAjax\js\checkout.js" />
     <Content Include="Themes\ClassicAjax\js\product.js" />
     <None Include="README.md" />
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
