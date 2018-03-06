@@ -1185,4 +1185,7 @@
   <data name="AccessToClient.Text" xml:space="preserve">
     <value>Access given to Client</value>
   </data>
+  <data name="roles.Text" xml:space="preserve">
+    <value>Administrators,Manager,Editor,ClientEditor</value>
+  </data>
 </root>
