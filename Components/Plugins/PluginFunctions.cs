@@ -53,7 +53,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     if (!NBrightBuyUtils.CheckRights()) break;
                     PluginAddInterface(context);
                     strOut = PluginAdminDetail(context);
-                    break;                    
+                    break;
+                case "plugins_admin_save":
+                    if (!NBrightBuyUtils.CheckRights()) break;
+                    PluginSave(context);
+                    strOut = PluginAdminDetail(context);
+                    break;
+                    
             }
             return strOut;
         }
@@ -181,6 +187,34 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                 // ignore
             }
         }
+
+        public static void PluginSave(HttpContext context)
+        {
+            if (NBrightBuyUtils.CheckRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+                if (Utils.IsNumeric(itemid))
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var info = objCtrl.GetData(Convert.ToInt32(itemid));
+                    var pluginRecord = new PluginRecord(info);
+                    var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
+
+                    ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                    var productXml = ajaxInfo.XMLData;
+
+                    pluginRecord.Info().XMLData = productXml;
+                    pluginRecord.UpdateModels(modelXml, Utils.GetCurrentCulture());
+                    objCtrl.Update(pluginRecord.Info());
+
+                    // remove save GetData cache
+                    DataCache.ClearCache();
+
+                }
+            }
+        }
+
 
     }
 }

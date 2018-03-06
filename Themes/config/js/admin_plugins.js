@@ -122,13 +122,6 @@
             nbxget('plugins_admin_getdetail', '#nbs_pluginsadminsearch', '#datadisplay');
         };
 
-        if (e.cmd == 'plugins_admin_saveexit') {
-            $("#editlang").val($("#nextlang").val());
-            $("#editlanguage").val($("#nextlang").val());
-            $('#razortemplate').val('Admin_pluginsList.cshtml');
-            $('#selecteditemid').val('');
-            nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-        };
 
         if (e.cmd == 'plugins_movepluginsadmin') {
             $('#razortemplate').val('Admin_pluginsList.cshtml');
