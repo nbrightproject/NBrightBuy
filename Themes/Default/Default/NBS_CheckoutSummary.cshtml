@@ -1,0 +1,106 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using System.Linq
+@using System.Text
+@using System.Web
+@using System.Web.Razor.Parser
+@using System.Web.Razor.Parser.SyntaxTree
+@using System.Xml
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Users
+@using NBrightCore
+@using NBrightCore.common
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+
+@AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
+
+@{
+    // assign Model, so we can resolve var in VS
+    var cart = (CartData)Model.List.First();
+    var info = cart.PurchaseInfo;
+}
+
+<!-- Order summary box from here down  -->
+    <div class="checkoutextra">
+
+        <div class="formrow">
+            <h3>@ResourceKey("General.lblordersummary")</h3>
+        </div>
+
+        <!-- Order summary text inputs  -->
+        <div class="summaryleft">
+
+            <div class="formrow">
+                <label>@ResourceKey("General.lblspecialinstructions")</label>
+                @NBrightTextArea(info, "genxml/extrainfo/genxml/textbox/extramessage", "")
+            </div>
+
+            @if (Model.GetSettingBool("checkoutpromocode"))
+            {
+                <div class="formrow">
+                    <label>@ResourceKey("General.PromotionalCode")</label>
+                    @NBrightTextBox(info, "genxml/extrainfo/genxml/textbox/promocode")
+                </div>
+            }
+
+            @if (Model.GetSettingBool("checkouttaxcode"))
+            {
+                <div class="formrow">
+                    <label>@ResourceKey("General.TaxNumber")</label>
+                    @NBrightTextBox(info, "genxml/extrainfo/genxml/textbox/taxnumber")
+                </div>
+            }
+
+            @if (Model.GetSettingBool("copyorderto"))
+            {
+                <div class="formrow">
+                    <label>@ResourceKey("General.copyorderto")</label>
+
+                    @if (info.GetXmlProperty("genxml/extrainfo/genxml/textbox/cartemailaddress") == "")
+                {
+                    info.SetXmlProperty("genxml/extrainfo/genxml/textbox/cartemailaddress", info.GetXmlProperty("genxml/billaddress/genxml/textbox/email"));
+                }
+                    @NBrightTextBox(info, "genxml/extrainfo/genxml/textbox/cartemailaddress", "name='cartemailaddress' type='email' datatype='email'")
+                </div>
+            }
+
+            <div class="formrow">
+                <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
+                <a href="javascript:void(0)" id="cmdRecalcSummary" class="primarybutton">@ResourceKey("CartView.UpdateCart")</a>
+            </div>
+
+        </div>
+
+        <div class="summaryright">
+
+            <ul class="checkoutdetails">
+                <li class="large"><div>@ResourceKey("General.Subtotal")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedsubtotal"))</li>
+                <li class="large"><div>@ResourceKey("General.Discount")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/applieddiscount"))</li>
+                <li class="large"><div>@ResourceKey("General.Shipping")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedshipping"))</li>
+                <li class="large"><div>@ResourceKey("General.Tax")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/taxcost"))</li>
+                <li class="total larger">
+                    <div>@ResourceKey("General.Total")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))
+                </li>
+                @if (Model.GetSettingBool("subscribenewsletter"))
+            {
+                    <li class="formrow submissioncheck">@CheckBox(info, "genxml/extrainfo/genxml/checkbox/chknews", "ResourceKey:CartView.chknews", "", true)</li>
+                }
+
+                <li class="formrow submissioncheck"><b>@ResourceKey("CartView.chkterms")</b></li>
+                <li class="submission"><a href="javascript:void(0)" id="cmdOrder" class="primarybutton">@ResourceKey("CartView.Order")</a></li>
+            </ul>
+
+            @if (cart.EditMode != "")
+            {
+                if (cart.EditMode == "C")
+                {
+                    <div class="debug">@ResourceKey("CartView.editmodeC")</div>
+                }
+                if (cart.EditMode == "E")
+                {
+                    <div class="debug">@ResourceKey("CartView.editmodeE")</div>
+                }
+            }
+        </div>
+
+    </div>

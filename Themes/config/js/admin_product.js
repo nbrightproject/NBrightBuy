@@ -189,6 +189,17 @@
                 nbxget('product_admin_getlist', '#nbs_productadminsearch', '#datadisplay');
             });
 
+            $('.productAdmin_cmdDelete').unbind("click");
+            $('.productAdmin_cmdDelete').click(function () {
+                if (confirm($('#confirmdeletemsg').text())) {
+                    $('.actionbuttonwrapper').hide();
+                    $('.editlanguage').hide();
+                    $('.processing').show();
+                    $('#selecteditemid').val($(this).attr('itemid'));
+                    nbxget('product_admin_delete', '#nbs_productadminsearch', '#actionreturn');
+                }
+            });
+
         }
 
         if (e.cmd == 'product_admin_delete') {

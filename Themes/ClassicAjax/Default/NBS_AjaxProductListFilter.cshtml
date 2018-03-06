@@ -29,7 +29,7 @@
     foreach (GroupData selGroup in catData.GetFilterGroups(Model.Lang))
     {
         var propList = NBrightBuyUtils.BuildCatList(1, false, false, selGroup.Info.ItemID, "", "", false, true, selGroup.Ref, "", "");
-        strOut += "<div class='h3 -headline'>" + selGroup.Name + "</div>";
+        strOut += "<div class='h3-headline'>" + selGroup.Name + "</div>";
         strOut += "<ul>";
         foreach (var item in propList)
         {
