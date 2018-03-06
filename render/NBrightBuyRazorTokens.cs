@@ -1147,6 +1147,34 @@ namespace NBrightBuy.render
             return new RawString(strOut);
         }
 
+        public IEncodedString SortOrderAjaxDropDownList(String datatext, NBrightRazor model, string attributes = "")
+        {
+            var navigationdata = new NavigationData(PortalSettings.Current.PortalId, model.ModuleRef);
+
+            if (Utils.IsNumeric(model.GetUrlParam("catid").Trim()))
+            {
+                navigationdata.CategoryId = Convert.ToInt32(model.GetUrlParam("catid").Trim());
+                navigationdata.PageModuleId = model.ModuleId.ToString("D");
+            }
+            var strOut = "";
+            var datat = datatext.Split(',');
+
+            strOut = "<select " + attributes + ">";
+            var c = 0;
+            var s = "";
+            foreach (var t in datat)
+            {
+                s = "";
+                if (c.ToString("D") == navigationdata.OrderByIdx) s = "selected";
+                strOut += $"    <option value='{c.ToString("D")}' {s} selectedurl='javascript:void(0)'>{t}</option>";
+                c += 1;
+
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
         /// <summary>
         /// Display a page size option on the product list module.
         /// </summary>

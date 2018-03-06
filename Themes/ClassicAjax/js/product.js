@@ -102,6 +102,13 @@ function AjaxView_GetList_nbxgetCompleted(e) {
 
     $('.processing').hide();
     if (e.cmd == 'product_ajaxview_getlist') {
+
+        $('.sortorderselect').unbind("change");
+        $('.sortorderselect').change(function () {
+            $('#orderby').val($(this).val());
+            loadProductList();
+        });        
+
         loadFilters();
     }
 
