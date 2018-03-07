@@ -59,7 +59,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     PluginSave(context);
                     strOut = PluginAdminDetail(context);
                     break;
-                    
+                case "plugins_movepluginsadmin":
+                    if (!NBrightBuyUtils.CheckRights()) break;
+                    PluginMove(context);
+                    strOut = PluginAdminList(context);
+                    break;                    
             }
             return strOut;
         }
@@ -215,6 +219,47 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
             }
         }
 
+
+        public static void PluginMove(HttpContext context)
+        {
+            if (NBrightBuyUtils.CheckRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+                var movepluginsid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movepluginsid");
+                var movetopluginsid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetopluginsid");
+                if (movepluginsid > 0 && movetopluginsid > 0)
+                {
+                    var objCtrl = new NBrightBuyController();
+                    var infoTo = objCtrl.GetData(movetopluginsid);
+                    var info = objCtrl.GetData(movepluginsid);
+
+                    if (info.GetXmlPropertyInt("genxml/hidden/index") >
+                        infoTo.GetXmlPropertyInt("genxml/hidden/index"))
+                    {
+                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyInt("genxml/hidden/index") - 1).ToString(), TypeCode.Double);
+                    }
+                    else
+                    {
+                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyInt("genxml/hidden/index")).ToString(), TypeCode.Double);
+                    }
+                    objCtrl.Update(info);
+
+                    var pdata = PluginUtils.GetPluginList();
+                    var lp = 1;
+                    foreach (var p in pdata)
+                    {
+                        p.SetXmlProperty("genxml/hidden/index", lp.ToString());
+                        objCtrl.Update(p);
+                        lp += 1;
+                    }
+
+                    // remove save GetData cache
+                    DataCache.ClearCache();
+
+                }
+            }
+        }
 
     }
 }
