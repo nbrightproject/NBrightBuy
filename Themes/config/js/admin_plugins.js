@@ -32,7 +32,7 @@
             nbxget('plugins_adminaddnew', '#nbs_pluginsadminsearch', '#datadisplay');
         });
 
-        if (e.cmd == 'plugins_admin_getlist') {
+        if (e.cmd == 'plugins_admin_getlist' || e.cmd == 'plugins_admin_delete') {
 
             $('.processing').hide();
 
@@ -109,13 +109,6 @@
 
         }
 
-        if (e.cmd == 'plugins_admin_delete') {
-            $('.processing').show();
-            $('#razortemplate').val('Admin_pluginsList.cshtml');
-            $('#selecteditemid').val('');
-            nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
-        }
-
         if (e.cmd == 'plugins_admin_save') {
             $("#editlang").val($("#nextlang").val());
             $("#editlanguage").val($("#nextlang").val());
@@ -178,11 +171,13 @@
 
             $('#pluginsAdmin_cmdDelete').unbind("click");
             $('#pluginsAdmin_cmdDelete').click(function () {
-                if (confirm($('#confirmdeletemsg').text())) {
+                if (confirm($('#confirmresetmsg').text())) {
                     $('.actionbuttonwrapper').hide();
                     $('.editlanguage').hide();
                     $('.processing').show();
-                    nbxget('plugins_admin_delete', '#nbs_pluginsadminsearch', '#actionreturn');
+                    $('#razortemplate').val('Admin_pluginsList.cshtml');
+                    $('#selecteditemid').val('');
+                    nbxget('plugins_admin_delete', '#pluginsdatasection', '#datadisplay');
                 }
             });
 

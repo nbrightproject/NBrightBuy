@@ -49,6 +49,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     if (!NBrightBuyUtils.CheckRights()) break;
                     strOut = PluginAdminDetail(context);
                     break;
+                case "plugins_adminaddnew":
+                    if (!NBrightBuyUtils.CheckRights()) break;
+                    strOut = PluginAddNew(context);
+                    break; 
                 case "plugins_addpluginsmodels":
                     if (!NBrightBuyUtils.CheckRights()) break;
                     PluginAddInterface(context);
@@ -58,6 +62,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     if (!NBrightBuyUtils.CheckRights()) break;
                     PluginSave(context);
                     strOut = PluginAdminDetail(context);
+                    break;
+                case "plugins_admin_delete":
+                    if (!NBrightBuyUtils.CheckRights()) break;
+                    PluginDelete(context);
+                    strOut = PluginAdminList(context);
                     break;
                 case "plugins_movepluginsadmin":
                     if (!NBrightBuyUtils.CheckRights()) break;
@@ -107,6 +116,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
                     if (themeFolder == "") themeFolder = "config";
                     var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+                    if (razortemplate == "")
+                    {
+                        razortemplate = "Admin_pluginsList.cshtml";
+                    }
 
                     var passSettings = new Dictionary<string, string>();
                     foreach (var s in ajaxInfo.ToDictionary())
@@ -169,6 +182,42 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
             }
         }
 
+        public static String PluginAddNew(HttpContext context)
+        {
+            try
+            {
+                if (NBrightBuyUtils.CheckRights())
+                {
+                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+
+                    var strOut = "";
+                    var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
+                    if (themeFolder == "") themeFolder = "config";
+                    var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
+
+                    var passSettings = NBrightBuyUtils.GetPassSettings(ajaxInfo);
+
+                    var info = new NBrightInfo(true);
+                    info.ItemID = -1;
+                    info.Lang = Utils.GetCurrentCulture();
+                    info.SetXmlProperty("genxml/hidden/index","99");
+                    info.TypeCode = "PLUGIN";
+                    info.GUIDKey = Utils.GetUniqueKey(12);
+                    var objCtrl = new NBrightBuyController();
+                    info.ItemID = objCtrl.Update(info);
+                    var pluginRecord = new PluginRecord(info);
+
+                    strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", pluginRecord, TemplateRelPath, themeFolder, Utils.GetCurrentCulture(), passSettings);
+                    return strOut;
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public static void PluginAddInterface(HttpContext context)
         {
             try
@@ -206,9 +255,23 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     var modelXml = Utils.UnCode(ajaxInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
 
                     ajaxInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
-                    var productXml = ajaxInfo.XMLData;
+                    pluginRecord.Info().XMLData = ajaxInfo.XMLData; 
 
-                    pluginRecord.Info().XMLData = productXml;
+                    // check for unique ctrl ref
+                    var ctrlref = pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl");
+                    var ctrltest = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PLUGIN", pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl"));
+                    if (ctrltest != null)
+                    {
+                        pluginRecord.Info().SetXmlProperty("genxml/textbox/ctrl", pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl") + Utils.GetUniqueKey());
+                    }
+
+                    // make sure index is in correct format, (FLOAT) for SQL
+                    pluginRecord.Info().SetXmlProperty("genxml/hidden/index", (pluginRecord.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()), TypeCode.Double);
+                    pluginRecord.Info().RemoveXmlNode("genxml/hidden/itemid");
+                    pluginRecord.Info().RemoveXmlNode("genxml/hidden/editlanguage");
+                    pluginRecord.Info().RemoveXmlNode("genxml/hidden/uilang1");
+                    pluginRecord.Info().GUIDKey = pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl");
+
                     pluginRecord.UpdateModels(modelXml, Utils.GetCurrentCulture());
                     objCtrl.Update(pluginRecord.Info());
 
@@ -219,13 +282,29 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
             }
         }
 
+        public static void PluginDelete(HttpContext context)
+        {
+            if (NBrightBuyUtils.CheckRights())
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
+                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
+                if (Utils.IsNumeric(itemid))
+                {
+                    var objCtrl = new NBrightBuyController();
+                    objCtrl.Delete(Convert.ToInt32(itemid));
+
+                    // remove save GetData cache
+                    DataCache.ClearCache();
+
+                }
+            }
+        }
 
         public static void PluginMove(HttpContext context)
         {
             if (NBrightBuyUtils.CheckRights())
             {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
                 var movepluginsid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movepluginsid");
                 var movetopluginsid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/movetopluginsid");
                 if (movepluginsid > 0 && movetopluginsid > 0)
@@ -234,22 +313,24 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     var infoTo = objCtrl.GetData(movetopluginsid);
                     var info = objCtrl.GetData(movepluginsid);
 
-                    if (info.GetXmlPropertyInt("genxml/hidden/index") >
-                        infoTo.GetXmlPropertyInt("genxml/hidden/index"))
+                    if (infoTo.GetXmlPropertyDouble("genxml/hidden/index") < info.GetXmlPropertyDouble("genxml/hidden/index"))
                     {
-                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyInt("genxml/hidden/index") - 1).ToString(), TypeCode.Double);
+                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyDouble("genxml/hidden/index") - 0.5).ToString("00.0"), TypeCode.Double);
                     }
                     else
                     {
-                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyInt("genxml/hidden/index")).ToString(), TypeCode.Double);
+                        info.SetXmlProperty("genxml/hidden/index", (infoTo.GetXmlPropertyDouble("genxml/hidden/index") + 0.5).ToString("00.0"), TypeCode.Double);
                     }
                     objCtrl.Update(info);
 
+                    // remove save GetData cache so we read changed data
+                    DataCache.ClearCache();
+
                     var pdata = PluginUtils.GetPluginList();
-                    var lp = 1;
+                    var lp = 0;
                     foreach (var p in pdata)
                     {
-                        p.SetXmlProperty("genxml/hidden/index", lp.ToString());
+                        p.SetXmlProperty("genxml/hidden/index", lp.ToString(),TypeCode.Double);
                         objCtrl.Update(p);
                         lp += 1;
                     }

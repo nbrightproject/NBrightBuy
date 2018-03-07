@@ -20,7 +20,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static List<NBrightInfo> GetPluginList()
         {
             var objCtrl = new NBrightBuyController();
-            var rtnList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PLUGIN","", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','int')");
+            var rtnList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PLUGIN","", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','float')");
             if (rtnList.Count == 0)
             {
                 rtnList = CreatePlugins();
@@ -75,11 +75,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 p.UserId = 0;
                 p.TypeCode = "PLUGIN";
 
+                p.SetXmlProperty("genxml/hidden/index", p.GetXmlPropertyDouble("genxml/hidden/index").ToString("00.0"), TypeCode.Double);
+
                 var interfaces = p.XMLDoc.SelectNodes("genxml/interfaces/*");
                 if (interfaces.Count == 0)
                 {
                     // possible legacy format, change.
-                    p.SetXmlProperty("genxml/checkbox/disable", p.GetXmlProperty("genxml/checkbox/active"));
                     p.SetXmlProperty("genxml/interfaces", "");
                     p.SetXmlProperty("genxml/interfaces/genxml", "");
                     p.SetXmlProperty("genxml/interfaces/genxml/dropdownlist", "");
@@ -115,7 +116,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
                     newInfo.ItemID = rtnList.Count;
-                    newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                    newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""),TypeCode.Double);
                     newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                     rtnList.Add(newInfo);
                 }
@@ -142,7 +143,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         {
                             // add the missing plugin to the active list
                             newInfo.ItemID = rtnList.Count;
-                            newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""));
+                            newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""), TypeCode.Double);
                             newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                             rtnList.Add(newInfo);
                         }
@@ -165,7 +166,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
             {
                 var objCtrl = new NBrightBuyController();
-                var ctrlList = new Dictionary<String, int>();
                 var flist = Directory.GetFiles(pluginfoldermappath);
                 foreach (var f in flist)
                 {
@@ -209,9 +209,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                     objCtrl.Update(nbi2);
                                 }
                             }
-
-
-                            ctrlList.Add(nbi.GetXmlProperty("genxml/textbox/ctrl"), nbi.GetXmlPropertyInt("genxml/hidden/index"));
 
                             updated = true;
                             File.Delete(f);

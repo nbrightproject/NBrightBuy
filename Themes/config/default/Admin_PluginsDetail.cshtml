@@ -24,7 +24,7 @@
 
     <input id="itemid" type="hidden" value="@plugin.Info().ItemID" />
     <input id="editlanguage" type="hidden" value="@plugin.Info().Lang" />
-    <input id="index" type="hidden" value="@plugin.Info().GetXmlProperty("genxml/hidden/index")" />
+    <input id="index" type="hidden" value="@plugin.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()" />
 
     <!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
     <input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
@@ -51,16 +51,6 @@
 
                 <div class="box-content">
                     <div class="form-horizontal dnnForm">
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">
-                                @ResourceKey("Plugins.lblctrl")
-                            </label>
-                            <div class="col-sm-6">
-                                @TextBox(plugin.Info(), "genxml/textbox/ctrl", "class='form-control' maxlength='50'")
-                            </div>
-                        </div>
-
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
@@ -123,7 +113,6 @@
                                 @ResourceKey("Plugins.lblroles")
                             </label>
                             <div class="col-sm-6">
-                                @TextBox(plugin.Info(), "genxml/textbox/roles", "class='form-control'")
                                 @CheckBoxList(plugin.Info(), "genxml/checkboxlist/securityroles", ResourceKey("General.roles").ToString(), ResourceKey("General.roles").ToString())
                             </div>
                         </div>
@@ -148,6 +137,9 @@
 
 
                     </div>
+                    <div>
+                        @plugin.Info().GUIDKey / @plugin.Info().ItemID
+                    </div>
                 </div>
 
             </div>
@@ -155,9 +147,6 @@
         <div class="clearfix">
         </div>
     </div>
-
-
-
 
 
     <h3>@ResourceKey("Plugins.interfaces")</h3>
@@ -183,11 +172,11 @@
                     <div class="col-sm-12 form-horizontal">
                         <div class="row">
                             <div class="col-sm-2">
-                                <label class="control-label">@ResourceKey("Plugins.lblprovidertype")</label>
+                                <label class="control-label">@ResourceKey("Plugins.assembly")</label>
                                 @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
                             </div>
                             <div class="col-sm-5">
-                                <label class="control-label">@ResourceKey("Plugins.assembly")</label>
+                                <label class="control-label">@ResourceKey("Plugins.namespaceclass")</label>
                                 @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
                             </div>
                             <div class="col-sm-2">
@@ -220,6 +209,39 @@
 
 </span>
     
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-search"></i><span>XML</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-down"></i>
+                    </a><a class="expand-link"><i class="fa fa-expand"></i></a>
+                    <a class="close-link"><i class="fa fa-times"></i></a>
+                </div>
+                <div class="no-move">
+                </div>
+            </div>
+
+            <div class="box-content collapse">
+                <div class="form-horizontal dnnForm">
+
+
+                    @plugin.Info().XMLData
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+</div>
+
+
 
 <div class="clearfix">
 </div>

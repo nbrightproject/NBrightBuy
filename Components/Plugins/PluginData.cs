@@ -203,16 +203,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var pList = new Dictionary<String, NBrightInfo>();
             foreach (var p in _pluginList)
             {
-                if (p.GetXmlProperty("genxml/dropdownlist/providertype") == providerType && (p.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
+                var pr = new PluginRecord(p);
+                foreach (var i in pr.GetInterfaces())
                 {
-                    var ctrlkey = p.GetXmlProperty("genxml/textbox/ctrl");
-                    var lp = 1;
-                    while (pList.ContainsKey(ctrlkey))
+                    if (i.GetXmlProperty("genxml/dropdownlist/providertype") == providerType && (i.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
                     {
-                        ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("");
-                        lp += 1;
+                        var ctrlkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                        var lp = 1;
+                        while (pList.ContainsKey(ctrlkey))
+                        {
+                            ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("");
+                            lp += 1;
+                        }
+                        pList.Add(ctrlkey, i);
                     }
-                    pList.Add(ctrlkey, p);
                 }
             }
             return pList;
