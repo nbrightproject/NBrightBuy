@@ -19,10 +19,10 @@
 
 <div class="minicart">
   <div class="minicarticon"><i class="fa fa-shopping-cart"></i></div>
-  <div class="h4-headline">Votre panier</div>
+  <div class="h4-headline">@ResourceKey("CartView.YourBasket")</div>
   @if (itemsInCart > 0)
   {
-    <a href="/tabid/@Model.GetSetting("carttab")/Default.aspx">@itemsInCart produit(s) : @NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))</a>
+    <a href="/tabid/@Model.GetSetting("carttab")/Default.aspx">@itemsInCart @ResourceKey("CartView.txtitemslower") : @NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))</a>
   }
   else
   {

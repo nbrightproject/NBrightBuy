@@ -89,7 +89,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
                 //get group list (these are the sections/first level of the menu)
                 var rootList = new Dictionary<String, String>();
 
-                foreach (var p in pluginData.GetPluginList())
+                var pluginList = PluginUtils.GetPluginList();
+                foreach (var p in pluginList)
                 {
                     var grpname = p.GetXmlProperty("genxml/textbox/group");
                     if (p.GetXmlPropertyBool("genxml/checkbox/hidden") == false)

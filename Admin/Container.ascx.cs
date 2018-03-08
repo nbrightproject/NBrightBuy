@@ -24,7 +24,6 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ViewNBrightGen class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Container : DotNetNuke.Entities.Modules.PortalModuleBase
@@ -57,9 +56,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
 
                     if (String.IsNullOrEmpty(ctrl))
                     {
-                        var p = _pluginData.GetPlugin(0);
-                        if (p != null) ctrl = p.GUIDKey;
-                        if (ctrl=="") ctrl = "orders";
+                        ctrl = "dashsummary";
                         if (StoreSettings.Current.Settings().Count == 0) ctrl = "settings";
                         HttpContext.Current.Session["nbrightbackofficectrl"] = ctrl;
                     }

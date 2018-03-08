@@ -19,8 +19,6 @@
 #cartdetails .leftside{float:left;width:48%;}
 #cartdetails .rightside{float:right;width:48%;}
 #shippingoptions{margin-bottom:10px;}
-#shippingoptions input{vertical-align:-2px;margin:0 0 0 10px;}
-#shippingoptions label{line-height:22px;margin:0 0 0 6px;}
 .checkoutship input{vertical-align:-2px;margin:0 0 0 10px;}
 .checkoutship label{line-height:22px;margin:0 0 0 6px;}
 #checkoutdetails .primarybutton{margin-right:0;}
@@ -77,10 +75,10 @@
 input.quantity {float:left;}
 
 /* Payment */
-#payment{width:66%;margin:0 auto;padding:1%;} /* padding to allow for box shadow on panel */
+#payment{margin:20px 0 0 0;}
 #payment .paymentlogo{float:right;margin:0 0 15px 15px;}
 #payment h1{font-size:38px;line-height:100%;margin:24px;opacity:0.5;}
-.paymentcomplete, .paymentfailed{width:66%;margin:0 auto;}*/
+.paymentcomplete, .paymentfailed{margin:20px 0 0 0;}
 
 /* default payment button */
 .paybutton{background:#42403f;color:#FFFFFF;}

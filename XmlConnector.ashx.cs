@@ -34,6 +34,7 @@ using Nevoweb.DNN.NBrightBuy.Components.Payments;
 using Nevoweb.DNN.NBrightBuy.Components.Products;
 using Nevoweb.DNN.NBrightBuy.Components.Category;
 using Nevoweb.DNN.NBrightBuy.Components.ItemLists;
+using Nevoweb.DNN.NBrightBuy.Components.Plugins;
 using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace Nevoweb.DNN.NBrightBuy
@@ -124,7 +125,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 else if (paramCmd.StartsWith("addressadmin_"))
                 {
                     strOut = AddressAdminFunctions.ProcessCommand(paramCmd, context);
-                }                
+                }
+                else if (paramCmd.StartsWith("plugins_"))
+                {
+                    strOut = PluginFunctions.ProcessCommand(paramCmd, context);
+                }
                 else
                 {
                     switch (paramCmd)

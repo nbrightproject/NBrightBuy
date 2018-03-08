@@ -27,24 +27,23 @@
             <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
             <ol>
                 <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
-                <li class="step2 activestep">@ResourceKey("CartView.CartstepsAddresses")</li>
+                <li class="step2">@ResourceKey("CartView.CartstepsAddresses")</li>
                 <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
-                <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
-                <li class="step5 activestep">@ResourceKey("CartView.CartstepsConfirm")</li>
+                <li class="step4 activestep">@ResourceKey("CartView.CartstepsPayment")</li>
+                <li class="step5">@ResourceKey("CartView.CartstepsConfirm")</li>
             </ol>
         </div>
     }
 
 
 
-    <div id="payment" class="panel">
+    <div id="payment">
 
         <div class="formrow paymenttotal">
             @ResourceKey("CartView.Totaltopay") : @CurrencyOf(info.GetXmlPropertyDouble("genxml/appliedtotal"))
         </div>
 
         @PaymentProviderList(info, "")
-
 
     </div>
 

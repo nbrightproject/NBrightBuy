@@ -332,8 +332,8 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
                 DataCache.ClearCache();
 
-                var pi = new PluginData(PortalId);
-                pi.RemovePortalLevel();
+                //var pi = new PluginData(PortalId);
+                //pi.RemovePortalLevel();
 
                 NBrightBuyUtils.SetNotfiyMessage(ModuleId, "completed", NotifyCode.ok);
             }

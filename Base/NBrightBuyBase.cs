@@ -16,27 +16,27 @@ using Nevoweb.DNN.NBrightBuy.Components;
 namespace Nevoweb.DNN.NBrightBuy.Base
 {
     public class NBrightBuyBase : DotNetNuke.Entities.Modules.PortalModuleBase
-	{
+    {
         protected NBrightCore.controls.PagingCtrl CtrlPaging;
         public NBrightBuyController ModCtrl;
-		public bool DebugMode = false;
-		public string ModuleKey = "";
-		public string ModuleAppType = "1";
-		public string UploadFolder = "";
-		public string SelUserId = "";
+        public bool DebugMode = false;
+        public string ModuleKey = "";
+        public string ModuleAppType = "1";
+        public string UploadFolder = "";
+        public string SelUserId = "";
         public string ThemeFolder = "";
-	    public ModSettings ModSettings;
+        public ModSettings ModSettings;
         public string RazorTemplate = "";
 
         public Boolean EnablePaging;
 
         public DotNetNuke.Framework.CDefault BasePage
         {
-            get { return (DotNetNuke.Framework.CDefault) this.Page; }
+            get { return (DotNetNuke.Framework.CDefault)this.Page; }
         }
 
-		protected override void OnInit(EventArgs e)
-		{
+        protected override void OnInit(EventArgs e)
+        {
 
             ModCtrl = new NBrightBuyController();
             DebugMode = StoreSettings.Current.DebugMode;
@@ -77,16 +77,11 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             }
 
             //add template provider to NBright Templating
+            //TODO: Remove when BO is all razor.
             NBrightCore.providers.GenXProviderManager.AddProvider("NBrightBuy,Nevoweb.DNN.NBrightBuy.render.GenXmlTemplateExt");
-          
-            // search for any other NBright Tenmplating providers that might have been added.
-            var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var l = pluginData.GetTemplateExtProviders();
-            foreach (var p in l)
-            {
-                var prov = p.Value;
-                NBrightCore.providers.GenXProviderManager.AddProvider(prov.GetXmlProperty("genxml/textbox/assembly") + "," + prov.GetXmlProperty("genxml/textbox/namespaceclass"));
-            }
+
+            // Build the plugin list
+            PluginUtils.CreateSystemPlugins();
 
         }
 
@@ -99,7 +94,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             if (ctrlMsg != null)
             {
                 var msg = NBrightBuyUtils.GetNotfiyMessage(ModuleId);
-                var l = new Literal {Text = msg};
+                var l = new Literal { Text = msg };
                 ctrlMsg.Controls.Add(l);
             }
         }
@@ -125,7 +120,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
         public void DoDetail(Repeater rp1)
         {
-            DoDetail(rp1,0);
+            DoDetail(rp1, 0);
         }
 
         /// <summary>
@@ -133,7 +128,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
         /// </summary>
         /// <param name="rp1"></param>
         /// <param name="moduleId"></param>
-        public void DoDetail(Repeater rp1,int moduleId) 
+        public void DoDetail(Repeater rp1, int moduleId)
         {
             var obj = new NBrightInfo(true);
             obj.ModuleId = moduleId;
