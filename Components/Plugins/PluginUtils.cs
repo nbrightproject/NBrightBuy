@@ -219,7 +219,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
             {
                 var objCtrl = new NBrightBuyController();
-                var flist = Directory.GetFiles(pluginfoldermappath,".xml");
+                var flist = Directory.GetFiles(pluginfoldermappath,"*.xml");
                 foreach (var f in flist)
                 {
                     if (f.EndsWith(".xml"))
@@ -230,16 +230,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                             var nbi = new NBrightInfo();
                             nbi.XMLData = datain;
                             // check if we are injecting multiple
-                            var nodlist = nbi.XMLDoc.SelectNodes("root/genxml");
+                            var nodlist = nbi.XMLDoc.SelectNodes("genxml");
                             if (nodlist != null && nodlist.Count > 0)
                             {
                                 foreach (XmlNode nod in nodlist)
                                 {
                                     var nbi2 = new NBrightInfo();
                                     nbi2.XMLData = nod.OuterXml;
-                                    nbi2.ItemID = 99999;
+                                    nbi2.ItemID = -1;
                                     nbi2.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrl");
-                                    nbi2.PortalId = -1;
+                                    nbi2.PortalId = 99999;
                                     nbi2.Lang = "";
                                     nbi2.ParentItemId = 0;
                                     nbi2.ModuleId = -1;
@@ -259,17 +259,20 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                                         else
                                         {
                                             objCtrl.Update(nbi2);
+                                            updated = true;
                                         }
                                     }
                                     else
                                     {
                                         objCtrl.Update(nbi2);
+                                        updated = true;
                                     }
                                 }
                             }
-
-                            updated = true;
-                            File.Delete(f);
+                            if (updated)
+                            {
+                                File.Delete(f);
+                            }
                         }
                         catch (Exception)
                         {
