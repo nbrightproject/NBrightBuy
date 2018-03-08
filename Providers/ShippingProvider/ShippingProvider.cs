@@ -60,7 +60,11 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override string Name()
         {
-            return "Standard";
+            var shipData = new ShippingData(Shippingkey);
+            var rtn = shipData.Info.GetXmlProperty("genxml/lang/genxml/textbox/name");
+            if (rtn == "") rtn = shipData.Info.GetXmlProperty("genxml/textbox/name");
+            if (rtn == "") rtn = "Standard";
+            return rtn;
         }
 
         public override string GetTemplate(NBrightInfo cartInfo)

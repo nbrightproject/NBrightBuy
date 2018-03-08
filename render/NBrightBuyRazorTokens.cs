@@ -1388,15 +1388,19 @@ namespace NBrightBuy.render
             {
                 var isValid = true;
                 var shipprov = ShippingInterface.Instance(d.Key);
-                if (shipprov != null) isValid = shipprov.IsValid(cartData.PurchaseInfo);
-                var p = d.Value;
-                if (isValid)
+                if (shipprov != null)
                 {
-                    if (value == "") value = d.Key;
-                    s = "";
-                    if (value == d.Key) s = "checked";
-                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + upd + " name='" + id + "radio' type='radio' value='" + d.Key + "'  " + s + "/><label>" + p.GetXmlProperty("genxml/textbox/name") + "</label>";
-                    c += 1;
+                    shipprov.Shippingkey = d.Key;
+                    isValid = shipprov.IsValid(cartData.PurchaseInfo);
+                    var p = d.Value;
+                    if (isValid)
+                    {
+                        if (value == "") value = d.Key;
+                        s = "";
+                        if (value == d.Key) s = "checked";
+                        strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + upd + " name='" + id + "radio' type='radio' value='" + d.Key + "'  " + s + "/><label>" + shipprov.Name() + "</label>";
+                        c += 1;
+                    }
                 }
             }
             strOut += "</div>";

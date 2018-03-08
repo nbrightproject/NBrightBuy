@@ -259,10 +259,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
 
                     // check for unique ctrl ref
                     var ctrlref = pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl");
-                    var ctrltest = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PLUGIN", pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl"));
+                    var ctrltest = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "PLUGIN", ctrlref);
                     if (ctrltest != null)
                     {
-                        pluginRecord.Info().SetXmlProperty("genxml/textbox/ctrl", pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl") + Utils.GetUniqueKey());
+                        if (ctrltest.ItemID != pluginRecord.Info().ItemID)
+                        {
+                            pluginRecord.Info().SetXmlProperty("genxml/textbox/ctrl", pluginRecord.Info().GetXmlProperty("genxml/textbox/ctrl") + Utils.GetUniqueKey());
+                        }
                     }
 
                     // make sure index is in correct format, (FLOAT) for SQL

@@ -208,13 +208,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     if (i.GetXmlProperty("genxml/dropdownlist/providertype") == providerType && (i.GetXmlProperty("genxml/checkbox/active") == "True" || !activeOnly))
                     {
-                        var ctrlkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                        var ctrlkey = pr.Info().GetXmlProperty("genxml/textbox/ctrl");
                         var lp = 1;
                         while (pList.ContainsKey(ctrlkey))
                         {
                             ctrlkey = p.GetXmlProperty("genxml/textbox/assembly") + lp.ToString("");
                             lp += 1;
                         }
+                        i.SetXmlProperty("genxml/textbox/ctrl",ctrlkey); // add key for multiple interfacxes have ctrlkey data
                         pList.Add(ctrlkey, i);
                     }
                 }
