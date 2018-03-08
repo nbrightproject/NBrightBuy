@@ -11,6 +11,24 @@
     var info = order.PurchaseInfo;
 }
 
+@if (Model.GetSettingBool("carttitle"))
+{
+    <h1>@ResourceKey("CartView.YourBasket")</h1>
+}
+@if (Model.GetSettingBool("cartsteps"))
+{
+<div class="checkoutsteps">
+    <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
+    <ol>
+        <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
+        <li class="step2">@ResourceKey("CartView.CartstepsAddresses")</li>
+        <li class="step3">@ResourceKey("CartView.CartstepsShipping")</li>
+        <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
+        <li class="step5 activestep">@ResourceKey("CartView.CartstepsConfirm")</li>
+    </ol>
+</div>
+}
+
 <div class="nbs paymentcomplete">
 
 <div class="formrow">
@@ -34,6 +52,5 @@
             <a class="primarybutton" href="/tabid/@(Model.GetSetting("productlisttab"))">@ResourceKey("CartView.returntostore")</a>
         </div>
     }
-
 
 </div>

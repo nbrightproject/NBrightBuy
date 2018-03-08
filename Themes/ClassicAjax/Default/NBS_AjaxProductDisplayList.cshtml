@@ -32,7 +32,7 @@
       <!-- Product sort -->
       <div class="productsort">
         <!--<label>@ResourceKey("General.pagesize") :</label>@PageSizeDropDownList("8,16,32,64,128", Model, "", true, false)-->
-        @SortOrderDropDownList("ResourceKey:ProductView.orderby", Model, "", true, false)
+          @SortOrderAjaxDropDownList(ResourceKey("ProductView.orderby").ToString(), Model, "class='sortorderselect'")
       </div>
       <!-- Category details -->
       <div class="categorydetails">
