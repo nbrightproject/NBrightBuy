@@ -630,9 +630,6 @@
     <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay.cshtml" />
     <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay_head.cshtml" />
-    <None Include="Plugins\v030501-system.configsave">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Themes\config\default\Admin_CategoryFilterGroups.cshtml" />
     <None Include="Themes\config\default\Admin_Plugins.cshtml" />
     <None Include="Themes\config\default\Admin_PluginsList.cshtml" />

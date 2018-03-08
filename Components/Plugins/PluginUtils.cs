@@ -23,39 +23,56 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnList = objCtrl.GetList(PortalSettings.Current.PortalId, -1, "PLUGIN","", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','float')");
             if (rtnList.Count == 0)
             {
-                rtnList = CreatePlugins();
+                rtnList = CreatePortalPlugins();
             }
             return rtnList;
         }
 
-        private static List<NBrightInfo> CreatePlugins()
+        public static void CreateSystemPlugins()
+        {
+            var cachekey = "pluginlistsystem";
+            var pList = NBrightBuyUtils.GetCache(cachekey);
+            if (pList == null)
+            {
+                var objCtrl = new NBrightBuyController();
+                var rtnList = objCtrl.GetList(99999, -1, "PLUGIN", "", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','float')");
+                if (rtnList.Count == 0)
+                {
+                    var pluginList = new List<NBrightInfo>();
+                    var info = new NBrightInfo();
+                    // no menuplugin.xml exists, so must be new install, get new config
+                    var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
+                    if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath) && File.Exists(pluginfoldermappath + "\\menu.config"))
+                    {
+                        var menuconfig = Utils.ReadFile(pluginfoldermappath + "\\menu.config");
+                        if (menuconfig != "")
+                        {
+                            info.XMLData = menuconfig;
+                            info.PortalId = 99999;
+                            pluginList = CalcSystemPluginList(info);
+                            CreateDBrecords(pluginList, 99999);
+                            CreatePortalPlugins();
+                        }
+                    }
+                }
+                NBrightBuyUtils.SetCache(cachekey, "True");
+            }
+        }
+
+        private static List<NBrightInfo> CreatePortalPlugins()
         {
             var pluginList = new List<NBrightInfo>();
 
             var info = new NBrightInfo();
             info.PortalId = PortalSettings.Current.PortalId;
             
-            // no menuplugin.xml exists, so must be new install, get new config
-            var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
-            if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath) && File.Exists(pluginfoldermappath + "\\menu.config"))
-            {
-                var menuconfig = Utils.ReadFile(pluginfoldermappath + "\\menu.config");
-                if (menuconfig != "")
-                {
-                    info.XMLData = menuconfig;
-                    info.PortalId = 99999;
-                    pluginList = CalcPluginList(info,99999);
-                    CreateDBrecords(pluginList, 99999);
-                }
-            }
-
             var templCtrl = NBrightBuyUtils.GetTemplateGetter(PortalSettings.Current.PortalId, "config");
             var menuplugin = templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, true, StoreSettings.Current.Settings());
             if (menuplugin != "")
             {
                 // menuplugin.xml exists, which is legacy data for this portal.
                 info.XMLData = menuplugin;
-                pluginList = CalcPluginList(info, PortalSettings.Current.PortalId);
+                pluginList = CalcPortalPluginList(info);
                 CreateDBrecords(pluginList, PortalSettings.Current.PortalId);
             }
             else
@@ -72,10 +89,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static List<NBrightInfo> CalcPluginList(NBrightInfo info,int portalid)
+        private static List<NBrightInfo> CalcSystemPluginList(NBrightInfo info)
         {
-            var templCtrl = NBrightBuyUtils.GetTemplateGetter(PortalSettings.Current.PortalId, "config");
-
             var rtnList = new List<NBrightInfo>();
             var xmlNodeList = info.XMLDoc.SelectNodes("genxml/plugin/*");
             if (xmlNodeList != null)
@@ -84,12 +99,21 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 {
                     var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
                     newInfo.ItemID = rtnList.Count;
-                    newInfo.PortalId = portalid;
+                    newInfo.PortalId = 99999;
                     newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""),TypeCode.Double);
                     newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                     rtnList.Add(newInfo);
                 }
             }
+
+            return rtnList;
+        }
+
+        private static List<NBrightInfo> CalcPortalPluginList(NBrightInfo info)
+        {
+            var templCtrl = NBrightBuyUtils.GetTemplateGetter(PortalSettings.Current.PortalId, "config");
+
+            var rtnList = new List<NBrightInfo>();
 
             // get the systemlevel, incase this is an update and we have new system level provider that needs to be added
             // Some systems create their own portal specific menu we assume they don't require new updates from NBS core, so take that if we have one.
@@ -112,7 +136,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                         {
                             // add the missing plugin to the active list
                             newInfo.ItemID = rtnList.Count;
-                            newInfo.PortalId = portalid;
+                            newInfo.PortalId = PortalSettings.Current.PortalId;
                             newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""), TypeCode.Double);
                             newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                             rtnList.Add(newInfo);

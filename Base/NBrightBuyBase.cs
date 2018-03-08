@@ -77,19 +77,11 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             }
 
             //add template provider to NBright Templating
+            //TODO: Remove when BO is all razor.
             NBrightCore.providers.GenXProviderManager.AddProvider("NBrightBuy,Nevoweb.DNN.NBrightBuy.render.GenXmlTemplateExt");
 
             // Build the plugin list
-            var pluginData = new PluginData(PortalSettings.Current.PortalId);
-
-            // search for any other NBright Tenmplating providers that might have been added.
-            //var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            //var l = pluginData.GetTemplateExtProviders();
-            //foreach (var p in l)
-            //{
-            //    var prov = p.Value;
-            //    NBrightCore.providers.GenXProviderManager.AddProvider(prov.GetXmlProperty("genxml/textbox/assembly") + "," + prov.GetXmlProperty("genxml/textbox/namespaceclass"));
-            //}
+            PluginUtils.CreateSystemPlugins();
 
         }
 
