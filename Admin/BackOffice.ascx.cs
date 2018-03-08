@@ -34,7 +34,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
     {
 
 
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
@@ -42,9 +42,7 @@ namespace Nevoweb.DNN.NBrightBuy.Admin
             {
 
                 // check for new plugins
-                //var pi = new PluginData(PortalId, true);
-                //pi.UpdateSystemPlugins();
-                //pi.CheckforNewSystemConfig();
+                PluginUtils.UpdateSystemPlugins();
 
                 #region "load templates"
 

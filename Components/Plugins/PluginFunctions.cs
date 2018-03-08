@@ -293,6 +293,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     var objCtrl = new NBrightBuyController();
                     objCtrl.Delete(Convert.ToInt32(itemid));
 
+                    PluginUtils.CopySystemPluginsToPortal();
+
                     // remove save GetData cache
                     DataCache.ClearCache();
 
@@ -326,14 +328,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Plugins
                     // remove save GetData cache so we read changed data
                     DataCache.ClearCache();
 
-                    var pdata = PluginUtils.GetPluginList();
-                    var lp = 0;
-                    foreach (var p in pdata)
-                    {
-                        p.SetXmlProperty("genxml/hidden/index", lp.ToString(),TypeCode.Double);
-                        objCtrl.Update(p);
-                        lp += 1;
-                    }
+                    PluginUtils.ResequenceRecords();
 
                     // remove save GetData cache
                     DataCache.ClearCache();
