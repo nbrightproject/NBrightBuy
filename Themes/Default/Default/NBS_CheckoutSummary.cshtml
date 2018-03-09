@@ -68,27 +68,24 @@
 
         <div class="summaryright">
 
-            <ul class="checkoutdetails">
-                <li class="large"><div>@ResourceKey("General.Subtotal")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedsubtotal"))</li>
-                <li class="large"><div>@ResourceKey("General.Discount")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/applieddiscount"))</li>
-                <li class="large"><div>@ResourceKey("General.Shipping")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedshipping"))</li>
-                <li class="large"><div>@ResourceKey("General.Tax")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/taxcost"))</li>
-                <li class="total larger">
-                    <div>@ResourceKey("General.Total")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))
-                </li>
-                @if (Model.GetSettingBool("subscribenewsletter"))
-            {
-                    <li class="formrow submissioncheck">@CheckBox(info, "genxml/extrainfo/genxml/checkbox/chknews", "ResourceKey:CartView.chknews", "", true)</li>
-                }
-
-                <li class="formrow submissioncheck"><b>@ResourceKey("CartView.chkterms")</b></li>
-                <li class="submission">
-                  <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
-                  <a href="javascript:void(0)" id="cmdRecalcSummary" class="primarybutton">@ResourceKey("CartView.UpdateCart")</a>
-                  <a href="javascript:void(0)" id="cmdOrder" class="primarybutton">@ResourceKey("CartView.Order")</a>
-                </li>
-
+            <ul class="checkoutdetails checkouttotals">
+                    @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\Default\\Default\\NBS_CheckoutTotals.cshtml", Model)
             </ul>
+                <ul class="checkoutdetails">
+
+                    @if (Model.GetSettingBool("subscribenewsletter"))
+                    {
+                        <li class="formrow submissioncheck">@CheckBox(info, "genxml/extrainfo/genxml/checkbox/chknews", "ResourceKey:CartView.chknews", "", true)</li>
+                    }
+
+                    <li class="formrow submissioncheck"><b>@ResourceKey("CartView.chkterms")</b></li>
+                    <li class="submission">
+                        <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
+                        <a href="javascript:void(0)" id="cmdRecalcSummary" class="primarybutton">@ResourceKey("CartView.UpdateCart")</a>
+                        <a href="javascript:void(0)" id="cmdOrder" class="primarybutton">@ResourceKey("CartView.Order")</a>
+                    </li>
+
+                </ul>
 
             @if (cart.EditMode != "")
             {

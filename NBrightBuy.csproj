@@ -1643,6 +1643,7 @@
     <None Include="Themes\Default\Default\NBS_CheckoutRegion.cshtml" />
     <None Include="Themes\Default\Default\NBS_Checkoutsettings.cshtml" />
     <None Include="Themes\Default\Default\NBS_CheckoutShipMethod.cshtml" />
+    <None Include="Themes\Default\Default\NBS_CheckoutTotals.cshtml" />
     <None Include="Themes\Default\Default\NBS_CheckoutSummary.cshtml" />
     <None Include="Themes\Default\Default\NBS_Checkout_head.cshtml" />
     <None Include="Themes\Default\Default\NBS_FullCart.cshtml" />
@@ -1659,9 +1660,7 @@
     <None Include="Themes\Default\Default\NBS_OrderAdminsettings.cshtml" />
     <None Include="Themes\Default\Default\NBS_OrderAdmin_head.cshtml" />
     <None Include="Themes\Default\Default\NBS_Payment.cshtml" />
-    <None Include="Themes\Default\Default\NBS_PaymentFAIL.cshtml" />
     <None Include="Themes\Default\Default\NBS_PaymentList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_PaymentOK.cshtml" />
     <None Include="Themes\Default\Default\NBS_Paymentsettings.cshtml" />
     <None Include="Themes\Default\Default\NBS_Payment_head.cshtml" />
     <None Include="Themes\Default\Default\NBS_ProductNotFound.cshtml" />
@@ -1673,6 +1672,8 @@
     <None Include="Themes\Default\Default\NBS_ProfileHome_head.cshtml" />
     <None Include="Themes\Default\Default\OrderHtmlOutput.cshtml" />
     <None Include="Themes\Default\Default\OrderPrintOutput.cshtml" />
+    <None Include="Themes\Default\Default\payment_fail.cshtml" />
+    <None Include="Themes\Default\Default\payment_ok.cshtml" />
     <None Include="Themes\Default\Default\printorder.cshtml" />
     <None Include="Web.config" />
     <None Include="XmlConnector.ashx" />
