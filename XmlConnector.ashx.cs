@@ -27,6 +27,7 @@ using DotNetNuke.Services.Exceptions;
 using NBrightBuy.render;
 using NBrightCore.images;
 using Nevoweb.DNN.NBrightBuy.Components.Address;
+using Nevoweb.DNN.NBrightBuy.Components.Cart;
 using Nevoweb.DNN.NBrightBuy.Components.Clients;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using Nevoweb.DNN.NBrightBuy.Components.Orders;
@@ -130,6 +131,10 @@ namespace Nevoweb.DNN.NBrightBuy
                 {
                     strOut = PluginFunctions.ProcessCommand(paramCmd, context);
                 }
+                else if (paramCmd.StartsWith("cart_"))
+                {
+                    strOut = CartFunctions.ProcessCommand(paramCmd, context);
+                }
                 else
                 {
                     switch (paramCmd)
@@ -194,40 +199,8 @@ namespace Nevoweb.DNN.NBrightBuy
                             break;
                         case "printproduct":
                             break;
-                        case "removefromcart":
-                            RemoveFromCart(context);
-                            strOut = "removefromcart";
-                            break;
-                        case "recalculatecart":
-                            RecalculateCart(context);
-                            strOut = "recalculatecart";
-                            break;
-                        case "recalculatesummary":
-                            RecalculateSummary(context);
-                            strOut = "recalculatecart";
-                            break;
-                        case "redirecttopayment":
-                            strOut = RedirectToPayment(context);
-                            break;
-                        case "updatebilladdress":
-                            strOut = UpdateCartAddress(context, "bill");
-                            break;
-                        case "updateshipaddress":
-                            strOut = UpdateCartAddress(context, "ship");
-                            break;
-                        case "updateshipoption":
-                            strOut = UpdateCartAddress(context, "shipoption");
-                            break;
-                        case "rendercart":
-                            strOut = RenderCart(context);
-                            break;
                         case "renderpostdata":
                             strOut = RenderPostData(context);
-                            break;
-                        case "clearcart":
-                            var currentcart = new CartData(PortalSettings.Current.PortalId);
-                            currentcart.DeleteCart();
-                            strOut = "clearcart";
                             break;
                         case "shippingprovidertemplate":
                             strOut = GetShippingProviderTemplates(context);
@@ -562,33 +535,6 @@ namespace Nevoweb.DNN.NBrightBuy
 
         #region "Front Office Actions"
 
-        private String RenderCart(HttpContext context)
-        {
-            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-            var carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/carttemplate");
-            if (carttemplate == "") carttemplate = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttemplate");
-            var theme = ajaxInfo.GetXmlProperty("genxml/hidden/carttheme");
-            if (theme == "") theme = ajaxInfo.GetXmlProperty("genxml/hidden/minicarttheme");
-            var lang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
-            var controlpath = ajaxInfo.GetXmlProperty("genxml/hidden/controlpath");
-            if (controlpath == "") controlpath = "/DesktopModules/NBright/NBrightBuy";
-            var razorTempl = "";
-            if (carttemplate != "")
-            {
-                if (lang == "") lang = Utils.GetCurrentCulture();
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-                if (UserController.Instance.GetCurrentUserInfo().UserID != -1)  // If we have a user, do save to update userid, so addrees checkout can get addresses.
-                {
-                    if (currentcart.UserId != UserController.Instance.GetCurrentUserInfo().UserID && currentcart.EditMode == "")
-                    {
-                        currentcart.Save();
-                    }
-                }
-
-                razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0,"", currentcart, controlpath, theme, lang, StoreSettings.Current.Settings());
-            }
-            return razorTempl;
-        }
 
         /// <summary>
         /// This token used the ajax posted context data to render the razor template specified in "carttemplate"
@@ -687,20 +633,6 @@ namespace Nevoweb.DNN.NBrightBuy
             }
         }
 
-        private string RecalculateCart(HttpContext context)
-        {
-                var strOut = "";
-                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-                foreach (var ajaxInfo in ajaxInfoList)
-                {
-                        currentcart.MergeCartInputData(currentcart.GetItemIndex(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode")), ajaxInfo);
-                }
-                currentcart.Save(StoreSettings.Current.DebugMode,true);
-                strOut = "OK";
-                return strOut;
-        }
-
         private string UpdateProfile(HttpContext context)
         {
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
@@ -753,128 +685,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 navData.OrderBy = " order by " + ajaxInfo.GetXmlProperty("genxml/hidden/orderby" + navData.OrderByIdx);
                 navData.Save();
 
-                return "OK";
-        }
-
-        private string UpdateCartAddress(HttpContext context,String addresstype = "")
-        {
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context,true);
-
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
-
-                if (addresstype == "bill")
-                {
-                    currentcart.AddBillingAddress(ajaxInfo);
-                    currentcart.Save();
-                }
-
-                if (addresstype == "ship")
-                {
-                    if (currentcart.GetShippingOption() == "2") // need to test this, becuase in legacy code the shipping option is set to "2" when we save the shipping address.
-                    {
-                        currentcart.AddShippingAddress(ajaxInfo);
-                        currentcart.Save();
-                    }
-                }
-
-                if (addresstype == "shipoption")
-                {
-                    var shipoption = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/rblshippingoptions");
-                    currentcart.SetShippingOption(shipoption);
-                    currentcart.Save();
-                }
-
-                return addresstype;
-        }
-
-        private string RedirectToPayment(HttpContext context)
-        {
-            try
-            {
-                RecalculateSummary(context);
-
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-
-                if (currentcart.GetCartItemList().Count > 0)
-                {
-                    currentcart.SetValidated(true);
-                    if (currentcart.EditMode == "E") currentcart.ConvertToOrder();
-                }
-                else
-                {
-                    currentcart.SetValidated(true);
-                }
-                currentcart.Save();
-
-                var rtnurl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId);
-                if (currentcart.EditMode == "E")
-                {
-                    // is order being edited, so return to order status after edit.
-                    // ONLY if the cartsummry is being displayed to the manager.
-                    currentcart.ConvertToOrder();
-                    // redirect to back office
-                    var param = new string[2];
-                    param[0] = "ctrl=orders";
-                    param[1] = "eid=" + currentcart.PurchaseInfo.ItemID.ToString("");
-                    var strbackofficeTabId = StoreSettings.Current.Get("backofficetabid");
-                    var backofficeTabId = PortalSettings.Current.ActiveTab.TabID;
-                    if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
-                    rtnurl = Globals.NavigateURL(backofficeTabId, "", param);
-                }
-                return rtnurl;
-
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return "ERROR";
-            }
-        }
-
-        private string RecalculateSummary(HttpContext context)
-        {
-            var objCtrl = new NBrightBuyController();
-
-            var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context, true);
-                var shipoption = currentcart.GetShippingOption(); // ship option already set in address update.
-
-                currentcart.AddExtraInfo(ajaxInfo);
-                currentcart.SetShippingOption(shipoption);
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider"));
-
-            var shipref = ajaxInfo.GetXmlProperty("genxml/radiobuttonlist/shippingprovider");
-            var displayanme = "";
-            var shipInfo = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shipref);
-            if (shipInfo != null)
-            {
-                displayanme = shipInfo.GetXmlProperty("genxml/textbox/shippingdisplayname");
-            }
-            if (displayanme == "") displayanme = shipref;
-            currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme", displayanme);
-
-            var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/shippingproductcode", shippingproductcode);
-                var pickuppointref = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointref");
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
-                var pickuppointaddr = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointaddr");
-                currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointaddr", pickuppointaddr);
-
-                currentcart.Lang = ajaxInfo.Lang;  // set lang so we can send emails in same language the order was made in.
-
-                currentcart.Save(StoreSettings.Current.DebugMode,true);
-
-                return "OK";
-        }
-
-        private string RemoveFromCart(HttpContext context)
-        {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-                currentcart.RemoveItem(ajaxInfo.GetXmlProperty("genxml/hidden/itemcode"));
-                currentcart.Save(StoreSettings.Current.DebugMode);
                 return "OK";
         }
 

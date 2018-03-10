@@ -215,6 +215,7 @@
       <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Address\AddressFunctions.cs" />
+    <Compile Include="Components\Cart\CartFunctions.cs" />
     <Compile Include="Components\ItemLists\ItemListsFunctions.cs" />
     <Compile Include="Components\Plugins\PluginUtils.cs" />
     <Compile Include="Components\Plugins\PluginFunctions.cs" />
@@ -317,7 +318,7 @@
     <Compile Include="ProfileRazorForm.ascx.designer.cs">
       <DependentUpon>ProfileRazorForm.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\CartData.cs" />
+    <Compile Include="Components\Cart\CartData.cs" />
     <Compile Include="Components\Categories\CategoryUtils.cs" />
     <Compile Include="Components\Categories\CatMenuBuilder.cs" />
     <Compile Include="Components\ClassInfo.cs" />

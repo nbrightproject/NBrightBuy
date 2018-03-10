@@ -13,12 +13,12 @@ $(document).ready(function () {
     $('#cmdRecalcCart').click(function () {
         $('.processing').show();
         $('#cmdGoCheckout').show();
-        nbxget('recalculatecart', '.cartdatarow', '#fullcartdatareturn', '.quantitycolumn');
+        nbxget('cart_recalculatecart', '.cartdatarow', '#fullcartdatareturn', '.quantitycolumn');
     });
 
     $('#cmdGoCheckout').click(function () {
         $('.processing').show();
-        nbxget('recalculatecart', '.cartdatarow', '#fullcartredirectreturn', '.quantitycolumn');
+        nbxget('cart_recalculatecart', '.cartdatarow', '#fullcartredirectreturn', '.quantitycolumn');
     });
 
     // Ajax action return, reload cart list

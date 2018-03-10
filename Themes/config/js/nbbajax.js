@@ -20,11 +20,13 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 
 	request.done(function (data) {
 	    if (data != 'noaction') {
-	        if (appendreturn == null) {
-	            $(target).children().remove();
-	            $(target).html(data).trigger('change');
-	        } else
-	            $(target).append(data).trigger('change');
+	        if (target != '' && target != null) {
+	            if (appendreturn == null) {
+	                $(target).children().remove();
+	                $(target).html(data).trigger('change');
+	            } else
+	                $(target).append(data).trigger('change');
+	        }
 
 	        $.event.trigger({
 	            type: "nbxgetcompleted",
