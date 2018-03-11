@@ -127,19 +127,6 @@ function AjaxView_GetList_nbxgetCompleted(e) {
         $("html, body").animate({ scrollTop: 0 }, 200);
     }
 
-    // Add to Basket for Ajax + Form validation  (Mini-Cart head duplicate)
-    var form = $("#Form");
-    form.validate();
-
-    $('.addtobasket').unbind("click");
-    $('.addtobasket').click(function () {
-        if (form.valid()) {
-            if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
-            nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
-            $('.addedtobasket').delay(10).fadeIn('fast');
-        }
-    });
-
     if (e.cmd == 'itemlist_add') {
         $('#shoppinglistadd-' + $('#shopitemid').val()).hide();
         $('#shoppinglistremove-' + $('#shopitemid').val()).show();

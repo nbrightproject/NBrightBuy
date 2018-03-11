@@ -1,5 +1,6 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
 @using System.Linq
+@using NBrightCore.common
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
 
@@ -18,7 +19,7 @@
 
 <div class="nbs">
 
-    <div class="productdetail" itemscope itemtype="http://schema.org/Product">
+    <div class="productdetail">
 
         <div class="detailflex">
 
@@ -81,7 +82,7 @@
 
             <h2>@info.GetXmlProperty("genxml/textbox/manufacturer")</h2>
 
-            <h1 itemprop="name">@(product.ProductName)</h1>
+            <h1>@(product.ProductName)</h1>
 
             <div class="price">
 
@@ -107,7 +108,7 @@
 
             @if (@info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary") != "")
             {
-                <div itemprop="description" class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
+                <div class="summary">@BreakOf(info, "genxml/lang/genxml/textbox/txtsummary")</div>
             }
 
             @if (@product.Models.Count >= 2)
@@ -158,7 +159,7 @@
             }
 
             <div class="properties">
-              Réf. @info.GetXmlProperty("genxml/textbox/txtproductref")<br />
+            @ResourceKey("General.Ref") @info.GetXmlProperty("genxml/textbox/txtproductref")<br />
             </div>
 
             <div>

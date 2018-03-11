@@ -161,14 +161,6 @@ namespace Nevoweb.DNN.NBrightBuy
                                 strOut = FileUpload(context, itemId);
                             }
                             break;
-                        case "addtobasket":
-                            strOut = AddToBasket(context);
-                            break;
-                        case "addalltobasket":
-                            strOut = AddAllToBasket(context);
-                            break;
-                        case "addcookietobasket":
-                            break;
                         case "docdownload":
 
                             var fname = Utils.RequestQueryStringParam(context, "filename");
@@ -571,66 +563,6 @@ namespace Nevoweb.DNN.NBrightBuy
             if (uilang == "") uilang = Utils.GetCurrentCulture();
             razorTempl = NBrightBuyUtils.RazorTemplRender("ThemeFolderSelect.cshtml", 0, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", "config", uilang, StoreSettings.Current.Settings());
             return razorTempl;
-        }
-
-        private string AddToBasket(HttpContext context)
-        {
-            try
-            {
-                var strOut = "";
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-                var settings = ajaxInfo.ToDictionary();
-
-                if (settings.ContainsKey("productid"))
-                {
-                    if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-
-                    var currentcart = new CartData(Convert.ToInt16(settings["portalid"]));
-                    currentcart.AddAjaxItem(ajaxInfo, StoreSettings.Current.SettingsInfo,StoreSettings.Current.DebugMode);
-                    currentcart.Save(StoreSettings.Current.DebugMode);
-                    strOut = "OK";
-                }
-
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                Logging.LogException(ex);
-                return ex.ToString();
-            }
-        }
-
-        private string AddAllToBasket(HttpContext context)
-        {
-            try
-            {
-                var strOut = "";
-                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
-
-                foreach (var ajaxInfo in ajaxInfoList)
-                {
-                    var settings = ajaxInfo.ToDictionary();
-
-                    if (settings.ContainsKey("productid"))
-                    {
-                        if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
-
-                        var currentcart = new CartData(Convert.ToInt16(settings["portalid"]));
-                        currentcart.AddAjaxItem(ajaxInfo, StoreSettings.Current.SettingsInfo, StoreSettings.Current.DebugMode);
-                        currentcart.Save(StoreSettings.Current.DebugMode);
-                        strOut = "OK";
-                    }
-
-                }
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                Logging.LogException(ex);
-                return ex.ToString();
-            }
         }
 
         private string UpdateProfile(HttpContext context)

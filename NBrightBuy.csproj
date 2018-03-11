@@ -575,6 +575,7 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_Checkout.css" />
+    <Content Include="Themes\ClassicAjax\js\minicart.js" />
     <Content Include="Themes\Default\css\ClientAccount.css" />
     <Content Include="Themes\Default\css\NBS_Checkout.css" />
     <Content Include="Themes\Default\img\email-facebook.gif" />

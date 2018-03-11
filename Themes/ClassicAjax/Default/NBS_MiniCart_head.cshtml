@@ -9,9 +9,6 @@
     <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()">
 </span>
 
-<!-- return area for ajax data -->
-<div id="minicartdatareturn" style="display:none;"></div>
-
 <!-- Get messages for JQuery validation -->
 @{
     var langcode = Model.GetUrlParam("language");
@@ -26,27 +23,4 @@
     <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_@(langcode).js"></script>
 }
 
-<script type="text/javascript">
-
-    $(document).ready(function() {
-
-        //Form validation 
-        var form = $("#Form");
-        form.validate();
-
-        $('.addtobasket').click(function () {
-            if (form.valid()) {
-                if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
-                nbxget('addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
-                $('.addedtobasket').delay(10).fadeIn('fast');
-            }
-        });
-
-        $('#minicartdatareturn').change(function () {
-            nbxget('rendercart', '.minicartdata', '.container_classicajax_nbs_minicart'); // Reload Cart
-            $('.addedtobasket').delay(1000).fadeOut('fast');
-        });
-
-    });
-
-</script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/minicart.js"></script>

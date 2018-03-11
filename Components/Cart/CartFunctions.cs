@@ -54,6 +54,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 case "cart_rendercartaddress":
                     strOut = RenderCart(context);
                     break;
+                case "cart_renderminicart":
+                    strOut = RenderCart(context);
+                    break;                    
                 case "cart_recalculatecart":
                     RecalculateCart(context);
                     break;
@@ -75,6 +78,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                     break;
                 case "cart_updateshipoption":
                     strOut = UpdateCartAddress(context, "shipoption");
+                    break;
+                case "cart_redirecttocheckout":
+                    RecalculateCart(context);
+                    break;
+                case "cart_addtobasket":
+                    AddToBasket(context);
+                    break;
+                case "cart_addalltobasket":
+                    AddAllToBasket(context);
                     break;
             }
             return strOut;
@@ -252,6 +264,55 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
 
             return addresstype;
         }
+
+        private static void AddToBasket(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var settings = ajaxInfo.ToDictionary();
+
+                if (settings.ContainsKey("productid"))
+                {
+                    if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+                    var currentcart = new CartData(Convert.ToInt16(settings["portalid"]));
+                    currentcart.AddAjaxItem(ajaxInfo, StoreSettings.Current.SettingsInfo, StoreSettings.Current.DebugMode);
+                    currentcart.Save(StoreSettings.Current.DebugMode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogException(ex);
+            }
+        }
+
+        private static void AddAllToBasket(HttpContext context)
+        {
+            try
+            {
+                var ajaxInfoList = NBrightBuyUtils.GetAjaxInfoList(context);
+                foreach (var ajaxInfo in ajaxInfoList)
+                {
+                    var settings = ajaxInfo.ToDictionary();
+
+                    if (settings.ContainsKey("productid"))
+                    {
+                        if (!settings.ContainsKey("portalid")) settings.Add("portalid", PortalSettings.Current.PortalId.ToString("")); // aways make sure we have portalid in settings
+
+                        var currentcart = new CartData(Convert.ToInt16(settings["portalid"]));
+                        currentcart.AddAjaxItem(ajaxInfo, StoreSettings.Current.SettingsInfo, StoreSettings.Current.DebugMode);
+                        currentcart.Save(StoreSettings.Current.DebugMode);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogException(ex);
+            }
+        }
+
 
     }
 }
