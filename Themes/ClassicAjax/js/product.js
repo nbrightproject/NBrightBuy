@@ -101,6 +101,16 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     });
 
     $('.processing').hide();
+
+    if (e.cmd == 'cart_addtobasket') {
+        nbxget('cart_renderminicart', '.minicartdata', '.container_classicajax_nbs_minicart'); // Reload Cart
+        $('.addedtobasket').delay(1000).fadeOut('fast');
+    }
+
+    if (e.cmd == 'cart_renderminicart') {
+        $('.processing').hide();
+    }
+
     if (e.cmd == 'product_ajaxview_getlist') {
 
         $('.sortorderselect').unbind("change");
@@ -108,6 +118,19 @@ function AjaxView_GetList_nbxgetCompleted(e) {
             $('#orderby').val($(this).val());
             loadProductList();
         });        
+
+        //Form validation 
+        var form = $("#Form");
+        form.validate();
+
+        $('.addtobasket').click(function () {
+            if (form.valid()) {
+                $('.processing').show();
+                if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
+                nbxget('cart_addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+                $('.addedtobasket').delay(10).fadeIn('fast');
+            }
+        });
 
         loadFilters();
     }
@@ -263,8 +286,25 @@ function propertyFilterClicked() {
     loadProductListFilter();
 }
 function loadProductList() {
-    $('.processing').show();
-    nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    if ($('#ajaxlist').val() == 'True') {
+        $('.processing').show();
+        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    } else {
+        
+        //Form validation 
+        var form = $("#Form");
+        form.validate();
+
+        $('.addtobasket').click(function () {
+            if (form.valid()) {
+                $('.processing').show();
+                if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
+                nbxget('cart_addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+                $('.addedtobasket').delay(10).fadeIn('fast');
+            }
+        });
+
+    }
 }
 function loadProductListFilter() {
     $('.processing').show();
