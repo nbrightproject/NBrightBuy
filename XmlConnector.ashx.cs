@@ -194,9 +194,6 @@ namespace Nevoweb.DNN.NBrightBuy
                         case "renderpostdata":
                             strOut = RenderPostData(context);
                             break;
-                        case "shippingprovidertemplate":
-                            strOut = GetShippingProviderTemplates(context);
-                            break;
                         case "getsettings":
                             strOut = GetSettings(context);
                             break;
@@ -618,55 +615,6 @@ namespace Nevoweb.DNN.NBrightBuy
                 navData.Save();
 
                 return "OK";
-        }
-
-
-        private String GetShippingProviderTemplates(HttpContext context)
-        {
-            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-            var activeprovider = ajaxInfo.GetXmlProperty("genxml/hidden/shippingprovider");
-            var currentcart = new CartData(PortalSettings.Current.PortalId);
-
-            var shipoption = currentcart.GetShippingOption(); // we don't want to overwrite the selected shipping option.
-            currentcart.AddExtraInfo(ajaxInfo);
-            currentcart.SetShippingOption(shipoption);
-            currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
-            currentcart.Save();
-
-            if (activeprovider == "") activeprovider = currentcart.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
-
-
-            var strRtn = "";
-            var pluginData = new PluginData(PortalSettings.Current.PortalId);
-            var provList = pluginData.GetShippingProviders();
-            if (provList != null && provList.Count > 0)
-            {
-                if (activeprovider == "") activeprovider = provList.First().Key;
-                foreach (var d in provList)
-                {
-                    var p = d.Value;
-                    var shippingkey = p.GetXmlProperty("genxml/textbox/ctrl");
-                    var shipprov = ShippingInterface.Instance(shippingkey);
-                    if (shipprov != null)
-                    {
-                        if (activeprovider == d.Key)
-                        {
-                            var razorTempl = shipprov.GetTemplate(currentcart.PurchaseInfo);
-                            var objList = new List<NBrightInfo>();
-                            objList.Add(currentcart.PurchaseInfo);
-                            if (razorTempl.StartsWith("@"))
-                            {
-                                strRtn += NBrightBuyUtils.RazorRender(objList, razorTempl, shippingkey + "shippingtemplate", StoreSettings.Current.DebugMode);
-                            }
-                            else
-                            {
-                                strRtn += GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
-                            }
-                        }
-                    }
-                }
-            }
-            return strRtn;
         }
 
 

@@ -88,6 +88,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 case "cart_addalltobasket":
                     AddAllToBasket(context);
                     break;
+                case "cart_shippingprovidertemplate":
+                    strOut = GetShippingProviderTemplates(context);
+                    break;
+                case "cart_recalculatesummary":
+                    RecalculateSummary(context);
+                    break;
             }
             return strOut;
         }
@@ -144,7 +150,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
             currentcart.Save(StoreSettings.Current.DebugMode, true);
         }
 
-        private static string RecalculateSummary(HttpContext context)
+        private static void RecalculateSummary(HttpContext context)
         {
             var objCtrl = new NBrightBuyController();
 
@@ -178,7 +184,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
 
             currentcart.Save(StoreSettings.Current.DebugMode, true);
 
-            return "OK";
         }
 
         private static string RedirectToPayment(HttpContext context)
@@ -313,6 +318,53 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
             }
         }
 
+        private static string GetShippingProviderTemplates(HttpContext context)
+        {
+            var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+            var activeprovider = ajaxInfo.GetXmlProperty("genxml/hidden/shippingprovider");
+            var currentcart = new CartData(PortalSettings.Current.PortalId);
+
+            var shipoption = currentcart.GetShippingOption(); // we don't want to overwrite the selected shipping option.
+            currentcart.AddExtraInfo(ajaxInfo);
+            currentcart.SetShippingOption(shipoption);
+            currentcart.PurchaseInfo.SetXmlProperty("genxml/currentcartstage", "cartsummary"); // (Legacy) we need to set this so the cart calcs shipping
+            currentcart.Save();
+
+            if (activeprovider == "") activeprovider = currentcart.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
+
+
+            var strRtn = "";
+            var pluginData = new PluginData(PortalSettings.Current.PortalId);
+            var provList = pluginData.GetShippingProviders();
+            if (provList != null && provList.Count > 0)
+            {
+                if (activeprovider == "") activeprovider = provList.First().Key;
+                foreach (var d in provList)
+                {
+                    var p = d.Value;
+                    var shippingkey = p.GetXmlProperty("genxml/textbox/ctrl");
+                    var shipprov = ShippingInterface.Instance(shippingkey);
+                    if (shipprov != null)
+                    {
+                        if (activeprovider == d.Key)
+                        {
+                            var razorTempl = shipprov.GetTemplate(currentcart.PurchaseInfo);
+                            var objList = new List<NBrightInfo>();
+                            objList.Add(currentcart.PurchaseInfo);
+                            if (razorTempl.StartsWith("@"))
+                            {
+                                strRtn += NBrightBuyUtils.RazorRender(objList, razorTempl, shippingkey + "shippingtemplate", StoreSettings.Current.DebugMode);
+                            }
+                            else
+                            {
+                                strRtn += GenXmlFunctions.RenderRepeater(objList[0], razorTempl, "", "XMLData", "", StoreSettings.Current.Settings(), null);
+                            }
+                        }
+                    }
+                }
+            }
+            return strRtn;
+        }
 
     }
 }
