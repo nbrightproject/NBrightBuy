@@ -91,11 +91,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <div class="form-group">
-                        @RenderRazorInjectTemplate(info, "productfields.cshtml")
-                    </div>
-                </div>
-                <div class="col-sm-12">
+                    @RenderRazorInjectTemplate(info, "productfields.cshtml")
                     <div class="form-group">
                         <div class="col-sm-8">
                             @CheckBox(info, "genxml/checkbox/chkishidden", "")
@@ -122,10 +118,11 @@
                     </div>
                 </div>
             </div>
-            <div class="clearfix"></div>
+
+            <hr />
 
             <h3>@ResourceKey("General.Models")</h3>
-            <div class="box-content editmodels">
+            <div class="editmodels">
                 <div class="form-horizontal dnnForm">
                     <div class="col-sm-12">
                         <div class="form-group form-inline">
