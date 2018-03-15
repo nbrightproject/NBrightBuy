@@ -915,6 +915,31 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return false;
         }
 
+        public Boolean IsNotPaid()
+        {
+            return !IsPaid();
+        }
+
+        public Boolean IsPaid()
+        {
+            var orderstatus = PurchaseInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
+            if (orderstatus == "010" || orderstatus == "020" || orderstatus == "030")
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public Boolean IsArchived()
+        {
+            var orderstatus = PurchaseInfo.GetXmlProperty("genxml/dropdownlist/orderstatus");
+            if (orderstatus == "110")
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Get the IsClientOrderMode (If the cart is being edited/created by a manager then this flag is set to true.)
         /// </summary>

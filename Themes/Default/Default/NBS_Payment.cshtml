@@ -40,9 +40,11 @@
             <div id="payment">
 
                 <div class="formrow paymenttotal">
-                    @ResourceKey("CartView.Totaltopay") : @CurrencyOf(info.GetXmlPropertyDouble("genxml/appliedtotal"))
+                    <h2>
+                        @ResourceKey("CartView.Totaltopay") : @CurrencyOf(info.GetXmlPropertyDouble("genxml/appliedtotal"))
+                    </h2>
                 </div>
-
+                <hr/>
                 @PaymentProviderList(info, "")
 
             </div>

@@ -99,9 +99,6 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             var strOut = "";
 
-            // new data record so set defaults.
-            var cartInfo = new CartData(PortalSettings.Current.PortalId);
-
             var orderid = Utils.RequestParam(Context, "orderid");
             if (Utils.IsNumeric(orderid))
             {
@@ -111,30 +108,34 @@ namespace Nevoweb.DNN.NBrightBuy
 
 
                 strOut = prov.ProcessPaymentReturn(Context);
-                orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // reload the order, becuase the status and typecode may have changed by the payment provider.
-                var status = Utils.RequestQueryStringParam(Context, "status");
-                if (status == "0")
+                if (strOut == "")
                 {
-                    var rtnerr = orderData.PurchaseInfo.GetXmlProperty("genxml/paymenterror");
-                    orderData.AddAuditMessage(rtnerr, "paymsg", "payment.ascx", "False");
-                    orderData.Save();
-                    if (strOut == "")
+                    orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // reload the order, becuase the status and typecode may have changed by the payment provider.
+                    var status = Utils.RequestQueryStringParam(Context, "status");
+                    if (status == "0")
                     {
-                        strOut = NBrightBuyUtils.RazorTemplRender("NBS_PaymentFail.cshtml", 0, "", cartInfo, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        var rtnerr = orderData.PurchaseInfo.GetXmlProperty("genxml/paymenterror");
+                        orderData.AddAuditMessage(rtnerr, "paymsg", "payment.ascx", "False");
+                        orderData.Save();
+                        if (strOut == "")
+                        {
+                            strOut = NBrightBuyUtils.RazorTemplRender("payment_fail.cshtml", 0, "", orderData, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        }
                     }
-                }
-                else
-                {
-                    orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
-                    orderData.PaymentOk("050");
-                    if (strOut == "")
+                    else
                     {
-                        strOut = NBrightBuyUtils.RazorTemplRender("NBS_PaymentOK.cshtml", 0, "", orderData, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        orderData = new OrderData(PortalId, Convert.ToInt32(orderid)); // get the updated order.
+                        orderData.PaymentOk("050");
+                        if (strOut == "")
+                        {
+                            strOut = NBrightBuyUtils.RazorTemplRender("payment_ok.cshtml", 0, "", orderData, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        }
                     }
                 }
             }
             else
             {
+                var cartInfo = new CartData(PortalSettings.Current.PortalId);
                 // not returning from bank, so display list of payment providers.
                 strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, 0, "", cartInfo, ControlPath, ThemeFolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
             }

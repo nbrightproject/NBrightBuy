@@ -265,7 +265,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             {
 
                 // only process this on waiting for bank, incomplete or cancelled.  Cancel might be sent back from bank if client fails on first payment try.
-                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030" || forceStatusChange)
+                if (IsNotPaid() || forceStatusChange)
                 {
                     var discountprov = DiscountCodeInterface.Instance();
                     if (discountprov != null)
@@ -298,7 +298,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (!PurchaseInfo.GetXmlPropertyBool("genxml/stopprocess"))
             {
                 // only move back to cart, if we've not processed payment already.
-                if (OrderStatus == "020" || OrderStatus == "010" || OrderStatus == "030")
+                if (IsNotPaid())
                 {
                     ReleaseModelTransQty();
                     OrderStatus = orderStatus;
