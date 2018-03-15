@@ -830,8 +830,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             var rtnInfo = new NBrightInfo();
             rtnInfo.PortalId = PortalId;
             var xmlNode = PurchaseInfo.XMLDoc.SelectSingleNode("genxml/shipaddress");
-            if (xmlNode != null) rtnInfo.XMLData = xmlNode.InnerXml;
-            return rtnInfo;
+            if (xmlNode != null)
+            {
+                rtnInfo.XMLData = xmlNode.InnerXml;
+                return rtnInfo;
+            }
+            return GetBillingAddress();
         }
 
         public void DeleteShippingAddress()

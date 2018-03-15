@@ -62,7 +62,7 @@
                           if (product.Imgs.Count > 1)
                           {
                             <li class="image@(lp.ToString())">
-                              <a href="javascript:void(0)" title="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=90&amp;h=0" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" onclick="showImage('@(img.GetXmlProperty("genxml/hidden/imageurl"))','@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))');"></a>
+                              <a href="javascript:void(0)" title="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=90&amp;h=0" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" onclick="showImage('/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=500&amp;h=0','@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))');"></a>
                             </li>
                           }
                           lp += 1;

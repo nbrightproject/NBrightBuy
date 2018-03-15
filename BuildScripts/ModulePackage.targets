@@ -27,10 +27,9 @@
       <InstallInclude Include="**\*.js" Exclude="packages\**;Themes\**;" />
      <InstallInclude Include="**\*.xml" Exclude="**\menuplugin.xml;Themes\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
       <InstallInclude Include="**\*.txt"  Exclude="Themes\**;**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;Installation\**;" />
-      <InstallInclude Include="**\images\**" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="**\img\**" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="**\Themes\Classic\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
-      <InstallInclude Include="**\Themes\ClassicRazor\**\*.*" Exclude="**\menuplugin.xml**\Thumbs.db;;" />
+      <InstallInclude Include="**\images\**" Exclude="packages\**;Themes\**;**\Thumbs.db;" />
+      <InstallInclude Include="**\img\**" Exclude="packages\**;Themes\**;**\Thumbs.db;" />
+      <InstallInclude Include="**\Themes\Default\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
       <InstallInclude Include="**\Themes\config\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
       <InstallInclude Include="**\Themes\ClassicAjax\**\*.*" Exclude="**\menuplugin.xml;**\Thumbs.db;" />
       

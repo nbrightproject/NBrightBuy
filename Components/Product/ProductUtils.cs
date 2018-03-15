@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Web.UI.WebControls;
 using System.Xml;
 using NBrightCore.TemplateEngine;
 using NBrightCore.render;
 using NBrightDNN;
 using NBrightCore.common;
+using NBrightCore.images;
 using NBrightCore.providers;
+using Nevoweb.DNN.NBrightBuy.Components.Products;
 
 namespace Nevoweb.DNN.NBrightBuy.Components
 {
@@ -514,6 +517,49 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             RemoveProductDataCache(product.Info.PortalId, product.Info.ItemID);
         }
 
+	    public static void CreateFriendlyImages(int productid, string lang)
+	    {
+	        var productData = new ProductData(productid, lang);
+	        var productImgFolder = StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + productData.DataRecord.ItemID + "\\" + lang;
+            Utils.CreateFolder(productImgFolder);
+	        var lp = 1;
+	        foreach (var i in productData.Imgs)
+	        {
+	            var imgname = i.GetXmlProperty("genxml/lang/genxml/textbox/txtimagedesc");
+	            if (imgname == "")
+	            {
+	                imgname = productData.ProductName;
+	            }
+	            if (imgname == "")
+	            {
+	                imgname = productData.ProductRef;
+	            }
+	            if (imgname != "")
+	            {
+                    var fullName = i.GetXmlProperty("genxml/hidden/imagepath");
+                    var extension = Path.GetExtension(fullName);
+                    imgname = Utils.StripAccents(imgname.Replace(" ", "-")) + "-" + lp + extension;
+                    var newImageFileName = productImgFolder + "\\" + imgname;
+	                var imgSize = 960;
+                    if (extension != null && extension.ToLower() == ".png")
+                    {
+                        newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
+                    }
+                    else
+                    {
+                        newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
+                    }
 
-    }
+	                var newimageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + productData.DataRecord.ItemID + "/" + lang + "/" + imgname;
+	                productData.DataLangRecord.SetXmlProperty("genxml/hidden/imageurl", newimageurl);
+	                productData.DataLangRecord.SetXmlProperty("genxml/hidden/imagepath", newImageFileName);
+	                var objCtrl = new NBrightBuyController();
+	                objCtrl.Update(productData.DataLangRecord);
+	            }
+	            lp += 1;
+	        }
+	    }
+
+
+	}
 }

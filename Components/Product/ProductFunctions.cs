@@ -339,6 +339,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
                     prdData.Update(productXml);
                     prdData.Save(true,newrecord);
 
+                    ProductUtils.CreateFriendlyImages(prdData.DataRecord.ItemID, EditLangCurrent);
+
                     // remove save GetData cache
                     var strCacheKey = prdData.Info.ItemID.ToString("") + "*" + prdData.DataRecord.TypeCode  + "LANG*" + "*" + EditLangCurrent;
                     Utils.RemoveCache(strCacheKey);
