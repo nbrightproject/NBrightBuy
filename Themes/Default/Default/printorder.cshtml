@@ -33,21 +33,28 @@
 <script>
 
     $(document).ready(function () {
-            $('.processing').show();
+        $('.processing').show();
 
-            $('#razortemplate').val('OrderPrintOutput.cshtml');
-            nbxget('orderadmin_getdetail', '#nbs_orderprint', '#datadisplay');
+        @{
+            var jsout = "OrderPrintOutput.cshtml";
+            if (@Model.GetUrlParam("printtype") == "shiplabel")
+            {
+                jsout = "OrderLabelOutput.cshtml";
+            }
+        }
+        $('#razortemplate').val('@(jsout)');
+        nbxget('orderadmin_getdetail', '#nbs_orderprint', '#datadisplay');
 
-            $(document).on("nbxgetcompleted", OrderPrint_nbxgetCompleted); // assign a completed event for the ajax calls
+        $(document).on("nbxgetcompleted", OrderPrint_nbxgetCompleted); // assign a completed event for the ajax calls
 
-            // function to do actions after an ajax call has been made.
-            function OrderPrint_nbxgetCompleted(e) {
+        // function to do actions after an ajax call has been made.
+        function OrderPrint_nbxgetCompleted(e) {
 
-                $('.processing').hide();
+            $('.processing').hide();
 
-            };
+        };
 
-     });
+    });
 
 </script>
 

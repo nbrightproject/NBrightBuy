@@ -80,19 +80,8 @@ namespace Nevoweb.DNN.NBrightBuy
 
             // because we are using a webservice the system current thread culture might not be set correctly,
             _uilang = NBrightBuyUtils.SetContextLangauge(context);
-            _editlang = _uilang;
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-            if (ajaxInfo.GetXmlProperty("genxml/hidden/nextlang") != "")
-            {
-                _editlang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang");
-            }
-            else
-            {
-                if (ajaxInfo.GetXmlProperty("genxml/hidden/editlang") != "")
-                {
-                    _editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-                }
-            }
+            _editlang = NBrightBuyUtils.GetEditLang(ajaxInfo, _uilang);
 
             #endregion
 

@@ -1672,6 +1672,7 @@
     <None Include="Themes\Default\Default\NBS_ProfileHome.cshtml" />
     <None Include="Themes\Default\Default\NBS_ProfileHome_head.cshtml" />
     <None Include="Themes\Default\Default\OrderHtmlOutput.cshtml" />
+    <None Include="Themes\Default\Default\OrderLabelOutput.cshtml" />
     <None Include="Themes\Default\Default\OrderPrintOutput.cshtml" />
     <None Include="Themes\Default\Default\payment_fail.cshtml" />
     <None Include="Themes\Default\Default\payment_ok.cshtml" />

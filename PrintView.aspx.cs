@@ -126,6 +126,7 @@ namespace Nevoweb.DNN.NBrightBuy
                     strOut = "***ERROR***  Invalid Security";
                     if (_scode == orderData.PurchaseInfo.GetXmlProperty("genxml/securitycode") || userInfo.UserID == orderData.UserId || userInfo.IsInRole(StoreSettings.ManagerRole) || userInfo.IsInRole(StoreSettings.EditorRole))
                     {
+                        var doProv = false;
                         //check the payment provider for a print url
                         var shippingprovider = orderData.PurchaseInfo.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider");
                         if (shippingprovider != "")
@@ -136,21 +137,26 @@ namespace Nevoweb.DNN.NBrightBuy
                                 if (_printtype == "shiplabel")
                                 {
                                     var printurl = shipprov.GetDeliveryLabelUrl(orderData.PurchaseInfo);
-                                    if (printurl != "") Response.Redirect(printurl);                                    
+                                    if (printurl != "")
+                                    {
+                                        doProv = true;
+                                        Response.Redirect(printurl);
+                                    }
                                 }
                             }
                         }
+                        if (!doProv)
+                        {
+                            var printtemplate = "printorder.cshtml";
+                            var obj = new NBrightInfo(true);
+                            obj.PortalId = PortalSettings.Current.PortalId;
+                            obj.ModuleId = 0;
+                            obj.Lang = Utils.GetCurrentCulture();
+                            obj.GUIDKey = _printtype;
+                            obj.ItemID = -1;
 
-
-                        // No print label, so print template specified.                        
-                        var obj = new NBrightInfo(true);
-                        obj.PortalId = PortalSettings.Current.PortalId;
-                        obj.ModuleId = 0;
-                        obj.Lang = Utils.GetCurrentCulture();
-                        obj.GUIDKey = _printtype;
-                        obj.ItemID = -1;
-
-                        strOut = NBrightBuyUtils.RazorTemplRender("printorder.cshtml", 0, "", obj, "/DesktopModules/NBright/NBrightBuy", _theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                            strOut = NBrightBuyUtils.RazorTemplRender(printtemplate, 0, "", obj, "/DesktopModules/NBright/NBrightBuy", _theme, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
+                        }
                     }
                 }
             }

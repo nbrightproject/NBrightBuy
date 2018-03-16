@@ -43,18 +43,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
 
         public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "", string uilang = "")
         {
-            EditLangCurrent = editlang;
-            if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
-            UiLang = uilang;
-            if (UiLang == "") UiLang = Utils.GetCurrentCulture();
-
+            
             var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
             EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             if (EntityTypeCode == "") EntityTypeCode = "PRD"; // default to product
             UiLang = NBrightBuyUtils.GetUILang(ajaxInfo);
+            EditLangCurrent = editlang;
+            if (EditLangCurrent == "") EditLangCurrent = NBrightBuyUtils.GetEditLang(ajaxInfo);
 
+
+            if (!paramCmd.ToLower().Contains("save"))
+            {
+                // pickup nextlang, indicates if we are changing languages. (Don't use if saving data, only for getting next language.)
+                EditLangCurrent = NBrightBuyUtils.GetNextLang(ajaxInfo, EditLangCurrent);
+            }
 
             switch (paramCmd)
             {

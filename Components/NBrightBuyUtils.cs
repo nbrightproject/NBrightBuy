@@ -2651,7 +2651,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             return objInfo;
         }
 
-        public static String GetUILang(NBrightInfo ajaxInfo)
+        public static String GetUILang(NBrightInfo ajaxInfo, string defaultlang = "")
         {
             var UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
             if (UserLang != "") return UserLang;
@@ -2667,7 +2667,51 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (UserLang != "") return UserLang;
             UserLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
             if (UserLang != "") return UserLang;
-            return Utils.GetCurrentCulture();
+            if (defaultlang == "")
+            {
+                return Utils.GetCurrentCulture();
+            }
+            return defaultlang;
+        }
+
+        public static String GetEditLang(NBrightInfo ajaxInfo, string defaultlang = "")
+        {
+            var editLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang1");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang2");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang3");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/editlanguage");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/lang");
+            if (editLang != "") return editLang;
+            editLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            if (editLang != "") return editLang;
+            if (defaultlang == "")
+            {
+                return Utils.GetCurrentCulture();
+            }
+            return defaultlang;
+        }
+
+        public static String GetNextLang(NBrightInfo ajaxInfo, string defaultlang = "")
+        {
+            var nextLang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang");
+            if (nextLang != "") return nextLang;
+            nextLang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang1");
+            if (nextLang != "") return nextLang;
+            nextLang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang2");
+            if (nextLang != "") return nextLang;
+            nextLang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang3");
+            if (nextLang != "") return nextLang;
+            if (defaultlang == "")
+            {
+                return Utils.GetCurrentCulture();
+            }
+            return defaultlang;
         }
 
         #endregion
