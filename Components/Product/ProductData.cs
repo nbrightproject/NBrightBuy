@@ -806,6 +806,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             // remove any cache
             ProductUtils.RemoveProductDataCache(DataRecord.PortalId, DataRecord.ItemID);
+            ProductUtils.DeleteFriendlyImages(DataRecord.ItemID);
             //delete and allow DB to cascade delete
             var objCtrl = new NBrightBuyController();
             objCtrl.Delete(DataRecord.ItemID);
