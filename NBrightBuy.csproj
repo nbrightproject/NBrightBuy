@@ -575,6 +575,9 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\ClassicAjax\css\NBS_Checkout.css" />
+    <Content Include="Themes\config\img\asterisk.png" />
+    <Content Include="Themes\config\img\invalid.png" />
+    <Content Include="Themes\config\img\openstore-logo.png" />
     <Content Include="Themes\Default\css\ClientAccount.css" />
     <Content Include="Themes\Default\css\NBS_Checkout.css" />
     <Content Include="Themes\Default\img\email-facebook.gif" />
@@ -1034,16 +1037,6 @@
     <Content Include="Themes\config\default\extrashippingdata.html" />
     <Content Include="Themes\config\default\datepicker.html" />
     <Content Include="Themes\config\default\Payment_Settings.html" />
-    <Content Include="Themes\config\default\propertiesdetailbody.html" />
-    <Content Include="Themes\config\default\propertiesdetailfooter.html" />
-    <Content Include="Themes\config\default\propertiesdetailheader.html" />
-    <Content Include="Themes\config\default\propertieslistbody.html" />
-    <Content Include="Themes\config\default\propertieslistfooter.html" />
-    <Content Include="Themes\config\default\propertieslistheader.html" />
-    <Content Include="Themes\config\default\propertiessearch.html" />
-    <Content Include="Themes\config\default\propertyproductbody.html" />
-    <Content Include="Themes\config\default\propertyproductfooter.html" />
-    <Content Include="Themes\config\default\propertyproductheader.html" />
     <Content Include="Themes\config\default\Tools.html" />
     <Content Include="Themes\config\default\import.html" />
     <Content Include="Themes\config\default\export.html" />
@@ -1058,11 +1051,6 @@
     <Content Include="Themes\config\default\pluginsdetailheader.html" />
     <Content Include="Themes\config\default\pluginsfooter.html" />
     <Content Include="Themes\config\default\pluginsheader.html" />
-    <Content Include="Themes\config\default\ProductSearch_Settings.html" />
-    <Content Include="Themes\config\default\productselectbody.html" />
-    <Content Include="Themes\config\default\productselectfooter.html" />
-    <Content Include="Themes\config\default\productselectheader.html" />
-    <Content Include="Themes\config\default\ProductView_Settings.html" />
     <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
     <None Include="Themes\config\default\NBS_AjaxProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ItemListsettings.cshtml" />
@@ -1070,7 +1058,6 @@
     <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
     <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />
-    <Content Include="Themes\config\img\amylis_24x24.png" />
     <Content Include="Themes\config\img\flags\16\af-ZA.png" />
     <Content Include="Themes\config\img\flags\16\ar-AE.png" />
     <Content Include="Themes\config\img\flags\16\ar-BH.png" />
@@ -1485,7 +1472,6 @@
     <Content Include="Themes\config\img\flags\32\zh-MO.png" />
     <Content Include="Themes\config\img\flags\32\zh-SG.png" />
     <Content Include="Themes\config\img\flags\32\zh-TW.png" />
-    <Content Include="Themes\config\img\nb-store_24x24.png" />
     <Content Include="Themes\config\js\admin_plugins.js" />
     <Content Include="Themes\config\js\admin_property.js" />
     <Content Include="Themes\config\js\admin_category.js" />

@@ -46,9 +46,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
 
         public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
-            EditLangCurrent = editlang;
-            if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
-
             var strOut = "CATEGORY - ERROR!! - No Security rights or function command.";
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             UiLang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
@@ -56,6 +53,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
             EntityTypeCode = ajaxInfo.GetXmlProperty("genxml/hidden/entitytypecode");
             if (EntityTypeCode == "") EntityTypeCode = "CAT"; // default to category
+            UiLang = NBrightBuyUtils.GetUILang(ajaxInfo);
+            EditLangCurrent = editlang;
+            if (EditLangCurrent == "") EditLangCurrent = NBrightBuyUtils.GetEditLang(ajaxInfo);
+
+            if (!paramCmd.ToLower().Contains("save"))
+            {
+                // pickup nextlang, indicates if we are changing languages. (Don't use if saving data, only for getting next language.)
+                EditLangCurrent = NBrightBuyUtils.GetNextLang(ajaxInfo, EditLangCurrent);
+            }
 
             switch (paramCmd)
             {
@@ -65,7 +71,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                     break;
                 case "category_admin_getdetail":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryAdminDetail(context);
+                    strOut = CategoryAdminDetail(context,0, EditLangCurrent);
                     break;
                 case "category_admin_addnew":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -77,11 +83,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                     break;
                 case "category_admin_save":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategorySave(context);
+                    strOut = CategorySave(context, EditLangCurrent);
                     break;
                 case "category_admin_saveexit":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategorySave(context);
+                    strOut = CategorySave(context, EditLangCurrent);
                     break;
                 case "category_admin_movecategory":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -93,7 +99,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                     break;
                 case "category_updateimages":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = UpdateCategoryImages(context);
+                    strOut = UpdateCategoryImages(context, EditLangCurrent);
                     break;
                 case "category_getproductselectlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
@@ -104,22 +110,22 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                     strOut = CategoryHidden(context);
                     break;
                 case "category_categoryproductlist":
-                    strOut = GetCategoryProductList(context);
+                    strOut = GetCategoryProductList(context, EditLangCurrent);
                     break;
                 case "category_removeimage":
-                    strOut = RemoveCategoryImage(context);
+                    strOut = RemoveCategoryImage(context, EditLangCurrent);
                     break;
                 case "category_displayproductselect":
-                    strOut = CategoryProductSelect(context);
+                    strOut = CategoryProductSelect(context, EditLangCurrent);
                     break;
                 case "category_selectcatxref":
-                    if (NBrightBuyUtils.CheckRights()) strOut = SelectCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = SelectCatXref(context, EditLangCurrent);
                     break;
                 case "category_deletecatxref":
                     if (NBrightBuyUtils.CheckRights()) strOut = DeleteCatXref(context);
                     break;
                 case "category_deleteallcatxref":
-                    if (NBrightBuyUtils.CheckRights()) strOut = DeleteAllCatXref(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = DeleteAllCatXref(context, EditLangCurrent);
                     break;
                 case "category_copyallcatxref":
                     if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context);
@@ -128,16 +134,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                     if (NBrightBuyUtils.CheckRights()) strOut = CopyAllCatXref(context, true);
                     break;
                 case "category_cattaxupdate":
-                    if (NBrightBuyUtils.CheckRights()) strOut = CatTaxUpdate(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = CatTaxUpdate(context, EditLangCurrent);
                     break;
                 case "category_addgroupfilter":
-                    if (NBrightBuyUtils.CheckRights()) strOut = AddGroupFilter(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = AddGroupFilter(context, EditLangCurrent);
                     break;
                 case "category_removegroupfilter":
-                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveGroupFilter(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = RemoveGroupFilter(context, EditLangCurrent);
                     break;
                 case "category_categorygroupfilter":
-                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryGroupFilters(context);
+                    if (NBrightBuyUtils.CheckRights()) strOut = CategoryGroupFilters(context, EditLangCurrent);
                     break;                    
             }
             return strOut;
@@ -147,7 +153,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         public static String CategoryAdminList(HttpContext context, string editType = "")
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-            var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
             var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
             if (razortemplate == "") razortemplate = "Admin_CategoryList.cshtml";
             var themefolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
@@ -158,12 +163,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             if (editType.ToLower() == "property")
             {
                 var selgroup = ajaxInfo.GetXmlProperty("genxml/hidden/selectedgroup");
-                grpCats = NBrightBuyUtils.GetCatList(catid, selgroup, editlang);
+                grpCats = NBrightBuyUtils.GetCatList(catid, selgroup, EntityTypeCode);
             }
             else
-                grpCats = NBrightBuyUtils.GetCatList(catid, "cat", editlang);
+                grpCats = NBrightBuyUtils.GetCatList(catid, "cat", EntityTypeCode);
 
-            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", grpCats, TemplateRelPath, themefolder, UiLang, StoreSettings.Current.Settings());
+            var strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", grpCats, TemplateRelPath, themefolder, Utils.GetCurrentCulture(), StoreSettings.Current.Settings());
 
             return strOut;
         }
@@ -171,8 +176,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         public static String CategoryAdminAddNew(HttpContext context,string editType = "")
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
-            var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-            var categoryData = CategoryUtils.GetCategoryData(-1, editlang);
+            var categoryData = CategoryUtils.GetCategoryData(-1, EntityTypeCode);
             var selgroup = ajaxInfo.GetXmlProperty("genxml/hidden/selectedgroup");
             if (selgroup == "") selgroup = "cat";
             categoryData.GroupType = selgroup;
@@ -188,8 +192,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         {
             var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
             var selectedcatid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
-            var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-            var categoryData = CategoryUtils.GetCategoryData(selectedcatid, editlang);
+            var categoryData = CategoryUtils.GetCategoryData(selectedcatid, EntityTypeCode);
             categoryData.Delete();
             NBrightBuyUtils.RemoveModCachePortalWide(PortalSettings.Current.PortalId);
             return CategoryAdminList(context, editType);
@@ -220,13 +223,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             return "";
         }
 
-        public static String ProductAdminSave(HttpContext context)
+        public static String ProductAdminSave(HttpContext context, string editLangCurrent)
         {
             try
             {
                 try
                 {
-                    CategorySave(context);
+                    EditLangCurrent = editLangCurrent;
+                    CategorySave(context, EditLangCurrent);
                     return "";
                 }
                 catch (Exception ex)
@@ -241,10 +245,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         }
 
 
-        public static String CategorySave(HttpContext context)
+        public static String CategorySave(HttpContext context, string editLangCurrent)
         {
             if (NBrightBuyUtils.CheckManagerRights())
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
                 var parentitemid = ajaxInfo.GetXmlPropertyInt("genxml/dropdownlist/ddlparentcatid");
                 var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/itemid");
@@ -363,8 +368,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                         var objCtrl = new NBrightBuyController();
                         objCtrl.Update(selData.DataRecord);
 
-                        FixRecordSortOrder(toParentItemid.ToString("")); //reindex all siblings (this is so we get a int on the recordsortorder)
-                        FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"));
+                        FixRecordSortOrder(toParentItemid.ToString(""), EditLangCurrent); //reindex all siblings (this is so we get a int on the recordsortorder)
+                        FixRecordGroupType(selData.Info.ItemID.ToString(""), selData.DataRecord.GetXmlProperty("genxml/dropdownlist/ddlgrouptype"), EditLangCurrent);
 
                         if (reindex)
                         {
@@ -377,10 +382,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             }
         }
 
-        private static void FixRecordGroupType(String parentid, String groupType)
+        private static void FixRecordGroupType(String parentid, String groupType, string editLangCurrent)
         {
             if (Utils.IsNumeric(parentid) && Convert.ToInt32(parentid) > 0)
             {
+                EditLangCurrent = editLangCurrent;
                 // fix any incorrect sort orders
                 var strFilter = " and NB1.ParentItemId = " + parentid + " ";
                 var levelList = _objCtrl.GetDataList(PortalSettings.Current.PortalId, -1, "CATEGORY", "CATEGORYLANG", EditLangCurrent, strFilter, " order by [XMLData].value('(genxml/hidden/recordsortorder)[1]','decimal(10,2)') ", true);
@@ -393,13 +399,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                         catData.DataRecord.SetXmlProperty("genxml/dropdownlist/ddlgrouptype", groupType);
                         _objCtrl.Update(catData.DataRecord);
                     }
-                    FixRecordGroupType(catData.Info.ItemID.ToString(""), groupType);
+                    FixRecordGroupType(catData.Info.ItemID.ToString(""), groupType, editLangCurrent);
                 }
             }
         }
 
-        private static void FixRecordSortOrder(String parentid)
+        private static void FixRecordSortOrder(String parentid,string editLangCurrent)
         {
+            EditLangCurrent = editLangCurrent;
             if (!Utils.IsNumeric(parentid)) parentid = "0";
             // fix any incorrect sort orders
             Double lp = 1;
@@ -451,12 +458,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         }
 
 
-        public static String CategoryAdminDetail(HttpContext context, int catid = 0)
+        public static String CategoryAdminDetail(HttpContext context, int catid,string editLangCurrent)
         {
             try
             {
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
+                    EditLangCurrent = editLangCurrent;
                     var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                     var strOut = "";
                     var selecteditemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
@@ -495,10 +503,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             }
         }
 
-        public static String GetCategoryProductList(HttpContext context)
+        public static String GetCategoryProductList(HttpContext context,string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var objQual = DotNetNuke.Data.DataProvider.Instance().ObjectQualifier;
                 var dbOwner = DotNetNuke.Data.DataProvider.Instance().DatabaseOwner;
@@ -522,10 +531,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
 
         }
 
-        public static String CategoryProductSelect(HttpContext context)
+        public static String CategoryProductSelect(HttpContext context,string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var strOut = "";
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
@@ -567,8 +577,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
 
         #region "fileupload"
 
-        public static string UpdateCategoryImages(HttpContext context)
+        public static string UpdateCategoryImages(HttpContext context,string editLangCurrent)
         {
+            EditLangCurrent = editLangCurrent;
             //get uploaded params
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             var catitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
@@ -589,16 +600,17 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                             if (imgResize == 0) imgResize = 800;
                             var imagepath = ProductFunctions.ResizeImage(fullName, imgResize);
                             var imageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + Path.GetFileName(imagepath);
-                            AddNewImage(catitemid, imageurl, imagepath);
+                            AddNewImage(catitemid, imageurl, imagepath, EditLangCurrent);
                         }
                     }
                 }
             }
-            return CategoryAdminDetail(context);
+            return CategoryAdminDetail(context, 0, EditLangCurrent);
         }
 
-        private static void AddNewImage(int itemId, String imageurl, String imagepath)
+        private static void AddNewImage(int itemId, String imageurl, String imagepath,string editLangCurrent)
         {
+            EditLangCurrent = editLangCurrent;
             var catData = new CategoryData(itemId,EditLangCurrent);
             if (catData.Exists)
             {
@@ -608,8 +620,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             }
         }
 
-        public static string RemoveCategoryImage(HttpContext context)
+        public static string RemoveCategoryImage(HttpContext context,string editLangCurrent)
         {
+            EditLangCurrent = editLangCurrent;
             //get uploaded params
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
             var catitemid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
@@ -621,15 +634,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
                 catData.DataRecord.SetXmlProperty("genxml/hidden/imagepath", "");
                 catData.Save();
             }
-            return CategoryAdminDetail(context);
+            return CategoryAdminDetail(context,0,EditLangCurrent);
         }
 
         #endregion
 
-        public static string SelectCatXref(HttpContext context)
+        public static string SelectCatXref(HttpContext context,string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
                 var selectedproductid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectproductid");
@@ -647,8 +661,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             }
             return "";
         }
-        public static string DeleteAllCatXref(HttpContext context)
+        public static string DeleteAllCatXref(HttpContext context,string editLangCurrent)
         {
+            EditLangCurrent = editLangCurrent;
             var strOut = NBrightBuyUtils.GetResxMessage("general_fail");
             try
             {
@@ -722,10 +737,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             return strOut;
         }
 
-        public static string CatTaxUpdate(HttpContext context)
+        public static string CatTaxUpdate(HttpContext context,string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
                 var taxrate = ajaxInfo.GetXmlProperty("genxml/hidden/selecttaxrate");
@@ -757,10 +773,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
         }
 
 
-        public static string AddGroupFilter(HttpContext context)
+        public static string AddGroupFilter(HttpContext context,string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
                 var groupref = ajaxInfo.GetXmlProperty("genxml/hidden/selectedgroupref");
@@ -778,12 +795,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             {
                 return e.ToString();
             }
-            return CategoryGroupFilters(context);
+            return CategoryGroupFilters(context, EditLangCurrent);
         }
-        public static string RemoveGroupFilter(HttpContext context)
+        public static string RemoveGroupFilter(HttpContext context, string editLangCurrent)
         {
             try
             {
+                EditLangCurrent = editLangCurrent;
                 var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                 var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
                 var groupid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedgroupid");
@@ -797,15 +815,16 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Category
             {
                 return e.ToString();
             }
-            return CategoryGroupFilters(context);
+            return CategoryGroupFilters(context, EditLangCurrent);
         }
 
-        public static String CategoryGroupFilters(HttpContext context)
+        public static String CategoryGroupFilters(HttpContext context,string editLangCurrent)
         {
             try
             {
                 if (NBrightBuyUtils.CheckManagerRights())
                 {
+                    EditLangCurrent = editLangCurrent;
                     var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
                     var strOut = "";
                     var catid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/selectedcatid");
