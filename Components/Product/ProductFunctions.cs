@@ -41,11 +41,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             TemplateRelPath = "/DesktopModules/NBright/NBrightBuy";
         }
 
-        public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
+        public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "", string uilang = "")
         {
             EditLangCurrent = editlang;
             if (EditLangCurrent == "") EditLangCurrent = Utils.GetCurrentCulture();
-
+            UiLang = uilang;
+            if (UiLang == "") UiLang = Utils.GetCurrentCulture();
 
             var strOut = "PRODUCT - ERROR!! - No Security rights or function command.";
             var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
