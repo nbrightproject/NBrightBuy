@@ -181,62 +181,24 @@ namespace NBrightBuy.render
 
 
         /// <summary>
-        /// Thumbnail image
+        /// image url or Thumbnail url
         /// </summary>
         /// <param name="info">NBrightInfo class of PRD type</param>
         /// <param name="width">width</param>
         /// <param name="height">height</param>
         /// <param name="idx">index of the image to display</param>
         /// <param name="attributes">free text added onto end of url parameters</param>
-        /// <returns>Thumbnailer url</returns>
-        public IEncodedString ProductImage(NBrightInfo info, string width = "150", string height = "0", string idx = "1", string attributes = "", bool fileImage = false, bool outputPNG = false)
+        /// <returns>image url</returns>
+        public IEncodedString ProductImageUrl(NBrightInfo info, int width = 0, int height = 0, int idx = 1, string attributes = "")
         {
-            var url = "";
-            var imageurlsrc = info.GetXmlProperty("genxml/imgs/genxml[" + idx + "]/hidden/imageurl");
-            if (fileImage)
+            var url = info.GetXmlProperty("genxml/lang/genxml/imgs/genxml[" + idx + "]/hidden/fimageurl");
+            if (url == "" || width > 0 || height > 0)
             {
-                var src = HttpContext.Current.Server.MapPath(imageurlsrc);
-
-                var strCacheKey = info.PortalId + "*" + src + "*" + Utils.GetCurrentCulture() + "*imgfile:" + width + "*" + height + "*";
-                url = (String)Utils.GetCache(strCacheKey);
-
-                if (String.IsNullOrEmpty(url))
+                if (url == "")
                 {
-                    var imgpath = Path.GetFileNameWithoutExtension(src);
-                    var ext = ".jpg";
-                    if (outputPNG) ext = ".png";
-                    var thumbname = imgpath + "_Thumb" + width + "x" + height + ext;
-                    imgpath = Path.GetFullPath(src).Replace(Path.GetFileName(src), "") + thumbname;
-                    url = imageurlsrc.Replace(Path.GetFileName(src), thumbname);
-
-                    if (!File.Exists(imgpath))
-                    {
-                        var newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(width), Convert.ToInt32(height));
-                        ImageCodecInfo useEncoder;
-                        useEncoder = ImgUtils.GetEncoder(ImageFormat.Jpeg);
-                        if (outputPNG) useEncoder = ImgUtils.GetEncoder(ImageFormat.Png);
-
-                        var encoderParameters = new EncoderParameters(1);
-                        encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
-
-                        try
-                        {
-                            newImage.Save(imgpath, useEncoder, encoderParameters);
-                        }
-                        catch (Exception exc)
-                        {
-                            if (StoreSettings.Current.DebugMode) url = exc.ToString();
-                        }
-
-                    }
-
-                    if (!StoreSettings.Current.DebugMode) Utils.SetCache(strCacheKey, url);
+                    url = info.GetXmlProperty("genxml/imgs/genxml[" + idx + "]/hidden/imageurl");
                 }
-
-            }
-            else
-            {
-                url = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?src=" + imageurlsrc + "&w=" + width + "&h=" + height + attributes;
+                url = StoreSettings.NBrightBuyPath() + "/NBrightThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + attributes;
             }
             return new RawString(url);
         }

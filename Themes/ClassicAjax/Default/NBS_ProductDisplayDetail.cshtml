@@ -31,7 +31,7 @@
 
                     @if (product.Imgs.Count > 0)
                     {
-                        <img src="@ProductImage(info, "500", "0")" alt="@(product.Imgs.First().GetXmlProperty("genxml/textbox/txtimagedesc"))" id="mainimage" />
+                        <img src="@ProductImageUrl(info)" alt="@(product.Imgs.First().GetXmlProperty("genxml/textbox/txtimagedesc"))" id="mainimage" />
                     }
                     else
                     {
@@ -62,7 +62,7 @@
                           if (product.Imgs.Count > 1)
                           {
                             <li class="image@(lp.ToString())">
-                              <a href="javascript:void(0)" title="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))"><img src="/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=90&amp;h=0" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" onclick="showImage('/DesktopModules/NBright/NBrightBuy/NBrightThumb.ashx?src=@(img.GetXmlProperty("genxml/hidden/imageurl"))&amp;w=500&amp;h=0','@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))');"></a>
+                              <a href="javascript:void(0)" title="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))"><img src="@ProductImageUrl(info, 90, 0, lp)" alt="@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))" onclick="showImage('@ProductImageUrl(info, 0, 0, lp)','@(img.GetXmlProperty("genxml/textbox/txtimagedesc"))');"></a>
                             </li>
                           }
                           lp += 1;
@@ -276,7 +276,7 @@
                             @if (rp.GetXmlProperty("genxml/imgs/genxml[1]/hidden/imageurl") != "")
                             {
                                 <div class="image">
-                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImage(rp, "160", "0")">
+                                    <img title="@(info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary"))" src="@ProductImageUrl(rp, 160, 0)">
                                 </div>
                             }
                             else

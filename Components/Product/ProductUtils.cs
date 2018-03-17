@@ -573,7 +573,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	                {
 	                    newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
 	                }
-	                var newimageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + productData.DataRecord.ItemID + "/" + lang + "/" + imgname;
+	                var newimageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + productData.DataRecord.ItemID + "/" + lang + "/" + imgnameext;
 	                productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimageurl", newimageurl);
 	                productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimagepath", newImageFileName);
                     productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimageref", imageref);                    
