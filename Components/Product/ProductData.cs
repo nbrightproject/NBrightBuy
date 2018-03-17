@@ -1047,6 +1047,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 foreach (var f in updatefields.Where(f => f != ""))
                 {
+                    if (f.EndsWith("/fimageref") && imgInfo.GetXmlProperty(f) == "")
+                    {
+                        imgInfo.SetXmlProperty(f, Utils.GetUniqueKey());
+                    }
                     objInfoLang.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
                 }
                 strXmlLang += objInfoLang.XMLData;
@@ -1064,6 +1068,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
                 foreach (var f in updatefields.Where(f => f != ""))
                 {
+                    if (f.EndsWith("/imageref") && imgInfo.GetXmlProperty(f) == "")
+                    {
+                        imgInfo.SetXmlProperty(f, Utils.GetUniqueKey());
+                    }
                     objInfo.SetXmlProperty(f, imgInfo.GetXmlProperty(f));
                 }
                 strXml += objInfo.XMLData;
