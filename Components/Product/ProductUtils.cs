@@ -518,15 +518,27 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             RemoveProductDataCache(product.Info.PortalId, product.Info.ItemID);
         }
 
-	    public static void CreateFriendlyImages(int productid, string lang, bool forceoverwrite = false)
+	    public static void CreateFriendlyImages(int productid, string lang)
 	    {
+            var objCtrl = new NBrightBuyController();
+            var imgList = new List<string>();
             var productData = new ProductData(productid, lang);
 	        var productImgFolder = StoreSettings.Current.FolderImagesMapPath.TrimEnd('\\') + "\\" + productData.DataRecord.ItemID + "\\" + lang;
             Utils.CreateFolder(productImgFolder);
 	        var lp = 1;
 	        foreach (var i in productData.Imgs)
 	        {
-                var update = false;
+                //becuase of updates to sort order and alt text we NEED to delete the existing files.
+                Utils.DeleteSysFile(i.GetXmlProperty("genxml/lang/genxml/hidden/fimagepath"));
+
+                // use imageref to link langauges
+                var imageref = i.GetXmlProperty("genxml/hidden/imageref");
+	            if (imageref == "")
+	            {
+	                imageref = Utils.GetUniqueKey();
+                    productData.DataRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/imageref", imageref);
+                }
+
                 var imgname = i.GetXmlProperty("genxml/lang/genxml/textbox/txtimagedesc");
 	            if (imgname == "")
 	            {
@@ -534,42 +546,96 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 	            }
 	            if (imgname == "")
 	            {
+
+
 	                imgname = productData.ProductRef;
 	            }
 	            if (imgname != "")
 	            {
                     var fullName = i.GetXmlProperty("genxml/hidden/imagepath");
                     var extension = Path.GetExtension(fullName);
-                    imgname = Utils.StripAccents(imgname.Replace(" ", "-")) + "-" + lp + extension;
-                    var newImageFileName = productImgFolder + "\\" + imgname;
-	                var imgSize = 960;
-	                if (forceoverwrite || !File.Exists(newImageFileName))
+	                imgname = CleanFileName(imgname.Replace(" ","-"));
+	                var imgnameext = imgname + extension;
+	                var newImageFileName = productImgFolder + "\\" + imgnameext;
+	                var lp2 = 1;
+	                while (File.Exists(newImageFileName))
 	                {
-
-	                    if (extension != null && extension.ToLower() == ".png")
-	                    {
-	                        newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
-	                    }
-	                    else
-	                    {
-	                        newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
-	                    }
-
-	                    var newimageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" +
-	                                      productData.DataRecord.ItemID + "/" + lang + "/" + imgname;
-	                    productData.DataLangRecord.SetXmlProperty("genxml/hidden/imageurl", newimageurl);
-	                    productData.DataLangRecord.SetXmlProperty("genxml/hidden/imagepath", newImageFileName);
-	                    update = true;
+	                    imgnameext = imgname + "-" + lp2 + extension;
+	                    newImageFileName = productImgFolder + "\\" + imgnameext;
+	                    lp2++;
 	                }
-	            }
-                lp += 1;
+	                var imgSize = 960;
+	                if (extension != null && extension.ToLower() == ".png")
+	                {
+	                    newImageFileName = ImgUtils.ResizeImageToPng(fullName, newImageFileName, imgSize);
+	                }
+	                else
+	                {
+	                    newImageFileName = ImgUtils.ResizeImageToJpg(fullName, newImageFileName, imgSize);
+	                }
+	                var newimageurl = StoreSettings.Current.FolderImages.TrimEnd('/') + "/" + productData.DataRecord.ItemID + "/" + lang + "/" + imgname;
+	                productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimageurl", newimageurl);
+	                productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimagepath", newImageFileName);
+                    productData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp + "]/hidden/fimageref", imageref);                    
+                    imgList.Add(newImageFileName);
+                }
+	            lp += 1;
+	        }
 
-                if (update)
+            objCtrl.Update(productData.DataLangRecord);
+            objCtrl.Update(productData.DataRecord);
+
+            // remove any deleted images.
+            var fl = Directory.GetFiles(productImgFolder);
+            foreach (var f in fl)
+            {
+                if (!imgList.Contains(f))
                 {
-                    var objCtrl = new NBrightBuyController();
-                    objCtrl.Update(productData.DataLangRecord);
+                    Utils.DeleteSysFile(f);
                 }
             }
+
+            // sort other language
+            foreach (var l in DnnUtils.GetCultureCodeList())
+            {
+                if (l != lang)
+                {
+                    var strXml = "";
+                    var pData = new ProductData(productid, l);
+                    var lp3 = 1;
+                    foreach (var langimg in productData.Imgs)
+                    {
+                        var imgref = langimg.GetXmlProperty("genxml/hidden/imageref");
+                        var strNode = pData.DataLangRecord.GetXmlNode("genxml/imgs/genxml[./hidden/fimageref='" + imgref + "']");
+                        if (strNode == "")
+                        {
+                            // create missing ref and get xml. (May misalign images alts)
+                            pData.DataLangRecord.SetXmlProperty("genxml/imgs/genxml[" + lp3 + "]/hidden/fimageref", imgref);
+                            strNode = pData.DataLangRecord.GetXmlNode("genxml/imgs/genxml[./hidden/fimageref='" + imgref + "']");
+                        }
+                        strXml += "<genxml>" + strNode + "</genxml>";
+                        lp3 += 1;
+                    }
+                    strXml = "<imgs>" + strXml + "</imgs>";
+                    pData.DataLangRecord.RemoveXmlNode("genxml/imgs");
+                    pData.DataLangRecord.AddXmlNode(strXml,"imgs","genxml");
+                    objCtrl.Update(pData.DataLangRecord);
+                }
+            }
+
+            RemoveProductDataCache(PortalSettings.Current.PortalId, productid);
+
+        }
+        public static string CleanFileName(string filename)
+        {
+            string file = filename;
+            file = string.Concat(file.Split(System.IO.Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
+
+            if (file.Length > 250)
+            {
+                file = file.Substring(0, 250);
+            }
+            return file;
         }
 
         public static void DeleteFriendlyImages(int productid)
