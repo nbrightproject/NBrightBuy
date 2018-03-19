@@ -1490,7 +1490,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<NBrightInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
         {
             // do razor template
-            var ckey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString();
+            if (lang == "")
+            {
+                lang = Utils.GetCurrentCulture();
+            }
+            var ckey = "NBrightBuyRazorOutput" + theme + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + lang;
             var razorTempl = (string)GetModCache(ckey);
             if (razorTempl == null || StoreSettings.Current.DebugMode)
             {

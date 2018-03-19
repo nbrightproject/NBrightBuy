@@ -68,7 +68,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Clients
             {
                 case "property_admin_getlist":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;
-                    strOut = CategoryFunctions.CategoryAdminList(context, "property");
+                    strOut = CategoryFunctions.CategoryAdminList(context, "property", EditLangCurrent);
                     break;
                 case "property_admin_getdetail":
                     if (!NBrightBuyUtils.CheckManagerRights()) break;

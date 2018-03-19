@@ -11,6 +11,7 @@
             nbxget('property_admin_save', '#propertydatasection', '#actionreturn');
         } else {
             // Need to save list
+            $("#nextlang").val('');
             $("#editlang").val($(this).attr("editlang"));
             $('#razortemplate').val('Admin_PropertyList.cshtml');
             nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
@@ -340,6 +341,7 @@
             if (e.cmd == 'property_admin_save') {
                 $('.processing').show();
                 $('#editlang').val($('#nextlang').val());
+                $("#nextlang").val('');
                 $('#razortemplate').val('Admin_PropertyDetail.cshtml');
                 nbxget('property_admin_getdetail', '#nbs_propertyadminsearch', '#datadisplay');
             }
