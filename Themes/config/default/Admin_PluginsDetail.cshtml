@@ -148,66 +148,65 @@
         </div>
     </div>
 
+</span>
 
-    <h3>@ResourceKey("Plugins.interfaces")</h3>
-    <br />
-    <div class="editmodels">
-        <div class="form-horizontal dnnForm">
-            <div class="col-sm-12">
-                <div class="form-group form-inline">
-                    <a class="btn btn-primary" id="addmodels">@ResourceKey("General.cmdAddButton")</a>
-                    <a class="btn btn-warning" id="undomodel" style="display: none;">@ResourceKey("General.UndoButton")</a>
-                </div>
-                <ul id="pluginsmodels">
-                    @{
+
+<h3>@ResourceKey("Plugins.interfaces")</h3>
+<br />
+<div class="editmodels">
+    <div class="form-horizontal dnnForm">
+        <div class="col-sm-12">
+            <div class="form-group form-inline">
+                <a class="btn btn-primary" id="addmodels">@ResourceKey("General.cmdAddButton")</a>
+                <a class="btn btn-warning" id="undomodel" style="display: none;">@ResourceKey("General.UndoButton")</a>
+            </div>
+            <ul id="pluginsmodels">
+                @{
                     var lp1 = 1;
-                    }
-                    @foreach (var nbiModel in plugin.GetInterfaces())
+                }
+                @foreach (var nbiModel in plugin.GetInterfaces())
                 {
-                <li class="modelitem form-group">
-                    <!-- class="modelitem" is needed for JS postback update -->
-                    <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
-                    <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+                    <li class="modelitem form-group">
+                        <!-- class="modelitem" is needed for JS postback update -->
+                        <a class="sortelementUp"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                        <a class="sortelementDown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
 
-                    <div class="col-sm-12 form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <label class="control-label">@ResourceKey("Plugins.assembly")</label>
-                                @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
-                            </div>
-                            <div class="col-sm-5">
-                                <label class="control-label">@ResourceKey("Plugins.namespaceclass")</label>
-                                @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
-                            </div>
-                            <div class="col-sm-2">
-                                <label class="control-label">@ResourceKey("Plugins.lblprovidertype")</label>
-                                @DropDownList(nbiModel, "genxml/dropdownlist/providertype_" + lp1, ResourceKey("Plugins.providertype", "", "datavalue").ToString(), ResourceKey("Plugins.providertype", "", "data").ToString(), "class='form-control'")
-                            </div>
-                            <div class="col-sm-1">
-                                <label class="control-label">@ResourceKey("General.Active")</label>
-                                @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='form-control'")
-                            </div>
-                            <div class="col-sm-1 text-right">
-                                <a class="removemodel btn btn-danger">
-                                    @ResourceKey("General.cmdRemoveButton")
-                                </a>
-                            </div>
-                            <div class="col-sm-1">
+                        <div class="col-sm-12 form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label class="control-label">@ResourceKey("Plugins.assembly")</label>
+                                    @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="control-label">@ResourceKey("Plugins.namespaceclass")</label>
+                                    @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='form-control input-sm' maxlength='250' ", "")
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class="control-label">@ResourceKey("Plugins.lblprovidertype")</label>
+                                    @DropDownList(nbiModel, "genxml/dropdownlist/providertype_" + lp1, ResourceKey("Plugins.providertype", "", "datavalue").ToString(), ResourceKey("Plugins.providertype", "", "data").ToString(), "class='form-control'")
+                                </div>
+                                <div class="col-sm-1">
+                                    <label class="control-label">@ResourceKey("General.Active")</label>
+                                    @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='form-control'")
+                                </div>
+                                <div class="col-sm-1 text-right">
+                                    <a class="removemodel btn btn-danger">
+                                        @ResourceKey("General.cmdRemoveButton")
+                                    </a>
+                                </div>
+                                <div class="col-sm-1">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
                     lp1 += 1;
                 }
-                </ul>
-            </div>
+            </ul>
         </div>
-
     </div>
 
-
-</span>
+</div>
     
 <div class="row">
     <div class="col-xs-12 col-sm-12">
