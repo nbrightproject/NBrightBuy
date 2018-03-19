@@ -75,6 +75,8 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.ajaxcatmenu').click(function(event) {
         event.preventDefault();
 
+        $("#propertyfilter").val('');  // remove filter on cateogry change.
+
         $(".active").removeClass("active");
         $(this).parent().addClass("active");
 

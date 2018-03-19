@@ -1,0 +1,27 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using DotNetNuke.Entities.Portals
+@using DotNetNuke.Entities.Users
+@using NBrightCore.common
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components
+
+<div id="loader" class="processing" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
+<!-- fields required to send required ajax cart to server -->
+<span class="minicartdata" style="display: none;">
+    <input id="minicarttemplate" type="hidden" value="NBS_MiniCart.cshtml">
+    <input id="minicarttheme" type="hidden" value="ClassicAjax">
+    <input id="uilang" type="hidden" value="@Utils.GetCurrentCulture()">
+</span>
+
+<input id="logintab" type="hidden" value="@(StoreSettings.Current.Get("logintab"))" />
+
+<!-- Shopping List Popup -->
+<div style="display: none">
+    <div id="shoppinglistpopup" class="shoppinglistpopup">
+    </div>
+</div>
+
+

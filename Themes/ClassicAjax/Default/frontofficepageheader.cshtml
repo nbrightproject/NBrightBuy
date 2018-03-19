@@ -21,4 +21,32 @@
 
 <script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/jquery.validate.min.js"></script>
 
-<div id="loader" class="processing" style="display:none;"><div class="spinner"></div></div>
+<!-- RAZORTEMPLATE NBS_AjaxProductDisplayList_head -->
+<!-- This template is injected into the details page head section -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/config/js/nbbajax.js"></script>
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/product.js"></script>
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.cookie.min.js"></script>
+
+<!-- Colorbox -->
+<script type="text/javascript" src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.colorbox-min.js"></script>
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/css/colorbox.css" rel="stylesheet">
+
+
+<link href="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/css/NBS_CategoryMenu.css" rel="stylesheet">
+
+<!-- Treeview menu https://github.com/tefra/navgoco -->
+<script src="/DesktopModules/NBright/NBrightBuy/Themes/ClassicAjax/js/jquery.navgoco.js"></script>
+
+<!-- Get messages for JQuery validation -->
+@{
+    var langcode = Model.GetUrlParam("language");
+    if (langcode != "")
+    {
+        langcode = langcode.Substring(0, 2);
+    }
+
+}
+@if (langcode != "" && langcode != "en")
+{
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_@(langcode).js"></script>
+}

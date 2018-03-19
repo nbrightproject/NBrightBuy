@@ -51,12 +51,18 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             // insert page header text
             NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "frontofficepageheader.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
 
+            // insert text in body.
+            NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, "frontofficepagebody.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
+
+
             if (ModuleContext.Configuration != null)
             {
                 if (String.IsNullOrEmpty(RazorTemplate)) RazorTemplate = ModuleConfiguration.DesktopModule.ModuleName + ".cshtml";
 
                 // insert page header text
                 NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
+                // insert page body text, for passback element.
+                NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_moddata" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
             }
             var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
 
