@@ -58,7 +58,7 @@
     <value xml:space="preserve">Winkelwagen header: </value>
   </data>
   <data name="lblPaymentTab.Help" lastModified="2014-11-29 14:00:11">
-    <value xml:space="preserve">Pagina die de NBS_Payment module is geplaatst. De winkelwagen zal worden doorgestuurd naar deze pagina en verwerking van de bestelling zal worden overgenomen door de NBS_Payment module.</value>
+    <value xml:space="preserve">Pagina die de Payment module is geplaatst. De winkelwagen zal worden doorgestuurd naar deze pagina en verwerking van de bestelling zal worden overgenomen door de Payment module.</value>
   </data>
   <data name="lblPaymentTab.Text" lastModified="2014-11-29 14:00:11">
     <value xml:space="preserve">Betalingspagina: </value>

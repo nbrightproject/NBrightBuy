@@ -21,7 +21,7 @@
 </style>
 
 <!-- fields required to send required ajax cart to server -->
-<span id="nbs_orderprint">
+<span id="orderprint">
     <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"/>
     <input id="razortemplate" type="hidden" value=""/>
     <input id="selecteditemid" type="hidden" value='@Model.GetUrlParam("itemid")' />    
@@ -43,7 +43,7 @@
             }
         }
         $('#razortemplate').val('@(jsout)');
-        nbxget('orderadmin_getdetail', '#nbs_orderprint', '#datadisplay');
+        nbxget('orderadmin_getdetail', '#orderprint', '#datadisplay');
 
         $(document).on("nbxgetcompleted", OrderPrint_nbxgetCompleted); // assign a completed event for the ajax calls
 

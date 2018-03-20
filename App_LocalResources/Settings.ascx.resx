@@ -123,12 +123,6 @@
   <data name="Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="storagetypeclient.Help" xml:space="preserve">
-    <value>Client cartid and other client specific data can be stored as Cookies or SessionMemory</value>
-  </data>
-  <data name="storagetypeclient.Text" xml:space="preserve">
-    <value>Client Storage Type</value>
-  </data>
   <data name="productlisttab.Help" xml:space="preserve">
     <value>Used to redirect user/manager to the product page when certain actions are done.</value>
   </data>

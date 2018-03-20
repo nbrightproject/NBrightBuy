@@ -30,7 +30,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
             if (_entityTypeCodeLang == "") _entityTypeCodeLang = "PRDLANG";
             _themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
             _templatename = ajaxInfo.GetXmlProperty("genxml/hidden/templatename");
-            if (_templatename == "") _templatename = "NBS_favoriteslist";
+            if (_templatename == "") _templatename = "favoriteslist";
             if (_themeFolder == "") _themeFolder = "ClassicRazor";
             var itemId = ajaxInfo.GetXmlProperty("genxml/hidden/shopitemid");
             var itemlistname = ajaxInfo.GetXmlProperty("genxml/hidden/shoplistname");
@@ -158,7 +158,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
 
             var modelsetings = StoreSettings.Current.Settings();
             if (!modelsetings.ContainsKey("listkeys")) modelsetings.Add("listkeys", itemListData.listkeys);
-            var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ItemListPopupBody.cshtml", -1, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", _themeFolder, Utils.GetCurrentCulture(), modelsetings);
+            var strOut = NBrightBuyUtils.RazorTemplRender("ItemListPopupBody.cshtml", -1, "", ajaxInfo, "/DesktopModules/NBright/NBrightBuy", _themeFolder, Utils.GetCurrentCulture(), modelsetings);
 
             return strOut;
         }

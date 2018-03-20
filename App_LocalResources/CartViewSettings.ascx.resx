@@ -172,7 +172,7 @@
     <value>Cart Type : </value>
   </data>
   <data name="lblPaymentTab.Help" xml:space="preserve">
-    <value>Page which this module will redirect to on Submit.  Usually The Checkout option for this module will redirect to the Payment page with the NBS_Payment module.  The Fullcart list option for this module should redirect to the Checkout page. </value>
+    <value>Page which this module will redirect to on Submit.  Usually The Checkout option for this module will redirect to the Payment page with the Payment module.  The Fullcart list option for this module should redirect to the Checkout page. </value>
   </data>
   <data name="lblPaymentTab.Text" xml:space="preserve">
     <value>Redirect Page : </value>

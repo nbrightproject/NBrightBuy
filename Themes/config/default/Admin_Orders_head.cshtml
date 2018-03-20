@@ -11,7 +11,7 @@
 
 
 <!-- fields required to send required ajax cart to server -->
-<span id="nbs_orderadminsearch">
+<span id="orderadminsearch">
     <input id="userid" type="hidden" value="@UserController.Instance.GetCurrentUserInfo().UserID"/>
     <input id="razortemplate" type="hidden" value=""/>
     <input id="themefolder" type="hidden" value="config"/>
@@ -52,7 +52,7 @@
             }
 
             $('#razortemplate').val('Admin_OrdersList.cshtml');
-            nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+            nbxget('orderadmin_getlist', '#orderadminsearch', '#datadisplay');
 
             $(document).on("nbxgetcompleted", Admin_Order_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -87,21 +87,21 @@
                         $('.processing').show();
                         $('#razortemplate').val('Admin_OrdersDetail.cshtml');
                         $('#selecteditemid').val($(this).attr('itemid'));
-                        nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getdetail', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('.cmd_repeatorder').unbind("click");
                     $('.cmd_repeatorder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
-                        nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_reorder', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('.cmdPg').unbind("click");
                     $('.cmdPg').click(function () {
                         $('.processing').show();
                         $('#pagenumber').val($(this).attr('pagenumber'));
-                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getlist', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('#OrderAdmin_cmdSearch').unbind("click");
@@ -113,7 +113,7 @@
                         $('#dtesearchdateto').val($('#OrderAdmin_datesearchto').val());
                         $('#searchorderstatus').val($('#OrderAdmin_searchorderstatus').val());
 
-                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getlist', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('#OrderAdmin_cmdReset').unbind("click");
@@ -125,7 +125,7 @@
                         $('#dtesearchdateto').val('');
                         $('#searchorderstatus').val('');
 
-                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getlist', '#orderadminsearch', '#datadisplay');
                     });
 
 
@@ -142,20 +142,20 @@
                         $('.processing').show();
                         $('#razortemplate').val('Admin_OrdersList.cshtml');
                         $('#selecteditemid').val('');
-                        nbxget('orderadmin_getlist', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getlist', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('#OrderAdmin_cmdReOrder').unbind("click");
                     $('#OrderAdmin_cmdReOrder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
-                        nbxget('orderadmin_reorder', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_reorder', '#orderadminsearch', '#datadisplay');
                     });
                     $('#OrderAdmin_cmdEditOrder').unbind("click");
                     $('#OrderAdmin_cmdEditOrder').click(function () {
                         $('.processing').show();
                         $('#selecteditemid').val($(this).attr('itemid'));
-                        nbxget('orderadmin_edit', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_edit', '#orderadminsearch', '#datadisplay');
                     });
 
                     $('.OrderAdmin_cmdSave').unbind("click");
@@ -208,15 +208,15 @@
 
                 if (e.cmd == 'orderadmin_removeinvoice') {
                     $('.processing').show();
-                    nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                    nbxget('orderadmin_getdetail', '#orderadminsearch', '#datadisplay');
                 }
 
                 if (e.cmd == 'orderadmin_save') {
                     $('.processing').show();
                     if ($('#emailtype').val() !== '') {
-                        nbxget('orderadmin_sendemail', '#nbs_orderadminsearch', '#actionreturn');
+                        nbxget('orderadmin_sendemail', '#orderadminsearch', '#actionreturn');
                     } else {
-                        nbxget('orderadmin_getdetail', '#nbs_orderadminsearch', '#datadisplay');
+                        nbxget('orderadmin_getdetail', '#orderadminsearch', '#datadisplay');
                     }
 
                 }

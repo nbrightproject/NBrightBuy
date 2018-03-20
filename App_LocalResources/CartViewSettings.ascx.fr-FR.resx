@@ -166,7 +166,7 @@
     <value>Type de Panier : </value>
   </data>
 	<data name="lblPaymentTab.Help" xml:space="preserve">
-    <value>Page où le module NBS_Payment module est placé. La panier sera reidirgié vers cette page et le processus de commande sera repris par le module NBS_Payment.</value>
+    <value>Page où le module Payment module est placé. La panier sera reidirgié vers cette page et le processus de commande sera repris par le module Payment.</value>
   </data>
 	<data name="lblPaymentTab.Text" xml:space="preserve">
     <value>Page de Paiement : </value>

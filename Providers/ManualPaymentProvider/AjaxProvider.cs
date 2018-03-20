@@ -50,7 +50,7 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
 
         public override void Validate()
         {
-            throw new NotImplementedException();
+            // ignore
         }
 
     }

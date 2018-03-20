@@ -298,7 +298,7 @@
     <value>Longueur de la page</value>
   </data>
   <data name="paymenttab.Help" xml:space="preserve">
-    <value>Onglet vers lequel le client sera redirigé pour sélectionner un mode de paiement. (Module NBS_Payment)</value>
+    <value>Onglet vers lequel le client sera redirigé pour sélectionner un mode de paiement. (Module Payment)</value>
   </data>
   <data name="paymenttab.Text" xml:space="preserve">
     <value>Paiement</value>

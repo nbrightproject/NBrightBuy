@@ -21,10 +21,10 @@ $(document).ready(function () {
         nbxget('cart_redirecttocheckout', '.cartdatarow', '', '.quantitycolumn');
     });
 
-    $(document).on("nbxgetcompleted", NBS_Cart_nbxgetCompleted); // assign a completed event for the ajax calls
+    $(document).on("nbxgetcompleted", Cart_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // function to do actions after an ajax call has been made.
-    function NBS_Cart_nbxgetCompleted(e) {
+    function Cart_nbxgetCompleted(e) {
 
         $('.processing').hide();
 

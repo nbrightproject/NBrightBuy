@@ -691,9 +691,9 @@ namespace Nevoweb.DNN.NBrightBuy
                 _404code = true;
 
                 // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "NBS_ProductNotFound_head.cshtml", _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
+                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "ProductNotFound_head.cshtml", _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
-                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender("ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

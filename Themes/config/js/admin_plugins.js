@@ -6,7 +6,7 @@
     $('.processing').show();
 
     $('#razortemplate').val('Admin_PluginsList.cshtml');
-    nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
+    nbxget('plugins_admin_getlist', '#pluginsadminsearch', '#datadisplay');
 
     // function to do actions after an ajax call has been made.
     function Admin_plugins_nbxgetCompleted(e) {
@@ -29,7 +29,7 @@
         $('#pluginsAdmin_cmdAddNew').click(function () {
             $('.processing').show();
             $('#razortemplate').val('Admin_pluginsDetail.cshtml');
-            nbxget('plugins_adminaddnew', '#nbs_pluginsadminsearch', '#datadisplay');
+            nbxget('plugins_adminaddnew', '#pluginsadminsearch', '#datadisplay');
         });
 
         if (e.cmd == 'plugins_admin_getlist' || e.cmd == 'plugins_admin_delete') {
@@ -82,7 +82,7 @@
                 $(".selectcancel").hide();
                 $(".selectrecord").show();
                 $("#movetopluginsid").val($(this).attr("itemid"));
-                nbxget('plugins_movepluginsadmin', '#nbs_pluginsadminsearch', '#datadisplay');
+                nbxget('plugins_movepluginsadmin', '#pluginsadminsearch', '#datadisplay');
             });
 
             // editbutton created by list, so needs to be assigned on each render of list.
@@ -91,7 +91,7 @@
                 $('.processing').show();
                 $('#razortemplate').val('Admin_PluginsDetail.cshtml');
                 $('#selecteditemid').val($(this).attr('itemid'));
-                nbxget('plugins_admin_getdetail', '#nbs_pluginsadminsearch', '#datadisplay');
+                nbxget('plugins_admin_getdetail', '#pluginsadminsearch', '#datadisplay');
             });
 
 
@@ -104,7 +104,7 @@
                 } else {
                     $(this).addClass('fa-check-circle').removeClass('fa-circle');
                 }
-                nbxget('plugins_selectchangeactive', '#nbs_pluginsadminsearch');
+                nbxget('plugins_selectchangeactive', '#pluginsadminsearch');
             });
 
         }
@@ -112,14 +112,14 @@
         if (e.cmd == 'plugins_admin_save') {
             $("#editlang").val($("#nextlang").val());
             $("#editlanguage").val($("#nextlang").val());
-            nbxget('plugins_admin_getdetail', '#nbs_pluginsadminsearch', '#datadisplay');
+            nbxget('plugins_admin_getdetail', '#pluginsadminsearch', '#datadisplay');
         };
 
 
         if (e.cmd == 'plugins_movepluginsadmin') {
             $('#razortemplate').val('Admin_pluginsList.cshtml');
             $('#selecteditemid').val('');
-            nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
+            nbxget('plugins_admin_getlist', '#pluginsadminsearch', '#datadisplay');
         };
         
         if (e.cmd == 'plugins_getpluginsselectlist') {
@@ -156,7 +156,7 @@
                 $('.processing').show();
                 $('#razortemplate').val('Admin_pluginsList.cshtml');
                 $('#selecteditemid').val('');
-                nbxget('plugins_admin_getlist', '#nbs_pluginsadminsearch', '#datadisplay');
+                nbxget('plugins_admin_getlist', '#pluginsadminsearch', '#datadisplay');
             });
             
             $('#pluginsAdmin_cmdSave').unbind("click");
@@ -194,7 +194,7 @@
             $('#addmodels').unbind("click");
             $('#addmodels').click(function () {
                 $('.processing').show();
-                nbxget('plugins_addpluginsmodels', '#nbs_pluginsadminsearch', '#datadisplay'); // load models
+                nbxget('plugins_addpluginsmodels', '#pluginsadminsearch', '#datadisplay'); // load models
             });
 
             $('#undomodel').unbind("click");

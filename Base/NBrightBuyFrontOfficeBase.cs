@@ -36,6 +36,14 @@ namespace Nevoweb.DNN.NBrightBuy.Base
             {
                 RazorTemplate = ModSettings.Settings()["razortemplate"];
             }
+            if (RazorTemplate == "" && ModSettings.Settings().ContainsKey("razorlisttemplate") && ModSettings.Settings()["razorlisttemplate"] != "")
+            {
+                RazorTemplate = ModSettings.Settings()["razorlisttemplate"];
+            }
+            if (RazorTemplate == "" && ModSettings.Settings().ContainsKey("razordetailtemplate") && ModSettings.Settings()["razordetailtemplate"] != "")
+            {
+                RazorTemplate = ModSettings.Settings()["razordetailtemplate"];
+            }
 
             if (ModSettings != null)
             {
@@ -49,10 +57,10 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
 
             // insert page header text
-            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "frontofficepageheader.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
+            NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, "FrontOfficePageHeader.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
 
             // insert text in body.
-            NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, "frontofficepagebody.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
+            NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, "FrontOfficePageBody.cshtml", _controlPath, ThemeFolder, ModSettings.Settings());
 
 
             if (ModuleContext.Configuration != null)
@@ -62,7 +70,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
                 // insert page header text
                 NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
                 // insert page body text, for passback element.
-                NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_moddata" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
+                NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_pageinject" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
             }
             var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
 

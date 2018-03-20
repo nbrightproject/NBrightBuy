@@ -105,7 +105,7 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.processing').hide();
 
     if (e.cmd == 'cart_addtobasket') {
-        nbxget('cart_renderminicart', '.minicartdata', '.container_classicajax_nbs_minicart'); // Reload Cart
+        nbxget('cart_renderminicart', '.minicartdata', '.container_classicajax_minicart'); // Reload Cart
         $('.addedtobasket').delay(1000).fadeOut('fast');
     }
 
@@ -181,7 +181,7 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.wishlistadd').unbind("click");
     $('.wishlistadd').click(function () {
         $('#shoplistname').val($('.shoplistselect').val());
-        nbxget('itemlist_add', '#nbs_productajaxview'); //apply serverside
+        nbxget('itemlist_add', '#productajaxview'); //apply serverside
         $('#shoppinglistpopup').colorbox.close();
     });
 
@@ -290,7 +290,7 @@ function propertyFilterClicked() {
 function loadProductList() {
     if ($('#ajaxlist').val() == 'True') {
         $('.processing').show();
-        nbxget('product_ajaxview_getlist', '#nbs_productajaxview', '#nbs_ajaxproducts');
+        nbxget('product_ajaxview_getlist', '#productajaxview', '#ajaxproducts');
     } else {
         
         //Form validation 
@@ -310,17 +310,17 @@ function loadProductList() {
 }
 function loadProductListFilter() {
     $('.processing').show();
-    nbxget('product_ajaxview_getlistfilter', '#nbs_productajaxview', '#nbs_ajaxproducts');
+    nbxget('product_ajaxview_getlistfilter', '#productajaxview', '#ajaxproducts');
 }
 function loadItemListPopup() {
     $('.processing').show();
-    nbxget('itemlist_getpopup', '#nbs_productajaxview', '#shoppinglistpopup');
+    nbxget('itemlist_getpopup', '#productajaxview', '#shoppinglistpopup');
 }
 function loadFilters() {
     $('.processing').show();
     $("#propertyfiltertypeinside").val($("#filter_propertyfiltertypeinside").val());
     $("#propertyfiltertypeoutside").val($("#filter_propertyfiltertypeoutside").val());
-    nbxget('product_ajaxview_getfilters', '#nbs_ajaxfiltermodulesettings', '#nbs_ajaxfilter');
+    nbxget('product_ajaxview_getfilters', '#ajaxfiltermodulesettings', '#ajaxfilter');
 }
 
 function IsInFavorites(productid) {

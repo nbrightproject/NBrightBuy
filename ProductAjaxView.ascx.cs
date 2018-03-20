@@ -38,7 +38,6 @@ namespace Nevoweb.DNN.NBrightBuy
         private String _ename = "";
         private String _catid = "";
         private String _modkey = "";
-        private String _templD = "";
         private Boolean _displayentrypage = false;
         private NavigationData _navigationdata;
         public String EntityTypeCode = "PRD";
@@ -146,13 +145,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 // get template codes
                 if (_displayentrypage)
                 {
-                    _templD = ModSettings.Get("razordetailtemplate");
-                    if (_templD == "") _templD = ModSettings.Get("txtdisplayentrybody"); // legacy name
+                    RazorTemplate = ModSettings.Get("razordetailtemplate");
                 }
                 else
                 {
-                    _templD = ModSettings.Get("razorlisttemplate");
-                    if (_templD == "") _templD = ModSettings.Get("txtdisplaybody"); // legacy name
+                    RazorTemplate = ModSettings.Get("razorlisttemplate");
                 }
 
                 #endregion
@@ -193,7 +190,7 @@ namespace Nevoweb.DNN.NBrightBuy
         {
             NBrightInfo objCat = null;
 
-            if (_templD.Trim() != "")  // if we don;t have a template, don't do anything
+            if (RazorTemplate.Trim() != "")  // if we don;t have a template, don't do anything
             {
 
                 if (_displayentrypage)
@@ -205,7 +202,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 else
                 {
                     // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
                 }
             }
 
@@ -265,12 +262,10 @@ namespace Nevoweb.DNN.NBrightBuy
 
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");
-                // insert page header text
-                NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(_templD) + "_head" + Path.GetExtension(_templD), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings(), productData);
 
                 #region "do razor template"
 
-                var strOut = NBrightBuyUtils.RazorTemplRender(_templD, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, ModuleId, "productdetailrazor" + ModuleId.ToString() + "*" + entryId, productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);
@@ -280,7 +275,7 @@ namespace Nevoweb.DNN.NBrightBuy
             else
             {
                 _404code = true;
-                var strOut = NBrightBuyUtils.RazorTemplRender("NBS_ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                var strOut = NBrightBuyUtils.RazorTemplRender("ProductNotFound.cshtml", ModuleId, "", productData, _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

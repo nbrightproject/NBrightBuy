@@ -52,13 +52,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         {
             foreach (var lang in DnnUtils.GetCultureCodeList(_portalId))
             {
-                var strCacheKey = "NBS_GrpList_" + lang + "_" + _portalId;
+                var strCacheKey = "GrpList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + _portalId;
+                strCacheKey = "GroupsDictionary_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + _portalId;
+                strCacheKey = "GrpCategoryList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);
-                strCacheKey = "NBS_CategoryList_" + lang + "_" + _portalId;
+                strCacheKey = "CategoryList_" + lang + "_" + _portalId;
                 NBrightBuyUtils.RemoveCache(strCacheKey);                
             }
         }
@@ -476,7 +476,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             _objCtrl = new NBrightBuyController();
             _lang = lang;
 
-            var strCacheKey = "NBS_GrpList_" + lang + "_" + _portalId;
+            var strCacheKey = "GrpList_" + lang + "_" + _portalId;
             GroupList = (List<NBrightInfo>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GroupList == null || debugMode)
             {
@@ -485,7 +485,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 NBrightBuyUtils.SetModCache(-1, strCacheKey, GroupList);
             }
 
-            strCacheKey = "NBS_GroupsDictionary_" + lang + "_" + _portalId;
+            strCacheKey = "GroupsDictionary_" + lang + "_" + _portalId;
             GroupsDictionary = (Dictionary<string,string>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GroupsDictionary == null || debugMode)
             {
@@ -498,7 +498,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // build group category list
-            strCacheKey = "NBS_GrpCategoryList_" + lang + "_" + _portalId;
+            strCacheKey = "GrpCategoryList_" + lang + "_" + _portalId;
             GrpCategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (GrpCategoryList == null || debugMode)
             {
@@ -507,7 +507,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
 
             // build cateogry list for navigation from group category list
-            strCacheKey = "NBS_CategoryList_" + lang + "_" + _portalId;
+            strCacheKey = "CategoryList_" + lang + "_" + _portalId;
             CategoryList = (List<GroupCategoryData>)NBrightBuyUtils.GetModCache(strCacheKey);
             if (CategoryList == null || debugMode)
             {

@@ -47,10 +47,10 @@
                 processCartStep('prev');
             });
 
-            $(document).on("nbxgetcompleted", NBS_CheckOut_nbxgetCompleted); // assign a completed event for the ajax calls
+            $(document).on("nbxgetcompleted", CheckOut_nbxgetCompleted); // assign a completed event for the ajax calls
 
             // function to do actions after an ajax call has been made.
-            function NBS_CheckOut_nbxgetCompleted(e) {
+            function CheckOut_nbxgetCompleted(e) {
 
                 $('.processing').hide();
 
@@ -147,7 +147,7 @@
                         //recalc on trigger from provider
                         $('.recalcshipprovider').unbind();
                         $('.recalcshipprovider').click(function () {
-                            $('#carttemplate').val('NBS_CheckoutSummary.cshtml');
+                            $('#carttemplate').val('CheckoutSummary.cshtml');
                             nbxget('cart_recalculatesummary', '#checkoutsummary');
                         });
 
@@ -166,7 +166,7 @@
                 }
 
                 if (e.cmd == 'cart_shippingprovidertemplate') {
-                    $('#carttemplate').val('NBS_CheckoutSummary.cshtml');
+                    $('#carttemplate').val('CheckoutSummary.cshtml');
                     nbxget('cart_recalculatesummary', '#checkoutsummary');
                 }
 
@@ -238,7 +238,7 @@
 
                 if (e.cmd == 'cart_updateshipoption') {
                     nbxget('cart_rendersummary', '#checkoutdata', '#checkoutdisplaysummary');
-                    $('#carttemplate').val('NBS_CheckoutShipMethod.cshtml');
+                    $('#carttemplate').val('CheckoutShipMethod.cshtml');
                     nbxget('cart_rendershipmethod', '#checkoutdata', '#checkoutdisplayshipmethod');
                 }
 
@@ -249,7 +249,7 @@
                     $('#cmdRecalcSummary').unbind();
                     $('#cmdRecalcSummary').click(function() {
                         $('.processing').show();
-                        $('#carttemplate').val('NBS_CheckoutSummary.cshtml');
+                        $('#carttemplate').val('CheckoutSummary.cshtml');
                         nbxget('cart_recalculatesummary', '#checkoutsummary');
                     });
 
@@ -294,7 +294,7 @@ function processCartStep(buttontype) {
     // show cart list
     if ($('#cartstep').val() == '1') {
         $('.processing').show();
-        $('#carttemplate').val('NBS_CheckoutList.cshtml');
+        $('#carttemplate').val('CheckoutList.cshtml');
         $('#cmdDeleteCart').show();
         $('#cmdRecalcCart').show();
         $('#cmdPrev').hide();
@@ -307,7 +307,7 @@ function processCartStep(buttontype) {
 
     if ($('#cartstep').val() == '2') {
         $('.processing').show();
-        $('#carttemplate').val('NBS_CheckoutAddress.cshtml');
+        $('#carttemplate').val('CheckoutAddress.cshtml');
         $('#cmdDeleteCart').hide();
         $('#cmdRecalcCart').hide();
         $('#cmdPrev').show();
@@ -323,7 +323,7 @@ function processCartStep(buttontype) {
             var validator = $("#Form").validate();
             if (validator.form()) {
                 $('.processing').show();
-                $('#carttemplate').val('NBS_CheckoutSummary.cshtml');
+                $('#carttemplate').val('CheckoutSummary.cshtml');
                 $('#cmdDeleteCart').hide();
                 $('#cmdRecalcCart').hide();
                 $('#cmdPrev').show();
@@ -337,7 +337,7 @@ function processCartStep(buttontype) {
             }
         } else {
             $('.processing').show();
-            $('#carttemplate').val('NBS_CheckoutSummary.cshtml');
+            $('#carttemplate').val('CheckoutSummary.cshtml');
             $('#cmdDeleteCart').hide();
             $('#cmdRecalcCart').hide();
             $('#cmdPrev').show();
@@ -347,7 +347,7 @@ function processCartStep(buttontype) {
             $('#checkoutsummary').show();
             nbxget('cart_rendersummary', '#checkoutdata', '#checkoutdisplaysummary');
 
-            $('#carttemplate').val('NBS_CheckoutShipMethod.cshtml');
+            $('#carttemplate').val('CheckoutShipMethod.cshtml');
             nbxget('cart_rendershipmethod', '#checkoutdata', '#checkoutdisplayshipmethod');
 
         }

@@ -31,7 +31,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         /// <param name="nameAppendix">specifiy Unique key for search data</param>
         public NavigationData(int portalId, String moduleKey, string nameAppendix = "")
         {
-            _storageType = StoreSettings.Current.StorageTypeClient;
             Exists = false;
             _portalId = portalId;
             _cookieName = "NBrightBuyNav" + "_" + moduleKey.Trim() + nameAppendix.Trim();

@@ -64,7 +64,7 @@
     <value xml:space="preserve">Carrello Intestazione:</value>
   </data>
   <data name="lblPaymentTab.Help" lastModified="2015-11-11 11:18:07">
-    <value xml:space="preserve">Pagina alla quale questo modulo si reindirizzerà all'Invio. Solitamente L'opzione Checkout per questo modulo reindirizza alla pagina di pagamento con il modulo NBS_Payment. L'opzione CarrelloCompleto per questo modulo dovrebbe reindirizzare alla pagina di Checkout.</value>
+    <value xml:space="preserve">Pagina alla quale questo modulo si reindirizzerà all'Invio. Solitamente L'opzione Checkout per questo modulo reindirizza alla pagina di pagamento con il modulo Payment. L'opzione CarrelloCompleto per questo modulo dovrebbe reindirizzare alla pagina di Checkout.</value>
   </data>
   <data name="lblPaymentTab.Text" lastModified="2015-11-11 11:18:07">
     <value xml:space="preserve">Redirect Pagina:</value>

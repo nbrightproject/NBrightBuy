@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
 
-    <package name="NBS_ProductView" type="Module" version="3.6.7">
-      <friendlyName>NBS_ProductView</friendlyName>
+    <package name="OS_ProductView" type="Module" version="4.0.0">
+      <friendlyName>OS_ProductView</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
       </description>
@@ -31,7 +31,7 @@
       </license>
       <releaseNotes>
 
-        v3.6.7.0
+        v4.0.0.0
 
         NOTE: NBSv3.5 requires the NBrightTemplate v8.2.0 or above system to be installed.
 
@@ -129,10 +129,10 @@
 
         <component type="Skin">
           <skinFiles>
-            <skinName>NBrightStoreBO</skinName>
-            <basePath>Portals\_default\Skins\NBrightStoreBO</basePath>
+            <skinName>OpenStoreBO</skinName>
+            <basePath>Portals\_default\Skins\OpenStoreBO</basePath>
             <skinFile>
-              <name>NBrightStoreBO.ascx</name>
+              <name>OpenStoreBO.ascx</name>
             </skinFile>
           </skinFiles>
         </component>
@@ -141,10 +141,9 @@
       </components>
     </package>
 
-    <package name="NBS_ProductDisplay" type="Module" version="3.6.7">
-			<friendlyName>NBS_ProductDisplay</friendlyName>
+    <package name="OS_ProductDisplay" type="Module" version="4.0.0">
+			<friendlyName>OS_ProductDisplay</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
-  Front office product list and detail. (supports DNN7.2+)
 			</description>
 			<iconFile />
 			<owner>
@@ -174,7 +173,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   <components>
     <component type="Module">
       <desktopModule>
-        <moduleName>NBS_ProductDisplay</moduleName>
+        <moduleName>OS_ProductDisplay</moduleName>
         <foldername>NBright/NBrightBuy</foldername>
         <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
         <supportedFeatures>
@@ -183,7 +182,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </supportedFeatures>
         <moduleDefinitions>
           <moduleDefinition>
-            <friendlyName>NBS_ProductDisplay</friendlyName>
+            <friendlyName>OS_ProductDisplay</friendlyName>
             <defaultCacheTime>0</defaultCacheTime>
             <moduleControls>
               <moduleControl>
@@ -214,8 +213,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-    <package name="NBS_DisplaySearch" type="Module" version="3.6.7">
-      <friendlyName>NBS_DisplaySearch</friendlyName>
+    <package name="OS_DisplaySearch" type="Module" version="4.0.0">
+      <friendlyName>OS_DisplaySearch</friendlyName>
       <description>
         NBrightStore open source e-commerce for DNN.
         Search options for front office.
@@ -248,7 +247,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         <component type="Module">
           <desktopModule>
-            <moduleName>NBS_DisplaySearch</moduleName>
+            <moduleName>OS_DisplaySearch</moduleName>
             <foldername>NBright/NBrightBuy</foldername>
             <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
             <supportedFeatures>
@@ -257,7 +256,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>NBS_DisplaySearch</friendlyName>
+                <friendlyName>OS_DisplaySearch</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -295,8 +294,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       </components>
     </package>
 
-    <package name="NBS_AddressAdmin" type="Module" version="3.6.7">
-			<friendlyName>NBS_AddressAdmin</friendlyName>
+    <package name="OS_AddressAdmin" type="Module" version="4.0.0">
+			<friendlyName>OS_AddressAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Admin for clients addresses from the front office.
 			</description>
@@ -328,7 +327,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_AddressAdmin</moduleName>
+						<moduleName>OS_AddressAdmin</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -337,7 +336,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_AddressAdmin</friendlyName>
+								<friendlyName>OS_AddressAdmin</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -370,8 +369,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_Payment" type="Module" version="3.6.7">
-			<friendlyName>NBS_Payment</friendlyName>
+		<package name="OS_Payment" type="Module" version="4.0.0">
+			<friendlyName>OS_Payment</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   Process payment of orders.
 			</description>
@@ -403,7 +402,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_Payment</moduleName>
+						<moduleName>OS_Payment</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -412,7 +411,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_Payment</friendlyName>
+								<friendlyName>OS_Payment</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -444,9 +443,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_OrderAdmin" type="Module" version="3.6.7">
+		<package name="OS_OrderAdmin" type="Module" version="4.0.0">
 
-			<friendlyName>NBS_OrderAdmin</friendlyName>
+			<friendlyName>OS_OrderAdmin</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   This module provides access to client orders from the front office, for clients.
 			</description>
@@ -478,7 +477,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_OrderAdmin</moduleName>
+						<moduleName>OS_OrderAdmin</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -487,7 +486,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_OrderAdmin</friendlyName>
+								<friendlyName>OS_OrderAdmin</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -520,8 +519,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-		<package name="NBS_ProfileForm" type="Module" version="3.6.7">
-			<friendlyName>NBS_ProfileForm</friendlyName>
+		<package name="OS_ProfileForm" type="Module" version="4.0.0">
+			<friendlyName>OS_ProfileForm</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN.
   This module creates a profile form that links to the DNN profile and NBS address.
 			</description>
@@ -553,7 +552,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_ProfileForm</moduleName>
+						<moduleName>OS_ProfileForm</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -562,7 +561,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_ProfileForm</friendlyName>
+								<friendlyName>OS_ProfileForm</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -596,8 +595,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		</package>
 
 		
-				<package name="NBS_Checkout" type="Module" version="3.6.7">
-			<friendlyName>NBS_Checkout</friendlyName>
+				<package name="OS_Checkout" type="Module" version="4.0.0">
+			<friendlyName>OS_Checkout</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Checkout process.
 			</description>
 			<iconFile />
@@ -628,7 +627,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_Checkout</moduleName>
+						<moduleName>OS_Checkout</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -637,7 +636,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_Checkout</friendlyName>
+								<friendlyName>OS_Checkout</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -670,8 +669,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_MiniCart" type="Module" version="3.6.7">
-			<friendlyName>NBS_MiniCart</friendlyName>
+				<package name="OS_MiniCart" type="Module" version="4.0.0">
+			<friendlyName>OS_MiniCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. Mini cart view.
 			</description>
 			<iconFile />
@@ -702,7 +701,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_MiniCart</moduleName>
+						<moduleName>OS_MiniCart</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -711,7 +710,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_MiniCart</friendlyName>
+								<friendlyName>OS_MiniCart</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -744,8 +743,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-				<package name="NBS_FullCart" type="Module" version="3.6.7">
-			<friendlyName>NBS_FullCart</friendlyName>
+				<package name="OS_FullCart" type="Module" version="4.0.0">
+			<friendlyName>OS_FullCart</friendlyName>
 			<description>NBrightStore open source e-commerce for DNN. full cart view.
 			</description>
 			<iconFile />
@@ -776,7 +775,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				<component type="Module">
 					<desktopModule>
-						<moduleName>NBS_FullCart</moduleName>
+						<moduleName>OS_FullCart</moduleName>
 						<foldername>NBright/NBrightBuy</foldername>
 						<businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
 						<supportedFeatures>
@@ -785,7 +784,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>NBS_FullCart</friendlyName>
+								<friendlyName>OS_FullCart</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -818,10 +817,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			</components>
 		</package>
 
-    <package name="NBS_CategoryMenu" type="Module" version="3.6.7">
-      <friendlyName>NBS_CategoryMenu</friendlyName>
+    <package name="OS_CategoryMenu" type="Module" version="4.0.0">
+      <friendlyName>OS_CategoryMenu</friendlyName>
       <description>
-        NBS_CategoryMenu Display 
+        CategoryMenu Display 
       </description>
       <iconFile />
       <owner>
@@ -847,12 +846,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
       <releaseNotes>
-        NBSv3.5.
       </releaseNotes>
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>NBS_CategoryMenu</moduleName>
+            <moduleName>OS_CategoryMenu</moduleName>
             <foldername>NBright/NBrightBuy</foldername>
             <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
             <supportedFeatures>
@@ -860,7 +858,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>NBS_CategoryMenu</friendlyName>
+                <friendlyName>OS_CategoryMenu</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -891,8 +889,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       </components>
     </package>
 
-    <package name="NBS_AjaxProductDisplay" type="Module" version="3.6.7">
-      <friendlyName>NBS_AjaxProductDisplay</friendlyName>
+    <package name="OS_ProductDisplayAjax" type="Module" version="4.0.0">
+      <friendlyName>OS_ProductDisplayAjax</friendlyName>
       <description>NBrightStore open source e-commerce for DNN. Front office product list and detail with ajax support. (supports DNN7.2+)</description>
       <iconFile />
       <owner>
@@ -921,7 +919,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>NBS_AjaxProductDisplay</moduleName>
+            <moduleName>OS_ProductDisplayAjax</moduleName>
             <foldername>NBright/NBrightBuy</foldername>
             <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
             <supportedFeatures>
@@ -930,7 +928,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>NBS_AjaxProductDisplay</friendlyName>
+                <friendlyName>OS_ProductDisplayAjax</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -960,8 +958,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         </component>
       </components>
     </package>
-    <package name="NBS_AjaxProductListFilter" type="Module" version="3.6.7">
-      <friendlyName>NBS_AjaxProductListFilter</friendlyName>
+    <package name="OS_ProductListAjaxFilter" type="Module" version="4.0.0">
+      <friendlyName>OS_ProductListAjaxFilter</friendlyName>
       <description>
         Filter module for Ajax Product Display
       </description>
@@ -994,7 +992,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>NBS_AjaxProductListFilter</moduleName>
+            <moduleName>OS_ProductListAjaxFilter</moduleName>
             <foldername>NBright/NBrightBuy</foldername>
             <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
             <supportedFeatures>
@@ -1002,12 +1000,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>NBS_AjaxProductListFilter</friendlyName>
+                <friendlyName>OS_AjaxProductListFilter</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/NBright/NBrightBuy/AjaxProductListFilter.ascx</controlSrc>
+                    <controlSrc>DesktopModules/NBright/NBrightBuy/ProductListAjaxFilter.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -1017,7 +1015,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/NBright/NBrightBuy/AjaxProductListFilterSettings.ascx</controlSrc>
+                    <controlSrc>DesktopModules/NBright/NBrightBuy/ProductListAjaxFilterSettings.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Settings</controlTitle>
                     <controlType>Edit</controlType>
@@ -1034,8 +1032,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     </package>    
 
 
-    <package name="NBS_ItemList" type="Module" version="3.6.7">
-      <friendlyName>NBS_ItemList</friendlyName>
+    <package name="OS_ItemList" type="Module" version="4.0.0">
+      <friendlyName>OS_ItemList</friendlyName>
       <description>
         Itemlist admin for shopping/favorites list
       </description>
@@ -1067,7 +1065,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>NBS_ItemList</moduleName>
+            <moduleName>OS_ItemList</moduleName>
             <foldername>NBright/NBrightBuy</foldername>
             <businessControllerClass>Nevoweb.DNN.NBrightBuy.Components.NBrightBuyController,NBrightBuy</businessControllerClass>
             <supportedFeatures>
@@ -1075,7 +1073,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>NBS_ItemListRazor</friendlyName>
+                <friendlyName>OS_ItemListRazor</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>

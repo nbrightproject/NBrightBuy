@@ -200,23 +200,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (nbi != null) cartId = nbi.ItemID.ToString("");
                 }
                 if (nbi == null)
-                {                    
-                    if (StoreSettings.Current.StorageTypeClient == DataStorageType.SessionMemory)
+                {
+                    _cookie = HttpContext.Current.Request.Cookies[_cookieName];
+                    if (_cookie == null)
                     {
-                        if (HttpContext.Current.Session[_cookieName + "cartId"] != null)
-                            cartId = (String) HttpContext.Current.Session[_cookieName + "cartId"];
+                        _cookie = new HttpCookie(_cookieName);
                     }
                     else
                     {
-                        _cookie = HttpContext.Current.Request.Cookies[_cookieName];
-                        if (_cookie == null)
-                        {
-                            _cookie = new HttpCookie(_cookieName);
-                        }
-                        else
-                        {
-                            if (_cookie["cartId"] != null) cartId = _cookie["cartId"];
-                        }
+                        if (_cookie["cartId"] != null) cartId = _cookie["cartId"];
                     }
                 }
                 if (!Utils.IsNumeric(cartId)) cartId = "-1";
@@ -241,20 +233,11 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         private void SaveCartId()
         {
             //save cartid for client
-            if (StoreSettings.Current.StorageTypeClient == DataStorageType.SessionMemory)
-            {
-                // save data to cache
-                HttpContext.Current.Session[_cookieName] = _cartId;
-            }
-            else
-            {
-                _cookie = HttpContext.Current.Request.Cookies[_cookieName];
-                if (_cookie == null) _cookie = new HttpCookie(_cookieName);
-                _cookie["cartId"] = _cartId.ToString("");
-                _cookie.Expires = DateTime.Now.AddYears(1);
-                HttpContext.Current.Response.Cookies.Add(_cookie);
-            }
-
+            _cookie = HttpContext.Current.Request.Cookies[_cookieName];
+            if (_cookie == null) _cookie = new HttpCookie(_cookieName);
+            _cookie["cartId"] = _cartId.ToString("");
+            _cookie.Expires = DateTime.Now.AddYears(1);
+            HttpContext.Current.Response.Cookies.Add(_cookie);
         }
 
         #endregion

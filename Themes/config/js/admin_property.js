@@ -14,7 +14,7 @@
             $("#nextlang").val('');
             $("#editlang").val($(this).attr("editlang"));
             $('#razortemplate').val('Admin_PropertyList.cshtml');
-            nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
+            nbxget('property_admin_getlist', '#propertyadminsearch', '#datadisplay');
         }
     });
 
@@ -26,7 +26,7 @@
         
         $('#selectedgroup').val($('#groupsel').val());
         $('#razortemplate').val('Admin_PropertyList.cshtml');
-        nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
+        nbxget('property_admin_getlist', '#propertyadminsearch', '#datadisplay');
 
 
         var $container = $('#selectlistwrapper').masonry({
@@ -62,7 +62,7 @@
             $('#productAdmin_cmdAddNew').click(function () {
                 $('.processing').show();
                 $('#razortemplate').val('Admin_ProductDetail.cshtml');
-                nbxget('property_adminaddnew', '#nbs_productadminsearch', '#datadisplay');
+                nbxget('property_adminaddnew', '#productadminsearch', '#datadisplay');
             });
 
             if (e.cmd == 'property_categoryproductlist'
@@ -101,7 +101,7 @@
                 $("#groupsel").change(function () {
                     $('.processing').show();
                     $('#selectedgroup').val($(this).val());
-                    nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_getlist', '#propertyadminsearch', '#datadisplay');
                 });
 
                 $('.selectrecord').unbind("click");
@@ -132,7 +132,7 @@
                     $(".selectcancel").hide();
                     $(".selectrecord").show();
                     $("#movetocatid").val($(this).attr("itemid"));
-                    nbxget('property_admin_movecategory', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_movecategory', '#propertyadminsearch', '#datadisplay');
                 });
 
                 // editbutton created by list, so needs to be assigned on each render of list.
@@ -142,7 +142,7 @@
                     $('.groupselpanel').hide();
                     $('#razortemplate').val('Admin_PropertyDetail.cshtml');
                     $('#selectedcatid').val($(this).attr('itemid'));
-                    nbxget('property_admin_getdetail', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_getdetail', '#propertyadminsearch', '#datadisplay');
                 });
 
 
@@ -155,13 +155,13 @@
                     } else {
                         $(this).addClass('fa-check-circle').removeClass('fa-circle');
                     }
-                    nbxget('property_selectchangehidden', '#nbs_propertyadminsearch');
+                    nbxget('property_selectchangehidden', '#propertyadminsearch');
                 });
 
                 $('#propertyAdmin_cmdAddNew').unbind("click");
                 $("#propertyAdmin_cmdAddNew").click(function () {
                     $('.processing').show();
-                    nbxget('property_admin_addnew', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_addnew', '#propertyadminsearch', '#datadisplay');
                 });
 
                 $('.propertyAdmin_cmdDelete').unbind("click");
@@ -169,7 +169,7 @@
                     if (confirm($('#confirmdeletemsg').text())) {
                         $('.processing').show();
                         $('#selectedcatid').val($(this).attr('itemid'));
-                        nbxget('property_admin_delete', '#nbs_propertyadminsearch', '#datadisplay');
+                        nbxget('property_admin_delete', '#propertyadminsearch', '#datadisplay');
                     }
                 });
 
@@ -251,7 +251,7 @@
                         })
                         .bind('fileuploadstop', function (e) {
                             if (filesdone == filecount) {
-                                nbxget('property_updateimages', '#nbs_propertyadminsearch', '#datadisplay'); // load images
+                                nbxget('property_updateimages', '#propertyadminsearch', '#datadisplay'); // load images
                                 filesdone = 0;
                                 $('input[id*="imguploadlist"]').val('');
                                 $('.processing').hide();
@@ -263,7 +263,7 @@
                 $('#removeimage').unbind("click");
                 $('#removeimage').click(function () {
                     $('.processing').show();
-                    nbxget('property_removeimage', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_removeimage', '#propertyadminsearch', '#datadisplay');
                 });
             
 
@@ -276,7 +276,7 @@
                     $('.groupselpanel').show();
                     $('#selectedcatid').val('');
                     $('#razortemplate').val('Admin_PropertyList.cshtml');
-                    nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_getlist', '#propertyadminsearch', '#datadisplay');
                 });
             
                 $('#propertyAdmin_cmdSave').unbind("click");
@@ -296,7 +296,7 @@
                 $('#propertyAdmin_cmdDelete').click(function () {
                     if (confirm($('#confirmdeletemsg').text())) {
                         $('.processing').show();
-                        nbxget('property_admin_delete', '#nbs_propertyadminsearch', '#datadisplay');
+                        nbxget('property_admin_delete', '#propertyadminsearch', '#datadisplay');
                     }
                 });
 
@@ -309,7 +309,7 @@
                 $('#productselect').click(function () {
                     $('.processing').show();
                     $('#razortemplate').val('Admin_PropertyProductSelect.cshtml');
-                    nbxget('property_displayproductselect', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_displayproductselect', '#propertyadminsearch', '#datadisplay');
                 });
 
 
@@ -318,14 +318,14 @@
                 $('.removeproduct').click(function () {
                     $('#selectproductid').val($(this).attr('itemid'));
                     $('.productid' + $(this).attr('itemid')).hide();
-                    nbxget('property_deletecatxref', '#nbs_propertyadminsearch');
+                    nbxget('property_deletecatxref', '#propertyadminsearch');
                 });
 
                 $('#removeall').unbind();
                 $('#removeall').click(function () {
                     if (confirm($('#confirmmsg').html())) {
                         $('#productlist').hide();
-                        nbxget('property_deleteallcatxref', '#nbs_propertyadminsearch');
+                        nbxget('property_deleteallcatxref', '#propertyadminsearch');
                     }
                 });
 
@@ -343,7 +343,7 @@
                 $('#editlang').val($('#nextlang').val());
                 $("#nextlang").val('');
                 $('#razortemplate').val('Admin_PropertyDetail.cshtml');
-                nbxget('property_admin_getdetail', '#nbs_propertyadminsearch', '#datadisplay');
+                nbxget('property_admin_getdetail', '#propertyadminsearch', '#datadisplay');
             }
             if (e.cmd == 'property_admin_saveexit'
                 || e.cmd == 'property_admin_delete') {
@@ -351,7 +351,7 @@
                 $('.groupselpanel').show();
                 $('#selectedcatid').val('');
                 $('#razortemplate').val('Admin_PropertyList.cshtml');
-                nbxget('property_admin_getlist', '#nbs_propertyadminsearch', '#datadisplay');
+                nbxget('property_admin_getlist', '#propertyadminsearch', '#datadisplay');
             }
 
             // ---------------------------------------------------------------------------
@@ -369,7 +369,7 @@
                     $("#searchtext").val('');
                     $("#searchcategory").val('');
                     $('#razortemplate').val('Admin_PropertyDetail.cshtml');
-                    nbxget('property_admin_getdetail', '#nbs_propertyadminsearch', '#datadisplay');
+                    nbxget('property_admin_getdetail', '#propertyadminsearch', '#datadisplay');
                     $('#datadisplay').show();
                 });
 
@@ -379,7 +379,7 @@
                     $('#pagenumber').val('1');
                     $('#searchtext').val($('#txtproductselectsearch').val());
                     $('#searchcategory').val($('#ddlsearchcategory').val());
-                    nbxget('property_getproductselectlist', '#nbs_propertyadminsearch', '#productselectlist');
+                    nbxget('property_getproductselectlist', '#propertyadminsearch', '#productselectlist');
                 });
 
                 $('#selectreset').unbind("click");
@@ -389,14 +389,14 @@
                     $('#searchtext').val('');
                     $("#searchcategory").val('');
                     $('#txtproductselectsearch').val('');
-                    nbxget('property_getproductselectlist', '#nbs_propertyadminsearch', '#productselectlist');
+                    nbxget('property_getproductselectlist', '#propertyadminsearch', '#productselectlist');
                 });
 
                 $('.cmdPg').unbind("click");
                 $('.cmdPg').click(function () {
                     $('.processing').show();
                     $('#pagenumber').val($(this).attr('pagenumber'));
-                    nbxget('property_getproductselectlist', '#nbs_propertyadminsearch', '#productselectlist');
+                    nbxget('property_getproductselectlist', '#propertyadminsearch', '#productselectlist');
                 });
 
                 // select product
@@ -404,7 +404,7 @@
                 $('.selectproduct').click(function () {
                     $('.selectproductid' + $(this).attr('itemid')).hide();
                     $('#selectproductid').val($(this).attr('itemid'));
-                    nbxget('property_selectcatxref', '#nbs_propertyadminsearch');
+                    nbxget('property_selectcatxref', '#propertyadminsearch');
                 });
 
             };

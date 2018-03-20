@@ -200,19 +200,19 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AjaxProductListFilter.ascx.cs">
-      <DependentUpon>AjaxProductListFilter.ascx</DependentUpon>
+    <Compile Include="ProductListAjaxFilter.ascx.cs">
+      <DependentUpon>ProductListAjaxFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AjaxProductListFilter.ascx.designer.cs">
-      <DependentUpon>AjaxProductListFilter.ascx.cs</DependentUpon>
+    <Compile Include="ProductListAjaxFilter.ascx.designer.cs">
+      <DependentUpon>ProductListAjaxFilter.ascx.cs</DependentUpon>
     </Compile>
-    <Compile Include="AjaxProductListFilterSettings.ascx.cs">
-      <DependentUpon>AjaxProductListFilterSettings.ascx</DependentUpon>
+    <Compile Include="ProductListAjaxFilterSettings.ascx.cs">
+      <DependentUpon>ProductListAjaxFilterSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AjaxProductListFilterSettings.ascx.designer.cs">
-      <DependentUpon>AjaxProductListFilterSettings.ascx.cs</DependentUpon>
+    <Compile Include="ProductListAjaxFilterSettings.ascx.designer.cs">
+      <DependentUpon>ProductListAjaxFilterSettings.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Address\AddressFunctions.cs" />
     <Compile Include="Components\Cart\CartFunctions.cs" />
@@ -480,12 +480,13 @@
     <Content Include="Admin\Orders.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="AjaxProductListFilter.ascx">
+    <Content Include="ProductListAjaxFilter.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="AjaxProductListFilterSettings.ascx">
+    <Content Include="ProductListAjaxFilterSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Installation\Readme_NBS_Upgrade.txt" />
     <Content Include="ItemListRazor.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -552,10 +553,10 @@
     <Content Include="ProductRazorView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.ascx">
+    <Content Include="Skins\OpenStoreBO\OpenStoreBO.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Skins\NBrightStoreBO\NBrightStoreBO.doctype.xml" />
+    <Content Include="Skins\OpenStoreBO\OpenStoreBO.doctype.xml" />
     <Content Include="Themes\ClassicAjax\css\classicajax.css" />
     <Content Include="Themes\ClassicAjax\css\colorbox.css" />
     <Content Include="Themes\ClassicAjax\css\images\animated-overlay.gif" />
@@ -572,12 +573,11 @@
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_454545_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_888888_256x240.png" />
     <Content Include="Themes\ClassicAjax\css\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Themes\ClassicAjax\css\NBS_CategoryMenu.css" />
     <Content Include="Themes\config\img\asterisk.png" />
     <Content Include="Themes\config\img\invalid.png" />
     <Content Include="Themes\config\img\openstore-logo.png" />
     <Content Include="Themes\Default\css\ClientAccount.css" />
-    <Content Include="Themes\Default\css\NBS_Checkout.css" />
+    <Content Include="Themes\Default\css\Checkout.css" />
     <Content Include="Themes\Default\img\email-facebook.gif" />
     <Content Include="Themes\Default\img\email-twitter.gif" />
     <Content Include="Themes\Default\js\AddressAdmin.js" />
@@ -599,34 +599,34 @@
     <Content Include="Themes\ClassicAjax\js\product.js" />
     <None Include="README.md" />
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
-    <None Include="Themes\ClassicAjax\Default\frontofficepagebody.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\frontofficepageheader.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplayList.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplay_moddata.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplayList_paging.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductDisplaysettings.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductListFilter.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_AjaxProductListFilter_moddata.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CarouselProductDisplay.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CarouselProductDisplay_head.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CategoryMenu.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CategoryMenuDrill.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CategoryMenuDrillLink.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CategoryMenuLink.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_CategoryMenuLinkAjax.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_DisplayAdvSearch.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_DisplaySearch.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_FeatProductDisplay.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_FeatProductDisplay_head.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ItemListPopupBody.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_MiniCart.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_MiniCartsettings.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplayDetail.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplayDetail_head.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplayList.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplayListBody.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_ProductDisplaysettings.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\NBS_SelectionProductDisplay.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FrontOfficePageBody.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FrontOfficePageHeader.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList_pageinject.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList_paging.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxSettings.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductListAjaxFilter.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductListAjaxFilter_pageinject.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\CategoryMenu.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\CategoryMenuDrill.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\CategoryMenuDrillLink.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\CategoryMenuLink.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\CategoryMenuLinkAjax.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\SearchAdvanced.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\Search.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\Featured.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FeaturedCarousel.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FeaturedCarousel_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FeaturedCycle.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\FeaturedCycle_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ItemListPopupBody.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\MiniCart.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\MiniCartSettings.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayDetail.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayDetail_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayList.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayListBody.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplaySettings.cshtml" />
     <None Include="Themes\config\default\Admin_CategoryFilterGroups.cshtml" />
     <None Include="Themes\config\default\Admin_Plugins.cshtml" />
     <None Include="Themes\config\default\Admin_PluginsList.cshtml" />
@@ -672,13 +672,13 @@
     <None Include="Themes\config\default\Admin_Category_head.cshtml" />
     <None Include="Themes\config\default\Admin_Product_head.cshtml" />
     <None Include="Themes\config\default\modelfields.cshtml" />
-    <None Include="Themes\config\default\NBS_Paymentsettings.cshtml" />
-    <None Include="Themes\config\default\NBS_AjaxProductListFilterSettings.cshtml" />
-    <None Include="Themes\config\default\NBS_AddressAdminsettings.cshtml" />
-    <None Include="Themes\config\default\NBS_OrderAdminsettings.cshtml" />
-    <None Include="Themes\config\default\NBS_DisplaySearchSettings.cshtml" />
-    <None Include="Themes\config\default\NBS_CategoryMenuSettings.cshtml" />
-    <None Include="Themes\config\default\NBS_Checkoutsettings.cshtml" />
+    <None Include="Themes\config\default\OS_Paymentsettings.cshtml" />
+    <None Include="Themes\config\default\OS_ProductListAjaxFilterSettings.cshtml" />
+    <None Include="Themes\config\default\OS_AddressAdminsettings.cshtml" />
+    <None Include="Themes\config\default\OS_OrderAdminsettings.cshtml" />
+    <None Include="Themes\config\default\OS_DisplaySearchSettings.cshtml" />
+    <None Include="Themes\config\default\OS_CategoryMenuSettings.cshtml" />
+    <None Include="Themes\config\default\OS_Checkoutsettings.cshtml" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Plugins\menu.config" />
@@ -1045,11 +1045,11 @@
     <Content Include="Themes\config\default\pluginsfooter.html" />
     <Content Include="Themes\config\default\pluginsheader.html" />
     <None Include="Themes\config\default\Admin_Orders_head.cshtml" />
-    <None Include="Themes\config\default\NBS_AjaxProductDisplaysettings.cshtml" />
-    <None Include="Themes\config\default\NBS_ItemListsettings.cshtml" />
+    <None Include="Themes\config\default\OS_ProductDisplayAjaxsettings.cshtml" />
+    <None Include="Themes\config\default\OS_ItemListsettings.cshtml" />
     <None Include="Themes\config\default\ThemeFolderSelect.cshtml" />
-    <None Include="Themes\config\default\NBS_ProductDisplaysettings.cshtml" />
-    <None Include="Themes\config\default\NBS_ProfileFormsettings.cshtml" />
+    <None Include="Themes\config\default\OS_ProductDisplaysettings.cshtml" />
+    <None Include="Themes\config\default\OS_ProfileFormsettings.cshtml" />
     <Content Include="Themes\config\default\settingsbody.html" />
     <Content Include="Themes\config\img\flags\16\af-ZA.png" />
     <Content Include="Themes\config\img\flags\16\ar-AE.png" />
@@ -1582,7 +1582,7 @@
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="Themes\config\default\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Themes\config\default\fileuploadjs.cshtml" />
-    <None Include="Themes\config\default\NBS_FullCartsettings.cshtml" />
+    <None Include="Themes\config\default\OS_FullCartsettings.cshtml" />
     <None Include="Themes\config\default\plugins\bootstrapvalidator\bootstrapValidator.scss" />
     <None Include="Themes\config\default\plugins\bootstrap\bootstrap-theme.css.map" />
     <None Include="Themes\config\default\plugins\bootstrap\bootstrap.css.map" />
@@ -1600,7 +1600,7 @@
     <None Include="Themes\config\default\plugins\select2\select2_locale_en.js.template" />
     <None Include="Themes\config\default\plugins\xcharts\LICENSE" />
     <None Include="Themes\config\default\plugins\xcharts\README.md" />
-    <None Include="Themes\config\default\NBS_MiniCartsettings.cshtml" />
+    <None Include="Themes\config\default\OS_MiniCartsettings.cshtml" />
     <None Include="Themes\config\default\productfields.cshtml" />
     <None Include="Themes\config\default\productviewsettings.cshtml" />
     <None Include="Themes\config\default\setup.config" />
@@ -1611,45 +1611,45 @@
     <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="Themes\Default\Default\AddClientRole.cshtml" />
     <None Include="Themes\Default\Default\ClientMenu.cshtml" />
-    <None Include="Themes\Default\Default\NBS_AddressAdmin.cshtml" />
-    <None Include="Themes\Default\Default\NBS_AddressAdminDetail.cshtml" />
-    <None Include="Themes\Default\Default\NBS_AddressAdminList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_AddressAdminsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_AddressAdmin_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CartList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Checkout.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutAddress.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutRegion.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Checkoutsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutShipMethod.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutTotals.cshtml" />
-    <None Include="Themes\Default\Default\NBS_CheckoutSummary.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Checkout_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_FullCart.cshtml" />
-    <None Include="Themes\Default\Default\NBS_FullCartList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_FullCartsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_FullCart_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ItemList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ItemListProducts.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ItemListsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ItemList_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_OrderAdmin.cshtml" />
-    <None Include="Themes\Default\Default\NBS_OrderAdminDetail.cshtml" />
-    <None Include="Themes\Default\Default\NBS_OrderAdminList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_OrderAdminsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_OrderAdmin_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Payment.cshtml" />
-    <None Include="Themes\Default\Default\NBS_PaymentList.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Paymentsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Payment_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProductNotFound.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProductNotFound_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_Profileform.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProfileFormsettings.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProfileForm_head.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProfileHome.cshtml" />
-    <None Include="Themes\Default\Default\NBS_ProfileHome_head.cshtml" />
+    <None Include="Themes\Default\Default\AddressAdmin.cshtml" />
+    <None Include="Themes\Default\Default\AddressAdminDetail.cshtml" />
+    <None Include="Themes\Default\Default\AddressAdminList.cshtml" />
+    <None Include="Themes\Default\Default\AddressAdminsettings.cshtml" />
+    <None Include="Themes\Default\Default\AddressAdmin_head.cshtml" />
+    <None Include="Themes\Default\Default\CartList.cshtml" />
+    <None Include="Themes\Default\Default\Checkout.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutAddress.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutList.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutRegion.cshtml" />
+    <None Include="Themes\Default\Default\Checkoutsettings.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutShipMethod.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutTotals.cshtml" />
+    <None Include="Themes\Default\Default\CheckoutSummary.cshtml" />
+    <None Include="Themes\Default\Default\Checkout_head.cshtml" />
+    <None Include="Themes\Default\Default\FullCart.cshtml" />
+    <None Include="Themes\Default\Default\FullCartList.cshtml" />
+    <None Include="Themes\Default\Default\FullCartsettings.cshtml" />
+    <None Include="Themes\Default\Default\FullCart_head.cshtml" />
+    <None Include="Themes\Default\Default\ItemList.cshtml" />
+    <None Include="Themes\Default\Default\ItemListProducts.cshtml" />
+    <None Include="Themes\Default\Default\ItemListsettings.cshtml" />
+    <None Include="Themes\Default\Default\ItemList_head.cshtml" />
+    <None Include="Themes\Default\Default\OrderAdmin.cshtml" />
+    <None Include="Themes\Default\Default\OrderAdminDetail.cshtml" />
+    <None Include="Themes\Default\Default\OrderAdminList.cshtml" />
+    <None Include="Themes\Default\Default\OrderAdminsettings.cshtml" />
+    <None Include="Themes\Default\Default\OrderAdmin_head.cshtml" />
+    <None Include="Themes\Default\Default\Payment.cshtml" />
+    <None Include="Themes\Default\Default\PaymentList.cshtml" />
+    <None Include="Themes\Default\Default\Paymentsettings.cshtml" />
+    <None Include="Themes\Default\Default\Payment_head.cshtml" />
+    <None Include="Themes\Default\Default\ProductNotFound.cshtml" />
+    <None Include="Themes\Default\Default\ProductNotFound_head.cshtml" />
+    <None Include="Themes\Default\Default\Profileform.cshtml" />
+    <None Include="Themes\Default\Default\ProfileFormsettings.cshtml" />
+    <None Include="Themes\Default\Default\ProfileForm_head.cshtml" />
+    <None Include="Themes\Default\Default\ProfileHome.cshtml" />
+    <None Include="Themes\Default\Default\ProfileHome_head.cshtml" />
     <None Include="Themes\Default\Default\OrderHtmlOutput.cshtml" />
     <None Include="Themes\Default\Default\OrderLabelOutput.cshtml" />
     <None Include="Themes\Default\Default\OrderPrintOutput.cshtml" />
@@ -1660,9 +1660,7 @@
     <None Include="XmlConnector.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Installation\" />
     <Folder Include="Providers\" />
-    <Folder Include="Themes\Default\css\Ximages\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

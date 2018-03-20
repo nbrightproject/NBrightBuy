@@ -35,7 +35,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public void ClearCache()
         {
-            strCacheKey = "NBS_CarProdXrefList_" + PortalSettings.Current.PortalId;
+            strCacheKey = "CarProdXrefList_" + PortalSettings.Current.PortalId;
             NBrightBuyUtils.RemoveCache(strCacheKey);
         }
 
@@ -51,7 +51,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         private void Load()
         {
-            strCacheKey = "NBS_CarProdXrefList_" + PortalSettings.Current.PortalId;
+            strCacheKey = "CarProdXrefList_" + PortalSettings.Current.PortalId;
             CatRefProdList = (List<String>)Utils.GetCache(strCacheKey);
             if (CatRefProdList == null)
             {

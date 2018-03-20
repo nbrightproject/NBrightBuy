@@ -1513,7 +1513,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
             //get Model Level Settings
             var ModuleKey = ModSettings.Get("modref");
             if (String.IsNullOrEmpty(ModuleKey))
-                ModuleKey = ModSettings.Get("modulekey"); // keep backward compatiblity with NBS_ProductView.
+                ModuleKey = ModSettings.Get("modulekey"); // keep backward compatiblity with ProductView.
 
             #region render template stuff
 
