@@ -8,11 +8,7 @@ $(document).ready(function () {
     selOrderByDropDown = "#sortorderdropdown" + $('modkey').val();
 
     $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
-
-    loadProductList();
-    loadItemListPopup();
-
-   
+  
 	$('.nav-tabs > li > a').click(function(event){
 		event.preventDefault();//stop browser to take action for clicked anchor
 

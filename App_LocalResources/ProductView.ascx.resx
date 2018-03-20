@@ -319,7 +319,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
     <value>Promotional offer</value>
   </data>
   <data name="promoflag.Text" xml:space="preserve">
-    <value>Promotion !</value>
+    <value>Promotion</value>
   </data>
   <data name="references.Text" xml:space="preserve">
     <value>References</value>
@@ -328,7 +328,7 @@ is provided by foreignexchangeresource.com&lt;/p&gt;</value>
     <value>With this product, we recommend :</value>
   </data>
   <data name="orderby.Text" xml:space="preserve">
-    <value>Default,From Price, From Price Desc,Product Ref,Product Name</value>
+    <value>Default sort,Sort by price (low to high),Sort by price (high to low),Sort by reference,Sort by name</value>
   </data>
   <data name="favorites.Text" xml:space="preserve">
     <value>Favorites</value>

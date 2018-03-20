@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -229,7 +229,7 @@
     <value>Solde !</value>
   </data>
   <data name="orderby.Text" xml:space="preserve">
-    <value>Défaut,Prix croissant,Prix décroissant,Réf. produit,Nom du produit</value>
+    <value>Tri par défaut,Tri par prix croissant,Tri par prix décroissant,Tri par référence,Tri par nom</value>
   </data>
   <data name="outofstock.Text" xml:space="preserve">
     <value>Pas de stock disponible</value>
@@ -253,7 +253,7 @@
     <value>Offre promotionnelle</value>
   </data>
   <data name="promoflag.Text" xml:space="preserve">
-    <value>Promotion !</value>
+    <value>Promo</value>
   </data>
   <data name="purchasabledocument.Text" xml:space="preserve">
     <value>Télécharger ici après achat &lt;i class='fa fa-exclamation-circle'&gt;&lt;/i&gt;</value>

@@ -39,18 +39,18 @@
                             <i class="fa fa-picture-o"></i>
                         </div>
                     }
+
+                    <div class="flags">
                     @if (@product.IsOnSale)
                     {
-                        <div class="onsaleflag">@ResourceKey("ProductView.onsaleflag")</div>
+                        <span class="onsaleflag">@ResourceKey("ProductView.promoflag")</span>
                     }
                     @if (!@product.IsInStock)
                     {
                         <div class="outofstockflag">@ResourceKey("ProductView.outofstockflag")</div>
                     }
-                    @if (product.HasProperty("promotionflag"))
-                    {
-                        <div class="promotionflag" @(ResourceKey("ProductView.promotionflag"))></div>
-                    }
+                    </div>
+
                 </div>
 
                 <!-- display images -->

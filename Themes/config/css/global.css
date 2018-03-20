@@ -74,7 +74,7 @@ input[type=radio].invalid{box-shadow:0 0 4px #ff0000;}
   margin-left: -50px;
   border-radius: 50%;
   border: 1px solid #ccc;
-  border-top-color: #07d;
+  border-top-color: #00a3de;
   animation: spinner .6s linear infinite;
   z-index: 9999;
 }
