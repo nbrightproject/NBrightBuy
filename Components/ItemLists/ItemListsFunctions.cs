@@ -31,7 +31,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.ItemLists
             _themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
             _templatename = ajaxInfo.GetXmlProperty("genxml/hidden/templatename");
             if (_templatename == "") _templatename = "favoriteslist";
-            if (_themeFolder == "") _themeFolder = "ClassicRazor";
+            if (_themeFolder == "") _themeFolder = "ClassicAjax";
             var itemId = ajaxInfo.GetXmlProperty("genxml/hidden/shopitemid");
             var itemlistname = ajaxInfo.GetXmlProperty("genxml/hidden/shoplistname");
 

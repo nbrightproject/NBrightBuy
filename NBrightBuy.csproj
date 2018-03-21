@@ -601,12 +601,11 @@
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
     <None Include="Themes\ClassicAjax\Default\FrontOfficePageBody.cshtml" />
     <None Include="Themes\ClassicAjax\Default\FrontOfficePageHeader.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjax.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjax_pageinject.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\MiniCart_head.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\MiniCart_pageinject.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList_paging.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxSettings.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\ProductDisplayAjaxList_head.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductListAjaxFilter.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductListAjaxFilter_pageinject.cshtml" />
     <None Include="Themes\ClassicAjax\Default\CategoryMenu.cshtml" />

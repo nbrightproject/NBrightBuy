@@ -149,7 +149,7 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
-                    RazorTemplate = ModSettings.Get("razorlisttemplate");
+                    RazorTemplate = ModSettings.Get("razortemplate");
                 }
 
                 #endregion
@@ -201,8 +201,11 @@ namespace Nevoweb.DNN.NBrightBuy
                 }
                 else
                 {
-                    // insert page header text
-                    NBrightBuyUtils.RazorIncludePageHeaderNoCache(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ModSettings.ThemeFolder, ModSettings.Settings());
+                    // load base template which should call ajax and load the list.
+                    var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, ModuleId, "productdetailrazor" + ModuleId, new NBrightInfo(true), _controlPath, ModSettings.ThemeFolder, Utils.GetCurrentCulture(), ModSettings.Settings());
+                    var lit = new Literal();
+                    lit.Text = strOut;
+                    phData.Controls.Add(lit);
                 }
             }
 

@@ -101,7 +101,7 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.processing').hide();
 
     if (e.cmd == 'cart_addtobasket') {
-        nbxget('cart_renderminicart', '.minicartdata', '.container_classicajax_minicart'); // Reload Cart
+        nbxget('cart_renderminicart', '#productajaxview', '.container_classicajax_minicart'); // Reload Cart
         $('.addedtobasket').delay(1000).fadeOut('fast');
     }
 
@@ -134,6 +134,9 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     }
 
     if (e.cmd == 'product_ajaxview_getfilters') {
+        // swith moduleid param back to list after change for filter
+        $('#moduleid').val($('#list_moduleid').val());
+
         // propertyFilterClicked method is in AjaxDisplayProductList_head
         $(".nbs-ajaxfilter input[type='checkbox']").change(propertyFilterClicked);
 
@@ -184,12 +187,12 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.shoppinglistremove').unbind("click");
     $('.shoppinglistremove').click(function () {
         $('#shopitemid').val($(this).attr('itemid'));
-        nbxget('itemlist_remove', '.entryid' + $(this).attr('itemid')); //apply serverside
+        nbxget('itemlist_remove', '#productajaxview'); //apply serverside
     });
 
     $('.wishlistremoveall').unbind("click");
     $('.wishlistremoveall').click(function () {
-        nbxget('itemlist_delete', '.entryid' + $(this).attr('itemid')); //apply serverside
+        nbxget('itemlist_delete', '#productajaxview'); //apply serverside
     });
 
     $('.shoplistselect').unbind("change");
@@ -285,7 +288,6 @@ function propertyFilterClicked() {
 }
 function loadProductList() {
     if ($('#ajaxlist').val() == 'True') {
-        $('.processing').show();
         nbxget('product_ajaxview_getlist', '#productajaxview', '#ajaxproducts');
     } else {
         
@@ -316,7 +318,8 @@ function loadFilters() {
     $('.processing').show();
     $("#propertyfiltertypeinside").val($("#filter_propertyfiltertypeinside").val());
     $("#propertyfiltertypeoutside").val($("#filter_propertyfiltertypeoutside").val());
-    nbxget('product_ajaxview_getfilters', '#ajaxfiltermodulesettings', '#ajaxfilter');
+    $("#moduleid").val($("#filter_moduleid").val());
+    nbxget('product_ajaxview_getfilters', '#productajaxview', '#ajaxfilter');
 }
 
 function IsInFavorites(productid) {

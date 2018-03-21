@@ -40,7 +40,7 @@
             <input id="tabid" type="hidden" value="@Model.GetUrlParam("tabid")" />
             <input id="index" type="hidden" value="" />
             <input id="themefolder" type="hidden" value="@info.GetXmlProperty("genxml/dropdownlist/themefolder")" />
-            <input id="razortemplate" type="hidden" value="ProductDisplaysettings.cshtml" />
+            <input id="razortemplate" type="hidden" value="ProductDisplayAjaxSettings.cshtml" />
             <div class="dnnFormItem">
                 <div>
                     @DnnLabel("lblcontrolpayth", "Settings.providercontrolpath")
@@ -57,6 +57,12 @@
                 <div>
                     @DnnLabel("lblEntityTypeCode", "ProductViewSettings.EntityTypeCode")
                     @TextBox(info, "genxml/textbox/entitytypecode", "width='300px' class='form-control' ", "ResourceKey:EntityTypeCode.EntityTypeCode")
+                </div>
+            </div>
+            <div class="dnnFormItem">
+                <div>
+                    @DnnLabel("lbltemplate", "Settings.razortemplate")
+                    @NBrightTextBox(info, "genxml/textbox/razortemplate", "", "ProductDisplayAjax.cshtml")
                 </div>
             </div>
             <div class="dnnFormItem">

@@ -1972,25 +1972,25 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Products
 
             // get the moduleid, tabid
             var moduleid = ajaxInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            var ps = PortalSettings.Current;
+            if (!Utils.IsNumeric(moduleid))
+            {
+                return "No moduleid passed to server";
+            }
             var settings = new Hashtable();
 
             // then add the NBrightBuy settings
             var ModSettings = new ModSettings(moduleid, settings);
 
-
-            var RazorTemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
-            var providercontrolpath = "/DesktopModules/NBright/" + ajaxInfo.GetXmlProperty("genxml/hidden/providercontrolpath") + "/";
-            var ThemeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
-            var uilang = ajaxInfo.GetXmlProperty("genxml/hidden/uilang");
+            var RazorTemplate = ModSettings.Get("razortemplate");
+            var providercontrolpath = "/DesktopModules/NBright/" + ModSettings.Get("providercontrolpath") + "/";
+            var ThemeFolder = ModSettings.Get("themefolder");
             var catname = ajaxInfo.GetXmlProperty("genxml/hidden/catref");
-
             if (catname != "" && ajaxInfo.GetXmlPropertyInt("genxml/hidden/catid") == 0)
             {
                 ajaxInfo.SetXmlProperty("genxml/hidden/catid", CategoryUtils.GetCatIdFromName(catname));
             }
 
-            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, -1, "", ajaxInfo, providercontrolpath, ThemeFolder, uilang, ModSettings.Settings());
+            var strOut = NBrightBuyUtils.RazorTemplRender(RazorTemplate, -1, "", ajaxInfo, providercontrolpath, ThemeFolder, UiLang, ModSettings.Settings());
 
             return strOut;
         }

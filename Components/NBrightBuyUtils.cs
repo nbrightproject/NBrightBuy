@@ -1790,7 +1790,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         public static void RazorIncludePageHeader(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
         {
-
             if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
             if (!page.Items["nbrightinject"].ToString().Contains(razorTemplateName + ","))
             {
@@ -1813,23 +1812,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public static void RazorIncludePageBody(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings, ProductData productdata = null)
+        public static void RazorIncludePageBody(int moduleid, Page page, string razorTemplateName, string controlPath, string theme, Dictionary<string, string> settings)
         {
-
             if (!page.Items.Contains("nbrightinject")) page.Items.Add("nbrightinject", "");
             if (!page.Items["nbrightinject"].ToString().Contains(razorTemplateName + ","))
             {
                 var razorTempl = "";
-                if (productdata == null)
-                {
-                    var nbi = new NBrightInfo();
-                    nbi.Lang = Utils.GetCurrentCulture();
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageBody", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
-                }
-                else
-                {
-                    razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageBody" + productdata.Info.ItemID, productdata, controlPath, theme, Utils.GetCurrentCulture(), settings);
-                }
+                var nbi = new NBrightInfo();
+                nbi.Lang = Utils.GetCurrentCulture();
+                razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageBody", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 if (razorTempl != "" && !razorTempl.StartsWith("ERROR"))
                 {
                     page.Form.Controls.Add(new LiteralControl(razorTempl));

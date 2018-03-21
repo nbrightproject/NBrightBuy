@@ -69,7 +69,7 @@ namespace Nevoweb.DNN.NBrightBuy.Base
 
                 // insert page header text
                 NBrightBuyUtils.RazorIncludePageHeader(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_head" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
-                // insert page body text, for passback element.
+                // insert page body text for template name. 
                 NBrightBuyUtils.RazorIncludePageBody(ModuleId, Page, Path.GetFileNameWithoutExtension(RazorTemplate) + "_pageinject" + Path.GetExtension(RazorTemplate), _controlPath, ThemeFolder, ModSettings.Settings());
             }
             var strOut = "<span class='container_" + ThemeFolder + "_" + RazorTemplate + "'>";
