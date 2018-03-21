@@ -1820,7 +1820,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var razorTempl = "";
                 var nbi = new NBrightInfo();
                 nbi.Lang = Utils.GetCurrentCulture();
-                razorTempl = NBrightBuyUtils.RazorTemplRender(razorTemplateName, moduleid, "RazorIncludePageBody", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
+                razorTempl = NBrightBuyUtils.RazorTemplRenderNoCache(razorTemplateName, moduleid, "RazorIncludePageBody", nbi, controlPath, theme, Utils.GetCurrentCulture(), settings);
                 if (razorTempl != "" && !razorTempl.StartsWith("ERROR"))
                 {
                     page.Form.Controls.Add(new LiteralControl(razorTempl));

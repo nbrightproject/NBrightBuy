@@ -1574,7 +1574,7 @@
     <EmbeddedResource Include="App_LocalResources\Tools.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NBS.dnn">
+    <None Include="OpenStore.dnn">
       <SubType>Designer</SubType>
     </None>
     <None Include="NBrightThumb.ashx" />
@@ -1666,8 +1666,8 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <Extension>zip</Extension>
-    <DNNFileName>NBS</DNNFileName>
-    <PackageName>NBS</PackageName>
+    <DNNFileName>OpenStore</DNNFileName>
+    <PackageName>OpenStore</PackageName>
   </PropertyGroup>
   <Import Project="BuildScripts\ModulePackage.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">

@@ -20,13 +20,15 @@ The easiest method to upgrade is to create a new store and migrate the data.
 Simply export from NBS and import into Open Store, the import and export of data is compatible.
 
 
-Method 3
+Method 2
 --------
 
 If method 1 is impossible, install the latest verison of Open Source.  
 
-Becuase the module names and templates have changed, you might get some issues with modules.
-If you get any issues you should add the new module with settings and delete the old module.
+Becuase the module names and templates have changed, you will get some issues with modules.
+You should add the new module "OS*" with settings and delete the old module (NBS*).
+
+After replacing all old NBS moodules you can remove the old NBS* module deinfinitions from DNN, do NOT remove the files.
 
 Check the BO>Admin>Plufgins has the correct data, the plugin method has altered, it's been designed to upgrade, but you should check.
 

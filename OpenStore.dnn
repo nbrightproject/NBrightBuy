@@ -45,48 +45,12 @@
           <scripts>
             <basePath>DesktopModules\NBright\NBrightBuy</basePath>
             <script type="Install">
-              <name>02.06.00.SqlDataProvider</name>
-              <version>02.06.00</version>
-            </script>
-            <script type="Install">
-              <name>03.00.00.SqlDataProvider</name>
-              <version>03.00.00</version>
-            </script>
-            <script type="Install">
-              <name>03.02.00.SqlDataProvider</name>
-              <version>03.02.00</version>
-            </script>
-            <script type="Install">
-              <name>03.02.00.SqlDataProvider</name>
-              <version>03.02.00</version>
-            </script>
-            <script type="Install">
-              <name>03.05.06.SqlDataProvider</name>
-              <version>03.05.06</version>
-            </script>
-            <script type="Install">
-              <name>03.05.07.SqlDataProvider</name>
-              <version>03.05.07</version>
-            </script>
-            <script type="Install">
-              <name>03.05.08.SqlDataProvider</name>
-              <version>03.05.08</version>
-            </script>
-            <script type="Install">
-              <name>03.05.09.SqlDataProvider</name>
-              <version>03.05.09</version>
-            </script>
-            <script type="Install">
-              <name>03.05.10.SqlDataProvider</name>
-              <version>03.05.10</version>
-            </script>
-            <script type="Install">
-              <name>03.06.07.SqlDataProvider</name>
-              <version>03.06.07</version>
+              <name>04.00.00.SqlDataProvider</name>
+              <version>04.00.00</version>
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
-              <version>03.00.00</version>
+              <version>04.00.00</version>
             </script>
           </scripts>
         </component>
