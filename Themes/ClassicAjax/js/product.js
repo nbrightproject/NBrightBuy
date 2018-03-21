@@ -288,6 +288,7 @@ function propertyFilterClicked() {
 }
 function loadProductList() {
     if ($('#ajaxlist').val() == 'True') {
+        $('.processing').show();
         nbxget('product_ajaxview_getlist', '#productajaxview', '#ajaxproducts');
     } else {
         
