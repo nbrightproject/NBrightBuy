@@ -141,6 +141,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
         public static string exittab = "exittab";
         public static string paymenttab = "paymenttab";
         public static string carttab = "carttab";
+        public static string checkouttab = "checkouttab";
         public static string ddldetailtabid = "ddldetailtabid";
         public static string productlisttab = "productlisttab";
         public static string pagesize = "pagesize";

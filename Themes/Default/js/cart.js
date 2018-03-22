@@ -6,7 +6,7 @@ $(document).ready(function () {
         var msg = $('#cmdClearCart').val();
         if (confirm(msg)) {
             $('.processing').show();
-            nbxget('cart_clearcart', '#fullcartdata');
+            nbxget('cart_clearcart', '#productajaxview');
         }
     });
 
@@ -34,7 +34,7 @@ $(document).ready(function () {
             $('.removeitem').click(function() {
                 $('.processing').show();
                 $('#itemcode').val($(this).attr('itemcode'));
-                nbxget('cart_removefromcart', '#fullcartdata');
+                nbxget('cart_removefromcart', '#productajaxview');
             });
 
             $('.processing').hide();
@@ -80,7 +80,7 @@ $(document).ready(function () {
         }
 
         if (e.cmd == 'cart_recalculatecart' || e.cmd == 'cart_removefromcart' || e.cmd == 'cart_clearcart') {
-            nbxget('cart_rendercartlist', '#fullcartdata', '#checkoutitemlist');
+            nbxget('cart_rendercartlist', '#productajaxview', '#checkoutitemlist');
         }
         
         if (e.cmd == 'cart_redirecttocheckout') {
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
     // show cart list
     $('.processing').show();
-    nbxget('cart_rendercartlist', '#fullcartdata', '#checkoutitemlist');
+    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutitemlist');
 
 
 });

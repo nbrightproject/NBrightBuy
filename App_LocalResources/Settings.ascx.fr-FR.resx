@@ -172,7 +172,7 @@
     <value>Tout cocher</value>
   </data>
   <data name="checkout.Text" xml:space="preserve">
-    <value>Messages du panier</value>
+    <value>CheckOut</value>
   </data>
   <data name="checkoutpromocode.Text" xml:space="preserve">
     <value>Champ code promo</value>
@@ -377,5 +377,8 @@
   </data>
   <data name="enablefileloggingmsg.Text" xml:space="preserve">
     <value>To be able to actually see a logfile, you need to add a logger and an appender to the DotNetNuke.Log4Net.config file in the root of your DNN installation.</value>
+  </data>
+  <data name="cartmessages.Text" xml:space="preserve">
+    <value>Messages du panier</value>
   </data>
 </root>

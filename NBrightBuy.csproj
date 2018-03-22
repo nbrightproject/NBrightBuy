@@ -596,7 +596,7 @@
     <Content Include="Themes\ClassicAjax\js\jquery.cycle2.min.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.min.js" />
-    <Content Include="Themes\ClassicAjax\js\product.js" />
+    <Content Include="Themes\Default\js\product.js" />
     <None Include="README.md" />
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
     <None Include="Themes\ClassicAjax\Default\FrontOfficePageBody.cshtml" />
@@ -624,7 +624,7 @@
     <None Include="Themes\ClassicAjax\Default\MiniCart.cshtml" />
     <None Include="Themes\ClassicAjax\Default\MiniCartSettings.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayDetail.cshtml" />
-    <None Include="Themes\ClassicAjax\Default\ProductDisplayDetail_head.cshtml" />
+    <None Include="Themes\ClassicAjax\Default\ProductDisplayDetail_seohead.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayList.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplayListBody.cshtml" />
     <None Include="Themes\ClassicAjax\Default\ProductDisplaySettings.cshtml" />
@@ -1626,11 +1626,9 @@
     <None Include="Themes\Default\Default\CheckoutShipMethod.cshtml" />
     <None Include="Themes\Default\Default\CheckoutTotals.cshtml" />
     <None Include="Themes\Default\Default\CheckoutSummary.cshtml" />
-    <None Include="Themes\Default\Default\Checkout_head.cshtml" />
     <None Include="Themes\Default\Default\FullCart.cshtml" />
     <None Include="Themes\Default\Default\FullCartList.cshtml" />
     <None Include="Themes\Default\Default\FullCartsettings.cshtml" />
-    <None Include="Themes\Default\Default\FullCart_head.cshtml" />
     <None Include="Themes\Default\Default\ItemList.cshtml" />
     <None Include="Themes\Default\Default\ItemListProducts.cshtml" />
     <None Include="Themes\Default\Default\ItemListsettings.cshtml" />

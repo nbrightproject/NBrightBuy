@@ -21,7 +21,7 @@
                 var msg = $('#cmdClearCart').val();
                 if (confirm(msg)) {
                     $('.processing').show();
-                    nbxget('cart_clearcart', '#checkoutdata');
+                    nbxget('cart_clearcart', '#productajaxview');
                 }
             });
 
@@ -55,7 +55,7 @@
                 $('.processing').hide();
 
                 if (e.cmd == 'cart_recalculatecart') {
-                    nbxget('cart_rendercartlist', '#checkoutdata', '#checkoutdisplaylist');
+                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
                 }
 
                 if (e.cmd == 'cart_rendercartaddress') {
@@ -171,11 +171,11 @@
                 }
 
                 if (e.cmd == 'cart_recalculatesummary') {
-                    nbxget('cart_rendersummary', '#checkoutdata', '#checkoutdisplaysummary');
+                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
                 }
 
                 if (e.cmd == 'cart_clearcart' || e.cmd == 'cart_removefromcart') {
-                    nbxget('cart_rendercartlist', '#checkoutdata', '#checkoutdisplaylist');
+                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
                 }
 
                 if (e.cmd == 'cart_rendercartlist') {
@@ -184,7 +184,7 @@
                     $('.removeitem').click(function() {
                         $('.processing').show();
                         $('#itemcode').val($(this).attr('itemcode'));
-                        nbxget('cart_removefromcart', '#checkoutdata');
+                        nbxget('cart_removefromcart', '#productajaxview');
                     });
 
                     $('.processing').hide();
@@ -237,9 +237,10 @@
                 }
 
                 if (e.cmd == 'cart_updateshipoption') {
-                    nbxget('cart_rendersummary', '#checkoutdata', '#checkoutdisplaysummary');
+                    $('#carttemplate').val('CheckoutSummary.cshtml');
+                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
                     $('#carttemplate').val('CheckoutShipMethod.cshtml');
-                    nbxget('cart_rendershipmethod', '#checkoutdata', '#checkoutdisplayshipmethod');
+                    nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
                 }
 
                 if (e.cmd == 'cart_rendersummary') {
@@ -302,7 +303,7 @@ function processCartStep(buttontype) {
         $('#checkoutdisplaylist').show();
         $('#checkoutdisplayaddr').hide();
         $('#checkoutsummary').hide();
-        nbxget('cart_rendercartlist', '#checkoutdata', '#checkoutdisplaylist');
+        nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
     }
 
     if ($('#cartstep').val() == '2') {
@@ -315,7 +316,7 @@ function processCartStep(buttontype) {
         $('#checkoutdisplaylist').hide();
         $('#checkoutdisplayaddr').show();
         $('#checkoutsummary').hide();
-        nbxget('cart_rendercartaddress', '#checkoutdata', '#checkoutdisplayaddr');
+        nbxget('cart_rendercartaddress', '#productajaxview', '#checkoutdisplayaddr');
     }
 
     if ($('#cartstep').val() == '3') {
@@ -345,10 +346,10 @@ function processCartStep(buttontype) {
             $('#checkoutdisplaylist').hide();
             $('#checkoutdisplayaddr').hide();
             $('#checkoutsummary').show();
-            nbxget('cart_rendersummary', '#checkoutdata', '#checkoutdisplaysummary');
+            nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
 
             $('#carttemplate').val('CheckoutShipMethod.cshtml');
-            nbxget('cart_rendershipmethod', '#checkoutdata', '#checkoutdisplayshipmethod');
+            nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
 
         }
     }

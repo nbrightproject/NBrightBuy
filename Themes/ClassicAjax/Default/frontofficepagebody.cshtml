@@ -1,21 +1,10 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using DotNetNuke.Common
 @using DotNetNuke.Entities.Portals
 @using DotNetNuke.Entities.Users
 @using NBrightCore.common
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components
-
-<div id="loader" class="processing" style="display: none;">
-    <div class="spinner"></div>
-</div>
-
-<input id="logintab" type="hidden" value="@(StoreSettings.Current.Get("logintab"))" />
-
-<!-- Shopping List Popup -->
-<div style="display: none">
-    <div id="shoppinglistpopup" class="shoppinglistpopup">
-    </div>
-</div>
 
 <div id="productajaxview" style="display: none;">
     <!-- passparam section-->
@@ -50,6 +39,32 @@
     <input id="minicarttemplate" type="hidden" value="MiniCart.cshtml">
     <input id="minicarttheme" type="hidden" value="ClassicAjax">
 
+    <!-- checkout cart -->
+    <input id="itemcode" value="" type="hidden" />
+    <input id="carttemplate" type="hidden" value="">
+    <input id="carttheme" type="hidden" value="Default">
+    <input id="defaultaddr" value="" type="hidden" />
+    <input id="cartstep" value="@(Model.GetUrlParam("cartstep", "1"))" type="hidden" />
+
 </div>
 
+<div id="loader" class="processing" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
+<input id="logintab" type="hidden" value="@(StoreSettings.Current.Get("logintab"))" />
+
+<!-- Shopping List Popup -->
+<div style="display: none">
+    <div id="shoppinglistpopup" class="shoppinglistpopup">
+    </div>
+</div>
+
+<input id="checkouturl" type="hidden" value="@(Globals.NavigateURL(Model.GetSettingInt("checkouttabid")))">
+
+<!-- shipping provider element to trigger reload -->
+<div class="reloadshipprovider" style="display:none;"></div>
+
+<!-- return area for ajax data -->
+<div id="checkoutpayredirectreturn" style="display: none;"></div>
 

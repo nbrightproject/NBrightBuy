@@ -218,6 +218,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 return PortalSettings.Current.ActiveTab.TabID;
             }
         }
+        public int CheckoutTabId
+        {
+            get
+            {
+                var i = Get("checkouttab");
+                if (Utils.IsNumeric(i)) return Convert.ToInt32(i);
+                return PortalSettings.Current.ActiveTab.TabID;
+            }
+        }
 
         public int ProductListTabId
         {
