@@ -80,6 +80,7 @@ $(document).ready(function () {
         }
 
         if (e.cmd == 'cart_recalculatecart' || e.cmd == 'cart_removefromcart' || e.cmd == 'cart_clearcart') {
+            $('#carttemplate').val('FullCartList.cshtml');
             nbxget('cart_rendercartlist', '#productajaxview', '#checkoutitemlist');
         }
         
@@ -90,10 +91,6 @@ $(document).ready(function () {
         }
 
     }
-
-    // show cart list
-    $('.processing').show();
-    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutitemlist');
 
 
 });

@@ -55,6 +55,19 @@ $(document).ready(function () {
         if ($('.quantity').val() == 'NaN') $('.quantity').val('1');
     });
 
+    // product detail add to basket event
+    $('.addtobasket').click(function () {
+        //Form validation 
+        var form = $("#Form");
+        form.validate();
+        if (form.valid()) {
+            $('.processing').show();
+            if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
+            nbxget('cart_addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+            $('.addedtobasket').delay(10).fadeIn('fast');
+        }
+    });
+
 });
 
 
@@ -100,7 +113,8 @@ function AjaxView_GetList_nbxgetCompleted(e) {
 
     $('.processing').hide();
 
-    if (e.cmd == 'cart_addtobasket') {
+    if (e.cmd == 'cart_addtobasket') {        
+        $('#carttemplate').val('MiniCart.cshtml');
         nbxget('cart_renderminicart', '#productajaxview', '.container_classicajax_minicart'); // Reload Cart
         $('.addedtobasket').delay(1000).fadeOut('fast');
     }

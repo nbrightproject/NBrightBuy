@@ -2314,13 +2314,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components
 
         #region "Razor functions"
 
-        public static string RenderCart(string theme, string carttemplate, string controlPath = "/DesktopModules/NBright/NBrightBuy")
+        public static string RenderCart(string theme, string carttemplate, string controlPath = "/DesktopModules/NBright/NBrightBuy",int moduleid = -1)
         {
             var razorTempl = "";
             if (carttemplate != "")
             {
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
-                var passSettings = new Dictionary<string, string>();
+                var settings = GetSettings(PortalSettings.Current.PortalId, moduleid);
+                var passSettings = GetPassSettings(settings);
                 foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
                 {
                     if (passSettings.ContainsKey(s.Key))

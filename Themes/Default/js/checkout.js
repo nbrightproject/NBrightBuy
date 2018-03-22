@@ -269,10 +269,6 @@
 
             }
 
-
-   processCartStep('start');
-
-
 });
 
 function populateAddressForm(selectordiv, datavalues, datafields) {

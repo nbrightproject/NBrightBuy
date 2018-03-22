@@ -129,7 +129,7 @@
 
                         </td>
                         <td class="quantitycolumn">
-                            <input id="itemcode" value="@(nbi.GetXmlProperty("genxml/itemcode"))" type="hidden"/> <!-- This is required, so mergecart can work on update -->
+                            <input id="itemcode_@(lp)" value="@(nbi.GetXmlProperty("genxml/itemcode"))" type="hidden"/> <!-- This is required, so mergecart can work on update -->
 
                             <div class="quantityfields">
                                 <a class="qtyminus" href="javascript:void(0)" itemcode="@(nbi.GetXmlProperty("genxml/itemcode"))"><i class="fa fa-minus"></i></a>
