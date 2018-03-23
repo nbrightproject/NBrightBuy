@@ -107,6 +107,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 else
                     passSettings.Add(s.Key, s.Value);
             }
+            foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
+            {
+                if (passSettings.ContainsKey(s.Key))
+                    passSettings[s.Key] = s.Value;
+                else
+                    passSettings.Add(s.Key, s.Value);
+            }
             return passSettings;
         }
 
@@ -1604,7 +1611,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             // do razor template
             var ckey = "NBrightBuyRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
             var razorTempl = (string)GetModCache(ckey);
-            if (razorTempl == null)
+            if (razorTempl == null || cacheKey == "")
             {
                 razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
                 if (razorTempl == "")
@@ -2322,14 +2329,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 var currentcart = new CartData(PortalSettings.Current.PortalId);
                 var settings = GetSettings(PortalSettings.Current.PortalId, moduleid);
                 var passSettings = GetPassSettings(settings);
-                foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
-                {
-                    if (passSettings.ContainsKey(s.Key))
-                        passSettings[s.Key] = s.Value;
-                    else
-                        passSettings.Add(s.Key, s.Value);
-                }
-
                 razorTempl = NBrightBuyUtils.RazorTemplRender(carttemplate, 0, "", currentcart, controlPath, theme, Utils.GetCurrentCulture(), passSettings);
             }
             return razorTempl;
