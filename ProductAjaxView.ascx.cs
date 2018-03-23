@@ -261,7 +261,6 @@ namespace Nevoweb.DNN.NBrightBuy
                     BasePage.Title = productData.ProductName;
 
                 if (productData.SEODescription != "") BasePage.Description = productData.SEODescription;
-                if (productData.SEOTagwords != "") BasePage.KeyWords = productData.SEOTagwords;
 
                 // if debug , output the xml used.
                 if (DebugMode) productData.Info.XMLDoc.Save(PortalSettings.HomeDirectoryMapPath + "debug_entry.xml");

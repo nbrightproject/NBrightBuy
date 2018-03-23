@@ -48,6 +48,12 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 case "cart_rendersummary":
                     strOut = RenderCart(context);
                     break;
+                case "cart_rendersummary_start":
+                    strOut = RenderCart(context);
+                    break;
+                case "cart_rendersummary_ship":
+                    strOut = RenderCart(context);
+                    break;
                 case "cart_rendershipmethod":
                     strOut = RenderCart(context);
                     break;

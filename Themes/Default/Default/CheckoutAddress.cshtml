@@ -38,6 +38,8 @@
 </div>
     }
 
+<div class="addressbookmessage">@ResourceKey("CartView.AddressBookMessage")</div>
+
 <div id="cartbilladdress">
 <div class="checkoutbillform">
     <h3>@ResourceKey("CartView.BillingAddress")</h3>
@@ -46,62 +48,62 @@
     @if (info.UserId >= 0)
     {
         <div class="formrow">
-            <h6>@ResourceKey("General.ChooseAddress")</h6>
+            <label>@ResourceKey("General.ChooseAddress")</label>
             @AddressSelectList(info,"genxml/dropdownlist/selectaddress", ".checkoutbillform", "firstname,lastname,company,unit,street,postalcode,city,country,telephone,email,region", "class='chooseaddress'")
         </div>
     }
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblFirstName")</h6>
+            <label>@ResourceKey("General.lblFirstName")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/firstname")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.lblLastName")</h6>
+            <label>@ResourceKey("General.lblLastName")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/lastname")
         </div>
     </div>
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblPhone")</h6>
+            <label>@ResourceKey("General.lblPhone")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/telephone")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.Email")</h6>
+            <label>@ResourceKey("General.Email")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/email", "required name='billemail' class='required' type='email' datatype='email'")
         </div>
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblCompany")</h6>
+        <label>@ResourceKey("General.lblCompany")</label>
         @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/company")
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblAddress1")</h6>
+        <label>@ResourceKey("General.lblAddress1")</label>
         @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/unit")
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblAddress2")</h6>
+        <label>@ResourceKey("General.lblAddress2")</label>
         @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/street")
     </div>
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblCity")</h6>
+            <label>@ResourceKey("General.lblCity")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/city")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.lblPostCode")</h6>
+            <label>@ResourceKey("General.lblPostCode")</label>
             @NBrightTextBox(info, "genxml/billaddress/genxml/textbox/postalcode", "required name='billpostalcode' class='required'")
         </div>
     </div>
 
     <div class="formrow">
         <div class="leftside checkoutbillformcountrydiv">
-            <h6>@ResourceKey("General.lblCountry")</h6>
+            <label>@ResourceKey("General.lblCountry")</label>
             @CountrySelectList(info, "genxml/billaddress/genxml/dropdownlist/country", "required name='billcountry' class='required' class='checkoutbillformcountry'")
             <!-- hidden data field required to render ajax region update -->
             <input id="carttemplate_ad" type="hidden" value="CheckoutRegion.cshtml">
@@ -112,7 +114,7 @@
             <input id="billregion_ad" type="hidden" value="">
         </div>
         <div class="rightside checkoutbillformregiondiv">
-            <h6>@ResourceKey("General.lblRegion")</h6>
+            <label>@ResourceKey("General.lblRegion")</label>
             @RegionSelect(info, "genxml/billaddress/genxml/dropdownlist/region", "","",false)
         </div>
     </div>
@@ -124,7 +126,7 @@
 <!-- Shipping options radio buttons -->
 <div id="cartshippingoptions" >
 <div id="shippingoptions">
-    <div class="formrow dnnForm">
+    <div class="formrow">
         <h3>@ResourceKey("General.lblshippingoptions")</h3>
         @if (Model.GetSettingBool("collectfromstore"))
         {
@@ -144,62 +146,62 @@
     @if (info.UserId >= 0)
     {
         <div class="formrow">
-            <h6>@ResourceKey("General.ChooseAddress")</h6>
+            <label>@ResourceKey("General.ChooseAddress")</label>
             @AddressSelectList(info, "genxml/dropdownlist/selectshipaddress", ".checkoutshipform", "firstname,lastname,company,unit,street,postalcode,city,country,telephone,email,region", "class='chooseaddress'")
         </div>
     }
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblFirstName")</h6>
+            <label>@ResourceKey("General.lblFirstName")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/firstname")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.lblLastName")</h6>
+            <label>@ResourceKey("General.lblLastName")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/lastname")
         </div>
     </div>
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblPhone")</h6>
+            <label>@ResourceKey("General.lblPhone")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/telephone")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.Email")</h6>
+            <label>@ResourceKey("General.Email")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/email", "required name='shipemail' class='required' type='email' datatype='email'")
         </div>
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblCompany")</h6>
+        <label>@ResourceKey("General.lblCompany")</label>
         @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/company")
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblAddress1")</h6>
+        <label>@ResourceKey("General.lblAddress1")</label>
         @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/unit")
     </div>
 
     <div class="formrow">
-        <h6>@ResourceKey("General.lblAddress2")</h6>
+        <label>@ResourceKey("General.lblAddress2")</label>
         @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/street")
     </div>
 
     <div class="formrow">
         <div class="leftside">
-            <h6>@ResourceKey("General.lblCity")</h6>
+            <label>@ResourceKey("General.lblCity")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/city")
         </div>
         <div class="rightside">
-            <h6>@ResourceKey("General.lblPostCode")</h6>
+            <label>@ResourceKey("General.lblPostCode")</label>
             @NBrightTextBox(info, "genxml/shipaddress/genxml/textbox/postalcode", "required name='shippostalcode' class='required'")
         </div>
     </div>
 
     <div class="formrow">
         <div class="leftside checkoutshipformcountrydiv">
-            <h6>@ResourceKey("General.lblCountry")</h6>
+            <label>@ResourceKey("General.lblCountry")</label>
             @CountrySelectList(info, "genxml/shipaddress/genxml/dropdownlist/country", "required name='shipcountry' class='required checkoutshipformcountry'")
             <!-- hidden data field required to render ajax region update -->
             <input id="carttemplate_ads" type="hidden" value="CheckoutRegion.cshtml">
@@ -210,7 +212,7 @@
             <input id="shipregion_ads" type="hidden" value="">
         </div>
         <div class="rightside checkoutshipformregiondiv">
-            <h6>@ResourceKey("General.lblRegion")</h6>
+            <label>@ResourceKey("General.lblRegion")</label>
             @RegionSelect(info, "genxml/shipaddress/genxml/dropdownlist/region", "", "",false)
         </div>
     </div>

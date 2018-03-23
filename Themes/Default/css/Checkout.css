@@ -1,5 +1,5 @@
 /* Checkout Steps */
-.checkoutsteps {background:#efefef;font-size:12px;color:#3f3030;margin-bottom:12px;}
+.checkoutsteps {background:#efefef;font-size:12px;color:#3f3030;margin-bottom:20px;}
 .checkoutsteps:after {content:"";display:table;clear:both;}
 .checkoutstepsheader {background:#dedede;padding:12px 24px;font-weight:bold;float:left;}
 .checkoutsteps ol {counter-reset:li;list-style:none;padding:0;margin:0;}
@@ -10,8 +10,7 @@
 
 /* Checkout */
 #cartdetails{overflow:hidden;padding:1%;}/* some padding for panel shadows */
-#cartdetails H3{line-height:34px;margin:0 0 12px;padding:0;}
-#cartdetails H6{font-size:12px;font-weight:normal;margin:0 0 5px;}
+#cartdetails h3{margin:0 0 20px;padding:0;}
 #cartdetails .formrow{clear:both;}
 /*#cartlist .formrow{clear:both;text-align:right;}*/
 #cartdetails .chooseaddress{background:#fefff4;box-shadow:none;padding:3px;}
@@ -42,10 +41,12 @@
 #cartlist .secondarybutton{margin-right:0;}
 #cartdetails .radiobuttonlist .dnnRadiobutton{margin:0 0 9px;}
 #cartdetails .radiobuttonlist .dnnBoxLabel{margin-right:15px;}
+#shippingmethods {margin:0 0 20px 0;}
+.addressbookmessage {font-style:italic;margin:0 0 20px 0;}
 
 /* cartlist Table - www.csstablegenerator.com */
-#cartlist{margin-bottom:24px;}
-#cartlist table{margin:0px;padding:0px;width:100%;border-collapse:collapse;border-spacing:0;width:100%;}
+#cartlist{}
+#cartlist table{margin:0 0 20px 0;padding:0px;width:100%;border-collapse:collapse;border-spacing:0;width:100%;}
 #cartlist table tr:nth-child(odd){background-color:#f2f2f2;}
 #cartlist table tr:nth-child(even){background-color:#ffffff;}
 #cartlist table td{vertical-align:middle;text-align:center;padding:6px;font-family:inherit;font-weight:normal;border:1px solid #DDDDDD;padding:10px;text-align:center;}

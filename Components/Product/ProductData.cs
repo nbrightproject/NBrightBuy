@@ -156,21 +156,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             }
         }
 
-        public String SEOTagwords
-        {
-            get
-            {
-                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txttagwords");
-                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
-                return strOut;
-            }
-        }
 
         public String SEODescription
         {
             get
             {
-                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");
+                var strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/seodescription");
+                if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtsummary");
                 if (strOut == "") strOut = Info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname");
                 return strOut;
             }

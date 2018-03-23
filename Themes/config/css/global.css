@@ -33,17 +33,17 @@
 
 /* General Form Styles */
 .formrow:after, .radiobuttonlist:after {content:"";display:table;clear:both;}
-.formrow label {display:block;font-size:12px;font-weight:normal;text-transform:uppercase;line-height:normal;margin:0 0 5px;}
+.formrow label {display:block;font-size:14px;font-weight:normal;line-height:normal;margin:0 0 5px;}
 .formrow input[type=text], .formrow input[type=email], .formrow select, .formrow textarea {border:1px solid #dddddd;box-sizing:border-box;height:30px;padding:0 7px;width:100%;margin:0 0 15px;}
 .formrow select {padding-right:0;}
-.formrow input[type=radio] {float:left;margin:0 0 0 10px;}
-.radiobuttonlist label {float:left;margin:-2px 0 0 6px;text-transform:none;}
-.formrow input[type=checkbox] {float:left;margin:0 0 0 10px;}
-.submissioncheck {margin:0 0 9px !important;}
-.submissioncheck label {float:left;margin:-2px 0 0 6px;text-transform:none;font-style:italic;}
+.formrow input[type=radio] {float:left;margin:2px 6px 0 10px;}
+.formrow input[type=checkbox] {float:left;margin:2px 6px 0 10px;}
+.submissioncheck {margin:0 0 9px 0 !important;}
+.submissioncheck label {text-transform:none;font-style:italic;}
 /* === HTML5 Validation Styles === */
 .nbs input:required {background:#fff url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/asterisk.png") no-repeat 98% center;outline:none !important;}
 .nbs input:focus:invalid {background:#fff url("/DesktopModules/NBright/NBrightBuy/Themes/config/img/invalid.png") no-repeat 98% center;}
+.error {color:#d45252;}
 
 /* Misc */
 .large{font-size:115%}

@@ -33,10 +33,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var strOut = "manualpayment Ajax Error";
             switch (paramCmd)
             {
-                case "manualpaymentajax_savesettings":
+                case "manualpayment_savesettings":
                     strOut = objCtrl.SavePluginSinglePageData(context);
                     break;
-                case "manualpaymentajax_selectlang":
+                case "manualpayment_selectlang":
                     objCtrl.SavePluginSinglePageData(context);
                     var nextlang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang");
                     var info = objCtrl.GetPluginSinglePageData("manualpayment", "MANUALPAYMENT", nextlang);

@@ -52,82 +52,81 @@
             // function to do actions after an ajax call has been made.
             function CheckOut_nbxgetCompleted(e) {
 
-                $('.processing').hide();
-
                 if (e.cmd == 'cart_recalculatecart') {
                     nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
                 }
 
                 if (e.cmd == 'cart_rendercartaddress') {
 
-                        $('.processing').hide();
-                        $('#cartactions').show();
+                    $('#cartactions').show();
 
-                        $('#selectaddress').unbind();
-                        $('#selectaddress').change(function () {
-                            populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
-                            $('#billregion').val($('#billaddress_region').val());
-                            $('#billaddress_country').trigger("change");
-                        });
+                    $('#selectaddress').unbind();
+                    $('#selectaddress').change(function() {
+                        populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
+                        $('#billregion').val($('#billaddress_region').val());
+                        $('#billaddress_country').trigger("change");
+                    });
 
-                        $('#billaddress_country').unbind();
-                        $('#billaddress_country').change(function () {
-                            $('.checkoutbillformregiondiv').hide();
-                            nbxget('renderpostdata', '.checkoutbillformcountrydiv', '.checkoutbillformregiondiv');
-                        });
+                    $('#billaddress_country').unbind();
+                    $('#billaddress_country').change(function() {
+                        $('.checkoutbillformregiondiv').hide();
+                        $('.processing').show();
+                        nbxget('renderpostdata', '.checkoutbillformcountrydiv', '.checkoutbillformregiondiv');
+                    });
 
-                        $('.checkoutbillformregiondiv').unbind();
-                        $('.checkoutbillformregiondiv').change(function () {
-                            if ($('#billregion').val() != '') {
-                                $('#billaddress_region').val($('#billregion').val());
-                                $('#billregion').val('')
-                            }
-                            $('.checkoutbillformregiondiv').show();
-                        });
+                    $('.checkoutbillformregiondiv').unbind();
+                    $('.checkoutbillformregiondiv').change(function() {
+                        if ($('#billregion').val() != '') {
+                            $('#billaddress_region').val($('#billregion').val());
+                            $('#billregion').val('')
+                        }
+                        $('.checkoutbillformregiondiv').show();
+                    });
 
 
-                        $('#selectshipaddress').unbind();
-                        $('#selectshipaddress').change(function () {
-                            populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
-                            $('#shipregion').val($('#shipaddress_region').val());
-                            $('#shipaddress_country').trigger("change");
-                        });
+                    $('#selectshipaddress').unbind();
+                    $('#selectshipaddress').change(function() {
+                        populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
+                        $('#shipregion').val($('#shipaddress_region').val());
+                        $('#shipaddress_country').trigger("change");
+                    });
 
-                        $('#shipaddress_country').unbind();
-                        $('#shipaddress_country').change(function () {
-                            $('.checkoutshipformregiondiv').hide();
-                            nbxget('renderpostdata', '.checkoutshipformcountrydiv', '.checkoutshipformregiondiv');
-                        });
+                    $('#shipaddress_country').unbind();
+                    $('#shipaddress_country').change(function() {
+                        $('.checkoutshipformregiondiv').hide();
+                        $('.processing').show();
+                        nbxget('renderpostdata', '.checkoutshipformcountrydiv', '.checkoutshipformregiondiv');
+                    });
 
-                        $('.checkoutshipformregiondiv').unbind();
-                        $('.checkoutshipformregiondiv').change(function () {
-                            if ($('#shipregion').val() != '') {
-                                $('#shipaddress_region').val($('#shipregion').val());
-                                $('#shipregion').val('')
-                            }
-                            $('.checkoutshipformregiondiv').show();
-                        });
+                    $('.checkoutshipformregiondiv').unbind();
+                    $('.checkoutshipformregiondiv').change(function() {
+                        if ($('#shipregion').val() != '') {
+                            $('#shipaddress_region').val($('#shipregion').val());
+                            $('#shipregion').val('')
+                        }
+                        $('.checkoutshipformregiondiv').show();
+                    });
 
-                        $('.rblshippingoptions').unbind();
-                        $('.rblshippingoptions').change(function () {
-                            var selected = $('input[name=extrainfo_rblshippingoptionsradio]:checked');
-                            if (selected.val() == '2') {
-                                $('.checkoutshipform').show();
-                            } else {
-                                $('.checkoutshipform').hide();
-                            }
-                            // disable validation on hidden controls
-                            $('input:visible').renameAttr('ignorerequired', 'required');;
-                            $('input:hidden').renameAttr('required', 'ignorerequired');
-                        });
-
-                        if ($('input[name=extrainfo_rblshippingoptionsradio]:checked').val() == '2') {
+                    $('.rblshippingoptions').unbind();
+                    $('.rblshippingoptions').change(function() {
+                        var selected = $('input[name=extrainfo_rblshippingoptionsradio]:checked');
+                        if (selected.val() == '2') {
                             $('.checkoutshipform').show();
                         } else {
                             $('.checkoutshipform').hide();
                         }
+                        // disable validation on hidden controls
+                        $('input:visible').renameAttr('ignorerequired', 'required');;
+                        $('input:hidden').renameAttr('required', 'ignorerequired');
+                    });
 
-                }                
+                    if ($('input[name=extrainfo_rblshippingoptionsradio]:checked').val() == '2') {
+                        $('.checkoutshipform').show();
+                    } else {
+                        $('.checkoutshipform').hide();
+                    }
+
+                }
 
                 if (e.cmd == 'cart_rendershipmethod') {
 
@@ -142,11 +141,13 @@
                         //reload shipping provider template on trigger from provider
                         $('.reloadshipprovider').unbind();
                         $('.reloadshipprovider').click(function () {
+                            $('.processing').show();
                             nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
                         });
                         //recalc on trigger from provider
                         $('.recalcshipprovider').unbind();
                         $('.recalcshipprovider').click(function () {
+                            $('.processing').show();
                             $('#carttemplate').val('CheckoutSummary.cshtml');
                             nbxget('cart_recalculatesummary', '#checkoutsummary');
                         });
@@ -159,22 +160,24 @@
                             }
                         });
 
+                        $('.processing').show();
                         nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
-
-                        $('.processing').hide();
 
                 }
 
                 if (e.cmd == 'cart_shippingprovidertemplate') {
                     $('#carttemplate').val('CheckoutSummary.cshtml');
+                    $('.processing').show();
                     nbxget('cart_recalculatesummary', '#checkoutsummary');
                 }
 
                 if (e.cmd == 'cart_recalculatesummary') {
+                    $('.processing').show();
                     nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
                 }
 
                 if (e.cmd == 'cart_clearcart' || e.cmd == 'cart_removefromcart') {
+                    $('.processing').show();
                     nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
                 }
 
@@ -187,7 +190,6 @@
                         nbxget('cart_removefromcart', '#productajaxview');
                     });
 
-                    $('.processing').hide();
                     $('#cartactions').show();
 
                     // if we have a cartempty element hide the action buttons
@@ -229,22 +231,22 @@
                 }
 
                 if (e.cmd == 'cart_updatebilladdress') {
-                    nbxget('cart_updateshipoption', '#shippingoptions');
+                    $('.processing').show();
+                    nbxget('cart_updateshipaddress', '.checkoutshipform');
                 }
 
                 if (e.cmd == 'cart_updateshipaddress') {
-                    nbxget('cart_updateshipaddress', '.checkoutshipform');
+                    $('.processing').show();
+                    nbxget('cart_updateshipoption', '#shippingoptions');
                 }
 
                 if (e.cmd == 'cart_updateshipoption') {
                     $('#carttemplate').val('CheckoutSummary.cshtml');
-                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
-                    $('#carttemplate').val('CheckoutShipMethod.cshtml');
-                    nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
+                    $('.processing').show();
+                    nbxget('cart_rendersummary_ship', '#productajaxview', '#checkoutdisplaysummary');
                 }
 
-                if (e.cmd == 'cart_rendersummary') {
-                    $('.processing').hide();
+                if (e.cmd == 'cart_rendersummary' || e.cmd == 'cart_rendersummary_ship' || e.cmd == 'cart_rendersummary_start') {
                     $('#cartactions').show();
 
                     $('#cmdRecalcSummary').unbind();
@@ -260,10 +262,16 @@
                         nbxget('cart_redirecttopayment', '#checkoutsummary', '#checkoutpayredirectreturn');
                     });
 
+                    if (e.cmd == 'cart_rendersummary_start' || e.cmd == 'cart_rendersummary_ship') {
+                        $('#carttemplate').val('CheckoutShipMethod.cshtml');
+                        $('.processing').show();
+                        nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
+                    }
                 }
 
                 if (e.cmd == 'cart_redirecttopayment') {
                     $('.processing').show();
+                    $('#cmdOrder').hide();
                     window.location.href = $('#checkoutpayredirectreturn').text();
                 }
 
@@ -342,11 +350,7 @@ function processCartStep(buttontype) {
             $('#checkoutdisplaylist').hide();
             $('#checkoutdisplayaddr').hide();
             $('#checkoutsummary').show();
-            nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
-
-            $('#carttemplate').val('CheckoutShipMethod.cshtml');
-            nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
-
+            nbxget('cart_rendersummary_start', '#productajaxview', '#checkoutdisplaysummary');
         }
     }
 

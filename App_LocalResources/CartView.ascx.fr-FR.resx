@@ -168,11 +168,14 @@
   <data name="selectaddress.Text" xml:space="preserve">
     <value>Carnet d'adresses</value>
   </data>
+  <data name="AddressBookMessage.Text" xml:space="preserve">
+    <value>Vous devez être connecté pour sélectionner une adresse enregistrée.</value>
+  </data>
   <data name="shippingoption1.data" xml:space="preserve">
-    <value>Utiliser adresse de facturation;Nouvelle adresse;Je passerais prendre ma commande</value>
+    <value>Utiliser l'adresse de facturation;Nouvelle adresse;Enlèvement en magasin</value>
   </data>
   <data name="shippingoption2.data" xml:space="preserve">
-    <value>Utiliser adresse de facturation;Saisir une adresse de livraison</value>
+    <value>Utiliser l'adresse de facturation;Saisir une adresse de livraison</value>
   </data>
   <data name="SaveAddress.Text" xml:space="preserve">
     <value>Enregistrer l'adresse</value>
@@ -199,7 +202,7 @@
     <value>Supprimer tous les articles et annuler la commande ?</value>
   </data>
   <data name="chknews.Text" xml:space="preserve">
-    <value>Recevoir notre Newsletter</value>
+    <value>Recevoir notre newsletter</value>
   </data>
   <data name="chkterms.Text" xml:space="preserve">
     <value>En soumettant votre commande, vous confirmez que vous acceptez nos Conditions Générales de Vente.</value>
@@ -265,13 +268,13 @@
     <value>Confirmation</value>
   </data>
   <data name="shippingoption1data.Text" xml:space="preserve">
-    <value>Utiliser adresse de facturation,Nouvelle adresse,Je passerais prendre ma commande</value>
+    <value>Utiliser l'adresse de facturation,Nouvelle adresse,Enlèvement en magasin</value>
   </data>
   <data name="shippingoption1datavalue.Text" xml:space="preserve">
     <value>1,2,3</value>
   </data>
   <data name="shippingoption2data.Text" xml:space="preserve">
-    <value>Utiliser adresse de facturation,Saisir une adresse de livraison</value>
+    <value>Utiliser l'adresse de facturation,Saisir une adresse de livraison</value>
   </data>
   <data name="shippingoption2datavalue.Text" xml:space="preserve">
     <value>1,2</value>

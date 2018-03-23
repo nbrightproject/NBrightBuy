@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('#manualpayment_cmdSave').click(function () {
         $('.processing').show();
         $('.actionbuttonwrapper').hide();
-        nbxget('manualpaymentajax_savesettings', '.manualpaymentdata', '.manualpaymentreturnmsg');
+        nbxget('manualpayment_savesettings', '.manualpaymentdata', '.manualpaymentreturnmsg');
     });
 
     $('.selectlang').unbind("click");
@@ -16,20 +16,20 @@ $(document).ready(function () {
         $('.actionbuttonwrapper').hide();
         $('.processing').show();
         $("#nextlang").val($(this).attr("editlang"));
-        nbxget('manualpaymentajax_selectlang', '.manualpaymentdata', '.manualpaymentdata');
+        nbxget('manualpayment_selectlang', '.manualpaymentdata', '.manualpaymentdata');
     });
 
 
-    $(document).on("nbxgetcompleted", NBS_PayBox_nbxgetCompleted); // assign a completed event for the ajax calls
+    $(document).on("nbxgetcompleted", ManualPayment_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // function to do actions after an ajax call has been made.
-    function NBS_PayBox_nbxgetCompleted(e) {
+    function ManualPayment_nbxgetCompleted(e) {
 
         $('.processing').hide();
         $('.actionbuttonwrapper').show();
         $('.editlanguage').show();
 
-        if (e.cmd == 'manualpaymentajax_selectlang') {
+        if (e.cmd == 'manualpayment_selectlang') {
 
         }
 

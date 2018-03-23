@@ -597,6 +597,8 @@
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.js" />
     <Content Include="Themes\ClassicAjax\js\jquery.navgoco.min.js" />
     <Content Include="Themes\Default\js\product.js" />
+    <None Include="Installation\04.00.00.SqlDataProvider" />
+    <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="README.md" />
     <None Include="Themes\ClassicAjax\css\images\Thumbs.db" />
     <None Include="Themes\ClassicAjax\Default\FrontOfficePageBody.cshtml" />

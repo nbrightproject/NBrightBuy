@@ -76,7 +76,7 @@
         <!-- fields required to send required ajax data to server to purchase product -->
         <div class="purchasing entryid@(info.ItemID)">
             <input id="@(info.ItemID)_productid" type="hidden" value="@(info.ItemID)">
-            <input id="uilang" type="hidden" value="@(info.Lang)">
+            <input id="@(info.ItemID)_uilang" type="hidden" value="@(info.Lang)">
 
             <div class="return"><a href="@EntryReturnUrl(Model)" class="actionbutton absec"><i class="fa fa-reply"></i>@ResourceKey("ProductView.return")</a></div>
 
