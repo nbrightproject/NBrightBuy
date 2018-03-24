@@ -303,4 +303,13 @@
   <data name="products.Text" xml:space="preserve">
     <value>Produits</value>
   </data>
+  <data name="vouchers.Text" xml:space="preserve">
+    <value>Coupons</value>
+  </data>
+  <data name="grouppromo.Text" xml:space="preserve">
+    <value>Groupées</value>
+  </data>
+  <data name="multibuypromo.Text" xml:space="preserve">
+    <value>Achats multiples</value>
+  </data>
 </root>

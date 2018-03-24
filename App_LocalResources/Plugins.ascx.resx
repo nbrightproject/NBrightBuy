@@ -312,4 +312,13 @@
   <data name="ui.Text" xml:space="preserve">
     <value>User Interface</value>
   </data>
+  <data name="vouchers.Text" xml:space="preserve">
+    <value>Vouchers</value>
+  </data>
+  <data name="grouppromo.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="multibuypromo.Text" xml:space="preserve">
+    <value>Mulit-Buy</value>
+  </data>
 </root>
