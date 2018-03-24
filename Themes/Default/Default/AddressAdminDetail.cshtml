@@ -31,55 +31,55 @@
 
         <div class="formrow">
             <div class="leftside">
-                <h6>@ResourceKey("General.lblFirstName")</h6>
+                <label>@ResourceKey("General.lblFirstName")</label>
                 @NBrightTextBox(info, "genxml/textbox/firstname")
             </div>
             <div class="rightside">
-                <h6>@ResourceKey("General.lblLastName")</h6>
+                <label>@ResourceKey("General.lblLastName")</label>
                 @NBrightTextBox(info, "genxml/textbox/lastname")
             </div>
         </div>
 
         <div class="formrow">
             <div class="leftside">
-                <h6>@ResourceKey("General.lblPhone")</h6>
+                <label>@ResourceKey("General.lblPhone")</label>
                 @NBrightTextBox(info, "genxml/textbox/telephone")
             </div>
             <div class="rightside">
-                <h6>@ResourceKey("General.Email")</h6>
+                <label>@ResourceKey("General.Email")</label>
                 @NBrightTextBox(info, "genxml/textbox/email", "required name='billemail' class='required' type='email' datatype='email'")
             </div>
         </div>
 
         <div class="formrow">
-            <h6>@ResourceKey("General.lblCompany")</h6>
+            <label>@ResourceKey("General.lblCompany")</label>
             @NBrightTextBox(info, "genxml/textbox/company")
         </div>
 
         <div class="formrow">
-            <h6>@ResourceKey("General.lblAddress1")</h6>
+            <label>@ResourceKey("General.lblAddress1")</label>
             @NBrightTextBox(info, "genxml/textbox/unit")
         </div>
 
         <div class="formrow">
-            <h6>@ResourceKey("General.lblAddress2")</h6>
+            <label>@ResourceKey("General.lblAddress2")</label>
             @NBrightTextBox(info, "genxml/textbox/street")
         </div>
 
         <div class="formrow">
             <div class="leftside">
-                <h6>@ResourceKey("General.lblCity")</h6>
+                <label>@ResourceKey("General.lblCity")</label>
                 @NBrightTextBox(info, "genxml/textbox/city")
             </div>
             <div class="rightside">
-                <h6>@ResourceKey("General.lblPostCode")</h6>
+                <label>@ResourceKey("General.lblPostCode")</label>
                 @NBrightTextBox(info, "genxml/textbox/postalcode", "required name='billpostalcode' class='required'")
             </div>
         </div>
 
         <div class="formrow">
             <div class="leftside checkoutbillformcountrydiv">
-                <h6>@ResourceKey("General.lblCountry")</h6>
+                <label>@ResourceKey("General.lblCountry")</label>
                 @CountrySelectList(info, "genxml/dropdownlist/country", "required name='billcountry' class='required' class='checkoutbillformcountry'")
                 <!-- hidden data field required to render ajax region update -->
                 <input id="carttemplate" type="hidden" value="CheckoutRegion.cshtml">
@@ -90,7 +90,7 @@
                 <input id="billregion" type="hidden" value="">
             </div>
             <div class="rightside checkoutbillformregiondiv">
-                <h6>@ResourceKey("General.lblRegion")</h6>
+                <label>@ResourceKey("General.lblRegion")</label>
                 @RegionSelect(info, "genxml/dropdownlist/region", "", "", false)
             </div>
         </div>

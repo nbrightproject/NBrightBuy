@@ -1640,8 +1640,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     nbRazor.Lang = lang;
 
                     var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
-                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, StoreSettings.Current.DebugMode);
-                    if (cacheKey != "" && !StoreSettings.Current.DebugMode) SetModCache(moduleid, ckey, razorTempl); // only save to cache if we pass in a cache key.
+                    var debugMode = StoreSettings.Current.DebugMode;
+                    if (cacheKey == "")
+                    {
+                        debugMode = true;
+                    }
+                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, debugMode);
+                    if (!debugMode) SetModCache(moduleid, ckey, razorTempl); // only save to cache if we pass in a cache key.
                 }
                 else
                 {
@@ -1759,7 +1764,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                 }
                 Engine.Razor = service;
                 var israzorCached = Utils.GetCache("nbrightbuyrzcache_" + templateKey); // get a cache flag for razor compile.
-                if (israzorCached == null || (string)israzorCached != razorTempl)
+                if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     result = Engine.Razor.RunCompile(razorTempl, GetMd5Hash(razorTempl), null, info);
                     Utils.SetCache("nbrightbuyrzcache_" + templateKey, razorTempl);

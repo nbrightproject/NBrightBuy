@@ -285,6 +285,27 @@
   <data name="cmdReturn.ToolTip" xml:space="preserve">
     <value>Return</value>
   </data>
+  <data name="seooptimization.Text" xml:space="preserve">
+    <value>SEO (optional)</value>
+  </data>
+  <data name="seoname.Text" xml:space="preserve">
+    <value>SEO Name</value>
+  </data>
+  <data name="seonamehelp.Text" xml:space="preserve">
+    <value>Alternative name for the product (replaces it in the URL).</value>
+  </data>
+  <data name="seotitle.Text" xml:space="preserve">
+    <value>Title Tag</value>
+  </data>
+  <data name="seotitlehelp.Text" xml:space="preserve">
+    <value>Alternative meta title. (default is product name)</value>
+  </data>
+  <data name="seodescription.Text" xml:space="preserve">
+    <value>Meta Description</value>
+  </data>
+  <data name="seodescriptionhelp.Text" xml:space="preserve">
+    <value>Alternative meta description. (default is summary)</value>
+  </data>
   <data name="cmdReturnIcon.Text" xml:space="preserve">
     <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Return</value>
   </data>
@@ -321,17 +342,11 @@
   <data name="Name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="seoname.Text" xml:space="preserve">
-    <value>SEO Name</value>
-  </data>
   <data name="Ref.Text" xml:space="preserve">
     <value>Ref</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
-  </data>
-  <data name="seotitle.Text" xml:space="preserve">
-    <value>SEO Title</value>
   </data>
   <data name="Archived.Text" xml:space="preserve">
     <value>Archived</value>

@@ -63,7 +63,7 @@
                     $('#selectaddress').unbind();
                     $('#selectaddress').change(function() {
                         populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
-                        $('#billregion').val($('#billaddress_region').val());
+                        $('#ad_billregion').val($('#billaddress_region').val());
                         $('#billaddress_country').trigger("change");
                     });
 
@@ -76,18 +76,17 @@
 
                     $('.checkoutbillformregiondiv').unbind();
                     $('.checkoutbillformregiondiv').change(function() {
-                        if ($('#billregion').val() != '') {
-                            $('#billaddress_region').val($('#billregion').val());
-                            $('#billregion').val('')
+                        if ($('#ad_billregion').val() != '') {
+                            $('#billaddress_region').val($('#ad_billregion').val());
+                            $('#ad_billregion').val('');
                         }
                         $('.checkoutbillformregiondiv').show();
                     });
 
-
                     $('#selectshipaddress').unbind();
                     $('#selectshipaddress').change(function() {
                         populateAddressForm($(this).attr('formselector'), $(this).find('option:selected').attr('datavalues'), $(this).find('option:selected').attr('datafields'));
-                        $('#shipregion').val($('#shipaddress_region').val());
+                        $('#ads_shipregion').val($('#shipaddress_region').val());
                         $('#shipaddress_country').trigger("change");
                     });
 
@@ -100,9 +99,9 @@
 
                     $('.checkoutshipformregiondiv').unbind();
                     $('.checkoutshipformregiondiv').change(function() {
-                        if ($('#shipregion').val() != '') {
-                            $('#shipaddress_region').val($('#shipregion').val());
-                            $('#shipregion').val('')
+                        if ($('#ads_shipregion').val() != '') {
+                            $('#shipaddress_region').val($('#ads_shipregion').val());
+                            $('#ads_shipregion').val('');
                         }
                         $('.checkoutshipformregiondiv').show();
                     });

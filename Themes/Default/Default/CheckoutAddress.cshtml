@@ -38,14 +38,16 @@
 </div>
     }
 
-<div class="addressbookmessage">@ResourceKey("CartView.AddressBookMessage")</div>
-
+@if (info.UserId <= 0)
+{
+    <div class="addressbookmessage">@ResourceKey("CartView.AddressBookMessage")</div>
+}
 <div id="cartbilladdress">
 <div class="checkoutbillform">
     <h3>@ResourceKey("CartView.BillingAddress")</h3>
 
 
-    @if (info.UserId >= 0)
+    @if (info.UserId >= 1)
     {
         <div class="formrow">
             <label>@ResourceKey("General.ChooseAddress")</label>
@@ -106,19 +108,18 @@
             <label>@ResourceKey("General.lblCountry")</label>
             @CountrySelectList(info, "genxml/billaddress/genxml/dropdownlist/country", "required name='billcountry' class='required' class='checkoutbillformcountry'")
             <!-- hidden data field required to render ajax region update -->
-            <input id="carttemplate_ad" type="hidden" value="CheckoutRegion.cshtml">
-            <input id="carttheme_ad" type="hidden" value="ClassicAjax">
-            <input id="uilang_ad" type="hidden" value="@Utils.GetCurrentCulture()">
-            <input id="region_ad" type="hidden" value="@info.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region")">
-            <input id="xpath_ad" type="hidden" value="genxml/billaddress/genxml/dropdownlist/region">
-            <input id="billregion_ad" type="hidden" value="">
+            <input id="ad_carttemplate" type="hidden" value="CheckoutRegion.cshtml">
+            <input id="ad_carttheme" type="hidden" value="ClassicAjax">
+            <input id="ad_uilang" type="hidden" value="@Utils.GetCurrentCulture()">
+            <input id="ad_region" type="hidden" value="@info.GetXmlProperty("genxml/billaddress/genxml/dropdownlist/region")">
+            <input id="ad_xpath" type="hidden" value="genxml/billaddress/genxml/dropdownlist/region">
+            <input id="ad_billregion" type="hidden" value="">
         </div>
         <div class="rightside checkoutbillformregiondiv">
             <label>@ResourceKey("General.lblRegion")</label>
             @RegionSelect(info, "genxml/billaddress/genxml/dropdownlist/region", "","",false)
         </div>
     </div>
-
 
 </div>
 </div>
@@ -204,12 +205,12 @@
             <label>@ResourceKey("General.lblCountry")</label>
             @CountrySelectList(info, "genxml/shipaddress/genxml/dropdownlist/country", "required name='shipcountry' class='required checkoutshipformcountry'")
             <!-- hidden data field required to render ajax region update -->
-            <input id="carttemplate_ads" type="hidden" value="CheckoutRegion.cshtml">
-            <input id="carttheme_ads" type="hidden" value="ClassicAjax">
-            <input id="uilang_ads" type="hidden" value="@Utils.GetCurrentCulture()">
-            <input id="region_ads" type="hidden" value="@info.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region")">
-            <input id="xpath_ads" type="hidden" value="genxml/shipaddress/genxml/dropdownlist/region">
-            <input id="shipregion_ads" type="hidden" value="">
+            <input id="ads_carttemplate" type="hidden" value="CheckoutRegion.cshtml">
+            <input id="ads_carttheme" type="hidden" value="ClassicAjax">
+            <input id="ads_uilang" type="hidden" value="@Utils.GetCurrentCulture()">
+            <input id="ads_region" type="hidden" value="@info.GetXmlProperty("genxml/shipaddress/genxml/dropdownlist/region")">
+            <input id="ads_xpath" type="hidden" value="genxml/shipaddress/genxml/dropdownlist/region">
+            <input id="ads_shipregion" type="hidden" value="">
         </div>
         <div class="rightside checkoutshipformregiondiv">
             <label>@ResourceKey("General.lblRegion")</label>

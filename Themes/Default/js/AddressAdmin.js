@@ -65,7 +65,7 @@ $(document).ready(function () {
             $('.checkoutbillformregiondiv').change(function () {
                 if ($('#billregion').val() != '') {
                     $('#billaddress_region').val($('#billregion').val());
-                    $('#billregion').val('')
+                    $('#billregion').val('');
                 }
                 $('.checkoutbillformregiondiv').show();
             });

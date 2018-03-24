@@ -996,11 +996,26 @@
   <data name="SEO.Text" xml:space="preserve">
     <value>SEO</value>
   </data>
+  <data name="seooptimization.Text" xml:space="preserve">
+    <value>Optimisation SEO (optionnel)</value>
+  </data>
   <data name="seoname.Text" xml:space="preserve">
     <value>Nom SEO</value>
   </data>
+  <data name="seonamehelp.Text" xml:space="preserve">
+    <value>Renseignez ici un nom différent du nom du produit (le remplace dans l'URL).</value>
+  </data>
   <data name="seotitle.Text" xml:space="preserve">
-    <value>Titre SEO</value>
+    <value>Balise Title</value>
+  </data>
+  <data name="seotitlehelp.Text" xml:space="preserve">
+    <value>Renseignez ici un titre différent du nom du produit.</value>
+  </data>
+  <data name="seodescription.Text" xml:space="preserve">
+    <value>Meta Description</value>
+  </data>
+  <data name="seodescriptionhelp.Text" xml:space="preserve">
+    <value>Renseignez ici une autre description que celle du résumé.</value>
   </data>
   <data name="Settings.Text" xml:space="preserve">
     <value>Paramètres</value>

@@ -43,49 +43,35 @@
         <h3>@ResourceKey("General.Product") : @info.GetXmlProperty("genxml/lang/genxml/textbox/txtproductname")</h3>
         <div class="box-content editdetails">
             <div class="form-horizontal dnnForm">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <div class="col-sm-8">
-                            <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)
-                            @TextBox(info, "genxml/lang/genxml/textbox/txtproductname", "class='form-control' maxlength='250'")
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <label class="control-label">@ResourceKey("General.Name")</label>@LangFlag(info.Lang)
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtproductname", "class='form-control' maxlength='250'")
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="control-label">@ResourceKey("General.Code")</label>
+                                @TextBox(info, "genxml/textbox/txtproductref", "class='form-control' maxlength='250'")
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            <label class="control-label">@ResourceKey("General.Code")</label>
-                            @TextBox(info, "genxml/textbox/txtproductref", "class='form-control' maxlength='250'")
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label">@ResourceKey("General.Summary")</label>@LangFlag(info.Lang)
-                            @TextArea(info, "genxml/lang/genxml/textbox/txtsummary", "class='form-control' height='100' maxlength='200' textmode='MultiLine'")
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <label class="control-label">@ResourceKey("General.Manufacturer")</label>
-                            @TextBox(info, "genxml/textbox/manufacturer", "class='form-control' maxlength='250'")
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag(info.Lang)
-                            @TextBox(info, "genxml/lang/genxml/textbox/extrafield", "class='form-control' maxlength='250'")
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.Manufacturer")</label>
+                                @TextBox(info, "genxml/textbox/manufacturer", "class='form-control' maxlength='250'")
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label">@ResourceKey("General.Extra")</label>@LangFlag(info.Lang)
+                                @TextBox(info, "genxml/lang/genxml/textbox/extrafield", "class='form-control' maxlength='250'")
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <div class="col-sm-6">
-                            <label class="control-label">@ResourceKey("General.seoname")</label>@LangFlag(info.Lang)
-                            @TextBox(info, "genxml/lang/genxml/textbox/txtseoname", "class='form-control' maxlength='250'")
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="control-label">@ResourceKey("General.seotitle")</label>@LangFlag(info.Lang)
-                            @TextBox(info, "genxml/lang/genxml/textbox/txtseopagetitle", "class='form-control' maxlength='250'")
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="control-label">@ResourceKey("General.Tags")</label>@LangFlag(info.Lang)
-                            @TextArea(info, "genxml/lang/genxml/textbox/txttagwords", "class='form-control' height='100' maxlength='200' textmode='MultiLine'")
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.Summary")</label>@LangFlag(info.Lang)
+                                @TextArea(info, "genxml/lang/genxml/textbox/txtsummary", "class='form-control' rows='5' maxlength='200' textmode='MultiLine'")
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,7 +79,7 @@
                 <div class="col-sm-12">
                     @RenderRazorInjectTemplate(info, "productfields.cshtml")
                     <div class="form-group">
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             @CheckBox(info, "genxml/checkbox/chkishidden", "")
                             <label class="control-label">@ResourceKey("General.Hidden")</label>
                             &nbsp;@CheckBox(info, "genxml/checkbox/chkdisable", "")
@@ -105,7 +91,6 @@
                                     @CheckBox(info, "genxml/checkbox/chkfileupload", "")<label class="control-label">@ResourceKey("General.allowupload")</label>
                                 </span>
                             }
-
                         </div>
                         <div class="col-sm-4" style="text-align: right;">
                             @if (info.GetXmlProperty("genxml/hidden/promoname") != "")
@@ -116,6 +101,37 @@
                             <label class="control-label">@ResourceKey("General.nbsref") :</label> @info.GetXmlProperty("genxml/importref") / <label class="control-label">@ResourceKey("General.nbsid") :</label> @info.ItemID
                         </div>
                     </div>
+                </div>
+
+                <hr />
+                <div class="col-sm-12">
+                    <h4>@ResourceKey("General.seooptimization")</h4>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.seoname")</label>@LangFlag(info.Lang)
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtseoname", "class='form-control' maxlength='250'")
+                                <small class="form-text text-muted">@ResourceKey("General.seonamehelp")</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.seotitle")</label>@LangFlag(info.Lang)
+                                @TextBox(info, "genxml/lang/genxml/textbox/txtseopagetitle", "class='form-control' maxlength='250'")
+                                <small class="form-text text-muted">@ResourceKey("General.seotitlehelp")</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label">@ResourceKey("General.seodescription")</label>@LangFlag(info.Lang)
+                                @TextArea(info, "genxml/lang/genxml/textbox/seodescription", "class='form-control' rows='5' maxlength='200' textmode='MultiLine'")
+                                <small class="form-text text-muted">@ResourceKey("General.seodescriptionhelp")</small>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
