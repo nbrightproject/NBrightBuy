@@ -173,6 +173,10 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
             if (shipInfo != null)
             {
                 displayanme = shipInfo.GetXmlProperty("genxml/textbox/shippingdisplayname");
+                if (shipInfo.GetXmlProperty("genxml/textbox/name") != "")
+                {
+                    displayanme = shipInfo.GetXmlProperty("genxml/textbox/name");
+                }
             }
             if (displayanme == "") displayanme = shipref;
             currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme", displayanme);
