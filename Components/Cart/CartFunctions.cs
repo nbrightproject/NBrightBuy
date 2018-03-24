@@ -48,12 +48,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 case "cart_rendersummary":
                     strOut = RenderCart(context);
                     break;
-                case "cart_rendersummary_start":
-                    strOut = RenderCart(context);
-                    break;
-                case "cart_rendersummary_ship":
-                    strOut = RenderCart(context);
-                    break;
                 case "cart_rendershipmethod":
                     strOut = RenderCart(context);
                     break;
@@ -68,6 +62,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                     break;
                 case "cart_redirecttopayment":
                     strOut = RedirectToPayment(context);
+                    break;
+                case "cart_recalcforpayment":
+                    strOut = ReCalcForPayment(context);
                     break;
                 case "cart_clearcart":
                     var currentcart = new CartData(PortalSettings.Current.PortalId);
@@ -194,7 +191,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
 
         }
 
-        private static string RedirectToPayment(HttpContext context)
+        private static string ReCalcForPayment(HttpContext context)
         {
             try
             {
@@ -228,7 +225,37 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                     if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
                     rtnurl = Globals.NavigateURL(backofficeTabId, "", param);
                 }
+
+                try
+                {
+                    var rPost = new PaymentPost();
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Write(rPost.GetPostHtml(rtnurl));
+                }
+                catch (Exception ex)
+                {
+                    return "Redirect Error";
+                }
+
+
                 return rtnurl;
+
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return "ERROR";
+            }
+        }
+
+        private static string RedirectToPayment(HttpContext context)
+        {
+            try
+            {
+
+                var rPost = new PaymentPost();
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Write(rPost.GetPostHtml(rtnurl));
 
             }
             catch (Exception ex)

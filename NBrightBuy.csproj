@@ -200,6 +200,7 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Cart\PaymentPost.cs" />
     <Compile Include="ProductListAjaxFilter.ascx.cs">
       <DependentUpon>ProductListAjaxFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1625,7 +1626,6 @@
     <None Include="Themes\Default\Default\CheckoutList.cshtml" />
     <None Include="Themes\Default\Default\CheckoutRegion.cshtml" />
     <None Include="Themes\Default\Default\Checkoutsettings.cshtml" />
-    <None Include="Themes\Default\Default\CheckoutShipMethod.cshtml" />
     <None Include="Themes\Default\Default\CheckoutTotals.cshtml" />
     <None Include="Themes\Default\Default\CheckoutSummary.cshtml" />
     <None Include="Themes\Default\Default\FullCart.cshtml" />

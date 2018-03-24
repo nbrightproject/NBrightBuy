@@ -20,6 +20,29 @@
     var info = cart.PurchaseInfo;
 }
 
+<h1>@ResourceKey("CartView.YourBasket")</h1>
+<div class="checkoutsteps">
+    <div class="checkoutstepsheader">@ResourceKey("CartView.CartstepsProcess")</div>
+    <ol>
+        <li class="step1">@ResourceKey("CartView.CartstepsRecap")</li>
+        <li class="step2">@ResourceKey("CartView.CartstepsAddresses")</li>
+        <li class="step3 activestep">@ResourceKey("CartView.CartstepsShipping")</li>
+        <li class="step4">@ResourceKey("CartView.CartstepsPayment")</li>
+        <li class="step5">@ResourceKey("CartView.CartstepsConfirm")</li>
+    </ol>
+</div>
+
+<!-- Shipping methods  -->
+<div id="shippingmethods">
+    <div class="formrow">
+        <h3>@ResourceKey("General.shippingmethods")</h3>
+        <div id="providerselection">
+            @ShippingProviderList(info, "class='shippingmethodselect'")
+        </div>
+        <div id="shipprovidertemplates"></div>
+    </div>
+</div>
+
 <!-- Order summary box from here down  -->
     <div class="checkoutextra">
 

@@ -47,14 +47,78 @@
                 processCartStep('prev');
             });
 
+            $(document).unbind();
             $(document).on("nbxgetcompleted", CheckOut_nbxgetCompleted); // assign a completed event for the ajax calls
 
             // function to do actions after an ajax call has been made.
             function CheckOut_nbxgetCompleted(e) {
 
-                if (e.cmd == 'cart_recalculatecart') {
-                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
+
+                // ----------------------------------------------------------------------------
+                // --------- render cart list  
+                // ----------------------------------------------------------------------------
+
+                if (e.cmd == 'cart_rendercartlist') {
+
+                    $('.removeitem').unbind();
+                    $('.removeitem').click(function () {
+                        $('.processing').show();
+                        $('#itemcode').val($(this).attr('itemcode'));
+                        nbxget('cart_removefromcart', '#productajaxview');
+                    });
+
+                    $('#cartactions').show();
+
+                    // if we have a cartempty element hide the action buttons
+                    if ($('#cartempty').text() != '') {
+                        $('#cartactions').hide();
+                    } else {
+                        $('#cartactions').show();
+                    }
+
+                    $(".quantity").keydown(function (e) {
+                        if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
+                        if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
+                        // Ensure that it is a number and stop the keypress
+                        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+                    });
+
+                    $('.qtyminus').unbind();
+                    $('.qtyminus').click(function () {
+                        var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
+                        var newQty = parseInt(oldqty, 10);
+                        if (isNaN(newQty)) {
+                            newQty = 2;
+                        }
+                        if (newQty >= 1) {
+                            --newQty;
+                            $('.itemcode' + $(this).attr('itemcode')).val(newQty);
+                        }
+                    });
+                    $('.qtyplus').unbind();
+                    $('.qtyplus').click(function () {
+                        var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
+                        var newQty = parseInt(oldqty, 10);
+                        if (isNaN(newQty)) {
+                            newQty = 0;
+                        }
+                        ++newQty;
+                        $('.itemcode' + $(this).attr('itemcode')).val(newQty);
+                    });
                 }
+
+                if (e.cmd == 'cart_recalculatecart') {
+                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplay');
+                }
+
+                if (e.cmd == 'cart_clearcart' || e.cmd == 'cart_removefromcart') {
+                    $('.processing').show();
+                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplay');
+                }
+
+                // ----------------------------------------------------------------------------
+                // --------- render Address  
+                // ----------------------------------------------------------------------------
 
                 if (e.cmd == 'cart_rendercartaddress') {
 
@@ -127,106 +191,10 @@
 
                 }
 
-                if (e.cmd == 'cart_rendershipmethod') {
-
-                        $('#cartactions').show();
-
-                        $('.shippingmethodselect').unbind();
-                        $('.shippingmethodselect').change(function () {
-                            $('.processing').show();
-                            nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
-                        });
-
-                        //reload shipping provider template on trigger from provider
-                        $('.reloadshipprovider').unbind();
-                        $('.reloadshipprovider').click(function () {
-                            $('.processing').show();
-                            nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
-                        });
-                        //recalc on trigger from provider
-                        $('.recalcshipprovider').unbind();
-                        $('.recalcshipprovider').click(function () {
-                            $('.processing').show();
-                            $('#carttemplate').val('CheckoutSummary.cshtml');
-                            nbxget('cart_recalculatesummary', '#checkoutsummary');
-                        });
-
-                        $('#shipprovidertemplates').unbind();
-                        $('#shipprovidertemplates').change(function () {
-                            // init js function if included in shipping provider template
-                            if (typeof initShippingProviderTemplate == "function") {
-                                initShippingProviderTemplate();
-                            }
-                        });
-
-                        $('.processing').show();
-                        nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
-
-                }
-
                 if (e.cmd == 'cart_shippingprovidertemplate') {
                     $('#carttemplate').val('CheckoutSummary.cshtml');
                     $('.processing').show();
                     nbxget('cart_recalculatesummary', '#checkoutsummary');
-                }
-
-                if (e.cmd == 'cart_recalculatesummary') {
-                    $('.processing').show();
-                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplaysummary');
-                }
-
-                if (e.cmd == 'cart_clearcart' || e.cmd == 'cart_removefromcart') {
-                    $('.processing').show();
-                    nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
-                }
-
-                if (e.cmd == 'cart_rendercartlist') {
-
-                    $('.removeitem').unbind();
-                    $('.removeitem').click(function() {
-                        $('.processing').show();
-                        $('#itemcode').val($(this).attr('itemcode'));
-                        nbxget('cart_removefromcart', '#productajaxview');
-                    });
-
-                    $('#cartactions').show();
-
-                    // if we have a cartempty element hide the action buttons
-                    if ($('#cartempty').text() != '') {
-                        $('#cartactions').hide();
-                    } else {
-                        $('#cartactions').show();
-                    }
-
-                    $(".quantity").keydown(function(e) {
-                        if (e.keyCode == 8 || e.keyCode <= 46) return; // Allow: backspace, delete.
-                        if ((e.keyCode >= 35 && e.keyCode <= 39)) return; // Allow: home, end, left, right
-                        // Ensure that it is a number and stop the keypress
-                        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
-                    });
-
-                    $('.qtyminus').unbind();
-                    $('.qtyminus').click(function() {
-                        var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
-                        var newQty = parseInt(oldqty, 10);
-                        if (isNaN(newQty)) {
-                            newQty = 2;
-                        }
-                        if (newQty >= 1) {
-                            --newQty;
-                            $('.itemcode' + $(this).attr('itemcode')).val(newQty);
-                        }
-                    });
-                    $('.qtyplus').unbind();
-                    $('.qtyplus').click(function() {
-                        var oldqty = $('.itemcode' + $(this).attr('itemcode')).val();
-                        var newQty = parseInt(oldqty, 10);
-                        if (isNaN(newQty)) {
-                            newQty = 0;
-                        }
-                        ++newQty;
-                        $('.itemcode' + $(this).attr('itemcode')).val(newQty);
-                    });
                 }
 
                 if (e.cmd == 'cart_updatebilladdress') {
@@ -242,10 +210,20 @@
                 if (e.cmd == 'cart_updateshipoption') {
                     $('#carttemplate').val('CheckoutSummary.cshtml');
                     $('.processing').show();
-                    nbxget('cart_rendersummary_ship', '#productajaxview', '#checkoutdisplaysummary');
+                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplay');
                 }
 
-                if (e.cmd == 'cart_rendersummary' || e.cmd == 'cart_rendersummary_ship' || e.cmd == 'cart_rendersummary_start') {
+
+                // ----------------------------------------------------------------------------
+                // --------- render Summary  
+                // ----------------------------------------------------------------------------
+
+                if (e.cmd == 'cart_recalculatesummary') {
+                    $('.processing').show();
+                    nbxget('cart_rendersummary', '#productajaxview', '#checkoutdisplay');
+                }
+
+                if (e.cmd == 'cart_rendersummary') {
                     $('#cartactions').show();
 
                     $('#cmdRecalcSummary').unbind();
@@ -258,20 +236,34 @@
                     $('#cmdOrder').unbind();
                     $('#cmdOrder').click(function () {
                         $('.processing').show();
-                        nbxget('cart_redirecttopayment', '#checkoutsummary', '#checkoutpayredirectreturn');
+                        nbxget('cart_redirecttopayment', '#checkoutsummary', '#checkoutdisplay');
                     });
 
-                    if (e.cmd == 'cart_rendersummary_start' || e.cmd == 'cart_rendersummary_ship') {
-                        $('#carttemplate').val('CheckoutShipMethod.cshtml');
+                    //reload shipping provider template on trigger from provider
+                    $('.reloadshipprovider').unbind();
+                    $('.reloadshipprovider').click(function () {
                         $('.processing').show();
-                        nbxget('cart_rendershipmethod', '#productajaxview', '#checkoutdisplayshipmethod');
-                    }
+                        nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
+                    });
+                    //recalc on trigger from provider
+                    $('.recalcshipprovider').unbind();
+                    $('.recalcshipprovider').click(function () {
+                        $('.processing').show();
+                        $('#carttemplate').val('CheckoutSummary.cshtml');
+                        nbxget('cart_recalculatesummary', '#checkoutsummary');
+                    });
+
+                    //$('.processing').show();
+                    //nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
                 }
+
 
                 if (e.cmd == 'cart_redirecttopayment') {
                     $('.processing').show();
                     $('#cmdOrder').hide();
-                    window.location.href = $('#checkoutpayredirectreturn').text();
+                    location.reload();
+                    //
+                    //window.location.href = $('#checkoutpayredirectreturn').text();
                 }
 
             }
@@ -293,6 +285,8 @@ function populateAddressForm(selectordiv, datavalues, datafields) {
     }
 }
 
+
+
 function processCartStep(buttontype) {
 
     // show cart list
@@ -303,53 +297,32 @@ function processCartStep(buttontype) {
         $('#cmdRecalcCart').show();
         $('#cmdPrev').hide();
         $('#cmdNext').show();
-        $('#checkoutdisplaylist').show();
-        $('#checkoutdisplayaddr').hide();
-        $('#checkoutsummary').hide();
-        nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplaylist');
+        nbxget('cart_rendercartlist', '#productajaxview', '#checkoutdisplay');
     }
 
-    if ($('#cartstep').val() == '2') {
+    if ($('#cartstep').val() == '2' || buttontype == 'start') {
+        $('#cartstep').val("2");
         $('.processing').show();
         $('#carttemplate').val('CheckoutAddress.cshtml');
         $('#cmdDeleteCart').hide();
         $('#cmdRecalcCart').hide();
         $('#cmdPrev').show();
         $('#cmdNext').show();
-        $('#checkoutdisplaylist').hide();
-        $('#checkoutdisplayaddr').show();
-        $('#checkoutsummary').hide();
-        nbxget('cart_rendercartaddress', '#productajaxview', '#checkoutdisplayaddr');
+        nbxget('cart_rendercartaddress', '#productajaxview', '#checkoutdisplay');
     }
 
     if ($('#cartstep').val() == '3') {
-        if (buttontype == 'next') {
-            var validator = $("#Form").validate();
-            if (validator.form()) {
-                $('.processing').show();
-                $('#carttemplate').val('CheckoutSummary.cshtml');
-                $('#cmdDeleteCart').hide();
-                $('#cmdRecalcCart').hide();
-                $('#cmdPrev').show();
-                $('#cmdNext').hide();
-                $('#checkoutdisplaylist').hide();
-                $('#checkoutdisplayaddr').hide();
-                $('#checkoutsummary').show();
-                nbxget('cart_updatebilladdress', '.checkoutbillform');
-            } else {
-                $('#cartstep').val("2");
-            }
-        } else {
+        var validator = $("#Form").validate();
+        if (validator.form()) {
             $('.processing').show();
             $('#carttemplate').val('CheckoutSummary.cshtml');
             $('#cmdDeleteCart').hide();
             $('#cmdRecalcCart').hide();
             $('#cmdPrev').show();
             $('#cmdNext').hide();
-            $('#checkoutdisplaylist').hide();
-            $('#checkoutdisplayaddr').hide();
-            $('#checkoutsummary').show();
-            nbxget('cart_rendersummary_start', '#productajaxview', '#checkoutdisplaysummary');
+            nbxget('cart_updatebilladdress', '.checkoutbillform');
+        } else {
+            $('#cartstep').val("2");
         }
     }
 
