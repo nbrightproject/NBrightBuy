@@ -133,7 +133,7 @@
     <value>Tax Rate (%)</value>
   </data>
   <data name="taxtype.data" xml:space="preserve">
-    <value>Tax Included in Unit Price;Tax NOT Included in Unit Price;No Tax</value>
+    <value>Tax Included in Unit Price;Tax NOT Included in Unit Price;No Tax;Tax Included in Unit Price (zero tax total)</value>
   </data>
   <data name="valideutaxcountrycode.Text" xml:space="preserve">
     <value>Valid EU country codes (CSV List)</value>

@@ -22,6 +22,16 @@
 
                 <li class="large"><div>@ResourceKey("General.Subtotal")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedsubtotal"))</li>
                 <li class="large"><div>@ResourceKey("General.Discount")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/applieddiscount"))</li>
-                <li class="large"><div>@ResourceKey("General.Shipping")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedshipping"))</li>
-                <li class="large"><div>@ResourceKey("General.Tax")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/taxcost"))</li>
-                <li class="total larger"><div>@ResourceKey("General.Total")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))</li>
+<li class="large">
+    <div>@ResourceKey("General.Shipping")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedshipping"))</li>
+@if (info.GetXmlPropertyDouble("genxml/taxcost") > 0  && info.GetXmlPropertyInt("genxml/taxtype") == 2)
+{
+    <li class="large"><div>@ResourceKey("General.Tax")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/taxcost"))</li>
+}
+<li class="total larger">    
+    <div>@ResourceKey("General.Total")</div>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/appliedtotal"))
+</li>
+@if (info.GetXmlPropertyDouble("genxml/taxcost") > 0 && info.GetXmlPropertyInt("genxml/taxtype") == 1)
+{
+    <li class="small"><div><small>@ResourceKey("General.Tax")&nbsp;@ResourceKey("General.included")</small></div><small>@NBrightBuyUtils.FormatToStoreCurrency(info.GetXmlPropertyDouble("genxml/taxcost"))</small></li>
+}

@@ -1200,4 +1200,7 @@
   <data name="loginpopupmsg.Text" xml:space="preserve">
     <value>Vous devez être connecté afin d'ajouter des produits aux listes de courses.</value>
   </data>
+  <data name="included.Text" xml:space="preserve">
+    <value>(inclus)</value>
+  </data>
 </root>

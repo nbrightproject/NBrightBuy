@@ -154,7 +154,7 @@ namespace NBrightBuy.render
 
                 var strOut = "";
                 var id = getIdFromXpath(xpath);
-                strOut = "<select id='" + id + "' class='modelstatusdropdown' " + attributes + " >";
+                strOut = "<select id='" + id + "' " + attributes + " >";
 
                 var aryCode = orderstatuscode.Split(',');
                 var aryText = orderstatustext.Split(',');

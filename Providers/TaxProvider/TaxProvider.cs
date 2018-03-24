@@ -19,7 +19,10 @@ namespace Nevoweb.DNN.NBrightBuy.Providers
             var info = ProviderUtils.GetProviderSettings("tax");
             var taxtype = info.GetXmlProperty("genxml/radiobuttonlist/taxtype");
 
-            if (taxtype == "3") // no tax
+            // return taxtype, 1 = included in cost, 2 = not included in cost, 3 = no tax, 4 = tax included in cost, but calculate to zero.
+            cartInfo.SetXmlPropertyDouble("genxml/taxtype", taxtype);
+
+            if (taxtype == "3" || taxtype == "4") // no tax calculation
             {
                 cartInfo.SetXmlPropertyDouble("genxml/taxcost", 0);
                 cartInfo.SetXmlPropertyDouble("genxml/appliedtax", 0);

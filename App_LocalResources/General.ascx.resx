@@ -1206,4 +1206,7 @@
   <data name="cmdResetButton.confirm" xml:space="preserve">
     <value>Reset record ?</value>
   </data>
+  <data name="included.Text" xml:space="preserve">
+    <value>(incl.)</value>
+  </data>
 </root>
