@@ -95,3 +95,48 @@ function nbxget(cmd, selformdiv, target, selformitemdiv, appendreturn)
 	        alert("Request failed: " + textStatus);
 	    });
 	}
+
+
+
+	function nbxproductget(cmd, selformdiv, target, selformitemdiv, appendreturn) {
+	    $.ajaxSetup({ cache: false });
+
+	    var cmdupdate = '/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx?cmd=' + cmd;
+	    var values = '';
+	    if (selformitemdiv == null) {
+	        values = $.fn.genxmlajax(selformdiv);
+	    }
+	    else {
+	        values = $.fn.genxmlajaxitems(selformdiv, selformitemdiv);
+	    }
+	    var request = $.ajax({
+	        type: "POST",
+	        url: cmdupdate,
+	        cache: false,
+	        timeout: 50000,
+	        data: { inputxml: encodeURI(values) }
+	    });
+
+	    request.done(function (data) {
+	        if (data != 'noaction') {
+	            if (target != '' && target != null) {
+	                if (appendreturn == null) {
+	                    $(target).children().remove();
+	                    $(target).html(data).trigger('change');
+	                } else
+	                    $(target).append(data).trigger('change');
+	            }
+
+	            $.event.trigger({
+	                type: "nbxproductgetcompleted",
+	                cmd: cmd
+	            });
+	        }
+
+	    });
+
+	    request.fail(function (jqXHR, textStatus) {
+	        $('#loader').hide('');
+	        alert("Request failed: " + textStatus);
+	    });
+	}

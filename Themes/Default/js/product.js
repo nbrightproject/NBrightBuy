@@ -7,7 +7,8 @@ $(document).ready(function () {
     selPageSizeDropDown = "#pagesizedropdown" + $('modkey').val();
     selOrderByDropDown = "#sortorderdropdown" + $('modkey').val();
 
-    $(document).on("nbxgetcompleted", AjaxView_GetList_nbxgetCompleted); // assign a completed event for the ajax calls
+    $(document).unbind();
+    $(document).on("nbxproductgetcompleted", AjaxView_GetList_nbxproductgetCompleted); // assign a completed event for the ajax calls
   
 	$('.nav-tabs > li > a').click(function(event){
 		event.preventDefault();//stop browser to take action for clicked anchor
@@ -65,7 +66,7 @@ $(document).ready(function () {
 // *****************************************************************************
 
 
-function AjaxView_GetList_nbxgetCompleted(e) {
+function AjaxView_GetList_nbxproductgetCompleted(e) {
 
     addHandlers();
 
@@ -104,7 +105,7 @@ function AjaxView_GetList_nbxgetCompleted(e) {
 
     if (e.cmd == 'cart_addtobasket') {        
         $('#carttemplate').val('MiniCart.cshtml');
-        nbxget('cart_renderminicart', '#productajaxview', '.container_classicajax_minicart'); // Reload Cart
+        nbxproductget('cart_renderminicart', '#productajaxview', '.container_classicajax_minicart'); // Reload Cart
         $('.addedtobasket').delay(1000).fadeOut('fast');
     }
 
@@ -175,19 +176,19 @@ function AjaxView_GetList_nbxgetCompleted(e) {
     $('.wishlistadd').unbind("click");
     $('.wishlistadd').click(function () {
         $('#shoplistname').val($('.shoplistselect').val());
-        nbxget('itemlist_add', '#productajaxview'); //apply serverside
+        nbxproductget('itemlist_add', '#productajaxview'); //apply serverside
         $('#shoppinglistpopup').colorbox.close();
     });
 
     $('.shoppinglistremove').unbind("click");
     $('.shoppinglistremove').click(function () {
         $('#shopitemid').val($(this).attr('itemid'));
-        nbxget('itemlist_remove', '#productajaxview'); //apply serverside
+        nbxproductget('itemlist_remove', '#productajaxview'); //apply serverside
     });
 
     $('.wishlistremoveall').unbind("click");
     $('.wishlistremoveall').click(function () {
-        nbxget('itemlist_delete', '#productajaxview'); //apply serverside
+        nbxproductget('itemlist_delete', '#productajaxview'); //apply serverside
     });
 
     $('.shoplistselect').unbind("change");
@@ -284,25 +285,25 @@ function propertyFilterClicked() {
 function loadProductList() {
     if ($('#ajaxlist').val() == 'True') {
         $('.processing').show();
-        nbxget('product_ajaxview_getlist', '#productajaxview', '#ajaxproducts');
+        nbxproductget('product_ajaxview_getlist', '#productajaxview', '#ajaxproducts');
     } else {
         addotbasketclick();
     }
 }
 function loadProductListFilter() {
     $('.processing').show();
-    nbxget('product_ajaxview_getlistfilter', '#productajaxview', '#ajaxproducts');
+    nbxproductget('product_ajaxview_getlistfilter', '#productajaxview', '#ajaxproducts');
 }
 function loadItemListPopup() {
     $('.processing').show();
-    nbxget('itemlist_getpopup', '#productajaxview', '#shoppinglistpopup');
+    nbxproductget('itemlist_getpopup', '#productajaxview', '#shoppinglistpopup');
 }
 function loadFilters() {
     $('.processing').show();
     $("#propertyfiltertypeinside").val($("#filter_propertyfiltertypeinside").val());
     $("#propertyfiltertypeoutside").val($("#filter_propertyfiltertypeoutside").val());
     $("#moduleid").val($("#filter_moduleid").val());
-    nbxget('product_ajaxview_getfilters', '#productajaxview', '#ajaxfilter');
+    nbxproductget('product_ajaxview_getfilters', '#productajaxview', '#ajaxfilter');
 }
 
 function IsInFavorites(productid) {
@@ -330,7 +331,7 @@ function addotbasketclick() {
         if (form.valid()) {
             $('.processing').show();
             if (parseInt($('.quantity').val()) < 1) $('.quantity').val('1');
-            nbxget('cart_addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
+            nbxproductget('cart_addtobasket', '.entryid' + $(this).attr('itemid'), '#minicartdatareturn'); // Reload Cart
             $('.addedtobasket').delay(10).fadeIn('fast');
         }
     });

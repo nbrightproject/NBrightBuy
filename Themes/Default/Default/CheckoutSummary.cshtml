@@ -11,6 +11,7 @@
 @using NBrightCore.common
 @using NBrightDNN
 @using Nevoweb.DNN.NBrightBuy.Components;
+@using Nevoweb.DNN.NBrightBuy.Components.Cart
 
 @AddMetaData("resourcepath", "/DesktopModules/NBright/NBrightBuy/App_LocalResources/")
 
@@ -32,18 +33,20 @@
     </ol>
 </div>
 
-<!-- Shipping methods  -->
-<div id="shippingmethods">
-    <div class="formrow">
-        <h3>@ResourceKey("General.shippingmethods")</h3>
-        <div id="providerselection">
-            @ShippingProviderList(info, "class='shippingmethodselect'")
-        </div>
-        <div id="shipprovidertemplates"></div>
-    </div>
-</div>
+<span id="checkoutsummary">
 
-<!-- Order summary box from here down  -->
+    <!-- Shipping methods  -->
+    <div id="shippingmethods">
+        <div class="formrow">
+            <h3>@ResourceKey("General.shippingmethods")</h3>
+            <div id="providerselection">
+                @ShippingProviderList(info, "class='shippingmethodselect'")
+            </div>
+            <div id="shipprovidertemplates"></div>
+        </div>
+    </div>
+
+    <!-- Order summary box from here down  -->
     <div class="checkoutextra">
 
         <div class="formrow">
@@ -92,23 +95,24 @@
         <div class="summaryright">
 
             <ul class="checkoutdetails checkouttotals">
-                    @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\Default\\Default\\CheckoutTotals.cshtml", Model)
+                @RenderTemplate("\\DesktopModules\\NBright\\NBrightBuy\\Themes\\Default\\Default\\CheckoutTotals.cshtml", Model)
             </ul>
-                <ul class="checkoutdetails">
+            <ul class="checkoutdetails">
 
-                    @if (Model.GetSettingBool("subscribenewsletter"))
-                    {
-                        <li class="formrow submissioncheck">@CheckBox(info, "genxml/extrainfo/genxml/checkbox/chknews", "ResourceKey:CartView.chknews", "", true)</li>
-                    }
+                @if (Model.GetSettingBool("subscribenewsletter"))
+                {
+                    <li class="formrow submissioncheck">@CheckBox(info, "genxml/extrainfo/genxml/checkbox/chknews", "ResourceKey:CartView.chknews", "", true)</li>
+                }
 
-                    <li class="formrow submissioncheck"><b>@ResourceKey("CartView.chkterms")</b></li>
-                    <li class="submission">
-                        <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
-                        <a href="javascript:void(0)" id="cmdRecalcSummary" class="primarybutton">@ResourceKey("CartView.UpdateCart")</a>
-                        <a href="javascript:void(0)" id="cmdOrder" class="primarybutton">@ResourceKey("CartView.Order")</a>
-                    </li>
+                <li class="formrow submissioncheck"><b>@ResourceKey("CartView.chkterms")</b></li>
+                <li class="submission">
+                    <!-- "updatecart" & "clearcart" class is used by JQuery to trigger events, must be left on -->
+                    <a href="javascript:void(0)" id="cmdRecalcSummary" class="primarybutton">@ResourceKey("CartView.UpdateCart")</a>
+                    <a href="javascript:void(0)" id="cmdRedirectPay" class="primarybutton">@ResourceKey("CartView.Order")</a>
+                    <span id="checkoutpayredirectreturn" style="display: none;">@CartFunctions.GetPaymentUrl()</span>
+                </li>
 
-                </ul>
+            </ul>
 
             @if (cart.EditMode != "")
             {
@@ -124,3 +128,5 @@
         </div>
 
     </div>
+
+</span>

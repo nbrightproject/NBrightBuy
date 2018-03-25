@@ -26,6 +26,7 @@ using NBrightDNN;
 using NBrightDNN.render;
 using Nevoweb.DNN.NBrightBuy.Base;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Nevoweb.DNN.NBrightBuy.Components.Cart;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using RazorEngine;
 using DataProvider = DotNetNuke.Data.DataProvider;

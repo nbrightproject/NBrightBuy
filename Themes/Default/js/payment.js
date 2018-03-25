@@ -3,6 +3,7 @@
 $(document).ready(function () {
     // start load all ajax data, continued by js in product.js file
 
+    $(document).unbind();
     $(document).on("nbxgetcompleted", Payment_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // function to do actions after an ajax call has been made.

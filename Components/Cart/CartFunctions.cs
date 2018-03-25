@@ -60,12 +60,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 case "cart_recalculatecart":
                     RecalculateCart(context);
                     break;
-                case "cart_redirecttopayment":
-                    strOut = RedirectToPayment(context);
-                    break;
-                case "cart_recalcforpayment":
-                    strOut = ReCalcForPayment(context);
-                    break;
                 case "cart_clearcart":
                     var currentcart = new CartData(PortalSettings.Current.PortalId);
                     currentcart.DeleteCart();
@@ -95,6 +89,9 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                     strOut = GetShippingProviderTemplates(context);
                     break;
                 case "cart_recalculatesummary":
+                    RecalculateSummary(context);
+                    break;
+                case "cart_recalculatesummary2":
                     RecalculateSummary(context);
                     break;
             }
@@ -189,80 +186,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
 
             currentcart.Save(StoreSettings.Current.DebugMode, true);
 
-        }
-
-        private static string ReCalcForPayment(HttpContext context)
-        {
-            try
-            {
-                RecalculateSummary(context);
-
-                var currentcart = new CartData(PortalSettings.Current.PortalId);
-
-                if (currentcart.GetCartItemList().Count > 0)
-                {
-                    currentcart.SetValidated(true);
-                    if (currentcart.EditMode == "E") currentcart.ConvertToOrder();
-                }
-                else
-                {
-                    currentcart.SetValidated(true);
-                }
-                currentcart.Save();
-
-                var rtnurl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId);
-                if (currentcart.EditMode == "E")
-                {
-                    // is order being edited, so return to order status after edit.
-                    // ONLY if the cartsummry is being displayed to the manager.
-                    currentcart.ConvertToOrder();
-                    // redirect to back office
-                    var param = new string[2];
-                    param[0] = "ctrl=orders";
-                    param[1] = "eid=" + currentcart.PurchaseInfo.ItemID.ToString("");
-                    var strbackofficeTabId = StoreSettings.Current.Get("backofficetabid");
-                    var backofficeTabId = PortalSettings.Current.ActiveTab.TabID;
-                    if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
-                    rtnurl = Globals.NavigateURL(backofficeTabId, "", param);
-                }
-
-                try
-                {
-                    var rPost = new PaymentPost();
-                    HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Response.Write(rPost.GetPostHtml(rtnurl));
-                }
-                catch (Exception ex)
-                {
-                    return "Redirect Error";
-                }
-
-
-                return rtnurl;
-
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return "ERROR";
-            }
-        }
-
-        private static string RedirectToPayment(HttpContext context)
-        {
-            try
-            {
-
-                var rPost = new PaymentPost();
-                HttpContext.Current.Response.Clear();
-                HttpContext.Current.Response.Write(rPost.GetPostHtml(rtnurl));
-
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return "ERROR";
-            }
         }
 
         private static void RemoveFromCart(HttpContext context)
@@ -399,6 +322,50 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                 }
             }
             return strRtn;
+        }
+
+        public static string GetPaymentUrl()
+        {
+            try
+            {
+
+                var currentcart = new CartData(PortalSettings.Current.PortalId);
+
+                if (currentcart.GetCartItemList().Count > 0)
+                {
+                    currentcart.SetValidated(true);
+                    if (currentcart.EditMode == "E") currentcart.ConvertToOrder();
+                }
+                else
+                {
+                    currentcart.SetValidated(true);
+                }
+                currentcart.Save();
+
+                var rtnurl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId);
+                if (currentcart.EditMode == "E")
+                {
+                    // is order being edited, so return to order status after edit.
+                    // ONLY if the cartsummry is being displayed to the manager.
+                    currentcart.ConvertToOrder();
+                    // redirect to back office
+                    var param = new string[2];
+                    param[0] = "ctrl=orders";
+                    param[1] = "eid=" + currentcart.PurchaseInfo.ItemID.ToString("");
+                    var strbackofficeTabId = StoreSettings.Current.Get("backofficetabid");
+                    var backofficeTabId = PortalSettings.Current.ActiveTab.TabID;
+                    if (Utils.IsNumeric(strbackofficeTabId)) backofficeTabId = Convert.ToInt32(strbackofficeTabId);
+                    rtnurl = Globals.NavigateURL(backofficeTabId, "", param);
+                }
+
+                return rtnurl;
+
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return "ERROR";
+            }
         }
 
     }

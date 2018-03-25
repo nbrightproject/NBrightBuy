@@ -200,7 +200,6 @@
     <Compile Include="Base\NBrightBuySettingBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Cart\PaymentPost.cs" />
     <Compile Include="ProductListAjaxFilter.ascx.cs">
       <DependentUpon>ProductListAjaxFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1484,7 +1483,6 @@
     <Content Include="Themes\config\js\masonry.pkgd.min.js" />
     <Content Include="Themes\config\js\nbbajax.js" />
     <Content Include="Themes\config\js\nbbitemlist.js" />
-    <Content Include="Themes\config\js\nbbqtycookie.js" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\AddressAdminSettings.ascx.fr-FR.resx" />
@@ -1612,8 +1610,9 @@
     <None Include="Themes\config\img\flags\16\Thumbs.db" />
     <None Include="Themes\config\img\flags\24\Thumbs.db" />
     <None Include="Themes\config\img\flags\32\Thumbs.db" />
-    <None Include="Themes\config\js\nbbqtycookie.readme" />
     <None Include="Themes\Default\Default\AddClientRole.cshtml" />
+    <None Include="Themes\Default\Default\FullCart_head.cshtml" />
+    <None Include="Themes\Default\Default\Checkout_head.cshtml" />
     <None Include="Themes\Default\Default\ClientMenu.cshtml" />
     <None Include="Themes\Default\Default\AddressAdmin.cshtml" />
     <None Include="Themes\Default\Default\AddressAdminDetail.cshtml" />

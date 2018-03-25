@@ -53,6 +53,7 @@
             // function to do actions after an ajax call has been made.
             function CheckOut_nbxgetCompleted(e) {
 
+                $('.processing').hide();
 
                 // ----------------------------------------------------------------------------
                 // --------- render cart list  
@@ -233,10 +234,10 @@
                         nbxget('cart_recalculatesummary', '#checkoutsummary');
                     });
 
-                    $('#cmdOrder').unbind();
-                    $('#cmdOrder').click(function () {
+                    $('#cmdRedirectPay').unbind();
+                    $('#cmdRedirectPay').click(function () {
                         $('.processing').show();
-                        nbxget('cart_redirecttopayment', '#checkoutsummary', '#checkoutdisplay');
+                        nbxget('cart_recalculatesummary2', '#checkoutsummary');
                     });
 
                     //reload shipping provider template on trigger from provider
@@ -252,18 +253,11 @@
                         $('#carttemplate').val('CheckoutSummary.cshtml');
                         nbxget('cart_recalculatesummary', '#checkoutsummary');
                     });
-
-                    //$('.processing').show();
-                    //nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
                 }
 
-
-                if (e.cmd == 'cart_redirecttopayment') {
+                if (e.cmd == 'cart_recalculatesummary2') {
                     $('.processing').show();
-                    $('#cmdOrder').hide();
-                    location.reload();
-                    //
-                    //window.location.href = $('#checkoutpayredirectreturn').text();
+                    window.location.href = $('#checkoutpayredirectreturn').text();
                 }
 
             }

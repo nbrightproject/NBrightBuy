@@ -6,6 +6,7 @@ $(document).ready(function () {
     $('#razortemplate').val('AddressAdminList.cshtml');
     nbxget('addressadmin_getlist', '#addressadminsearch', '#datadisplay');
 
+    $(document).unbind();
     $(document).on("nbxgetcompleted", AddressAdmin_nbxgetCompleted); // assign a completed event for the ajax calls
 
     // function to do actions after an ajax call has been made.
