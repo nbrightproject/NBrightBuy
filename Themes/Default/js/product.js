@@ -7,7 +7,6 @@ $(document).ready(function () {
     selPageSizeDropDown = "#pagesizedropdown" + $('modkey').val();
     selOrderByDropDown = "#sortorderdropdown" + $('modkey').val();
 
-    $(document).unbind();
     $(document).on("nbxproductgetcompleted", AjaxView_GetList_nbxproductgetCompleted); // assign a completed event for the ajax calls
   
 	$('.nav-tabs > li > a').click(function(event){

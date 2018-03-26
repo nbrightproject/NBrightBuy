@@ -47,7 +47,6 @@
                 processCartStep('prev');
             });
 
-            $(document).unbind();
             $(document).on("nbxgetcompleted", CheckOut_nbxgetCompleted); // assign a completed event for the ajax calls
 
             // function to do actions after an ajax call has been made.
@@ -192,12 +191,6 @@
 
                 }
 
-                if (e.cmd == 'cart_shippingprovidertemplate') {
-                    $('#carttemplate').val('CheckoutSummary.cshtml');
-                    $('.processing').show();
-                    nbxget('cart_recalculatesummary', '#checkoutsummary');
-                }
-
                 if (e.cmd == 'cart_updatebilladdress') {
                     $('.processing').show();
                     nbxget('cart_updateshipaddress', '.checkoutshipform');
@@ -240,6 +233,13 @@
                         nbxget('cart_recalculatesummary2', '#checkoutsummary');
                     });
 
+                    $('.shippingmethodselect').unbind();
+                    $('.shippingmethodselect').click(function () {
+                        $('.processing').show();
+                        $('#carttemplate').val('CheckoutSummary.cshtml');
+                        nbxget('cart_recalculatesummary', '#checkoutsummary');
+                    });
+
                     //reload shipping provider template on trigger from provider
                     $('.reloadshipprovider').unbind();
                     $('.reloadshipprovider').click(function () {
@@ -258,6 +258,11 @@
                 if (e.cmd == 'cart_recalculatesummary2') {
                     $('.processing').show();
                     window.location.href = $('#checkoutpayredirectreturn').text();
+                }
+
+                if (e.cmd == 'cart_recalculatesummary') {
+                    $('.processing').show();
+                    nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
                 }
 
             }
