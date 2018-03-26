@@ -37,9 +37,6 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
         public static string ProcessCommand(string paramCmd, HttpContext context, string editlang = "")
         {
             var strOut = "CART - ERROR!! - No Security rights or function command.";
-            var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);
-            var userId = ajaxInfo.GetXmlPropertyInt("genxml/hidden/userid");
-
             switch (paramCmd)
             {
                 case "cart_rendercartlist":

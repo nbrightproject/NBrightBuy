@@ -129,12 +129,12 @@
 
                 @if (Model.GetSetting("printtype") == "shiplabel")
             {
-                    <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                    <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                         <tr>
                             <td width="50%" align="left" valign="top" style="line-height: 100%">
 
                                 <div>
-                                    <b>@ResourceKey("General.ShipTo", emaillang):</b><br />                                    
+                                    <b>@ResourceKey("General.ShipTo", emaillang):</b><br />
                                 </div>
 
                                 @if (nbi.GetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/rblshippingoptions") == "2")
@@ -186,11 +186,11 @@
                         </tr>
                     </table>
 
-                    <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                    <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                         <tr>
                             <td width="50%" align="left" valign="top" style="line-height: 100%">
                             <font size="1">
-                                <b>@ResourceKey("General.ReturnTo", emaillang):</b> @Model.GetSetting("storecompany"), @Model.GetSetting("storeaddressline1"), @Model.GetSetting("storeaddressline2"), @Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode"), @Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))                                
+                                <b>@ResourceKey("General.ReturnTo", emaillang):</b> @Model.GetSetting("storecompany"), @Model.GetSetting("storeaddressline1"), @Model.GetSetting("storeaddressline2"), @Model.GetSetting("storecity"), @Model.GetSetting("storeregion") @Model.GetSetting("storepostcode"), @Utils.DecodeInternalField(Model.GetSetting("storecountrytext"))
                             </font>
                             </td>
                         </tr>
@@ -205,19 +205,19 @@
                     if (Model.GetSetting("emaillogourl") != "")
                     {
                     <!-- Logo -->
-                        <table width="700" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
-                            <tr>
-                                <td style="line-height:100%">
-                                    <a href="http://@WebsiteUrl()">
-                                        <img alt="@Model.GetSetting("storename")" border="0" src="@Model.GetSetting("emaillogourl")" style="display:block;width:700px;height:auto" title="@Model.GetSetting("storename")" width="700">
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                    <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
+                        <tr>
+                            <td style="text-align:center;">
+                                <a href="http://@WebsiteUrl()">
+                                    <img alt="@Model.GetSetting("storename")" border="0" src="http://@WebsiteUrl()@Model.GetSetting("emaillogourl")">
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                     }
 
                 <!-- orderemailmessage.html -->
-                    <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                    <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                         <tr>
                             <td width="67%" align="left" valign="top" style="line-height:150%">
                                 <h2>@ResourceKey("Notification." + @Model.GetSetting("printtype"), emaillang)</h2>
@@ -237,7 +237,7 @@
 
                     <div style="height:8px">&nbsp;</div><!-- spacer -->
                 <!-- Order Info -->
-                    <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                    <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                         <tr>
                             <td width="50%" align="left" valign="top" style="line-height:150%">
                                 <div><b>@ResourceKey("OrderAdmin.ordernumber", emaillang): </b>@nbi.GetXmlProperty("genxml/ordernumber")</div>
@@ -330,7 +330,7 @@
 
 
                 <!-- Items -->
-                                        <table width="700" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
+                                        <table width="800" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
                                             <tr>
                                                 <td>
                                                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -436,7 +436,7 @@
                                                                                 <div style="height:8px">&nbsp;</div><!-- spacer -->
 
                     <!-- Bank payment -->
-                                                                                <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                                                                                <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                                                                                     <tr>
                                                                                         <td style="line-height:100%">
                                                                                             <h4>@ResourceKey("Notification.ManualPayment", emaillang)</h4>
@@ -454,7 +454,7 @@
 
                                                                             <div style="height:8px">&nbsp;</div><!-- spacer -->
                 <!-- Addresses -->
-                                                                            <table width="700" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#ffffff">
+                                                                            <table width="800" border="0" cellpadding="20" cellspacing="0" align="center" bgcolor="#ffffff">
                                                                                 <tr>
                                                                                     <td width="50%" align="left" valign="top" style="line-height:100%">
                                                                                         <h4>@ResourceKey("Notification.BillingAddress", emaillang)</h4>
@@ -547,10 +547,10 @@
 
 
                 <!-- Footer -->
-                                                                            <table width="100%" border="0" cellpadding="12" cellspacing="0" align="center" bgcolor="#363636">
+                                                                            <table width="800" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#363636">
                                                                                 <tr>
                                                                                     <td style="line-height:100%">
-                                                                                        <table width="700" border="0" cellpadding="12" cellspacing="0" align="center">
+                                                                                        <table width="800" border="0" cellpadding="20" cellspacing="0" align="center">
                                                                                             <tr>
                                                                                                 <td width="50%" align="left" valign="top" style="line-height:100%;color:#999999">
                                                                                                     <div>
