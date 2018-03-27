@@ -24,7 +24,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Address
             try
             {
                 var strOut = "AddressAdmin - ERROR!! - No Security rights for current user!";
-                if (NBrightBuyUtils.CheckManagerRights() && UserController.Instance.GetCurrentUserInfo().UserID > 0)
+                if (UserController.Instance.GetCurrentUserInfo().UserID > 0)
                 {
                     NBrightBuyUtils.SetContextLangauge(context);
                     var ajaxInfo = NBrightBuyUtils.GetAjaxFields(context);

@@ -218,6 +218,7 @@
                 }
 
                 if (e.cmd == 'cart_rendersummary') {
+                    $('.processing').show();
                     $('#cartactions').show();
 
                     $('#cmdRecalcSummary').unbind();
@@ -240,12 +241,6 @@
                         nbxget('cart_recalculatesummary', '#checkoutsummary');
                     });
 
-                    //reload shipping provider template on trigger from provider
-                    $('.reloadshipprovider').unbind();
-                    $('.reloadshipprovider').click(function () {
-                        $('.processing').show();
-                        nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
-                    });
                     //recalc on trigger from provider
                     $('.recalcshipprovider').unbind();
                     $('.recalcshipprovider').click(function () {
@@ -253,16 +248,16 @@
                         $('#carttemplate').val('CheckoutSummary.cshtml');
                         nbxget('cart_recalculatesummary', '#checkoutsummary');
                     });
+
+                    nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
+                }
+
+                if (e.cmd == 'cart_shippingprovidertemplate') {
                 }
 
                 if (e.cmd == 'cart_recalculatesummary2') {
                     $('.processing').show();
                     window.location.href = $('#checkoutpayredirectreturn').text();
-                }
-
-                if (e.cmd == 'cart_recalculatesummary') {
-                    $('.processing').show();
-                    nbxget('cart_shippingprovidertemplate', '#checkoutsummary', '#shipprovidertemplates');
                 }
 
             }

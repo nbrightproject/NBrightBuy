@@ -1209,4 +1209,7 @@
   <data name="included.Text" xml:space="preserve">
     <value>(incl.)</value>
   </data>
+  <data name="AddressName.Text" xml:space="preserve">
+    <value>Address Name</value>
+  </data>
 </root>

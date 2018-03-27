@@ -1,4 +1,5 @@
 @inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightRazor>
+@using DotNetNuke.Entities.Portals
 @using NBrightDNN
 
 <!-- Include Ajax -->
@@ -37,12 +38,15 @@
 
 <!-- Get messages for JQuery validation -->
 @{
-    var langcode = Model.GetUrlParam("language");
+    var langcode = Model.Lang;
+    if (langcode == "")
+    {
+        langcode = Model.GetUrlParam("language");
+    }
     if (langcode != "")
     {
         langcode = langcode.Substring(0, 2);
     }
-
 }
 @if (langcode != "" && langcode != "en")
 {

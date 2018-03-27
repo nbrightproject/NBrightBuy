@@ -1203,4 +1203,7 @@
   <data name="included.Text" xml:space="preserve">
     <value>(inclus)</value>
   </data>
+  <data name="AddressName.Text" xml:space="preserve">
+    <value>Adresse Nom</value>
+  </data>
 </root>

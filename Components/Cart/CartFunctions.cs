@@ -307,7 +307,15 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
                             {
                                 var objList = new List<NBrightInfo>();
                                 objList.Add(currentcart.PurchaseInfo);
-                                strRtn += NBrightBuyUtils.RazorRender(objList, razorTempl, shippingkey + "shippingtemplate", StoreSettings.Current.DebugMode);
+
+                                var nbRazor = new NBrightRazor(objList.Cast<object>().ToList(), NBrightBuyUtils.GetPassSettings(ajaxInfo), HttpContext.Current.Request.QueryString);
+                                nbRazor.ModuleId = -1;
+                                nbRazor.FullTemplateName = "";
+                                nbRazor.TemplateName = "";
+                                nbRazor.ThemeFolder = "";
+                                nbRazor.Lang = Utils.GetCurrentCulture();
+
+                                strRtn += NBrightBuyUtils.RazorRender(nbRazor, razorTempl, shippingkey + "shippingtemplate", true);
                             }
                         }
                     }
