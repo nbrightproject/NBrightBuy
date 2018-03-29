@@ -204,10 +204,13 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (nodlist != null)
                 foreach (XmlNode n in nodlist)
                 {
-                    var s = n.InnerText.Replace(" ", "").ToLower();
-                    if (!s.StartsWith("<script"))  // ignore any scripts added by the template to spamsafe emails, etc
+                    if (n.Name != "addressname")
                     {
-                        newAddr += s;                        
+                        var s = n.InnerText.Replace(" ", "").ToLower();
+                        if (!s.StartsWith("<script"))  // ignore any scripts added by the template to spamsafe emails, etc
+                        {
+                            newAddr += s;
+                        }
                     }
                 }
             nodlist = nInfo.XMLDoc.SelectNodes("genxml/dropdownlist/*");

@@ -109,7 +109,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
                     if (!Utils.IsNumeric(selectedbilladdrIdx)) selectedbilladdrIdx = "-1";
                     addrData.AddAddress(billAddr, Convert.ToInt32(selectedbilladdrIdx));
                     var shipAddr = ordData.GetShippingAddress();
-                    var selectedShipaddrIdx = billAddr.GetXmlProperty("genxml/dropdownlist/selectaddress");
+                    var selectedShipaddrIdx = shipAddr.GetXmlProperty("genxml/dropdownlist/selectshipaddress");
                     if (!Utils.IsNumeric(selectedShipaddrIdx)) selectedShipaddrIdx = "-1";
                     addrData.AddAddress(shipAddr, Convert.ToInt32(selectedShipaddrIdx));
                 }
@@ -290,45 +290,7 @@ namespace Nevoweb.DNN.NBrightBuy.Components
             if (currentcartstage == "cartaddress" || currentcartstage == "cartsummary") // can only calc shipping on this stage.
             {
                 ShippingInterface shipprov = null;
-                if (shippingkey == "")
-                {
-                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
-                    var provList = pluginData.GetShippingProviders();
-                    foreach (var d in provList)
-                    {
-                        var isValid = true;
-                        var shipprov1 = ShippingInterface.Instance(d.Key);
-                        if (shipprov1 != null) isValid = shipprov1.IsValid(PurchaseInfo);
-                        if (isValid)
-                        {
-                            shipprov = shipprov1;
-                            if (shipprov != null) PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", shipprov.Shippingkey);
-                            break;
-                        }
-                    }
-                }
-                else
-                    shipprov = ShippingInterface.Instance(shippingkey);
-
-                if (shipprov != null && !shipprov.IsValid(PurchaseInfo)) // Check we have a valid one!! if not the get another!!
-                {
-                    var pluginData = new PluginData(PortalSettings.Current.PortalId);
-                    var provList = pluginData.GetShippingProviders();
-                    foreach (var d in provList)
-                    {
-                        var isValid = true;
-                        var shipprov1 = ShippingInterface.Instance(d.Key);
-                        if (shipprov1 != null) isValid = shipprov1.IsValid(PurchaseInfo);
-                        if (isValid)
-                        {
-                            shipprov = shipprov1;
-                            if (shipprov != null) PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/radiobuttonlist/shippingprovider", shipprov.Shippingkey);
-                            break;
-                        }
-                    }
-                }
-
-
+                 shipprov = ShippingInterface.Instance(shippingkey);
                 if (shipprov != null)
                 {
                     PurchaseInfo = shipprov.CalculateShipping(PurchaseInfo);

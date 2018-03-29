@@ -163,21 +163,14 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
             var shipInfo = objCtrl.GetByGuidKey(PortalSettings.Current.PortalId, -1, "SHIPPING", shipref);
             if (shipInfo != null)
             {
-                displayanme = shipInfo.GetXmlProperty("genxml/textbox/shippingdisplayname");
-                if (shipInfo.GetXmlProperty("genxml/textbox/name") != "")
-                {
-                    displayanme = shipInfo.GetXmlProperty("genxml/textbox/name");
+                var shipprov = ShippingInterface.Instance(shipref);
+                if (shipprov != null)
+                { 
+                    displayanme = shipprov.Name();
                 }
             }
             if (displayanme == "") displayanme = shipref;
             currentcart.PurchaseInfo.SetXmlProperty("genxml/extrainfo/genxml/hidden/shippingdisplayanme", displayanme);
-
-            var shippingproductcode = ajaxInfo.GetXmlProperty("genxml/hidden/shippingproductcode");
-            currentcart.PurchaseInfo.SetXmlProperty("genxml/shippingproductcode", shippingproductcode);
-            var pickuppointref = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointref");
-            currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointref", pickuppointref);
-            var pickuppointaddr = ajaxInfo.GetXmlProperty("genxml/hidden/pickuppointaddr");
-            currentcart.PurchaseInfo.SetXmlProperty("genxml/pickuppointaddr", pickuppointaddr);
 
             currentcart.Lang = ajaxInfo.Lang;  // set lang so we can send emails in same language the order was made in.
 

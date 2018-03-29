@@ -193,7 +193,7 @@
     <value>Commandes</value>
   </data>
   <data name="plugins.Text" xml:space="preserve">
-    <value>Plugins</value>
+    <value>Extensions</value>
   </data>
   <data name="lblhidden.Help" xml:space="preserve">
     <value>Ne pas afficher dans le menu.</value>
@@ -304,12 +304,15 @@
     <value>Produits</value>
   </data>
   <data name="vouchers.Text" xml:space="preserve">
-    <value>Coupons</value>
+    <value>Bons de réduction</value>
   </data>
   <data name="grouppromo.Text" xml:space="preserve">
-    <value>Groupées</value>
+    <value>Promotions de groupe</value>
   </data>
   <data name="multibuypromo.Text" xml:space="preserve">
-    <value>Achats multiples</value>
+    <value>Offres d'achat</value>
+  </data>
+  <data name="manualpayment.Text" xml:space="preserve">
+    <value>Paiement manuel</value>
   </data>
 </root>
