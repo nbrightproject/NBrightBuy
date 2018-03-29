@@ -1314,7 +1314,12 @@ namespace NBrightBuy.render
                     }
                 }
 
-                var itemtext = tItem.GetXmlProperty("genxml/textbox/firstname") + "," + tItem.GetXmlProperty("genxml/textbox/lastname") + "," + tItem.GetXmlProperty("genxml/textbox/unit") + "," + tItem.GetXmlProperty("genxml/textbox/street") + "," + tItem.GetXmlProperty("genxml/textbox/city");
+                var addrname = "";
+                if (tItem.GetXmlProperty("genxml/textbox/addressname") != "")
+                {
+                    addrname = tItem.GetXmlProperty("genxml/textbox/addressname") + ": ";
+                }
+                var itemtext = addrname + tItem.GetXmlProperty("genxml/textbox/firstname") + "," + tItem.GetXmlProperty("genxml/textbox/lastname") + "," + tItem.GetXmlProperty("genxml/textbox/unit") + "," + tItem.GetXmlProperty("genxml/textbox/street") + "," + tItem.GetXmlProperty("genxml/textbox/city");
                 var idx = tItem.GetXmlProperty("genxml/hidden/index");
                 if (idx != "")
                 {

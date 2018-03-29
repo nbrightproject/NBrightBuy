@@ -208,11 +208,8 @@ namespace Nevoweb.DNN.NBrightBuy.Components.Cart
 
             if (addresstype == "ship")
             {
-                if (currentcart.GetShippingOption() == "2") // need to test this, becuase in legacy code the shipping option is set to "2" when we save the shipping address.
-                {
-                    currentcart.AddShippingAddress(ajaxInfo);
-                    currentcart.Save();
-                }
+                currentcart.AddShippingAddress(ajaxInfo);
+                currentcart.Save();
             }
 
             if (addresstype == "shipoption")

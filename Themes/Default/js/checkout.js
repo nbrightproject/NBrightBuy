@@ -269,7 +269,12 @@ function populateAddressForm(selectordiv, datavalues, datafields) {
     // selectordiv = the selector for the form section that needs popluating
     // datafields = the list of field ids that need popluating (in seq order matching the "data" param)
     // datavalues = the list of data values to be populated.
-    if (datavalues != null && datavalues != '') {
+    if (datavalues == null || datavalues == '') {
+        //TODO: clearing the dropdown will repoplate the region text. 
+        //$(selectordiv).find("select").each(function () { this.selectedIndex = 0 });
+        $(selectordiv).find('input:text').val('');
+        $(selectordiv).find('input[type=email]').val('');
+    } else {
         var datarray = datavalues.split(',');
         var fieldarray = datafields.split(',');
         var arrayLength = fieldarray.length;
