@@ -1,4 +1,4 @@
-# This project is now not supported.  Use OpenStore v4.
+# This project is not supported.  Use OpenStore v4.
 
 https://www.openstore-ecommerce.com
 
