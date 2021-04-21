@@ -1,3 +1,8 @@
+# This project is not supported.  Use OpenStore v4.
+
+https://www.openstore-ecommerce.com
+
+
 # NBrightBuy
 NBrightStore - E-Commerce for DNN (NBSv3)
 
