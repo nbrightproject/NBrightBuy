@@ -2,6 +2,7 @@
 
 https://www.openstore-ecommerce.com
 
+https://github.com/openstore-ecommerce/OpenStore
 
 # NBrightBuy
 NBrightStore - E-Commerce for DNN (NBSv3)
